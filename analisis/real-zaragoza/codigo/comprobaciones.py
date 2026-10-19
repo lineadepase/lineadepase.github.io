@@ -107,7 +107,7 @@ def comprobar_tarjetas(tarjetas, estadisticas):
     """Las amarillas apuntadas una a una coinciden con las de las estadísticas del partido."""
     amarillas = estadisticas[(estadisticas["periodo"] == "Partido") & (estadisticas["metrica"] == "amarillas")]
     for fila in amarillas.itertuples():
-        apuntadas = ((tarjetas["partido_id"] == fila.partido_id) & (tarjetas["tarjeta"] == "Amarilla")).sum()
+        apuntadas = ((tarjetas["partido_id"] == fila.partido_id) & (tarjetas["tarjeta"].isin(["Amarilla", "Segunda amarilla"]))).sum()
         _exigir(apuntadas == fila.zaragoza,
                 f"Partido {fila.partido_id}: {apuntadas} amarillas apuntadas y {fila.zaragoza} en las estadísticas")
 

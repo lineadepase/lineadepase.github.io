@@ -30,7 +30,8 @@ cambios;sale;Jugador que sale.;Texto;Marcos Cuenca
 cambios;fuente_url;Página de la que saqué el dato.;Texto;https://www.realzaragoza.com/partidos/temporada-2026-2027…
 tarjetas;partido_id;Partido (ver tabla partidos).;Número entero;1
 tarjetas;jugador;Jugador amonestado o expulsado.;Texto;Lucas Terrer
-tarjetas;tarjeta;«Amarilla» o «Roja».;Texto;Amarilla
+tarjetas;tarjeta;«Amarilla», «Roja» o «Segunda amarilla».;Texto;Amarilla
+tarjetas;minuto;"Minuto base de la tarjeta; vacío si no se ha recogido. Las expulsiones cierran los minutos jugados, sin descuento.";Número entero;14
 tarjetas;fuente_url;Página de la que saqué el dato.;Texto;https://futboltotal.futbol/partido/gimnastic-vs-zaragoza-…
 tiros;partido_id;Partido (ver tabla partidos).;Número entero;1
 tiros;tiros_zaragoza;Tiros totales del Zaragoza.;Número entero;33
@@ -107,11 +108,11 @@ clasificacion;gf;Goles a favor.;Número entero;12
 clasificacion;gc;Goles en contra.;Número entero;6
 clasificacion;puntos;Puntos.;Número entero;15
 clasificacion;fuente_url;Página de la que saqué el dato.;Texto;https://www.fotmob.com/es-419/teams/8394/overview
-proximos;jornada;Jornada.;Número entero;8
+proximos;jornada;Jornada.;Número entero;9
 proximos;competicion;Competición.;Texto;Primera Federación
-proximos;fecha;Fecha prevista (puede cambiar).;Texto;2026-10-18
+proximos;fecha;Fecha prevista (puede cambiar).;Texto;2026-10-23
 proximos;sede;«Casa» o «Fuera».;Texto;Fuera
-proximos;rival;Rival.;Texto;Real Murcia
+proximos;rival;Rival.;Texto;CE Europa
 proximos;fuente_url;Página de la que saqué el dato.;Texto;https://www.fotmob.com/es-419/teams/8394/overview
 partidos_rivales;equipo;Equipo del que son los resultados.;Texto;Real Murcia
 partidos_rivales;jornada;Jornada.;Número entero;1
@@ -159,14 +160,14 @@ resumenes_youtube;titulo;Título del vídeo.;Texto;Resumen #PrimeraFederación |
 resumenes_youtube;duracion;Duración (minutos:segundos).;Texto;4:03
 resumenes_youtube;url;Enlace al vídeo.;Texto;https://www.youtube.com/watch?v=psvkPAyTRhk
 jugadores;jugador;Jugador.;Texto;Jaume Jardí
-jugadores;partidos;Partidos jugados.;Número entero;7
-jugadores;titularidades;Partidos como titular.;Número entero;6
-jugadores;minutos;Minutos jugados, sin contar el descuento.;Número entero;554
+jugadores;partidos;Partidos jugados.;Número entero;8
+jugadores;titularidades;Partidos como titular.;Número entero;7
+jugadores;minutos;Minutos jugados, sin contar el descuento.;Número entero;639
 jugadores;goles;Goles.;Número entero;4
 jugadores;asistencias;Asistencias (solo las que constan).;Número entero;4
 jugadores;participaciones_con_minutos;Goles + asistencias.;Número entero;8
-jugadores;participaciones_por_90;Goles + asistencias por cada 90 minutos jugados.;Número decimal;1.3
-jugadores;minutos_por_participacion;Minutos que tarda de media en participar en un gol. Vacío si no ha participado en ninguno.;Número entero;69
+jugadores;participaciones_por_90;Goles + asistencias por cada 90 minutos jugados.;Número decimal;1.13
+jugadores;minutos_por_participacion;Minutos que tarda de media en participar en un gol. Vacío si no ha participado en ninguno.;Número entero;80
 minutos_partido;partido_id;Partido (ver tabla partidos).;Número entero;1
 minutos_partido;jugador;Jugador.;Texto;Westerveld
 minutos_partido;rol;«Titular» o «Suplente».;Texto;Titular

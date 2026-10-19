@@ -1,0 +1,12 @@
+{
+  "partido_id": 8,
+  "jornada": 8,
+  "rival": "Real Murcia",
+  "fecha": "2026-10-18",
+  "estado": "pendiente",
+  "fuente_url": "https://www.youtube.com/watch?v=Eq-htl0RmVs",
+  "alcance": "resumen pendiente de reproducir",
+  "fecha_revision": null,
+  "archivo_analisis": null,
+  "motivo": "La lectura web del vídeo devuelve Online fetch throttled; no se han observado imágenes."
+}

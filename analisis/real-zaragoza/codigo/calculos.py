@@ -139,28 +139,34 @@ def participacion_en_goles(goles_liga):
 # Minutos
 # ---------------------------------------------------------------------------
 
-def minutos_por_partido(alineaciones, cambios):
+def minutos_por_partido(alineaciones, cambios, tarjetas=None):
     """
     Minutos de cada jugador en cada partido con alineación conocida.
 
     Titular: del 0 al minuto en que sale (90 si no sale).
     Suplente: del minuto en que entra al 90.
-    No hay expulsiones del Zaragoza hasta ahora; si las hubiera, habría que
-    tratarlas como una salida sin cambio.
+    Las expulsiones con minuto registrado se tratan como salidas sin cambio.
     """
     filas = []
     for partido_id, once in alineaciones.groupby("partido_id"):
         cambios_partido = cambios[cambios["partido_id"] == partido_id]
         salidas = dict(zip(cambios_partido["sale"], cambios_partido["minuto"]))
         entradas = dict(zip(cambios_partido["entra"], cambios_partido["minuto"]))
+        if tarjetas is not None and "minuto" in tarjetas:
+            expulsados = tarjetas[(tarjetas["partido_id"] == partido_id)
+                                  & tarjetas["tarjeta"].isin(["Roja", "Segunda amarilla"])
+                                  & tarjetas["minuto"].notna()]
+            for exp in expulsados.itertuples():
+                salidas[exp.jugador] = min(salidas.get(exp.jugador, MINUTOS_PARTIDO),
+                                          min(exp.minuto, MINUTOS_PARTIDO))
 
         for jugador in once["jugador"]:
             sale = salidas.get(jugador, MINUTOS_PARTIDO)
             filas.append([partido_id, jugador, "Titular", 0, sale, sale])
 
         for jugador, entra in entradas.items():
-            filas.append([partido_id, jugador, "Suplente", entra, MINUTOS_PARTIDO,
-                          MINUTOS_PARTIDO - entra])
+            sale = salidas.get(jugador, MINUTOS_PARTIDO)
+            filas.append([partido_id, jugador, "Suplente", entra, sale, sale - entra])
 
     return pd.DataFrame(
         filas, columns=["partido_id", "jugador", "rol", "entra", "sale", "minutos"]

@@ -36,6 +36,7 @@ cargar_datos <- function(proyecto) {
     goles        = goles[goles$partido_id %in% ids_liga, ],
     alineaciones = alineaciones[alineaciones$partido_id %in% ids_liga, ],
     cambios      = cambios[cambios$partido_id %in% ids_liga, ],
+    tarjetas     = leer(proyecto, "entrada", "tarjetas.csv"),
 
     py_sede      = leer(proyecto, "salida", "resumen_sede.csv"),
     py_jugadores = leer(proyecto, "salida", "jugadores.csv"),

@@ -106,7 +106,7 @@ def main():
 
     ids_liga = set(liga["partido_id"])
     alineaciones_liga = datos["alineaciones"][datos["alineaciones"]["partido_id"].isin(ids_liga)]
-    minutos = calculos.minutos_por_partido(alineaciones_liga, datos["cambios"])
+    minutos = calculos.minutos_por_partido(alineaciones_liga, datos["cambios"], datos["tarjetas"])
     participacion = calculos.participacion_en_goles(goles_liga)
     jugadores = calculos.tabla_jugadores(minutos, goles_liga)
     clasificacion = calculos.preparar_clasificacion(datos["clasificacion"])

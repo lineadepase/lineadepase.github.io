@@ -51,7 +51,7 @@ Las páginas y sus plantillas conservan el selector de tema, los gráficos ampli
 | `goles.csv` | Cada gol: minuto, parte, goleador, asistencia, penalti y propia puerta |
 | `alineaciones.csv` | Once inicial de cada partido |
 | `cambios.csv` | Minuto, jugador que entra y jugador que sale |
-| `tarjetas.csv` | Tarjetas del Zaragoza |
+| `tarjetas.csv` | Tarjetas del Zaragoza y minuto cuando se conoce; las expulsiones cierran los minutos jugados |
 | `tiros.csv` | Tiros, tiros a puerta y posesión, con aviso si el dato está incompleto |
 | `estadisticas.csv` | Estadísticas completas de los partidos que las tienen (incluso por partes) |
 | `clasificacion.csv` | Clasificación del grupo tras cada jornada apuntada |

@@ -125,7 +125,8 @@ TABLAS = {
         "columnas": {
             "partido_id": "Partido (ver tabla partidos).",
             "jugador": "Jugador amonestado o expulsado.",
-            "tarjeta": "«Amarilla» o «Roja».",
+            "tarjeta": "«Amarilla», «Roja» o «Segunda amarilla».",
+            "minuto": "Minuto base de la tarjeta; vacío si no se ha recogido. Las expulsiones cierran los minutos jugados, sin descuento.",
             "fuente_url": "Página de la que saqué el dato.",
         },
     },

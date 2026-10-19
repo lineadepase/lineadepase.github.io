@@ -154,7 +154,7 @@ def generar(jornada):
 <script src="../../assets/tema.js"></script>
 <link rel="stylesheet" href="../../assets/estilo.css?v=20261015b">
 <link rel="stylesheet" href="../../assets/real-zaragoza.css?v=20261016b">
-<script src="../../assets/mejoras.js?v=20261014c" defer></script>
+<script src="../../assets/mejoras.js?v=20261016b" defer></script>
 <link rel="icon" href="../../assets/icono.svg" type="image/svg+xml">
 </head>
 <body>

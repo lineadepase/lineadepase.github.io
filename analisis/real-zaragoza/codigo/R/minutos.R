@@ -8,10 +8,8 @@
 #
 # Límites que conviene tener en cuenta (también están en el README):
 #   - No cuento el descuento: un partido completo son 90 minutos.
-#   - Si un suplente que ha entrado es sustituido después, se le cuenta
-#     hasta el 90. Hasta ahora no ha pasado.
-#   - No hay expulsiones del Zaragoza. Si las hubiera, habría que tratarlas
-#     como una salida sin cambio, aquí y en Python.
+#   - Si un suplente vuelve a salir, termina en el minuto de salida.
+#   - Las expulsiones con minuto registrado son salidas sin cambio.
 #
 # Sumo los minutos de todos los partidos de liga y comparo con la columna
 # «minutos» de datos/salida/jugadores.csv.
@@ -35,11 +33,25 @@ comprobar_minutos <- function(datos) {
     sale <- ifelse(once %in% cambios_partido$sale,
                    cambios_partido$minuto[match(once, cambios_partido$sale)],
                    MINUTOS_PARTIDO)
+    tarjetas <- datos$tarjetas
+    expulsados <- tarjetas[tarjetas$partido_id == id &
+      tarjetas$tarjeta %in% c("Roja", "Segunda amarilla") & !is.na(tarjetas$minuto), ]
+    for (i in seq_along(once)) {
+      m <- expulsados$minuto[expulsados$jugador == once[i]]
+      if (length(m)) sale[i] <- min(sale[i], m, MINUTOS_PARTIDO)
+    }
     filas[[length(filas) + 1]] <- data.frame(jugador = once, minutos = sale)
 
     # Suplentes: los que entran, desde su minuto hasta el 90
+    finales <- rep(MINUTOS_PARTIDO, nrow(cambios_partido))
+    for (i in seq_along(cambios_partido$entra)) {
+      jugador <- cambios_partido$entra[i]
+      m <- c(cambios_partido$minuto[cambios_partido$sale == jugador],
+             expulsados$minuto[expulsados$jugador == jugador])
+      if (length(m)) finales[i] <- min(finales[i], m)
+    }
     filas[[length(filas) + 1]] <- data.frame(jugador = cambios_partido$entra,
-                                             minutos = MINUTOS_PARTIDO - cambios_partido$minuto)
+                                             minutos = finales - cambios_partido$minuto)
   }
 
   # Sumo por jugador los minutos de todos los partidos

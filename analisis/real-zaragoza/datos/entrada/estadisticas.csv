@@ -115,3 +115,45 @@ partido_id,periodo,metrica,zaragoza,valor_rival,calidad,fuente_url
 7,Parte 2,rojas,0,0,ok,https://es.besoccer.com/partido/at-madrid-b/real-zaragoza/202724244
 7,Parte 2,tiros_puerta,6,6,ok,https://aupazaragoza.com/articulo/partido-at-madrile-o-vs-real-zaragoza-2026-10-11
 7,Parte 2,tiros_fuera,2,3,ok,https://aupazaragoza.com/articulo/partido-at-madrile-o-vs-real-zaragoza-2026-10-11
+8,Partido,posesion_pct,49,51,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Partido,fueras_juego,0,3,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Partido,corners,4,3,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Partido,tiros,9,9,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Partido,tiros_fuera,3,5,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Partido,tiros_puerta,3,1,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Partido,tiros_bloqueados,3,3,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Partido,paradas_publicadas,1,3,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Partido,entradas,15,19,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Partido,pases,379,393,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Partido,pases_completados,302,305,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Partido,faltas,13,26,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Partido,amarillas,5,2,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Partido,rojas,1,0,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Primera parte,posesion_pct,56,44,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Primera parte,fueras_juego,0,1,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Primera parte,corners,1,1,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Primera parte,tiros,3,3,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Primera parte,tiros_fuera,1,2,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Primera parte,tiros_puerta,2,1,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Primera parte,tiros_bloqueados,0,0,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Primera parte,paradas_publicadas,1,2,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Primera parte,entradas,11,10,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Primera parte,pases,251,195,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Primera parte,pases_completados,205,141,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Primera parte,faltas,7,11,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Primera parte,amarillas,2,0,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Primera parte,rojas,0,0,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Segunda parte,posesion_pct,40,60,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Segunda parte,fueras_juego,0,2,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Segunda parte,corners,3,2,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Segunda parte,tiros,6,6,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Segunda parte,tiros_fuera,2,3,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Segunda parte,tiros_puerta,1,0,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Segunda parte,tiros_bloqueados,3,3,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Segunda parte,paradas_publicadas,0,1,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Segunda parte,entradas,4,9,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Segunda parte,pases,128,198,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Segunda parte,pases_completados,97,164,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Segunda parte,faltas,6,15,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Segunda parte,amarillas,3,2,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302
+8,Segunda parte,rojas,1,0,ok,https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302

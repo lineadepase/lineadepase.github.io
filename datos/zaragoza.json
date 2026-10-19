@@ -1,7 +1,7 @@
 {
- "corte": "2026-10-11",
- "jornada": 7,
- "clasificacion_tras": 7,
+ "corte": "2026-10-18",
+ "jornada": 8,
+ "clasificacion_tras": 8,
  "partidos": [
   {
    "partido_id": 1,
@@ -14,7 +14,7 @@
    "resultado": "Derrota",
    "puntos": 0,
    "puntos_acumulados": 0,
-   "posicion_rival": 14,
+   "posicion_rival": 11,
    "tiros_zaragoza": 33,
    "tiros_rival": 10,
    "posesion_pct": 75.0,
@@ -31,7 +31,7 @@
    "resultado": "Victoria",
    "puntos": 3,
    "puntos_acumulados": 3,
-   "posicion_rival": 8,
+   "posicion_rival": 12,
    "tiros_zaragoza": 19,
    "tiros_rival": 10,
    "posesion_pct": 67.0,
@@ -65,7 +65,7 @@
    "resultado": "Victoria",
    "puntos": 3,
    "puntos_acumulados": 9,
-   "posicion_rival": 6,
+   "posicion_rival": 4,
    "tiros_zaragoza": 17,
    "tiros_rival": 8,
    "posesion_pct": 62.0,
@@ -82,7 +82,7 @@
    "resultado": "Victoria",
    "puntos": 3,
    "puntos_acumulados": 12,
-   "posicion_rival": 10,
+   "posicion_rival": 7,
    "tiros_zaragoza": 8,
    "tiros_rival": 8,
    "posesion_pct": 56.0,
@@ -116,10 +116,27 @@
    "resultado": "Empate",
    "puntos": 1,
    "puntos_acumulados": 16,
-   "posicion_rival": 11,
+   "posicion_rival": 14,
    "tiros_zaragoza": 16,
    "tiros_rival": 15,
    "posesion_pct": 65.0,
+   "completo": true
+  },
+  {
+   "partido_id": 8,
+   "jornada": 8,
+   "fecha": "2026-10-18",
+   "sede": "Fuera",
+   "rival": "Real Murcia",
+   "goles_favor": 0,
+   "goles_contra": 0,
+   "resultado": "Empate",
+   "puntos": 1,
+   "puntos_acumulados": 17,
+   "posicion_rival": 3,
+   "tiros_zaragoza": 9,
+   "tiros_rival": 9,
+   "posesion_pct": 49.0,
    "completo": true
   }
  ],
@@ -466,49 +483,57 @@
  "jugadores": [
   {
    "jugador": "Jaume Jardí",
-   "partidos": 7,
-   "titularidades": 6,
-   "minutos": 554,
+   "partidos": 8,
+   "titularidades": 7,
+   "minutos": 639.0,
    "goles": 4,
    "asistencias": 4
   },
   {
    "jugador": "Westerveld",
-   "partidos": 6,
-   "titularidades": 6,
-   "minutos": 540,
+   "partidos": 7,
+   "titularidades": 7,
+   "minutos": 630.0,
    "goles": 0,
    "asistencias": 0
   },
   {
    "jugador": "Rubo",
-   "partidos": 6,
-   "titularidades": 6,
-   "minutos": 522,
+   "partidos": 7,
+   "titularidades": 7,
+   "minutos": 612.0,
    "goles": 2,
    "asistencias": 0
   },
   {
    "jugador": "Lucas Terrer",
-   "partidos": 7,
-   "titularidades": 6,
-   "minutos": 516,
+   "partidos": 8,
+   "titularidades": 7,
+   "minutos": 606.0,
    "goles": 0,
    "asistencias": 0
   },
   {
    "jugador": "Diego González",
-   "partidos": 6,
-   "titularidades": 6,
-   "minutos": 511,
+   "partidos": 7,
+   "titularidades": 7,
+   "minutos": 601.0,
    "goles": 1,
    "asistencias": 1
   },
   {
    "jugador": "Marco Sangalli",
-   "partidos": 6,
+   "partidos": 7,
    "titularidades": 5,
-   "minutos": 494,
+   "minutos": 528.0,
+   "goles": 0,
+   "asistencias": 0
+  },
+  {
+   "jugador": "P. Ademo",
+   "partidos": 7,
+   "titularidades": 6,
+   "minutos": 496.0,
    "goles": 0,
    "asistencias": 0
   },
@@ -516,15 +541,7 @@
    "jugador": "Raúl Pereira",
    "partidos": 7,
    "titularidades": 4,
-   "minutos": 443,
-   "goles": 0,
-   "asistencias": 0
-  },
-  {
-   "jugador": "P. Ademo",
-   "partidos": 6,
-   "titularidades": 5,
-   "minutos": 414,
+   "minutos": 443.0,
    "goles": 0,
    "asistencias": 0
   },
@@ -532,87 +549,87 @@
    "jugador": "Joaquín",
    "partidos": 6,
    "titularidades": 3,
-   "minutos": 366,
+   "minutos": 366.0,
    "goles": 0,
+   "asistencias": 0
+  },
+  {
+   "jugador": "Óscar Ureña",
+   "partidos": 7,
+   "titularidades": 4,
+   "minutos": 363.0,
+   "goles": 3,
+   "asistencias": 1
+  },
+  {
+   "jugador": "Rubén Díez",
+   "partidos": 6,
+   "titularidades": 5,
+   "minutos": 354.0,
+   "goles": 0,
+   "asistencias": 1
+  },
+  {
+   "jugador": "Pau Sans",
+   "partidos": 7,
+   "titularidades": 3,
+   "minutos": 300.0,
+   "goles": 1,
    "asistencias": 0
   },
   {
    "jugador": "Iker Vadillo",
    "partidos": 5,
    "titularidades": 4,
-   "minutos": 294,
+   "minutos": 294.0,
    "goles": 0,
    "asistencias": 0
-  },
-  {
-   "jugador": "Rubén Díez",
-   "partidos": 5,
-   "titularidades": 4,
-   "minutos": 286,
-   "goles": 0,
-   "asistencias": 1
-  },
-  {
-   "jugador": "Pau Sans",
-   "partidos": 6,
-   "titularidades": 3,
-   "minutos": 279,
-   "goles": 1,
-   "asistencias": 0
-  },
-  {
-   "jugador": "Óscar Ureña",
-   "partidos": 6,
-   "titularidades": 3,
-   "minutos": 278,
-   "goles": 3,
-   "asistencias": 1
   },
   {
    "jugador": "S. Escudero",
-   "partidos": 5,
-   "titularidades": 4,
-   "minutos": 236,
+   "partidos": 6,
+   "titularidades": 5,
+   "minutos": 292.0,
    "goles": 0,
    "asistencias": 0
   },
   {
    "jugador": "Ander Herrera",
-   "partidos": 3,
+   "partidos": 4,
    "titularidades": 3,
-   "minutos": 226,
+   "minutos": 248.0,
    "goles": 0,
    "asistencias": 0
   },
   {
    "jugador": "Edu Espiau",
-   "partidos": 4,
-   "titularidades": 2,
-   "minutos": 172,
+   "partidos": 5,
+   "titularidades": 3,
+   "minutos": 241.0,
    "goles": 3,
    "asistencias": 2
   },
   {
-   "jugador": "H. Barrachina",
-   "partidos": 3,
-   "titularidades": 1,
-   "minutos": 163,
+   "jugador": "J. Gabilondo",
+   "partidos": 4,
+   "titularidades": 3,
+   "minutos": 233.0,
    "goles": 0,
    "asistencias": 0
   },
   {
-   "jugador": "J. Gabilondo",
-   "partidos": 3,
-   "titularidades": 2,
-   "minutos": 143,
+   "jugador": "H. Barrachina",
+   "partidos": 4,
+   "titularidades": 1,
+   "minutos": 168.0,
    "goles": 0,
    "asistencias": 0
   },
   {
    "jugador": "Yussif Saidu",
-   "partidos": 4,
+   "partidos": 5,
    "titularidades": 0,
-   "minutos": 126,
+   "minutos": 131.0,
    "goles": 1,
    "asistencias": 0
   },
@@ -620,7 +637,7 @@
    "jugador": "Marcos Cuenca",
    "partidos": 5,
    "titularidades": 2,
-   "minutos": 120,
+   "minutos": 120.0,
    "goles": 0,
    "asistencias": 0
   },
@@ -628,7 +645,7 @@
    "jugador": "Tachi",
    "partidos": 2,
    "titularidades": 1,
-   "minutos": 108,
+   "minutos": 108.0,
    "goles": 0,
    "asistencias": 0
   },
@@ -636,7 +653,7 @@
    "jugador": "Anartz Peña",
    "partidos": 1,
    "titularidades": 1,
-   "minutos": 90,
+   "minutos": 90.0,
    "goles": 0,
    "asistencias": 0
   },
@@ -644,7 +661,7 @@
    "jugador": "Diego Monzón",
    "partidos": 1,
    "titularidades": 0,
-   "minutos": 19,
+   "minutos": 19.0,
    "goles": 0,
    "asistencias": 0
   },
@@ -652,7 +669,7 @@
    "jugador": "J. Tobajas",
    "partidos": 1,
    "titularidades": 0,
-   "minutos": 19,
+   "minutos": 19.0,
    "goles": 0,
    "asistencias": 0
   },
@@ -660,7 +677,7 @@
    "jugador": "Hugo Pinilla",
    "partidos": 1,
    "titularidades": 0,
-   "minutos": 11,
+   "minutos": 11.0,
    "goles": 0,
    "asistencias": 1
   }
@@ -668,234 +685,226 @@
  "clasificacion": [
   {
    "posicion": 1,
-   "equipo": "Real Zaragoza",
-   "pj": 7,
+   "equipo": "Villarreal B",
+   "pj": 8,
    "g": 5,
-   "e": 1,
+   "e": 2,
    "p": 1,
-   "gf": 16,
-   "gc": 10,
-   "puntos": 16
+   "gf": 17,
+   "gc": 9,
+   "puntos": 17
   },
   {
    "posicion": 2,
-   "equipo": "Real Murcia",
-   "pj": 7,
+   "equipo": "Real Zaragoza",
+   "pj": 8,
    "g": 5,
-   "e": 0,
-   "p": 2,
-   "gf": 11,
-   "gc": 7,
-   "puntos": 15
+   "e": 2,
+   "p": 1,
+   "gf": 16,
+   "gc": 10,
+   "puntos": 17
   },
   {
    "posicion": 3,
-   "equipo": "Villarreal B",
-   "pj": 7,
-   "g": 4,
-   "e": 2,
-   "p": 1,
-   "gf": 15,
-   "gc": 9,
-   "puntos": 14
+   "equipo": "Real Murcia",
+   "pj": 8,
+   "g": 5,
+   "e": 1,
+   "p": 2,
+   "gf": 11,
+   "gc": 7,
+   "puntos": 16
   },
   {
    "posicion": 4,
-   "equipo": "Hércules",
-   "pj": 7,
+   "equipo": "Cartagena",
+   "pj": 8,
    "g": 4,
-   "e": 1,
-   "p": 2,
-   "gf": 6,
-   "gc": 5,
-   "puntos": 13
-  },
-  {
-   "posicion": 5,
-   "equipo": "Alcorcón",
-   "pj": 7,
-   "g": 3,
    "e": 3,
    "p": 1,
    "gf": 13,
    "gc": 5,
-   "puntos": 12
+   "puntos": 15
+  },
+  {
+   "posicion": 5,
+   "equipo": "Real Jaén",
+   "pj": 8,
+   "g": 4,
+   "e": 3,
+   "p": 1,
+   "gf": 12,
+   "gc": 8,
+   "puntos": 15
   },
   {
    "posicion": 6,
-   "equipo": "Cartagena",
-   "pj": 7,
+   "equipo": "Alcorcón",
+   "pj": 8,
    "g": 3,
-   "e": 3,
+   "e": 4,
    "p": 1,
-   "gf": 10,
-   "gc": 5,
-   "puntos": 12
+   "gf": 14,
+   "gc": 6,
+   "puntos": 13
   },
   {
    "posicion": 7,
-   "equipo": "Real Jaén",
-   "pj": 7,
-   "g": 3,
-   "e": 3,
-   "p": 1,
+   "equipo": "UD Ibiza",
+   "pj": 8,
+   "g": 4,
+   "e": 1,
+   "p": 3,
    "gf": 11,
-   "gc": 8,
-   "puntos": 12
+   "gc": 10,
+   "puntos": 13
   },
   {
    "posicion": 8,
-   "equipo": "Antequera",
-   "pj": 7,
-   "g": 2,
-   "e": 4,
-   "p": 1,
-   "gf": 11,
-   "gc": 9,
-   "puntos": 10
+   "equipo": "Hércules",
+   "pj": 8,
+   "g": 4,
+   "e": 1,
+   "p": 3,
+   "gf": 6,
+   "gc": 7,
+   "puntos": 13
   },
   {
    "posicion": 9,
-   "equipo": "SD Huesca",
-   "pj": 7,
-   "g": 2,
-   "e": 4,
-   "p": 1,
-   "gf": 9,
+   "equipo": "Real Madrid Castilla",
+   "pj": 8,
+   "g": 3,
+   "e": 3,
+   "p": 2,
+   "gf": 11,
    "gc": 9,
-   "puntos": 10
+   "puntos": 12
   },
   {
    "posicion": 10,
-   "equipo": "UD Ibiza",
-   "pj": 7,
-   "g": 3,
-   "e": 1,
-   "p": 3,
-   "gf": 9,
-   "gc": 9,
-   "puntos": 10
+   "equipo": "SD Huesca",
+   "pj": 8,
+   "g": 2,
+   "e": 5,
+   "p": 1,
+   "gf": 10,
+   "gc": 10,
+   "puntos": 11
   },
   {
    "posicion": 11,
-   "equipo": "Atlético Madrileño",
-   "pj": 7,
-   "g": 2,
-   "e": 3,
-   "p": 2,
-   "gf": 15,
+   "equipo": "Gimnàstic",
+   "pj": 8,
+   "g": 3,
+   "e": 2,
+   "p": 3,
+   "gf": 11,
    "gc": 12,
-   "puntos": 9
+   "puntos": 11
   },
   {
    "posicion": 12,
-   "equipo": "Real Madrid Castilla",
-   "pj": 7,
+   "equipo": "Antequera",
+   "pj": 8,
    "g": 2,
-   "e": 3,
+   "e": 4,
    "p": 2,
-   "gf": 8,
-   "gc": 7,
-   "puntos": 9
+   "gf": 13,
+   "gc": 12,
+   "puntos": 10
   },
   {
    "posicion": 13,
-   "equipo": "Sant Andreu",
-   "pj": 7,
-   "g": 2,
-   "e": 2,
-   "p": 3,
-   "gf": 7,
-   "gc": 8,
-   "puntos": 8
+   "equipo": "Algeciras",
+   "pj": 8,
+   "g": 3,
+   "e": 1,
+   "p": 4,
+   "gf": 11,
+   "gc": 13,
+   "puntos": 10
   },
   {
    "posicion": 14,
-   "equipo": "Gimnàstic",
-   "pj": 7,
+   "equipo": "Atlético Madrileño",
+   "pj": 8,
    "g": 2,
-   "e": 2,
+   "e": 3,
    "p": 3,
-   "gf": 9,
-   "gc": 11,
-   "puntos": 8
+   "gf": 16,
+   "gc": 14,
+   "puntos": 9
   },
   {
    "posicion": 15,
-   "equipo": "Algeciras",
-   "pj": 7,
+   "equipo": "Sant Andreu",
+   "pj": 8,
    "g": 2,
-   "e": 1,
-   "p": 4,
+   "e": 3,
+   "p": 3,
    "gf": 9,
-   "gc": 13,
-   "puntos": 7
+   "gc": 10,
+   "puntos": 9
   },
   {
    "posicion": 16,
    "equipo": "CE Europa",
-   "pj": 7,
+   "pj": 8,
    "g": 2,
    "e": 1,
-   "p": 4,
+   "p": 5,
    "gf": 6,
-   "gc": 11,
+   "gc": 14,
    "puntos": 7
   },
   {
    "posicion": 17,
    "equipo": "CDA Águilas FC",
-   "pj": 7,
+   "pj": 8,
    "g": 1,
    "e": 3,
-   "p": 3,
-   "gf": 7,
-   "gc": 12,
+   "p": 4,
+   "gf": 8,
+   "gc": 14,
    "puntos": 6
   },
   {
    "posicion": 18,
    "equipo": "CD Teruel",
-   "pj": 7,
+   "pj": 8,
    "g": 1,
    "e": 2,
-   "p": 4,
+   "p": 5,
    "gf": 3,
-   "gc": 12,
+   "gc": 14,
    "puntos": 5
   },
   {
    "posicion": 19,
    "equipo": "Rayo Majadahonda",
-   "pj": 7,
+   "pj": 8,
    "g": 1,
    "e": 1,
-   "p": 5,
+   "p": 6,
    "gf": 5,
-   "gc": 8,
+   "gc": 9,
    "puntos": 4
   },
   {
    "posicion": 20,
    "equipo": "Juventud Torremolinos CF",
-   "pj": 7,
+   "pj": 8,
    "g": 0,
-   "e": 2,
+   "e": 3,
    "p": 5,
-   "gf": 8,
-   "gc": 18,
-   "puntos": 2
+   "gf": 10,
+   "gc": 20,
+   "puntos": 3
   }
  ],
  "proximos": [
-  {
-   "jornada": 8,
-   "competicion": "Primera Federación",
-   "fecha": "2026-10-18",
-   "sede": "Fuera",
-   "rival": "Real Murcia",
-   "posicion_rival": 2
-  },
   {
    "jornada": 9,
    "competicion": "Primera Federación",
@@ -910,7 +919,7 @@
    "fecha": "2026-10-31",
    "sede": "Casa",
    "rival": "Villarreal B",
-   "posicion_rival": 3
+   "posicion_rival": 1
   },
   {
    "jornada": 11,
@@ -918,7 +927,7 @@
    "fecha": "2026-11-08",
    "sede": "Casa",
    "rival": "SD Huesca",
-   "posicion_rival": 9
+   "posicion_rival": 10
   }
  ],
  "fichas": [
@@ -1368,6 +1377,46 @@
    "a_puerta_zaragoza": 8.0,
    "a_puerta_rival": 7.0,
    "posesion_pct": 65.0
+  },
+  {
+   "partido_id": 8,
+   "competicion": "Primera Federación",
+   "jornada": 8,
+   "fecha": "2026-10-18",
+   "sede": "Fuera",
+   "rival": "Real Murcia",
+   "goles_favor": 0,
+   "goles_contra": 0,
+   "gf_descanso": 0,
+   "gc_descanso": 0,
+   "goles": [],
+   "tarjetas": [
+    {
+     "jugador": "S. Escudero",
+     "tarjeta": "Amarilla"
+    },
+    {
+     "jugador": "P. Ademo",
+     "tarjeta": "Amarilla"
+    },
+    {
+     "jugador": "Ander Herrera",
+     "tarjeta": "Amarilla"
+    },
+    {
+     "jugador": "P. Ademo",
+     "tarjeta": "Segunda amarilla"
+    },
+    {
+     "jugador": "Pau Sans",
+     "tarjeta": "Amarilla"
+    }
+   ],
+   "tiros_zaragoza": 9.0,
+   "tiros_rival": 9.0,
+   "a_puerta_zaragoza": 3.0,
+   "a_puerta_rival": 1.0,
+   "posesion_pct": 49.0
   }
  ],
  "copa": []

@@ -1,12 +1,15 @@
 {
-  "contexto": "Real Zaragoza · Primera Federación · jornada 7",
-  "cifra": "90+12",
-  "titular": ["minuto del 4-4 en Alcalá,", "después de ir 4-2 en el 88"],
-  "detalle": [
-    "90+9: Rubo, asistencia de Jardí (4-3)",
-    "90+12: Jardí, de penalti (4-4)",
-    "Antes, en el 66, Rubén Díez falló un penalti con 2-1",
-    "Sigue líder con 16 puntos, uno más que el Real Murcia"
+  "contexto": "Real Zaragoza · Primera Federación · jornada 8",
+  "cifra": "0-0",
+  "titular": [
+    "del 4-4 en Alcalá",
+    "al empate sin goles en Murcia"
   ],
-  "fuentes": "Datos públicos: FotMob, futboltotal, BeSoccer y AupaZaragoza"
+  "detalle": [
+    "17 puntos tras ocho jornadas: segundo clasificado",
+    "16 goles a favor y 10 en contra en la liga",
+    "Nueve tiros por equipo; 3-1 a puerta para el Zaragoza",
+    "Primer 0-0 de esta temporada en liga"
+  ],
+  "fuentes": "Datos públicos: web del Real Zaragoza y BeSoccer"
 }

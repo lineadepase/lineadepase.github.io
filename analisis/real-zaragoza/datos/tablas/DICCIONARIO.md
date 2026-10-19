@@ -4,7 +4,7 @@ Qué es cada tabla del proyecto y qué significa cada columna. Este archivo lo g
 
 ## partidos
 
-Un partido oficial por fila (liga y copa) con el resultado final y al descanso. Archivo: `datos/entrada/partidos.csv` (7 filas).
+Un partido oficial por fila (liga y copa) con el resultado final y al descanso. Archivo: `datos/entrada/partidos.csv` (8 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|
@@ -39,7 +39,7 @@ Un gol por fila, a favor o en contra, con minuto, goleador y asistencia. Archivo
 
 ## alineaciones
 
-Once inicial del Zaragoza en cada partido: un titular por fila. Archivo: `datos/entrada/alineaciones.csv` (77 filas).
+Once inicial del Zaragoza en cada partido: un titular por fila. Archivo: `datos/entrada/alineaciones.csv` (88 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|
@@ -49,7 +49,7 @@ Once inicial del Zaragoza en cada partido: un titular por fila. Archivo: `datos/
 
 ## cambios
 
-Sustituciones del Zaragoza: quién entra, quién sale y en qué minuto. Archivo: `datos/entrada/cambios.csv` (35 filas).
+Sustituciones del Zaragoza: quién entra, quién sale y en qué minuto. Archivo: `datos/entrada/cambios.csv` (40 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|
@@ -61,18 +61,19 @@ Sustituciones del Zaragoza: quién entra, quién sale y en qué minuto. Archivo:
 
 ## tarjetas
 
-Tarjetas que ven los jugadores del Zaragoza. Archivo: `datos/entrada/tarjetas.csv` (23 filas).
+Tarjetas que ven los jugadores del Zaragoza. Archivo: `datos/entrada/tarjetas.csv` (28 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|
 | `partido_id` | Partido (ver tabla partidos). | Número entero | 1 |
 | `jugador` | Jugador amonestado o expulsado. | Texto | Lucas Terrer |
-| `tarjeta` | «Amarilla» o «Roja». | Texto | Amarilla |
+| `tarjeta` | «Amarilla», «Roja» o «Segunda amarilla». | Texto | Amarilla |
+| `minuto` | Minuto base de la tarjeta; vacío si no se ha recogido. Las expulsiones cierran los minutos jugados, sin descuento. | Número entero | 14 |
 | `fuente_url` | Página de la que saqué el dato. | Texto | https://futboltotal.futbol/partido/gimnastic-vs-zaragoza-… |
 
 ## tiros
 
-Tiros y posesión de cada partido, con una nota cuando el desglose no cuadra. Archivo: `datos/entrada/tiros.csv` (7 filas).
+Tiros y posesión de cada partido, con una nota cuando el desglose no cuadra. Archivo: `datos/entrada/tiros.csv` (8 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|
@@ -89,7 +90,7 @@ Tiros y posesión de cada partido, con una nota cuando el desglose no cuadra. Ar
 
 ## estadisticas
 
-Otras estadísticas de partido de fuentes públicas, en formato largo (una métrica por fila). Archivo: `datos/entrada/estadisticas.csv` (116 filas).
+Otras estadísticas de partido de fuentes públicas, en formato largo (una métrica por fila). Archivo: `datos/entrada/estadisticas.csv` (158 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|
@@ -164,7 +165,7 @@ Todos los partidos del grupo 2 con estadísticas de Sofascore. Una fila por equi
 
 ## clasificacion
 
-Clasificación del grupo 2 después de cada jornada apuntada. Archivo: `datos/entrada/clasificacion.csv` (40 filas).
+Clasificación del grupo 2 después de cada jornada apuntada. Archivo: `datos/entrada/clasificacion.csv` (60 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|
@@ -182,20 +183,20 @@ Clasificación del grupo 2 después de cada jornada apuntada. Archivo: `datos/en
 
 ## proximos
 
-Próximos partidos del calendario. Archivo: `datos/entrada/proximos.csv` (4 filas).
+Próximos partidos del calendario. Archivo: `datos/entrada/proximos.csv` (3 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|
-| `jornada` | Jornada. | Número entero | 8 |
+| `jornada` | Jornada. | Número entero | 9 |
 | `competicion` | Competición. | Texto | Primera Federación |
-| `fecha` | Fecha prevista (puede cambiar). | Texto | 2026-10-18 |
+| `fecha` | Fecha prevista (puede cambiar). | Texto | 2026-10-23 |
 | `sede` | «Casa» o «Fuera». | Texto | Fuera |
-| `rival` | Rival. | Texto | Real Murcia |
+| `rival` | Rival. | Texto | CE Europa |
 | `fuente_url` | Página de la que saqué el dato. | Texto | https://www.fotmob.com/es-419/teams/8394/overview |
 
 ## partidos_rivales
 
-Resultados del próximo rival esta temporada, para la previa. Archivo: `datos/entrada/partidos_rivales.csv` (7 filas).
+Resultados del próximo rival esta temporada, para la previa. Archivo: `datos/entrada/partidos_rivales.csv` (15 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|
@@ -210,7 +211,7 @@ Resultados del próximo rival esta temporada, para la previa. Archivo: `datos/en
 
 ## incidencias
 
-Diferencias entre fuentes y qué dato me quedo. Es el registro de decisiones del proyecto. Archivo: `datos/entrada/incidencias.csv` (39 filas).
+Diferencias entre fuentes y qué dato me quedo. Es el registro de decisiones del proyecto. Archivo: `datos/entrada/incidencias.csv` (49 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|
@@ -273,18 +274,18 @@ Tabla calculada: minutos y participación en goles de cada jugador en liga. Arch
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|
 | `jugador` | Jugador. | Texto | Jaume Jardí |
-| `partidos` | Partidos jugados. | Número entero | 7 |
-| `titularidades` | Partidos como titular. | Número entero | 6 |
-| `minutos` | Minutos jugados, sin contar el descuento. | Número entero | 554 |
+| `partidos` | Partidos jugados. | Número entero | 8 |
+| `titularidades` | Partidos como titular. | Número entero | 7 |
+| `minutos` | Minutos jugados, sin contar el descuento. | Número entero | 639 |
 | `goles` | Goles. | Número entero | 4 |
 | `asistencias` | Asistencias (solo las que constan). | Número entero | 4 |
 | `participaciones_con_minutos` | Goles + asistencias. | Número entero | 8 |
-| `participaciones_por_90` | Goles + asistencias por cada 90 minutos jugados. | Número decimal | 1.3 |
-| `minutos_por_participacion` | Minutos que tarda de media en participar en un gol. Vacío si no ha participado en ninguno. | Número entero | 69 |
+| `participaciones_por_90` | Goles + asistencias por cada 90 minutos jugados. | Número decimal | 1.13 |
+| `minutos_por_participacion` | Minutos que tarda de media en participar en un gol. Vacío si no ha participado en ninguno. | Número entero | 80 |
 
 ## minutos_partido
 
-Tabla calculada: minutos de cada jugador en cada partido de liga. Archivo: `datos/salida/minutos_partido.csv` (112 filas).
+Tabla calculada: minutos de cada jugador en cada partido de liga. Archivo: `datos/salida/minutos_partido.csv` (128 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|

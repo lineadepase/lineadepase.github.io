@@ -38,3 +38,13 @@
 7;Clasificación;El Hércules 1-0 Sant Andreu (12/10) ya está jugado según Sofascore. La tabla de la jornada 7 tenía a los dos con 6 partidos;Actualizo la tabla tras la jornada 7: el Hércules sube al 4.º con 13 puntos y los empatados a puntos se ordenan por diferencia de goles
 0;Grupo 2;Sofascore no da el xG de tres partidos del grupo: Huesca-Sant Andreu (J1), Villarreal B-Algeciras (J2) y Gimnàstic-Sant Andreu (J5);Las medias de xG de esos equipos se calculan solo con los partidos que lo tienen
 0;Sofascore;Entre el 15/10 y el 16/10 Sofascore corrigió varias estadísticas secundarias de los partidos del Zaragoza (tiros, pases, duelos, despejes). El xG no cambió;Uso siempre la última versión y vuelvo a descargar todos los partidos a la vez, para que el Zaragoza y el resto del grupo salgan de la misma consulta
+8;Sofascore;La lectura web de statistics del evento 16599931 y events/round/8 no está accesible (19-10-2026);"No añado métricas ni filas del grupo sin respuesta de la fuente; cobertura de grupo 2 permanece hasta J7"
+8;Marcador;La consulta web de team/2815/events/next/0 no está accesible;Conservo datos/sofascore.json sin cambios por la regla indicada
+8;Posesión;"Club 50 %; BeSoccer 49 % para el Zaragoza";"Uso BeSoccer; los tiros coinciden: 9-9 y 3-1 a puerta"
+8;Estadísticas del club;"Muchos ceros aparentes: faltas y tarjetas contradicen los eventos; el desglose de tiros no suma";"No uso esos ceros ni los estimo; bloqueo de tiros de BeSoccer"
+8;Expulsión;"futboltotal indica roja directa; BeSoccer y Sport Aragón indican doble amarilla en el 82";"Registro Segunda amarilla para P. Ademo; primera amarilla 45; Escudero 14; Ander 73; Pau 87"
+8;Cambios;La ficha oficial entremezcla nombres de los equipos en el 69;Pau Sans sustituye a Edu Espiau: confirmado por los onces y el resto de sustituciones
+8;Vídeo;No se ha podido acceder a un vídeo reproducible ni verificar sus fotogramas;"Análisis visual pendiente; no se modifica goles_video.csv (partido 0-0)"
+8;Previa CE Europa;Futbolme no accesible y calendario completo de BeSoccer no recuperable;"Resultados de Goal contrastados J1-J7 con grupo2_partidos.csv; J8 cuadra con clasificación oficial (6-14 y 7 puntos); pendiente contraste futbolme/BeSoccer solicitado"
+8;Grupo 2 PJ;Cada equipo tiene 7 partidos en grupo2_partidos.csv y 8 en la clasificación J8;Faltan los diez partidos de J8: no se presenta la cobertura como actualizada
+8;Minutos;Primera expulsión del Zaragoza: Ademo en el 82;"Añadido minuto a tarjetas.csv y salida sin cambio en Python y R; no se añade una sustitución ficticia"

@@ -247,7 +247,7 @@ def bloque_goles(p, goles, tarjetas):
 
     t = tarjetas[tarjetas["partido_id"] == p.partido_id]
     if len(t):
-        items = "".join(f'<li><span class="mp-tarjeta{" roja" if x.tarjeta == "Roja" else ""}" aria-label="{e(x.tarjeta)}"></span>{e(x.jugador)}</li>'
+        items = "".join(f'<li><span class="mp-tarjeta{" roja" if x.tarjeta in ("Roja", "Segunda amarilla") else ""}" aria-label="{e(x.tarjeta)}"></span>{e(x.jugador)}</li>'
                         for x in t.itertuples())
         tarjetas_html = f'<ul class="mp-tarjetas">{items}</ul>'
     else:
