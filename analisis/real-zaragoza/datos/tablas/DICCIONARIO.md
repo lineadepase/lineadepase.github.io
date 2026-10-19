@@ -255,7 +255,7 @@ Cada gol de liga apuntado viendo los resúmenes en YouTube: cómo nace, por dón
 
 ## resumenes_youtube
 
-Vídeos de resumen que he usado para apuntar los goles. Archivo: `datos/entrada/video/resumenes_youtube.csv` (8 filas).
+Vídeos de resumen que he usado para apuntar los goles. Archivo: `datos/entrada/video/resumenes_youtube.csv` (9 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|

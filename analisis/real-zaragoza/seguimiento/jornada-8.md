@@ -45,3 +45,13 @@ https://lineadepase.github.io/
 ## Reintento del vídeo y autorización de publicación
 
 El usuario confirma publicación y análisis del resumen aunque termine sin goles. Se verifica en YouTube el canal oficial @RFEFutbol, el título y la duración de 155 segundos. El navegador carga la ficha pero no reproduce imágenes: permanece negro en 0:00 tras un reintento. La descarga del formato de vídeo devuelve HTML «Site Unavailable», de 195 bytes; no es un vídeo válido. Sigue pendiente observar las jugadas. La prueba de subida vuelve a fallar por falta de credenciales; la autorización del usuario está concedida, el bloqueo es técnico.
+
+## Análisis visual completado con el archivo aportado
+
+El usuario ha facilitado videoplayback.mp4, de 154,6 segundos, 1280×720 y sin pista de audio. Revisión visual mediante fotogramas de todo el resumen y capturas más próximas en las secuencias relevantes. El estado actual de textos/video/jornada-8.json es completado: los bloqueos de vídeo descritos antes quedan resueltos para este análisis.
+
+Se incorpora textos/video/jornada-8.html a jornada-8.html y ultimo-partido.html mediante una función que exige estado completado y partido_id coincidente. Se añaden fuente y duración a resumenes_youtube.csv. No se modifican goles_video.csv ni las métricas de Sofascore.
+
+Se distinguen seis bloques: progresión del Zaragoza (0:11–0:26), falta del Murcia y repetición (0:29–0:47), llegada del Murcia por su derecha y repetición (0:49–1:06), Ademo y revisión (1:07–1:46), salida por banda y disputa posterior (1:47–2:14), y falta del Zaragoza (2:15–2:22). No se atribuye un minuto de partido a partir del tiempo del archivo. El córner final al larguero no aparece y no se analiza como observado.
+
+actualizar.py vuelve a terminar correctamente. Se comprueba que el análisis aparece una sola vez en J8 y Último partido y que no se carga para otros partidos. R sigue sin estar instalado y la subida carece de credenciales: publicación pendiente pese a estar autorizada.

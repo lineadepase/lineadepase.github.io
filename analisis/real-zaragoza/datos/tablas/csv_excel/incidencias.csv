@@ -44,7 +44,7 @@
 8;Estadísticas del club;"Muchos ceros aparentes: faltas y tarjetas contradicen los eventos; el desglose de tiros no suma";"No uso esos ceros ni los estimo; bloqueo de tiros de BeSoccer"
 8;Expulsión;"futboltotal indica roja directa; BeSoccer y Sport Aragón indican doble amarilla en el 82";"Registro Segunda amarilla para P. Ademo; primera amarilla 45; Escudero 14; Ander 73; Pau 87"
 8;Cambios;La ficha oficial entremezcla nombres de los equipos en el 69;Pau Sans sustituye a Edu Espiau: confirmado por los onces y el resto de sustituciones
-8;Vídeo;No se ha podido acceder a un vídeo reproducible ni verificar sus fotogramas;"Análisis visual pendiente; no se modifica goles_video.csv (partido 0-0)"
+8;Vídeo;"El acceso directo de YouTube fallaba; el usuario ha facilitado el archivo del resumen oficial (154,6 s)";"Análisis visual completado el 19-10-2026; no contiene el córner final al larguero; no se modifica goles_video.csv"
 8;Previa CE Europa;Futbolme no accesible y calendario completo de BeSoccer no recuperable;"Resultados de Goal contrastados J1-J7 con grupo2_partidos.csv; J8 cuadra con clasificación oficial (6-14 y 7 puntos); pendiente contraste futbolme/BeSoccer solicitado"
 8;Grupo 2 PJ;Cada equipo tiene 7 partidos en grupo2_partidos.csv y 8 en la clasificación J8;Faltan los diez partidos de J8: no se presenta la cobertura como actualizada
 8;Minutos;Primera expulsión del Zaragoza: Ademo en el 82;"Añadido minuto a tarjetas.csv y salida sin cambio en Python y R; no se añade una sustitución ficticia"

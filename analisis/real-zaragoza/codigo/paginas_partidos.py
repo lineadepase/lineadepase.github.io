@@ -29,6 +29,7 @@ Datos que usa (todos de datos/entrada):
 """
 
 import html
+import json
 import re
 from pathlib import Path
 
@@ -353,8 +354,21 @@ def bloque_video(p, video, resumenes):
     return f"""
   <section class="seccion" aria-labelledby="t-video-{p.jornada}">
     <p class="etiqueta">Visto en vídeo</p>
-    <h2 id="t-video-{p.jornada}">Cómo fueron los goles</h2>{tabla}{reproductor}
+    <h2 id="t-video-{p.jornada}">{"Cómo fueron los goles" if not g.empty else "Resumen del partido"}</h2>{tabla}{reproductor}
   </section>"""
+
+
+def bloque_analisis_video(p):
+    """Incluye solo revisiones visuales terminadas, también en partidos sin goles."""
+    carpeta = PROYECTO / "textos" / "video"
+    registro = carpeta / f"jornada-{int(p.jornada)}.json"
+    texto = carpeta / f"jornada-{int(p.jornada)}.html"
+    if not registro.exists() or not texto.exists():
+        return ""
+    estado = json.loads(registro.read_text(encoding="utf-8"))
+    if estado.get("estado") != "completado" or estado.get("partido_id") != p.partido_id:
+        return ""
+    return texto.read_text(encoding="utf-8")
 
 
 def bloque_alineacion(p, alineaciones, cambios):
@@ -408,7 +422,7 @@ def ficha(p, d, sofa, activa, titulo_extra=""):
     {bloque_kpis(p, liga, sofa)}
     <div class="graficos">{bloque_goles(p, d["goles"], d["tarjetas"])}{bloque_estadisticas(p, sofa, d["tiros"])}{bloque_alineacion(p, d["alineaciones"], d["cambios"])}</div>
   </section>
-  {bloque_video(p, d["video"], d["resumenes"])}
+  {bloque_video(p, d["video"], d["resumenes"])}{chr(10) + bloque_analisis_video(p) if bloque_analisis_video(p) else ""}
   <section class="seccion lectura" aria-label="Fuentes y navegación">
     <h2>Fuentes</h2><ul>{"".join(fuentes)}</ul>
     <div class="enlaces">{"".join(navegacion)}<a class="boton lleno" href="jornadas.html">Todas las jornadas</a></div>
@@ -736,6 +750,7 @@ def pagina_ultimo(d, sofa):
     {comparativa_temporada(p, sofa)}
   </section>
   {notas}
+  {bloque_analisis_video(p)}
   {siguiente_html}
 </main>"""
     (CARPETA_PAGINAS / "ultimo-partido.html").write_text(

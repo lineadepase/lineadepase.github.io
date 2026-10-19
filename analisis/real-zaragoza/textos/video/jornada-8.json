@@ -3,15 +3,49 @@
   "jornada": 8,
   "rival": "Real Murcia",
   "fecha": "2026-10-18",
-  "estado": "pendiente",
+  "estado": "completado",
   "fuente_url": "https://www.youtube.com/watch?v=Eq-htl0RmVs",
-  "alcance": "resumen pendiente de reproducir",
-  "fecha_revision": null,
-  "archivo_analisis": null,
-  "motivo": "Fuente oficial verificada. El reproductor del navegador permanece negro en 0:00 tras el reintento; la descarga de vídeo y las planchas devuelve una página Site Unavailable de 195 bytes, no contenido multimedia. No se han observado jugadas.",
+  "alcance": "Análisis visual de las secuencias del resumen oficial; archivo sin audio. No es un análisis del partido completo.",
+  "fecha_revision": "2026-10-19",
+  "archivo_analisis": "analisis/real-zaragoza/textos/video/jornada-8.html",
+  "motivo": null,
   "canal": "Real Federación Española Fútbol",
   "canal_url": "https://www.youtube.com/@RFEFutbol",
   "titulo": "Resumen #PrimeraFederación | Real Murcia CF 0-0 Real Zaragoza | Jornada 8 | Temporada 2026/2027",
-  "duracion_segundos": 155,
-  "publicacion_autorizada": true
+  "duracion_segundos": 154.6,
+  "publicacion_autorizada": true,
+  "metodo": "Fotogramas de todo el archivo cada dos segundos y revisión a intervalos de un segundo en las secuencias relevantes; comprobación ampliada de las acciones dudosas.",
+  "archivo_sha256": "6be46d9843d642c21465c19b3b6000b2c59243d66ab99866e8b93e7caa559973",
+  "secuencias": [
+    {
+      "desde": 11,
+      "hasta": 26,
+      "tema": "Progresión del Zaragoza y finalización"
+    },
+    {
+      "desde": 29,
+      "hasta": 47,
+      "tema": "Falta lateral del Murcia y repetición"
+    },
+    {
+      "desde": 49,
+      "hasta": 66,
+      "tema": "Profundidad del Murcia por su derecha y repetición"
+    },
+    {
+      "desde": 67,
+      "hasta": 106,
+      "tema": "Disputa de Ademo, revisión y salida del campo"
+    },
+    {
+      "desde": 107,
+      "hasta": 134,
+      "tema": "Salida por banda, disputa, amonestación y revisión"
+    },
+    {
+      "desde": 135,
+      "hasta": 142,
+      "tema": "Falta del Zaragoza y continuación"
+    }
+  ]
 }
