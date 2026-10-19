@@ -414,6 +414,8 @@ def ficha(p, d, sofa, activa, titulo_extra=""):
     for x in (r.itertuples() if len(r) else []):
         fuentes.append(f'<li><a href="{e(x.url)}" target="_blank" rel="noopener">Resumen de {e(x.canal)}</a></li>')
 
+    fuentes_html = "" if '<h3>Fuentes</h3>' in bloque_analisis_video(p) else f'<h2>Fuentes</h2><ul>{"".join(fuentes)}</ul>'
+
     return f"""<main class="envoltorio">
   <p class="migas"><a href="../index.html">Proyectos</a> / <a href="index.html">Real Zaragoza 2026/27</a> / Jornada {p.jornada}</p>
   {pestanas(activa)}
@@ -427,7 +429,7 @@ def ficha(p, d, sofa, activa, titulo_extra=""):
   </section>
   {bloque_video(p, d["video"], d["resumenes"])}{chr(10) + bloque_analisis_video(p) if bloque_analisis_video(p) else ""}
   <section class="seccion lectura" aria-label="Fuentes y navegación">
-    <h2>Fuentes</h2><ul>{"".join(fuentes)}</ul>
+    {fuentes_html}
     <div class="enlaces">{"".join(navegacion)}<a class="boton lleno" href="jornadas.html">Todas las jornadas</a></div>
   </section>
 </main>"""
