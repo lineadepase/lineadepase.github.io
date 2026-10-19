@@ -55,3 +55,10 @@ Se incorpora textos/video/jornada-8.html a jornada-8.html y ultimo-partido.html 
 Se distinguen seis bloques: progresión del Zaragoza (0:11–0:26), falta del Murcia y repetición (0:29–0:47), llegada del Murcia por su derecha y repetición (0:49–1:06), Ademo y revisión (1:07–1:46), salida por banda y disputa posterior (1:47–2:14), y falta del Zaragoza (2:15–2:22). No se atribuye un minuto de partido a partir del tiempo del archivo. El córner final al larguero no aparece y no se analiza como observado.
 
 actualizar.py vuelve a terminar correctamente. Se comprueba que el análisis aparece una sola vez en J8 y Último partido y que no se carga para otros partidos. R sigue sin estar instalado y la subida carece de credenciales: publicación pendiente pese a estar autorizada.
+
+
+## Validación para publicación · 19 de octubre de 2026
+
+Los tres parches se aplican sobre main actualizado. El acceso de subida a GitHub queda comprobado con git push --dry-run. actualizar.py y previa.py 9 terminan correctamente. La comprobación independiente comprobar.R, ejecutada con R 4.6.1, termina correctamente: ocho partidos, 17 puntos y balance 16-10. Queda resuelto el bloqueo previo de validación en R.
+
+La regeneración conserva los datos y el contenido del análisis visual. Se verifica una sola sección de análisis en jornada-8.html y ultimo-partido.html, y ninguna en J1-J7. Se conservan los gráficos y el Excel entregados en los parches. Siguen vigentes los pendientes de cobertura avanzada del grupo (corte J7), Sofascore y contraste de fuentes de la previa descritos arriba.
