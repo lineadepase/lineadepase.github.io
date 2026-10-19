@@ -8,5 +8,10 @@
   "alcance": "resumen pendiente de reproducir",
   "fecha_revision": null,
   "archivo_analisis": null,
-  "motivo": "La lectura web del vídeo devuelve Online fetch throttled; no se han observado imágenes."
+  "motivo": "Fuente oficial verificada. El reproductor del navegador permanece negro en 0:00 tras el reintento; la descarga de vídeo y las planchas devuelve una página Site Unavailable de 195 bytes, no contenido multimedia. No se han observado jugadas.",
+  "canal": "Real Federación Española Fútbol",
+  "canal_url": "https://www.youtube.com/@RFEFutbol",
+  "titulo": "Resumen #PrimeraFederación | Real Murcia CF 0-0 Real Zaragoza | Jornada 8 | Temporada 2026/2027",
+  "duracion_segundos": 155,
+  "publicacion_autorizada": true
 }

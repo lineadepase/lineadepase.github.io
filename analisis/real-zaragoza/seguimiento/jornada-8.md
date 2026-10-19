@@ -41,3 +41,7 @@ Estoy preparando la actualización de Línea de pase. El xG y el análisis del v
 https://lineadepase.github.io/
 
 #LíneaDePase #AnálisisDeDatos #RealZaragoza
+
+## Reintento del vídeo y autorización de publicación
+
+El usuario confirma publicación y análisis del resumen aunque termine sin goles. Se verifica en YouTube el canal oficial @RFEFutbol, el título y la duración de 155 segundos. El navegador carga la ficha pero no reproduce imágenes: permanece negro en 0:00 tras un reintento. La descarga del formato de vídeo devuelve HTML «Site Unavailable», de 195 bytes; no es un vídeo válido. Sigue pendiente observar las jugadas. La prueba de subida vuelve a fallar por falta de credenciales; la autorización del usuario está concedida, el bloqueo es técnico.
