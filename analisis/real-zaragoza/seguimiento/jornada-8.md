@@ -62,3 +62,8 @@ actualizar.py vuelve a terminar correctamente. Se comprueba que el análisis apa
 Los tres parches se aplican sobre main actualizado. El acceso de subida a GitHub queda comprobado con git push --dry-run. actualizar.py y previa.py 9 terminan correctamente. La comprobación independiente comprobar.R, ejecutada con R 4.6.1, termina correctamente: ocho partidos, 17 puntos y balance 16-10. Queda resuelto el bloqueo previo de validación en R.
 
 La regeneración conserva los datos y el contenido del análisis visual. Se verifica una sola sección de análisis en jornada-8.html y ultimo-partido.html, y ninguna en J1-J7. Se conservan los gráficos y el Excel entregados en los parches. Siguen vigentes los pendientes de cobertura avanzada del grupo (corte J7), Sofascore y contraste de fuentes de la previa descritos arriba.
+
+
+## Revisión editorial del análisis general · 19 de octubre de 2026
+
+Se sustituye el desglose de secuencias por un análisis general en tercera persona. Se contrastan las crónicas de ambos clubes y de Radio Zaragoza, Radio Murcia, Sport Aragón y Región Online Murcia. El cabezazo de Moyita al larguero se sitúa en el descuento, sin asignar un minuto exacto porque las crónicas difieren. Se enlazan las fuentes al final y se actualizan las entradillas de portada y del resumen del proyecto. Las estadísticas no cambian.

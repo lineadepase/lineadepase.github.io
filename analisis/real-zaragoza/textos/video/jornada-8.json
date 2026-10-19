@@ -5,7 +5,7 @@
   "fecha": "2026-10-18",
   "estado": "completado",
   "fuente_url": "https://www.youtube.com/watch?v=Eq-htl0RmVs",
-  "alcance": "Análisis visual de las secuencias del resumen oficial; archivo sin audio. No es un análisis del partido completo.",
+  "alcance": "Análisis general del partido, con interpretación táctica y contexto de temporada a partir de estadísticas, crónicas contrastadas y resumen oficial.",
   "fecha_revision": "2026-10-19",
   "archivo_analisis": "analisis/real-zaragoza/textos/video/jornada-8.html",
   "motivo": null,
@@ -14,7 +14,7 @@
   "titulo": "Resumen #PrimeraFederación | Real Murcia CF 0-0 Real Zaragoza | Jornada 8 | Temporada 2026/2027",
   "duracion_segundos": 154.6,
   "publicacion_autorizada": true,
-  "metodo": "Fotogramas de todo el archivo cada dos segundos y revisión a intervalos de un segundo en las secuencias relevantes; comprobación ampliada de las acciones dudosas.",
+  "metodo": "Contraste de las crónicas de ambos clubes, Radio Zaragoza, Radio Murcia, Sport Aragón y Región Online Murcia con las estadísticas registradas y la revisión visual previa.",
   "archivo_sha256": "6be46d9843d642c21465c19b3b6000b2c59243d66ab99866e8b93e7caa559973",
   "secuencias": [
     {
@@ -47,5 +47,15 @@
       "hasta": 142,
       "tema": "Falta del Zaragoza y continuación"
     }
-  ]
+  ],
+  "fuentes_analisis": [
+    "https://www.realzaragoza.com/noticias/punto-de-gran-valor-en-murcia-0-0",
+    "https://www.realmurcia.es/el-real-murcia-suma-un-punto-ante-el-zaragoza-en-un-choque-muy-igualado-0-0/",
+    "https://cadenaser.com/aragon/2026/10/18/el-real-zaragoza-logra-un-buen-punto-en-murcia-radio-zaragoza/",
+    "https://cadenaser.com/murcia/2026/10/18/el-real-murcia-planta-cara-al-real-zaragoza-y-se-queda-con-ganas-de-mas-radio-murcia/",
+    "https://www.sportaragon.com/articulo/real-zaragoza/1x1-real-zaragoza-real-murcia/20261018203312161278.html",
+    "https://rommurcia.es/el-larguero-frena-al-real-murcia-ante-un-zaragoza-que-acabo-con-diez-0-0/",
+    "https://es.besoccer.com/partido/real-murcia/real-zaragoza/202724302"
+  ],
+  "enfoque": "Tercera persona. Análisis temático del juego, los cambios, la expulsión y el balance de temporada."
 }
