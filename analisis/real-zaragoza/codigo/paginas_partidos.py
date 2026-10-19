@@ -264,11 +264,14 @@ def bloque_estadisticas(p, sofa, tiros):
     """Barras enfrentadas Zaragoza-rival con las estadísticas de Sofascore.
     Si Sofascore no tiene el partido, uso al menos los tiros y la posesión de tiros.csv."""
     s = dict(sofa.get(p.partido_id, {}))
+    fuente = "Fuente: Sofascore. Su modelo de xG no es público; lo uso para comparar partidos entre sí."
     if not s:
         t = tiros[tiros["partido_id"] == p.partido_id]
         if t.empty:
             return ""
         t = t.iloc[0]
+        fuente = (f'Fuente: <a href="{e(t.fuente_url)}" target="_blank" rel="noopener">'
+                  'ficha estadística del partido</a>. Tiros y posesión; sin xG disponible.')
         s = {"posesion_pct": (t.posesion_pct, 100 - t.posesion_pct),
              "tiros": (t.tiros_zaragoza, t.tiros_rival),
              "tiros_a_puerta": (t.a_puerta_zaragoza, t.a_puerta_rival)}
@@ -290,7 +293,7 @@ def bloque_estadisticas(p, sofa, tiros):
       <h3>Estadísticas</h3>
       <p class="leyenda"><span><i style="background:var(--cesped)"></i>Real Zaragoza (izquierda)</span><span><i style="background:var(--muted)"></i>{e(p.rival)}</span></p>
       <dl class="mp-stats">{"".join(filas)}</dl>
-      <p class="mp-pie">Fuente: Sofascore. Su modelo de xG no es público; lo uso para comparar partidos entre sí.</p>
+      <p class="mp-pie">{fuente}</p>
     </div>"""
 
 
