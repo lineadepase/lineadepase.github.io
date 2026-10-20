@@ -1,0 +1,195 @@
+{
+  "jornada": 8,
+  "fecha": "2026-10-17",
+  "local": "CDA Águilas FC",
+  "visitante": "UD Ibiza",
+  "goles_local": 1,
+  "goles_visitante": 2,
+  "fuente_url": "https://www.sofascore.com/",
+  "capturas": [
+    "IMG_2631.png",
+    "IMG_2632.png",
+    "IMG_2633.png",
+    "IMG_2634.png",
+    "IMG_2635.png",
+    "IMG_2636.png",
+    "IMG_2637.png",
+    "IMG_2638.jpeg"
+  ],
+  "revisado": "2026-10-20",
+  "metodo": "Transcripción de la pestaña Estadísticas con TODOS seleccionado. Valores local, visitante. No se infieren tarjetas rojas, que no aparecen.",
+  "metricas": {
+    "posesion_pct": [
+      39,
+      61
+    ],
+    "xg": [
+      0.79,
+      0.73
+    ],
+    "ocasiones_claras": [
+      2,
+      0
+    ],
+    "tiros": [
+      15,
+      10
+    ],
+    "paradas": [
+      2,
+      5
+    ],
+    "corners": [
+      11,
+      2
+    ],
+    "faltas": [
+      11,
+      13
+    ],
+    "pases": [
+      269,
+      465
+    ],
+    "entradas": [
+      11,
+      15
+    ],
+    "tiros_libres": [
+      13,
+      11
+    ],
+    "amarillas": [
+      3,
+      1
+    ],
+    "tiros_a_puerta": [
+      6,
+      4
+    ],
+    "xgot": [
+      1.53,
+      1.78
+    ],
+    "tiros_al_palo": [
+      1,
+      0
+    ],
+    "tiros_fuera": [
+      6,
+      4
+    ],
+    "tiros_bloqueados": [
+      3,
+      2
+    ],
+    "tiros_dentro_area": [
+      12,
+      8
+    ],
+    "tiros_fuera_area": [
+      3,
+      2
+    ],
+    "ocasiones_claras_marcadas": [
+      1,
+      0
+    ],
+    "ocasiones_claras_falladas": [
+      1,
+      0
+    ],
+    "faltas_recibidas_ultimo_tercio": [
+      3,
+      1
+    ],
+    "fueras_juego": [
+      1,
+      1
+    ],
+    "pases_buenos": [
+      173,
+      351
+    ],
+    "saques_banda": [
+      24,
+      19
+    ],
+    "pases_ultimo_tercio": [
+      53,
+      74
+    ],
+    "balones_largos_ok": [
+      27,
+      22
+    ],
+    "balones_largos_total": [
+      80,
+      65
+    ],
+    "centros_ok": [
+      11,
+      1
+    ],
+    "centros_total": [
+      28,
+      7
+    ],
+    "duelos_ganados_pct": [
+      55,
+      45
+    ],
+    "desposeido": [
+      5,
+      9
+    ],
+    "duelos_suelo_ok": [
+      31,
+      27
+    ],
+    "duelos_suelo_total": [
+      58,
+      58
+    ],
+    "duelos_aereos_ok": [
+      27,
+      21
+    ],
+    "duelos_aereos_total": [
+      48,
+      48
+    ],
+    "regates_ok": [
+      7,
+      2
+    ],
+    "regates_total": [
+      17,
+      4
+    ],
+    "entradas_ganadas_pct": [
+      73,
+      73
+    ],
+    "intercepciones": [
+      8,
+      6
+    ],
+    "recuperaciones": [
+      39,
+      39
+    ],
+    "despejes": [
+      13,
+      28
+    ],
+    "goles_evitados": [
+      -0.22,
+      0.53
+    ],
+    "saques_meta": [
+      10,
+      9
+    ]
+  }
+}
