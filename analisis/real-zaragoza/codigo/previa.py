@@ -141,6 +141,9 @@ def generar(jornada):
             url=escape(u), nombre="BeSoccer" if "besoccer" in u else "futbolme")
         for u in fuentes)
 
+    extra_ruta = CARPETA_ENTRADA.parent.parent / "textos" / f"previa_j{jornada}_extra.html"
+    extra = extra_ruta.read_text(encoding="utf-8") if extra_ruta.exists() else ""
+
     html = f"""<!doctype html>
 <html lang="es" class="tema-real-zaragoza">
 <head>
@@ -206,6 +209,7 @@ def generar(jornada):
     </div>
   </section>
 
+  {extra}
   <section class="seccion">
     <p class="etiqueta">Rivales comunes</p>
     <h2>Contra los mismos equipos</h2>

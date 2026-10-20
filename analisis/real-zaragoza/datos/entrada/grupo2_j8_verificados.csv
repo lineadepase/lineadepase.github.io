@@ -1,0 +1,85 @@
+jornada,fecha,local,visitante,metrica,valor_local,valor_visitante,fuente_url,capturas
+8,2026-10-18,Real Murcia,Real Zaragoza,posesion_pct,51,49,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,xg,0.79,0.47,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,tiros,9,9,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,tiros_a_puerta,1,3,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,xgot,0.16,0.88,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,tiros_al_palo,1,0,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,tiros_fuera,5,3,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,tiros_bloqueados,3,3,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,tiros_dentro_area,6,3,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,tiros_fuera_area,3,6,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,corners,3,4,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,pases,394,379,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,pases_buenos,306,302,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,faltas,26,13,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,amarillas,2,5,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,rojas,0,1,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,entradas,19,15,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,tiros_libres,13,26,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,faltas_recibidas_ultimo_tercio,2,3,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,fueras_juego,3,0,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,saques_banda,24,21,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,pases_ultimo_tercio,48,36,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,balones_largos_ok,31,15,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,balones_largos_total,60,44,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,centros_ok,5,4,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,centros_total,14,17,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,duelos_ganados_pct,47,53,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,desposeido,14,14,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,duelos_suelo_ok,37,44,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,duelos_suelo_total,81,81,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,duelos_aereos_ok,10,8,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,duelos_aereos_total,18,18,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,regates_ok,5,4,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,regates_total,6,9,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,entradas_ganadas_pct,58,80,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,intercepciones,5,6,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,recuperaciones,43,43,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,despejes,28,15,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,paradas,3,1,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,goles_evitados,0.88,0.16,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-18,Real Murcia,Real Zaragoza,saques_meta,4,4,https://www.sofascore.com/es/football/match/real-murcia-real-zaragoza/pgbsMOb,IMG_2607.jpeg; IMG_2608.png–IMG_2614.png
+8,2026-10-16,Cartagena,CE Europa,posesion_pct,44,56,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,xg,1.44,1.0,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,ocasiones_claras,3,3,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,tiros,12,18,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,paradas,3,0,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,corners,4,4,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,faltas,14,15,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,pases,355,448,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,entradas,15,19,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,tiros_libres,15,14,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,amarillas,0,3,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,tiros_a_puerta,3,3,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,xgot,2.24,0.8,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,tiros_al_palo,1,0,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,tiros_fuera,5,11,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,tiros_bloqueados,4,4,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,tiros_dentro_area,12,9,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,tiros_fuera_area,0,9,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,ocasiones_claras_marcadas,3,0,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,ocasiones_claras_falladas,0,3,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,faltas_recibidas_ultimo_tercio,0,2,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,fueras_juego,2,3,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,pases_buenos,280,381,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,saques_banda,15,28,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,pases_ultimo_tercio,34,63,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,balones_largos_ok,29,30,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,balones_largos_total,63,58,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,centros_ok,5,5,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,centros_total,16,23,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,duelos_ganados_pct,45,55,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,desposeido,12,8,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,duelos_suelo_ok,36,39,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,duelos_suelo_total,75,75,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,duelos_aereos_ok,7,14,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,duelos_aereos_total,21,21,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,regates_ok,7,6,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,regates_total,14,13,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,entradas_ganadas_pct,33,74,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,intercepciones,8,8,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,recuperaciones,42,45,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,despejes,24,16,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,goles_evitados,0.8,-0.76,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Cartagena,CE Europa,saques_meta,15,7,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png

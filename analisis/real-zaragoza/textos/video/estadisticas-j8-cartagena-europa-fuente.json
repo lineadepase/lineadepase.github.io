@@ -1,0 +1,195 @@
+{
+  "jornada": 8,
+  "fecha": "2026-10-16",
+  "local": "Cartagena",
+  "visitante": "CE Europa",
+  "goles_local": 3,
+  "goles_visitante": 0,
+  "fuente_url": "https://www.sofascore.com/",
+  "capturas": [
+    "IMG_2615.png",
+    "IMG_2616.png",
+    "IMG_2617.png",
+    "IMG_2618.png",
+    "IMG_2619.png",
+    "IMG_2620.png",
+    "IMG_2621.png",
+    "IMG_2622.png"
+  ],
+  "revisado": "2026-10-20",
+  "metodo": "Transcripción de la pestaña Estadísticas con TODOS seleccionado. Valores local, visitante. No se infiere el valor de tarjetas rojas, que no aparece.",
+  "metricas": {
+    "posesion_pct": [
+      44,
+      56
+    ],
+    "xg": [
+      1.44,
+      1.0
+    ],
+    "ocasiones_claras": [
+      3,
+      3
+    ],
+    "tiros": [
+      12,
+      18
+    ],
+    "paradas": [
+      3,
+      0
+    ],
+    "corners": [
+      4,
+      4
+    ],
+    "faltas": [
+      14,
+      15
+    ],
+    "pases": [
+      355,
+      448
+    ],
+    "entradas": [
+      15,
+      19
+    ],
+    "tiros_libres": [
+      15,
+      14
+    ],
+    "amarillas": [
+      0,
+      3
+    ],
+    "tiros_a_puerta": [
+      3,
+      3
+    ],
+    "xgot": [
+      2.24,
+      0.8
+    ],
+    "tiros_al_palo": [
+      1,
+      0
+    ],
+    "tiros_fuera": [
+      5,
+      11
+    ],
+    "tiros_bloqueados": [
+      4,
+      4
+    ],
+    "tiros_dentro_area": [
+      12,
+      9
+    ],
+    "tiros_fuera_area": [
+      0,
+      9
+    ],
+    "ocasiones_claras_marcadas": [
+      3,
+      0
+    ],
+    "ocasiones_claras_falladas": [
+      0,
+      3
+    ],
+    "faltas_recibidas_ultimo_tercio": [
+      0,
+      2
+    ],
+    "fueras_juego": [
+      2,
+      3
+    ],
+    "pases_buenos": [
+      280,
+      381
+    ],
+    "saques_banda": [
+      15,
+      28
+    ],
+    "pases_ultimo_tercio": [
+      34,
+      63
+    ],
+    "balones_largos_ok": [
+      29,
+      30
+    ],
+    "balones_largos_total": [
+      63,
+      58
+    ],
+    "centros_ok": [
+      5,
+      5
+    ],
+    "centros_total": [
+      16,
+      23
+    ],
+    "duelos_ganados_pct": [
+      45,
+      55
+    ],
+    "desposeido": [
+      12,
+      8
+    ],
+    "duelos_suelo_ok": [
+      36,
+      39
+    ],
+    "duelos_suelo_total": [
+      75,
+      75
+    ],
+    "duelos_aereos_ok": [
+      7,
+      14
+    ],
+    "duelos_aereos_total": [
+      21,
+      21
+    ],
+    "regates_ok": [
+      7,
+      6
+    ],
+    "regates_total": [
+      14,
+      13
+    ],
+    "entradas_ganadas_pct": [
+      33,
+      74
+    ],
+    "intercepciones": [
+      8,
+      8
+    ],
+    "recuperaciones": [
+      42,
+      45
+    ],
+    "despejes": [
+      24,
+      16
+    ],
+    "goles_evitados": [
+      0.8,
+      -0.76
+    ],
+    "saques_meta": [
+      15,
+      7
+    ]
+  }
+}
