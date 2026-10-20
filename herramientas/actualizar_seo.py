@@ -167,6 +167,28 @@ def build():
                  'sameAs': ['https://www.linkedin.com/in/angel-marqueta-alonso-a8831164',
                             'https://www.youtube.com/@lineadepasefutbol']}]}
             tags.insert(-1, '<script type="application/ld+json">' + json.dumps(schema, ensure_ascii=False) + '</script>')
+        else:
+            crumbs = [('Inicio', BASE + '/')]
+            if path.startswith('proyectos/') and path != 'proyectos/index.html':
+                crumbs.append(('Proyectos', BASE + '/proyectos/index.html'))
+            if path.startswith('proyectos/real-zaragoza/') and path != 'proyectos/real-zaragoza/index.html':
+                crumbs.append(('Real Zaragoza', BASE + '/proyectos/real-zaragoza/index.html'))
+            crumbs.append((title.replace(' · Línea de pase', ''), url))
+            graph = [{
+                '@type': 'BreadcrumbList',
+                'itemListElement': [
+                    {'@type': 'ListItem', 'position': n, 'name': name, 'item': link}
+                    for n, (name, link) in enumerate(crumbs, 1)]}]
+            if path.startswith('proyectos/') and path not in ['proyectos/index.html', 'proyectos/real-zaragoza/index.html']:
+                graph.append({
+                    '@type': 'Article', '@id': url + '#analisis',
+                    'headline': title.replace(' · Línea de pase', ''),
+                    'description': description, 'image': [image_url],
+                    'inLanguage': 'es', 'mainEntityOfPage': url,
+                    'author': {'@type': 'Person', 'name': 'Ángel Marqueta Alonso',
+                               'url': BASE + '/sobre-mi/index.html'}})
+            tags.insert(-1, '<script type="application/ld+json">' + json.dumps(
+                {'@context': 'https://schema.org', '@graph': graph}, ensure_ascii=False) + '</script>')
         raw = raw.replace('</head>', nl.join(tags) + nl + '</head>', 1)
         file.write_text(raw, encoding='utf-8', newline='')
         urls.append(url)
