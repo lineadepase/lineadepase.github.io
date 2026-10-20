@@ -83,3 +83,45 @@ jornada,fecha,local,visitante,metrica,valor_local,valor_visitante,fuente_url,cap
 8,2026-10-16,Cartagena,CE Europa,despejes,24,16,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
 8,2026-10-16,Cartagena,CE Europa,goles_evitados,0.8,-0.76,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
 8,2026-10-16,Cartagena,CE Europa,saques_meta,15,7,https://www.sofascore.com/,IMG_2615.png–IMG_2622.png
+8,2026-10-16,Alcorcón,SD Huesca,posesion_pct,55,45,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,xg,1.36,1.33,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,ocasiones_claras,1,2,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,tiros,19,6,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,paradas,1,5,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,corners,4,2,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,faltas,15,17,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,pases,432,356,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,entradas,10,10,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,tiros_libres,17,14,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,amarillas,3,3,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,rojas,1,1,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,tiros_a_puerta,6,2,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,xgot,1.87,1.21,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,tiros_fuera,7,3,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,tiros_bloqueados,6,1,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,tiros_dentro_area,14,5,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,tiros_fuera_area,5,1,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,ocasiones_claras_marcadas,0,1,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,ocasiones_claras_falladas,1,1,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,faltas_recibidas_ultimo_tercio,4,2,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,pases_buenos,374,281,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,saques_banda,26,13,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,pases_ultimo_tercio,46,47,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,balones_largos_ok,31,24,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,balones_largos_total,53,49,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,centros_ok,8,1,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,centros_total,24,6,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,duelos_ganados_pct,46,54,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,desposeido,7,5,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,duelos_suelo_ok,31,28,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,duelos_suelo_total,59,59,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,duelos_aereos_ok,4,13,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,duelos_aereos_total,17,17,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,regates_ok,4,6,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,regates_total,7,11,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,entradas_ganadas_pct,50,70,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,intercepciones,6,8,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,recuperaciones,40,41,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,despejes,15,28,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,goles_evitados,0.21,0.87,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg
+8,2026-10-16,Alcorcón,SD Huesca,saques_meta,4,8,https://www.sofascore.com/,IMG_2623.png–IMG_2629.png; IMG_2630.jpeg

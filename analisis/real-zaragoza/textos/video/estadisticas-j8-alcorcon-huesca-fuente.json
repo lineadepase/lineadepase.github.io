@@ -1,0 +1,191 @@
+{
+  "jornada": 8,
+  "fecha": "2026-10-16",
+  "local": "Alcorcón",
+  "visitante": "SD Huesca",
+  "goles_local": 1,
+  "goles_visitante": 1,
+  "fuente_url": "https://www.sofascore.com/",
+  "capturas": [
+    "IMG_2623.png",
+    "IMG_2624.png",
+    "IMG_2625.png",
+    "IMG_2626.png",
+    "IMG_2627.png",
+    "IMG_2628.png",
+    "IMG_2629.png",
+    "IMG_2630.jpeg"
+  ],
+  "revisado": "2026-10-20",
+  "metodo": "Transcripción de la pestaña Estadísticas con TODOS seleccionado. Valores local, visitante. No se infieren fueras de juego ni tiros al palo, que no aparecen. El gol del Huesca figura como penalti.",
+  "metricas": {
+    "posesion_pct": [
+      55,
+      45
+    ],
+    "xg": [
+      1.36,
+      1.33
+    ],
+    "ocasiones_claras": [
+      1,
+      2
+    ],
+    "tiros": [
+      19,
+      6
+    ],
+    "paradas": [
+      1,
+      5
+    ],
+    "corners": [
+      4,
+      2
+    ],
+    "faltas": [
+      15,
+      17
+    ],
+    "pases": [
+      432,
+      356
+    ],
+    "entradas": [
+      10,
+      10
+    ],
+    "tiros_libres": [
+      17,
+      14
+    ],
+    "amarillas": [
+      3,
+      3
+    ],
+    "rojas": [
+      1,
+      1
+    ],
+    "tiros_a_puerta": [
+      6,
+      2
+    ],
+    "xgot": [
+      1.87,
+      1.21
+    ],
+    "tiros_fuera": [
+      7,
+      3
+    ],
+    "tiros_bloqueados": [
+      6,
+      1
+    ],
+    "tiros_dentro_area": [
+      14,
+      5
+    ],
+    "tiros_fuera_area": [
+      5,
+      1
+    ],
+    "ocasiones_claras_marcadas": [
+      0,
+      1
+    ],
+    "ocasiones_claras_falladas": [
+      1,
+      1
+    ],
+    "faltas_recibidas_ultimo_tercio": [
+      4,
+      2
+    ],
+    "pases_buenos": [
+      374,
+      281
+    ],
+    "saques_banda": [
+      26,
+      13
+    ],
+    "pases_ultimo_tercio": [
+      46,
+      47
+    ],
+    "balones_largos_ok": [
+      31,
+      24
+    ],
+    "balones_largos_total": [
+      53,
+      49
+    ],
+    "centros_ok": [
+      8,
+      1
+    ],
+    "centros_total": [
+      24,
+      6
+    ],
+    "duelos_ganados_pct": [
+      46,
+      54
+    ],
+    "desposeido": [
+      7,
+      5
+    ],
+    "duelos_suelo_ok": [
+      31,
+      28
+    ],
+    "duelos_suelo_total": [
+      59,
+      59
+    ],
+    "duelos_aereos_ok": [
+      4,
+      13
+    ],
+    "duelos_aereos_total": [
+      17,
+      17
+    ],
+    "regates_ok": [
+      4,
+      6
+    ],
+    "regates_total": [
+      7,
+      11
+    ],
+    "entradas_ganadas_pct": [
+      50,
+      70
+    ],
+    "intercepciones": [
+      6,
+      8
+    ],
+    "recuperaciones": [
+      40,
+      41
+    ],
+    "despejes": [
+      15,
+      28
+    ],
+    "goles_evitados": [
+      0.21,
+      0.87
+    ],
+    "saques_meta": [
+      4,
+      8
+    ]
+  }
+}
