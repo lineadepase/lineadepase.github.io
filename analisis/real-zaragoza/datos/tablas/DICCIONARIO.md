@@ -117,7 +117,7 @@ Estadísticas de Sofascore de cada partido, xG incluido, en formato largo (una m
 
 ## grupo2_partidos
 
-Todos los partidos del grupo 2 con estadísticas de Sofascore. Una fila por equipo y partido: cada partido aparece dos veces, una desde cada lado. Archivo: `datos/entrada/grupo2_partidos.csv` (140 filas).
+Todos los partidos del grupo 2 con estadísticas de Sofascore. Una fila por equipo y partido: cada partido aparece dos veces, una desde cada lado. Archivo: `datos/entrada/grupo2_partidos.csv` (160 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|

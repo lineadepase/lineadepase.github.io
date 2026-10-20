@@ -1,0 +1,193 @@
+{
+  "jornada": 8,
+  "evento_sofascore": 16599928,
+  "fecha": "2026-10-18",
+  "local": "Real Jaén",
+  "visitante": "Rayo Majadahonda",
+  "goles_local": 1,
+  "goles_visitante": 0,
+  "fuente_url": "https://www.sofascore.com/es-la/football/match/rayo-majadahonda-real-jaen/QgbszQFb#id:16599928,tab:statistics",
+  "revisado": "2026-10-20",
+  "metodo": "Texto de Estadísticas / Todos facilitado por el usuario el 20/10/2026 a las 14:53 Europe/Madrid. Valores local, visitante. El texto termina tras los saques de meta del Real Jaén; el valor visitante y las tarjetas rojas se dejan sin dato.",
+  "incidencias": [
+    "La fuente indica 10 tiros a puerta del Rayo y 7 paradas del Jaén con resultado 1-0. Se conservan ambos valores visibles sin forzar una corrección."
+  ],
+  "metricas": {
+    "posesion_pct": [
+      45,
+      55
+    ],
+    "xg": [
+      0.34,
+      2.5
+    ],
+    "ocasiones_claras": [
+      2,
+      7
+    ],
+    "tiros": [
+      7,
+      22
+    ],
+    "paradas": [
+      7,
+      0
+    ],
+    "corners": [
+      6,
+      3
+    ],
+    "faltas": [
+      10,
+      15
+    ],
+    "pases": [
+      354,
+      421
+    ],
+    "entradas": [
+      15,
+      16
+    ],
+    "tiros_libres": [
+      15,
+      10
+    ],
+    "amarillas": [
+      3,
+      4
+    ],
+    "tiros_a_puerta": [
+      1,
+      10
+    ],
+    "xgot": [
+      0.92,
+      2.3
+    ],
+    "tiros_al_palo": [
+      0,
+      1
+    ],
+    "tiros_fuera": [
+      1,
+      10
+    ],
+    "tiros_bloqueados": [
+      5,
+      2
+    ],
+    "tiros_dentro_area": [
+      4,
+      17
+    ],
+    "tiros_fuera_area": [
+      3,
+      5
+    ],
+    "ocasiones_claras_marcadas": [
+      1,
+      0
+    ],
+    "ocasiones_claras_falladas": [
+      1,
+      7
+    ],
+    "pases_profundidad": [
+      1,
+      0
+    ],
+    "faltas_recibidas_ultimo_tercio": [
+      1,
+      3
+    ],
+    "fueras_juego": [
+      2,
+      2
+    ],
+    "pases_buenos": [
+      271,
+      340
+    ],
+    "saques_banda": [
+      26,
+      20
+    ],
+    "pases_ultimo_tercio": [
+      40,
+      86
+    ],
+    "balones_largos_ok": [
+      37,
+      26
+    ],
+    "balones_largos_total": [
+      70,
+      61
+    ],
+    "centros_ok": [
+      2,
+      6
+    ],
+    "centros_total": [
+      8,
+      22
+    ],
+    "duelos_ganados_pct": [
+      52,
+      48
+    ],
+    "desposeido": [
+      5,
+      3
+    ],
+    "duelos_suelo_ok": [
+      27,
+      29
+    ],
+    "duelos_suelo_total": [
+      56,
+      56
+    ],
+    "duelos_aereos_ok": [
+      18,
+      13
+    ],
+    "duelos_aereos_total": [
+      31,
+      31
+    ],
+    "regates_ok": [
+      0,
+      3
+    ],
+    "regates_total": [
+      11,
+      15
+    ],
+    "entradas_ganadas_pct": [
+      80,
+      81
+    ],
+    "intercepciones": [
+      9,
+      13
+    ],
+    "recuperaciones": [
+      44,
+      52
+    ],
+    "despejes": [
+      37,
+      10
+    ],
+    "goles_evitados": [
+      2.3,
+      -0.08
+    ],
+    "saques_meta": [
+      15,
+      null
+    ]
+  }
+}

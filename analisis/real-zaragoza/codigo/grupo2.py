@@ -270,6 +270,16 @@ def solapes(t, cx, cy, eje_y_invertido=False):
             else:
                 izquierda = min(a, b, key=lambda f: getattr(f, cx))
                 mover.setdefault(izquierda.equipo, (-6, 4, "right"))
+    # Ajustes de lectura para el grupo de puntos más próximo tras la J8.
+    if cx == "tiros" and cy == "xg_por_tiro":
+        mover.update({"Gimnàstic": (-6, 4, "right"),
+                      "SD Huesca": (-6, -12, "right"),
+                      "Sant Andreu": (6, -12, "left")})
+    if cx == "posesion" and cy == "xg_pp":
+        mover.update({"CE Europa": (-6, 10, "right"),
+                      "Real Jaén": (-6, -10, "right"),
+                      "Juventud Torremolinos CF": (6, 10, "left"),
+                      "SD Huesca": (6, -12, "left")})
     return mover
 
 
@@ -448,13 +458,13 @@ def tabla_html(t):
             f"<tr{clase}><td class=\"n\">{f.posicion}</td><th scope=\"row\">{e(f.equipo)}</th>"
             f"<td class=\"n\">{f.pj}</td><td class=\"n\"><b>{f.puntos}</b></td><td class=\"n\">{numero(f.xpts, 1)}</td>"
             f"<td class=\"n\">{con_signo(f.dif_puntos, 1)}</td>"
-            f"<td class=\"n\">{f.gf}–{f.gc}</td><td class=\"n\">{numero(f.xg, 1)}–{numero(f.xg_contra, 1)}</td>"
+            f"<td class=\"n\">{f.gf}–{f.gc}</td><td class=\"n\">{f.pj_xg}/{f.pj}</td><td class=\"n\">{numero(f.xg, 1)}–{numero(f.xg_contra, 1)}</td>"
             f"<td class=\"n\">{con_signo(f.xg_dif_pp)}</td>"
             f"<td class=\"n\">{numero(f.tiros, 1)}</td><td class=\"n\">{numero(f.xg_por_tiro)}</td>"
             f"<td class=\"n\">{numero(f.posesion, 0)} %</td></tr>")
     return f"""<div class="tarjeta tabla" tabindex="0" role="region" aria-label="Tabla del grupo 2, desplazable"><table class="tabla-grupo">
       <thead><tr><th class="n">#</th><th>Equipo</th><th class="n">PJ</th><th class="n">Pts</th><th class="n" title="Puntos esperados según el xG">xPts</th>
-      <th class="n" title="Puntos reales menos puntos esperados">Dif.</th><th class="n">Goles</th><th class="n">xG</th>
+      <th class="n" title="Puntos reales menos puntos esperados">Dif.</th><th class="n">Goles</th><th class="n" title="Partidos con xG sobre partidos jugados">PJ xG</th><th class="n">xG</th>
       <th class="n" title="xG a favor menos xG en contra, por partido">xG dif./PJ</th><th class="n">Tiros/PJ</th>
       <th class="n">xG/tiro</th><th class="n">Posesión</th></tr></thead>
       <tbody>{"".join(filas)}</tbody></table></div>"""
@@ -492,7 +502,7 @@ def escribir_pagina(t, jornada):
     import paginas_partidos as pp                      # reutilizo la plantilla y las pestañas
     texto_ruta = TEXTOS / "grupo2.html"
     analisis = texto_ruta.read_text(encoding="utf-8") if texto_ruta.exists() else ""
-    figura = lambda archivo, alt, pie: (f'<figure class="figura"><img src="graficos/grupo2/{archivo}" alt="{alt}" '
+    figura = lambda archivo, alt, pie: (f'<figure class="figura"><img src="graficos/grupo2/{archivo}?v=j{jornada}" alt="{alt}" '
                                         f'loading="lazy"><figcaption>{pie}</figcaption></figure>')
     jornada_actual, actualidad = actualidad_html()
     cuerpo = f"""<main class="envoltorio">
@@ -501,7 +511,7 @@ def escribir_pagina(t, jornada):
   <section class="seccion primera" aria-labelledby="t-grupo">
     <p class="etiqueta">Primera Federación · Grupo 2 · Resultados J{jornada_actual} · Estadísticas avanzadas J{jornada}</p>
     <h1 id="t-grupo">El grupo 2, con datos</h1>
-    <p class="entradilla">Clasificación y resultados hasta la jornada {jornada_actual}. La comparación de xG, puntos esperados, tiros y posesión conserva su corte en la jornada {jornada}, con la cobertura indicada en cada apartado.</p>
+    <p class="entradilla">Clasificación y resultados hasta la jornada {jornada_actual}. La comparación de xG, puntos esperados, tiros y posesión está actualizada hasta la jornada {jornada}, con la cobertura indicada en cada apartado.</p>
   </section>
   {actualidad}
   <section class="seccion lectura" aria-labelledby="t-lectura">
@@ -510,7 +520,7 @@ def escribir_pagina(t, jornada):
   </section>
   <section class="seccion" aria-labelledby="t-tabla">
     <p class="etiqueta">Clasificación ampliada</p><h2 id="t-tabla">La tabla, con xG · J{jornada}</h2>
-    <p class="nota">Ordenada por puntos, diferencia de goles y goles a favor. xPts: puntos esperados según el xG de cada partido. Dif.: puntos reales menos esperados.</p>
+    <p class="nota">Ordenada por puntos, diferencia de goles y goles a favor. PJ xG: encuentros con xG sobre partidos jugados. Los goles esperados totales y su diferencia se calculan solo en partidos con dato. xPts: puntos esperados según el xG de cada partido. Dif.: puntos reales menos esperados.</p>
     {tabla_html(t)}
   </section>
   <section class="seccion lectura" aria-labelledby="t-graficos">
@@ -525,9 +535,9 @@ def escribir_pagina(t, jornada):
   <section class="seccion lectura" id="metodo-grupo" aria-labelledby="t-metodo-grupo">
     <p class="etiqueta">Cómo está hecho</p><h2 id="t-metodo-grupo">Método y límites</h2>
     <ul>
-      <li>Datos de Sofascore de los {int(t.pj.sum() / 2)} partidos jugados del grupo, en <a href="../../analisis/real-zaragoza/datos/entrada/grupo2_partidos.csv">grupo2_partidos.csv</a> (una fila por equipo y partido).</li>
+      <li>Datos de Sofascore de los {int(t.pj.sum() / 2)} partidos jugados del grupo; la J8 está contrastada con capturas y texto aportados por el usuario. Tabla completa: en <a href="../../analisis/real-zaragoza/datos/entrada/grupo2_partidos.csv">grupo2_partidos.csv</a> (una fila por equipo y partido).</li>
       <li>Los puntos esperados suponen que los goles de cada equipo siguen una distribución de Poisson con media igual a su xG. Es una aproximación: no tiene en cuenta el marcador ni cómo cambia un partido después de un gol.</li>
-      <li>Sofascore no da el xG de tres partidos. En esos cuento los puntos reales como esperados y no entran en las medias de xG.</li>
+      <li>Falta el xG de tres partidos antiguos: Huesca–Sant Andreu (J1), Villarreal B–Algeciras (J2) y Gimnàstic–Sant Andreu (J5). Hay xG en 77 de los 80 encuentros. En los tres sin xG cuento los puntos reales como esperados; no entran en las medias de xG. La columna PJ xG indica la cobertura de cada equipo.</li>
       <li>Con {jornada} jornadas, una racha buena o mala de cara a puerta pesa mucho. Estas cifras describen lo que ha pasado; no predicen la clasificación final.</li>
       <li>La tabla ordena los empates por diferencia de goles. El reglamento usa antes el enfrentamiento directo, así que algún puesto puede no coincidir con la clasificación oficial.</li>
     </ul>
