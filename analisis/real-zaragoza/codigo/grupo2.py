@@ -460,6 +460,33 @@ def tabla_html(t):
       <tbody>{"".join(filas)}</tbody></table></div>"""
 
 
+def actualidad_html():
+    """Resultados y clasificación revisados, independientes del corte de xG."""
+    c = pd.read_csv(ENTRADA / "clasificacion.csv")
+    j = int(c.tras_jornada.max())
+    c = c[c.tras_jornada == j].sort_values("posicion")
+    resultados = pd.read_csv(ENTRADA / "grupo2_resultados.csv")
+    resultados = resultados[resultados.jornada == j]
+    filas = []
+    for f in c.itertuples():
+        clase = ' class="propio"' if f.equipo == ZARAGOZA else ""
+        filas.append(f'<tr{clase}><td>{f.posicion}</td><th scope="row">{e(f.equipo)}</th>'
+                     f'<td>{f.pj}</td><td><b>{f.puntos}</b></td><td>{f.g}</td><td>{f.e}</td>'
+                     f'<td>{f.p}</td><td>{f.gf}</td><td>{f.gc}</td><td>{f.gf-f.gc:+d}</td></tr>')
+    partidos = ''.join(f'<li>{e(f.local)} <strong>{f.goles_local}–{f.goles_visitante}</strong> {e(f.visitante)}</li>'
+                       for f in resultados.itertuples())
+    return j, f"""<section class="seccion" aria-labelledby="t-actualidad">
+    <p class="etiqueta">Actualizado el 20/10/2026 · Jornada {j} completa</p>
+    <h2 id="t-actualidad">Resultados y clasificación tras la jornada {j}</h2>
+    <p>El Villarreal B alcanza al Zaragoza con 17 puntos y lidera por diferencia de goles (+8 frente a +6). El Murcia queda tercero con 16; Cartagena y Real Jaén suman 15. La jornada deja 25 goles: seis victorias locales, una visitante y tres empates.</p>
+    <ul>{partidos}</ul>
+    <div class="tarjeta tabla" tabindex="0" role="region" aria-label="Clasificación tras la jornada {j}, desplazable"><table>
+    <thead><tr><th>#</th><th>Equipo</th><th>PJ</th><th>Pts</th><th>G</th><th>E</th><th>P</th><th>GF</th><th>GC</th><th>DG</th></tr></thead>
+    <tbody>{''.join(filas)}</tbody></table></div>
+    <p class="nota">Fuentes: <a href="{e(resultados.iloc[0].fuente_url)}" target="_blank" rel="noopener">resultados de AS</a> y <a href="{e(c.iloc[0].fuente_url)}" target="_blank" rel="noopener">clasificación en la web del Real Zaragoza</a>. Los empates se muestran por diferencia de goles; la clasificación definitiva depende de los criterios reglamentarios.</p>
+    </section>"""
+
+
 def escribir_pagina(t, jornada):
     """Monta grupo-2.html con la misma cabecera, pestañas y pie que el resto."""
     import paginas_partidos as pp                      # reutilizo la plantilla y las pestañas
@@ -467,25 +494,27 @@ def escribir_pagina(t, jornada):
     analisis = texto_ruta.read_text(encoding="utf-8") if texto_ruta.exists() else ""
     figura = lambda archivo, alt, pie: (f'<figure class="figura"><img src="graficos/grupo2/{archivo}" alt="{alt}" '
                                         f'loading="lazy"><figcaption>{pie}</figcaption></figure>')
+    jornada_actual, actualidad = actualidad_html()
     cuerpo = f"""<main class="envoltorio">
   <p class="migas"><a href="../index.html">Proyectos</a> / <a href="index.html">Real Zaragoza 2026/27</a> / Grupo 2</p>
   {pp.pestanas("grupo")}
   <section class="seccion primera" aria-labelledby="t-grupo">
-    <p class="etiqueta">Primera Federación · Grupo 2 · Tras la jornada {jornada}</p>
+    <p class="etiqueta">Primera Federación · Grupo 2 · Resultados J{jornada_actual} · Estadísticas avanzadas J{jornada}</p>
     <h1 id="t-grupo">El grupo 2, con datos</h1>
-    <p class="entradilla">Los 20 equipos del grupo con las estadísticas de Sofascore de todos los partidos: goles esperados (xG), puntos esperados, tiros y posesión. Sirve para poner al Real Zaragoza en contexto: no solo cuántos puntos lleva, sino si los merece.</p>
+    <p class="entradilla">Clasificación y resultados hasta la jornada {jornada_actual}. La comparación de xG, puntos esperados, tiros y posesión conserva su corte en la jornada {jornada}, con la cobertura indicada en cada apartado.</p>
   </section>
+  {actualidad}
   <section class="seccion lectura" aria-labelledby="t-lectura">
-    <p class="etiqueta">Lo que dicen los datos</p><h2 id="t-lectura">Lectura del grupo</h2>
+    <p class="etiqueta">Lo que dicen los datos</p><h2 id="t-lectura">Lectura avanzada · J{jornada}</h2>
     {analisis}
   </section>
   <section class="seccion" aria-labelledby="t-tabla">
-    <p class="etiqueta">Clasificación ampliada</p><h2 id="t-tabla">La tabla, con xG</h2>
+    <p class="etiqueta">Clasificación ampliada</p><h2 id="t-tabla">La tabla, con xG · J{jornada}</h2>
     <p class="nota">Ordenada por puntos, diferencia de goles y goles a favor. xPts: puntos esperados según el xG de cada partido. Dif.: puntos reales menos esperados.</p>
     {tabla_html(t)}
   </section>
   <section class="seccion lectura" aria-labelledby="t-graficos">
-    <p class="etiqueta">Gráficos</p><h2 id="t-graficos">El grupo, en seis gráficos</h2>
+    <p class="etiqueta">Gráficos</p><h2 id="t-graficos">El grupo, en seis gráficos · J{jornada}</h2>
     {figura("dominio.png", "Dispersión de xG a favor y en contra por partido de los 20 equipos", "Cada punto es un equipo. Arriba a la derecha, los que generan mucho y conceden poco. Las líneas discontinuas son la media del grupo.")}
     {figura("puntos_esperados.png", "Puntos reales y puntos esperados de cada equipo", "Círculo hueco: puntos esperados. Círculo lleno: puntos reales. La línea mide la distancia entre los dos.")}
     {figura("eficacia.png", "Goles marcados menos xG y xG en contra menos goles encajados por equipo", "Izquierda: acierto de cara a puerta. Derecha: acierto del portero y la defensa. Positivo, mejor de lo esperado.")}
@@ -499,14 +528,14 @@ def escribir_pagina(t, jornada):
       <li>Datos de Sofascore de los {int(t.pj.sum() / 2)} partidos jugados del grupo, en <a href="../../analisis/real-zaragoza/datos/entrada/grupo2_partidos.csv">grupo2_partidos.csv</a> (una fila por equipo y partido).</li>
       <li>Los puntos esperados suponen que los goles de cada equipo siguen una distribución de Poisson con media igual a su xG. Es una aproximación: no tiene en cuenta el marcador ni cómo cambia un partido después de un gol.</li>
       <li>Sofascore no da el xG de tres partidos. En esos cuento los puntos reales como esperados y no entran en las medias de xG.</li>
-      <li>Con siete jornadas, una racha buena o mala de cara a puerta pesa mucho. Estas cifras describen lo que ha pasado; no predicen la clasificación final.</li>
+      <li>Con {jornada} jornadas, una racha buena o mala de cara a puerta pesa mucho. Estas cifras describen lo que ha pasado; no predicen la clasificación final.</li>
       <li>La tabla ordena los empates por diferencia de goles. El reglamento usa antes el enfrentamiento directo, así que algún puesto puede no coincidir con la clasificación oficial.</li>
     </ul>
     <div class="enlaces"><a class="boton lleno" href="https://github.com/lineadepase/lineadepase.github.io/blob/main/analisis/real-zaragoza/codigo/grupo2.py" target="_blank" rel="noopener">Ver el código</a><a class="boton" href="index.html">Volver a la temporada</a></div>
   </section>
 </main>"""
     (CARPETA_PAGINAS / "grupo-2.html").write_text(
-        pp.pagina(f"Grupo 2 de Primera Federación con datos (J{jornada})",
+        pp.pagina(f"Grupo 2 de Primera Federación: resultados J{jornada_actual} y datos avanzados J{jornada}",
                   "Los 20 equipos del grupo 2 de Primera Federación con xG, puntos esperados, tiros y posesión de Sofascore.",
                   cuerpo), encoding="utf-8")
 
