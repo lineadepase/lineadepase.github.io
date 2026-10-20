@@ -5,7 +5,7 @@
   "visitante": "Hércules",
   "goles_local": 2,
   "goles_visitante": 0,
-  "fuente_url": "https://www.sofascore.com/es/football/match/algeciras-cf-hercules-cf/ChbsOOb",
+  "fuente_url": "https://www.sofascore.com/es-la/football/match/algeciras-cf-hercules-cf/ChbsOOb#id:16599924,tab:statistics",
   "capturas": [
     "IMG_2647.png",
     "IMG_2648.png",
@@ -19,7 +19,7 @@
     "IMG_2656.png"
   ],
   "revisado": "2026-10-20",
-  "metodo": "Transcripción de la pestaña Estadísticas con TODOS seleccionado. Valores local, visitante. Capturas con duplicados y cambios del mapa de tiros: las estadísticas agregadas coinciden. No aparecen los bloques finales de balones largos, centros, duelos, defensa y goles evitados; se dejan sin dato.",
+  "metodo": "Transcripción de las capturas IMG_2647.png–IMG_2656.png, completada con el texto íntegro de Estadísticas / Todos que el usuario ha copiado de Sofascore el 20/10/2026 a las 14:22 (Europe/Madrid). Valores local, visitante. Las 25 métricas anteriores coinciden con el texto; se añaden 18 métricas nuevas, sin inferir las que no figuran.",
   "metricas": {
     "posesion_pct": [
       51,
@@ -120,6 +120,80 @@
     "pases_ultimo_tercio": [
       72,
       45
+    ],
+    "duelos_ganados_pct": [
+      49,
+      51
+    ],
+    "desposeido": [
+      3,
+      2
+    ],
+    "duelos_suelo_ok": [
+      38,
+      37
+    ],
+    "duelos_suelo_total": [
+      75,
+      75
+    ],
+    "duelos_aereos_ok": [
+      11,
+      14
+    ],
+    "duelos_aereos_total": [
+      25,
+      25
+    ],
+    "regates_ok": [
+      8,
+      8
+    ],
+    "regates_total": [
+      20,
+      18
+    ],
+    "balones_largos_ok": [
+      27,
+      31
+    ],
+    "balones_largos_total": [
+      66,
+      64
+    ],
+    "centros_ok": [
+      2,
+      2
+    ],
+    "centros_total": [
+      14,
+      18
+    ],
+    "entradas_ganadas_pct": [
+      58,
+      67
+    ],
+    "intercepciones": [
+      15,
+      10
+    ],
+    "recuperaciones": [
+      43,
+      41
+    ],
+    "despejes": [
+      21,
+      16
+    ],
+    "goles_evitados": [
+      0.55,
+      -0.87
+    ],
+    "saques_meta": [
+      6,
+      11
     ]
-  }
+  },
+  "evento_sofascore": 16599924,
+  "cobertura": "Completadas las métricas visibles aportadas; no se infieren tiros al palo ni ocasiones claras falladas."
 }
