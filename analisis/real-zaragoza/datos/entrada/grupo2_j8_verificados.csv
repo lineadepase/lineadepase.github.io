@@ -168,3 +168,47 @@ jornada,fecha,local,visitante,metrica,valor_local,valor_visitante,fuente_url,cap
 8,2026-10-17,CDA Águilas FC,UD Ibiza,despejes,13,28,https://www.sofascore.com/,IMG_2631.png–IMG_2637.png; IMG_2638.jpeg
 8,2026-10-17,CDA Águilas FC,UD Ibiza,goles_evitados,-0.22,0.53,https://www.sofascore.com/,IMG_2631.png–IMG_2637.png; IMG_2638.jpeg
 8,2026-10-17,CDA Águilas FC,UD Ibiza,saques_meta,10,9,https://www.sofascore.com/,IMG_2631.png–IMG_2637.png; IMG_2638.jpeg
+8,2026-10-17,Villarreal B,CD Teruel,posesion_pct,61,39,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,xg,3.17,0.2,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,ocasiones_claras,4,1,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,tiros,19,8,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,paradas,2,2,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,corners,10,2,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,faltas,16,10,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,pases,563,358,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,entradas,16,27,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,tiros_libres,10,16,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,amarillas,2,2,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,tiros_a_puerta,5,2,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,xgot,1.18,0.14,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,tiros_al_palo,1,0,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,tiros_fuera,7,4,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,tiros_bloqueados,7,2,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,tiros_dentro_area,15,3,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,tiros_fuera_area,4,5,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,ocasiones_claras_marcadas,1,0,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,ocasiones_claras_falladas,3,1,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,pases_profundidad,1,0,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,faltas_recibidas_ultimo_tercio,4,0,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,fueras_juego,3,0,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,pases_buenos,484,263,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,saques_banda,25,19,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,pases_ultimo_tercio,93,45,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,balones_largos_ok,28,27,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,balones_largos_total,47,73,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,centros_ok,5,4,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,centros_total,11,13,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,duelos_ganados_pct,45,55,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,desposeido,10,10,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,duelos_suelo_ok,38,51,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,duelos_suelo_total,89,89,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,duelos_aereos_ok,12,9,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,duelos_aereos_total,21,21,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,regates_ok,12,9,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,regates_total,29,15,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,entradas_ganadas_pct,69,59,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,intercepciones,12,10,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,recuperaciones,52,49,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,despejes,16,18,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,goles_evitados,0.14,-0.82,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Villarreal B,CD Teruel,saques_meta,7,10,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png

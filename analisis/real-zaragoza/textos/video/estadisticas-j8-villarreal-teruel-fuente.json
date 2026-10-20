@@ -1,0 +1,202 @@
+{
+  "jornada": 8,
+  "fecha": "2026-10-17",
+  "local": "Villarreal B",
+  "visitante": "CD Teruel",
+  "goles_local": 2,
+  "goles_visitante": 0,
+  "fuente_url": "https://www.sofascore.com/",
+  "capturas": [
+    "IMG_2639.png",
+    "IMG_2640.png",
+    "IMG_2641.png",
+    "IMG_2642.png",
+    "IMG_2643.png",
+    "IMG_2644.png",
+    "IMG_2645.png",
+    "IMG_2646.png"
+  ],
+  "revisado": "2026-10-20",
+  "metodo": "Transcripción de la pestaña Estadísticas con TODOS seleccionado. Valores local, visitante. No se infieren tarjetas rojas, que no aparecen.",
+  "incidencias": [
+    "Sofascore muestra 5 tiros a puerta del Villarreal B y 2 paradas del Teruel, con marcador 2-0. Se mantienen ambos valores tal como aparecen; no se fuerza la igualdad tiros a puerta = goles + paradas."
+  ],
+  "metricas": {
+    "posesion_pct": [
+      61,
+      39
+    ],
+    "xg": [
+      3.17,
+      0.2
+    ],
+    "ocasiones_claras": [
+      4,
+      1
+    ],
+    "tiros": [
+      19,
+      8
+    ],
+    "paradas": [
+      2,
+      2
+    ],
+    "corners": [
+      10,
+      2
+    ],
+    "faltas": [
+      16,
+      10
+    ],
+    "pases": [
+      563,
+      358
+    ],
+    "entradas": [
+      16,
+      27
+    ],
+    "tiros_libres": [
+      10,
+      16
+    ],
+    "amarillas": [
+      2,
+      2
+    ],
+    "tiros_a_puerta": [
+      5,
+      2
+    ],
+    "xgot": [
+      1.18,
+      0.14
+    ],
+    "tiros_al_palo": [
+      1,
+      0
+    ],
+    "tiros_fuera": [
+      7,
+      4
+    ],
+    "tiros_bloqueados": [
+      7,
+      2
+    ],
+    "tiros_dentro_area": [
+      15,
+      3
+    ],
+    "tiros_fuera_area": [
+      4,
+      5
+    ],
+    "ocasiones_claras_marcadas": [
+      1,
+      0
+    ],
+    "ocasiones_claras_falladas": [
+      3,
+      1
+    ],
+    "pases_profundidad": [
+      1,
+      0
+    ],
+    "faltas_recibidas_ultimo_tercio": [
+      4,
+      0
+    ],
+    "fueras_juego": [
+      3,
+      0
+    ],
+    "pases_buenos": [
+      484,
+      263
+    ],
+    "saques_banda": [
+      25,
+      19
+    ],
+    "pases_ultimo_tercio": [
+      93,
+      45
+    ],
+    "balones_largos_ok": [
+      28,
+      27
+    ],
+    "balones_largos_total": [
+      47,
+      73
+    ],
+    "centros_ok": [
+      5,
+      4
+    ],
+    "centros_total": [
+      11,
+      13
+    ],
+    "duelos_ganados_pct": [
+      45,
+      55
+    ],
+    "desposeido": [
+      10,
+      10
+    ],
+    "duelos_suelo_ok": [
+      38,
+      51
+    ],
+    "duelos_suelo_total": [
+      89,
+      89
+    ],
+    "duelos_aereos_ok": [
+      12,
+      9
+    ],
+    "duelos_aereos_total": [
+      21,
+      21
+    ],
+    "regates_ok": [
+      12,
+      9
+    ],
+    "regates_total": [
+      29,
+      15
+    ],
+    "entradas_ganadas_pct": [
+      69,
+      59
+    ],
+    "intercepciones": [
+      12,
+      10
+    ],
+    "recuperaciones": [
+      52,
+      49
+    ],
+    "despejes": [
+      16,
+      18
+    ],
+    "goles_evitados": [
+      0.14,
+      -0.82
+    ],
+    "saques_meta": [
+      7,
+      10
+    ]
+  }
+}
