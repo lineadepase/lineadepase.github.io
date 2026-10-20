@@ -212,3 +212,28 @@ jornada,fecha,local,visitante,metrica,valor_local,valor_visitante,fuente_url,cap
 8,2026-10-17,Villarreal B,CD Teruel,despejes,16,18,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
 8,2026-10-17,Villarreal B,CD Teruel,goles_evitados,0.14,-0.82,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
 8,2026-10-17,Villarreal B,CD Teruel,saques_meta,7,10,https://www.sofascore.com/,IMG_2639.png–IMG_2646.png
+8,2026-10-17,Algeciras,Hércules,posesion_pct,51,49,https://www.sofascore.com/es/football/match/algeciras-cf-hercules-cf/ChbsOOb,IMG_2647.png–IMG_2656.png
+8,2026-10-17,Algeciras,Hércules,xg,0.76,0.5,https://www.sofascore.com/es/football/match/algeciras-cf-hercules-cf/ChbsOOb,IMG_2647.png–IMG_2656.png
+8,2026-10-17,Algeciras,Hércules,ocasiones_claras,1,0,https://www.sofascore.com/es/football/match/algeciras-cf-hercules-cf/ChbsOOb,IMG_2647.png–IMG_2656.png
+8,2026-10-17,Algeciras,Hércules,tiros,14,7,https://www.sofascore.com/es/football/match/algeciras-cf-hercules-cf/ChbsOOb,IMG_2647.png–IMG_2656.png
+8,2026-10-17,Algeciras,Hércules,paradas,1,2,https://www.sofascore.com/es/football/match/algeciras-cf-hercules-cf/ChbsOOb,IMG_2647.png–IMG_2656.png
+8,2026-10-17,Algeciras,Hércules,corners,1,3,https://www.sofascore.com/es/football/match/algeciras-cf-hercules-cf/ChbsOOb,IMG_2647.png–IMG_2656.png
+8,2026-10-17,Algeciras,Hércules,faltas,14,18,https://www.sofascore.com/es/football/match/algeciras-cf-hercules-cf/ChbsOOb,IMG_2647.png–IMG_2656.png
+8,2026-10-17,Algeciras,Hércules,pases,440,413,https://www.sofascore.com/es/football/match/algeciras-cf-hercules-cf/ChbsOOb,IMG_2647.png–IMG_2656.png
+8,2026-10-17,Algeciras,Hércules,entradas,12,15,https://www.sofascore.com/es/football/match/algeciras-cf-hercules-cf/ChbsOOb,IMG_2647.png–IMG_2656.png
+8,2026-10-17,Algeciras,Hércules,tiros_libres,18,14,https://www.sofascore.com/es/football/match/algeciras-cf-hercules-cf/ChbsOOb,IMG_2647.png–IMG_2656.png
+8,2026-10-17,Algeciras,Hércules,amarillas,5,6,https://www.sofascore.com/es/football/match/algeciras-cf-hercules-cf/ChbsOOb,IMG_2647.png–IMG_2656.png
+8,2026-10-17,Algeciras,Hércules,rojas,0,1,https://www.sofascore.com/es/football/match/algeciras-cf-hercules-cf/ChbsOOb,IMG_2647.png–IMG_2656.png
+8,2026-10-17,Algeciras,Hércules,tiros_a_puerta,4,1,https://www.sofascore.com/es/football/match/algeciras-cf-hercules-cf/ChbsOOb,IMG_2647.png–IMG_2656.png
+8,2026-10-17,Algeciras,Hércules,xgot,1.13,0.55,https://www.sofascore.com/es/football/match/algeciras-cf-hercules-cf/ChbsOOb,IMG_2647.png–IMG_2656.png
+8,2026-10-17,Algeciras,Hércules,tiros_fuera,6,5,https://www.sofascore.com/es/football/match/algeciras-cf-hercules-cf/ChbsOOb,IMG_2647.png–IMG_2656.png
+8,2026-10-17,Algeciras,Hércules,tiros_bloqueados,4,1,https://www.sofascore.com/es/football/match/algeciras-cf-hercules-cf/ChbsOOb,IMG_2647.png–IMG_2656.png
+8,2026-10-17,Algeciras,Hércules,tiros_dentro_area,6,6,https://www.sofascore.com/es/football/match/algeciras-cf-hercules-cf/ChbsOOb,IMG_2647.png–IMG_2656.png
+8,2026-10-17,Algeciras,Hércules,tiros_fuera_area,8,1,https://www.sofascore.com/es/football/match/algeciras-cf-hercules-cf/ChbsOOb,IMG_2647.png–IMG_2656.png
+8,2026-10-17,Algeciras,Hércules,ocasiones_claras_marcadas,1,0,https://www.sofascore.com/es/football/match/algeciras-cf-hercules-cf/ChbsOOb,IMG_2647.png–IMG_2656.png
+8,2026-10-17,Algeciras,Hércules,pases_profundidad,0,1,https://www.sofascore.com/es/football/match/algeciras-cf-hercules-cf/ChbsOOb,IMG_2647.png–IMG_2656.png
+8,2026-10-17,Algeciras,Hércules,faltas_recibidas_ultimo_tercio,0,3,https://www.sofascore.com/es/football/match/algeciras-cf-hercules-cf/ChbsOOb,IMG_2647.png–IMG_2656.png
+8,2026-10-17,Algeciras,Hércules,fueras_juego,2,1,https://www.sofascore.com/es/football/match/algeciras-cf-hercules-cf/ChbsOOb,IMG_2647.png–IMG_2656.png
+8,2026-10-17,Algeciras,Hércules,pases_buenos,368,329,https://www.sofascore.com/es/football/match/algeciras-cf-hercules-cf/ChbsOOb,IMG_2647.png–IMG_2656.png
+8,2026-10-17,Algeciras,Hércules,saques_banda,17,18,https://www.sofascore.com/es/football/match/algeciras-cf-hercules-cf/ChbsOOb,IMG_2647.png–IMG_2656.png
+8,2026-10-17,Algeciras,Hércules,pases_ultimo_tercio,72,45,https://www.sofascore.com/es/football/match/algeciras-cf-hercules-cf/ChbsOOb,IMG_2647.png–IMG_2656.png
