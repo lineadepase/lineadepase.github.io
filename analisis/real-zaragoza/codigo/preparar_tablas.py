@@ -185,6 +185,8 @@ TABLAS = {
             "goles_contra": "Goles del rival.",
             "xg": "Goles esperados (xG) según Sofascore. Vacío si Sofascore no lo da.",
             "xg_rival": "Lo mismo, del rival.",
+            "fuente_xg": "URL específica del xG; puede diferir de la fuente del resto de estadísticas.",
+            "nota_xg": "Limitación del proveedor o modelo de los xG complementarios.",
             "ocasiones_claras": "Ocasiones claras (big chances).",
             "ocasiones_claras_rival": "Lo mismo, del rival.",
             "tiros": "Tiros totales.",

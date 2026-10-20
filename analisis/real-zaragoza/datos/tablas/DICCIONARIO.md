@@ -131,6 +131,8 @@ Todos los partidos del grupo 2 con estadísticas de Sofascore. Una fila por equi
 | `goles_contra` | Goles del rival. | Número entero | 3 |
 | `xg` | Goles esperados (xG) según Sofascore. Vacío si Sofascore no lo da. | Número decimal | 1.36 |
 | `xg_rival` | Lo mismo, del rival. | Número decimal | 1.48 |
+| `fuente_xg` | URL específica del xG; puede diferir de la fuente del resto de estadísticas. | Texto | https://www.sofascore.com/api/v1/event/16599360/statistics |
+| `nota_xg` | Limitación del proveedor o modelo de los xG complementarios. | Texto | Fuente complementaria; proveedor/modelo de xG no confirma… |
 | `ocasiones_claras` | Ocasiones claras (big chances). | Número entero | 7 |
 | `ocasiones_claras_rival` | Lo mismo, del rival. | Número entero | 2 |
 | `tiros` | Tiros totales. | Número entero | 21 |
@@ -211,7 +213,7 @@ Resultados del próximo rival esta temporada, para la previa. Archivo: `datos/en
 
 ## incidencias
 
-Diferencias entre fuentes y qué dato me quedo. Es el registro de decisiones del proyecto. Archivo: `datos/entrada/incidencias.csv` (49 filas).
+Diferencias entre fuentes y qué dato me quedo. Es el registro de decisiones del proyecto. Archivo: `datos/entrada/incidencias.csv` (52 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|

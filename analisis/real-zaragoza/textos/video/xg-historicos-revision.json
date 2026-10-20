@@ -1,0 +1,37 @@
+{
+  "revision": "2026-10-20",
+  "recuperados": [
+    {
+      "jornada": 2,
+      "local": "Villarreal B",
+      "visitante": "Algeciras",
+      "xg_local": 0.93,
+      "xg_visitante": 2.07,
+      "fuente_url": "https://scangoal.com/h2h/algeciras-vs-villarreal-b",
+      "contraste_url": "https://scangoal.com/match/gimnastic-vs-algeciras-20260911?lang=hi",
+      "estado": "Recuperado de estadísticas del partido; modelo no identificado",
+      "fecha_revision": "2026-10-20"
+    },
+    {
+      "jornada": 5,
+      "local": "Gimnàstic",
+      "visitante": "Sant Andreu",
+      "xg_local": 0.52,
+      "xg_visitante": 2.19,
+      "fuente_url": "https://nb-bet.com/en/Events/1624476-himnastik-sant-andryu-prognoz-na-match",
+      "contraste_url": "https://scangoal.com/match/ue-sant-andreu-vs-antequera-20261004?lang=fr",
+      "estado": "Recuperado de estadísticas del partido; modelo no identificado",
+      "fecha_revision": "2026-10-20"
+    }
+  ],
+  "pendiente": {
+    "partido": "SD Huesca–Sant Andreu, J1, 29-08-2026",
+    "estado": "Sin xG fiable confirmado",
+    "fuentes_comprobadas": [
+      "https://www.fotmob.com/matches/sant-andreu-vs-sd-huesca/2jfq1kw",
+      "https://scangoal.com/match/ue-sant-andreu-vs-antequera-20261004?lang=fr",
+      "https://atleticostats.com/matches/6a968dc0fbb7aeda6a30ffc2"
+    ],
+    "motivo": "FotMob no muestra estadísticas del encuentro y ScanGoal muestra xG vacío. Atlético Stats muestra posesiones que no suman 100 % y cero tiros a puerta del equipo que marcó: no se usa su xG. OddsGPT ofrece predicciones previas al partido, no xG de los remates."
+  }
+}

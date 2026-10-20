@@ -66,6 +66,8 @@ grupo2_partidos;goles_favor;Goles del equipo.;Número entero;1
 grupo2_partidos;goles_contra;Goles del rival.;Número entero;3
 grupo2_partidos;xg;Goles esperados (xG) según Sofascore. Vacío si Sofascore no lo da.;Número decimal;1.36
 grupo2_partidos;xg_rival;Lo mismo, del rival.;Número decimal;1.48
+grupo2_partidos;fuente_xg;"URL específica del xG; puede diferir de la fuente del resto de estadísticas.";Texto;https://www.sofascore.com/api/v1/event/16599360/statistics
+grupo2_partidos;nota_xg;Limitación del proveedor o modelo de los xG complementarios.;Texto;"Fuente complementaria; proveedor/modelo de xG no confirma…"
 grupo2_partidos;ocasiones_claras;Ocasiones claras (big chances).;Número entero;7
 grupo2_partidos;ocasiones_claras_rival;Lo mismo, del rival.;Número entero;2
 grupo2_partidos;tiros;Tiros totales.;Número entero;21

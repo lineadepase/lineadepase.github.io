@@ -32,8 +32,9 @@ Puntos esperados (xPts):
     3 · P(ganar) + 1 · P(empatar). Es una aproximación sencilla y conocida:
     ignora que los goles de un partido no son del todo independientes, pero
     sirve para ver qué equipos van por encima o por debajo de lo que generan.
-    Sofascore no tiene el xG de tres partidos; en esos uso los puntos reales,
-    así que no suman ni restan en la comparación.
+    Queda un partido sin xG fiable; en ese uso los puntos reales,
+    así que no suma ni resta en la comparación. Dos encuentros usan fuentes
+    complementarias, identificadas por separado en el CSV y en el método.
 """
 
 import html
@@ -278,7 +279,8 @@ def solapes(t, cx, cy, eje_y_invertido=False):
     if cx == "posesion" and cy == "xg_pp":
         mover.update({"CE Europa": (-6, 10, "right"),
                       "Real Jaén": (-6, -10, "right"),
-                      "Juventud Torremolinos CF": (6, 10, "left"),
+                      "Juventud Torremolinos CF": (6, -8, "left"),
+                      "Sant Andreu": (6, -4, "left"),
                       "SD Huesca": (6, -12, "left")})
     return mover
 
@@ -363,7 +365,7 @@ def eficacia(t):
             lbl.set_fontweight("bold")
     fig.suptitle("¿Quién rinde por encima de lo que generan sus ocasiones?", x=0.02, ha="left",
                  fontweight="bold", fontsize=13)
-    fig.text(0.02, -0.01, "Positivo: mejor de lo esperado. Solo partidos con xG en Sofascore.", fontsize=8.5,
+    fig.text(0.02, -0.01, "Positivo: mejor de lo esperado. Solo partidos con xG; dos usan fuentes complementarias.", fontsize=8.5,
              color=TINTA_SUAVE)
     fig.tight_layout()
     guardar(fig, "eficacia.png")
@@ -502,7 +504,7 @@ def escribir_pagina(t, jornada):
     import paginas_partidos as pp                      # reutilizo la plantilla y las pestañas
     texto_ruta = TEXTOS / "grupo2.html"
     analisis = texto_ruta.read_text(encoding="utf-8") if texto_ruta.exists() else ""
-    figura = lambda archivo, alt, pie: (f'<figure class="figura"><img src="graficos/grupo2/{archivo}?v=j{jornada}" alt="{alt}" '
+    figura = lambda archivo, alt, pie: (f'<figure class="figura"><img src="graficos/grupo2/{archivo}?v=j{jornada}-xg79" alt="{alt}" '
                                         f'loading="lazy"><figcaption>{pie}</figcaption></figure>')
     jornada_actual, actualidad = actualidad_html()
     cuerpo = f"""<main class="envoltorio">
@@ -535,9 +537,9 @@ def escribir_pagina(t, jornada):
   <section class="seccion lectura" id="metodo-grupo" aria-labelledby="t-metodo-grupo">
     <p class="etiqueta">Cómo está hecho</p><h2 id="t-metodo-grupo">Método y límites</h2>
     <ul>
-      <li>Datos de Sofascore de los {int(t.pj.sum() / 2)} partidos jugados del grupo; la J8 está contrastada con capturas y texto aportados por el usuario. Tabla completa: en <a href="../../analisis/real-zaragoza/datos/entrada/grupo2_partidos.csv">grupo2_partidos.csv</a> (una fila por equipo y partido).</li>
+      <li>Base de Sofascore de los {int(t.pj.sum() / 2)} partidos jugados del grupo, con dos xG recuperados de fuentes complementarias; la J8 está contrastada con capturas y texto aportados por el usuario. Tabla completa: en <a href="../../analisis/real-zaragoza/datos/entrada/grupo2_partidos.csv">grupo2_partidos.csv</a> (una fila por equipo y partido).</li>
       <li>Los puntos esperados suponen que los goles de cada equipo siguen una distribución de Poisson con media igual a su xG. Es una aproximación: no tiene en cuenta el marcador ni cómo cambia un partido después de un gol.</li>
-      <li>Falta el xG de tres partidos antiguos: Huesca–Sant Andreu (J1), Villarreal B–Algeciras (J2) y Gimnàstic–Sant Andreu (J5). Hay xG en 77 de los 80 encuentros. En los tres sin xG cuento los puntos reales como esperados; no entran en las medias de xG. La columna PJ xG indica la cobertura de cada equipo.</li>
+      <li>Hay xG en 79 de los 80 encuentros: 77 de Sofascore y dos de fuentes complementarias. Villarreal B–Algeciras (J2): 0,93–2,07, publicado por <a href="https://scangoal.com/h2h/algeciras-vs-villarreal-b">ScanGoal</a>. Gimnàstic–Sant Andreu (J5): 0,52–2,19, publicado por <a href="https://nb-bet.com/en/Events/1624476-himnastik-sant-andryu-prognoz-na-match">nb-bet</a> y coincidente en ScanGoal. No se ha confirmado el proveedor ni el modelo de estos dos xG: la serie combinada puede tener diferencias metodológicas. Las columnas fuente_xg y nota_xg identifican su procedencia; se conserva la <a href="../../analisis/real-zaragoza/datos/salida/grupo2_equipos_solo_sofascore.csv">tabla calculada solo con Sofascore</a> para comparar. Huesca–Sant Andreu (J1) sigue sin xG fiable: sus puntos reales se usan como esperados y se excluye de las medias de xG. PJ xG indica la cobertura de cada equipo.</li>
       <li>Con {jornada} jornadas, una racha buena o mala de cara a puerta pesa mucho. Estas cifras describen lo que ha pasado; no predicen la clasificación final.</li>
       <li>La tabla ordena los empates por diferencia de goles. El reglamento usa antes el enfrentamiento directo, así que algún puesto puede no coincidir con la clasificación oficial.</li>
     </ul>
@@ -546,7 +548,7 @@ def escribir_pagina(t, jornada):
 </main>"""
     (CARPETA_PAGINAS / "grupo-2.html").write_text(
         pp.pagina(f"Grupo 2 de Primera Federación: resultados J{jornada_actual} y datos avanzados J{jornada}",
-                  "Los 20 equipos del grupo 2 de Primera Federación con xG, puntos esperados, tiros y posesión de Sofascore.",
+                  "Los 20 equipos del grupo 2 de Primera Federación con xG, puntos esperados, tiros y posesión, con fuentes y cobertura documentadas.",
                   cuerpo), encoding="utf-8")
 
 

@@ -210,6 +210,7 @@ def generar(ruta, partidos, goles, jugadores, clasificacion, sede, incidencias, 
     <h2>Cómo está hecho</h2>
     <p>Los datos de cada partido los copio a mano de las fichas públicas. Un script de Python los cruza entre sí (goles con marcadores, cambios con alineaciones, tarjetas con estadísticas y clasificación con resultados) y no genera nada si algo no cuadra. Después calcula las tablas, dibuja los gráficos y monta esta página. Un segundo script en R repite los cálculos principales para comprobar que salen igual.</p>
     <div class="enlaces">
+      <a class="boton" href="../../analisis/real-zaragoza/datos/tableau/Real_Zaragoza_extracciones.twbx" download>Descargar Tableau · J8</a>
       <a class="boton lleno" href="https://github.com/lineadepase/lineadepase.github.io/tree/main/analisis/real-zaragoza" rel="noopener" target="_blank">Código y datos en GitHub</a>
       <a class="boton" href="index.html">Volver al panel</a>
     </div>
