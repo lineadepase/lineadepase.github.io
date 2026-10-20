@@ -1,0 +1,199 @@
+{
+  "jornada": 8,
+  "evento_sofascore": 16599937,
+  "fecha": "2026-10-18",
+  "local": "Real Madrid Castilla",
+  "visitante": "Antequera",
+  "goles_local": 3,
+  "goles_visitante": 2,
+  "fuente_url": "https://www.sofascore.com/es-la/football/match/antequera-real-madrid-castilla-u21/ubcsyLj#id:16599937,tab:statistics",
+  "revisado": "2026-10-20",
+  "metodo": "Transcripción del texto íntegro de Estadísticas / Todos copiado por el usuario de Sofascore el 20/10/2026 a las 14:27 Europe/Madrid. Valores local, visitante.",
+  "contexto": [
+    "Gol en propia puerta de Jorge Cestero (Castilla) a favor del Antequera en el minuto 40.",
+    "Expulsión de I. P. Cuevas (Antequera) en el minuto 57; confirmación en el 59.",
+    "Los goles en propia puerta pueden impedir la igualdad tiros a puerta = goles + paradas. Se mantienen los agregados del proveedor sin corregirlos."
+  ],
+  "metricas": {
+    "posesion_pct": [
+      60,
+      40
+    ],
+    "xg": [
+      3.02,
+      0.64
+    ],
+    "ocasiones_claras": [
+      4,
+      1
+    ],
+    "tiros": [
+      17,
+      11
+    ],
+    "paradas": [
+      2,
+      5
+    ],
+    "corners": [
+      2,
+      5
+    ],
+    "faltas": [
+      11,
+      17
+    ],
+    "pases": [
+      555,
+      358
+    ],
+    "entradas": [
+      14,
+      23
+    ],
+    "tiros_libres": [
+      17,
+      11
+    ],
+    "amarillas": [
+      2,
+      4
+    ],
+    "rojas": [
+      0,
+      1
+    ],
+    "tiros_a_puerta": [
+      8,
+      3
+    ],
+    "xgot": [
+      2.84,
+      0.71
+    ],
+    "tiros_al_palo": [
+      0,
+      1
+    ],
+    "tiros_fuera": [
+      3,
+      4
+    ],
+    "tiros_bloqueados": [
+      6,
+      4
+    ],
+    "tiros_dentro_area": [
+      12,
+      6
+    ],
+    "tiros_fuera_area": [
+      5,
+      5
+    ],
+    "ocasiones_claras_marcadas": [
+      2,
+      0
+    ],
+    "ocasiones_claras_falladas": [
+      2,
+      1
+    ],
+    "pases_profundidad": [
+      1,
+      0
+    ],
+    "faltas_recibidas_ultimo_tercio": [
+      5,
+      1
+    ],
+    "fueras_juego": [
+      0,
+      1
+    ],
+    "duelos_ganados_pct": [
+      51,
+      49
+    ],
+    "desposeido": [
+      18,
+      9
+    ],
+    "duelos_suelo_ok": [
+      40,
+      39
+    ],
+    "duelos_suelo_total": [
+      79,
+      79
+    ],
+    "duelos_aereos_ok": [
+      3,
+      3
+    ],
+    "duelos_aereos_total": [
+      6,
+      6
+    ],
+    "regates_ok": [
+      9,
+      6
+    ],
+    "regates_total": [
+      14,
+      11
+    ],
+    "pases_buenos": [
+      496,
+      301
+    ],
+    "saques_banda": [
+      17,
+      13
+    ],
+    "pases_ultimo_tercio": [
+      66,
+      42
+    ],
+    "balones_largos_ok": [
+      31,
+      16
+    ],
+    "balones_largos_total": [
+      59,
+      44
+    ],
+    "centros_ok": [
+      1,
+      4
+    ],
+    "centros_total": [
+      4,
+      12
+    ],
+    "entradas_ganadas_pct": [
+      71,
+      57
+    ],
+    "intercepciones": [
+      7,
+      6
+    ],
+    "recuperaciones": [
+      44,
+      43
+    ],
+    "despejes": [
+      9,
+      22
+    ],
+    "goles_evitados": [
+      -1.29,
+      -0.16
+    ],
+    "saques_meta": [
+      8,
+      8
+    ]
+  }
+}
