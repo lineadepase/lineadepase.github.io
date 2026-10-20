@@ -32,8 +32,8 @@ Puntos esperados (xPts):
     3 · P(ganar) + 1 · P(empatar). Es una aproximación sencilla y conocida:
     ignora que los goles de un partido no son del todo independientes, pero
     sirve para ver qué equipos van por encima o por debajo de lo que generan.
-    Queda un partido sin xG fiable; en ese uso los puntos reales,
-    así que no suma ni resta en la comparación. Dos encuentros usan fuentes
+    Los encuentros sin xG se excluyen de xPts y de su comparación con puntos
+    reales: ambas magnitudes usan los mismos partidos. Dos encuentros usan fuentes
     complementarias, identificadas por separado en el CSV y en el método.
 """
 
@@ -146,8 +146,8 @@ def cargar():
     p = pd.read_csv(ENTRADA / "grupo2_partidos.csv", encoding="utf-8-sig")
     p["puntos"] = np.select([p.goles_favor > p.goles_contra, p.goles_favor == p.goles_contra], [3, 1], 0)
     p["con_xg"] = p["xg"].notna() & p["xg_rival"].notna()
-    # apply con axis=1 recorre fila a fila; en los partidos sin xG me quedo con los puntos reales
-    p["xpts"] = p.apply(lambda f: puntos_esperados(f.xg, f.xg_rival) if f.con_xg else f.puntos, axis=1)
+    # Un xG ausente no se sustituye por cero ni por el resultado real.
+    p["xpts"] = p.apply(lambda f: puntos_esperados(f.xg, f.xg_rival) if f.con_xg else np.nan, axis=1)
     return p
 
 
@@ -163,7 +163,7 @@ def tabla_equipos(p):
         puntos=("puntos", "sum"),
         gf=("goles_favor", "sum"),
         gc=("goles_contra", "sum"),
-        xpts=("xpts", "sum"),
+        xpts=("xpts", lambda v: v.sum(min_count=1)),
         tiros=("tiros", "mean"),
         tiros_contra=("tiros_rival", "mean"),
         posesion=("posesion_pct", "mean"),
@@ -171,6 +171,7 @@ def tabla_equipos(p):
     )
     x = con.groupby("equipo").agg(
         pj_xg=("jornada", "size"),
+        puntos_xg=("puntos", "sum"),
         xg=("xg", "sum"),
         xg_contra=("xg_rival", "sum"),
         gf_xg=("goles_favor", "sum"),     # goles en los partidos con xG, para comparar con justicia
@@ -189,7 +190,7 @@ def tabla_equipos(p):
     t["xg_por_tiro"] = t.xg / t.tiros_xg                 # calidad media de cada tiro
     t["xg_por_tiro_contra"] = t.xg_contra / t.tiros_contra_xg
     t["pct_dentro"] = t.dentro / t.tiros_xg * 100        # % de tiros desde dentro del área
-    t["dif_puntos"] = t.puntos - t.xpts                  # puntos por encima (+) o por debajo (−) de lo esperado
+    t["dif_puntos"] = t.puntos_xg - t.xpts                  # puntos por encima (+) o por debajo (−) de lo esperado
     # Orden de la clasificación: puntos, diferencia de goles y goles a favor.
     # (El reglamento usa primero el enfrentamiento directo, pero con siete
     # jornadas casi ningún empate está resuelto así; lo aviso en la página.)
@@ -319,23 +320,23 @@ def puntos_vs_esperados(t):
     for yi, f in zip(y, t.itertuples()):
         zgz = f.equipo == ZARAGOZA
         color = AZUL if zgz else GRIS_OSCURO
-        ax.plot([f.xpts, f.puntos], [yi, yi], color=AZUL_CLARO if zgz else GRIS, lw=3, zorder=1)
+        ax.plot([f.xpts, f.puntos_xg], [yi, yi], color=AZUL_CLARO if zgz else GRIS, lw=3, zorder=1)
         ax.scatter(f.xpts, yi, s=55, facecolor="white", edgecolor=color, lw=1.8, zorder=3)
         if zgz:
-            ax.plot(f.puntos, yi, marker="o", markersize=10, fillstyle="left", markerfacecolor=AZUL,
+            ax.plot(f.puntos_xg, yi, marker="o", markersize=10, fillstyle="left", markerfacecolor=AZUL,
                     markerfacecoloralt="white", markeredgecolor=AZUL, ls="", zorder=4)
         else:
-            ax.scatter(f.puntos, yi, s=55, color=color, zorder=3)
-    ax.set_yticks(y, [corto(n) for n in t.equipo])
+            ax.scatter(f.puntos_xg, yi, s=55, color=color, zorder=3)
+    ax.set_yticks(y, [corto(f.equipo) + (f" ({f.pj_xg}/{f.pj})" if f.pj_xg < f.pj else "") for f in t.itertuples()])
     for lbl in ax.get_yticklabels():
         if lbl.get_text() == corto(ZARAGOZA):
             lbl.set_color(AZUL)
             lbl.set_fontweight("bold")
     ax.set_xlabel("Puntos")
     ax.scatter([], [], s=55, facecolor="white", edgecolor=GRIS_OSCURO, label="Puntos esperados (xPts)")
-    ax.scatter([], [], s=55, color=GRIS_OSCURO, label="Puntos reales")
+    ax.scatter([], [], s=55, color=GRIS_OSCURO, label="Puntos reales en partidos con xG")
     ax.legend(loc="lower right")
-    ax.set_title("Puntos reales frente a puntos esperados")
+    ax.set_title("Puntos reales y esperados · solo partidos con xG")
     guardar(fig, "puntos_esperados.png")
 
 
@@ -458,15 +459,15 @@ def tabla_html(t):
         clase = ' class="propio"' if f.equipo == ZARAGOZA else ""
         filas.append(
             f"<tr{clase}><td class=\"n\">{f.posicion}</td><th scope=\"row\">{e(f.equipo)}</th>"
-            f"<td class=\"n\">{f.pj}</td><td class=\"n\"><b>{f.puntos}</b></td><td class=\"n\">{numero(f.xpts, 1)}</td>"
+            f"<td class=\"n\">{f.pj}</td><td class=\"n\"><b>{f.puntos}</b></td><td class=\"n\">{f.puntos_xg}</td><td class=\"n\">{numero(f.xpts, 1)}</td>"
             f"<td class=\"n\">{con_signo(f.dif_puntos, 1)}</td>"
             f"<td class=\"n\">{f.gf}–{f.gc}</td><td class=\"n\">{f.pj_xg}/{f.pj}</td><td class=\"n\">{numero(f.xg, 1)}–{numero(f.xg_contra, 1)}</td>"
             f"<td class=\"n\">{con_signo(f.xg_dif_pp)}</td>"
             f"<td class=\"n\">{numero(f.tiros, 1)}</td><td class=\"n\">{numero(f.xg_por_tiro)}</td>"
             f"<td class=\"n\">{numero(f.posesion, 0)} %</td></tr>")
     return f"""<div class="tarjeta tabla" tabindex="0" role="region" aria-label="Tabla del grupo 2, desplazable"><table class="tabla-grupo">
-      <thead><tr><th class="n">#</th><th>Equipo</th><th class="n">PJ</th><th class="n">Pts</th><th class="n" title="Puntos esperados según el xG">xPts</th>
-      <th class="n" title="Puntos reales menos puntos esperados">Dif.</th><th class="n">Goles</th><th class="n" title="Partidos con xG sobre partidos jugados">PJ xG</th><th class="n">xG</th>
+      <thead><tr><th class="n">#</th><th>Equipo</th><th class="n">PJ</th><th class="n">Pts</th><th class="n" title="Puntos reales solo en encuentros con xG">Pts con xG</th><th class="n" title="Puntos esperados solo en encuentros con xG">xPts</th>
+      <th class="n" title="Puntos reales menos esperados, solo en los mismos partidos con xG">Dif.</th><th class="n">Goles</th><th class="n" title="Partidos con xG sobre partidos jugados">PJ xG</th><th class="n">xG</th>
       <th class="n" title="xG a favor menos xG en contra, por partido">xG dif./PJ</th><th class="n">Tiros/PJ</th>
       <th class="n">xG/tiro</th><th class="n">Posesión</th></tr></thead>
       <tbody>{"".join(filas)}</tbody></table></div>"""
@@ -504,7 +505,7 @@ def escribir_pagina(t, jornada):
     import paginas_partidos as pp                      # reutilizo la plantilla y las pestañas
     texto_ruta = TEXTOS / "grupo2.html"
     analisis = texto_ruta.read_text(encoding="utf-8") if texto_ruta.exists() else ""
-    figura = lambda archivo, alt, pie: (f'<figure class="figura"><img src="graficos/grupo2/{archivo}?v=j{jornada}-xg79" alt="{alt}" '
+    figura = lambda archivo, alt, pie: (f'<figure class="figura"><img src="graficos/grupo2/{archivo}?v=j{jornada}-xg79-cobertura" alt="{alt}" '
                                         f'loading="lazy"><figcaption>{pie}</figcaption></figure>')
     jornada_actual, actualidad = actualidad_html()
     cuerpo = f"""<main class="envoltorio">
@@ -522,13 +523,13 @@ def escribir_pagina(t, jornada):
   </section>
   <section class="seccion" aria-labelledby="t-tabla">
     <p class="etiqueta">Clasificación ampliada</p><h2 id="t-tabla">La tabla, con xG · J{jornada}</h2>
-    <p class="nota">Ordenada por puntos, diferencia de goles y goles a favor. PJ xG: encuentros con xG sobre partidos jugados. Los goles esperados totales y su diferencia se calculan solo en partidos con dato. xPts: puntos esperados según el xG de cada partido. Dif.: puntos reales menos esperados.</p>
+    <p class="nota">Ordenada por puntos, diferencia de goles y goles a favor. PJ xG: encuentros con xG sobre partidos jugados. Los goles esperados totales y su diferencia se calculan solo en partidos con dato. Pts: puntos de toda la liga. Pts con xG y xPts: puntos reales y esperados solo en los encuentros con xG. Dif.: resta de estas dos últimas columnas; no incluye partidos sin dato.</p>
     {tabla_html(t)}
   </section>
   <section class="seccion lectura" aria-labelledby="t-graficos">
     <p class="etiqueta">Gráficos</p><h2 id="t-graficos">El grupo, en seis gráficos · J{jornada}</h2>
     {figura("dominio.png", "Dispersión de xG a favor y en contra por partido de los 20 equipos", "Cada punto es un equipo. Arriba a la derecha, los que generan mucho y conceden poco. Las líneas discontinuas son la media del grupo.")}
-    {figura("puntos_esperados.png", "Puntos reales y puntos esperados de cada equipo", "Círculo hueco: puntos esperados. Círculo lleno: puntos reales. La línea mide la distancia entre los dos.")}
+    {figura("puntos_esperados.png", "Puntos reales y puntos esperados de cada equipo", "Círculo hueco: puntos esperados. Círculo lleno: puntos reales de los mismos encuentros con xG. Los equipos con cobertura incompleta indican sus partidos entre paréntesis; sus totales no representan toda la temporada.")}
     {figura("eficacia.png", "Goles marcados menos xG y xG en contra menos goles encajados por equipo", "Izquierda: acierto de cara a puerta. Derecha: acierto del portero y la defensa. Positivo, mejor de lo esperado.")}
     {figura("evolucion_xg.png", "Diferencia de xG acumulada por jornada de los equipos de arriba", "El Zaragoza y los cinco primeros de la tabla; el resto, en gris.")}
     {figura("tiros_calidad.png", "Tiros por partido y xG por tiro de cada equipo", "Volumen (eje horizontal) frente a calidad media de cada tiro (eje vertical).")}
@@ -539,7 +540,7 @@ def escribir_pagina(t, jornada):
     <ul>
       <li>Base de Sofascore de los {int(t.pj.sum() / 2)} partidos jugados del grupo, con dos xG recuperados de fuentes complementarias; la J8 está contrastada con capturas y texto aportados por el usuario. Tabla completa: en <a href="../../analisis/real-zaragoza/datos/entrada/grupo2_partidos.csv">grupo2_partidos.csv</a> (una fila por equipo y partido).</li>
       <li>Los puntos esperados suponen que los goles de cada equipo siguen una distribución de Poisson con media igual a su xG. Es una aproximación: no tiene en cuenta el marcador ni cómo cambia un partido después de un gol.</li>
-      <li>Hay xG en 79 de los 80 encuentros: 77 de Sofascore y dos de fuentes complementarias. Villarreal B–Algeciras (J2): 0,93–2,07, publicado por <a href="https://scangoal.com/h2h/algeciras-vs-villarreal-b">ScanGoal</a>. Gimnàstic–Sant Andreu (J5): 0,52–2,19, publicado por <a href="https://nb-bet.com/en/Events/1624476-himnastik-sant-andryu-prognoz-na-match">nb-bet</a> y coincidente en ScanGoal. No se ha confirmado el proveedor ni el modelo de estos dos xG: la serie combinada puede tener diferencias metodológicas. Las columnas fuente_xg y nota_xg identifican su procedencia; se conserva la <a href="../../analisis/real-zaragoza/datos/salida/grupo2_equipos_solo_sofascore.csv">tabla calculada solo con Sofascore</a> para comparar. Huesca–Sant Andreu (J1) sigue sin xG fiable: sus puntos reales se usan como esperados y se excluye de las medias de xG. PJ xG indica la cobertura de cada equipo.</li>
+      <li>Hay xG en 79 de los 80 encuentros: 77 de Sofascore y dos de fuentes complementarias. Villarreal B–Algeciras (J2): 0,93–2,07, publicado por <a href="https://scangoal.com/h2h/algeciras-vs-villarreal-b">ScanGoal</a>. Gimnàstic–Sant Andreu (J5): 0,52–2,19, publicado por <a href="https://nb-bet.com/en/Events/1624476-himnastik-sant-andryu-prognoz-na-match">nb-bet</a> y coincidente en ScanGoal. No se ha confirmado el proveedor ni el modelo de estos dos xG: la serie combinada puede tener diferencias metodológicas. Las columnas fuente_xg y nota_xg identifican su procedencia; se conserva la <a href="../../analisis/real-zaragoza/datos/salida/grupo2_equipos_solo_sofascore.csv">tabla calculada solo con Sofascore</a> para comparar. Huesca–Sant Andreu (J1) sigue sin xG fiable: se excluye de las medias de xG y de ambos lados de la comparación entre puntos reales y esperados. No se le asigna un xG ni xPts. PJ xG indica la cobertura de cada equipo.</li>
       <li>Con {jornada} jornadas, una racha buena o mala de cara a puerta pesa mucho. Estas cifras describen lo que ha pasado; no predicen la clasificación final.</li>
       <li>La tabla ordena los empates por diferencia de goles. El reglamento usa antes el enfrentamiento directo, así que algún puesto puede no coincidir con la clasificación oficial.</li>
     </ul>
@@ -558,6 +559,13 @@ def main():
     # Guardo la tabla por equipo en UTF-8 con BOM, para que Excel enseñe bien las tildes
     SALIDA.mkdir(parents=True, exist_ok=True)
     t.round(3).to_csv(SALIDA / "grupo2_equipos.csv", index=False, encoding="utf-8-sig")
+    # Una segunda tabla permite consultar solo la cobertura de Sofascore.
+    original = p.copy()
+    extra = original["nota_xg"].fillna("").ne("")
+    original.loc[extra, ["xg", "xg_rival", "xpts"]] = np.nan
+    original.loc[extra, "con_xg"] = False
+    tabla_equipos(original).round(3).to_csv(
+        SALIDA / "grupo2_equipos_solo_sofascore.csv", index=False, encoding="utf-8-sig")
     mapa_dominio(t)
     puntos_vs_esperados(t)
     eficacia(t)

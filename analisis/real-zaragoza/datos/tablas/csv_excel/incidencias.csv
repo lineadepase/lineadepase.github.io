@@ -51,3 +51,4 @@
 1;xG Huesca–Sant Andreu;No se ha localizado xG fiable tras comprobar Sofascore, FotMob, ScanGoal y Atlético Stats;"Se mantiene ausente; no se usan predicciones previas ni cifras inconsistentes. Revisión 20-10-2026."
 0;xG recuperados J2 y J5;Dos partidos sin xG en Sofascore;"Recuperados 0.93–2.07 y 0.52–2.19 de ScanGoal/nb-bet; modelo no identificado. Fuente por fila y tabla solo Sofascore conservadas. Cobertura combinada 79/80."
 8;Tableau;Libro con extracciones hasta J7;"Actualizadas las cuatro extracciones Hyper y el Excel interno a J8; 8 partidos, 25 jugadores, 20 equipos y 128 registros de minutos. Publicación en Tableau Public es independiente del archivo."
+1;xPts sin xG;Sustituir el xPts ausente por puntos reales oculta la ausencia y mezcla datos con resultados;"Corregido 20-10-2026: xPts queda ausente. Se comparan solo puntos reales y esperados de los mismos partidos con xG; cobertura 7/8 para Huesca y Sant Andreu."
