@@ -104,7 +104,7 @@ Otras estadísticas de partido de fuentes públicas, en formato largo (una métr
 
 ## sofascore
 
-Estadísticas de Sofascore de cada partido, xG incluido, en formato largo (una métrica por fila). Archivo: `datos/entrada/sofascore.csv` (262 filas).
+Estadísticas de Sofascore de cada partido, xG incluido, en formato largo (una métrica por fila). Archivo: `datos/entrada/sofascore.csv` (303 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|
