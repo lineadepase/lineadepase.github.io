@@ -1,0 +1,193 @@
+{
+  "jornada": 8,
+  "evento_sofascore": 16599940,
+  "fecha": "2026-10-18",
+  "local": "Sant Andreu",
+  "visitante": "Juventud Torremolinos CF",
+  "goles_local": 2,
+  "goles_visitante": 2,
+  "fuente_url": "https://www.sofascore.com/es-la/football/match/juventud-torremolinos-cf-ue-sant-andreu-u19/nMjshtfc#id:16599940,tab:statistics",
+  "revisado": "2026-10-20",
+  "metodo": "Transcripción del texto íntegro de Estadísticas / Todos copiado por el usuario de Sofascore el 20/10/2026 a las 14:40 Europe/Madrid. Valores local, visitante. No se infieren tarjetas rojas: no figuran en el texto.",
+  "contexto": [
+    "El segundo gol del Torremolinos fue un penalti de Cristian Rodríguez en el minuto 88. El xG total incluye ese penalti."
+  ],
+  "metricas": {
+    "posesion_pct": [
+      51,
+      49
+    ],
+    "xg": [
+      2.96,
+      1.96
+    ],
+    "ocasiones_claras": [
+      6,
+      3
+    ],
+    "tiros": [
+      25,
+      9
+    ],
+    "paradas": [
+      4,
+      9
+    ],
+    "corners": [
+      4,
+      4
+    ],
+    "faltas": [
+      8,
+      11
+    ],
+    "pases": [
+      444,
+      424
+    ],
+    "entradas": [
+      15,
+      25
+    ],
+    "tiros_libres": [
+      11,
+      7
+    ],
+    "amarillas": [
+      2,
+      1
+    ],
+    "tiros_a_puerta": [
+      11,
+      6
+    ],
+    "xgot": [
+      2.87,
+      2.16
+    ],
+    "tiros_al_palo": [
+      1,
+      0
+    ],
+    "tiros_fuera": [
+      9,
+      3
+    ],
+    "tiros_bloqueados": [
+      5,
+      0
+    ],
+    "tiros_dentro_area": [
+      19,
+      6
+    ],
+    "tiros_fuera_area": [
+      6,
+      3
+    ],
+    "ocasiones_claras_marcadas": [
+      2,
+      2
+    ],
+    "ocasiones_claras_falladas": [
+      4,
+      1
+    ],
+    "pases_profundidad": [
+      1,
+      0
+    ],
+    "faltas_recibidas_ultimo_tercio": [
+      0,
+      4
+    ],
+    "fueras_juego": [
+      2,
+      1
+    ],
+    "duelos_ganados_pct": [
+      50,
+      50
+    ],
+    "desposeido": [
+      9,
+      9
+    ],
+    "duelos_suelo_ok": [
+      35,
+      33
+    ],
+    "duelos_suelo_total": [
+      68,
+      68
+    ],
+    "duelos_aereos_ok": [
+      16,
+      17
+    ],
+    "duelos_aereos_total": [
+      33,
+      33
+    ],
+    "regates_ok": [
+      9,
+      1
+    ],
+    "regates_total": [
+      25,
+      7
+    ],
+    "pases_buenos": [
+      351,
+      304
+    ],
+    "saques_banda": [
+      24,
+      28
+    ],
+    "pases_ultimo_tercio": [
+      64,
+      79
+    ],
+    "balones_largos_ok": [
+      48,
+      14
+    ],
+    "balones_largos_total": [
+      86,
+      61
+    ],
+    "centros_ok": [
+      7,
+      11
+    ],
+    "centros_total": [
+      15,
+      26
+    ],
+    "entradas_ganadas_pct": [
+      60,
+      56
+    ],
+    "intercepciones": [
+      14,
+      17
+    ],
+    "recuperaciones": [
+      49,
+      48
+    ],
+    "despejes": [
+      30,
+      19
+    ],
+    "goles_evitados": [
+      0.16,
+      0.87
+    ],
+    "saques_meta": [
+      10,
+      10
+    ]
+  }
+}
