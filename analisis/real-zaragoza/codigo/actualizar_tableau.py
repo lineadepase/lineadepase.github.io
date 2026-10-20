@@ -85,7 +85,8 @@ def actualizar(plantilla, destino):
                     evento.set('rows-inserted', str(len(tabla)))
                     evento.set('timestamp-start', ahora)
                 for conexion_excel in fuente.findall("./connection/named-connections/named-connection/connection"):
-                    conexion_excel.set('dbname', libro_excel.relative_to(carpeta).as_posix())
+                    conexion_excel.attrib.pop('dbname', None)
+                    conexion_excel.set('filename', libro_excel.relative_to(carpeta).as_posix())
                 from openpyxl.utils import get_column_letter
                 rango = f'A1:{get_column_letter(len(tabla.columns))}{len(tabla)+1}'
                 for nodo in fuente.findall('.//columns[@gridOrigin]'):
