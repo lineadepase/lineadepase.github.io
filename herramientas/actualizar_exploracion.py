@@ -35,6 +35,9 @@ def generate():
     generate_comparator(page)
     generate_selection(page)
     generate_news(page)
+    from entregas import generate_tools, generate_delivery
+    generate_tools(page)
+    generate_delivery(page)
     from segunda_edicion import generate_map, generate_home
     generate_map(page)
     generate_home()
@@ -70,6 +73,7 @@ def generate():
     (ROOT / 'archivo').mkdir(exist_ok=True)
     (ROOT / 'archivo/index.html').write_text(page('Archivo de análisis', 'Busca por temporada, rival o tema y vuelve a los partidos y proyectos que te interesan.', controls + cards), encoding='utf-8')
     concepts = [
+        ('xt', 'Amenaza esperada (xT)', 'Asigna un valor a cada zona del campo y mide cómo cambia ese valor cuando un pase o una conducción mueve el balón entre zonas.', 'Si una acción completada pasa de una zona con valor 0,02 a otra con 0,08, añade 0,06 xT en ese modelo. Es un ejemplo ilustrativo, no un dato de partido. La investigación de Liga F valora acciones completadas; no mide por sí sola la calidad global de una jugadora ni ajusta el contexto de su equipo.', '../proyectos/liga-f-xt/index.html#metodo', 'Ver el modelo aplicado a la Liga F', 'https://karun.in/blog/expected-threat.html', 'Karun Singh'),
         ('xg', 'Goles esperados (xG)', 'Estiman la probabilidad de que un tiro acabe en gol a partir de sus características. La suma describe la calidad de las ocasiones rematadas.', 'Un tiro de 0,20 xG equivale a una probabilidad estimada del 20 %. No garantiza un gol ni determina quién mereció ganar. Los modelos de distintos proveedores pueden dar valores diferentes.', '../proyectos/xg/index.html', 'Ver xG, sin líos', 'https://www.hudl.com/blog/expected-goals-xg-explained', 'Hudl Statsbomb'),
         ('posesion', 'Posesión y peligro', 'La posesión describe cuánto balón tiene un equipo según el método del proveedor. Para entender su ataque conviene acompañarla de tiros y calidad de las ocasiones.', 'Tener más balón no asegura generar mejores oportunidades. La página del grupo permite comparar estas dimensiones por separado.', '../proyectos/real-zaragoza/grupo-2.html', 'Comparar los equipos del grupo', '', ''),
         ('presion', 'Presión y PPDA', 'El PPDA relaciona los pases del rival con las acciones defensivas en una zona definida del campo. Un valor menor suele asociarse con una presión más intensa.', 'No mide por sí solo la eficacia de la presión. La zona y las acciones que cuentan dependen del proveedor. El seguimiento actual no publica PPDA: el vídeo aporta contexto visual, no una medición de esta métrica.', '../proyectos/real-zaragoza/jornadas.html', 'Consultar las fichas de partido', 'https://dataglossary.wyscout.com/ppda/', 'Wyscout'),
@@ -99,13 +103,20 @@ def enrich(raw, file):
         raw=re.sub(r'<a class="tarjeta-proyecto" href="liga-f-xt/index.html">[\s\S]*?</a>',complete_xt,raw,count=1)
     raw = re.sub(r'<!-- exploracion -->[\s\S]*?<!-- /exploracion -->', '', raw)
     def nav(match):
-        value = re.sub(r'<a[^>]+data-explorar="[^"]+"[^>]*>.*?</a>', '', match[0])
         links = ''
-        for folder, label in [('archivo', 'Archivo'), ('conceptos', 'Conceptos'), ('novedades', 'Novedades')]:
-            current = ' aria-current="page"' if file == ROOT / folder / 'index.html' else ''
-            links += '<a data-explorar="' + folder + '" href="' + relative(folder + '/index.html', file) + '"' + current + '>' + label + '</a>'
-        return value.replace('</nav>', links + '</nav>')
+        # El menú conserva siete entradas; Novedades permanece en el pie.
+        for folder,label in [('', 'Inicio'),('proyectos','Proyectos'),('herramientas','Herramientas'),('videos','Vídeos'),('archivo','Archivo'),('conceptos','Conceptos'),('sobre-mi','Sobre mí')]:
+            target=folder+'/index.html' if folder else 'index.html'
+            current=' aria-current="page"' if file==ROOT/target else ''
+            marker=' data-explorar="'+folder+'"' if folder in ('herramientas','archivo','conceptos') else ''
+            links+='<a'+marker+' href="'+relative(target,file)+'"'+current+'>'+label+'</a>'
+        return re.sub(r'(<nav[^>]*>)[\s\S]*</nav>',lambda m:m[1]+links+'</nav>',match[0])
     raw = re.sub(r'<nav class="nav"[\s\S]*?</nav>', nav, raw)
+    def footer(match):
+        value=re.sub(r'<a[^>]+data-novedades-pie[^>]*>.*?</a>\s*·\s*','',match[0])
+        link='<a data-novedades-pie href="'+relative('novedades/index.html',file)+'">Novedades</a> · '
+        return value.replace('© 2026',link+'© 2026',1)
+    raw=re.sub(r'<footer class="pie">[\s\S]*?</footer>',footer,raw)
     raw = re.sub(r'(assets/explorar\.css\?v=)[^"\s]+',r'\g<1>20261021e',raw)
     stylesheet = '<link rel="stylesheet" href="' + relative('assets/explorar.css', file) + '?v=20261021e">'
     if 'assets/explorar.css' not in raw:
@@ -121,7 +132,7 @@ def enrich(raw, file):
 
 def build():
     generate()
-    for folder in ['proyectos', 'videos', 'sobre-mi', 'archivo', 'conceptos', 'comparador', 'seleccion', 'novedades', 'mapa-grupo']:
+    for folder in ['proyectos', 'videos', 'sobre-mi', 'archivo', 'conceptos', 'comparador', 'seleccion', 'novedades', 'mapa-grupo', 'herramientas', 'tras-la-jornada']:
         for file in (ROOT / folder).rglob('*.html'):
             raw = file.read_text(encoding='utf-8')
             if '<main' in raw:

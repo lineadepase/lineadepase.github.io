@@ -3,7 +3,7 @@
   document.querySelectorAll('.goles-portada').forEach(details=>details.addEventListener('toggle',()=>{if(details.open)window.dispatchEvent(new Event('resize'));}));
   const nav = document.querySelector('.cabecera .nav');
   if (nav) {
-    const narrow = matchMedia('(max-width: 760px)');
+    const narrow = matchMedia('(max-width: 1100px)');
     const button = document.createElement('button');
     button.type='button'; button.className='boton-menu'; button.textContent='Menú';
     nav.id ||= 'navegacion-principal'; button.setAttribute('aria-controls',nav.id); button.setAttribute('aria-expanded','false');
