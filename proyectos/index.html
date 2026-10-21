@@ -58,11 +58,29 @@
   <section class="catalogo" aria-label="Catálogo de proyectos">
     <div class="envoltorio">
       <div class="filtros" role="group" aria-label="Filtrar por tipo de proyecto" hidden>
-        <button type="button" data-filtro="todos" aria-pressed="true">Todos <span>2</span></button>
+        <button type="button" data-filtro="todos" aria-pressed="true">Todos <span>3</span></button>
         <button type="button" data-filtro="temporada" aria-pressed="false">Seguimiento de temporada <span>1</span></button>
         <button type="button" data-filtro="master" aria-pressed="false">Trabajos del máster <span>1</span></button>
+        <button type="button" data-filtro="investigacion" aria-pressed="false">Investigaciones <span>1</span></button>
       </div>
       <ul class="tarjetas-proyecto" id="catalogo">
+        <li data-tipo="investigacion">
+          <a class="tarjeta-proyecto" href="liga-f-xt/index.html">
+            <div class="mini-marco">
+              <div class="mini mini-imagen">
+              <img src="liga-f-xt/graficos/compartir.png" alt="" width="1200" height="630" loading="lazy">
+            </div>
+              <span class="tipo-proyecto">Investigación</span>
+            </div>
+            <div class="tarjeta-texto">
+              <p class="tipo-texto">Investigación</p>
+              <p class="etiqueta">Liga F 2023/24 · StatsBomb Open Data</p>
+              <h2>El peligro empieza antes del último pase</h2>
+              <p>Un modelo propio de amenaza esperada (xT) para medir quién acerca el balón a las zonas de gol con pases y conducciones.</p>
+              <span class="ver">Leer la investigación</span>
+            </div>
+          </a>
+        </li>
         <li data-tipo="temporada">
           <a class="tarjeta-proyecto" href="real-zaragoza/index.html">
             <div class="mini-marco">

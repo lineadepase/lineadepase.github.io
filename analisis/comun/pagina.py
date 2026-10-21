@@ -27,10 +27,25 @@ def escribir_pagina(carpeta, titulo, descripcion, migas, cuerpo, fuentes_pie):
     cabeza = re.sub(r"<title>.*?</title>", f"<title>{titulo} · Línea de pase</title>", cabeza)
     cabeza = re.sub(r'<meta name="description" content=".*?">',
                     f'<meta name="description" content="{descripcion}">', cabeza)
+    # La plantilla puede tener metadatos propios de otro artículo.
+    cabeza = re.sub(r'<!-- SEO:.*?<!-- /SEO -->\s*', '', cabeza, flags=re.S)
+    url = f"https://lineadepase.com/proyectos/{carpeta}/index.html"
+    imagen = f"https://lineadepase.com/proyectos/{carpeta}/graficos/compartir.png"
     # Vista previa al compartir el enlace en redes.
-    cabeza += (f'<meta property="og:title" content="{titulo}">\n'
+    cabeza += (f'<link rel="canonical" href="{url}">\n'
+               '<meta property="og:type" content="article">\n'
+               '<meta property="og:locale" content="es_ES">\n'
+               '<meta property="og:site_name" content="Línea de pase">\n'
+               f'<meta property="og:url" content="{url}">\n'
+               f'<meta property="og:title" content="{titulo}">\n'
                f'<meta property="og:description" content="{descripcion}">\n'
-               f'<meta property="og:image" content="https://lineadepase.github.io/proyectos/{carpeta}/graficos/compartir.png">\n'
+               f'<meta property="og:image" content="{imagen}">\n'
+               '<meta property="og:image:width" content="1200">\n'
+               '<meta property="og:image:height" content="630">\n'
+               '<meta name="twitter:card" content="summary_large_image">\n'
+               f'<meta name="twitter:title" content="{titulo}">\n'
+               f'<meta name="twitter:description" content="{descripcion}">\n'
+               f'<meta name="twitter:image" content="{imagen}">\n'
                '<link rel="stylesheet" href="../../assets/investigacion.css?v=20261016">\n')
     menu = re.search(r'<header class="cabecera">.*?</header>', plantilla, re.S).group(0)
     pie = re.search(r'<footer class="pie">.*?</footer>', plantilla, re.S).group(0)
