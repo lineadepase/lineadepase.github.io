@@ -24,6 +24,10 @@
 .investigacion-con-foto .foto-lectura img{max-height:17rem}
 .lecturas-visuales{gap:2.5rem}
 .lecturas-visuales h2{font-size:1.8rem}
+.lectura-territorio{display:grid;gap:1rem;align-content:start}
+.lectura-territorio .foto-lectura img{max-height:14rem;margin-inline:0}
+.lecturas-visuales>.lectura-video{grid-template-columns:minmax(0,1fr);align-content:start}
+.lecturas-visuales .miniatura-video{max-width:24rem;margin-top:0}
 .lectura-video{display:grid;grid-template-columns:10rem minmax(0,1fr);gap:1rem;align-items:start}
 .miniatura-video{position:relative;display:block;margin-top:.4rem}
 .miniatura-video img{width:100%;height:auto;display:block;border-radius:8px}

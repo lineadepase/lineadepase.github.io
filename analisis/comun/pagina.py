@@ -47,7 +47,7 @@ def escribir_pagina(carpeta, titulo, descripcion, migas, cuerpo, fuentes_pie):
                f'<meta name="twitter:description" content="{descripcion}">\n'
                f'<meta name="twitter:image" content="{imagen}">\n'
                '<link rel="stylesheet" href="../../assets/investigacion.css?v=20261021fotos">\n'
-               '<link rel="stylesheet" href="../../assets/fotografia-editorial.css?v=20261021">\n')
+               '<link rel="stylesheet" href="../../assets/fotografia-editorial.css?v=20261021b">\n')
     menu = re.search(r'<header class="cabecera">.*?</header>', plantilla, re.S).group(0)
     pie = re.search(r'<footer class="pie">.*?</footer>', plantilla, re.S).group(0)
     pie = re.sub(r"<p>Fuentes:.*?</p>", f"<p>{fuentes_pie}</p>", pie, count=1, flags=re.S)
@@ -82,7 +82,7 @@ def escribir_pagina_zaragoza(archivo, titulo, descripcion, migas, cuerpo, fuente
                f'<meta property="og:description" content="{descripcion}">\n'
                f'<meta property="og:image" content="https://lineadepase.github.io/proyectos/real-zaragoza/graficos/simulacion/compartir.png">\n'
                '<link rel="stylesheet" href="../../assets/investigacion.css?v=20261021fotos">\n'
-               '<link rel="stylesheet" href="../../assets/fotografia-editorial.css?v=20261021">\n')
+               '<link rel="stylesheet" href="../../assets/fotografia-editorial.css?v=20261021b">\n')
     menu = re.search(r'<header class="cabecera">.*?</header>', plantilla, re.S).group(0)
     pestanas = re.search(r'<nav class="pestanas".*?</nav>', plantilla, re.S).group(0)
     pie = re.search(r'<footer class="pie">.*?</footer>', plantilla, re.S).group(0)
