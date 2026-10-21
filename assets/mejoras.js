@@ -55,8 +55,14 @@
     origin=button;contenido.replaceChildren();const copy=source.cloneNode(true);
     copy.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));copy.removeAttribute('id');
     if(copy.tagName.toLowerCase()==='svg') {
-      copy.setAttribute('viewBox',`0 0 ${source.getAttribute('width')} ${source.getAttribute('height')}`);
+      // Los gráficos responsivos ya definen su sistema de coordenadas en viewBox.
+      if (!copy.hasAttribute('viewBox')) {
+        const width=source.width.baseVal.value,height=source.height.baseVal.value;
+        if (width>0&&height>0) copy.setAttribute('viewBox',`0 0 ${width} ${height}`);
+      }
       copy.removeAttribute('width');copy.removeAttribute('height');copy.querySelectorAll('[tabindex]').forEach(e=>e.removeAttribute('tabindex'));
+      // La ampliación es una vista de lectura; los filtros siguen en el gráfico original.
+      copy.querySelectorAll('[role="button"]').forEach(e=>e.removeAttribute('role'));
     }
     dialog.querySelector('[data-zoom="menos"]').setAttribute('aria-label','Reducir '+tipo);
     dialog.querySelector('[data-zoom="mas"]').setAttribute('aria-label','Ampliar '+tipo);
