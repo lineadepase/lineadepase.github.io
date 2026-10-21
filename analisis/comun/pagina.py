@@ -46,7 +46,7 @@ def escribir_pagina(carpeta, titulo, descripcion, migas, cuerpo, fuentes_pie):
                f'<meta name="twitter:title" content="{titulo}">\n'
                f'<meta name="twitter:description" content="{descripcion}">\n'
                f'<meta name="twitter:image" content="{imagen}">\n'
-               '<link rel="stylesheet" href="../../assets/investigacion.css?v=20261016">\n')
+               '<link rel="stylesheet" href="../../assets/investigacion.css?v=20261021fotos">\n')
     menu = re.search(r'<header class="cabecera">.*?</header>', plantilla, re.S).group(0)
     pie = re.search(r'<footer class="pie">.*?</footer>', plantilla, re.S).group(0)
     pie = re.sub(r"<p>Fuentes:.*?</p>", f"<p>{fuentes_pie}</p>", pie, count=1, flags=re.S)
@@ -80,7 +80,7 @@ def escribir_pagina_zaragoza(archivo, titulo, descripcion, migas, cuerpo, fuente
     cabeza += (f'<meta property="og:title" content="{titulo}">\n'
                f'<meta property="og:description" content="{descripcion}">\n'
                f'<meta property="og:image" content="https://lineadepase.github.io/proyectos/real-zaragoza/graficos/simulacion/compartir.png">\n'
-               '<link rel="stylesheet" href="../../assets/investigacion.css?v=20261016">\n')
+               '<link rel="stylesheet" href="../../assets/investigacion.css?v=20261021fotos">\n')
     menu = re.search(r'<header class="cabecera">.*?</header>', plantilla, re.S).group(0)
     pestanas = re.search(r'<nav class="pestanas".*?</nav>', plantilla, re.S).group(0)
     pie = re.search(r'<footer class="pie">.*?</footer>', plantilla, re.S).group(0)
@@ -99,9 +99,9 @@ def figura_foto(src, meta):
     licencia enlazada, procedencia y cambios hechos, como piden las licencias
     Creative Commons.
     """
-    return (f'  <figure class="figura foto-cabecera"><img src="{src}" alt="{meta["descripcion"]}" loading="lazy">'
-            f'<figcaption>{meta["descripcion"]}. Foto: {meta["autor"]}, '
-            f'<a href="{meta["licencia_url"]}">{meta["licencia"]}</a>, '
+    return (f'  <figure class="figura foto foto-cabecera"><img src="{src}" alt="{meta["descripcion"]}" loading="lazy">'
+            f'<figcaption>{meta.get("pie", meta["descripcion"])}. Foto: {meta["autor"]} · '
+            f'<a href="{meta["licencia_url"]}">{meta["licencia"]}</a> · '
             f'<a href="{meta["pagina"]}">Wikimedia Commons</a> ({meta["cambios"]}).</figcaption></figure>')
 
 

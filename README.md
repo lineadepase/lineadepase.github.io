@@ -64,6 +64,10 @@ La selección incorpora un perfil breve en inglés. `assets/documentos/` contien
 
 La entrega incluye una imagen PNG propia y texto en tercera persona para copiar. El selector de canal añade parámetros UTM al enlace del análisis; no publica ni envía mensajes. Los parámetros preparan la identificación de procedencia en una herramienta de analítica compatible: Search Console mide la búsqueda de Google, no el conjunto de visitas ni los accesos desde redes. Los datos privados de Search Console no se incorporan a la web pública.
 
+## Fotografías
+
+Las fotografías de los artículos usan `figure.figura.foto` (se conserva también `foto-cabecera`): contenedor de hasta 384 px e imagen de hasta 320 px de alto, sin recortes adicionales. La ampliación se identifica como «Ampliar imagen» y no recibe la descarga de gráficos. Los retratos de firma conservan su tamaño discreto. Los pies incluyen solo identificación y créditos: autor, licencia enlazada, procedencia y modificaciones relevantes, sin dimensiones en píxeles. `analisis/comun/pagina.py` mantiene este formato al regenerar investigaciones; el campo `pie` permite separar el crédito breve de la descripción accesible completa.
+
 ## Google Analytics y consentimiento
 
 Analytics (`G-N6J2L7P4LP`) solo se carga tras aceptar la analítica. `assets/consentimiento.js` implementa el modo básico: antes de aceptar no se descarga gtag.js ni se envían eventos; publicidad denegada. La elección se conserva 180 días y puede cambiarse desde el pie. Al revocar se desactiva la medición, se borran las cookies de Analytics accesibles y se recarga la página. Sin JavaScript no se carga Analytics.

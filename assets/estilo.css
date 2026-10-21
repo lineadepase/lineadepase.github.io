@@ -143,6 +143,9 @@ h3{font-family:var(--f-display);font-weight:700;font-size:1.6rem;line-height:1.1
 .hallazgos .cifra{font-family:var(--f-display);font-weight:800;font-size:2.6rem;line-height:1;color:var(--senal-texto);white-space:nowrap}
 .figura{margin:1.5rem 0;background:var(--panel);border:1px solid var(--linea);border-radius:var(--radio);padding:1rem}
 .figura figcaption{font-size:.85rem;color:var(--tinta-suave);margin-top:.6rem}
+/* Fotografías de artículo: tamaño discreto, separado del de los gráficos. */
+.figura.foto,.figura.foto-cabecera{max-width:24rem;margin:1.5rem auto;padding:.75rem}
+.figura.foto img,.figura.foto-cabecera img{display:block;width:auto;max-width:100%;height:auto;max-height:20rem;object-fit:contain;margin-inline:auto;border-radius:var(--radio)}
 .enlaces{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1rem}
 .aviso{font-size:.92rem;color:var(--tinta-suave);background:var(--panel);border-left:4px solid var(--senal);padding:.8rem 1rem;border-radius:0 var(--radio) var(--radio) 0;max-width:68ch}
 

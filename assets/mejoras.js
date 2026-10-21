@@ -50,7 +50,7 @@
   dialog.querySelector('[data-zoom="mas"]').addEventListener('click',()=>{zoom=Math.min(250,zoom+50);ajustar();});
   dialog.addEventListener('close',()=>{document.body.classList.remove('modal-abierto');origin?.focus();});
   dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();}});
-  function ampliar(source,title,button) {
+  function ampliar(source,title,button,tipo) {
     if (!source) return;
     origin=button;contenido.replaceChildren();const copy=source.cloneNode(true);
     copy.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));copy.removeAttribute('id');
@@ -58,13 +58,16 @@
       copy.setAttribute('viewBox',`0 0 ${source.getAttribute('width')} ${source.getAttribute('height')}`);
       copy.removeAttribute('width');copy.removeAttribute('height');copy.querySelectorAll('[tabindex]').forEach(e=>e.removeAttribute('tabindex'));
     }
+    dialog.querySelector('[data-zoom="menos"]').setAttribute('aria-label','Reducir '+tipo);
+    dialog.querySelector('[data-zoom="mas"]').setAttribute('aria-label','Ampliar '+tipo);
     copy.setAttribute('aria-label',title);contenido.append(copy);dialog.querySelector('h2').textContent=title;zoom=100;ajustar();document.body.classList.add('modal-abierto');dialog.showModal();
   }
   document.querySelectorAll('.grafico,.figura img').forEach(source => {
     const dynamic=source.classList.contains('grafico');const holder=dynamic?source.parentElement:source.closest('figure');
+    const tipo=!dynamic&&holder.matches('.foto,.foto-cabecera,.retrato')?'imagen':'gráfico';
     const title=dynamic?holder.querySelector('h3').textContent:source.alt;
-    const b=document.createElement('button');b.type='button';b.className='ampliar-grafico';b.textContent='Ampliar gráfico';b.setAttribute('aria-label','Ampliar: '+title);
-    b.addEventListener('click',()=>ampliar(dynamic?source.querySelector('svg'):source,title,b));holder.append(b);
+    const b=document.createElement('button');b.type='button';b.className='ampliar-grafico';b.textContent='Ampliar '+tipo;b.setAttribute('aria-label','Ampliar '+tipo+': '+title);
+    b.addEventListener('click',()=>ampliar(dynamic?source.querySelector('svg'):source,title,b,tipo));holder.append(b);
   });
   const corte=document.querySelector('[data-corte]');
   if(corte)fetch('../../datos/zaragoza.json').then(r=>{if(!r.ok)throw Error();return r.json();}).then(d=>{

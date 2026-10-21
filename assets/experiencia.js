@@ -57,7 +57,7 @@
     const timeline=holder.id==='minutos';
     const dynamic=holder.classList.contains('grafico')||timeline;
     const image=dynamic?null:holder.querySelector('img');
-    if(!dynamic&&(!image||/foto|retrato|statsbomb/i.test(image.getAttribute('src')||''))) return;
+    if(!dynamic&&(!image||holder.matches('.foto,.foto-cabecera,.retrato')||/foto|retrato|statsbomb/i.test(image.getAttribute('src')||''))) return;
     const button=document.createElement('button'); button.type='button';button.className='descargar-grafico';button.textContent='Descargar gráfico (PNG)';
     const status=document.createElement('span');status.className='estado-descarga';status.setAttribute('role','status');
     const parent=dynamic&&!timeline?holder.parentElement:holder;
