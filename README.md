@@ -64,6 +64,8 @@ La selección incorpora un perfil breve en inglés. `assets/documentos/` contien
 
 La entrega incluye una imagen PNG propia y texto en tercera persona para copiar. El selector de canal añade parámetros UTM al enlace del análisis; no publica ni envía mensajes. Los parámetros preparan la identificación de procedencia en una herramienta de analítica compatible: Search Console mide la búsqueda de Google, no el conjunto de visitas ni los accesos desde redes. Los datos privados de Search Console no se incorporan a la web pública.
 
-## Google Analytics
+## Google Analytics y consentimiento
 
-Las páginas públicas incluyen la etiqueta `G-N6J2L7P4LP`. El paso `python herramientas/actualizar_seo.py` conserva la etiqueta y la añade a páginas nuevas sin duplicarla, mediante `herramientas/google_analytics.py`. Las páginas de redirección y los fragmentos de análisis quedan excluidos.
+Analytics (`G-N6J2L7P4LP`) solo se carga tras aceptar la analítica. `assets/consentimiento.js` implementa el modo básico: antes de aceptar no se descarga gtag.js ni se envían eventos; publicidad denegada. La elección se conserva 180 días y puede cambiarse desde el pie. Al revocar se desactiva la medición, se borran las cookies de Analytics accesibles y se recarga la página. Sin JavaScript no se carga Analytics.
+
+`herramientas/google_analytics.py` integra el cargador local, estilos y enlaces del pie al ejecutar `python herramientas/actualizar_seo.py`, sin duplicados. Las páginas de redirección y los fragmentos de análisis quedan excluidos. No añadir fragmentos de gtag directos a páginas o plantillas. Antes de publicar se comprueban: primera visita, rechazo, aceptación, persistencia, retirada y sincronización entre pestañas. Cloudflare, vídeos y fuentes externos son independientes de esta elección.

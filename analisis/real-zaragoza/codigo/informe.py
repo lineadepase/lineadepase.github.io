@@ -124,15 +124,10 @@ def generar(ruta, partidos, goles, jugadores, clasificacion, sede, incidencias, 
     html = f"""<!doctype html>
 <html lang="es" class="tema-real-zaragoza">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-N6J2L7P4LP"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){{dataLayer.push(arguments);}}
-  gtag('js', new Date());
-
-  gtag('config', 'G-N6J2L7P4LP');
-</script>
+<!-- Consentimiento de analítica -->
+<link rel="stylesheet" href="/assets/consentimiento.css?v=20261021">
+<script src="/assets/consentimiento.js?v=20261021" defer></script>
+<!-- /Consentimiento de analítica -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Informe completo: Real Zaragoza 2026/27 · Línea de pase</title>

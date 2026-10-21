@@ -1,0 +1,16 @@
+.consentimiento[hidden], [data-preferencias-cookies][hidden]{display:none!important}
+.consentimiento{position:fixed;z-index:1000;inset:auto 1rem 1rem;max-width:68rem;margin:auto;display:flex;gap:1.5rem;align-items:center;padding:1.4rem 1.6rem;border:1px solid var(--linea,#dbe3dc);border-radius:12px;background:var(--panel,#fff);color:var(--tinta,#0f2418);box-shadow:0 8px 40px #0004;font:1rem/1.5 var(--f-texto,Arial,sans-serif);max-height:calc(100dvh - 2rem);overflow:auto}
+.consentimiento h2{font-size:1.3rem;margin:0 0 .4rem;line-height:1.25}
+.consentimiento p{margin:0 0 .5rem}
+.consentimiento a{color:var(--cesped,#1f6b3e);text-decoration:underline}
+.consentimiento-estado:empty{display:none}
+.consentimiento-estado{font-size:.9rem;margin-top:.6rem!important}
+.consentimiento-texto{flex:1;min-width:0}
+.consentimiento-acciones{display:flex;flex-wrap:wrap;gap:.65rem;justify-content:flex-end;flex:0 0 20rem}
+.consentimiento-acciones button{flex:1 1 8rem;font:inherit;font-weight:600;min-height:44px;padding:.7rem 1rem;border:2px solid var(--tinta,#0f2418);border-radius:6px;background:var(--panel,#fff);color:var(--tinta,#0f2418);cursor:pointer}
+.consentimiento-acciones button:hover{background:var(--papel,#f7f9f5)}
+.consentimiento-acciones button:focus-visible,.consentimiento a:focus-visible{outline:3px solid var(--senal,#ff6a2b);outline-offset:3px}
+.consentimiento-acciones button[hidden]{display:none}
+.pie .cookies-enlaces{display:flex;justify-content:center;gap:.7rem;flex-wrap:wrap;font-size:.85rem}
+.pie .cookies-enlaces a,.pie .cookies-enlaces button{font:inherit;color:inherit;text-decoration:underline;background:none;border:0;cursor:pointer;padding:.35rem}
+@media(max-width:760px){.consentimiento{inset:auto .6rem .6rem;padding:1rem;display:block}.consentimiento-acciones{margin-top:1rem;justify-content:stretch}.consentimiento h2{font-size:1.15rem}}

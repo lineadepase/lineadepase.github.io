@@ -109,7 +109,7 @@ def build():
     output = ROOT / 'assets' / 'compartir'
     output.mkdir(parents=True, exist_ok=True)
     files = [ROOT / 'index.html']
-    for folder in ['proyectos', 'sobre-mi', 'videos', 'contacto', 'archivo', 'conceptos', 'comparador', 'seleccion', 'novedades', 'mapa-grupo', 'herramientas', 'tras-la-jornada']:
+    for folder in ['proyectos', 'sobre-mi', 'videos', 'contacto', 'archivo', 'conceptos', 'comparador', 'seleccion', 'novedades', 'mapa-grupo', 'herramientas', 'tras-la-jornada', 'privacidad']:
         files.extend(sorted((ROOT / folder).rglob('*.html')))
     urls = []
     manifest = []

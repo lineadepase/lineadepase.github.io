@@ -1,11 +1,15 @@
-"""Etiqueta de Google Analytics para las páginas públicas de la web."""
+"""Integra el consentimiento básico de Analytics en las páginas públicas."""
+import re
 
-ETIQUETA = '<!-- Google tag (gtag.js) -->\n<script async src="https://www.googletagmanager.com/gtag/js?id=G-N6J2L7P4LP"></script>\n<script>\n  window.dataLayer = window.dataLayer || [];\n  function gtag(){dataLayer.push(arguments);}\n  gtag(\'js\', new Date());\n\n  gtag(\'config\', \'G-N6J2L7P4LP\');\n</script>'
+ETIQUETA = '<!-- Consentimiento de analítica -->\n<link rel="stylesheet" href="/assets/consentimiento.css?v=20261021">\n<script src="/assets/consentimiento.js?v=20261021" defer></script>\n<!-- /Consentimiento de analítica -->'
+PIE = '<!-- Preferencias de cookies -->\n<div class="cookies-enlaces"><a href="/privacidad/index.html">Privacidad y cookies</a><button type="button" data-preferencias-cookies hidden>Preferencias de cookies</button></div>\n<!-- /Preferencias de cookies -->'
 
 
 def incorporar_etiqueta(html):
-    """Añade una sola etiqueta y conserva los finales de línea del HTML."""
-    if "googletagmanager.com/gtag/js" in html:
-        return html
+    """Sustituye la carga directa y mantiene una única integración y pie."""
     salto = "\r\n" if "\r\n" in html else "\n"
-    return html.replace("<head>", "<head>" + salto + ETIQUETA.replace("\n", salto), 1)
+    html = re.sub(r'<!-- Google tag \(gtag\.js\) -->\s*<script\b[^>]*></script>\s*<script>.*?</script>\r?\n?', '', html, flags=re.S)
+    html = re.sub(r'<!-- Consentimiento de analítica -->.*?<!-- /Consentimiento de analítica -->\r?\n?', '', html, flags=re.S)
+    html = re.sub(r'<!-- Preferencias de cookies -->.*?<!-- /Preferencias de cookies -->\r?\n?', '', html, flags=re.S)
+    html = html.replace('<head>', '<head>' + salto + ETIQUETA.replace('\n', salto), 1)
+    return html.replace('</footer>', PIE.replace('\n', salto) + salto + '</footer>', 1)
