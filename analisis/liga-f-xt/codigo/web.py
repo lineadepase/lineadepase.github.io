@@ -62,7 +62,7 @@ def main():
 
     copiar_recursos()
     foto = json.loads((ESTUDIO / "recursos" / "foto.json").read_text(encoding="utf-8"))
-    cuerpo = f"""  <section class="cab-proyecto">
+    cuerpo = f"""  <div class="apertura-con-foto"><section class="cab-proyecto">
     <aside class="aviso-historico" aria-label="Periodo del análisis"><strong>ANÁLISIS HISTÓRICO · 2023/24</strong><span>Datos de la Liga F 2023/24, temporada terminada en 2024. No describe la temporada actual.</span></aside>
     <p class="etiqueta">Investigación · Fútbol femenino · Liga F 2023/24</p>
     <h1>El peligro empieza antes del último pase</h1>
@@ -75,6 +75,7 @@ def main():
   </section>
 
 {figura_foto("graficos/foto.jpg", foto)}
+  </div>
 
   <nav class="accesos-seccion" aria-label="Secciones del artículo"><a href="#resultado">Resultados</a><a href="#metodo">Cómo se calcula</a><a href="#limites">Límites</a><a href="#fuentes">Fuentes y código</a></nav>
 

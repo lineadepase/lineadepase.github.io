@@ -1,0 +1,57 @@
+/* Las fotos acompañan a una entrada de lectura, sin ocupar todo el artículo. */
+.apertura-visual .apertura-visual-rejilla{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,24rem);gap:clamp(1.5rem,5vw,4rem);align-items:center}
+.apertura-visual h1{font-size:clamp(2.5rem,5vw,4rem);max-width:16ch;line-height:1.02;margin:.5rem 0 1rem}
+.apertura-visual .entradilla{max-width:42ch;font-size:1.1rem}
+.foto-portada,.foto-lectura{margin:0;max-width:24rem;min-width:0}
+.foto-portada img,.foto-lectura img{display:block;max-width:100%;width:auto;height:auto;max-height:20rem;margin-inline:auto;border-radius:10px}
+.foto-portada figcaption,.foto-lectura figcaption{font-size:.74rem;line-height:1.5;margin-top:.55rem;color:var(--tinta-suave)}
+.foto-portada figcaption,.foto-portada figcaption a{color:#d5e5d9}
+.entrada-fotografica{display:block;text-decoration:none;color:var(--cal)}
+.entrada-fotografica span{display:block;font-weight:600;margin-top:.65rem;font-size:1rem}
+.entrada-fotografica:hover span{text-decoration:underline}
+.actualidad-compacta{gap:2.5rem;padding:2rem 0}
+.titulo-resultado{display:flex;align-items:center;justify-content:space-between;gap:1.5rem}
+.titulo-resultado h2{font-size:clamp(1.8rem,3vw,2.5rem);margin:.2rem 0;line-height:1.08;max-width:20ch}
+.titulo-resultado .marcador-editorial{font-size:3.4rem;margin:0;white-space:nowrap}
+.actualidad-compacta .pregunta-portada{margin:.8rem 0 .5rem}
+.actualidad-compacta .entradilla{font-size:1rem;line-height:1.6}
+.actualidad-compacta .fecha-datos{font-size:.8rem;color:var(--tinta-suave)}
+.actualidad-compacta .enlaces{align-items:center;font-size:.9rem}
+.actualidad-compacta .mesa-de-datos h2{font-size:1.5rem;margin:.5rem 0}
+.actualidad-compacta .mesa-de-datos>a{padding:.75rem 0}
+.investigacion-con-foto{grid-template-columns:minmax(0,24rem) minmax(0,1fr);gap:clamp(1.5rem,5vw,4rem);padding:2.5rem 0}
+.investigacion-con-foto h2{max-width:24ch}
+.investigacion-con-foto .foto-lectura img{max-height:17rem}
+.lecturas-visuales{gap:2.5rem}
+.lecturas-visuales h2{font-size:1.8rem}
+.lectura-video{display:grid;grid-template-columns:10rem minmax(0,1fr);gap:1rem;align-items:start}
+.miniatura-video{position:relative;display:block;margin-top:.4rem}
+.miniatura-video img{width:100%;height:auto;display:block;border-radius:8px}
+.miniatura-video span{position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:1.5rem;text-shadow:0 1px 5px #000}
+.lectura-video .etiqueta{margin-top:0}
+.firma-con-retrato{display:flex;align-items:center;gap:1.2rem}
+.firma-con-retrato>img{width:72px;height:72px;flex:0 0 72px;object-fit:cover;border-radius:50%}
+.firma-con-retrato h2{font-size:2rem;margin:.35rem 0}
+.firma-con-retrato p{font-size:.95rem}
+.apertura-con-foto{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,24rem);gap:1.5rem 2.5rem;align-items:center;margin:1.5rem 0 2rem}
+.apertura-con-foto>.cab-proyecto,.apertura-con-foto>.primera{order:1;padding:0;margin:0;min-width:0}
+.apertura-con-foto>.figura.foto{order:2;margin:0;padding:0;border:0;background:transparent;width:100%;max-width:24rem;min-width:0}
+.apertura-con-foto>.tres-claves{order:3;grid-column:1/-1;margin:0}
+.apertura-con-foto>.figura.foto img{max-height:18rem}
+.apertura-con-foto>.figura.foto figcaption{font-size:.76rem;line-height:1.5}
+.apertura-con-foto h1{font-size:clamp(2.2rem,4vw,3.1rem);line-height:1.07}
+.apertura-con-foto .entradilla{font-size:1.08rem;line-height:1.65}
+@media(max-width:760px){
+ .apertura-visual .apertura-visual-rejilla,.investigacion-con-foto,.apertura-con-foto{grid-template-columns:minmax(0,1fr);gap:1.25rem}
+ .apertura-visual h1{font-size:clamp(2.5rem,9vw,3.25rem);max-width:17ch}
+ .foto-portada,.foto-lectura,.apertura-con-foto>.figura.foto{width:100%;max-width:24rem;justify-self:start}
+ .foto-portada img{max-height:15rem;margin-inline:0}
+ .foto-lectura img{margin-inline:0}
+ .investigacion-con-foto{padding:1.75rem 0}
+ .titulo-resultado{gap:1rem}.titulo-resultado h2{font-size:1.8rem}.titulo-resultado .marcador-editorial{font-size:2.8rem}
+ .apertura-con-foto{margin-top:1rem}.apertura-con-foto>.tres-claves{grid-column:auto}
+ .apertura-con-foto>.figura.foto img{max-height:15rem;margin-inline:0}
+ .lectura-video{grid-template-columns:minmax(0,8rem) minmax(0,1fr)}
+ .firma-con-retrato{align-items:flex-start;gap:.9rem}.firma-con-retrato>img{width:56px;height:56px;flex-basis:56px}
+}
+@media(max-width:380px){.lectura-video{grid-template-columns:minmax(0,1fr)}.miniatura-video{max-width:12rem}}
