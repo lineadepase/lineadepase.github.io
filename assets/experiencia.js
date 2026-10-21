@@ -37,6 +37,7 @@
     originals.forEach((element,index)=>{
       const style=getComputedStyle(element);
       ['fill','stroke','stroke-width','font-family','font-size','font-weight','opacity','text-anchor','dominant-baseline'].forEach(key=>copies[index].style.setProperty(key,style.getPropertyValue(key).replace(/url\(["']?[^)]*#([^"')]+)["']?\)/g,'url(#$1)')));
+      if(source.id==='minutos-svg'&&element.classList.contains('gol')) copies[index].style.opacity='1';
     });
     const references = new Set([...copy.outerHTML.matchAll(/url\(["']?#([^"')]+)["']?\)/g)].map(match=>match[1]));
     const defs=document.createElementNS('http://www.w3.org/2000/svg','defs');
