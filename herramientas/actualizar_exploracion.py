@@ -34,6 +34,9 @@ def generate():
     generate_comparator(page)
     generate_selection(page)
     generate_news(page)
+    from segunda_edicion import generate_map, generate_home
+    generate_map(page)
+    generate_home()
     entries = []
     source = (ROOT / 'proyectos/real-zaragoza/jornadas.html').read_text(encoding='utf-8')
     for href, content in re.findall(r'<a class="tarjeta-jornada [^"]+" href="([^"]+)">([\s\S]*?)</a>', source):
@@ -100,7 +103,7 @@ def enrich(raw, file):
 
 def build():
     generate()
-    for folder in ['proyectos', 'videos', 'sobre-mi', 'archivo', 'conceptos', 'comparador', 'seleccion', 'novedades']:
+    for folder in ['proyectos', 'videos', 'sobre-mi', 'archivo', 'conceptos', 'comparador', 'seleccion', 'novedades', 'mapa-grupo']:
         for file in (ROOT / folder).rglob('*.html'):
             raw = file.read_text(encoding='utf-8')
             if '<main' in raw:

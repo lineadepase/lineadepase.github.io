@@ -45,3 +45,11 @@ La misma generación integra `herramientas/experiencia.py`: mantiene las tres cl
 `experiencia.js` incorpora el menú móvil y las descargas de gráficos. Los PNG se componen en el navegador e incluyen título, periodo, fuente y marca; los gráficos interactivos conservan la sede seleccionada, sus leyendas y el estado visible. No envían los datos a servicios externos. Sin JavaScript la navegación permanece visible y las páginas de análisis siguen siendo legibles.
 
 La comprobación de visitantes se gestiona en Cloudflare, no en el código. Mantén el acceso de los buscadores reconocidos, `robots.txt`, `sitemap.xml`, las tarjetas sociales y la ruta de renovación de certificados. El acceso al repositorio y las publicaciones desde GitHub son independientes del control de visitantes.
+
+## Portada, comparación y materiales profesionales
+
+`herramientas/segunda_edicion.py` mantiene la portada editorial y el mapa interactivo de los veinte equipos (`mapa-grupo/`). La portada destaca el último encuentro, las herramientas y la selección profesional; el gráfico de minutos queda desplegable. Las lecturas revisadas de cada jornada se mantienen en `datos/claves-editoriales.json`, junto a la base factual usada para redactarlas.
+
+`assets/metricas-grupo.js` comparte los cálculos entre mapa y comparador. El modo por partido pondera la referencia con todos los registros disponibles; en totales se calcula la media por equipo. La posesión conserva siempre su porcentaje medio. El periodo reciente abarca las cinco últimas jornadas del corte. Los enlaces conservan los filtros y los PNG incluyen muestra, periodo y fuente. Ejecuta `node herramientas/pruebas/metricas-grupo.test.cjs` para comprobar muestras desiguales, filtros de fuente, ausencia de datos y medias.
+
+La selección incorpora un perfil breve en inglés. `assets/documentos/` contiene el dossier de cuatro páginas y el CV público de una página, revisados el 21 de octubre de 2026. Son documentos editoriales: requieren revisión al cambiar proyectos, formación o trayectoria. El CV público utiliza la web y LinkedIn como contacto y resume experiencia documentada, sin incluir dirección particular ni teléfono.

@@ -74,17 +74,21 @@ def summaries():
     items[base+'previa.html'] = [('La comparación','La previa contrasta clasificación, forma y rendimiento según la sede antes del próximo encuentro.'),
         ('El dato','El Zaragoza suma '+latest['puntos_acumulados']+' puntos hasta la jornada '+latest['jornada']+'; la tabla del rival y el corte aparecen en la comparativa.'),
         ('La lectura','La muestra describe el inicio de temporada y los rivales comunes aportan contexto, pero no permiten predecir el resultado.')]
+    editorial=json.loads((ROOT/'datos/claves-editoriales.json').read_text(encoding='utf-8'))
+    for jornada,entry in editorial.items():
+        items[base+'jornada-'+jornada+'.html']=[('La conclusión',entry['conclusion']),('El dato',entry['dato']),('La lectura',entry['lectura'])]
+    items[base+'ultimo-partido.html']=items[base+'jornada-'+latest['jornada']+'.html']
     return items
 
 
 def enrich(raw, file):
     relative = file.relative_to(ROOT).as_posix()
     for asset, tag in [('assets/experiencia.css', 'css'), ('assets/experiencia.js', 'js')]:
-        url = os.path.relpath(ROOT/asset, file.parent).replace('\\', '/') + '?v=20261021c'
+        url = os.path.relpath(ROOT/asset, file.parent).replace('\\', '/') + '?v=20261021d'
         markup = '<link rel="stylesheet" href="'+url+'">' if tag == 'css' else '<script src="'+url+'" defer></script>'
         if asset not in raw:
             raw = raw.replace('</head>',markup+'\n</head>',1)
-    raw = re.sub(r'(assets/experiencia\.(?:css|js)\?v=)[^"\s]+', r'\g<1>20261021c', raw)
+    raw = re.sub(r'(assets/experiencia\.(?:css|js)\?v=)[^"\s]+', r'\g<1>20261021d', raw)
     raw = re.sub(r'<meta name="grafico-contexto"[^>]*>\s*', '', raw)
     context = None
     if relative == 'index.html':
@@ -122,16 +126,16 @@ def enrich(raw, file):
         block = '<!-- acceso-herramienta --><section class="seccion llamada-comparador" id="compara-equipos"><h2>Dos equipos, frente a frente</h2><p>Compara resultados, ocasiones generadas y concedidas, con filtros de casa y fuera y cobertura visible.</p><a class="boton lleno" href="'+href+'">Abrir el comparador del Grupo 2</a></section><!-- /acceso-herramienta -->'
         raw = raw.replace('<!-- /tres-claves -->', '<!-- /tres-claves -->'+block, 1) if '<!-- /tres-claves -->' in raw else raw.replace('</main>',block+'</main>',1)
     raw = re.sub(r'<!-- seleccion-profesional -->[\s\S]*?<!-- /seleccion-profesional -->', '', raw)
-    if relative in ['index.html', 'proyectos/index.html', 'sobre-mi/index.html']:
+    if relative in ['proyectos/index.html', 'sobre-mi/index.html']:
         href = os.path.relpath(ROOT/'seleccion/index.html', file.parent).replace('\\', '/')
-        block = '<!-- seleccion-profesional --><section class="seccion envoltorio llamada-seleccion"><p class="etiqueta">Para clubes, medios y proyectos deportivos</p><h2>Tres trabajos para conocer cómo analizo</h2><p>Del seguimiento de un equipo a un modelo propio: las preguntas, las decisiones y los resultados de una selección de proyectos.</p><a class="boton lleno" href="'+href+'">Ver la selección de trabajos</a></section><!-- /seleccion-profesional -->'
+        block = '<!-- seleccion-profesional --><section class="seccion envoltorio llamada-seleccion"><p class="etiqueta">Para clubes, medios y proyectos deportivos</p><h2>Tres trabajos para conocer su enfoque</h2><p>Del seguimiento de un equipo a un modelo propio: las preguntas, las decisiones y los resultados de una selección de proyectos.</p><a class="boton lleno" href="'+href+'">Ver la selección de trabajos</a></section><!-- /seleccion-profesional -->'
         if relative == 'index.html':
             marker = re.search(r'<section class="seccion" aria-labelledby="t-videos">', raw)
             raw = raw[:marker.start()] + block + raw[marker.start():] if marker else raw.replace('</main>',block+'</main>',1)
         else:
             raw = raw.replace('</main>',block+'</main>',1)
     raw = re.sub(r'<!-- novedades-portada -->[\s\S]*?<!-- /novedades-portada -->', '', raw)
-    if relative == 'index.html':
+    if relative == 'index.html' and 'apertura-editorial' not in raw:
         news = json.loads((ROOT/'datos/novedades.json').read_text(encoding='utf-8'))
         block = '<!-- novedades-portada --><section class="seccion novedades-portada" aria-labelledby="titulo-novedades"><div class="envoltorio"><p class="etiqueta">Qué ha cambiado</p><h2 id="titulo-novedades">Novedades de Línea de pase</h2>'+news_list(news[:3], '')+'<a class="boton" href="novedades/index.html">Ver todas las novedades</a></div></section><!-- /novedades-portada -->'
         raw = raw.replace('<section class="seccion" aria-labelledby="t-metodo">',block+'<section class="seccion" aria-labelledby="t-metodo">',1)
@@ -150,9 +154,10 @@ def generate_comparator(page):
     controls = '<div class="archivo-controles" id="controles-comparador" hidden>'
     for key, label, selected in [('a', 'Primer equipo', 'Real Zaragoza'), ('b', 'Segundo equipo', 'Villarreal B')]:
         controls += '<label for="equipo-' + key + '">' + label + '<select id="equipo-' + key + '">' + ''.join('<option' + (' selected' if team == selected else '') + '>' + e(team) + '</option>' for team in teams) + '</select></label>'
-    controls += '<label for="sede-comparador">Dónde juega<select id="sede-comparador"><option value="">Casa y fuera</option><option>Casa</option><option>Fuera</option></select></label><label for="fuentes-comparador">Fuente de xG<select id="fuentes-comparador"><option value="sofascore">Solo Sofascore</option><option value="todas">Todas las fuentes documentadas</option></select></label></div>'
+    controls += '<label for="sede-comparador">Dónde juega<select id="sede-comparador"><option value="">Casa y fuera</option><option>Casa</option><option>Fuera</option></select></label><label for="fuentes-comparador">Fuente de xG<select id="fuentes-comparador"><option value="sofascore">Solo Sofascore</option><option value="todas">Todas las fuentes documentadas</option></select></label><label for="modo-comparador">Mostrar<select id="modo-comparador"><option value="promedio">Por partido</option><option value="totales">Totales</option></select></label><label for="periodo-comparador">Periodo<select id="periodo-comparador"><option value="toda">Toda la temporada</option><option value="ultimas5">Últimas cinco jornadas</option></select></label></div>'
     body = '<p class="nota">Primera Federación · Grupo 2 · Temporada 2026/27. Datos hasta la jornada ' + str(data['jornada']) + '. Los indicadores por partido se calculan solo con los encuentros que tienen ese dato.</p>' + controls
-    body += '<p id="estado-comparador" role="status" aria-live="polite">Cargando comparación…</p><div id="resultado-comparador"></div><p class="nota">Los puntos y los goles usan todos los partidos del filtro. El selector de fuente afecta únicamente a xG: por defecto se utiliza Sofascore. Incluir fuentes complementarias combina modelos que pueden valorar las ocasiones de forma distinta. Las ocasiones claras son el recuento del proveedor y no equivalen a xG.</p><details class="desplegable"><summary>Consultar cobertura y procedencia de los xG</summary><div id="fuentes-comparadas"></div></details><noscript><p>Activa JavaScript para usar el comparador. Puedes consultar las tablas y los gráficos en el <a href="../proyectos/real-zaragoza/grupo-2.html">análisis del grupo</a>.</p></noscript><p><a href="../datos/comparador-grupo2.json" download>Descargar los datos del comparador (JSON)</a> · <a href="../proyectos/real-zaragoza/grupo-2.html#metodo-grupo">Método y límites del análisis</a></p><script src="../assets/comparador.js?v=20261021" defer></script>'
+    body += '<div class="acciones-comparador"><button class="boton" id="intercambiar-equipos" type="button">Intercambiar equipos</button><button class="boton" id="copiar-comparacion" type="button">Copiar comparación</button><button class="boton" id="descargar-comparacion" type="button">Descargar comparativa (PNG)</button><a class="boton" id="ir-mapa" href="../mapa-grupo/index.html">Ver el mapa del grupo</a></div><p id="estado-compartir" role="status"></p><input id="enlace-comparacion" aria-label="Enlace de la comparación" readonly hidden>'
+    body += '<p id="estado-comparador" role="status" aria-live="polite">Cargando comparación…</p><p class="nota">Las barras utilizan una escala común para los veinte equipos del filtro. La marca vertical señala la media del grupo. En móvil, la tabla se puede desplazar horizontalmente.</p><div id="resultado-comparador"></div><p class="nota">Por partido, la referencia se calcula con todos los registros disponibles del grupo tras aplicar los filtros; en totales, se muestra la media de los equipos. La posesión siempre conserva su media porcentual. El selector de fuente afecta únicamente a xG. Las fuentes complementarias pueden utilizar modelos diferentes.</p><details class="desplegable"><summary>Consultar cobertura y procedencia de los xG</summary><div id="fuentes-comparadas"></div></details><noscript><p>La tabla del <a href="../proyectos/real-zaragoza/grupo-2.html">análisis del grupo</a> está disponible sin JavaScript.</p></noscript><p><a href="../datos/comparador-grupo2.json" download>Descargar los datos del comparador (JSON)</a> · <a href="../proyectos/real-zaragoza/grupo-2.html#metodo-grupo">Método y límites del análisis</a></p><script src="../assets/metricas-grupo.js?v=20261021d" defer></script><script src="../assets/comparador.js?v=20261021d" defer></script>'
     (ROOT/'comparador').mkdir(exist_ok=True)
     (ROOT/'comparador/index.html').write_text(page('Compara dos equipos del Grupo 2', 'Elige dos equipos y explora sus resultados, la producción ofensiva y las ocasiones que conceden.', body), encoding='utf-8')
 
@@ -180,15 +185,17 @@ def generate_selection(page):
          'Propuesta inicial para Andalucía y la Comunidad Valenciana, acompañada de indicadores y materiales de consulta.',
          'Comprobación de totales nacionales y distinción entre una propuesta basada en tasas y la demanda real por contrastar.',
          '../proyectos/futbol-femenino/index.html', '../analisis/futbol-femenino/datos/salida/indicadores.csv', 'Indicadores territoriales (CSV)')]
-    body = '<nav class="enlaces" aria-label="Selección de casos">'+''.join('<a class="boton" href="#'+c[0]+'">'+e(c[1])+'</a>' for c in cases)+'</nav>'
+    body = '<div class="enlaces descargas-profesionales"><a class="boton lleno" href="../assets/documentos/dossier-linea-de-pase.pdf">Dossier de proyectos (PDF)</a><a class="boton" href="../assets/documentos/cv-angel-marqueta.pdf">CV (PDF)</a><a class="boton" href="#english-profile">English profile</a></div><nav class="enlaces" aria-label="Selección de casos">'+''.join('<a class="boton" href="#'+c[0]+'">'+e(c[1])+'</a>' for c in cases)+'</nav>'
     for anchor, title, subtitle, question, challenge, method, output, proof, href, data, label in cases:
         body += '<article class="caso-seleccion" id="'+anchor+'"><p class="etiqueta">Caso de trabajo</p><h2>'+e(title)+'</h2><p class="entradilla">'+e(subtitle)+'</p><dl>'
         for key,value in [('Pregunta',question),('Problema resuelto',challenge),('Trabajo desarrollado',method),('Resultado',output),('Cómo se comprueba',proof)]:
             body += '<dt>'+key+'</dt><dd>'+e(value)+'</dd>'
+        application={'seguimiento':'Un cuerpo técnico o un medio puede contrastar la evolución del equipo, preparar preguntas sobre el próximo rival y consultar el origen de cada cifra.','modelo':'Un área de análisis puede explorar la progresión del balón antes del tiro y detectar perfiles para revisar en vídeo; el modelo no constituye por sí solo una recomendación de fichaje.','territorio':'Una entidad deportiva puede justificar dónde estudiar un piloto y definir qué debe comprobarse sobre el terreno antes de ampliar el programa.'}[anchor]
+        body += '<dt>Aplicación práctica</dt><dd>'+application+'</dd>'
         body += '</dl><div class="enlaces"><a class="boton lleno" href="'+href+'">Explorar el proyecto</a><a class="boton" href="'+data+'">'+label+'</a></div></article>'
-    body += '<section class="seccion"><h2>Hablemos de tu proyecto</h2><p>Me estoy formando en el Máster en Big Data Deportivo de Sports Data Campus. Estos trabajos muestran cómo preparo datos, documento decisiones y comunico una lectura futbolística.</p><a class="boton lleno" href="https://www.linkedin.com/in/angel-marqueta-alonso-a8831164" target="_blank" rel="noopener">Contactar por LinkedIn</a> <a class="boton" href="../sobre-mi/index.html">Conocer mi formación</a></section>'
+    body += '<section class="seccion" id="english-profile" lang="en"><p class="etiqueta">English profile</p><h2>Football analysis, with the evidence in view</h2><p>Ángel G. Marqueta Alonso is studying for a Master’s in Sports Big Data at Sports Data Campus. His work combines public football data, documented checks and visual explanations.</p><p>His portfolio covers season monitoring for Real Zaragoza, an expected-threat model for the 2023/24 Liga F season, and a regional participation study using Spanish public statistics. Each project distinguishes the findings from the limits of the available data.</p><p>His earlier technical and administrative roles involved incident management, data entry and regular reporting. The portfolio shows how that background is being developed towards sports analytics.</p></section><section class="seccion"><h2>Contacto profesional</h2><p>Ángel Marqueta cursa el Máster en Big Data Deportivo de Sports Data Campus. La selección reúne trabajos de preparación de datos, documentación de decisiones y comunicación de resultados.</p><a class="boton lleno" href="https://www.linkedin.com/in/angel-marqueta-alonso-a8831164" target="_blank" rel="noopener">Contactar por LinkedIn</a> <a class="boton" href="../sobre-mi/index.html">Formación y trayectoria</a></section>'
     (ROOT/'seleccion').mkdir(exist_ok=True)
-    (ROOT/'seleccion/index.html').write_text(page('Una selección de mi trabajo', 'Tres proyectos para conocer cómo convierto una pregunta deportiva en datos comprobables y una explicación clara.',body), encoding='utf-8')
+    (ROOT/'seleccion/index.html').write_text(page('Una selección de trabajos', 'Tres proyectos de Ángel Marqueta: de la pregunta deportiva a los datos comprobables, el informe y su aplicación.',body), encoding='utf-8')
 
 
 def news_list(entries, prefix):
