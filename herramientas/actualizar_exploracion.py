@@ -3,6 +3,7 @@ from pathlib import Path
 from html import escape, unescape
 import os
 import re
+import unicodedata
 
 ROOT = Path(__file__).resolve().parents[1]
 START = '<!-- exploracion -->'
@@ -56,10 +57,16 @@ def generate():
     for key, label, values in [('temporada', 'Temporada', sorted({e[3] for e in entries})), ('rival', 'Rival', sorted({e[4] for e in entries if e[4]})), ('tema', 'Tema', sorted({e[5] for e in entries}))]:
         controls += '<label for="filtro-' + key + '">' + label + '<select id="filtro-' + key + '"><option value="">Todos</option>' + ''.join('<option>' + escape(v) + '</option>' for v in values) + '</select></label>'
     controls += '<button type="button" class="boton" id="limpiar-archivo">Limpiar filtros</button></div>'
-    cards = '<p id="recuento-archivo" role="status" aria-live="polite">' + str(len(entries)) + ' análisis</p><ul class="archivo-lista">'
-    for href, title, desc, season, rival, topic in entries:
-        cards += '<li data-temporada="' + escape(season, quote=True) + '" data-rival="' + escape(rival, quote=True) + '" data-tema="' + escape(topic, quote=True) + '"><article><p class="etiqueta">' + escape(topic + ' · ' + season) + '</p><h2><a href="' + href + '">' + escape(title) + '</a></h2><p>' + escape(desc) + '</p></article></li>'
-    cards += '</ul><p id="archivo-vacio" hidden>No hay análisis con estos filtros. Prueba otro término o limpia los filtros.</p><script src="../assets/archivo.js" defer></script>'
+    cards = '<p class="nota">Cada carpeta reúne los análisis de una sección. La búsqueda y los filtros consultan todas las carpetas a la vez.</p><p id="recuento-archivo" role="status" aria-live="polite">' + str(len(entries)) + ' análisis</p><div class="archivo-carpetas">'
+    for topic, label in [('Partidos','Real Zaragoza'),('Investigación','Investigaciones'),('Fútbol femenino','Fútbol femenino · Territorio'),('Conceptos','Conceptos aplicados')]:
+        group=[entry for entry in entries if entry[5]==topic]
+        if not group:
+            continue
+        cards += '<details class="archivo-carpeta"><summary><span class="carpeta-nombre">'+escape(label)+'</span> <span class="carpeta-cantidad">'+str(len(group))+' análisis</span></summary><ul class="archivo-lista">'
+        for href, title, desc, season, rival, topic in group:
+            cards += '<li data-temporada="' + escape(season, quote=True) + '" data-rival="' + escape(rival, quote=True) + '" data-tema="' + escape(topic, quote=True) + '"><article><p class="etiqueta">' + escape(topic + ' · ' + season) + '</p><h2><a href="' + href + '">' + escape(title) + '</a></h2><p>' + escape(desc) + '</p></article></li>'
+        cards += '</ul></details>'
+    cards += '</div><p id="archivo-vacio" hidden>No hay análisis con estos filtros. Prueba otro término o limpia los filtros.</p><script src="../assets/archivo.js?v=20261021e" defer></script>'
     (ROOT / 'archivo').mkdir(exist_ok=True)
     (ROOT / 'archivo/index.html').write_text(page('Archivo de análisis', 'Busca por temporada, rival o tema y vuelve a los partidos y proyectos que te interesan.', controls + cards), encoding='utf-8')
     concepts = [
@@ -70,9 +77,11 @@ def generate():
         ('por-90', 'Estadísticas por 90 minutos', 'Permiten expresar una acción en una misma escala de tiempo: acciones divididas entre minutos jugados, multiplicadas por 90.', 'Ayudan a comparar participación, pero pocos minutos pueden producir valores extremos. Conviene mostrar siempre los minutos y considerar el rol del jugador.', '../proyectos/real-zaragoza/plantilla.html', 'Consultar minutos y participación', '', ''),
         ('tasas', 'Tasas y denominadores', 'Una tasa relaciona un recuento con la población a la que se refiere. Las licencias por cada 1.000 mujeres permiten comparar territorios de distinto tamaño.', 'Una licencia no equivale necesariamente a una persona. La tasa tampoco demuestra demanda de programas deportivos: hace falta contexto y trabajo de campo.', '../proyectos/futbol-femenino/index.html', 'Leer el análisis de fútbol femenino', '', ''),
     ]
-    body = '<nav class="enlaces" aria-label="Índice de conceptos">' + ''.join('<a class="boton" href="#' + c[0] + '">' + c[1] + '</a>' for c in concepts) + '</nav>'
+    concepts.sort(key=lambda item: ''.join(c for c in unicodedata.normalize('NFD',item[1]) if not unicodedata.combining(c)).casefold())
+    body = '<nav class="enlaces indice-conceptos" aria-label="Índice de conceptos">' + ''.join('<a class="boton" href="#' + c[0] + '">' + c[1] + '</a>' for c in concepts) + '</nav><div class="conceptos-rejilla">'
     for anchor, title, definition, limit, link, label, source, provider in concepts:
         body += '<article class="concepto" id="' + anchor + '"><h2>' + title + '</h2><p>' + definition + '</p><p><strong>Cómo leerlo:</strong> ' + limit + '</p><p><a href="' + link + '">' + label + '</a>' + (' · <a href="' + source + '">Definición de ' + provider + '</a>' if source else '') + '</p></article>'
+    body += '</div>'
     (ROOT / 'conceptos').mkdir(exist_ok=True)
     (ROOT / 'conceptos/index.html').write_text(page('Conceptos para leer el fútbol con datos', 'Una guía breve para entender las cifras, sus límites y cómo se utilizan en los análisis de esta web.', body), encoding='utf-8')
 
@@ -80,6 +89,14 @@ def generate():
 def enrich(raw, file):
     from experiencia import enrich as experiencia
     raw = experiencia(raw, file)
+    if file == ROOT / 'proyectos/index.html':
+        def complete_xt(match):
+            card=match[0]
+            if 'ficha-proyecto' in card:
+                return card
+            facts='<dl class="ficha-proyecto"><dt>Pregunta</dt><dd>¿Qué jugadoras acercan el balón a las zonas de gol antes del tiro?</dd><dt>Método</dt><dd>Modelo propio de xT sobre pases y conducciones, con validación fuera de muestra.</dd><dt>Resultado</dt><dd>Clasificación por 90 minutos, intervalos y resultados descargables de la Liga F 2023/24.</dd><dt>Aportación</dt><dd>Preparación de datos, implementación del modelo, comprobaciones y comunicación del análisis.</dd></dl>'
+            return card.replace('<span class="ver">',facts+'<span class="ver">',1)
+        raw=re.sub(r'<a class="tarjeta-proyecto" href="liga-f-xt/index.html">[\s\S]*?</a>',complete_xt,raw,count=1)
     raw = re.sub(r'<!-- exploracion -->[\s\S]*?<!-- /exploracion -->', '', raw)
     def nav(match):
         value = re.sub(r'<a[^>]+data-explorar="[^"]+"[^>]*>.*?</a>', '', match[0])
@@ -89,7 +106,8 @@ def enrich(raw, file):
             links += '<a data-explorar="' + folder + '" href="' + relative(folder + '/index.html', file) + '"' + current + '>' + label + '</a>'
         return value.replace('</nav>', links + '</nav>')
     raw = re.sub(r'<nav class="nav"[\s\S]*?</nav>', nav, raw)
-    stylesheet = '<link rel="stylesheet" href="' + relative('assets/explorar.css', file) + '?v=20261021">'
+    raw = re.sub(r'(assets/explorar\.css\?v=)[^"\s]+',r'\g<1>20261021e',raw)
+    stylesheet = '<link rel="stylesheet" href="' + relative('assets/explorar.css', file) + '?v=20261021e">'
     if 'assets/explorar.css' not in raw:
         raw = raw.replace('</head>', stylesheet + '\n</head>')
     if ('proyectos' in file.relative_to(ROOT).parts and file.name != 'index.html') or file.parent.name in ('futbol-femenino', 'xg', 'liga-f-xt', 'real-zaragoza'):

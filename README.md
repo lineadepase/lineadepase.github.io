@@ -44,6 +44,8 @@ La misma generación integra `herramientas/experiencia.py`: mantiene las tres cl
 
 `experiencia.js` incorpora el menú móvil y las descargas de gráficos. Los PNG se componen en el navegador e incluyen título, periodo, fuente y marca; los gráficos interactivos conservan la sede seleccionada, sus leyendas y el estado visible. No envían los datos a servicios externos. Sin JavaScript la navegación permanece visible y las páginas de análisis siguen siendo legibles.
 
+El archivo agrupa los análisis en carpetas desplegables por sección. La búsqueda cruza todas las carpetas, abre las coincidencias y oculta los grupos vacíos; al limpiar recupera la vista de carpetas. Los conceptos y su índice se ordenan alfabéticamente por el término visible y se presentan en dos columnas, o una en móvil. Los vídeos de explicación y los resúmenes de partidos comparten un ancho máximo de 640 píxeles, con reproducción a pantalla completa disponible. La ficha de la investigación de xT se mantiene junto a las otras dos en el catálogo.
+
 La comprobación de visitantes se gestiona en Cloudflare, no en el código. Mantén el acceso de los buscadores reconocidos, `robots.txt`, `sitemap.xml`, las tarjetas sociales y la ruta de renovación de certificados. El acceso al repositorio y las publicaciones desde GitHub son independientes del control de visitantes.
 
 ## Portada, comparación y materiales profesionales
