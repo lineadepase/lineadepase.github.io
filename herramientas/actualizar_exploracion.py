@@ -30,6 +30,10 @@ def page(title, description, body):
 
 
 def generate():
+    from experiencia import generate_comparator, generate_selection, generate_news
+    generate_comparator(page)
+    generate_selection(page)
+    generate_news(page)
     entries = []
     source = (ROOT / 'proyectos/real-zaragoza/jornadas.html').read_text(encoding='utf-8')
     for href, content in re.findall(r'<a class="tarjeta-jornada [^"]+" href="([^"]+)">([\s\S]*?)</a>', source):
@@ -71,11 +75,13 @@ def generate():
 
 
 def enrich(raw, file):
+    from experiencia import enrich as experiencia
+    raw = experiencia(raw, file)
     raw = re.sub(r'<!-- exploracion -->[\s\S]*?<!-- /exploracion -->', '', raw)
     def nav(match):
         value = re.sub(r'<a[^>]+data-explorar="[^"]+"[^>]*>.*?</a>', '', match[0])
         links = ''
-        for folder, label in [('archivo', 'Archivo'), ('conceptos', 'Conceptos')]:
+        for folder, label in [('archivo', 'Archivo'), ('conceptos', 'Conceptos'), ('novedades', 'Novedades')]:
             current = ' aria-current="page"' if file == ROOT / folder / 'index.html' else ''
             links += '<a data-explorar="' + folder + '" href="' + relative(folder + '/index.html', file) + '"' + current + '>' + label + '</a>'
         return value.replace('</nav>', links + '</nav>')
@@ -94,7 +100,7 @@ def enrich(raw, file):
 
 def build():
     generate()
-    for folder in ['proyectos', 'videos', 'sobre-mi', 'archivo', 'conceptos']:
+    for folder in ['proyectos', 'videos', 'sobre-mi', 'archivo', 'conceptos', 'comparador', 'seleccion', 'novedades']:
         for file in (ROOT / folder).rglob('*.html'):
             raw = file.read_text(encoding='utf-8')
             if '<main' in raw:

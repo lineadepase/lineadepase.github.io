@@ -1,0 +1,6 @@
+[
+  {"fecha":"2026-10-21","tipo":"Actualización","titulo":"Más formas de leer y explorar los análisis","texto":"Resúmenes con tres claves, comparador de equipos del Grupo 2, selección de trabajos, menú móvil y descarga de gráficos con contexto.","url":"comparador/index.html"},
+  {"fecha":"2026-10-21","tipo":"Publicación","titulo":"El peligro empieza antes del último pase","texto":"Investigación sobre la Liga F 2023/24 con un modelo propio de amenaza esperada (xT) para pases y conducciones.","url":"proyectos/liga-f-xt/index.html"},
+  {"fecha":"2026-10-21","tipo":"Corrección","titulo":"La descarga de Tableau recupera el dashboard completo","texto":"El archivo de la jornada 8 conserva las cinco hojas y el dashboard original, además de las extracciones actualizadas.","url":"proyectos/real-zaragoza/index.html#fuentes-metodo"},
+  {"fecha":"2026-10-20","tipo":"Actualización","titulo":"Grupo 2: jornada 8 completa","texto":"Resultados, clasificación, tablas y comparación avanzada actualizados hasta la octava jornada; las fuentes complementarias y la cobertura de xG se explican en el método.","url":"proyectos/real-zaragoza/grupo-2.html"}
+]
