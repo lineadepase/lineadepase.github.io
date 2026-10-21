@@ -34,4 +34,8 @@ GitHub Pages publica con `CNAME` apuntando a `lineadepase.com`; los enlaces al r
 
 El mapa incluye las páginas públicas principales; omite los fragmentos de `analisis/` y las redirecciones como `contacto/`. Los títulos y descripciones salen de cada HTML, para no duplicar textos de jornadas en la herramienta. Cuando cambie un título o se añada una página, vuelve a ejecutarla antes de publicar.
 
+## Archivo y conceptos
+
+`python herramientas/actualizar_seo.py` ejecuta primero `actualizar_exploracion.py`: reconstruye el archivo a partir de las tarjetas de jornadas y los proyectos publicados, genera la guía de conceptos e incorpora la navegación y las lecturas relacionadas. Ejecutarlo después de actualizar las jornadas conserva estas mejoras. El archivo funciona sin JavaScript; al activarlo añade búsqueda sin distinguir tildes, filtros combinables y recuento de resultados. Los textos de la guía y sus fuentes se mantienen en `herramientas/actualizar_exploracion.py`.
+
 La comprobación de visitantes se gestiona en Cloudflare, no en el código. Mantén el acceso de los buscadores reconocidos, `robots.txt`, `sitemap.xml`, las tarjetas sociales y la ruta de renovación de certificados. El acceso al repositorio y las publicaciones desde GitHub son independientes del control de visitantes.

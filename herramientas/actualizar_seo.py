@@ -103,10 +103,12 @@ def card(title, category, output):
 
 
 def build():
+    from actualizar_exploracion import build as exploracion
+    exploracion()
     output = ROOT / 'assets' / 'compartir'
     output.mkdir(parents=True, exist_ok=True)
     files = [ROOT / 'index.html']
-    for folder in ['proyectos', 'sobre-mi', 'videos', 'contacto']:
+    for folder in ['proyectos', 'sobre-mi', 'videos', 'contacto', 'archivo', 'conceptos']:
         files.extend(sorted((ROOT / folder).rglob('*.html')))
     urls = []
     manifest = []
