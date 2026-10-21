@@ -51,13 +51,14 @@
     try { return {image:await loadImage(url),revoke:()=>URL.revokeObjectURL(url)}; }
     catch(error){ URL.revokeObjectURL(url); throw error; }
   }
-  document.querySelectorAll('.grafico,figure.figura').forEach(holder=>{
-    const dynamic=holder.classList.contains('grafico');
+  document.querySelectorAll('.grafico,figure.figura,#minutos').forEach(holder=>{
+    const timeline=holder.id==='minutos';
+    const dynamic=holder.classList.contains('grafico')||timeline;
     const image=dynamic?null:holder.querySelector('img');
     if(!dynamic&&(!image||/foto|retrato|statsbomb/i.test(image.getAttribute('src')||''))) return;
     const button=document.createElement('button'); button.type='button';button.className='descargar-grafico';button.textContent='Descargar gráfico (PNG)';
     const status=document.createElement('span');status.className='estado-descarga';status.setAttribute('role','status');
-    const parent=dynamic?holder.parentElement:holder;
+    const parent=dynamic&&!timeline?holder.parentElement:holder;
     parent.append(button,status);
     button.addEventListener('click',async()=>{
       let loaded;
@@ -72,7 +73,7 @@
         if(filter) meta+=' · Sede: '+filter.textContent.trim()+'.';
         const note=dynamic?parent.querySelector(':scope > .nota')?.textContent:null;
         if(note) meta+=' '+note.trim();
-        const legend=dynamic?[...parent.querySelectorAll('.leyenda span')].map(item=>({label:item.textContent.trim(),color:getComputedStyle(item.querySelector('i')||item).backgroundColor})):[];
+        const legend=dynamic?[...parent.querySelectorAll('.leyenda span,.leyenda-min span')].map(item=>({label:item.textContent.trim(),color:getComputedStyle(item.querySelector('i')||item).backgroundColor,split:!!item.querySelector('.zgz-mitad')})):[];
         const canvas=document.createElement('canvas');const context=canvas.getContext('2d');
         const width=Math.max(1000,Math.min(1800,loaded.image.naturalWidth||1200));
         context.font='bold 30px Arial'; const titleLines=wrapText(context,title.trim(),width-96);
@@ -82,8 +83,8 @@
         canvas.width=width;canvas.height=top+chartHeight+footer;
         context.fillStyle='#ffffff';context.fillRect(0,0,width,canvas.height);
         context.fillStyle='#112b1d';context.font='bold 30px Arial';titleLines.forEach((line,i)=>context.fillText(line,48,44+i*38));
-        let legendX=48;context.font='20px Arial';legend.forEach(item=>{context.fillStyle=item.color;context.fillRect(legendX,top-32,18,18);context.fillStyle='#112b1d';context.fillText(item.label,legendX+28,top-16);legendX+=context.measureText(item.label).width+70;});
-        context.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--panel').trim()||'#ffffff';context.fillRect(32,top,width-64,chartHeight);
+        let legendX=48;context.font='20px Arial';legend.forEach(item=>{context.fillStyle=item.split?'#213e96':item.color;context.fillRect(legendX,top-32,18,18);if(item.split){context.fillStyle='#ffffff';context.fillRect(legendX+9,top-32,9,18);context.strokeStyle='#213e96';context.strokeRect(legendX,top-32,18,18);}context.fillStyle='#112b1d';context.fillText(item.label,legendX+28,top-16);legendX+=context.measureText(item.label).width+70;});
+        context.fillStyle=timeline?'#0f3d25':getComputedStyle(document.documentElement).getPropertyValue('--panel').trim()||'#ffffff';context.fillRect(32,top,width-64,chartHeight);
         context.drawImage(loaded.image,32,top,width-64,chartHeight);
         context.fillStyle='#4d6356';context.font='20px Arial';sourceLines.forEach((line,i)=>context.fillText(line,48,top+chartHeight+42+i*28));
         context.fillStyle='#1f6b3e';context.font='bold 24px Arial';context.fillText('Línea de pase · lineadepase.com',48,canvas.height-32);

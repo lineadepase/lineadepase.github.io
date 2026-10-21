@@ -80,13 +80,17 @@ def summaries():
 def enrich(raw, file):
     relative = file.relative_to(ROOT).as_posix()
     for asset, tag in [('assets/experiencia.css', 'css'), ('assets/experiencia.js', 'js')]:
-        url = os.path.relpath(ROOT/asset, file.parent).replace('\\', '/') + '?v=20261021a'
+        url = os.path.relpath(ROOT/asset, file.parent).replace('\\', '/') + '?v=20261021b'
         markup = '<link rel="stylesheet" href="'+url+'">' if tag == 'css' else '<script src="'+url+'" defer></script>'
         if asset not in raw:
             raw = raw.replace('</head>',markup+'\n</head>',1)
+    raw = re.sub(r'(assets/experiencia\.(?:css|js)\?v=)[^"\s]+', r'\g<1>20261021b', raw)
     raw = re.sub(r'<meta name="grafico-contexto"[^>]*>\s*', '', raw)
     context = None
-    if relative.startswith('proyectos/real-zaragoza/'):
+    if relative == 'index.html':
+        data = json.loads((ROOT/'datos/zaragoza.json').read_text(encoding='utf-8'))
+        context = 'Liga 2026/27 · Datos hasta '+data['corte']+' · Goles del Real Zaragoza, contrastados con las fuentes públicas del seguimiento. Elaboración propia.'
+    elif relative.startswith('proyectos/real-zaragoza/'):
         data = json.loads((ROOT/'datos/zaragoza.json').read_text(encoding='utf-8'))
         date = data['corte']
         found = re.match(r'jornada-(\d+)\.html', file.name)
