@@ -10,6 +10,7 @@ import json
 import re
 import xml.etree.ElementTree as ET
 from PIL import Image, ImageDraw, ImageFont
+from google_analytics import incorporar_etiqueta
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE = 'https://lineadepase.com'
@@ -192,6 +193,7 @@ def build():
             tags.insert(-1, '<script type="application/ld+json">' + json.dumps(
                 {'@context': 'https://schema.org', '@graph': graph}, ensure_ascii=False) + '</script>')
         raw = raw.replace('</head>', nl.join(tags) + nl + '</head>', 1)
+        raw = incorporar_etiqueta(raw)
         file.write_text(raw, encoding='utf-8', newline='')
         urls.append(url)
         manifest.append({'path': path, 'url': url, 'image': image_path})

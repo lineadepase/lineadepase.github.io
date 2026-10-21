@@ -63,3 +63,7 @@ La selección incorpora un perfil breve en inglés. `assets/documentos/` contien
 `herramientas/entregas.py` mantiene `tras-la-jornada/index.html`, destacada desde la portada. La generación del gráfico necesita Matplotlib además de Pillow. Antes de publicar otra entrega se revisan los datos y las claves del partido y se incorpora su pregunta en `datos/entregas-zaragoza.json`. Si falta la pregunta o la lectura de la última jornada, la página indica que está pendiente de revisión; no presenta la entrega anterior como actual. Los xG del gráfico proceden de la fila documentada de Sofascore del Zaragoza; una fuente distinta exige revisión.
 
 La entrega incluye una imagen PNG propia y texto en tercera persona para copiar. El selector de canal añade parámetros UTM al enlace del análisis; no publica ni envía mensajes. Los parámetros preparan la identificación de procedencia en una herramienta de analítica compatible: Search Console mide la búsqueda de Google, no el conjunto de visitas ni los accesos desde redes. Los datos privados de Search Console no se incorporan a la web pública.
+
+## Google Analytics
+
+Las páginas públicas incluyen la etiqueta `G-N6J2L7P4LP`. El paso `python herramientas/actualizar_seo.py` conserva la etiqueta y la añade a páginas nuevas sin duplicarla, mediante `herramientas/google_analytics.py`. Las páginas de redirección y los fragmentos de análisis quedan excluidos.
