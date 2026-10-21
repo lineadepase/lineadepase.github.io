@@ -35,7 +35,8 @@ def generate():
     for href, content in re.findall(r'<a class="tarjeta-jornada [^"]+" href="([^"]+)">([\s\S]*?)</a>', source):
         spans = re.findall(r'<span[^>]*>([\s\S]*?)</span>', content)
         rival = text(spans[1])
-        entries.append((f'../proyectos/real-zaragoza/{href}', f'{text(spans[0]).split(" · ")[0]} · Real Zaragoza – {rival}', text(spans[0]) + ' · ' + text(spans[2]) + ' · ' + text(spans[3]), '2026/27', rival, 'Partidos'))
+        match = f'{rival} – Real Zaragoza' if 'Fuera' in text(spans[0]) else f'Real Zaragoza – {rival}'
+        entries.append((f'../proyectos/real-zaragoza/{href}', f'{text(spans[0]).split(" · ")[0]} · {match}', text(spans[0]) + ' · ' + text(spans[2]) + ' · ' + text(spans[3]), '2026/27', rival, 'Partidos'))
     for folder, season, topic in [('futbol-femenino', '2023–2025', 'Fútbol femenino'), ('xg', 'Sin temporada', 'Conceptos'), ('liga-f-xt', '2023/24', 'Investigación')]:
         path = ROOT / 'proyectos' / folder / 'index.html'
         if not path.exists():
@@ -44,9 +45,9 @@ def generate():
         title = text(re.search(r'<h1[^>]*>([\s\S]*?)</h1>', raw)[1])
         desc = re.search(r'<meta name="description" content="([^"]*)"', raw)
         entries.append((f'../proyectos/{folder}/index.html', title, unescape(desc[1]) if desc else '', season, '', topic))
-    controls = '<div class="archivo-controles" id="controles-archivo" hidden><label>Buscar análisis<input id="buscar-archivo" type="search" placeholder="Rival, jornada o concepto"></label>'
+    controls = '<p class="nota">En las fichas del Zaragoza, el marcador se expresa siempre como goles a favor–goles en contra.</p><div class="archivo-controles" id="controles-archivo" hidden><label for="buscar-archivo">Buscar análisis<input id="buscar-archivo" type="search" placeholder="Rival, jornada o concepto"></label>'
     for key, label, values in [('temporada', 'Temporada', sorted({e[3] for e in entries})), ('rival', 'Rival', sorted({e[4] for e in entries if e[4]})), ('tema', 'Tema', sorted({e[5] for e in entries}))]:
-        controls += '<label>' + label + '<select id="filtro-' + key + '"><option value="">Todos</option>' + ''.join('<option>' + escape(v) + '</option>' for v in values) + '</select></label>'
+        controls += '<label for="filtro-' + key + '">' + label + '<select id="filtro-' + key + '"><option value="">Todos</option>' + ''.join('<option>' + escape(v) + '</option>' for v in values) + '</select></label>'
     controls += '<button type="button" class="boton" id="limpiar-archivo">Limpiar filtros</button></div>'
     cards = '<p id="recuento-archivo" role="status" aria-live="polite">' + str(len(entries)) + ' análisis</p><ul class="archivo-lista">'
     for href, title, desc, season, rival, topic in entries:
@@ -82,7 +83,7 @@ def enrich(raw, file):
     stylesheet = '<link rel="stylesheet" href="' + relative('assets/explorar.css', file) + '?v=20261021">'
     if 'assets/explorar.css' not in raw:
         raw = raw.replace('</head>', stylesheet + '\n</head>')
-    if 'proyectos' in file.relative_to(ROOT).parts and file.name != 'index.html' or file.parent.name in ('futbol-femenino', 'xg', 'liga-f-xt', 'real-zaragoza'):
+    if ('proyectos' in file.relative_to(ROOT).parts and file.name != 'index.html') or file.parent.name in ('futbol-femenino', 'xg', 'liga-f-xt', 'real-zaragoza'):
         links = [('archivo/index.html', 'Más análisis en el archivo'), ('conceptos/index.html', 'Entender los conceptos')]
         if file.parent.name == 'real-zaragoza':
             links.insert(0, ('proyectos/real-zaragoza/evolucion.html' if file.name != 'evolucion.html' else 'proyectos/real-zaragoza/grupo-2.html', 'Poner el partido en contexto'))
