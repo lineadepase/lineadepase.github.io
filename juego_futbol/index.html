@@ -997,6 +997,10 @@ function simularJornada() {
         return;
     }
 
+    // Una jornada consume la preparación previa: no se puede entrenar o descansar
+    // ilimitadamente entre dos partidos.
+    estadoJuego.preparacionUsada = false;
+
     const logBox = document.getElementById('match-log');
     logBox.innerHTML = '';
     const canvasShot = document.getElementById('canvas-shotmap');
@@ -1120,16 +1124,26 @@ function simularPartidoIndividual(local, vis, esNuestro, logBox, ctxShot, w, h) 
 
 // --- 8. MERCADO, ENTRENAMIENTO Y NUEVA TEMPORADA ---
 function accionDescansar() {
+    if (estadoJuego.preparacionUsada) {
+        alert("Ya has realizado una acción de preparación esta jornada.");
+        return;
+    }
     const miEq = obtenerMiEquipo();
     miEq.plantilla.forEach(j => {
         j.cansancio = Math.max(0, j.cansancio - 30);
         j.moral = Math.min(100, j.moral + 10);
     });
+    estadoJuego.preparacionUsada = true;
+    guardarPartidaLocal(false);
     alert("💤 La plantilla ha descansado y recupera frescura física.");
     actualizarUI();
 }
 
 function accionEntrenar() {
+    if (estadoJuego.preparacionUsada) {
+        alert("Ya has realizado una acción de preparación esta jornada.");
+        return;
+    }
     const miEq = obtenerMiEquipo();
     const suben = [];
     miEq.plantilla.forEach(j => {
@@ -1141,6 +1155,8 @@ function accionEntrenar() {
             }
         }
     });
+    estadoJuego.preparacionUsada = true;
+    guardarPartidaLocal(false);
     alert(suben.length ? `💪 Entrenamiento completado. Suben de media: ${suben.join(', ')}` : "💪 Sesión completada.");
     actualizarUI();
 }
@@ -1185,6 +1201,7 @@ function iniciarNuevaTemporada() {
     if (!confirm("¡La temporada ha terminado! ¿Quieres cobrar los premios de clasificación y comenzar la siguiente temporada?")) return;
     estadoJuego.temporada++;
     estadoJuego.jornadaActual = 0;
+    estadoJuego.preparacionUsada = false;
     estadoJuego.equipos.forEach(eq => {
         eq.presupuesto += 3000000;
         eq.puntos = 0; eq.pj = 0; eq.gf = 0; eq.gc = 0; eq.xgf = 0; eq.xgc = 0;
