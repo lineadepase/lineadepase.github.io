@@ -1162,7 +1162,12 @@ function simularPartidoIndividual(local, vis, esNuestro, logBox, ctxShot, w, h) 
     [local, vis].forEach(eq => {
         const mult = ESTILOS[eq.estilo].desgaste;
         eq.plantilla.forEach(j => {
-            if (!j.titular && j.lesionado > 0) j.lesionado--;
+            // Los lesionados descansan y recuperan una jornada; no juegan
+            // ni acumulan cansancio mientras siguen de baja.
+            if (j.lesionado > 0) {
+                j.lesionado--;
+                return;
+            }
             if (j.titular) {
                 j.cansancio = Math.min(100, j.cansancio + Math.round((13 + Math.random() * 10) * mult));
                 if (Math.random() < (j.cansancio > 75 ? 0.12 : 0.02)) {
