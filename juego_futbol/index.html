@@ -755,7 +755,11 @@ function calendarioValido(calendario, equipos) {
         if (new Set(participantes).size !== 4) return false;
     }
     const enfrentamientos = new Set(cruces.map(([a, b]) => a + '|' + b));
-    return enfrentamientos.size === 12 &&
+    // Cada mitad de la temporada debe enfrentar una vez a cada pareja.
+    const pareja = ([a, b]) => [a, b].sort().join('|');
+    const ida = new Set(cruces.slice(0, 6).map(pareja));
+    const vuelta = new Set(cruces.slice(6).map(pareja));
+    return enfrentamientos.size === 12 && ida.size === 6 && vuelta.size === 6 &&
         nombres.every(a => nombres.every(b => a === b || enfrentamientos.has(a + '|' + b)));
 }
 
