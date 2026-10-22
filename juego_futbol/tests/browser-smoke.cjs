@@ -149,6 +149,11 @@ const assert = require('node:assert/strict');
         }
       });
       assert.equal(saveFailure, false, 'el fallo de almacenamiento no debe bloquear el juego');
+      assert.equal(await page.locator('#estado-guardado').textContent(), '⚠️ No guardado',
+        'el fallo de autoguardado debe quedar visible');
+      await page.evaluate(() => guardarPartidaLocal(false));
+      assert.equal(await page.locator('#estado-guardado').textContent(), '✓ Guardado',
+        'el indicador debe recuperarse tras guardar correctamente');
       const shortSquad = await page.evaluate(() => {
         const club = obtenerMiEquipo();
         const original = club.plantilla.map(j => j.lesionado);
