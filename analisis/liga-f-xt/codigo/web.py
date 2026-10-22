@@ -141,6 +141,11 @@ def main():
         cuerpo,
         "Fuente: StatsBomb Open Data, Liga F 2023/24. Modelo propio de xT.",
     )
+    # Mismos añadidos que el resto de la web (menú, tres claves, contexto de
+    # las gráficas y lecturas relacionadas), solo en esta página.
+    sys.path.insert(0, str(RAIZ_WEB / "herramientas"))
+    from actualizar_exploracion import enrich  # noqa: E402
+    destino.write_text(enrich(destino.read_text(encoding="utf-8"), destino), encoding="utf-8")
     print(f"Página escrita en {destino.relative_to(RAIZ_WEB)}")
 
 

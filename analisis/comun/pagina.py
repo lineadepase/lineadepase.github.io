@@ -29,11 +29,26 @@ def escribir_pagina(carpeta, titulo, descripcion, migas, cuerpo, fuentes_pie):
                     f'<meta name="description" content="{descripcion}">', cabeza)
     # La plantilla puede tener metadatos propios de otro artículo.
     cabeza = re.sub(r'<!-- SEO:.*?<!-- /SEO -->\s*', '', cabeza, flags=re.S)
+    # También los añadidos de herramientas/ (contexto de gráficos, estilos de
+    # exploración y experiencia): son de la plantilla y se vuelven a poner
+    # para esta página con herramientas/actualizar_exploracion.py.
+    cabeza = re.sub(r'<meta name="grafico-contexto"[^>]*>\s*', '', cabeza)
+    cabeza = re.sub(r'<link rel="canonical"[^>]*>\s*', '', cabeza)
+    cabeza = re.sub(r'<link rel="stylesheet" href="[^"]*assets/(?:explorar|experiencia|fotografia-editorial)\.css[^"]*">\s*',
+                    '', cabeza)
+    cabeza = re.sub(r'<script src="[^"]*assets/experiencia\.js[^"]*" defer></script>\s*', '', cabeza)
+    destino = RAIZ_WEB / "proyectos" / carpeta / "index.html"
+    # Conserva el bloque SEO ya generado para esta página, si existe.
+    seo_actual = ""
+    if destino.exists():
+        previo = re.search(r'<!-- SEO:.*?<!-- /SEO -->\n?', destino.read_text(encoding="utf-8"), re.S)
+        seo_actual = previo.group(0) if previo else ""
     url = f"https://lineadepase.com/proyectos/{carpeta}/index.html"
     imagen = f"https://lineadepase.com/proyectos/{carpeta}/graficos/compartir.png"
     # Vista previa al compartir el enlace en redes.
-    cabeza += (f'<link rel="canonical" href="{url}">\n'
-               '<meta property="og:type" content="article">\n'
+    if not seo_actual:  # el bloque SEO ya trae la dirección canónica
+        cabeza += f'<link rel="canonical" href="{url}">\n'
+    cabeza += ('<meta property="og:type" content="article">\n'
                '<meta property="og:locale" content="es_ES">\n'
                '<meta property="og:site_name" content="Línea de pase">\n'
                f'<meta property="og:url" content="{url}">\n'
@@ -47,7 +62,8 @@ def escribir_pagina(carpeta, titulo, descripcion, migas, cuerpo, fuentes_pie):
                f'<meta name="twitter:description" content="{descripcion}">\n'
                f'<meta name="twitter:image" content="{imagen}">\n'
                '<link rel="stylesheet" href="../../assets/investigacion.css?v=20261021fotos">\n'
-               '<link rel="stylesheet" href="../../assets/fotografia-editorial.css?v=20261021b">\n')
+               '<link rel="stylesheet" href="../../assets/fotografia-editorial.css?v=20261021b">\n'
+               + seo_actual)
     menu = re.search(r'<header class="cabecera">.*?</header>', plantilla, re.S).group(0)
     pie = re.search(r'<footer class="pie">.*?</footer>', plantilla, re.S).group(0)
     pie = re.sub(r"<p>Fuentes:.*?</p>", f"<p>{fuentes_pie}</p>", pie, count=1, flags=re.S)
@@ -55,7 +71,6 @@ def escribir_pagina(carpeta, titulo, descripcion, migas, cuerpo, fuentes_pie):
     pagina = (f"{cabeza}</head>\n<body>\n{menu}\n\n<main class=\"envoltorio\">\n"
               f"  <p class=\"migas\"><a href=\"../index.html\">Proyectos</a> / {migas}</p>\n"
               f"{cuerpo}\n</main>\n\n{pie}\n</body>\n</html>\n")
-    destino = RAIZ_WEB / "proyectos" / carpeta / "index.html"
     destino.parent.mkdir(parents=True, exist_ok=True)
     destino.write_text(pagina, encoding="utf-8")
     return destino
