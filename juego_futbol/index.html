@@ -1246,12 +1246,18 @@ function accionEntrenar() {
 
 function ficharJugador(idx) {
     const miEq = obtenerMiEquipo();
-    const jug = estadoJuego.mercado[idx];
-    if (!jug || !Number.isFinite(jug.precio) || jug.precio < 0) {
+    if (!Number.isInteger(idx) || idx < 0 || idx >= estadoJuego.mercado.length) {
         alert("Este jugador no está disponible en el mercado.");
         return;
     }
-    if (miEq.presupuesto < jug.precio) {
+    const jug = estadoJuego.mercado[idx];
+    if (!jug || !Number.isFinite(jug.precio) || jug.precio < 0 ||
+        !Number.isFinite(jug.salario) || jug.salario < 0 ||
+        !['POR', 'DEF', 'CEN', 'DEL'].includes(jug.posicion)) {
+        alert("Este jugador no está disponible en el mercado.");
+        return;
+    }
+    if (miEq.presupuesto < jug.precio || miEq.presupuesto < 0) {
         alert("Presupuesto insuficiente para este fichaje.");
         return;
     }
@@ -1271,6 +1277,11 @@ function venderJugador(idx) {
     }
     if (!Number.isInteger(idx) || idx < 0 || idx >= miEq.plantilla.length) {
         alert("No se ha encontrado al jugador que quieres vender.");
+        return;
+    }
+    const candidato = miEq.plantilla[idx];
+    if (!Number.isFinite(candidato.precio) || candidato.precio < 0) {
+        alert("El valor de este jugador no es válido.");
         return;
     }
     const jug = miEq.plantilla.splice(idx, 1)[0];
@@ -1377,6 +1388,16 @@ window.onload = () => {
                     Number.isFinite(j.xg) && j.xg >= 0 &&
                     Number.isInteger(j.goles) && j.goles >= 0)) ||
             !Array.isArray(estadoJuego.mercado) ||
+            !estadoJuego.mercado.every(j => j && typeof j.nombre === 'string' &&
+                ['POR', 'DEF', 'CEN', 'DEL'].includes(j.posicion) &&
+                Number.isFinite(j.media) && j.media > 0 && j.media <= 100 &&
+                Number.isFinite(j.precio) && j.precio >= 0 &&
+                Number.isFinite(j.salario) && j.salario >= 0 &&
+                Number.isFinite(j.cansancio) && j.cansancio >= 0 && j.cansancio <= 100 &&
+                Number.isFinite(j.moral) && j.moral >= 0 && j.moral <= 100 &&
+                Number.isInteger(j.lesionado) && j.lesionado >= 0 &&
+                Number.isFinite(j.xg) && j.xg >= 0 &&
+                Number.isInteger(j.goles) && j.goles >= 0) ||
             !Array.isArray(estadoJuego.calendario) ||
             !calendarioValido(estadoJuego.calendario, estadoJuego.equipos) ||
             !Number.isInteger(estadoJuego.jornadaActual) ||
