@@ -37,6 +37,10 @@ const assert = require('node:assert/strict');
         }
       }
       await page.locator('button.tab-btn').filter({ hasText: 'Pizarra Táctica' }).click();
+      const availability = await page.locator('#resumen-disponibilidad').innerText();
+      assert.match(availability, /Disponibles: \d+\/\d+/);
+      assert.match(availability, /Lesionados: \d+/);
+      assert.match(availability, /Fatigados/);
       const injuryCheck = await page.evaluate(() => {
         const club = obtenerMiEquipo();
         const player = club.plantilla.find(j => j.titular);
