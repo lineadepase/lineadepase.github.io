@@ -2,10 +2,10 @@
 Portada de la previa para redes: el león de Línea de pase frente al rival.
 
 Es la primera imagen del carrusel de Instagram; la segunda es la tarjeta de
-datos de previa_redes.py. El león es una ilustración con derechos de uso que se
-guarda en codigo/recursos/ (leon_previa.png o leon_previa.svg), no el del escudo
-del club: en estas imágenes no se usan escudos ni logotipos. Si no hay
-ilustración, el script se detiene y la previa sale solo con la tarjeta de datos.
+datos de previa_redes.py. El fondo es la imagen del león facilitada por Ángel
+(codigo/recursos/portada_previa.jpg, 1080 × 1350); no se usan escudos ni
+logotipos de los clubes. Si falta, el script se detiene y la previa sale solo
+con la tarjeta de datos.
 
 Se ejecuta después de previa_redes.py, porque lee sus cifras:
     python analisis/real-zaragoza/codigo/previa_redes.py 9 --estadio "Can Dragó (Barcelona)"
@@ -33,14 +33,15 @@ PLANTILLA = """<!doctype html>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { width: 1080px; height: 1350px; overflow: hidden; font-family: Inter, "DejaVu Sans", sans-serif;
-         background: repeating-linear-gradient(90deg, #12221d 0 90px, #152820 90px 180px); color: #f2f4ef; }
-  .campo { position: absolute; inset: 0; }
+         background: #12221d url("__FONDO__") center -80px / 1080px auto no-repeat; color: #f2f4ef; }
+  .sombra-arriba { position: absolute; left: 0; right: 0; top: 0; height: 300px;
+                   background: linear-gradient(#12221dcc, #12221d00); }
+  .sombra-abajo { position: absolute; left: 0; right: 0; bottom: 0; height: 620px;
+                  background: linear-gradient(#12221d00 0%, #12221de6 38%, #12221d 62%); }
   .cabecera { position: absolute; left: 80px; top: 70px; }
   .marca { font-size: 26px; font-weight: 700; letter-spacing: .02em; }
   .serie { margin-top: 18px; font-size: 23px; font-weight: 700; color: #a8d5b5; letter-spacing: .03em; }
-  .leon { position: absolute; left: -140px; top: 160px; width: 760px; transform: rotate(9deg);
-          transform-origin: 60% 50%; }
-  .partido { position: absolute; left: 80px; right: 80px; top: 875px; }
+  .partido { position: absolute; left: 80px; right: 80px; bottom: 190px; }
   .local, .visitante { font-weight: 800; line-height: 1.02; letter-spacing: -.02em; white-space: nowrap; }
   .local { color: #f2f4ef; }
   .visitante { color: #ff7a2f; }
@@ -54,16 +55,12 @@ PLANTILLA = """<!doctype html>
   .fila span { color: #9fb3a7; }
 </style></head>
 <body>
-  <svg class="campo" viewBox="0 0 1080 1350" aria-hidden="true">
-    <rect x="40" y="40" width="1000" height="1270" fill="none" stroke="#2a4136" stroke-width="3"/>
-    <line x1="40" y1="675" x2="1040" y2="675" stroke="#2a4136" stroke-width="3"/>
-    <circle cx="540" cy="675" r="150" fill="none" stroke="#2a4136" stroke-width="3"/>
-  </svg>
+  <div class="sombra-arriba"></div>
+  <div class="sombra-abajo"></div>
   <div class="cabecera">
     <p class="marca">LÍNEA DE PASE</p>
     <p class="serie">PREVIA · PRIMERA FEDERACIÓN · JORNADA __JORNADA__</p>
   </div>
-  <div class="leon">__LEON__</div>
   <div class="partido">
     <p class="local ajustar">__LOCAL__ –</p>
     <p class="visitante ajustar">__VISITANTE__</p>
@@ -94,16 +91,12 @@ def main():
     inicio = datetime.fromisoformat(c["inicio_madrid"])
     cuando = f"{DIAS[inicio.weekday()].capitalize()} {inicio.day} de {MESES[inicio.month - 1]} · {inicio:%H:%M}"
 
-    svg, png = RECURSOS / "leon_previa.svg", RECURSOS / "leon_previa.png"
-    if svg.exists():
-        leon = svg.read_text(encoding="utf-8")
-    elif png.exists():
-        datos = base64.b64encode(png.read_bytes()).decode("ascii")
-        leon = f'<img src="data:image/png;base64,{datos}" alt="" style="width:100%">'
-    else:
-        raise SystemExit("Falta la ilustración del león en codigo/recursos/: no se genera la portada")
+    fondo = RECURSOS / "portada_previa.jpg"
+    if not fondo.exists():
+        raise SystemExit("Falta la imagen de fondo en codigo/recursos/portada_previa.jpg: no se genera la portada")
+    fondo_uri = "data:image/jpeg;base64," + base64.b64encode(fondo.read_bytes()).decode("ascii")
     html = (PLANTILLA.replace("__JORNADA__", str(c["jornada"]))
-            .replace("__LEON__", leon)
+            .replace("__FONDO__", fondo_uri)
             .replace("__LOCAL__", escape(c["local"]))
             .replace("__VISITANTE__", escape(c["visitante"]))
             .replace("__CUANDO__", escape(cuando))
