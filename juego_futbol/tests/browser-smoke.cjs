@@ -68,6 +68,22 @@ const assert = require('node:assert/strict');
         return unchanged;
       });
       assert.equal(injuredShot, true, 'un lesionado no puede rematar');
+      const noPlayers = await page.evaluate(() => {
+        const [home, away] = estadoJuego.equipos;
+        const original = [home, away].map(eq => eq.plantilla.map(j => j.lesionado));
+        for (const eq of [home, away]) eq.plantilla.forEach(j => { j.lesionado = 4; });
+        const before = [home, away].map(eq => eq.xgf);
+        const log = document.getElementById('match-log');
+        const canvas = document.getElementById('canvas-shotmap');
+        simularPartidoIndividual(home, away, false, log, canvas.getContext('2d'), canvas.width, canvas.height);
+        const after = [home, away].map(eq => eq.xgf);
+        [home, away].forEach((eq, i) => eq.plantilla.forEach((j, k) => { j.lesionado = original[i][k]; }));
+        convocarOnceAutomatico(home);
+        convocarOnceAutomatico(away);
+        return { before, after };
+      });
+      assert.deepEqual(noPlayers.after, noPlayers.before,
+        'equipos sin jugadores aptos no generan ocasiones');
       const training = await page.evaluate(() => {
         const club = obtenerMiEquipo();
         const fatigueBefore = club.plantilla.map(j => j.cansancio);
