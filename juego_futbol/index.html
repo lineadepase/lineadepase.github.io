@@ -847,7 +847,7 @@ function actualizarUI() {
     // Tabla Clasificación
     const tbodyC = document.getElementById('tbody-clasificacion');
     tbodyC.innerHTML = '';
-    const ordenados = [...estadoJuego.equipos].sort((a, b) => (b.puntos - a.puntos) || ((b.gf - b.gc) - (a.gf - a.gc)));
+    const ordenados = [...estadoJuego.equipos].sort(compararClasificacion);
     ordenados.forEach((eq, i) => {
         const dg = eq.gf - eq.gc;
         const difXg = eq.gf - eq.xgf;
@@ -1272,13 +1272,34 @@ function venderJugador(idx) {
     actualizarUI();
 }
 
+// Criterios simplificados de esta liga ficticia: puntos, diferencia de goles,
+ // goles a favor y, por último, nombre para desempates estables.
+function compararClasificacion(a, b) {
+    return (b.puntos - a.puntos) ||
+        ((b.gf - b.gc) - (a.gf - a.gc)) ||
+        (b.gf - a.gf) || a.nombre.localeCompare(b.nombre, 'es');
+}
+
+function calcularPremiosClasificacion(equipos) {
+    const premios = [5000000, 3500000, 2500000, 1500000];
+    return [...equipos].sort(compararClasificacion).map((eq, i) => ({
+        nombre: eq.nombre, posicion: i + 1, premio: premios[i]
+    }));
+}
+
 function iniciarNuevaTemporada() {
-    if (!confirm("¡La temporada ha terminado! ¿Quieres cobrar los premios de clasificación y comenzar la siguiente temporada?")) return;
+    if (estadoJuego.jornadaActual < estadoJuego.calendario.length) {
+        alert("Debes terminar las seis jornadas antes de comenzar otra temporada.");
+        return;
+    }
+    const premios = calcularPremiosClasificacion(estadoJuego.equipos);
+    const miPremio = premios.find(p => p.nombre === 'Real Zaragoza');
+    if (!confirm(`¡Temporada terminada! Real Zaragoza: ${miPremio.posicion}.º puesto y premio de ${miPremio.premio.toLocaleString('es-ES')} €. ¿Comenzar la siguiente temporada?`)) return;
     estadoJuego.temporada++;
     estadoJuego.jornadaActual = 0;
     estadoJuego.preparacionUsada = false;
     estadoJuego.equipos.forEach(eq => {
-        eq.presupuesto += 3000000;
+        eq.presupuesto += premios.find(p => p.nombre === eq.nombre).premio;
         eq.puntos = 0; eq.pj = 0; eq.gf = 0; eq.gc = 0; eq.xgf = 0; eq.xgc = 0;
         eq.plantilla.forEach(j => { j.goles = 0; j.xg = 0; j.cansancio = 0; j.lesionado = 0; });
         convocarOnceAutomatico(eq);
