@@ -1271,7 +1271,16 @@ window.onload = () => {
         if (!estadoJuego || !Array.isArray(estadoJuego.equipos) ||
             estadoJuego.equipos.length !== 4 ||
             !estadoJuego.equipos.every(eq => eq && typeof eq.nombre === 'string' &&
-                Array.isArray(eq.plantilla) && eq.plantilla.length >= 11) ||
+                Number.isFinite(eq.presupuesto) && eq.presupuesto >= 0 &&
+                Object.hasOwn(FORMACIONES, eq.formacion) &&
+                Object.hasOwn(ESTILOS, eq.estilo) &&
+                Array.isArray(eq.plantilla) && eq.plantilla.length >= 11 &&
+                eq.plantilla.every(j => j && typeof j.nombre === 'string' &&
+                    ['POR', 'DEF', 'CEN', 'DEL'].includes(j.posicion) &&
+                    Number.isFinite(j.media) && j.media > 0 &&
+                    Number.isFinite(j.cansancio) && Number.isFinite(j.moral) &&
+                    Number.isInteger(j.lesionado) && j.lesionado >= 0 &&
+                    Number.isFinite(j.xg) && Number.isFinite(j.goles))) ||
             !Array.isArray(estadoJuego.mercado) ||
             !Array.isArray(estadoJuego.calendario) ||
             estadoJuego.calendario.length !== 6 ||
