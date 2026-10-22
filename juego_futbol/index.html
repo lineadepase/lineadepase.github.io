@@ -990,17 +990,21 @@ function estadisticasEntrenamientoValidas(entrenamiento) {
         tipos.reduce((total, tipo) => total + (entrenamiento.porTipo[tipo]?.puntos || 0), 0) === entrenamiento.puntos;
 }
 
+function nombreGuardadoValido(nombre) {
+    return typeof nombre === 'string' && nombre.trim().length > 0 && nombre.length <= 80;
+}
+
 function estadoPartidaValido(estado) {
     try {
         return Boolean(estado && Array.isArray(estado.equipos) && estado.equipos.length === 4 &&
             new Set(estado.equipos.map(eq => eq?.nombre)).size === 4 &&
             estado.equipos.some(eq => eq?.nombre === 'FC Pase y Pifia') &&
-            estado.equipos.every(eq => eq && typeof eq.nombre === 'string' &&
+            estado.equipos.every(eq => eq && nombreGuardadoValido(eq.nombre) &&
                 Number.isFinite(eq.presupuesto) && Number.isFinite(eq.aforo) && eq.aforo >= 0 &&
                 Object.hasOwn(FORMACIONES, eq.formacion) && Object.hasOwn(ESTILOS, eq.estilo) &&
                 ['puntos', 'pj', 'gf', 'gc', 'xgf', 'xgc'].every(k => Number.isFinite(eq[k]) && eq[k] >= 0) &&
                 Array.isArray(eq.plantilla) && eq.plantilla.length >= 11 &&
-                eq.plantilla.every(j => j && typeof j.nombre === 'string' &&
+                eq.plantilla.every(j => j && nombreGuardadoValido(j.nombre) &&
                     ['POR', 'DEF', 'CEN', 'DEL'].includes(j.posicion) &&
                     Number.isFinite(j.media) && j.media > 0 && j.media <= 100 &&
                     Number.isFinite(j.cansancio) && j.cansancio >= 0 && j.cansancio <= 100 &&
@@ -1011,7 +1015,7 @@ function estadoPartidaValido(estado) {
                     Number.isFinite(j.xg) && j.xg >= 0 &&
                     Number.isInteger(j.goles) && j.goles >= 0 && typeof j.titular === 'boolean')) &&
             Array.isArray(estado.mercado) &&
-            estado.mercado.every(j => j && typeof j.nombre === 'string' &&
+            estado.mercado.every(j => j && nombreGuardadoValido(j.nombre) &&
                 ['POR', 'DEF', 'CEN', 'DEL'].includes(j.posicion) &&
                 Number.isFinite(j.media) && j.media > 0 && j.media <= 100 &&
                 Number.isFinite(j.precio) && j.precio >= 0 &&
@@ -1094,7 +1098,7 @@ function actualizarUI() {
             : (j.titular ? '⭐ Titular' : 'Suplente'));
         tr.innerHTML = `
             <td><span class="badge pos-${j.posicion}">${j.posicion}</span></td>
-            <td class="left"><strong>${j.nombre}</strong></td>
+            <td class="left"><strong>${escaparHTML(j.nombre)}</strong></td>
             <td>${j.media}</td>
             <td><strong>${rendimientoReal(j)}</strong></td>
             <td>${j.cansancio}%</td>
@@ -1129,7 +1133,7 @@ function actualizarUI() {
         if (eq.nombre === miEq.nombre) tr.style.background = 'rgba(37, 99, 235, 0.18)';
         tr.innerHTML = `
             <td><strong>${i + 1}</strong></td>
-            <td class="left"><strong>${eq.nombre}</strong></td>
+            <td class="left"><strong>${escaparHTML(eq.nombre)}</strong></td>
             <td><strong>${eq.puntos}</strong></td>
             <td>${eq.pj}</td>
             <td>${eq.gf}</td>
@@ -1156,8 +1160,8 @@ function actualizarUI() {
         const dif = j.goles - j.xg;
         const tr = document.createElement('tr');
         tr.innerHTML = `
-            <td class="left"><strong>${j.nombre}</strong></td>
-            <td class="left">${eqNombre}</td>
+            <td class="left"><strong>${escaparHTML(j.nombre)}</strong></td>
+            <td class="left">${escaparHTML(eqNombre)}</td>
             <td><span class="badge pos-${j.posicion}">${j.posicion}</span></td>
             <td><strong>${j.goles}</strong></td>
             <td>${j.xg.toFixed(2)}</td>
@@ -1172,7 +1176,7 @@ function actualizarUI() {
     estadoJuego.mercado.forEach((j, idx) => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
-            <td class="left"><strong>${j.nombre}</strong></td>
+            <td class="left"><strong>${escaparHTML(j.nombre)}</strong></td>
             <td><span class="badge pos-${j.posicion}">${j.posicion}</span></td>
             <td>${j.media}</td>
             <td>${j.precio.toLocaleString('es-ES')} €</td>
@@ -1188,7 +1192,7 @@ function actualizarUI() {
         const valorVenta = Math.round(j.precio * 0.8);
         const tr = document.createElement('tr');
         tr.innerHTML = `
-            <td class="left"><strong>${j.nombre}</strong></td>
+            <td class="left"><strong>${escaparHTML(j.nombre)}</strong></td>
             <td><span class="badge pos-${j.posicion}">${j.posicion}</span></td>
             <td>${j.media}</td>
             <td>${valorVenta.toLocaleString('es-ES')} €</td>

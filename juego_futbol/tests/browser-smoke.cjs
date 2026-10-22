@@ -368,6 +368,53 @@ const fs = require('node:fs/promises');
       await invalidImportDialog;
       assert.equal(await page.evaluate(() => obtenerMiEquipo().presupuesto), beforeInvalidImport,
         'una importación no válida no modifica la partida activa');
+      const importSafety = await page.evaluate(() => {
+        const partida = structuredClone(crearEstadoInicial());
+        const nombreHostil = '<img src=x onerror="window.__xssHit=true">';
+        partida.equipos[0].plantilla[0].nombre = nombreHostil;
+        partida.equipos[0].plantilla[0].goles = 1;
+        partida.equipos[0].plantilla[0].xg = 0.8;
+        partida.mercado[0].nombre = nombreHostil;
+        window.__xssHit = false;
+        return {
+          partida,
+          nombreHostil,
+          valid: estadoPartidaValido(partida),
+          longNameRejected: (() => {
+            const copia = structuredClone(partida);
+            copia.equipos[0].plantilla[0].nombre = 'x'.repeat(81);
+            return !estadoPartidaValido(copia);
+          })()
+        };
+      });
+      assert.equal(importSafety.valid, true,
+        'los nombres importados se aceptan como texto ordinario, aunque contengan signos HTML');
+      assert.equal(importSafety.longNameRejected, true,
+        'se rechazan nombres excesivamente largos para proteger el renderizado');
+      const safeImportStatus = page.waitForFunction(() =>
+        document.getElementById('estado-guardado').textContent === '✓ Copia importada');
+      await page.locator('#archivo-partida').setInputFiles({
+        name: 'copia-nombres-especiales.json', mimeType: 'application/json',
+        buffer: Buffer.from(JSON.stringify({ formato: 'linea-de-pase-partida', version: 1,
+          partida: importSafety.partida }))
+      });
+      await safeImportStatus;
+      await page.waitForTimeout(50);
+      const safeRender = await page.evaluate(nombreHostil => ({
+        plantelAsText: [...document.querySelectorAll('#tbody-plantilla strong')]
+          .some(el => el.textContent === nombreHostil),
+        marketAsText: [...document.querySelectorAll('#tbody-mercado strong')]
+          .some(el => el.textContent === nombreHostil),
+        scorerAsText: [...document.querySelectorAll('#tbody-goleadores strong')]
+          .some(el => el.textContent === nombreHostil),
+        injectedImages: document.querySelectorAll('tbody img').length,
+        executed: window.__xssHit
+      }), importSafety.nombreHostil);
+      assert.equal(safeRender.plantelAsText, true, 'un nombre importado se muestra como texto en plantilla');
+      assert.equal(safeRender.marketAsText, true, 'un nombre importado se muestra como texto en mercado');
+      assert.equal(safeRender.scorerAsText, true, 'un nombre importado se muestra como texto en goleadores');
+      assert.equal(safeRender.injectedImages, 0, 'un guardado no puede inyectar etiquetas en las tablas');
+      assert.equal(safeRender.executed, false, 'un guardado no puede ejecutar atributos HTML');
       const resetIndicator = await page.evaluate(() => {
         const originalConfirm = window.confirm;
         window.confirm = () => true;
