@@ -68,6 +68,17 @@ const assert = require('node:assert/strict');
         return unchanged;
       });
       assert.equal(injuredShot, true, 'un lesionado no puede rematar');
+      const blockedRead = await page.evaluate(() => {
+        const original = Storage.prototype.getItem;
+        Storage.prototype.getItem = function () { throw new Error('lectura bloqueada'); };
+        try {
+          window.onload();
+          return estadoJuego.equipos.length;
+        } finally {
+          Storage.prototype.getItem = original;
+        }
+      });
+      assert.equal(blockedRead, 4, 'el juego debe arrancar con almacenamiento bloqueado');
       const saveFailure = await page.evaluate(() => {
         const original = Storage.prototype.setItem;
         Storage.prototype.setItem = function () { throw new Error('almacenamiento bloqueado'); };
