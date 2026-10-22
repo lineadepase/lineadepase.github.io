@@ -11,7 +11,7 @@
 
 - Liga ficticia de cuatro equipos, calendario de ida y vuelta y clasificación con desempates.
 - Tres formaciones, tres estilos, selección automática y rotación manual.
-- Laboratorio de juego con ejercicios interactivos de pase y progresión y presión coordinada, explicación de las decisiones y progreso separado por ejercicio.
+- Laboratorio de juego con ejercicios interactivos de pase y progresión, presión coordinada y lectura del espacio, explicación de las decisiones y progreso separado por ejercicio.
 - Simulación de ocasiones, tiros, goles, xG interno, cansancio, lesiones, taquilla y salarios.
 - Mercado, venta de jugadores, preparación, premios y continuidad de temporada.
 - Guardado local en navegador y recuperación con validación estructural. Se admite el presupuesto negativo como estado válido.
@@ -37,4 +37,4 @@ Todos los clubes y futbolistas del juego usan nombres ficticios con tono humorí
 
 ## Próxima ampliación de producto
 
-El laboratorio ya contiene ejercicios jugables de pase y progresión y presión coordinada. Miden decisiones ficticias mediante escalas didácticas explicadas en pantalla; no cambian las valoraciones de los jugadores ni se presentan como métricas oficiales. Las próximas ampliaciones pueden incorporar lectura de espacios y finalización, además de repeticiones animadas generadas por el simulador. Los nombres humorísticos y las caras ilustradas originales siguen siendo el modo base; cualquier contenido identificable de clubes, competiciones o futbolistas reales requeriría una revisión de permisos antes de incorporarse.
+El laboratorio ya contiene ejercicios jugables de pase y progresión, presión coordinada y lectura del espacio. Miden decisiones ficticias mediante escalas didácticas explicadas en pantalla; no cambian las valoraciones de los jugadores ni se presentan como métricas oficiales. Las próximas ampliaciones pueden incorporar finalización y repeticiones animadas generadas por el simulador. Los nombres humorísticos y las caras ilustradas originales siguen siendo el modo base; cualquier contenido identificable de clubes, competiciones o futbolistas reales requeriría una revisión de permisos antes de incorporarse.

@@ -141,6 +141,38 @@ const fs = require('node:fs/promises');
       await page.reload();
       assert.equal(await page.evaluate(() => estadoJuego.entrenamiento.porTipo.presion.intentos), 1,
         'el progreso de presión también se conserva al recargar');
+      const olderPressureSave = await page.evaluate(() => {
+        const partida = crearEstadoInicial();
+        delete partida.entrenamiento.porTipo.espacio;
+        return estadoPartidaValido(partida);
+      });
+      assert.equal(olderPressureSave, true, 'los guardados de dos ejercicios siguen siendo válidos');
+      await page.locator('#tipo-ejercicio').selectOption('espacio');
+      assert.match(await page.locator('#titulo-laboratorio').innerText(), /Lectura del espacio/);
+      const spaceBoard = await page.locator('#svg-espacio').evaluate(el => ({
+        active: el.classList.contains('active'),
+        ariaHidden: el.getAttribute('aria-hidden'),
+        display: getComputedStyle(el).display,
+        width: el.getBoundingClientRect().width,
+        height: el.getBoundingClientRect().height
+      }));
+      assert.ok(spaceBoard.active && spaceBoard.ariaHidden === 'false' && spaceBoard.display !== 'none' &&
+        spaceBoard.width > 0 && spaceBoard.height > 0,
+        'la pizarra de lectura del espacio debe renderizarse: ' + JSON.stringify(spaceBoard));
+      const spaceChoice = await page.evaluate(() => retoPaseActual.opcionRecomendada);
+      await page.locator(`#pase-opciones button[data-opcion-index="${spaceChoice}"]`).click();
+      const spaceProgress = await page.evaluate(() => ({
+        total: estadoJuego.entrenamiento.intentos,
+        passes: estadoJuego.entrenamiento.porTipo.pase.intentos,
+        pressure: estadoJuego.entrenamiento.porTipo.presion.intentos,
+        space: estadoJuego.entrenamiento.porTipo.espacio.intentos,
+        spaceBest: estadoJuego.entrenamiento.porTipo.espacio.mejorPuntuacion
+      }));
+      assert.deepEqual(spaceProgress, { total: 3, passes: 1, pressure: 1, space: 1, spaceBest: 100 },
+        'lectura del espacio conserva progreso separado y suma al total');
+      await page.reload();
+      assert.equal(await page.evaluate(() => estadoJuego.entrenamiento.porTipo.espacio.intentos), 1,
+        'el progreso de lectura del espacio se conserva al recargar');
       await page.locator('button.tab-btn').filter({ hasText: 'Pizarra Táctica' }).click();
       const availability = await page.locator('#resumen-disponibilidad').innerText();
       assert.match(availability, /Disponibles: \d+\/\d+/);
