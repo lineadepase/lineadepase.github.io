@@ -278,6 +278,14 @@ const assert = require('node:assert/strict');
         return calendarioValido(partida.calendario, partida.equipos);
       });
       assert.equal(swappedCalendar, false, 'la ida y vuelta no pueden mezclar enfrentamientos');
+      await page.evaluate(() => {
+        const partida = crearEstadoInicial();
+        partida.equipos[0].nombre = 'Equipo inexistente';
+        localStorage.setItem('ldp_manager_save', JSON.stringify(partida));
+      });
+      await page.reload();
+      assert.equal(await page.evaluate(() => obtenerMiEquipo()?.nombre), 'Real Zaragoza',
+        'una partida sin el equipo controlado se debe rechazar');
       await page.evaluate(() => localStorage.setItem('ldp_manager_save', '{bad json'));
       await page.reload();
       assert.equal(await page.evaluate(() => estadoJuego.temporada), 1);
