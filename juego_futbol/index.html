@@ -349,6 +349,7 @@
         <div class="stat-pill">Presupuesto: <strong id="lbl-presupuesto">9.500.000 €</strong></div>
         <div class="stat-pill">Salarios: <strong id="lbl-salarios">0 €/j</strong></div>
         <button onclick="guardarPartidaLocal()" title="Guardar en navegador">💾 Guardar</button>
+        <span id="estado-guardado" role="status" aria-live="polite" style="font-size:12px;color:#cbd5e1"></span>
         <button onclick="reiniciarPartidaLocal()" title="Borrar guardado y empezar de cero">🔄 Reiniciar</button>
     </div>
 </header>
@@ -1293,10 +1294,12 @@ function iniciarNuevaTemporada() {
 function guardarPartidaLocal(mostrarAviso = true) {
     try {
         localStorage.setItem('ldp_manager_save', JSON.stringify(estadoJuego));
+        document.getElementById('estado-guardado').textContent = '✓ Guardado';
         if (mostrarAviso) alert("💾 Partida guardada en el navegador.");
         return true;
     } catch (error) {
         console.warn("No se pudo guardar la partida:", error);
+        document.getElementById('estado-guardado').textContent = '⚠️ No guardado';
         if (mostrarAviso) alert("No se ha podido guardar la partida. Comprueba el almacenamiento del navegador.");
         return false;
     }
