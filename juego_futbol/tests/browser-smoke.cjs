@@ -116,17 +116,16 @@ const fs = require('node:fs/promises');
       await page.locator('#tipo-ejercicio').selectOption('presion');
       assert.match(await page.locator('#titulo-laboratorio').innerText(), /Presión coordinada/);
       const pressBoardState = await page.locator('#svg-presion').evaluate(el => ({
-        hidden: el.hidden,
         active: el.classList.contains('active'),
+        ariaHidden: el.getAttribute('aria-hidden'),
         display: getComputedStyle(el).display,
         visibility: getComputedStyle(el).visibility,
         width: el.getBoundingClientRect().width,
         height: el.getBoundingClientRect().height,
         tabActive: document.querySelector('#tab-entrenamiento').classList.contains('active')
       }));
-      assert.equal(pressBoardState.hidden, false,
-        'la pizarra de presión debe quitar el atributo hidden: ' + JSON.stringify(pressBoardState));
-      assert.ok(pressBoardState.active && pressBoardState.display !== 'none' && pressBoardState.visibility !== 'hidden' &&
+      assert.ok(pressBoardState.active && pressBoardState.ariaHidden === 'false' &&
+        pressBoardState.display !== 'none' && pressBoardState.visibility !== 'hidden' &&
         pressBoardState.width > 0 && pressBoardState.height > 0 && pressBoardState.tabActive,
         'la pizarra de presión se muestra al cambiar de ejercicio: ' + JSON.stringify(pressBoardState));
       const pressingChoice = await page.evaluate(() => retoPaseActual.opcionRecomendada);
