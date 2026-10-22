@@ -26,6 +26,7 @@ const fs = require('node:fs/promises');
         clubes: estadoJuego.equipos.map(e => e.nombre),
         jugadores: estadoJuego.equipos.flatMap(e => e.plantilla.map(j => j.nombre)),
         mercado: estadoJuego.mercado.map(j => j.nombre),
+        perfilesRivales: estadoJuego.equipos.slice(1).map(e => [e.formacion, e.estilo]),
         cabecera: document.querySelector('.club-brand h1')?.textContent.trim()
       }));
       assert.deepEqual(plantillasFicticias.clubes, [
@@ -39,6 +40,9 @@ const fs = require('node:fs/promises');
         'Crispín Chutapiedras', 'Pipo Puntería', 'Tere Taconazo',
         'Benito Banderazo', 'Marga Parapenaltis'
       ], 'el mercado debe mostrar los nombres humorísticos ficticios');
+      assert.deepEqual(plantillasFicticias.perfilesRivales, [
+        ['5-3-2', 'Defensivo'], ['4-3-3', 'Ofensivo'], ['4-4-2', 'Equilibrado']
+      ], 'los rivales deben presentar perfiles tácticos diferenciados');
       const avatarCheck = await page.evaluate(() => {
         const avatares = [...document.querySelectorAll('#tbody-plantilla .player-avatar')];
         const avatarMercado = [...document.querySelectorAll('#tbody-mercado .player-avatar')];

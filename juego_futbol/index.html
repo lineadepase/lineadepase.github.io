@@ -878,9 +878,9 @@ function crearEstadoInicial() {
     convocarOnceAutomatico(miEquipo);
 
     const datosRivales = [
-        { nombre: "Atlético Siestense", apodo: "Siestense", aforo: 9000 },
-        { nombre: "Unión Deportiva Patapalo", apodo: "Patapalo", aforo: 22000 },
-        { nombre: "Deportivo Balón Perdido", apodo: "Balonazo", aforo: 29000 }
+        { nombre: "Atlético Siestense", apodo: "Siestense", aforo: 9000, formacion: "5-3-2", estilo: "Defensivo" },
+        { nombre: "Unión Deportiva Patapalo", apodo: "Patapalo", aforo: 22000, formacion: "4-3-3", estilo: "Ofensivo" },
+        { nombre: "Deportivo Balón Perdido", apodo: "Balonazo", aforo: 29000, formacion: "4-4-2", estilo: "Equilibrado" }
     ];
 
     const nombresRivales = {
@@ -893,7 +893,9 @@ function crearEstadoInicial() {
     const rivales = datosRivales.map(r => {
         const eq = {
             nombre: r.nombre, presupuesto: 7000000, aforo: r.aforo,
-            formacion: "4-4-2", estilo: "Equilibrado",
+            // Cada rival conserva una identidad táctica distinta y utilizable
+            // por el motor de ataque, defensa y desgaste.
+            formacion: r.formacion, estilo: r.estilo,
             puntos: 0, pj: 0, gf: 0, gc: 0, xgf: 0.0, xgc: 0.0,
             plantilla: []
         };

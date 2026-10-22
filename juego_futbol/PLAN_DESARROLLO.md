@@ -11,6 +11,7 @@
 
 - Liga ficticia de cuatro equipos, calendario de ida y vuelta y clasificación con desempates.
 - Tres formaciones, tres estilos, selección automática y rotación manual.
+- Rivales con identidades tácticas distintas: bloque defensivo 5-3-2, propuesta ofensiva 4-3-3 y perfil equilibrado 4-4-2.
 - Laboratorio de juego con ejercicios interactivos de pase y progresión, presión coordinada, lectura del espacio y finalización, explicación de las decisiones y progreso separado por ejercicio.
 - Simulación de ocasiones, tiros, goles, xG interno, cansancio, lesiones, taquilla y salarios. La relación entre ataque y defensa rival afecta tanto al volumen de remates como a la calidad estimada de las ocasiones.
 - Repeticiones analíticas esquemáticas de los remates del equipo del usuario, enlazadas desde la crónica y etiquetadas como contenido ficticio del simulador.
