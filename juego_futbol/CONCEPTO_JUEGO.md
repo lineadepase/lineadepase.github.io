@@ -15,7 +15,7 @@ El usuario dirige un club de barrio disparatado y aprende a tomar decisiones de 
 
 Estética de **pizarra de entrenador convertida en sala de análisis**: fondo azul noche, paneles azul pizarra, acentos celestes y un verde de césped reservado para el campo. Los datos importantes usan tipografía grande, contraste alto y etiquetas cortas; en móvil, los paneles pasan a una sola columna y las decisiones a botones táctiles apilados.
 
-Los retratos serán ilustraciones originales de estilo editorial/arcade. Se construirán con rasgos genéricos y expresivos (gesto, pelo, postura y accesorios), evitando copiar o hacer reconocible a una persona real. La variedad de edades, tonos de piel y estilos servirá para diferenciar personajes ficticios, no para representar plantillas oficiales.
+Los retratos de plantilla, goleadores y mercado se muestran como avatares vectoriales originales de estilo arcade: formas planas, rasgos expresivos y variaciones deterministas de pelo, tono de piel, gafas, barba y camiseta. No son fotos, no se basan en futbolistas reales ni pretenden representar una plantilla oficial. La misma persona ficticia conserva su avatar entre recargas, sin descargar imágenes externas.
 
 ## Partido y lenguaje de datos
 

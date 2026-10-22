@@ -39,6 +39,25 @@ const fs = require('node:fs/promises');
         'Crispín Chutapiedras', 'Pipo Puntería', 'Tere Taconazo',
         'Benito Banderazo', 'Marga Parapenaltis'
       ], 'el mercado debe mostrar los nombres humorísticos ficticios');
+      const avatarCheck = await page.evaluate(() => {
+        const avatares = [...document.querySelectorAll('#tbody-plantilla .player-avatar')];
+        const avatarMercado = [...document.querySelectorAll('#tbody-mercado .player-avatar')];
+        const muestra = avatarJugadorHTML('Paco Manoplas', 'POR');
+        return {
+          plantel: avatares.length,
+          mercado: avatarMercado.length,
+          decorativos: [...avatares, ...avatarMercado].every(svg => svg.getAttribute('aria-hidden') === 'true'),
+          estables: muestra === avatarJugadorHTML('Paco Manoplas', 'POR'),
+          distintos: muestra !== avatarJugadorHTML('Rita Remates', 'DEL'),
+          sinRecursosExternos: [...avatares, ...avatarMercado].every(svg => !svg.querySelector('[href], image'))
+        };
+      });
+      assert.equal(avatarCheck.plantel, 14, 'cada jugador de la plantilla tiene avatar vectorial');
+      assert.equal(avatarCheck.mercado, 5, 'cada fichaje disponible tiene avatar vectorial');
+      assert.equal(avatarCheck.decorativos, true, 'el avatar complementa el nombre sin duplicar lectura accesible');
+      assert.equal(avatarCheck.estables, true, 'el mismo personaje conserva su avatar determinista');
+      assert.equal(avatarCheck.distintos, true, 'nombres diferentes producen retratos diferenciados');
+      assert.equal(avatarCheck.sinRecursosExternos, true, 'los retratos no cargan imágenes de terceros');
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 0);
       const tabs = ['tactica', 'partido', 'clasificacion', 'mercado', 'entrenamiento'];
       for (const tab of tabs) {
