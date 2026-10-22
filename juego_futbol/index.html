@@ -632,7 +632,9 @@ function calcularFuerzas(eq) {
         convocarOnceAutomatico(eq);
         titulares = eq.plantilla.filter(j => j.titular && j.lesionado === 0);
     }
-    const media = titulares.reduce((acc, j) => acc + rendimientoReal(j), 0) / Math.max(1, titulares.length);
+    // Una alineación incompleta reduce la fuerza global: no basta con
+    // promediar únicamente los pocos jugadores que siguen disponibles.
+    const media = titulares.reduce((acc, j) => acc + rendimientoReal(j), 0) / 11;
     const mod = ESTILOS[eq.estilo];
     return {
         ataque: media * mod.ataque,
