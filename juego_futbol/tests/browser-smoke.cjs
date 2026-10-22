@@ -128,6 +128,24 @@ const assert = require('node:assert/strict');
       });
       assert.equal(invalidFixture.after, invalidFixture.before,
         'una jornada corrupta no debe simularse');
+      const futureFixture = await page.evaluate(() => {
+        const future = (estadoJuego.jornadaActual + 1) % estadoJuego.calendario.length;
+        const original = estadoJuego.calendario[future];
+        const before = estadoJuego.jornadaActual;
+        const points = estadoJuego.equipos.map(e => e.puntos);
+        estadoJuego.calendario[future] = [[estadoJuego.equipos[0].nombre, estadoJuego.equipos[0].nombre]];
+        try {
+          simularJornada();
+          return { before, after: estadoJuego.jornadaActual,
+            pointsUnchanged: estadoJuego.equipos.every((e, i) => e.puntos === points[i]) };
+        } finally {
+          estadoJuego.calendario[future] = original;
+        }
+      });
+      assert.equal(futureFixture.after, futureFixture.before,
+        'una jornada futura corrupta también debe impedir simular');
+      assert.equal(futureFixture.pointsUnchanged, true,
+        'no deben cambiar los puntos cuando el calendario es inválido');
       const blockedRead = await page.evaluate(() => {
         const original = Storage.prototype.getItem;
         Storage.prototype.getItem = function () { throw new Error('lectura bloqueada'); };
