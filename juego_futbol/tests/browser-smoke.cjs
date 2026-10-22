@@ -49,6 +49,21 @@ const assert = require('node:assert/strict');
       });
       assert.equal(injuryCheck.excluded, true, 'los lesionados no forman parte del once calculado');
       assert.ok(Number.isFinite(injuryCheck.result.ataque) && Number.isFinite(injuryCheck.result.defensa));
+      const injuredShot = await page.evaluate(() => {
+        const club = obtenerMiEquipo();
+        const target = club.plantilla.find(j => j.titular);
+        const prev = target.xg;
+        target.lesionado = 3;
+        const rival = estadoJuego.equipos.find(e => e !== club);
+        const log = document.getElementById('match-log');
+        const canvas = document.getElementById('canvas-shotmap');
+        simularPartidoIndividual(club, rival, false, log, canvas.getContext('2d'), canvas.width, canvas.height);
+        const unchanged = target.xg === prev;
+        target.lesionado = 0;
+        convocarOnceAutomatico(club);
+        return unchanged;
+      });
+      assert.equal(injuredShot, true, 'un lesionado no puede rematar');
       const training = await page.evaluate(() => {
         const club = obtenerMiEquipo();
         const fatigueBefore = club.plantilla.map(j => j.cansancio);
