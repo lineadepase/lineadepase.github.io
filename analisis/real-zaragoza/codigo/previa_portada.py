@@ -2,8 +2,10 @@
 Portada de la previa para redes: el león de Línea de pase frente al rival.
 
 Es la primera imagen del carrusel de Instagram; la segunda es la tarjeta de
-datos de previa_redes.py. El león es una ilustración propia (leon_previa.svg),
-no el del escudo del club: en estas imágenes no se usan escudos ni logotipos.
+datos de previa_redes.py. El león es una ilustración con derechos de uso que se
+guarda en codigo/recursos/ (leon_previa.png o leon_previa.svg), no el del escudo
+del club: en estas imágenes no se usan escudos ni logotipos. Si no hay
+ilustración, el script se detiene y la previa sale solo con la tarjeta de datos.
 
 Se ejecuta después de previa_redes.py, porque lee sus cifras:
     python analisis/real-zaragoza/codigo/previa_redes.py 9 --estadio "Can Dragó (Barcelona)"
@@ -13,6 +15,7 @@ Escribe datos/salida/previa_portada.png (1080 × 1350 px). La página se dibuja
 en HTML y se fotografía con Chromium mediante Playwright.
 """
 
+import base64
 import json
 from datetime import datetime
 from html import escape
@@ -23,7 +26,7 @@ from playwright.sync_api import sync_playwright
 from cargar_datos import CARPETA_SALIDA
 from previa_redes import DIAS, MESES
 
-LEON = Path(__file__).with_name("leon_previa.svg")
+RECURSOS = Path(__file__).with_name("recursos")
 
 PLANTILLA = """<!doctype html>
 <html lang="es"><head><meta charset="utf-8">
@@ -91,7 +94,14 @@ def main():
     inicio = datetime.fromisoformat(c["inicio_madrid"])
     cuando = f"{DIAS[inicio.weekday()].capitalize()} {inicio.day} de {MESES[inicio.month - 1]} · {inicio:%H:%M}"
 
-    leon = LEON.read_text(encoding="utf-8")
+    svg, png = RECURSOS / "leon_previa.svg", RECURSOS / "leon_previa.png"
+    if svg.exists():
+        leon = svg.read_text(encoding="utf-8")
+    elif png.exists():
+        datos = base64.b64encode(png.read_bytes()).decode("ascii")
+        leon = f'<img src="data:image/png;base64,{datos}" alt="" style="width:100%">'
+    else:
+        raise SystemExit("Falta la ilustración del león en codigo/recursos/: no se genera la portada")
     html = (PLANTILLA.replace("__JORNADA__", str(c["jornada"]))
             .replace("__LEON__", leon)
             .replace("__LOCAL__", escape(c["local"]))
