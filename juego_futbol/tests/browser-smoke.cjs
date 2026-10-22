@@ -68,6 +68,16 @@ const assert = require('node:assert/strict');
         return unchanged;
       });
       assert.equal(injuredShot, true, 'un lesionado no puede rematar');
+      const saveFailure = await page.evaluate(() => {
+        const original = Storage.prototype.setItem;
+        Storage.prototype.setItem = function () { throw new Error('almacenamiento bloqueado'); };
+        try {
+          return guardarPartidaLocal(false);
+        } finally {
+          Storage.prototype.setItem = original;
+        }
+      });
+      assert.equal(saveFailure, false, 'el fallo de almacenamiento no debe bloquear el juego');
       const shortSquad = await page.evaluate(() => {
         const club = obtenerMiEquipo();
         const original = club.plantilla.map(j => j.lesionado);
