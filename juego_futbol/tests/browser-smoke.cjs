@@ -279,8 +279,25 @@ const assert = require('node:assert/strict');
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 1, 'partida persistente');
       await page.evaluate(() => { for (let i = 1; i < 6; i++) simularJornada(); });
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 6);
+      const premios = await page.evaluate(() => {
+        const ordenados = calcularPremiosClasificacion(estadoJuego.equipos);
+        return ordenados.map(p => p.premio);
+      });
+      assert.deepEqual(premios, [5000000, 3500000, 2500000, 1500000],
+        'los premios deben descender según la clasificación');
+      const presupuestosAntes = await page.evaluate(() =>
+        Object.fromEntries(estadoJuego.equipos.map(e => [e.nombre, e.presupuesto])));
+      const premiosPorEquipo = await page.evaluate(() =>
+        Object.fromEntries(calcularPremiosClasificacion(estadoJuego.equipos).map(p => [p.nombre, p.premio])));
       await page.evaluate(() => iniciarNuevaTemporada());
       assert.equal(await page.evaluate(() => estadoJuego.temporada), 2);
+      const presupuestosDespues = await page.evaluate(() =>
+        Object.fromEntries(estadoJuego.equipos.map(e => [e.nombre, e.presupuesto])));
+      for (const nombre of Object.keys(presupuestosAntes)) {
+        assert.equal(presupuestosDespues[nombre] - presupuestosAntes[nombre], premiosPorEquipo[nombre],
+          'cada club recibe exactamente su premio de clasificación');
+      }
+
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 0);
       assert.equal(await page.evaluate(() => estadoJuego.calendario.length), 6);
       await page.reload();
