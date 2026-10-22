@@ -19,6 +19,7 @@ real-zaragoza/
 │   ├── previa.py          previa del próximo partido
 │   ├── previa_redes.py    imagen y cifras de la previa para redes
 │   ├── previa_portada.py  portada de la previa (imagen de fondo en codigo/recursos/portada_previa.jpg, sin escudos)
+│   ├── previa_carrusel.py diapositivas de la previa: rival, jugador, expectativa y cierre
 │   ├── tarjeta_dato.py    imagen de «El dato de la jornada» para LinkedIn
 │   ├── comprobar.R        repite los cálculos en R y los compara (ejecuta las piezas de R/)
 │   └── R/

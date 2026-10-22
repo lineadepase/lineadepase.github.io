@@ -1,0 +1,36 @@
+{
+  "jornada": 9,
+  "rival": "CE Europa",
+  "jugador": {
+    "nombre": "Khalid Noureddine",
+    "dorsal": "9",
+    "posicion": "Delantero centro",
+    "edad": 23,
+    "datos": [
+      [
+        "2",
+        "goles, uno de los dos máximos goleadores del equipo"
+      ],
+      [
+        "487",
+        "minutos en 8 partidos de liga"
+      ],
+      [
+        "16'",
+        "su último gol: de cabeza ante el Algeciras (2-1)"
+      ]
+    ],
+    "lectura": "Es la referencia en el área de un equipo que marca menos de lo que genera: 6 goles con 10,2 xG.",
+    "fuentes": "BeSoccer, FotMob y Andalucía Información"
+  },
+  "expectativa": {
+    "local": 38.7,
+    "empate": 25.8,
+    "visitante": 35.6,
+    "goles_local": 1.39,
+    "goles_visitante": 1.32,
+    "ventaja_local": 1.48,
+    "metodo": "Modelo de Poisson con ataque, defensa y ventaja de campo, ajustado con los 80 resultados del grupo 2 hasta la jornada 8.",
+    "lectura": "Con ocho jornadas, el modelo apenas separa a los equipos y pesa mucho el campo: estima que jugar en casa multiplica por 1,48 los goles esperados."
+  }
+}
