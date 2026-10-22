@@ -324,6 +324,25 @@ const assert = require('node:assert/strict');
       assert.equal(await page.evaluate(() => estadoJuego.calendario.length), 6);
       await page.reload();
       assert.equal(await page.evaluate(() => estadoJuego.temporada), 2);
+      // El déficit es una situación económica válida, no una partida corrupta.
+      await page.evaluate(() => {
+        const partida = crearEstadoInicial();
+        partida.equipos.find(e => e.nombre === 'Real Zaragoza').presupuesto = -250000;
+        localStorage.setItem('ldp_manager_save', JSON.stringify(partida));
+      });
+      await page.reload();
+      assert.equal(await page.evaluate(() => obtenerMiEquipo().presupuesto), -250000,
+        'una partida con déficit se recupera sin reiniciarse');
+      assert.match(await page.locator('#lbl-presupuesto').innerText(), /Déficit/,
+        'el déficit se señala en la interfaz');
+      const compraEnDeficit = await page.evaluate(() => {
+        const club = obtenerMiEquipo();
+        const antes = [club.presupuesto, club.plantilla.length, estadoJuego.mercado.length];
+        ficharJugador(0);
+        return { antes, despues: [club.presupuesto, club.plantilla.length, estadoJuego.mercado.length] };
+      });
+      assert.deepEqual(compraEnDeficit.despues, compraEnDeficit.antes,
+        'no se permite comprar jugadores con déficit');
       await page.evaluate(() => localStorage.setItem('ldp_manager_save',
         JSON.stringify({ equipos: [], mercado: [], calendario: [], jornadaActual: 0, temporada: 1 })));
       await page.reload();
