@@ -1315,6 +1315,8 @@ window.onload = () => {
         estadoJuego = guardado ? JSON.parse(guardado) : crearEstadoInicial();
         if (!estadoJuego || !Array.isArray(estadoJuego.equipos) ||
             estadoJuego.equipos.length !== 4 ||
+            new Set(estadoJuego.equipos.map(eq => eq?.nombre)).size !== 4 ||
+            !estadoJuego.equipos.some(eq => eq?.nombre === 'Real Zaragoza') ||
             !estadoJuego.equipos.every(eq => eq && typeof eq.nombre === 'string' &&
                 Number.isFinite(eq.presupuesto) && eq.presupuesto >= 0 &&
                 Object.hasOwn(FORMACIONES, eq.formacion) &&
