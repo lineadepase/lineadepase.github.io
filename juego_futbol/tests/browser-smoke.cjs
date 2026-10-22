@@ -68,6 +68,23 @@ const assert = require('node:assert/strict');
         return unchanged;
       });
       assert.equal(injuredShot, true, 'un lesionado no puede rematar');
+      const injuredRecovery = await page.evaluate(() => {
+        const [home, away] = estadoJuego.equipos;
+        const player = home.plantilla[0];
+        const old = { lesionado: player.lesionado, cansancio: player.cansancio, titular: player.titular };
+        player.lesionado = 2;
+        player.cansancio = 31;
+        player.titular = true;
+        const canvas = document.getElementById('canvas-shotmap');
+        simularPartidoIndividual(home, away, false, document.getElementById('match-log'),
+          canvas.getContext('2d'), canvas.width, canvas.height);
+        const result = { lesionado: player.lesionado, cansancio: player.cansancio };
+        Object.assign(player, old);
+        convocarOnceAutomatico(home);
+        return result;
+      });
+      assert.deepEqual(injuredRecovery, { lesionado: 1, cansancio: 31 },
+        'el lesionado se recupera sin acumular fatiga');
       const invalidFixture = await page.evaluate(() => {
         const original = estadoJuego.calendario[estadoJuego.jornadaActual];
         const before = estadoJuego.jornadaActual;
