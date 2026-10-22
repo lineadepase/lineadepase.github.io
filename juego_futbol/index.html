@@ -1044,7 +1044,8 @@ function simularPartidoIndividual(local, vis, esNuestro, logBox, ctxShot, w, h) 
         if (Math.random() < 0.82) {
             const atacaLocal = Math.random() < (atqL / (atqL + atqV));
             const eqAtq = atacaLocal ? local : vis;
-            const titulares = eqAtq.plantilla.filter(j => j.titular);
+            const titulares = eqAtq.plantilla.filter(j => j.titular && j.lesionado === 0);
+            if (titulares.length === 0) return;
             const rematador = elegirRematador(titulares);
 
             const esClara = Math.random() < 0.25;
