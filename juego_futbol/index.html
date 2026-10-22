@@ -1307,10 +1307,13 @@ function guardarPartidaLocal(mostrarAviso = true) {
 
 function reiniciarPartidaLocal() {
     if (confirm("¿Seguro que quieres reiniciar la partida desde la Temporada 1?")) {
+        const indicador = document.getElementById('estado-guardado');
         try {
             localStorage.removeItem('ldp_manager_save');
+            indicador.textContent = 'Nueva partida sin guardar';
         } catch (error) {
             console.warn("No se pudo borrar la partida guardada:", error);
+            indicador.textContent = '⚠️ Reinicio no guardado';
             alert("No se pudo borrar el guardado del navegador. El reinicio será temporal y la partida anterior podría reaparecer al recargar.");
         }
         estadoJuego = crearEstadoInicial();
