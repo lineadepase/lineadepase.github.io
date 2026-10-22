@@ -15,6 +15,8 @@ const assert = require('node:assert/strict');
       await page.goto('http://127.0.0.1:8765/juego_futbol/', { waitUntil: 'load' });
       if (mode === 'mobile') assert.equal(await page.evaluate(() => window.innerWidth), 390, 'ancho de pantalla móvil esperado');
       await page.waitForFunction(() => typeof estadoJuego !== 'undefined' && !!estadoJuego.equipos);
+      assert.equal(await page.locator('.sim-disclaimer').count(), 1, 'aviso visible de simulación');
+      assert.match(await page.locator('.sim-disclaimer').innerText(), /xG.*datos del juego/i);
       assert.equal(await page.evaluate(() => estadoJuego.equipos.length), 4);
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 0);
       const tabs = ['tactica', 'partido', 'clasificacion', 'mercado'];
