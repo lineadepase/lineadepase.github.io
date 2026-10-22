@@ -268,6 +268,9 @@ const assert = require('node:assert/strict');
       await page.reload();
       assert.equal(await page.evaluate(() => calendarioValido(estadoJuego.calendario, estadoJuego.equipos)), true,
         'calendario con enfrentamientos duplicados rechazado');
+      const safeMarkup = await page.evaluate(() =>
+        escaparHTML('<img src=x onerror=alert(1)>') === '&lt;img src=x onerror=alert(1)&gt;');
+      assert.equal(safeMarkup, true, 'los nombres mostrados en el registro deben escapar HTML');
       const swappedCalendar = await page.evaluate(() => {
         const partida = crearEstadoInicial();
         // Intercambiar jornadas completas entre mitades conserva los doce
