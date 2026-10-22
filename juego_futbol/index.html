@@ -736,6 +736,29 @@ function generarCalendario(nombres) {
     return [...ida, ...vuelta];
 }
 
+function calendarioValido(calendario, equipos) {
+    if (!Array.isArray(calendario) || calendario.length !== 6 ||
+        !Array.isArray(equipos) || equipos.length !== 4) return false;
+    const nombres = equipos.map(eq => eq.nombre);
+    if (new Set(nombres).size !== 4) return false;
+    const cruces = [];
+    for (const jornada of calendario) {
+        if (!Array.isArray(jornada) || jornada.length !== 2) return false;
+        const participantes = [];
+        for (const partido of jornada) {
+            if (!Array.isArray(partido) || partido.length !== 2) return false;
+            const [local, visitante] = partido;
+            if (local === visitante || !nombres.includes(local) || !nombres.includes(visitante)) return false;
+            participantes.push(local, visitante);
+            cruces.push([local, visitante]);
+        }
+        if (new Set(participantes).size !== 4) return false;
+    }
+    const enfrentamientos = new Set(cruces.map(([a, b]) => a + '|' + b));
+    return enfrentamientos.size === 12 &&
+        nombres.every(a => nombres.every(b => a === b || enfrentamientos.has(a + '|' + b)));
+}
+
 // --- 4. INTERFAZ Y RENDERIZADO ---
 function obtenerMiEquipo() {
     return estadoJuego.equipos.find(e => e.nombre === "Real Zaragoza");
@@ -1294,7 +1317,7 @@ window.onload = () => {
                     Number.isFinite(j.xg) && Number.isFinite(j.goles))) ||
             !Array.isArray(estadoJuego.mercado) ||
             !Array.isArray(estadoJuego.calendario) ||
-            estadoJuego.calendario.length !== 6 ||
+            !calendarioValido(estadoJuego.calendario, estadoJuego.equipos) ||
             !Number.isInteger(estadoJuego.jornadaActual) ||
             estadoJuego.jornadaActual < 0 ||
             estadoJuego.jornadaActual > estadoJuego.calendario.length ||
