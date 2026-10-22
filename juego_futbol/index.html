@@ -825,6 +825,22 @@ function calcularFuerzas(eq) {
     };
 }
 
+// Estima cuánto condiciona el ataque de un equipo a la defensa rival. Se usa
+// tanto para generar remates como para su calidad, de modo que el atributo de
+// defensa y los estilos tácticos tengan un efecto visible en el partido.
+function calcularPerfilAtaque(ataque, defensaRival) {
+    const ataqueSeguro = Number.isFinite(ataque) ? Math.max(0, ataque) : 0;
+    const defensaSegura = Number.isFinite(defensaRival) ? Math.max(35, defensaRival) : 35;
+    const ratio = ataqueSeguro / defensaSegura;
+    const limitar = (valor, minimo, maximo) => Math.max(minimo, Math.min(maximo, valor));
+    return {
+        ratio,
+        probabilidadRemate: limitar(0.72 + (ratio - 1) * 0.8, 0.45, 0.90),
+        probabilidadOcasionClara: limitar(0.25 + (ratio - 1) * 0.35, 0.10, 0.50),
+        ajusteXg: limitar((ratio - 1) * 0.15, -0.08, 0.08)
+    };
+}
+
 // --- 3. INICIALIZACIÓN Y PERSISTENCIA ---
 function crearEstadoInicial() {
     const crearJugador = (nombre, posicion, media) => ({
@@ -1826,17 +1842,24 @@ function simularPartidoIndividual(local, vis, esNuestro, logBox, ctxShot, w, h) 
     }
 
     tramos.forEach(min => {
-        if (Math.random() < 0.82) {
-            const totalAtaque = atqL + atqV;
-            if (totalAtaque <= 0) return;
-            const atacaLocal = Math.random() < (atqL / totalAtaque);
+        const amenazaLocal = atqL / Math.max(35, fVis.defensa);
+        const amenazaVisitante = atqV / Math.max(35, fLoc.defensa);
+        const amenazaTotal = amenazaLocal + amenazaVisitante;
+        if (amenazaTotal > 0) {
+            // El rival que ataca se decide por su capacidad frente a la defensa
+            // contraria, no solo por comparar dos valores de ataque.
+            const atacaLocal = Math.random() < (amenazaLocal / amenazaTotal);
             const eqAtq = atacaLocal ? local : vis;
+            const defensaRival = atacaLocal ? fVis.defensa : fLoc.defensa;
+            const perfilAtaque = calcularPerfilAtaque(atacaLocal ? atqL : atqV, defensaRival);
+            if (Math.random() >= perfilAtaque.probabilidadRemate) return;
             const titulares = eqAtq.plantilla.filter(j => j.titular && j.lesionado === 0);
             if (titulares.length === 0) return;
             const rematador = elegirRematador(titulares);
 
-            const esClara = Math.random() < 0.25;
-            const xgTiro = Number((esClara ? (0.30 + Math.random() * 0.25) : (0.04 + Math.random() * 0.18)).toFixed(2));
+            const esClara = Math.random() < perfilAtaque.probabilidadOcasionClara;
+            const xgBase = esClara ? (0.30 + Math.random() * 0.25) : (0.04 + Math.random() * 0.18);
+            const xgTiro = Number(Math.max(0.02, Math.min(0.68, xgBase + perfilAtaque.ajusteXg)).toFixed(2));
             const probGol = Math.min(0.85, xgTiro * (rendimientoReal(rematador) / 72));
             const esGol = Math.random() < probGol;
 

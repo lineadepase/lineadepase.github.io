@@ -12,7 +12,7 @@
 - Liga ficticia de cuatro equipos, calendario de ida y vuelta y clasificación con desempates.
 - Tres formaciones, tres estilos, selección automática y rotación manual.
 - Laboratorio de juego con ejercicios interactivos de pase y progresión, presión coordinada, lectura del espacio y finalización, explicación de las decisiones y progreso separado por ejercicio.
-- Simulación de ocasiones, tiros, goles, xG interno, cansancio, lesiones, taquilla y salarios.
+- Simulación de ocasiones, tiros, goles, xG interno, cansancio, lesiones, taquilla y salarios. La relación entre ataque y defensa rival afecta tanto al volumen de remates como a la calidad estimada de las ocasiones.
 - Repeticiones analíticas esquemáticas de los remates del equipo del usuario, enlazadas desde la crónica y etiquetadas como contenido ficticio del simulador.
 - Avatares vectoriales originales, estables para cada nombre ficticio, en las tablas de plantilla, goleadores y mercado.
 - Mercado, venta de jugadores, preparación, premios y continuidad de temporada.

@@ -58,6 +58,29 @@ const fs = require('node:fs/promises');
       assert.equal(avatarCheck.estables, true, 'el mismo personaje conserva su avatar determinista');
       assert.equal(avatarCheck.distintos, true, 'nombres diferentes producen retratos diferenciados');
       assert.equal(avatarCheck.sinRecursosExternos, true, 'los retratos no cargan imágenes de terceros');
+      const matchModelCheck = await page.evaluate(() => {
+        const equilibrado = calcularPerfilAtaque(70, 70);
+        const ventajaAtacante = calcularPerfilAtaque(82, 65);
+        const defensaSuperior = calcularPerfilAtaque(65, 82);
+        const extremos = [calcularPerfilAtaque(-10, 0), calcularPerfilAtaque(1000, 1)];
+        return {
+          ataqueCreaMasRemates: ventajaAtacante.probabilidadRemate > equilibrado.probabilidadRemate,
+          defensaReduceRemates: defensaSuperior.probabilidadRemate < equilibrado.probabilidadRemate,
+          ataqueMejoraCalidad: ventajaAtacante.ajusteXg > equilibrado.ajusteXg,
+          defensaReduceCalidad: defensaSuperior.ajusteXg < equilibrado.ajusteXg,
+          acotado: extremos.every(perfil => Number.isFinite(perfil.probabilidadRemate) &&
+            perfil.probabilidadRemate >= 0.45 && perfil.probabilidadRemate <= 0.90 &&
+            perfil.probabilidadOcasionClara >= 0.10 && perfil.probabilidadOcasionClara <= 0.50 &&
+            perfil.ajusteXg >= -0.08 && perfil.ajusteXg <= 0.08)
+        };
+      });
+      assert.deepEqual(matchModelCheck, {
+        ataqueCreaMasRemates: true,
+        defensaReduceRemates: true,
+        ataqueMejoraCalidad: true,
+        defensaReduceCalidad: true,
+        acotado: true
+      }, 'el motor debe reflejar ataque y defensa rivales al generar remates y xG');
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 0);
       const tabs = ['tactica', 'partido', 'clasificacion', 'mercado', 'entrenamiento'];
       for (const tab of tabs) {
