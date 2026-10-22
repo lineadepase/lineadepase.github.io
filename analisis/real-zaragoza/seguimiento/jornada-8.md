@@ -38,7 +38,7 @@ El Real Zaragoza suma 17 puntos en ocho partidos y queda segundo, empatado con e
 
 Estoy preparando la actualización de Línea de pase. El xG y el análisis del vídeo siguen pendientes de revisión.
 
-https://lineadepase.github.io/
+https://lineadepase.com/
 
 #LíneaDePase #AnálisisDeDatos #RealZaragoza
 

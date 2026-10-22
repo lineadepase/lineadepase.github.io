@@ -4,7 +4,7 @@ Marca: **Línea de pase**. Nombre público y firma del autor: **Ángel Marqueta 
 
 Usar este nombre en títulos de autor, guiones, locución, tarjetas de cierre, subtítulos, miniaturas, créditos y metadatos. Los datos comunes están en `identidad.json`.
 
-El cierre incluye la web https://lineadepase.github.io/ y el perfil de LinkedIn. Mantener los créditos de las fuentes, música y sus licencias.
+El cierre incluye la web https://lineadepase.com/ y el perfil de LinkedIn. Mantener los créditos de las fuentes, música y sus licencias.
 
 Preparar versión horizontal para la web y LinkedIn, y vertical para reels. Comprobar el cierre completo antes de publicar.
 

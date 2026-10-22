@@ -1,6 +1,6 @@
 # Actualización del Real Zaragoza y análisis de vídeo pendiente
 
-Trabajas sobre el repositorio GitHub `lineadepase/lineadepase.github.io`, mi web «Línea de pase»: https://lineadepase.github.io/.
+Trabajas sobre el repositorio GitHub `lineadepase/lineadepase.github.io`, mi web «Línea de pase»: https://lineadepase.com/.
 
 No uses conectores salvo Google Sheets para el apartado Tableau. No envíes correos, no hagas pagos ni modifiques otros servicios. Se autorizan las herramientas de acceso al repositorio, lectura web, notificación al usuario y entrega de archivos indicadas abajo. No publiques el dato de la jornada ni el texto para LinkedIn.
 
@@ -109,7 +109,7 @@ Si falla la subida, genera `git format-patch origin/main -o <carpeta temporal>`,
 
 ## 9. Verificación pública solo tras subir
 
-Espera dos minutos, sin bloquear la comunicación más de un minuto seguido. Abre https://lineadepase.github.io/proyectos/real-zaragoza/, verifica nueva jornada y marcador. Abre ultimo-partido.html y grupo-2.html; deben mostrar el partido y corte realmente incorporados. Si el grupo no pudo actualizarse, no debe atribuirse un corte nuevo. Comprueba también el enlace al análisis visual si se añadió. No afirmes que se ve actualizado sin haberlo comprobado.
+Espera dos minutos, sin bloquear la comunicación más de un minuto seguido. Abre https://lineadepase.com/proyectos/real-zaragoza/, verifica nueva jornada y marcador. Abre ultimo-partido.html y grupo-2.html; deben mostrar el partido y corte realmente incorporados. Si el grupo no pudo actualizarse, no debe atribuirse un corte nuevo. Comprueba también el enlace al análisis visual si se añadió. No afirmes que se ve actualizado sin haberlo comprobado.
 
 ## 10. Entrega
 

@@ -95,7 +95,7 @@ def escribir_pagina_zaragoza(archivo, titulo, descripcion, migas, cuerpo, fuente
                     f'<meta name="description" content="{descripcion}">', cabeza)
     cabeza += (f'<meta property="og:title" content="{titulo}">\n'
                f'<meta property="og:description" content="{descripcion}">\n'
-               f'<meta property="og:image" content="https://lineadepase.github.io/proyectos/real-zaragoza/graficos/simulacion/compartir.png">\n'
+               f'<meta property="og:image" content="https://lineadepase.com/proyectos/real-zaragoza/graficos/simulacion/compartir.png">\n'
                '<link rel="stylesheet" href="../../assets/investigacion.css?v=20261021fotos">\n'
                '<link rel="stylesheet" href="../../assets/fotografia-editorial.css?v=20261021b">\n')
     menu = re.search(r'<header class="cabecera">.*?</header>', plantilla, re.S).group(0)

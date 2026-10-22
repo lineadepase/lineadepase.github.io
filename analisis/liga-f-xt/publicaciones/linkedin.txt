@@ -12,6 +12,6 @@ Resultado: Caroline Graham Hansen registra 0,593 xT neto por 90, con ocho jugado
 
 El código en Python, el cuaderno y siete pruebas automáticas están en abierto. Los datos de StatsBomb no se redistribuyen, como pide su acuerdo de uso.
 
-https://lineadepase.github.io/proyectos/liga-f-xt/
+https://lineadepase.com/proyectos/liga-f-xt/
 
 #AnaliticaDeportiva #Python #FutbolFemenino #CienciaDeDatos

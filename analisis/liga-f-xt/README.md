@@ -1,6 +1,6 @@
 # Liga F 2023/24: crear peligro antes del tiro
 
-Investigación sobre quién acerca el balón a las zonas de gol con pases y conducciones, medido con un modelo propio de amenaza esperada (xT). El resultado se publica en [Línea de pase](https://lineadepase.github.io/proyectos/liga-f-xt/).
+Investigación sobre quién acerca el balón a las zonas de gol con pases y conducciones, medido con un modelo propio de amenaza esperada (xT). El resultado se publica en [Línea de pase](https://lineadepase.com/proyectos/liga-f-xt/).
 
 Es un análisis histórico: la temporada 2023/24 terminó en 2024 y no describe la forma actual de ninguna jugadora.
 
