@@ -1,0 +1,22 @@
+name: Pruebas del juego de fútbol
+on:
+  push:
+    branches:
+      - desarrollo/juego-futbol-revision-20261022
+  pull_request:
+    paths:
+      - 'juego_futbol/**'
+      - '.github/workflows/pruebas-juego-futbol.yml'
+  workflow_dispatch:
+jobs:
+  test-python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compilar archivos Python
+        run: python -m compileall -q juego_futbol
+      - name: Ejecutar pruebas del motor
+        run: python -m unittest discover -s juego_futbol/tests -v
