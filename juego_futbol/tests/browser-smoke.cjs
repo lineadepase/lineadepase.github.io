@@ -270,11 +270,11 @@ const assert = require('node:assert/strict');
         'calendario con enfrentamientos duplicados rechazado');
       const swappedCalendar = await page.evaluate(() => {
         const partida = crearEstadoInicial();
-        // Permutar dos partidos de distintas mitades mantiene los doce cruces,
-        // pero deja una ida y una vuelta con rivales repetidos.
-        const tmp = partida.calendario[0][0];
-        partida.calendario[0][0] = partida.calendario[3][0];
-        partida.calendario[3][0] = tmp;
+        // Intercambiar jornadas completas entre mitades conserva los doce
+        // partidos, pero duplica parejas dentro de cada vuelta.
+        const tmp = partida.calendario[0];
+        partida.calendario[0] = partida.calendario[3];
+        partida.calendario[3] = tmp;
         return calendarioValido(partida.calendario, partida.equipos);
       });
       assert.equal(swappedCalendar, false, 'la ida y vuelta no pueden mezclar enfrentamientos');
