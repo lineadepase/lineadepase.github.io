@@ -17,6 +17,24 @@ const assert = require('node:assert/strict');
       await page.waitForFunction(() => typeof estadoJuego !== 'undefined' && !!estadoJuego.equipos);
       assert.equal(await page.evaluate(() => estadoJuego.equipos.length), 4);
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 0);
+      const tabs = ['tactica', 'partido', 'clasificacion', 'mercado'];
+      for (const tab of tabs) {
+        await page.locator('button.tab-btn').filter({
+          hasText: tab === 'tactica' ? 'Pizarra Táctica' :
+            tab === 'partido' ? 'Día de Partido' :
+            tab === 'clasificacion' ? 'Clasificación' : 'Mercado'
+        }).click();
+        assert.equal(await page.locator('#tab-' + tab).evaluate(el => getComputedStyle(el).display !== 'none'), true,
+          'pestaña visible: ' + tab);
+        if (mode === 'mobile') {
+          const widths = await page.evaluate(() => ({
+            document: document.documentElement.scrollWidth,
+            viewport: window.innerWidth
+          }));
+          assert.ok(widths.document <= widths.viewport + 2, 'desbordamiento en pestaña ' + tab);
+        }
+      }
+      await page.locator('button.tab-btn').filter({ hasText: 'Pizarra Táctica' }).click();
       const market = await page.evaluate(() => {
         const club = obtenerMiEquipo();
         const before = { money: club.presupuesto, size: club.plantilla.length, available: estadoJuego.mercado.length };
