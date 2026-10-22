@@ -11,7 +11,7 @@ from pathlib import Path
 import pandas as pd
 
 ESTUDIO = Path(__file__).resolve().parents[1]
-ENLACE = "https://lineadepase.github.io/proyectos/real-zaragoza/simulacion.html"
+ENLACE = "https://lineadepase.com/proyectos/real-zaragoza/simulacion.html"
 
 
 def pct(valor):

@@ -30,7 +30,7 @@ def escribir_pagina(carpeta, titulo, descripcion, migas, cuerpo, fuentes_pie):
     # Vista previa al compartir el enlace en redes.
     cabeza += (f'<meta property="og:title" content="{titulo}">\n'
                f'<meta property="og:description" content="{descripcion}">\n'
-               f'<meta property="og:image" content="https://lineadepase.github.io/proyectos/{carpeta}/graficos/compartir.png">\n'
+               f'<meta property="og:image" content="https://lineadepase.com/proyectos/{carpeta}/graficos/compartir.png">\n'
                '<link rel="stylesheet" href="../../assets/investigacion.css?v=20261016">\n')
     menu = re.search(r'<header class="cabecera">.*?</header>', plantilla, re.S).group(0)
     pie = re.search(r'<footer class="pie">.*?</footer>', plantilla, re.S).group(0)
@@ -64,7 +64,7 @@ def escribir_pagina_zaragoza(archivo, titulo, descripcion, migas, cuerpo, fuente
                     f'<meta name="description" content="{descripcion}">', cabeza)
     cabeza += (f'<meta property="og:title" content="{titulo}">\n'
                f'<meta property="og:description" content="{descripcion}">\n'
-               f'<meta property="og:image" content="https://lineadepase.github.io/proyectos/real-zaragoza/graficos/simulacion/compartir.png">\n'
+               f'<meta property="og:image" content="https://lineadepase.com/proyectos/real-zaragoza/graficos/simulacion/compartir.png">\n'
                '<link rel="stylesheet" href="../../assets/investigacion.css?v=20261016">\n')
     menu = re.search(r'<header class="cabecera">.*?</header>', plantilla, re.S).group(0)
     pestanas = re.search(r'<nav class="pestanas".*?</nav>', plantilla, re.S).group(0)

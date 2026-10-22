@@ -1,6 +1,6 @@
 # Simulación del grupo 2 de Primera Federación 2026/27
 
-Simulación Monte Carlo del resto de la temporada del grupo 2: probabilidad de que cada equipo ascienda directamente, juegue el playoff o descienda. El resultado se publica en la sección del Real Zaragoza de [Línea de pase](https://lineadepase.github.io/proyectos/real-zaragoza/simulacion.html).
+Simulación Monte Carlo del resto de la temporada del grupo 2: probabilidad de que cada equipo ascienda directamente, juegue el playoff o descienda. El resultado se publica en la sección del Real Zaragoza de [Línea de pase](https://lineadepase.com/proyectos/real-zaragoza/simulacion.html).
 
 ## La pregunta
 
