@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Línea de Pase | Football Manager & xG Lab</title>
+    <title>Línea de Pase | Manager de fútbol y laboratorio xG (simulación)</title>
     <style>
         :root {
             --bg-dark: #0f172a;
@@ -35,6 +35,17 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+        }
+
+        .sim-disclaimer {
+            background: #172d43;
+            border: 1px solid #38bdf8;
+            border-radius: 10px;
+            padding: 11px 14px;
+            margin-bottom: 16px;
+            color: #e2e8f0;
+            font-size: 0.86rem;
+            line-height: 1.5;
         }
 
         /* CABECERA */
@@ -330,7 +341,7 @@
         <img src="../assets/real-zaragoza-escudo.png" alt="Escudo" onerror="this.style.display='none'">
         <div>
             <h1>REAL ZARAGOZA</h1>
-            <span>Línea de Pase · Football Manager & xG Lab</span>
+            <span>Línea de Pase · Manager de fútbol y xG simulado</span>
         </div>
     </div>
     <div class="top-stats">
@@ -350,6 +361,7 @@
 </nav>
 
 <main>
+    <p class="sim-disclaimer" role="note"><strong>Simulador ficticio:</strong> plantillas, valoraciones, fichajes, resultados y xG son datos del juego, no estadísticas reales ni información actualizada de los clubes.</p>
     <!-- PESTAÑA 1: TÁCTICA Y PLANTILLA -->
     <section id="tab-tactica" class="tab-content active">
         <div class="grid-2">
