@@ -1079,6 +1079,12 @@ function simularJornada() {
     actualizarUI();
 }
 
+function escaparHTML(valor) {
+    return String(valor).replace(/[&<>"']/g, caracter => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    })[caracter]);
+}
+
 function simularPartidoIndividual(local, vis, esNuestro, logBox, ctxShot, w, h) {
     const fLoc = calcularFuerzas(local);
     const fVis = calcularFuerzas(vis);
@@ -1091,7 +1097,7 @@ function simularPartidoIndividual(local, vis, esNuestro, logBox, ctxShot, w, h) 
     const tramos = [11, 23, 35, 44, 56, 67, 78, 89];
 
     if (esNuestro) {
-        logBox.innerHTML += `<p><strong>⚽ ${local.nombre} vs ${vis.nombre}</strong></p><hr style="border-color:#334155;margin:6px 0;">`;
+        logBox.innerHTML += `<p><strong>⚽ ${escaparHTML(local.nombre)} vs ${escaparHTML(vis.nombre)}</strong></p><hr style="border-color:#334155;margin:6px 0;">`;
     }
 
     tramos.forEach(min => {
@@ -1135,9 +1141,9 @@ function simularPartidoIndividual(local, vis, esNuestro, logBox, ctxShot, w, h) 
                 ctxShot.stroke();
 
                 if (esGol) {
-                    logBox.innerHTML += `<p class="log-goal">[${min}'] ¡GOOOL de ${rematador.nombre} (${eqAtq.nombre})! [xG: ${xgTiro.toFixed(2)}]</p>`;
+                    logBox.innerHTML += `<p class="log-goal">[${min}'] ¡GOOOL de ${escaparHTML(rematador.nombre)} (${escaparHTML(eqAtq.nombre)})! [xG: ${xgTiro.toFixed(2)}]</p>`;
                 } else if (xgTiro >= 0.28) {
-                    logBox.innerHTML += `<p class="log-chance">[${min}'] ¡Ocasión clara fallada por ${rematador.nombre}! [xG: ${xgTiro.toFixed(2)}]</p>`;
+                    logBox.innerHTML += `<p class="log-chance">[${min}'] ¡Ocasión clara fallada por ${escaparHTML(rematador.nombre)}! [xG: ${xgTiro.toFixed(2)}]</p>`;
                 }
             }
         }
@@ -1173,7 +1179,7 @@ function simularPartidoIndividual(local, vis, esNuestro, logBox, ctxShot, w, h) 
                 if (Math.random() < (j.cansancio > 75 ? 0.12 : 0.02)) {
                     j.lesionado = Math.floor(Math.random() * 2) + 1;
                     if (esNuestro) {
-                        logBox.innerHTML += `<p class="log-injury">🚑 ${j.nombre} (${eq.nombre}) se lesiona para ${j.lesionado} jornada(s).</p>`;
+                        logBox.innerHTML += `<p class="log-injury">🚑 ${escaparHTML(j.nombre)} (${escaparHTML(eq.nombre)}) se lesiona para ${j.lesionado} jornada(s).</p>`;
                     }
                 }
             }
@@ -1182,10 +1188,10 @@ function simularPartidoIndividual(local, vis, esNuestro, logBox, ctxShot, w, h) 
 
     if (esNuestro) {
         logBox.innerHTML += `<hr style="border-color:#334155;margin:8px 0;">`;
-        logBox.innerHTML += `<p><strong>🏁 FINAL: ${local.nombre} ${gL} - ${gV} ${vis.nombre}</strong> (xG: ${xgL.toFixed(2)} vs ${xgV.toFixed(2)})</p>`;
+        logBox.innerHTML += `<p><strong>🏁 FINAL: ${escaparHTML(local.nombre)} ${gL} - ${gV} ${escaparHTML(vis.nombre)}</strong> (xG: ${xgL.toFixed(2)} vs ${xgV.toFixed(2)})</p>`;
         logBox.innerHTML += `<p class="log-info">💶 Taquilla local: +${taquilla.toLocaleString('es-ES')} €</p><br>`;
     } else {
-        logBox.innerHTML += `<p class="log-info">• Otro partido: ${local.nombre} ${gL} - ${gV} ${vis.nombre} (xG: ${xgL.toFixed(2)}-${xgV.toFixed(2)})</p>`;
+        logBox.innerHTML += `<p class="log-info">• Otro partido: ${escaparHTML(local.nombre)} ${gL} - ${gV} ${escaparHTML(vis.nombre)} (xG: ${xgL.toFixed(2)}-${xgV.toFixed(2)})</p>`;
     }
 }
 
