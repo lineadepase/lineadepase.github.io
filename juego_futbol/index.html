@@ -2073,6 +2073,63 @@ function calcularPremiosClasificacion(equipos) {
     }));
 }
 
+function renovarMercadoTemporada() {
+    const nombres = [
+        'Rulo', 'Vera', 'Nico', 'Berta', 'Teo', 'Mili', 'Lucho', 'Cata', 'Pipo', 'Lola',
+        'Toni', 'Rita', 'Fede', 'Nora', 'Beto', 'Inés', 'Gabi', 'Susi', 'Mauro', 'Kike'
+    ];
+    const apellidos = [
+        'Larguero', 'Taconazo', 'Cañonazo', 'Dejada', 'Despeje', 'FueraJuego', 'Pelotazo',
+        'Parapenaltis', 'Chutapiedras', 'Pasecorto', 'Trallazo', 'Rechaces', 'Balonazo',
+        'Tobillo', 'MediaVuelta', 'Manoplas', 'Banderín', 'Rondo', 'Vaselina', 'Nopuedo'
+    ];
+    const posiciones = ['POR', 'DEF', 'CEN', 'DEL'];
+    const usados = new Set([
+        ...estadoJuego.equipos.flatMap(eq => eq.plantilla.map(j => j.nombre)),
+        ...estadoJuego.mercado.map(j => j.nombre)
+    ].map(nombre => nombre.toLocaleLowerCase('es')));
+    const temporada = estadoJuego.temporada;
+    const nuevos = [];
+
+    posiciones.forEach((posicion, indice) => {
+        let nombre = '';
+        for (let intento = 0; intento < nombres.length * apellidos.length; intento++) {
+            const combinacion = (temporada * 17 + indice * 97 + intento) % (nombres.length * apellidos.length);
+            const nombrePila = nombres[Math.floor(combinacion / apellidos.length)];
+            const apellido = apellidos[combinacion % apellidos.length];
+            const candidato = `${nombrePila} ${apellido}`;
+            if (!usados.has(candidato.toLocaleLowerCase('es'))) {
+                nombre = candidato;
+                break;
+            }
+        }
+        if (!nombre) return;
+
+        const media = Math.min(86, 68 + Math.floor(Math.random() * 9) + Math.min(temporada - 1, 4));
+        const factorTemporada = 1 + Math.min(0.2, (temporada - 1) * 0.035);
+        nuevos.push({
+            nombre, posicion, media, moral: 82, cansancio: 0,
+            precio: Math.round(media * 35000 * factorTemporada),
+            salario: Math.round(media * 220 * factorTemporada),
+            goles: 0, xg: 0, lesionado: 0, titular: false
+        });
+        usados.add(nombre.toLocaleLowerCase('es'));
+    });
+
+    // Se reinicia el estado de los jugadores que siguen disponibles y se limita
+    // la oferta para que una partida larga no genere una tabla interminable.
+    estadoJuego.mercado.forEach(j => {
+        j.goles = 0;
+        j.xg = 0;
+        j.cansancio = 0;
+        j.lesionado = 0;
+        j.titular = false;
+    });
+    estadoJuego.mercado = [...estadoJuego.mercado, ...nuevos]
+        .sort((a, b) => b.media - a.media || a.nombre.localeCompare(b.nombre, 'es'))
+        .slice(0, 12);
+}
+
 function iniciarNuevaTemporada() {
     if (estadoJuego.jornadaActual < estadoJuego.calendario.length) {
         alert("Debes terminar las seis jornadas antes de comenzar otra temporada.");
@@ -2092,6 +2149,7 @@ function iniciarNuevaTemporada() {
         eq.plantilla.forEach(j => { j.goles = 0; j.xg = 0; j.cansancio = 0; j.lesionado = 0; });
         convocarOnceAutomatico(eq);
     });
+    renovarMercadoTemporada();
     estadoJuego.calendario = generarCalendario(estadoJuego.equipos.map(eq => eq.nombre));
     guardarPartidaLocal(false);
     actualizarUI();

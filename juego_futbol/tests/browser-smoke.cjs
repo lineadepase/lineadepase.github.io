@@ -634,6 +634,10 @@ const fs = require('node:fs/promises');
         Object.fromEntries(estadoJuego.equipos.map(e => [e.nombre, e.presupuesto])));
       const premiosPorEquipo = await page.evaluate(() =>
         Object.fromEntries(calcularPremiosClasificacion(estadoJuego.equipos).map(p => [p.nombre, p.premio])));
+      const mercadoAntesDeTemporada = await page.evaluate(() => ({
+        cantidad: estadoJuego.mercado.length,
+        nombres: estadoJuego.mercado.map(j => j.nombre)
+      }));
       await page.evaluate(() => iniciarNuevaTemporada());
       assert.equal(await page.evaluate(() => estadoJuego.temporada), 2);
       const presupuestosDespues = await page.evaluate(() =>
@@ -645,8 +649,31 @@ const fs = require('node:fs/promises');
 
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 0);
       assert.equal(await page.evaluate(() => estadoJuego.calendario.length), 6);
+      const mercadoRenovado = await page.evaluate(() => ({
+        cantidad: estadoJuego.mercado.length,
+        jugadores: estadoJuego.mercado.map(j => ({ nombre: j.nombre, posicion: j.posicion, goles: j.goles, xg: j.xg })),
+        duplicados: new Set(estadoJuego.mercado.map(j => j.nombre.toLocaleLowerCase('es'))).size !== estadoJuego.mercado.length
+      }));
+      const incorporados = mercadoRenovado.jugadores.filter(j => !mercadoAntesDeTemporada.nombres.includes(j.nombre));
+      assert.equal(mercadoRenovado.cantidad, Math.min(12, mercadoAntesDeTemporada.cantidad + 4),
+        'la nueva temporada incorpora cuatro opciones de mercado hasta su límite');
+      assert.equal(incorporados.length, 4,
+        'los refuerzos generados son nuevos y ficticios');
+      assert.deepEqual(incorporados.map(j => j.posicion).sort(), ['CEN', 'DEF', 'DEL', 'POR'],
+        'la renovación anual cubre las cuatro posiciones');
+      assert.equal(mercadoRenovado.duplicados, false, 'el mercado no duplica nombres');
+      assert.ok(mercadoRenovado.jugadores.every(j => j.goles === 0 && j.xg === 0),
+        'las estadísticas del mercado empiezan limpias cada temporada');
       await page.reload();
       assert.equal(await page.evaluate(() => estadoJuego.temporada), 2);
+      const limiteMercado = await page.evaluate(() => {
+        estadoJuego.jornadaActual = estadoJuego.calendario.length;
+        iniciarNuevaTemporada();
+        return { temporada: estadoJuego.temporada, cantidad: estadoJuego.mercado.length,
+          distintos: new Set(estadoJuego.mercado.map(j => j.nombre.toLocaleLowerCase('es'))).size };
+      });
+      assert.deepEqual(limiteMercado, { temporada: 3, cantidad: 12, distintos: 12 },
+        'el mercado renueva opciones sin crecer indefinidamente en temporadas largas');
       // El déficit es una situación económica válida, no una partida corrupta.
       await page.evaluate(() => {
         const partida = crearEstadoInicial();

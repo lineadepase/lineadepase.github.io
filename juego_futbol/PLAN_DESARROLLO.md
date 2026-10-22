@@ -17,6 +17,7 @@
 - Repeticiones analíticas esquemáticas de los remates del equipo del usuario, enlazadas desde la crónica y etiquetadas como contenido ficticio del simulador.
 - Avatares vectoriales originales, estables para cada nombre ficticio, en las tablas de plantilla, goleadores y mercado.
 - Mercado, venta de jugadores, preparación, premios y continuidad de temporada.
+- Renovación anual del mercado con cuatro perfiles de jugador, cobertura de posiciones y un límite de doce opciones.
 - Guardado local en navegador y recuperación con validación estructural. Se admite el presupuesto negativo como estado válido.
 - Copia JSON exportable e importable, con comprobación de estructura antes de sustituir la partida.
 
