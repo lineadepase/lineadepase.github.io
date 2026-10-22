@@ -37,6 +37,18 @@ const assert = require('node:assert/strict');
         }
       }
       await page.locator('button.tab-btn').filter({ hasText: 'Pizarra Táctica' }).click();
+      const injuryCheck = await page.evaluate(() => {
+        const club = obtenerMiEquipo();
+        const player = club.plantilla.find(j => j.titular);
+        player.lesionado = 2;
+        const result = calcularFuerzas(club);
+        const excluded = !club.plantilla.some(j => j.titular && j.lesionado > 0);
+        player.lesionado = 0;
+        convocarOnceAutomatico(club);
+        return { result, excluded };
+      });
+      assert.equal(injuryCheck.excluded, true, 'los lesionados no forman parte del once calculado');
+      assert.ok(Number.isFinite(injuryCheck.result.ataque) && Number.isFinite(injuryCheck.result.defensa));
       const training = await page.evaluate(() => {
         const club = obtenerMiEquipo();
         const fatigueBefore = club.plantilla.map(j => j.cansancio);
