@@ -72,6 +72,17 @@
             object-fit: contain;
         }
 
+        .club-mark {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            border: 1px solid var(--accent-light);
+            background: linear-gradient(145deg, #1d4ed8, #0f172a);
+            font-size: 1.45rem;
+        }
+
         .club-brand h1 {
             font-size: 1.35rem;
             font-weight: 800;
@@ -339,9 +350,9 @@
 
 <header>
     <div class="club-brand">
-        <img src="../assets/real-zaragoza-escudo.png" alt="Escudo" onerror="this.style.display='none'">
+        <div class="club-mark" aria-hidden="true">⚽</div>
         <div>
-            <h1>REAL ZARAGOZA</h1>
+            <h1>FC PASE Y PIFIA</h1>
             <span>Línea de Pase · Manager de fútbol y xG simulado</span>
         </div>
     </div>
@@ -426,7 +437,7 @@
     <section id="tab-partido" class="tab-content">
         <div class="panel" style="margin-bottom: 20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
             <div>
-                <h2 id="lbl-cartel-partido" style="font-size:1.3rem;">Jornada 1: Real Zaragoza vs SD Huesca</h2>
+                <h2 id="lbl-cartel-partido" style="font-size:1.3rem;">Jornada 1: FC Pase y Pifia vs Atlético Siestense</h2>
                 <p class="hint-box" id="lbl-sub-partido">El tamaño de cada círculo en el mapa equivale al xG de la ocasión.</p>
             </div>
             <button class="btn-success" style="font-size:1rem; padding:12px 22px;" onclick="simularJornada()">▶️ SIMULAR JORNADA EN VIVO</button>
@@ -658,36 +669,43 @@ function crearEstadoInicial() {
     });
 
     const miEquipo = {
-        nombre: "Real Zaragoza",
+        nombre: "FC Pase y Pifia",
         presupuesto: 9500000,
         aforo: 30000,
         formacion: "4-4-2",
         estilo: "Equilibrado",
         puntos: 0, pj: 0, gf: 0, gc: 0, xgf: 0.0, xgc: 0.0,
         plantilla: [
-            crearJugador("Poussin", "POR", 72),
-            crearJugador("A. Francés", "DEF", 75),
-            crearJugador("Jair Amador", "DEF", 73),
-            crearJugador("Lluís López", "DEF", 71),
-            crearJugador("Tasende", "DEF", 73),
-            crearJugador("Borge", "DEF", 70),
-            crearJugador("Francho", "CEN", 77),
-            crearJugador("Marc Aguado", "CEN", 75),
-            crearJugador("Maikel Mesa", "CEN", 76),
-            crearJugador("Toni Moya", "CEN", 74),
-            crearJugador("Gori", "CEN", 70),
-            crearJugador("Iván Azón", "DEL", 74),
-            crearJugador("Soberón", "DEL", 75),
-            crearJugador("Bazdar", "DEL", 73)
+            crearJugador("Paco Manoplas", "POR", 72),
+            crearJugador("Rafa Rechaces", "DEF", 75),
+            crearJugador("Tino Tobillo", "DEF", 73),
+            crearJugador("Blas Banderín", "DEF", 71),
+            crearJugador("Lola Cerrojazo", "DEF", 73),
+            crearJugador("Nico Nopuedo", "DEF", 70),
+            crearJugador("Pili Pasecorto", "CEN", 77),
+            crearJugador("Rolo Rondo", "CEN", 75),
+            crearJugador("Mauri MediaVuelta", "CEN", 76),
+            crearJugador("Cris Cañito", "CEN", 74),
+            crearJugador("Fede FueraJuego", "CEN", 70),
+            crearJugador("Golo Goloso", "DEL", 74),
+            crearJugador("Rita Remates", "DEL", 75),
+            crearJugador("Charly Trallazo", "DEL", 73)
         ]
     };
     convocarOnceAutomatico(miEquipo);
 
     const datosRivales = [
-        { nombre: "SD Huesca", aforo: 9000 },
-        { nombre: "Racing Santander", aforo: 22000 },
-        { nombre: "Sporting Gijón", aforo: 29000 }
+        { nombre: "Atlético Siestense", apodo: "Siestense", aforo: 9000 },
+        { nombre: "Unión Deportiva Patapalo", apodo: "Patapalo", aforo: 22000 },
+        { nombre: "Deportivo Balón Perdido", apodo: "Balonazo", aforo: 29000 }
     ];
+
+    const nombresRivales = {
+        POR: ["Iker Guantes", "Marga Parapenaltis", "Paco Manoplas"],
+        DEF: ["Rafa Rechaces", "Blas Banderín", "Tino Tobillo", "Lola Cerrojazo", "Nico Nopuedo"],
+        CEN: ["Pili Pasecorto", "Rolo Rondo", "Mauri MediaVuelta", "Cris Cañito", "Fede FueraJuego"],
+        DEL: ["Golo Goloso", "Rita Remates", "Charly Trallazo", "Tere Taconazo"]
+    };
 
     const rivales = datosRivales.map(r => {
         const eq = {
@@ -697,9 +715,14 @@ function crearEstadoInicial() {
             plantilla: []
         };
         const posList = ["POR", "DEF", "DEF", "DEF", "DEF", "DEF", "CEN", "CEN", "CEN", "CEN", "CEN", "DEL", "DEL", "DEL"];
-        posList.forEach((p, idx) => {
+        const contadorPosiciones = { POR: 0, DEF: 0, CEN: 0, DEL: 0 };
+        posList.forEach(p => {
             const med = Math.floor(Math.random() * 6) + 70;
-            eq.plantilla.push(crearJugador(`${p}_${r.nombre.slice(0,3)}_${idx+1}`, p, med));
+            const nombres = nombresRivales[p];
+            const apodo = r.apodo || r.nombre.split(" ")[0];
+            const nombre = `${nombres[contadorPosiciones[p] % nombres.length]} (${apodo})`;
+            contadorPosiciones[p] += 1;
+            eq.plantilla.push(crearJugador(nombre, p, med));
         });
         convocarOnceAutomatico(eq);
         return eq;
@@ -707,11 +730,11 @@ function crearEstadoInicial() {
 
     const equipos = [miEquipo, ...rivales];
     const mercado = [
-        crearJugador("Aketxe", "CEN", 76),
-        crearJugador("Keidi Bare", "CEN", 76),
-        crearJugador("Alberto Marí", "DEL", 74),
-        crearJugador("Bernardo Vital", "DEF", 74),
-        crearJugador("Kervin Arriaga", "CEN", 75)
+        crearJugador("Crispín Chutapiedras", "CEN", 76),
+        crearJugador("Pipo Puntería", "CEN", 76),
+        crearJugador("Tere Taconazo", "DEL", 74),
+        crearJugador("Benito Banderazo", "DEF", 74),
+        crearJugador("Marga Parapenaltis", "CEN", 75)
     ];
 
     const calendario = generarCalendario(equipos.map(e => e.nombre));
@@ -775,7 +798,7 @@ function estadoPartidaValido(estado) {
     try {
         return Boolean(estado && Array.isArray(estado.equipos) && estado.equipos.length === 4 &&
             new Set(estado.equipos.map(eq => eq?.nombre)).size === 4 &&
-            estado.equipos.some(eq => eq?.nombre === 'Real Zaragoza') &&
+            estado.equipos.some(eq => eq?.nombre === 'FC Pase y Pifia') &&
             estado.equipos.every(eq => eq && typeof eq.nombre === 'string' &&
                 Number.isFinite(eq.presupuesto) && Number.isFinite(eq.aforo) && eq.aforo >= 0 &&
                 Object.hasOwn(FORMACIONES, eq.formacion) && Object.hasOwn(ESTILOS, eq.estilo) &&
@@ -813,7 +836,7 @@ function estadoPartidaValido(estado) {
 
 // --- 4. INTERFAZ Y RENDERIZADO ---
 function obtenerMiEquipo() {
-    return estadoJuego.equipos.find(e => e.nombre === "Real Zaragoza");
+    return estadoJuego.equipos.find(e => e.nombre === "FC Pase y Pifia");
 }
 
 function cambiarPestana(id, btn) {
@@ -1358,10 +1381,10 @@ function iniciarNuevaTemporada() {
         return;
     }
     const premios = calcularPremiosClasificacion(estadoJuego.equipos);
-    const miPremio = premios.find(p => p.nombre === 'Real Zaragoza');
+    const miPremio = premios.find(p => p.nombre === 'FC Pase y Pifia');
     const resumenPremios = premios.map(p =>
         `${p.posicion}.º ${p.nombre}: ${p.premio.toLocaleString('es-ES')} €`).join('\n');
-    if (!confirm(`¡Temporada terminada! Real Zaragoza: ${miPremio.posicion}.º puesto.\n\nPremios por clasificación:\n${resumenPremios}\n\n¿Comenzar la siguiente temporada?`)) return;
+    if (!confirm(`¡Temporada terminada! FC Pase y Pifia: ${miPremio.posicion}.º puesto.\n\nPremios por clasificación:\n${resumenPremios}\n\n¿Comenzar la siguiente temporada?`)) return;
     estadoJuego.temporada++;
     estadoJuego.jornadaActual = 0;
     estadoJuego.preparacionUsada = false;

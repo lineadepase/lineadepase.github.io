@@ -18,6 +18,13 @@ ESTILOS = {
     "Defensivo": {"ataque": 0.85, "defensa": 1.15, "desgaste": 0.9},
 }
 
+NOMBRES_RIVALES = {
+    "POR": ["Iker Guantes", "Marga Parapenaltis", "Paco Manoplas"],
+    "DEF": ["Rafa Rechaces", "Blas Banderín", "Tino Tobillo", "Lola Cerrojazo", "Nico Nopuedo"],
+    "CEN": ["Pili Pasecorto", "Rolo Rondo", "Mauri MediaVuelta", "Cris Cañito", "Fede FueraJuego"],
+    "DEL": ["Golo Goloso", "Rita Remates", "Charly Trallazo", "Tere Taconazo"],
+}
+
 
 class Jugador:
     def __init__(self, nombre, posicion, media, moral=80, cansancio=0, precio=2000000,
@@ -488,30 +495,35 @@ def cargar_partida(archivo):
 def crear_plantilla_base(equipo, es_usuario=False):
     if es_usuario:
         base = [
-            ("Poussin", "POR", 72), ("A. Francés", "DEF", 75), ("Jair Amador", "DEF", 73),
-            ("Lluís López", "DEF", 71), ("Tasende", "DEF", 72), ("Borge", "DEF", 70),
-            ("Francho", "CEN", 77), ("Marc Aguado", "CEN", 75), ("Maikel Mesa", "CEN", 76),
-            ("Toni Moya", "CEN", 74), ("Gori", "CEN", 70), ("Iván Azón", "DEL", 74),
-            ("Soberón", "DEL", 75), ("Bazdar", "DEL", 73),
+            ("Paco Manoplas", "POR", 72), ("Rafa Rechaces", "DEF", 75), ("Tino Tobillo", "DEF", 73),
+            ("Blas Banderín", "DEF", 71), ("Lola Cerrojazo", "DEF", 72), ("Nico Nopuedo", "DEF", 70),
+            ("Pili Pasecorto", "CEN", 77), ("Rolo Rondo", "CEN", 75), ("Mauri MediaVuelta", "CEN", 76),
+            ("Cris Cañito", "CEN", 74), ("Fede FueraJuego", "CEN", 70), ("Golo Goloso", "DEL", 74),
+            ("Rita Remates", "DEL", 75), ("Charly Trallazo", "DEL", 73),
         ]
         for nom, pos, med in base:
             equipo.agregar_jugador(Jugador(nom, pos, med, precio=med * 35000, salario=med * 220))
     else:
         posiciones = ["POR"] + ["DEF"] * 5 + ["CEN"] * 5 + ["DEL"] * 3
-        for i, pos in enumerate(posiciones):
+        contadores = {pos: 0 for pos in NOMBRES_RIVALES}
+        apodo = equipo.nombre.split()[0]
+        for pos in posiciones:
             med = random.randint(70, 75)
-            equipo.agregar_jugador(Jugador(f"{pos}_{equipo.nombre[:3]}_{i+1}", pos, med, precio=med * 35000, salario=med * 200))
+            nombres = NOMBRES_RIVALES[pos]
+            nombre = f"{nombres[contadores[pos] % len(nombres)]} ({apodo})"
+            contadores[pos] += 1
+            equipo.agregar_jugador(Jugador(nombre, pos, med, precio=med * 35000, salario=med * 200))
 
 
 if __name__ == "__main__":
     ARCHIVO_SAVE = "partida_guardada.json"
     temporada = 1
 
-    mi_equipo = Equipo("Real Zaragoza", presupuesto=8000000, aforo=30000)
+    mi_equipo = Equipo("FC Pase y Pifia", presupuesto=8000000, aforo=30000)
     crear_plantilla_base(mi_equipo, es_usuario=True)
     mi_equipo.convocar_once_automatico()
 
-    rivales = [Equipo("SD Huesca", aforo=9000), Equipo("Racing Santander", aforo=22000), Equipo("Sporting Gijón", aforo=29000)]
+    rivales = [Equipo("Atlético Siestense", aforo=9000), Equipo("Unión Deportiva Patapalo", aforo=22000), Equipo("Deportivo Balón Perdido", aforo=29000)]
     for r in rivales:
         crear_plantilla_base(r, es_usuario=False)
         r.convocar_once_automatico()
@@ -519,10 +531,10 @@ if __name__ == "__main__":
     lista_equipos = [mi_equipo] + rivales
 
     mercado = [
-        Jugador("Aketxe", "CEN", 76, precio=2800000, salario=18000),
-        Jugador("Keidi Bare", "CEN", 76, precio=3000000, salario=19000),
-        Jugador("Alberto Marí", "DEL", 74, precio=2200000, salario=15000),
-        Jugador("Bernardo Vital", "DEF", 74, precio=2100000, salario=14500),
+        Jugador("Crispín Chutapiedras", "CEN", 76, precio=2800000, salario=18000),
+        Jugador("Pipo Puntería", "CEN", 76, precio=3000000, salario=19000),
+        Jugador("Tere Taconazo", "DEL", 74, precio=2200000, salario=15000),
+        Jugador("Benito Banderazo", "DEF", 74, precio=2100000, salario=14500),
     ]
 
     calendario = generar_calendario_nombres([e.nombre for e in lista_equipos])
@@ -530,7 +542,7 @@ if __name__ == "__main__":
 
     while True:
         mapa_equipos = {e.nombre: e for e in lista_equipos}
-        mi_equipo = mapa_equipos["Real Zaragoza"]
+        mi_equipo = mapa_equipos["FC Pase y Pifia"]
 
         if jornada_actual >= len(calendario):
             print(f"\n🏆 ¡FIN DE LA TEMPORADA {temporada}!")

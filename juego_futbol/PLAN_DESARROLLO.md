@@ -18,7 +18,7 @@
 
 ## Reglas de presentación
 
-Los nombres, valoraciones, resultados y xG pertenecen al simulador. El xG es una estimación didáctica por tipo de ocasión, no una métrica oficial ni calculada a partir de datos reales. Revisar los derechos del escudo, imágenes y nombres reales antes de publicar una versión promocional.
+Todos los clubes y futbolistas del juego usan nombres ficticios con tono humorístico. La interfaz web utiliza un balón genérico y no incorpora escudos de clubes reales. Las valoraciones, resultados y xG pertenecen al simulador: el xG es una estimación didáctica por tipo de ocasión, no una métrica oficial ni calculada a partir de datos reales.
 
 ## Pruebas y limitaciones conocidas
 
@@ -30,6 +30,6 @@ Los nombres, valoraciones, resultados y xG pertenecen al simulador. El xG es una
 ## Antes de publicar
 
 1. Confirmar en el PR que las pruebas Python y navegador pasan y revisar las capturas.
-2. Revisar licencias y permisos de los activos gráficos y los nombres de jugadores.
+2. Revisar las licencias de cualquier activo gráfico de terceros que se añada en el futuro.
 3. Decidir si se amplía la liga y el mercado; no ampliar la competición hasta tener pruebas para continuidad multitemporada.
 4. Publicar únicamente tras autorización expresa.

@@ -40,6 +40,13 @@ ESTILOS = {
     "Defensivo": {"ataque": 0.85, "defensa": 1.15, "desgaste": 0.9},
 }
 
+NOMBRES_RIVALES = {
+    "POR": ["Iker Guantes", "Marga Parapenaltis", "Paco Manoplas"],
+    "DEF": ["Rafa Rechaces", "Blas Banderín", "Tino Tobillo", "Lola Cerrojazo", "Nico Nopuedo"],
+    "CEN": ["Pili Pasecorto", "Rolo Rondo", "Mauri MediaVuelta", "Cris Cañito", "Fede FueraJuego"],
+    "DEL": ["Golo Goloso", "Rita Remates", "Charly Trallazo", "Tere Taconazo"],
+}
+
 
 # --- 2. MODELO DE DATOS ---
 
@@ -136,33 +143,38 @@ class FootballManagerGUI:
         return None
 
     def inicializar_datos(self):
-        self.mi_equipo = Equipo("Real Zaragoza", presupuesto=9500000, aforo=30000)
+        self.mi_equipo = Equipo("FC Pase y Pifia", presupuesto=9500000, aforo=30000)
         base_rz = [
-            ("Poussin", "POR", 72), ("A. Francés", "DEF", 75), ("Jair Amador", "DEF", 73),
-            ("Lluís López", "DEF", 71), ("Tasende", "DEF", 73), ("Borge", "DEF", 70),
-            ("Francho", "CEN", 77), ("Marc Aguado", "CEN", 75), ("Maikel Mesa", "CEN", 76),
-            ("Toni Moya", "CEN", 74), ("Gori", "CEN", 70), ("Iván Azón", "DEL", 74),
-            ("Soberón", "DEL", 75), ("Bazdar", "DEL", 73),
+            ("Paco Manoplas", "POR", 72), ("Rafa Rechaces", "DEF", 75), ("Tino Tobillo", "DEF", 73),
+            ("Blas Banderín", "DEF", 71), ("Lola Cerrojazo", "DEF", 73), ("Nico Nopuedo", "DEF", 70),
+            ("Pili Pasecorto", "CEN", 77), ("Rolo Rondo", "CEN", 75), ("Mauri MediaVuelta", "CEN", 76),
+            ("Cris Cañito", "CEN", 74), ("Fede FueraJuego", "CEN", 70), ("Golo Goloso", "DEL", 74),
+            ("Rita Remates", "DEL", 75), ("Charly Trallazo", "DEL", 73),
         ]
         for nom, pos, med in base_rz:
             self.mi_equipo.agregar_jugador(Jugador(nom, pos, med, precio=med * 35000, salario=med * 220))
         self.mi_equipo.convocar_once_automatico()
 
-        self.rivales = [Equipo("SD Huesca", aforo=9000), Equipo("Racing Santander", aforo=22000), Equipo("Sporting Gijón", aforo=29000)]
+        self.rivales = [Equipo("Atlético Siestense", aforo=9000), Equipo("Unión Deportiva Patapalo", aforo=22000), Equipo("Deportivo Balón Perdido", aforo=29000)]
         for r in self.rivales:
             posiciones = ["POR"] + ["DEF"] * 5 + ["CEN"] * 5 + ["DEL"] * 3
-            for i, pos in enumerate(posiciones):
+            contadores = {pos: 0 for pos in NOMBRES_RIVALES}
+            apodo = r.nombre.split()[0]
+            for pos in posiciones:
                 med = random.randint(70, 75)
-                r.agregar_jugador(Jugador(f"{pos}_{r.nombre[:3]}_{i+1}", pos, med, precio=med * 35000, salario=med * 200))
+                nombres = NOMBRES_RIVALES[pos]
+                nombre = f"{nombres[contadores[pos] % len(nombres)]} ({apodo})"
+                contadores[pos] += 1
+                r.agregar_jugador(Jugador(nombre, pos, med, precio=med * 35000, salario=med * 200))
             r.convocar_once_automatico()
 
         self.equipos = [self.mi_equipo] + self.rivales
         self.mercado = [
-            Jugador("Aketxe", "CEN", 76, precio=2800000, salario=18000),
-            Jugador("Keidi Bare", "CEN", 76, precio=3000000, salario=19000),
-            Jugador("Alberto Marí", "DEL", 74, precio=2200000, salario=15000),
-            Jugador("Bernardo Vital", "DEF", 74, precio=2100000, salario=14500),
-            Jugador("Kervin Arriaga", "CEN", 75, precio=2400000, salario=16000),
+            Jugador("Crispín Chutapiedras", "CEN", 76, precio=2800000, salario=18000),
+            Jugador("Pipo Puntería", "CEN", 76, precio=3000000, salario=19000),
+            Jugador("Tere Taconazo", "DEL", 74, precio=2200000, salario=15000),
+            Jugador("Benito Banderazo", "DEF", 74, precio=2100000, salario=14500),
+            Jugador("Marga Parapenaltis", "CEN", 75, precio=2400000, salario=16000),
         ]
 
         # Generar calendario ida y vuelta
@@ -191,7 +203,7 @@ class FootballManagerGUI:
         self.header = tk.Frame(self.root, bg="#1e293b", height=65, padx=20, pady=10)
         self.header.pack(fill="x")
 
-        self.lbl_club = tk.Label(self.header, text="🛡️ REAL ZARAGOZA", fg="white", bg="#1e293b", font=("Segoe UI", 16, "bold"))
+        self.lbl_club = tk.Label(self.header, text="⚽ FC PASE Y PIFIA", fg="white", bg="#1e293b", font=("Segoe UI", 16, "bold"))
         self.lbl_club.pack(side="left")
 
         self.lbl_info_top = tk.Label(self.header, text="", fg="#38bdf8", bg="#1e293b", font=("Segoe UI", 12, "bold"))

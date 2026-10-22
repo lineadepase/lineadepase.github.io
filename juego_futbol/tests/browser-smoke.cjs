@@ -22,6 +22,23 @@ const fs = require('node:fs/promises');
       assert.equal(await page.locator('.sim-disclaimer').count(), 1, 'aviso visible de simulación');
       assert.match(await page.locator('.sim-disclaimer').innerText(), /xG.*datos del juego/i);
       assert.equal(await page.evaluate(() => estadoJuego.equipos.length), 4);
+      const plantillasFicticias = await page.evaluate(() => ({
+        clubes: estadoJuego.equipos.map(e => e.nombre),
+        jugadores: estadoJuego.equipos.flatMap(e => e.plantilla.map(j => j.nombre)),
+        mercado: estadoJuego.mercado.map(j => j.nombre),
+        cabecera: document.querySelector('.club-brand h1')?.textContent.trim()
+      }));
+      assert.deepEqual(plantillasFicticias.clubes, [
+        'FC Pase y Pifia', 'Atlético Siestense', 'Unión Deportiva Patapalo', 'Deportivo Balón Perdido'
+      ], 'todos los clubes deben ser ficticios');
+      assert.equal(plantillasFicticias.cabecera, 'FC PASE Y PIFIA', 'la cabecera debe usar la identidad ficticia');
+      assert.ok(plantillasFicticias.jugadores.every(nombre => !/^(POR|DEF|CEN|DEL)_/.test(nombre)),
+        'los rivales no deben mostrar identificadores internos como nombres');
+      assert.ok(plantillasFicticias.jugadores.some(nombre => nombre === 'Paco Manoplas'));
+      assert.deepEqual(plantillasFicticias.mercado, [
+        'Crispín Chutapiedras', 'Pipo Puntería', 'Tere Taconazo',
+        'Benito Banderazo', 'Marga Parapenaltis'
+      ], 'el mercado debe mostrar los nombres humorísticos ficticios');
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 0);
       const tabs = ['tactica', 'partido', 'clasificacion', 'mercado'];
       for (const tab of tabs) {
@@ -189,7 +206,7 @@ const fs = require('node:fs/promises');
       assert.equal(exported.version, 1);
       assert.equal(exported.partida.equipos.length, 4);
       const importCandidate = structuredClone(exported.partida);
-      importCandidate.equipos.find(e => e.nombre === 'Real Zaragoza').presupuesto = -250000;
+      importCandidate.equipos.find(e => e.nombre === 'FC Pase y Pifia').presupuesto = -250000;
       await page.locator('#archivo-partida').setInputFiles({
         name: 'copia-linea-de-pase.json', mimeType: 'application/json',
         buffer: Buffer.from(JSON.stringify({ ...exported, partida: importCandidate }))
@@ -317,7 +334,7 @@ const fs = require('node:fs/promises');
         clubes[1].gc = 4;
         return calcularPremiosClasificacion(clubes).map(e => e.nombre);
       });
-      assert.equal(empate[0], 'Real Zaragoza',
+      assert.equal(empate[0], 'FC Pase y Pifia',
         'a igualdad de puntos y diferencia de goles, mandan los goles a favor');
       const temporadaIncompleta = await page.evaluate(() => {
         const actual = estadoJuego.jornadaActual;
@@ -358,7 +375,7 @@ const fs = require('node:fs/promises');
       // El déficit es una situación económica válida, no una partida corrupta.
       await page.evaluate(() => {
         const partida = crearEstadoInicial();
-        partida.equipos.find(e => e.nombre === 'Real Zaragoza').presupuesto = -250000;
+        partida.equipos.find(e => e.nombre === 'FC Pase y Pifia').presupuesto = -250000;
         localStorage.setItem('ldp_manager_save', JSON.stringify(partida));
       });
       await page.reload();
@@ -433,7 +450,7 @@ const fs = require('node:fs/promises');
         localStorage.setItem('ldp_manager_save', JSON.stringify(partida));
       });
       await page.reload();
-      assert.equal(await page.evaluate(() => obtenerMiEquipo()?.nombre), 'Real Zaragoza',
+      assert.equal(await page.evaluate(() => obtenerMiEquipo()?.nombre), 'FC Pase y Pifia',
         'una partida sin el equipo controlado se debe rechazar');
       await page.evaluate(() => localStorage.setItem('ldp_manager_save', '{bad json'));
       await page.reload();

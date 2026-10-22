@@ -29,6 +29,13 @@ class TestMotor(unittest.TestCase):
         for formacion, posiciones in engine.FORMACIONES.items():
             self.assertEqual(sum(posiciones.values()), 11, formacion)
 
+    def test_plantillas_rivales_usan_nombres_ficticios_legibles(self):
+        rival = engine.Equipo("Atlético Siestense")
+        engine.crear_plantilla_base(rival)
+        self.assertEqual(len(rival.plantilla), 14)
+        self.assertTrue(all("_" not in jugador.nombre for jugador in rival.plantilla))
+        self.assertTrue(all("(Atlético)" in jugador.nombre for jugador in rival.plantilla))
+
 
     def test_calendario_ida_vuelta_sin_duplicados(self):
         nombres = ["A", "B", "C", "D"]
@@ -61,14 +68,14 @@ class TestMotor(unittest.TestCase):
     def test_guardado_y_carga_partida(self):
         import tempfile
         random.seed(42)
-        club = engine.Equipo("Equipo prueba")
+        club = engine.Equipo("FC Pase y Pifia")
         engine.crear_plantilla_base(club)
         club.convocar_once_automatico()
         club.presupuesto = -125000
         club.alineacion_titular = club.alineacion_titular[1:] + club.alineacion_titular[:1]
         orden_titulares = [j.nombre for j in club.alineacion_titular]
         equipos_originales = [club]
-        for nombre in ("Rival A", "Rival B", "Rival C"):
+        for nombre in ("Atlético Siestense", "Unión Deportiva Patapalo", "Deportivo Balón Perdido"):
             rival = engine.Equipo(nombre)
             engine.crear_plantilla_base(rival)
             rival.convocar_once_automatico()
@@ -88,11 +95,11 @@ class TestMotor(unittest.TestCase):
                          "el guardado conserva el once elegido")
 
     def test_guardado_invalido_se_rechaza(self):
-        club = engine.Equipo("A", presupuesto=-10)
+        club = engine.Equipo("FC Pase y Pifia", presupuesto=-10)
         engine.crear_plantilla_base(club)
         club.convocar_once_automatico()
         equipos = [club]
-        for nombre in ("B", "C", "D"):
+        for nombre in ("Atlético Siestense", "Unión Deportiva Patapalo", "Deportivo Balón Perdido"):
             equipo = engine.Equipo(nombre)
             engine.crear_plantilla_base(equipo)
             equipo.convocar_once_automatico()

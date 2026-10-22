@@ -91,7 +91,7 @@ class Menu(Estado):
 class Mercado(Estado):
     """Fichajes estilo Tinder: aceptar / descartar jugadores."""
 
-    NOMBRES = ["Iker Soto", "Marc Vidal", "Pablo Ruiz", "Dani Ortega", "Hugo Lara"]
+    NOMBRES = ["Paco Manoplas", "Rafa Rechaces", "Golo Goloso", "Rita Remates", "Pipo Puntería"]
     POSICIONES = ["POR", "DEF", "MED", "DEL"]
 
     def __init__(self, juego):
