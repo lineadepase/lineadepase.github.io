@@ -1240,8 +1240,15 @@ function iniciarNuevaTemporada() {
 }
 
 function guardarPartidaLocal(mostrarAviso = true) {
-    localStorage.setItem('ldp_manager_save', JSON.stringify(estadoJuego));
-    if (mostrarAviso) alert("💾 Partida guardada en el navegador.");
+    try {
+        localStorage.setItem('ldp_manager_save', JSON.stringify(estadoJuego));
+        if (mostrarAviso) alert("💾 Partida guardada en el navegador.");
+        return true;
+    } catch (error) {
+        console.warn("No se pudo guardar la partida:", error);
+        if (mostrarAviso) alert("No se ha podido guardar la partida. Comprueba el almacenamiento del navegador.");
+        return false;
+    }
 }
 
 function reiniciarPartidaLocal() {
