@@ -363,6 +363,7 @@
 <main>
     <p class="sim-disclaimer" role="note"><strong>Simulador ficticio:</strong> plantillas, valoraciones, fichajes, resultados y xG son datos del juego, no estadísticas reales ni información actualizada de los clubes.</p>
     <!-- PESTAÑA 1: TÁCTICA Y PLANTILLA -->
+    <p id="resumen-disponibilidad" role="status" aria-live="polite" style="margin:8px 0 14px;color:#cbd5e1;font-size:.9rem;"></p>
     <section id="tab-tactica" class="tab-content active">
         <div class="grid-2">
             <div class="panel">
@@ -762,6 +763,15 @@ function actualizarUI() {
 
     const f = calcularFuerzas(miEq);
     document.getElementById('lbl-fuerza-equipo').textContent = `Atq: ${f.ataque.toFixed(1)} | Def: ${f.defensa.toFixed(1)}`;
+
+    // Resumen de disponibilidad para decidir las rotaciones antes del partido.
+    const lesionados = miEq.plantilla.filter(j => j.lesionado > 0).length;
+    const fatigados = miEq.plantilla.filter(j => j.lesionado === 0 && j.cansancio >= 75).length;
+    const disponibles = miEq.plantilla.length - lesionados;
+    const resumen = document.getElementById('resumen-disponibilidad');
+    if (resumen) {
+        resumen.textContent = `Disponibles: ${disponibles}/${miEq.plantilla.length} · Lesionados: ${lesionados} · Fatigados (≥75 %): ${fatigados}`;
+    }
 
     // Tabla Plantilla
     const tbodyP = document.getElementById('tbody-plantilla');
