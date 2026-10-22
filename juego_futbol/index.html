@@ -1199,6 +1199,8 @@ function accionDescansar() {
     miEq.plantilla.forEach(j => {
         j.cansancio = Math.max(0, j.cansancio - 30);
         j.moral = Math.min(100, j.moral + 10);
+        // El descanso también permite recuperar una jornada de lesión.
+        if (j.lesionado > 0) j.lesionado--;
     });
     estadoJuego.preparacionUsada = true;
     guardarPartidaLocal(false);
