@@ -22,7 +22,9 @@
       ]
     ],
     "lectura": "Juega en un equipo que marca menos de lo que genera: 6 goles con 10,2 xG. Si el Europa afina, buena parte pasa por él.",
-    "fuentes": "BeSoccer, FotMob y Andalucía Información"
+    "fuentes": "BeSoccer, FotMob y Andalucía Información",
+    "foto": "recursos/jugadores/khalid-noureddine.png",
+    "foto_credito": "CE Europa"
   },
   "expectativa": {
     "local": 38.7,

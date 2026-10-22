@@ -26,9 +26,9 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import pandas as pd
 from matplotlib.lines import Line2D
-from matplotlib.patches import FancyBboxPatch, Rectangle
+from matplotlib.patches import Circle, FancyBboxPatch, Rectangle
 
-from cargar_datos import CARPETA_ENTRADA, CARPETA_SALIDA, CARPETA_TEXTOS, RAIZ_WEB
+from cargar_datos import CARPETA_ENTRADA, CARPETA_PROYECTO, CARPETA_SALIDA, CARPETA_TEXTOS, RAIZ_WEB
 
 FONDO = "#12221d"
 PANEL = "#1a2f27"
@@ -132,17 +132,46 @@ def grafico_web(p, rival, ruta):
     plt.close(fig)
 
 
+def foto_redondeada(ruta, ancho_px, alto_px, radio=22):
+    """Recorta la foto a la proporción del hueco, con fondo blanco y esquinas redondeadas."""
+    from PIL import Image, ImageDraw, ImageOps
+    import numpy as np
+    foto = Image.open(ruta).convert("RGBA")
+    fondo = Image.new("RGBA", foto.size, "white")
+    foto = Image.alpha_composite(fondo, foto)
+    foto = ImageOps.fit(foto, (int(ancho_px), int(alto_px)), Image.LANCZOS, centering=(0.5, 0.0))
+    mascara = Image.new("L", foto.size, 0)
+    ImageDraw.Draw(mascara).rounded_rectangle([0, 0, foto.size[0] - 1, foto.size[1] - 1], radio, fill=255)
+    foto.putalpha(mascara)
+    return np.asarray(foto)
+
+
 def jugador(c, jornada, ruta):
     j = c["jugador"]
     fig = lienzo(jornada, "JUGADOR A SEGUIR")
     titular = textwrap.wrap(j.get("titulo", f"Jugador a seguir del {c['rival']}"), 24)
     for k, linea in enumerate(titular[:2]):
         fig.text(0.08, 0.81 - 0.045 * k, linea, fontsize=27, fontweight="bold", color=TEXTO)
-    # Dorsal grande en lugar de foto (sin imágenes con derechos de terceros)
-    fig.add_artist(FancyBboxPatch((0.08, 0.465), 0.30, 0.24, transform=fig.transFigure,
-                                  boxstyle="round,pad=0,rounding_size=0.02", fc=PANEL, ec=LINEA))
-    fig.text(0.23, 0.585, j["dorsal"], fontsize=110, fontweight="bold", color=NARANJA,
-             ha="center", va="center")
+    foto = j.get("foto")
+    if foto:
+        # Foto facilitada por Ángel, con su crédito en el pie, y dorsal en un círculo
+        x0, y0, ancho, alto = 0.08, 0.44, 0.30, 0.27
+        eje = fig.add_axes([x0, y0, ancho, alto])
+        eje.imshow(foto_redondeada(CARPETA_PROYECTO / "codigo" / foto, ancho * 1080, alto * 1350), aspect="auto")
+        eje.axis("off")
+        fig.add_artist(FancyBboxPatch((x0, y0), ancho, alto, transform=fig.transFigure, fc="none",
+                                      boxstyle="round,pad=0,rounding_size=0.02", ec=LINEA, zorder=4))
+        cx, cy = x0 + ancho - 0.012, y0 + alto - 0.015
+        fig.add_artist(Circle((cx, cy), 0.042, transform=fig.transFigure,
+                              fc=NARANJA, ec=FONDO, lw=3, zorder=5))
+        fig.text(cx, cy - 0.002, j["dorsal"], fontsize=24, fontweight="bold",
+                 color="white", ha="center", va="center", zorder=6)
+    else:
+        # Sin foto con derechos de uso: dorsal grande
+        fig.add_artist(FancyBboxPatch((0.08, 0.465), 0.30, 0.24, transform=fig.transFigure,
+                                      boxstyle="round,pad=0,rounding_size=0.02", fc=PANEL, ec=LINEA))
+        fig.text(0.23, 0.585, j["dorsal"], fontsize=110, fontweight="bold", color=NARANJA,
+                 ha="center", va="center")
     fig.text(0.44, 0.655, j["nombre"].split(" ")[0], fontsize=24, fontweight="bold", color=TEXTO)
     fig.text(0.44, 0.615, " ".join(j["nombre"].split(" ")[1:]), fontsize=24, fontweight="bold", color=TEXTO)
     fig.text(0.44, 0.565, c["rival"], fontsize=13, color=VERDE_CLARO, fontweight="bold")
@@ -153,7 +182,8 @@ def jugador(c, jornada, ruta):
         fig.text(0.30, y + 0.012, texto, fontsize=12.5, color=SUAVE)
         y -= 0.062
     fig.text(0.08, 0.2, textwrap.fill(j["lectura"], 62), fontsize=11.5, color=TEXTO, linespacing=1.5, va="top")
-    pie(fig, f"Datos de liga hasta la jornada {jornada - 1}. Fuentes: {j['fuentes']}.")
+    credito = f" · Foto: {j['foto_credito']}" if j.get("foto") else ""
+    pie(fig, f"Datos hasta la J{jornada - 1} · {j['fuentes']}{credito}")
     fig.savefig(ruta, dpi=150, facecolor=FONDO)
     plt.close(fig)
 
