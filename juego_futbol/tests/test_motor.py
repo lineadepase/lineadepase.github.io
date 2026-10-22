@@ -77,5 +77,25 @@ class TestMotor(unittest.TestCase):
 
 
 
+    def test_temporada_completa_integridad(self):
+        random.seed(2026)
+        equipos = [engine.Equipo(nombre) for nombre in ("A", "B", "C", "D")]
+        for equipo in equipos:
+            engine.crear_plantilla_base(equipo)
+            equipo.convocar_once_automatico()
+        calendario = engine.generar_calendario_nombres([e.nombre for e in equipos])
+        mapa = {e.nombre: e for e in equipos}
+        for jornada in calendario:
+            for local, visitante in jornada:
+                engine.simular_partido(mapa[local], mapa[visitante], mostrar_detalle=False)
+        self.assertEqual(sum(e.partidos_jugados for e in equipos), 24)
+        self.assertTrue(all(e.partidos_jugados == 6 for e in equipos))
+        self.assertEqual(sum(e.goles_a_favor for e in equipos), sum(e.goles_en_contra for e in equipos))
+        self.assertAlmostEqual(sum(e.xg_favor for e in equipos), sum(e.xg_contra for e in equipos), places=2)
+        self.assertLessEqual(sum(e.puntos for e in equipos), 36)
+        self.assertGreaterEqual(sum(e.puntos for e in equipos), 24)
+
+
+
 if __name__ == "__main__":
     unittest.main()
