@@ -347,7 +347,7 @@
 
         .training-layout { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(260px, .65fr); gap: 20px; }
         .pass-pitch { width: 100%; display: block; border-radius: 12px; background: #14532d; margin: 12px 0; }
-        .pass-pitch[hidden] { display: none; }
+        .pass-pitch:not(.active) { display: none; }
         .pass-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
         .pass-option { width: 100%; min-height: 76px; background: #26364b; color: var(--text-main); border: 1px solid #52647a; border-radius: 10px; padding: 12px; text-align: left; cursor: pointer; }
         .pass-option:hover:not(:disabled), .pass-option:focus-visible { border-color: var(--accent-light); outline: 2px solid transparent; background: #304861; }
@@ -607,7 +607,7 @@
             <div class="panel">
                 <div class="panel-header"><span id="pregunta-ejercicio" class="panel-title">¿Qué línea elegirías?</span></div>
                 <p id="instruccion-ejercicio" class="hint-box">Valora el avance, la amenaza y la posibilidad de conservar el balón.</p>
-                <svg id="svg-pase" class="pass-pitch" viewBox="0 0 640 320" role="img" aria-labelledby="pass-pitch-title pass-pitch-desc">
+                <svg id="svg-pase" class="pass-pitch active" viewBox="0 0 640 320" role="img" aria-labelledby="pass-pitch-title pass-pitch-desc">
                     <title id="pass-pitch-title">Pizarra de rutas de pase</title>
                     <desc id="pass-pitch-desc">Esquema ficticio con tres líneas de pase, dos defensores y espacio de progresión hacia la portería rival.</desc>
                     <rect x="8" y="8" width="624" height="304" rx="8" fill="#166534" stroke="#dcfce7" stroke-width="3"/>
@@ -621,7 +621,7 @@
                     <circle cx="182" cy="160" r="4" fill="#fff"/>
                     <text x="583" y="160" fill="#f8fafc" font-size="15" font-weight="700" transform="rotate(90 583 160)">PORTERÍA RIVAL</text>
                 </svg>
-                <svg id="svg-presion" class="pass-pitch" viewBox="0 0 640 320" role="img" aria-labelledby="press-pitch-title press-pitch-desc" hidden>
+                <svg id="svg-presion" class="pass-pitch" viewBox="0 0 640 320" role="img" aria-labelledby="press-pitch-title press-pitch-desc" aria-hidden="true">
                     <title id="press-pitch-title">Pizarra de presión coordinada</title>
                     <desc id="press-pitch-desc">Esquema ficticio de la salida rival, coberturas y zonas hacia las que orientar la presión.</desc>
                     <rect x="8" y="8" width="624" height="304" rx="8" fill="#166534" stroke="#dcfce7" stroke-width="3"/>
@@ -1237,8 +1237,10 @@ function actualizarPanelEntrenamiento() {
     document.getElementById('instruccion-ejercicio').textContent = esPresion
         ? 'Busca el momento para saltar, protege las coberturas y evita que el rival supere el bloque.'
         : 'Valora el avance, la amenaza y la posibilidad de conservar el balón.';
-    document.getElementById('svg-pase').hidden = esPresion;
-    document.getElementById('svg-presion').hidden = !esPresion;
+    document.getElementById('svg-pase').classList.toggle('active', !esPresion);
+    document.getElementById('svg-pase').setAttribute('aria-hidden', String(esPresion));
+    document.getElementById('svg-presion').classList.toggle('active', esPresion);
+    document.getElementById('svg-presion').setAttribute('aria-hidden', String(!esPresion));
     document.getElementById('aviso-metrica-ejercicio').textContent = esPresion
         ? 'La valoración didáctica combina probabilidad de recuperación, compactación y riesgo de quedar superados. No es una estadística oficial ni una medición real del equipo.'
         : 'La puntuación es didáctica: combina avance, amenaza y conservación según las reglas de este ejercicio. No es una métrica oficial ni una evaluación real del jugador.';
