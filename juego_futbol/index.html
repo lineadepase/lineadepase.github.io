@@ -772,7 +772,9 @@ function actualizarUI() {
         tr.style.cursor = 'pointer';
         tr.onclick = () => clicarJugadorPlantilla(idx);
 
-        let estTxt = j.lesionado > 0 ? `🚑 Baja (${j.lesionado}j)` : (j.titular ? '⭐ Titular' : 'Suplente');
+        let estTxt = j.lesionado > 0 ? `🚑 Baja (${j.lesionado}j)`
+            : (j.cansancio >= 75 ? (j.titular ? '⚠️ Titular fatigado' : '⚠️ Fatigado')
+            : (j.titular ? '⭐ Titular' : 'Suplente'));
         tr.innerHTML = `
             <td><span class="badge pos-${j.posicion}">${j.posicion}</span></td>
             <td class="left"><strong>${j.nombre}</strong></td>
