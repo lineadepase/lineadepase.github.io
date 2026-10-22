@@ -1335,10 +1335,14 @@ window.onload = () => {
                 Array.isArray(eq.plantilla) && eq.plantilla.length >= 11 &&
                 eq.plantilla.every(j => j && typeof j.nombre === 'string' &&
                     ['POR', 'DEF', 'CEN', 'DEL'].includes(j.posicion) &&
-                    Number.isFinite(j.media) && j.media > 0 &&
-                    Number.isFinite(j.cansancio) && Number.isFinite(j.moral) &&
+                    Number.isFinite(j.media) && j.media > 0 && j.media <= 100 &&
+                    Number.isFinite(j.cansancio) && j.cansancio >= 0 && j.cansancio <= 100 &&
+                    Number.isFinite(j.moral) && j.moral >= 0 && j.moral <= 100 &&
+                    Number.isFinite(j.precio) && j.precio >= 0 &&
+                    Number.isFinite(j.salario) && j.salario >= 0 &&
                     Number.isInteger(j.lesionado) && j.lesionado >= 0 &&
-                    Number.isFinite(j.xg) && Number.isFinite(j.goles))) ||
+                    Number.isFinite(j.xg) && j.xg >= 0 &&
+                    Number.isInteger(j.goles) && j.goles >= 0)) ||
             !Array.isArray(estadoJuego.mercado) ||
             !Array.isArray(estadoJuego.calendario) ||
             !calendarioValido(estadoJuego.calendario, estadoJuego.equipos) ||
