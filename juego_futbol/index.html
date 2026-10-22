@@ -1238,8 +1238,16 @@ window.onload = () => {
     try {
         estadoJuego = guardado ? JSON.parse(guardado) : crearEstadoInicial();
         if (!estadoJuego || !Array.isArray(estadoJuego.equipos) ||
+            estadoJuego.equipos.length !== 4 ||
+            !estadoJuego.equipos.every(eq => eq && typeof eq.nombre === 'string' &&
+                Array.isArray(eq.plantilla) && eq.plantilla.length >= 11) ||
+            !Array.isArray(estadoJuego.mercado) ||
             !Array.isArray(estadoJuego.calendario) ||
-            !Number.isInteger(estadoJuego.jornadaActual)) {
+            estadoJuego.calendario.length !== 6 ||
+            !Number.isInteger(estadoJuego.jornadaActual) ||
+            estadoJuego.jornadaActual < 0 ||
+            estadoJuego.jornadaActual > estadoJuego.calendario.length ||
+            !Number.isInteger(estadoJuego.temporada) || estadoJuego.temporada < 1) {
             throw new Error("Formato de partida no válido");
         }
     } catch (error) {
