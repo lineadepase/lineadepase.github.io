@@ -154,6 +154,9 @@ const assert = require('node:assert/strict');
       await page.evaluate(() => guardarPartidaLocal(false));
       assert.equal(await page.locator('#estado-guardado').textContent(), '✓ Guardado',
         'el indicador debe recuperarse tras guardar correctamente');
+      await page.reload();
+      assert.equal(await page.locator('#estado-guardado').textContent(), '✓ Partida recuperada',
+        'al reabrir una partida guardada debe indicarse que se recuperó');
       const resetIndicator = await page.evaluate(() => {
         const originalConfirm = window.confirm;
         window.confirm = () => true;
