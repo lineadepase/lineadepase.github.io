@@ -37,6 +37,23 @@ const assert = require('node:assert/strict');
         }
       }
       await page.locator('button.tab-btn').filter({ hasText: 'Pizarra Táctica' }).click();
+      const training = await page.evaluate(() => {
+        const club = obtenerMiEquipo();
+        const fatigueBefore = club.plantilla.map(j => j.cansancio);
+        accionEntrenar();
+        const fatigueAfter = club.plantilla.map(j => j.cansancio);
+        accionDescansar();
+        const fatigueAfterBlockedRest = club.plantilla.map(j => j.cansancio);
+        return { fatigueBefore, fatigueAfter, fatigueAfterBlockedRest, used: estadoJuego.preparacionUsada };
+      });
+      assert.equal(training.used, true);
+      assert.deepEqual(training.fatigueAfterBlockedRest, training.fatigueAfter,
+        'no se puede descansar tras entrenar en la misma jornada');
+      assert.ok(training.fatigueAfter.some((n, i) => n > training.fatigueBefore[i]),
+        'el entrenamiento genera cansancio');
+      await page.reload();
+      assert.equal(await page.evaluate(() => estadoJuego.preparacionUsada), true,
+        'preparación persistente tras recarga');
       const invalidMarket = await page.evaluate(() => {
         const club = obtenerMiEquipo();
         const before = { money: club.presupuesto, size: club.plantilla.length,
