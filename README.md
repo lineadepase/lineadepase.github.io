@@ -1,15 +1,50 @@
 # Línea de pase
 
-Análisis de datos en fútbol. Web personal de proyectos de analítica deportiva de Ángel Marqueta Alonso.
+Análisis de datos en fútbol con fuentes públicas: preguntas concretas, código en Python y R, comprobaciones automáticas y límites explicados. Es la web de proyectos de Ángel Marqueta Alonso, estudiante del Máster en Big Data Deportivo.
 
 Web: https://lineadepase.com/
 
 ## Proyectos
 
-- **Real Zaragoza 2026/27**: seguimiento semanal con datos públicos (resultados, goles, tiros, minutos y clasificación) y panel interactivo.
-- **Fútbol femenino en datos**: licencias federativas (CSD) y población (INE) para decidir dónde empezar un programa de iniciación.
+| Proyecto | Pregunta | Técnicas | Código |
+| --- | --- | --- | --- |
+| [El peligro empieza antes del último pase](https://lineadepase.com/proyectos/liga-f-xt/) | ¿Qué jugadoras de la Liga F 2023/24 acercan el balón a las zonas de gol con pases y conducciones? | Modelo propio de amenaza esperada (xT), validación fuera de muestra por grupos de partidos, intervalos por remuestreo, pruebas con soluciones conocidas | [analisis/liga-f-xt](analisis/liga-f-xt/README.md) |
+| [Real Zaragoza 2026/27, jornada a jornada](https://lineadepase.com/proyectos/real-zaragoza/) | ¿Cómo evoluciona el equipo y qué explica sus resultados? | Recogida y contraste de fuentes, tablas reproducibles, comprobaciones en R, panel web, comparador del grupo y datos para Tableau | [analisis/real-zaragoza](analisis/real-zaragoza/README.md) |
+| [Fútbol femenino: dónde empezar a ampliar la base](https://lineadepase.com/proyectos/futbol-femenino/) | ¿En qué comunidades tendría más sentido un programa de iniciación? | Tasas por población con datos del CSD y del INE, criterios de selección explícitos, mapa | [analisis/futbol-femenino](analisis/futbol-femenino/README.md) |
+| [xG, sin líos](https://lineadepase.com/proyectos/xg/) | ¿Qué miden los goles esperados y cómo se interpretan? | Divulgación: vídeo subtitulado y explicación escrita | — |
 
-- **xG, sin líos**: vídeo subtitulado, explicación escrita y límites de los goles esperados.
+## Cómo reproducir los análisis
+
+Cada carpeta de `analisis/` tiene su `README.md`, su `requirements.txt` y sus pruebas. Desde la raíz del repositorio:
+
+```
+# Liga F 2023/24 (xT). La primera ejecución descarga unos 600 MB de StatsBomb Open Data
+pip install -r analisis/liga-f-xt/requirements.txt
+python analisis/liga-f-xt/codigo/ejecutar.py --cache <carpeta para los datos>
+python -m pytest analisis/liga-f-xt/pruebas
+
+# Real Zaragoza 2026/27
+pip install -r analisis/real-zaragoza/requirements.txt
+python analisis/real-zaragoza/codigo/actualizar.py
+Rscript analisis/real-zaragoza/codigo/comprobar.R
+
+# Fútbol femenino
+pip install -r analisis/futbol-femenino/requirements.txt
+python analisis/futbol-femenino/codigo/analisis.py
+```
+
+Los datos de StatsBomb no se redistribuyen, como pide su acuerdo de uso: el código los descarga en una carpeta local.
+
+## Forma de trabajo
+
+- Datos públicos, con la fuente y la fecha de corte en cada análisis.
+- Contraste de al menos dos fuentes en el seguimiento del Real Zaragoza; las discrepancias quedan registradas.
+- Cada cifra de los textos sale de los archivos de salida, no se escribe a mano.
+- Cada estudio explica lo que sus cifras no dicen.
+
+Análisis personales hechos con datos públicos. Sin relación con ningún club ni competición.
+
+# Mantenimiento de la web
 
 ## Estructura
 
@@ -20,7 +55,6 @@ Web: https://lineadepase.com/
 - `assets/estilo.css`: estilos comunes.
 - `analisis/`: código y datos de cada análisis. Ver [analisis/real-zaragoza](analisis/real-zaragoza/README.md) y [analisis/futbol-femenino](analisis/futbol-femenino/README.md).
 
-Análisis personales hechos con datos públicos. Sin relación con ningún club ni competición.
 
 ## Navegación del seguimiento
 
