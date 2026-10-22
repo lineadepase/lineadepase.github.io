@@ -82,6 +82,18 @@ const assert = require('node:assert/strict');
       assert.equal(market.afterSellSize, market.before.size);
       assert.equal(market.afterSellAvailable, market.before.available);
       assert.equal(market.afterSellMoney, market.before.money - market.price + Math.round(market.price * 0.8));
+      const beforeReload = await page.evaluate(() => ({
+        money: obtenerMiEquipo().presupuesto,
+        squad: obtenerMiEquipo().plantilla.length,
+        market: estadoJuego.mercado.length
+      }));
+      await page.reload();
+      const afterReload = await page.evaluate(() => ({
+        money: obtenerMiEquipo().presupuesto,
+        squad: obtenerMiEquipo().plantilla.length,
+        market: estadoJuego.mercado.length
+      }));
+      assert.deepEqual(afterReload, beforeReload, 'mercado y presupuesto guardados automáticamente');
       await page.locator('button').filter({ hasText: 'Día de Partido' }).click();
       await page.locator('button').filter({ hasText: 'SIMULAR JORNADA' }).click();
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 1);
