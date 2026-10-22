@@ -83,6 +83,21 @@ const assert = require('node:assert/strict');
       });
       assert.deepEqual(restRecovery, { lesionado: 1, cansancio: 20 },
         'el descanso debe reducir la lesión y la fatiga');
+      const repeatRest = await page.evaluate(() => {
+        const player = obtenerMiEquipo().plantilla[0];
+        const original = { lesionado: player.lesionado, cansancio: player.cansancio };
+        const used = estadoJuego.preparacionUsada;
+        estadoJuego.preparacionUsada = true;
+        player.lesionado = 2;
+        player.cansancio = 50;
+        accionDescansar();
+        const result = { lesionado: player.lesionado, cansancio: player.cansancio };
+        Object.assign(player, original);
+        estadoJuego.preparacionUsada = used;
+        return result;
+      });
+      assert.deepEqual(repeatRest, { lesionado: 2, cansancio: 50 },
+        'no se puede descansar dos veces en la misma jornada');
       const injuredRecovery = await page.evaluate(() => {
         const [home, away] = estadoJuego.equipos;
         const player = home.plantilla[0];
