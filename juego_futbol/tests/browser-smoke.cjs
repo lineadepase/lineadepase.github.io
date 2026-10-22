@@ -273,8 +273,8 @@ const assert = require('node:assert/strict');
         // Intercambiar jornadas completas entre mitades conserva los doce
         // partidos, pero duplica parejas dentro de cada vuelta.
         const tmp = partida.calendario[0];
-        partida.calendario[0] = partida.calendario[3];
-        partida.calendario[3] = tmp;
+        partida.calendario[0] = partida.calendario[4];
+        partida.calendario[4] = tmp;
         return calendarioValido(partida.calendario, partida.equipos);
       });
       assert.equal(swappedCalendar, false, 'la ida y vuelta no pueden mezclar enfrentamientos');
