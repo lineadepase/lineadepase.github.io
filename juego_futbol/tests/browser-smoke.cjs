@@ -68,6 +68,18 @@ const assert = require('node:assert/strict');
         return unchanged;
       });
       assert.equal(injuredShot, true, 'un lesionado no puede rematar');
+      const shortSquad = await page.evaluate(() => {
+        const club = obtenerMiEquipo();
+        const original = club.plantilla.map(j => j.lesionado);
+        const full = calcularFuerzas(club).ataque;
+        club.plantilla.forEach((j, i) => { j.lesionado = i < 6 ? 0 : 3; });
+        const depleted = calcularFuerzas(club).ataque;
+        club.plantilla.forEach((j, i) => { j.lesionado = original[i]; });
+        convocarOnceAutomatico(club);
+        return { full, depleted };
+      });
+      assert.ok(shortSquad.depleted < shortSquad.full,
+        'las bajas deben reducir la fuerza del equipo');
       const noPlayers = await page.evaluate(() => {
         const [home, away] = estadoJuego.equipos;
         const original = [home, away].map(eq => eq.plantilla.map(j => j.lesionado));
