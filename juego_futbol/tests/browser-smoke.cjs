@@ -147,6 +147,7 @@ const fs = require('node:fs/promises');
         return estadoPartidaValido(partida);
       });
       assert.equal(olderPressureSave, true, 'los guardados de dos ejercicios siguen siendo válidos');
+      await page.locator('button.tab-btn').filter({ hasText: 'Laboratorio de juego' }).click();
       await page.locator('#tipo-ejercicio').selectOption('espacio');
       assert.match(await page.locator('#titulo-laboratorio').innerText(), /Lectura del espacio/);
       const spaceBoard = await page.locator('#svg-espacio').evaluate(el => ({
