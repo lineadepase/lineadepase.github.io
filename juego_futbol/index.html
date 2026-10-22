@@ -1148,6 +1148,10 @@ function accionEntrenar() {
 function ficharJugador(idx) {
     const miEq = obtenerMiEquipo();
     const jug = estadoJuego.mercado[idx];
+    if (!jug || !Number.isFinite(jug.precio) || jug.precio < 0) {
+        alert("Este jugador no está disponible en el mercado.");
+        return;
+    }
     if (miEq.presupuesto < jug.precio) {
         alert("Presupuesto insuficiente para este fichaje.");
         return;
@@ -1163,6 +1167,10 @@ function venderJugador(idx) {
     const miEq = obtenerMiEquipo();
     if (miEq.plantilla.length <= 11) {
         alert("No puedes quedarte con menos de 11 jugadores en plantilla.");
+        return;
+    }
+    if (!Number.isInteger(idx) || idx < 0 || idx >= miEq.plantilla.length) {
+        alert("No se ha encontrado al jugador que quieres vender.");
         return;
     }
     const jug = miEq.plantilla.splice(idx, 1)[0];
