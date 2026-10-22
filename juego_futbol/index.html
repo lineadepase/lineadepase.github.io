@@ -740,6 +740,7 @@ function generarCalendario(nombres) {
 function calendarioValido(calendario, equipos) {
     if (!Array.isArray(calendario) || calendario.length !== 6 ||
         !Array.isArray(equipos) || equipos.length !== 4) return false;
+    if (!equipos.every(eq => eq && typeof eq.nombre === 'string')) return false;
     const nombres = equipos.map(eq => eq.nombre);
     if (new Set(nombres).size !== 4) return false;
     const cruces = [];
