@@ -25,14 +25,14 @@ Toda métrica generada se marcará como **simulada**. El xG describe la estimaci
 
 ## Entrenamiento
 
-El laboratorio jugable ofrece tres ejercicios: **pase y progresión**, que pondera avance, amenaza y conservación; **presión coordinada**, que pondera recuperación, compactación y riesgo de quedar superados; y **lectura del espacio**, que pondera la ventaja creada, la amenaza y el riesgo de perderla. Cada situación presenta tres decisiones y explica su consecuencia. El progreso total y los resultados por ejercicio se guardan; los ejercicios no modifican las medias, la fatiga ni la moral de la plantilla.
+El laboratorio jugable ofrece cuatro ejercicios: **pase y progresión**, que pondera avance, amenaza y conservación; **presión coordinada**, que pondera recuperación, compactación y riesgo de quedar superados; **lectura del espacio**, que pondera la ventaja creada, la amenaza y el riesgo de perderla; y **finalización**, que compara la calidad de remate con el pase y el tiempo disponible. Cada situación presenta tres decisiones y explica su consecuencia. El progreso total y los resultados por ejercicio se guardan; los ejercicios no modifican las medias, la fatiga ni la moral de la plantilla.
 
 La secuencia prevista para ampliar el laboratorio es:
 
 1. Pase y progresión (implementado).
 2. Presión: orientar al rival hacia una zona y decidir cuándo saltar (implementado).
 3. Lectura del espacio: reconocer apoyos, fijaciones y espacios libres (implementado).
-4. Finalización: elegir entre disparo, pase extra o conservación según el contexto.
+4. Finalización: elegir entre disparo, pase extra o conservación según el contexto (implementado).
 
 Cada ejercicio tendrá varias soluciones plausibles; la puntuación explicará el intercambio entre riesgo y recompensa y permitirá comparar intentos. Será una herramienta didáctica del juego, no una evaluación real del talento de una persona.
 

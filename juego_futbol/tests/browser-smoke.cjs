@@ -144,6 +144,7 @@ const fs = require('node:fs/promises');
       const olderPressureSave = await page.evaluate(() => {
         const partida = crearEstadoInicial();
         delete partida.entrenamiento.porTipo.espacio;
+        delete partida.entrenamiento.porTipo.finalizacion;
         return estadoPartidaValido(partida);
       });
       assert.equal(olderPressureSave, true, 'los guardados de dos ejercicios siguen siendo válidos');
@@ -174,6 +175,33 @@ const fs = require('node:fs/promises');
       await page.reload();
       assert.equal(await page.evaluate(() => estadoJuego.entrenamiento.porTipo.espacio.intentos), 1,
         'el progreso de lectura del espacio se conserva al recargar');
+      await page.locator('button.tab-btn').filter({ hasText: 'Laboratorio de juego' }).click();
+      await page.locator('#tipo-ejercicio').selectOption('finalizacion');
+      assert.match(await page.locator('#titulo-laboratorio').innerText(), /Finalización/);
+      const finishBoard = await page.locator('#svg-finalizacion').evaluate(el => ({
+        active: el.classList.contains('active'),
+        ariaHidden: el.getAttribute('aria-hidden'),
+        display: getComputedStyle(el).display,
+        width: el.getBoundingClientRect().width,
+        height: el.getBoundingClientRect().height,
+        visibleBoards: document.querySelectorAll('.pass-pitch.active').length
+      }));
+      assert.ok(finishBoard.active && finishBoard.ariaHidden === 'false' && finishBoard.display !== 'none' &&
+        finishBoard.width > 0 && finishBoard.height > 0 && finishBoard.visibleBoards === 1,
+        'la pizarra de finalización aparece sola y renderizada: ' + JSON.stringify(finishBoard));
+      const finishChoice = await page.evaluate(() => retoPaseActual.opcionRecomendada);
+      await page.locator(`#pase-opciones button[data-opcion-index="${finishChoice}"]`).click();
+      const finishProgress = await page.evaluate(() => ({
+        total: estadoJuego.entrenamiento.intentos,
+        attempts: estadoJuego.entrenamiento.porTipo.finalizacion.intentos,
+        best: estadoJuego.entrenamiento.porTipo.finalizacion.mejorPuntuacion,
+        playerDataUnchanged: obtenerMiEquipo().plantilla.every(j => j.goles === 0 && j.xg === 0)
+      }));
+      assert.deepEqual(finishProgress, { total: 4, attempts: 1, best: 100, playerDataUnchanged: true },
+        'finalización registra progreso sin alterar estadísticas reales del simulador');
+      await page.reload();
+      assert.equal(await page.evaluate(() => estadoJuego.entrenamiento.porTipo.finalizacion.intentos), 1,
+        'el progreso de finalización se conserva al recargar');
       await page.locator('button.tab-btn').filter({ hasText: 'Pizarra Táctica' }).click();
       const availability = await page.locator('#resumen-disponibilidad').innerText();
       assert.match(availability, /Disponibles: \d+\/\d+/);
