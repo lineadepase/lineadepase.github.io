@@ -629,7 +629,7 @@ function calcularFuerzas(eq) {
     let titulares = eq.plantilla.filter(j => j.titular && j.lesionado === 0);
     if (titulares.length < 11) {
         convocarOnceAutomatico(eq);
-        titulares = eq.plantilla.filter(j => j.titular);
+        titulares = eq.plantilla.filter(j => j.titular && j.lesionado === 0);
     }
     const media = titulares.reduce((acc, j) => acc + rendimientoReal(j), 0) / Math.max(1, titulares.length);
     const mod = ESTILOS[eq.estilo];
