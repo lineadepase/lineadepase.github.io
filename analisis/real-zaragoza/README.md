@@ -18,6 +18,7 @@ real-zaragoza/
 │   ├── informe.py         página del informe completo
 │   ├── previa.py          previa del próximo partido
 │   ├── previa_redes.py    imagen y cifras de la previa para redes
+│   ├── previa_portada.py  portada de la previa (león propio, sin escudos)
 │   ├── tarjeta_dato.py    imagen de «El dato de la jornada» para LinkedIn
 │   ├── comprobar.R        repite los cálculos en R y los compara (ejecuta las piezas de R/)
 │   └── R/
@@ -86,7 +87,7 @@ En `datos/tablas/` están las mismas tablas listas para abrir con doble clic en 
    python analisis/real-zaragoza/codigo/goles_video.py
    ```
 4. Revisar `textos/conclusiones.html` y los textos de la página del proyecto.
-5. Previa del siguiente partido: añadir los resultados del rival a `partidos_rivales.csv` y ejecutar `python analisis/real-zaragoza/codigo/previa.py <jornada>`. Para redes, `python analisis/real-zaragoza/codigo/previa_redes.py <jornada> --estadio "<estadio>"` crea `datos/salida/previa_redes.png` y `previa_redes.json` con las mismas cifras.
+5. Previa del siguiente partido: añadir los resultados del rival a `partidos_rivales.csv` y ejecutar `python analisis/real-zaragoza/codigo/previa.py <jornada>`. Para redes, `python analisis/real-zaragoza/codigo/previa_redes.py <jornada> --estadio "<estadio>"` crea `datos/salida/previa_redes.png` y `previa_redes.json` con las mismas cifras; después, `python analisis/real-zaragoza/codigo/previa_portada.py` crea la portada `previa_portada.png` (primera imagen del carrusel de Instagram).
 
 Los partidos de copa van en los mismos archivos con su competición; no cuentan para los puntos ni para la clasificación.
 
