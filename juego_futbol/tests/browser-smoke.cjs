@@ -154,6 +154,18 @@ const assert = require('node:assert/strict');
       await page.evaluate(() => guardarPartidaLocal(false));
       assert.equal(await page.locator('#estado-guardado').textContent(), '✓ Guardado',
         'el indicador debe recuperarse tras guardar correctamente');
+      const resetIndicator = await page.evaluate(() => {
+        const originalConfirm = window.confirm;
+        window.confirm = () => true;
+        try {
+          reiniciarPartidaLocal();
+          return document.getElementById('estado-guardado').textContent;
+        } finally {
+          window.confirm = originalConfirm;
+        }
+      });
+      assert.equal(resetIndicator, 'Nueva partida sin guardar',
+        'el reinicio debe indicar que la partida nueva no está guardada');
       const shortSquad = await page.evaluate(() => {
         const club = obtenerMiEquipo();
         const original = club.plantilla.map(j => j.lesionado);
