@@ -17,6 +17,23 @@ const assert = require('node:assert/strict');
       await page.waitForFunction(() => typeof estadoJuego !== 'undefined' && !!estadoJuego.equipos);
       assert.equal(await page.evaluate(() => estadoJuego.equipos.length), 4);
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 0);
+      const market = await page.evaluate(() => {
+        const club = obtenerMiEquipo();
+        const before = { money: club.presupuesto, size: club.plantilla.length, available: estadoJuego.mercado.length };
+        const price = estadoJuego.mercado[0].precio;
+        ficharJugador(0);
+        const assertMarket = { afterBuyMoney: club.presupuesto, afterBuySize: club.plantilla.length,
+          afterBuyAvailable: estadoJuego.mercado.length, price, before };
+        venderJugador(club.plantilla.length - 1);
+        return { ...assertMarket, afterSellMoney: club.presupuesto,
+          afterSellSize: club.plantilla.length, afterSellAvailable: estadoJuego.mercado.length };
+      });
+      assert.equal(market.afterBuyMoney, market.before.money - market.price);
+      assert.equal(market.afterBuySize, market.before.size + 1);
+      assert.equal(market.afterBuyAvailable, market.before.available - 1);
+      assert.equal(market.afterSellSize, market.before.size);
+      assert.equal(market.afterSellAvailable, market.before.available);
+      assert.equal(market.afterSellMoney, market.before.money - market.price + Math.round(market.price * 0.8));
       await page.locator('button').filter({ hasText: 'Día de Partido' }).click();
       await page.locator('button').filter({ hasText: 'SIMULAR JORNADA' }).click();
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 1);
