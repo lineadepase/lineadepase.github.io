@@ -728,7 +728,9 @@ function generarCalendario(nombres) {
     for (let j = 0; j < n - 1; j++) {
         const partidos = [];
         for (let i = 0; i < n / 2; i++) {
-            partidos.push([l[i], l[n - 1 - i]]);
+            // Alternar la localía en la ida evita que el primer equipo juegue
+            // siempre en casa; la vuelta invierte cada enfrentamiento.
+            partidos.push(j % 2 === 0 ? [l[i], l[n - 1 - i]] : [l[n - 1 - i], l[i]]);
         }
         ida.push(partidos);
         l = [l[0], l[n - 1], ...l.slice(1, n - 1)];
@@ -803,7 +805,13 @@ function actualizarUI() {
     if (resumen) {
         const titularesAptos = miEq.plantilla.filter(j => j.titular && j.lesionado === 0).length;
         const avisoOnce = titularesAptos < 11 ? ` · ⚠️ Solo ${titularesAptos} titulares aptos` : '';
-        resumen.textContent = `Disponibles: ${disponibles}/${miEq.plantilla.length} · Lesionados: ${lesionados} · Fatigados (≥75 %): ${fatigados}${avisoOnce}`;
+        const titulares = miEq.plantilla.filter(j => j.titular && j.lesionado === 0);
+        const posicionesSinCubrir = Object.entries(FORMACIONES[miEq.formacion])
+            .filter(([pos, cantidad]) => titulares.filter(j => j.posicion === pos).length < cantidad)
+            .map(([pos]) => pos);
+        const avisoPosiciones = posicionesSinCubrir.length
+            ? ` · ⚠️ Posiciones sin cubrir: ${posicionesSinCubrir.join(', ')} (jugadores adaptados)` : '';
+        resumen.textContent = `Disponibles: ${disponibles}/${miEq.plantilla.length} · Lesionados: ${lesionados} · Fatigados (≥75 %): ${fatigados}${avisoOnce}${avisoPosiciones}`;
     }
 
     // Tabla Plantilla
@@ -1294,7 +1302,9 @@ function iniciarNuevaTemporada() {
     }
     const premios = calcularPremiosClasificacion(estadoJuego.equipos);
     const miPremio = premios.find(p => p.nombre === 'Real Zaragoza');
-    if (!confirm(`¡Temporada terminada! Real Zaragoza: ${miPremio.posicion}.º puesto y premio de ${miPremio.premio.toLocaleString('es-ES')} €. ¿Comenzar la siguiente temporada?`)) return;
+    const resumenPremios = premios.map(p =>
+        `${p.posicion}.º ${p.nombre}: ${p.premio.toLocaleString('es-ES')} €`).join('\n');
+    if (!confirm(`¡Temporada terminada! Real Zaragoza: ${miPremio.posicion}.º puesto.\n\nPremios por clasificación:\n${resumenPremios}\n\n¿Comenzar la siguiente temporada?`)) return;
     estadoJuego.temporada++;
     estadoJuego.jornadaActual = 0;
     estadoJuego.preparacionUsada = false;
