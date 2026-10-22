@@ -18,6 +18,7 @@
 - Avatares vectoriales originales, estables para cada nombre ficticio, en las tablas de plantilla, goleadores y mercado.
 - Mercado, venta de jugadores, preparación, premios y continuidad de temporada.
 - Renovación anual del mercado con cuatro perfiles de jugador, cobertura de posiciones y un límite de doce opciones.
+- Plantillas con un máximo operativo de 25 futbolistas para conservar rotaciones manejables y bloquear fichajes al alcanzar el límite.
 - Guardado local en navegador y recuperación con validación estructural. Se admite el presupuesto negativo como estado válido.
 - Copia JSON exportable e importable, con comprobación de estructura antes de sustituir la partida.
 

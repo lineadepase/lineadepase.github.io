@@ -546,6 +546,24 @@ const fs = require('node:fs/promises');
       assert.equal(market.afterSellSize, market.before.size);
       assert.equal(market.afterSellAvailable, market.before.available);
       assert.equal(market.afterSellMoney, market.before.money - market.price + Math.round(market.price * 0.8));
+      const squadLimit = await page.evaluate(() => {
+        const club = obtenerMiEquipo();
+        const plantillaOriginal = club.plantilla;
+        const antes = { presupuesto: club.presupuesto, mercado: estadoJuego.mercado.length };
+        club.plantilla = Array.from({ length: MAX_PLANTILLA }, (_, i) => ({
+          ...plantillaOriginal[i % plantillaOriginal.length], nombre: `Suplente de prueba ${i + 1}`, titular: false
+        }));
+        actualizarUI();
+        const botonesBloqueados = [...document.querySelectorAll('#tbody-mercado button')].every(boton => boton.disabled);
+        ficharJugador(0);
+        const noHuboCompra = club.plantilla.length === MAX_PLANTILLA && club.presupuesto === antes.presupuesto &&
+          estadoJuego.mercado.length === antes.mercado;
+        club.plantilla = plantillaOriginal;
+        actualizarUI();
+        return { botonesBloqueados, noHuboCompra };
+      });
+      assert.deepEqual(squadLimit, { botonesBloqueados: true, noHuboCompra: true },
+        'la plantilla de 25 jugadores bloquea visualmente y también impide fichajes');
       const beforeReload = await page.evaluate(() => ({
         money: obtenerMiEquipo().presupuesto,
         squad: obtenerMiEquipo().plantilla.length,

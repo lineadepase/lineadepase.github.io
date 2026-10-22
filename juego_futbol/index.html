@@ -235,6 +235,7 @@
         .btn-primary:hover { background: #1d4ed8; }
         .btn-success { background: var(--green); border-color: var(--green); }
         .btn-success:hover { background: #15803d; }
+        button:disabled { cursor: not-allowed; opacity: .58; }
         .btn-warning { background: #d97706; border-color: #d97706; }
         .btn-danger { background: var(--red); border-color: var(--red); }
 
@@ -768,6 +769,7 @@ const ESTILOS = {
     "Equilibrado": { ataque: 1.00, defensa: 1.00, desgaste: 1.0 },
     "Defensivo": { ataque: 0.85, defensa: 1.15, desgaste: 0.9 }
 };
+const MAX_PLANTILLA = 25;
 
 let estadoJuego = null;
 let jugadorSeleccionadoIdx = null;
@@ -1023,7 +1025,7 @@ function estadoPartidaValido(estado) {
                 Number.isFinite(eq.presupuesto) && Number.isFinite(eq.aforo) && eq.aforo >= 0 &&
                 Object.hasOwn(FORMACIONES, eq.formacion) && Object.hasOwn(ESTILOS, eq.estilo) &&
                 ['puntos', 'pj', 'gf', 'gc', 'xgf', 'xgc'].every(k => Number.isFinite(eq[k]) && eq[k] >= 0) &&
-                Array.isArray(eq.plantilla) && eq.plantilla.length >= 11 &&
+                Array.isArray(eq.plantilla) && eq.plantilla.length >= 11 && eq.plantilla.length <= 50 &&
                 eq.plantilla.every(j => j && nombreGuardadoValido(j.nombre) &&
                     ['POR', 'DEF', 'CEN', 'DEL'].includes(j.posicion) &&
                     Number.isFinite(j.media) && j.media > 0 && j.media <= 100 &&
@@ -1034,7 +1036,7 @@ function estadoPartidaValido(estado) {
                     Number.isInteger(j.lesionado) && j.lesionado >= 0 &&
                     Number.isFinite(j.xg) && j.xg >= 0 &&
                     Number.isInteger(j.goles) && j.goles >= 0 && typeof j.titular === 'boolean')) &&
-            Array.isArray(estado.mercado) &&
+            Array.isArray(estado.mercado) && estado.mercado.length <= 100 &&
             estado.mercado.every(j => j && nombreGuardadoValido(j.nombre) &&
                 ['POR', 'DEF', 'CEN', 'DEL'].includes(j.posicion) &&
                 Number.isFinite(j.media) && j.media > 0 && j.media <= 100 &&
@@ -1101,7 +1103,7 @@ function actualizarUI() {
             .map(([pos]) => pos);
         const avisoPosiciones = posicionesSinCubrir.length
             ? ` · ⚠️ Posiciones sin cubrir: ${posicionesSinCubrir.join(', ')} (jugadores adaptados)` : '';
-        resumen.textContent = `Disponibles: ${disponibles}/${miEq.plantilla.length} · Lesionados: ${lesionados} · Fatigados (≥75 %): ${fatigados}${avisoOnce}${avisoPosiciones}`;
+        resumen.textContent = `Plantilla: ${miEq.plantilla.length}/${MAX_PLANTILLA} · Disponibles: ${disponibles}/${miEq.plantilla.length} · Lesionados: ${lesionados} · Fatigados (≥75 %): ${fatigados}${avisoOnce}${avisoPosiciones}`;
     }
 
     // Tabla Plantilla
@@ -1195,13 +1197,14 @@ function actualizarUI() {
     tbodyM.innerHTML = '';
     estadoJuego.mercado.forEach((j, idx) => {
         const tr = document.createElement('tr');
+        const plantillaCompleta = miEq.plantilla.length >= MAX_PLANTILLA;
         tr.innerHTML = `
             <td class="left"><span class="player-name-cell">${avatarJugadorHTML(j.nombre, j.posicion)}<strong>${escaparHTML(j.nombre)}</strong></span></td>
             <td><span class="badge pos-${j.posicion}">${j.posicion}</span></td>
             <td>${j.media}</td>
             <td>${j.precio.toLocaleString('es-ES')} €</td>
             <td>${j.salario.toLocaleString('es-ES')} €</td>
-            <td><button class="btn-success" onclick="ficharJugador(${idx})">Fichar</button></td>
+            <td><button class="btn-success" onclick="ficharJugador(${idx})" ${plantillaCompleta ? 'disabled title="La plantilla ya tiene 25 jugadores"' : ''}>${plantillaCompleta ? 'Plantilla completa' : 'Fichar'}</button></td>
         `;
         tbodyM.appendChild(tr);
     });
@@ -2020,6 +2023,10 @@ function ficharJugador(idx) {
         !Number.isFinite(jug.salario) || jug.salario < 0 ||
         !['POR', 'DEF', 'CEN', 'DEL'].includes(jug.posicion)) {
         alert("Este jugador no está disponible en el mercado.");
+        return;
+    }
+    if (miEq.plantilla.length >= MAX_PLANTILLA) {
+        alert(`La plantilla ya ha alcanzado su límite de ${MAX_PLANTILLA} jugadores. Vende a alguien antes de fichar.`);
         return;
     }
     if (miEq.presupuesto < jug.precio || miEq.presupuesto < 0) {
