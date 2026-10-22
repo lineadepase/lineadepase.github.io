@@ -788,7 +788,9 @@ function actualizarUI() {
         : `Temp. ${estadoJuego.temporada} · Finalizada`;
 
     document.getElementById('lbl-temporada').textContent = jTxt;
-    document.getElementById('lbl-presupuesto').textContent = miEq.presupuesto.toLocaleString('es-ES') + ' €';
+    document.getElementById('lbl-presupuesto').textContent =
+        miEq.presupuesto.toLocaleString('es-ES') + ' €' +
+        (miEq.presupuesto < 0 ? ' ⚠️ Déficit: vende jugadores o espera ingresos' : '');
     document.getElementById('lbl-salarios').textContent = masaSalarial(miEq).toLocaleString('es-ES') + ' €/j';
 
     document.getElementById('sel-formacion').value = miEq.formacion;
@@ -1360,7 +1362,7 @@ window.onload = () => {
             new Set(estadoJuego.equipos.map(eq => eq?.nombre)).size !== 4 ||
             !estadoJuego.equipos.some(eq => eq?.nombre === 'Real Zaragoza') ||
             !estadoJuego.equipos.every(eq => eq && typeof eq.nombre === 'string' &&
-                Number.isFinite(eq.presupuesto) && eq.presupuesto >= 0 &&
+                Number.isFinite(eq.presupuesto) &&
                 Object.hasOwn(FORMACIONES, eq.formacion) &&
                 Object.hasOwn(ESTILOS, eq.estilo) &&
                 Array.isArray(eq.plantilla) && eq.plantilla.length >= 11 &&
