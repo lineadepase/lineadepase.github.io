@@ -9,4 +9,4 @@ Línea de pase ha simulado 10.000 veces lo que queda de temporada en el grupo 2 
 Es el equipo con más opciones del grupo, pero en el 37 % de las temporadas simuladas se queda fuera de los cinco primeros. Quedan 31 jornadas.
 
 Todos los equipos, el método y el código:
-https://lineadepase.com/proyectos/real-zaragoza/simulacion.html
+https://lineadepase.com/proyectos/real-zaragoza/simulacion.html?utm_source=facebook&utm_medium=social&utm_campaign=simulacion

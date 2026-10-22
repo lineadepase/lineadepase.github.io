@@ -8,6 +8,6 @@ Con 7 jornadas jugadas, la clasificación dice menos de lo que parece. Línea de
 Tras la jornada 7, el Real Zaragoza asciende directamente en el 20 % de las simulaciones y acaba entre los cinco primeros en el 63 %.
 
 La simulación se actualiza después de cada jornada:
-https://lineadepase.com/proyectos/real-zaragoza/simulacion.html
+https://lineadepase.com/proyectos/real-zaragoza/simulacion.html?utm_source=linkedin&utm_medium=social&utm_campaign=simulacion
 
 #AnaliticaDeportiva #Python #MonteCarlo #Estadistica #RealZaragoza

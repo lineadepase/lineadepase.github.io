@@ -14,6 +14,11 @@ ESTUDIO = Path(__file__).resolve().parents[1]
 ENLACE = "https://lineadepase.com/proyectos/real-zaragoza/simulacion.html"
 
 
+def enlace(red):
+    """Enlace a la página con la red de origen, para ver en la analítica de qué red llega cada visita."""
+    return f"{ENLACE}?utm_source={red}&utm_medium=social&utm_campaign=simulacion"
+
+
 def pct(valor):
     return f"{valor * 100:.0f} %"
 
@@ -64,7 +69,7 @@ Línea de pase ha simulado 10.000 veces lo que queda de temporada en el grupo 2 
 {lectura_fb} en el {pct(1 - z.ascenso_o_playoff)} de las temporadas simuladas se queda fuera de los cinco primeros. Quedan {38 - j} jornadas.
 
 Todos los equipos, el método y el código:
-{ENLACE}
+{enlace("facebook")}
 """, encoding="utf-8")
 
     (carpeta / "linkedin.txt").write_text(f"""Con {j} jornadas jugadas, la clasificación dice menos de lo que parece. Línea de pase lo ha medido con una simulación Monte Carlo del grupo 2 de Primera Federación, programada en Python:
@@ -77,7 +82,7 @@ Todos los equipos, el método y el código:
 Tras la jornada {j}, el Real Zaragoza asciende directamente en el {pct(z.ascenso_directo)} de las simulaciones y acaba entre los cinco primeros en el {pct(z.ascenso_o_playoff)}.
 
 La simulación se actualiza después de cada jornada:
-{ENLACE}
+{enlace("linkedin")}
 
 #AnaliticaDeportiva #Python #MonteCarlo #Estadistica #RealZaragoza
 """, encoding="utf-8")
