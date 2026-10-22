@@ -1016,6 +1016,18 @@ function simularJornada() {
         return;
     }
 
+    // Comprobación defensiva del calendario antes de alterar la partida.
+    const partidos = estadoJuego.calendario[estadoJuego.jornadaActual];
+    const nombres = estadoJuego.equipos.map(eq => eq.nombre);
+    const participantes = Array.isArray(partidos) ? partidos.flat() : [];
+    if (!Array.isArray(partidos) || partidos.length !== 2 ||
+        !partidos.every(p => Array.isArray(p) && p.length === 2 &&
+            p[0] !== p[1] && nombres.includes(p[0]) && nombres.includes(p[1])) ||
+        participantes.length !== 4 || new Set(participantes).size !== 4) {
+        alert("El calendario de esta jornada no es válido. No se ha simulado el partido.");
+        return;
+    }
+
     // Una jornada consume la preparación previa: no se puede entrenar o descansar
     // ilimitadamente entre dos partidos.
     estadoJuego.preparacionUsada = false;
@@ -1026,7 +1038,6 @@ function simularJornada() {
     const ctxShot = canvasShot.getContext('2d');
     dibujarCampoBase(ctxShot, canvasShot.width, canvasShot.height);
 
-    const partidos = estadoJuego.calendario[estadoJuego.jornadaActual];
     const mapa = Object.fromEntries(estadoJuego.equipos.map(e => [e.nombre, e]));
 
     partidos.forEach(([locNom, visNom]) => {
