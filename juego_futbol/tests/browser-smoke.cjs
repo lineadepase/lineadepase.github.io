@@ -279,6 +279,28 @@ const assert = require('node:assert/strict');
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 1, 'partida persistente');
       await page.evaluate(() => { for (let i = 1; i < 6; i++) simularJornada(); });
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 6);
+      const empate = await page.evaluate(() => {
+        const clubes = crearEstadoInicial().equipos;
+        clubes.forEach(e => { e.puntos = 10; e.gf = 8; e.gc = 5; });
+        clubes[0].gf = 9;
+        clubes[1].gc = 4;
+        return calcularPremiosClasificacion(clubes).map(e => e.nombre);
+      });
+      assert.equal(empate[0], 'Real Zaragoza',
+        'a igualdad de puntos y diferencia de goles, mandan los goles a favor');
+      const temporadaIncompleta = await page.evaluate(() => {
+        const actual = estadoJuego.jornadaActual;
+        const temporada = estadoJuego.temporada;
+        estadoJuego.jornadaActual = 5;
+        try {
+          iniciarNuevaTemporada();
+          return estadoJuego.temporada === temporada && estadoJuego.jornadaActual === 5;
+        } finally {
+          estadoJuego.jornadaActual = actual;
+        }
+      });
+      assert.equal(temporadaIncompleta, true,
+        'no se debe cobrar premios ni iniciar temporada antes de la última jornada');
       const premios = await page.evaluate(() => {
         const ordenados = calcularPremiosClasificacion(estadoJuego.equipos);
         return ordenados.map(p => p.premio);
