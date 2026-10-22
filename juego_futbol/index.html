@@ -296,6 +296,26 @@
         .log-injury { color: var(--red); }
         .log-info { color: var(--text-muted); }
 
+        /* Evita que tablas y contenido ancho ensanchen la página en móviles. */
+        .grid-2 > *, .panel, .tab-content, .table-wrap {
+            min-width: 0;
+        }
+
+        @media (max-width: 600px) {
+            header { padding: 12px; }
+            .club-brand { min-width: 0; }
+            .club-brand h1 { font-size: 1.1rem; }
+            .club-brand span { font-size: 0.72rem; overflow-wrap: anywhere; }
+            .top-stats { gap: 8px; }
+            .stat-pill { padding: 6px 9px; font-size: 0.8rem; }
+            nav { padding: 0 10px; }
+            .tab-btn { padding: 12px; }
+            main { padding: 12px; }
+            .panel { padding: 12px; }
+            .grid-2 { grid-template-columns: minmax(0, 1fr); }
+            .table-wrap { max-width: 100%; }
+        }
+
         .hint-box {
             font-size: 0.82rem;
             color: var(--text-muted);
