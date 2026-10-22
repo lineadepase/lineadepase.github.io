@@ -19,7 +19,7 @@ Los retratos serán ilustraciones originales de estilo editorial/arcade. Se cons
 
 ## Partido y lenguaje de datos
 
-Las jugadas y repeticiones se dibujarán con animación 2D/SVG a partir del estado del simulador. Una pausa breve podrá mostrar una ruta de pase, un mapa de tiros o la ocupación aproximada del espacio. Se podrá continuar o saltar el análisis para no frenar el ritmo.
+La pestaña de partido ofrece una repetición analítica 2D/SVG para cada remate del equipo del usuario. La escena reconstruye una trayectoria esquemática y muestra minuto, rematador, equipo, desenlace y xG simulado; se puede elegir cualquier ocasión desde la crónica o desde sus controles. La animación respeta la preferencia de movimiento reducido. No es vídeo ni seguimiento real de jugadores. Como ampliación futura podrán añadirse capas de posesión, presión y ocupación del espacio sin frenar el ritmo.
 
 Toda métrica generada se marcará como **simulada**. El xG describe la estimación del propio juego para una ocasión inventada; un futuro índice de progresión o amenaza deberá explicar su fórmula o escala y no llamarse xT oficial. Las fuentes reales, si se conectan, mostrarán su procedencia y fecha por separado.
 

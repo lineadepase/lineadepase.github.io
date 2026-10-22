@@ -466,6 +466,43 @@ const fs = require('node:fs/promises');
       }));
       assert.deepEqual(afterReload, beforeReload, 'mercado y presupuesto guardados automáticamente');
       await page.locator('button').filter({ hasText: 'Día de Partido' }).click();
+      const replayCheck = await page.evaluate(() => {
+        const random = Math.random;
+        const originalStats = obtenerMiEquipo().plantilla.map(j => [j.goles, j.xg]);
+        try {
+          Math.random = () => 0.1;
+          limpiarRepeticionesPartido();
+          const [home, away] = crearEstadoInicial().equipos;
+          const canvas = document.getElementById('canvas-shotmap');
+          dibujarCampoBase(canvas.getContext('2d'), canvas.width, canvas.height);
+          simularPartidoIndividual(home, away, true, document.getElementById('match-log'),
+            canvas.getContext('2d'), canvas.width, canvas.height);
+          const selected = mostrarRepeticion(0);
+          return {
+            events: eventosPartidoActual.length,
+            controls: document.querySelectorAll('#replay-controls [data-replay-index]').length,
+            logButtons: document.querySelectorAll('#match-log .replay-trigger').length,
+            selected,
+            pressed: document.querySelector('#replay-controls [data-replay-index="0"]')?.getAttribute('aria-pressed'),
+            xg: document.getElementById('replay-xg').textContent,
+            player: document.getElementById('replay-player').textContent,
+            simulatedLabel: document.getElementById('replay-status').textContent.includes('no vídeo real'),
+            originalStatsUnchanged: obtenerMiEquipo().plantilla.every((j, i) =>
+              j.goles === originalStats[i][0] && j.xg === originalStats[i][1])
+          };
+        } finally {
+          Math.random = random;
+        }
+      });
+      assert.equal(replayCheck.events, 8, 'el remate del simulador produce eventos de repetición');
+      assert.equal(replayCheck.controls, replayCheck.events, 'cada ocasión tiene control para repetirla');
+      assert.equal(replayCheck.logButtons, replayCheck.events, 'la crónica enlaza cada remate a su repetición');
+      assert.equal(replayCheck.selected, true);
+      assert.equal(replayCheck.pressed, 'true', 'la repetición seleccionada se anuncia a lectores de pantalla');
+      assert.ok(Number.isFinite(Number(replayCheck.xg)) && replayCheck.player);
+      assert.equal(replayCheck.simulatedLabel, true, 'la repetición se identifica como reconstrucción, no vídeo real');
+      assert.equal(replayCheck.originalStatsUnchanged, true,
+        'la prueba de repetición usa datos aislados y no altera la partida activa');
       await page.locator('button').filter({ hasText: 'SIMULAR JORNADA' }).click();
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 1);
       await page.reload();

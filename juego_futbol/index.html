@@ -318,6 +318,19 @@
         .log-chance { color: var(--accent-light); }
         .log-injury { color: var(--red); }
         .log-info { color: var(--text-muted); }
+        .replay-trigger { margin: 4px 0 0 8px; min-height: 36px; padding: 6px 10px; border: 1px solid #7dd3fc; border-radius: 8px; background: #10273a; color: #e0f2fe; cursor: pointer; font-weight: 700; }
+        .replay-trigger:hover, .replay-trigger:focus-visible { background: #164e63; outline: 2px solid #7dd3fc; outline-offset: 2px; }
+        .replay-panel { margin-top: 20px; }
+        .replay-layout { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(220px, .65fr); gap: 18px; align-items: start; }
+        .replay-board { width: 100%; display: block; border-radius: 12px; background: #14532d; }
+        .replay-summary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+        .replay-metric { padding: 10px; border: 1px solid #334155; border-radius: 9px; background: rgba(15, 23, 42, .55); min-width: 0; overflow-wrap: anywhere; }
+        .replay-metric strong { display: block; color: var(--accent-light); font-size: .78rem; margin-bottom: 4px; }
+        .replay-ball { fill: #facc15; stroke: #fff; stroke-width: 3; }
+        .replay-shot { fill: none; stroke: #facc15; stroke-width: 3; stroke-dasharray: 8 7; opacity: .9; }
+        .replay-shot-marker { fill: #facc15; stroke: #fff; stroke-width: 3; }
+        .replay-controls { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+        .replay-trigger[aria-pressed="true"] { background: #075985; box-shadow: inset 0 0 0 1px #bae6fd; }
 
         /* Evita que tablas y contenido ancho ensanchen la página en móviles. */
         .grid-2 > *, .panel, .tab-content, .table-wrap {
@@ -360,6 +373,7 @@
             .training-layout { grid-template-columns: minmax(0, 1fr); }
             .pass-options { grid-template-columns: minmax(0, 1fr); }
             .pass-option { min-height: 60px; }
+            .replay-layout { grid-template-columns: minmax(0, 1fr); }
         }
     </style>
 </head>
@@ -479,6 +493,44 @@
                 <canvas id="canvas-shotmap" width="480" height="420"></canvas>
             </div>
         </div>
+        <section class="panel replay-panel" aria-labelledby="replay-heading">
+            <div class="panel-header">
+                <span id="replay-heading" class="panel-title">Repetición analítica</span>
+                <span class="hint-box">Animación esquemática generada por el simulador; no es vídeo real.</span>
+            </div>
+            <p id="replay-status" class="hint-box" role="status" aria-live="polite">Al simular una jornada, podrás revisar las ocasiones del partido de FC Pase y Pifia.</p>
+            <div class="replay-layout">
+                <div>
+                    <svg id="svg-replay" class="replay-board" viewBox="0 0 640 320" role="img" aria-labelledby="replay-svg-title replay-svg-desc">
+                        <title id="replay-svg-title">Reconstrucción táctica de una ocasión simulada</title>
+                        <desc id="replay-svg-desc">Pizarra de fútbol con trayectoria estimada del balón, defensores y punto de remate. La escena es una animación ficticia del motor.</desc>
+                        <rect x="8" y="8" width="624" height="304" rx="8" fill="#166534" stroke="#dcfce7" stroke-width="3"/>
+                        <path d="M320 8v304M8 160h624M8 90h80v140H8M632 90h-80v140h80" fill="none" stroke="#dcfce7" stroke-width="2" opacity=".72"/>
+                        <circle cx="320" cy="160" r="42" fill="none" stroke="#dcfce7" stroke-width="2" opacity=".72"/>
+                        <path d="M552 90v140M552 90h80M552 230h80" fill="none" stroke="#f8fafc" stroke-width="4"/>
+                        <path id="replay-trajectory" class="replay-shot" d=""/>
+                        <g fill="#ef4444" stroke="#fff" stroke-width="3"><circle cx="426" cy="116" r="15"/><circle cx="470" cy="202" r="15"/></g>
+                        <circle id="replay-shot-marker" class="replay-shot-marker" cx="560" cy="160" r="10" visibility="hidden"/>
+                        <circle id="replay-ball" class="replay-ball" cx="82" cy="160" r="9"/>
+                        <text x="565" y="74" fill="#f8fafc" font-size="14" font-weight="700">PORTERÍA</text>
+                    </svg>
+                    <div id="replay-controls" class="replay-controls" role="group" aria-label="Ocasiones del partido">
+                        <p class="hint-box">No hay ocasiones registradas todavía.</p>
+                    </div>
+                </div>
+                <div>
+                    <h3 id="replay-title">Sin repetición seleccionada</h3>
+                    <div class="replay-summary">
+                        <div class="replay-metric"><strong>MINUTO</strong><span id="replay-minute">—</span></div>
+                        <div class="replay-metric"><strong>REMATADOR</strong><span id="replay-player">—</span></div>
+                        <div class="replay-metric"><strong>Equipo</strong><span id="replay-team">—</span></div>
+                        <div class="replay-metric"><strong>xG simulado</strong><span id="replay-xg">—</span></div>
+                        <div class="replay-metric"><strong>Resultado</strong><span id="replay-outcome">—</span></div>
+                    </div>
+                    <p class="hint-box">La trayectoria, la ubicación y el xG son una representación del motor de juego. No proceden de vídeo ni de datos oficiales.</p>
+                </div>
+            </div>
+        </section>
     </section>
 
     <!-- PESTAÑA 3: CLASIFICACIÓN Y MÉTRICAS -->
@@ -719,6 +771,8 @@ let estadoJuego = null;
 let jugadorSeleccionadoIdx = null;
 let retoPaseActual = null;
 let tipoEjercicioActual = 'pase';
+let eventosPartidoActual = [];
+let animacionRepeticionId = null;
 
 // --- 2. FUNCIONES DE MODELO ---
 function rendimientoReal(j) {
@@ -1590,6 +1644,7 @@ function simularJornada() {
 
     const logBox = document.getElementById('match-log');
     logBox.innerHTML = '';
+    limpiarRepeticionesPartido();
     const canvasShot = document.getElementById('canvas-shotmap');
     const ctxShot = canvasShot.getContext('2d');
     dibujarCampoBase(ctxShot, canvasShot.width, canvasShot.height);
@@ -1603,6 +1658,13 @@ function simularJornada() {
         simularPartidoIndividual(local, vis, esNuestro, logBox, ctxShot, canvasShot.width, canvasShot.height);
     });
 
+    if (eventosPartidoActual.length) {
+        mostrarRepeticion(0);
+    } else {
+        document.getElementById('replay-status').textContent = 'Esta jornada no produjo remates para el partido de FC Pase y Pifia.';
+        document.getElementById('replay-controls').innerHTML = '<p class="hint-box">No hay ocasiones registradas en este encuentro.</p>';
+    }
+
     estadoJuego.jornadaActual++;
     guardarPartidaLocal(false);
     actualizarUI();
@@ -1612,6 +1674,98 @@ function escaparHTML(valor) {
     return String(valor).replace(/[&<>"']/g, caracter => ({
         '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
     })[caracter]);
+}
+
+function limpiarRepeticionesPartido() {
+    if (animacionRepeticionId !== null) cancelAnimationFrame(animacionRepeticionId);
+    animacionRepeticionId = null;
+    eventosPartidoActual = [];
+    const controles = document.getElementById('replay-controls');
+    if (controles) controles.innerHTML = '<p class="hint-box">Cargando ocasiones del partido…</p>';
+    const estado = document.getElementById('replay-status');
+    if (estado) estado.textContent = 'La animación se construye con los eventos ficticios del motor.';
+    const title = document.getElementById('replay-title');
+    if (title) title.textContent = 'Sin repetición seleccionada';
+    const metricas = {
+        'replay-minute': '—',
+        'replay-player': '—',
+        'replay-team': '—',
+        'replay-xg': '—',
+        'replay-outcome': '—'
+    };
+    Object.entries(metricas).forEach(([id, valor]) => {
+        const elemento = document.getElementById(id);
+        if (elemento) elemento.textContent = valor;
+    });
+    document.getElementById('replay-trajectory')?.setAttribute('d', '');
+    document.getElementById('replay-shot-marker')?.setAttribute('visibility', 'hidden');
+    const ball = document.getElementById('replay-ball');
+    ball?.setAttribute('cx', '82');
+    ball?.setAttribute('cy', '160');
+}
+
+function registrarEventoTiro(evento, logBox) {
+    const indice = eventosPartidoActual.push(evento) - 1;
+    const linea = document.createElement('p');
+    linea.className = evento.esGol ? 'log-goal' : 'log-chance';
+    linea.textContent = `[${evento.minuto}'] ${evento.esGol ? '¡GOOOL' : 'Remate'} de ${evento.rematador} (${evento.equipo}) · xG simulado ${evento.xg.toFixed(2)}`;
+    const boton = document.createElement('button');
+    boton.type = 'button';
+    boton.className = 'replay-trigger';
+    boton.dataset.replayIndex = String(indice);
+    boton.setAttribute('aria-pressed', 'false');
+    boton.setAttribute('aria-label', `Repetir remate de ${evento.rematador}, minuto ${evento.minuto}, xG simulado ${evento.xg.toFixed(2)}`);
+    boton.textContent = `▶ Repetir · ${evento.minuto}'`;
+    boton.addEventListener('click', () => mostrarRepeticion(indice));
+    linea.appendChild(boton);
+    logBox.appendChild(linea);
+}
+
+function mostrarRepeticion(indice) {
+    if (!Number.isInteger(indice) || indice < 0 || indice >= eventosPartidoActual.length) return false;
+    const evento = eventosPartidoActual[indice];
+    const ball = document.getElementById('replay-ball');
+    const marker = document.getElementById('replay-shot-marker');
+    const path = document.getElementById('replay-trajectory');
+    const start = { x: evento.inicio.x, y: evento.inicio.y };
+    const end = { x: evento.remate.x, y: evento.remate.y };
+    if (animacionRepeticionId !== null) cancelAnimationFrame(animacionRepeticionId);
+    animacionRepeticionId = null;
+    path.setAttribute('d', `M ${start.x} ${start.y} Q ${(start.x + end.x) / 2} ${Math.max(24, Math.min(296, Math.min(start.y, end.y) - 24))} ${end.x} ${end.y}`);
+    marker.setAttribute('cx', String(end.x));
+    marker.setAttribute('cy', String(end.y));
+    marker.setAttribute('visibility', 'visible');
+    ball.setAttribute('cx', String(start.x));
+    ball.setAttribute('cy', String(start.y));
+    document.getElementById('replay-title').textContent = evento.esGol ? 'Remate con gol simulado' : 'Remate sin gol';
+    document.getElementById('replay-minute').textContent = `${evento.minuto}'`;
+    document.getElementById('replay-player').textContent = evento.rematador;
+    document.getElementById('replay-team').textContent = evento.equipo;
+    document.getElementById('replay-xg').textContent = evento.xg.toFixed(2);
+    document.getElementById('replay-outcome').textContent = evento.esGol ? 'Gol del simulador' : 'Sin gol';
+    document.getElementById('replay-status').textContent = `Repetición ${indice + 1} de ${eventosPartidoActual.length} · trayectoria reconstruida, no vídeo real.`;
+    document.querySelectorAll('#replay-controls [data-replay-index]').forEach(boton => {
+        boton.setAttribute('aria-pressed', String(Number(boton.dataset.replayIndex) === indice));
+    });
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) {
+        ball.setAttribute('cx', String(end.x));
+        ball.setAttribute('cy', String(end.y));
+        return true;
+    }
+    const duracion = 850;
+    let inicio = null;
+    const animar = ahora => {
+        if (inicio === null) inicio = ahora;
+        const progreso = Math.min(1, (ahora - inicio) / duracion);
+        const suave = progreso * progreso * (3 - 2 * progreso);
+        ball.setAttribute('cx', String(start.x + (end.x - start.x) * suave));
+        ball.setAttribute('cy', String(start.y + (end.y - start.y) * suave));
+        if (progreso < 1) animacionRepeticionId = requestAnimationFrame(animar);
+        else animacionRepeticionId = null;
+    };
+    animacionRepeticionId = requestAnimationFrame(animar);
+    return true;
 }
 
 function simularPartidoIndividual(local, vis, esNuestro, logBox, ctxShot, w, h) {
@@ -1669,11 +1823,21 @@ function simularPartidoIndividual(local, vis, esNuestro, logBox, ctxShot, w, h) 
                 ctxShot.strokeStyle = "#fff";
                 ctxShot.stroke();
 
-                if (esGol) {
-                    logBox.innerHTML += `<p class="log-goal">[${min}'] ¡GOOOL de ${escaparHTML(rematador.nombre)} (${escaparHTML(eqAtq.nombre)})! [xG: ${xgTiro.toFixed(2)}]</p>`;
-                } else if (xgTiro >= 0.28) {
-                    logBox.innerHTML += `<p class="log-chance">[${min}'] ¡Ocasión clara fallada por ${escaparHTML(rematador.nombre)}! [xG: ${xgTiro.toFixed(2)}]</p>`;
-                }
+                const normalX = atacaLocal ? sx : w - sx;
+                const normalY = atacaLocal ? sy : h - sy;
+                const xReplay = Math.round(24 + (normalX / w) * 580);
+                const yReplay = Math.round(24 + (normalY / h) * 272);
+                const xInicio = Math.max(48, xReplay - (esClara ? 92 : 148));
+                const yInicio = Math.max(42, Math.min(278, yReplay + (yReplay < 160 ? 36 : -36)));
+                registrarEventoTiro({
+                    minuto: min,
+                    rematador: rematador.nombre,
+                    equipo: eqAtq.nombre,
+                    xg: xgTiro,
+                    esGol,
+                    inicio: { x: xInicio, y: yInicio },
+                    remate: { x: xReplay, y: yReplay }
+                }, logBox);
             }
         }
     });
@@ -1716,6 +1880,19 @@ function simularPartidoIndividual(local, vis, esNuestro, logBox, ctxShot, w, h) 
     });
 
     if (esNuestro) {
+        if (eventosPartidoActual.length) {
+            document.getElementById('replay-controls').innerHTML = '';
+            eventosPartidoActual.forEach((evento, indice) => {
+                const boton = document.createElement('button');
+                boton.type = 'button';
+                boton.className = 'replay-trigger';
+                boton.dataset.replayIndex = String(indice);
+                boton.setAttribute('aria-pressed', 'false');
+                boton.textContent = `${evento.minuto}' · ${evento.esGol ? 'Gol' : 'Remate'} · xG ${evento.xg.toFixed(2)}`;
+                boton.addEventListener('click', () => mostrarRepeticion(indice));
+                document.getElementById('replay-controls').appendChild(boton);
+            });
+        }
         logBox.innerHTML += `<hr style="border-color:#334155;margin:8px 0;">`;
         logBox.innerHTML += `<p><strong>🏁 FINAL: ${escaparHTML(local.nombre)} ${gL} - ${gV} ${escaparHTML(vis.nombre)}</strong> (xG: ${xgL.toFixed(2)} vs ${xgV.toFixed(2)})</p>`;
         logBox.innerHTML += `<p class="log-info">💶 Taquilla local: +${taquilla.toLocaleString('es-ES')} €</p><br>`;

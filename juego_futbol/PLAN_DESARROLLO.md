@@ -13,6 +13,7 @@
 - Tres formaciones, tres estilos, selección automática y rotación manual.
 - Laboratorio de juego con ejercicios interactivos de pase y progresión, presión coordinada, lectura del espacio y finalización, explicación de las decisiones y progreso separado por ejercicio.
 - Simulación de ocasiones, tiros, goles, xG interno, cansancio, lesiones, taquilla y salarios.
+- Repeticiones analíticas esquemáticas de los remates del equipo del usuario, enlazadas desde la crónica y etiquetadas como contenido ficticio del simulador.
 - Mercado, venta de jugadores, preparación, premios y continuidad de temporada.
 - Guardado local en navegador y recuperación con validación estructural. Se admite el presupuesto negativo como estado válido.
 - Copia JSON exportable e importable, con comprobación de estructura antes de sustituir la partida.
@@ -37,4 +38,4 @@ Todos los clubes y futbolistas del juego usan nombres ficticios con tono humorí
 
 ## Próxima ampliación de producto
 
-El laboratorio ya contiene ejercicios jugables de pase y progresión, presión coordinada, lectura del espacio y finalización. Miden decisiones ficticias mediante escalas didácticas explicadas en pantalla; no cambian las valoraciones de los jugadores ni se presentan como métricas oficiales. Las próximas ampliaciones pueden incorporar repeticiones animadas generadas por el simulador. Los nombres humorísticos y las caras ilustradas originales siguen siendo el modo base; cualquier contenido identificable de clubes, competiciones o futbolistas reales requeriría una revisión de permisos antes de incorporarse.
+El laboratorio ya contiene ejercicios jugables de pase y progresión, presión coordinada, lectura del espacio y finalización. Miden decisiones ficticias mediante escalas didácticas explicadas en pantalla; no cambian las valoraciones de los jugadores ni se presentan como métricas oficiales. La pestaña de partido también incorpora repeticiones esquemáticas de remates, generadas por el motor y claramente diferenciadas de un vídeo o dato oficial. Una ampliación posterior podría explorar mapas de presión y ocupación espacial. Los nombres humorísticos y las caras ilustradas originales siguen siendo el modo base; cualquier contenido identificable de clubes, competiciones o futbolistas reales requeriría una revisión de permisos antes de incorporarse.
