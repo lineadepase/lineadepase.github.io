@@ -344,6 +344,22 @@
             color: var(--text-muted);
             margin-top: 8px;
         }
+
+        .training-layout { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(260px, .65fr); gap: 20px; }
+        .pass-pitch { width: 100%; display: block; border-radius: 12px; background: #14532d; margin: 12px 0; }
+        .pass-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+        .pass-option { width: 100%; min-height: 76px; background: #26364b; color: var(--text-main); border: 1px solid #52647a; border-radius: 10px; padding: 12px; text-align: left; cursor: pointer; }
+        .pass-option:hover:not(:disabled), .pass-option:focus-visible { border-color: var(--accent-light); outline: 2px solid transparent; background: #304861; }
+        .pass-option:disabled { cursor: default; opacity: .82; }
+        .pass-option.selected { border-color: var(--gold); box-shadow: inset 0 0 0 1px var(--gold); }
+        .pass-option strong { display: block; margin-bottom: 5px; }
+        .training-feedback { min-height: 58px; border-left: 3px solid var(--accent-light); padding: 10px 12px; margin: 12px 0; background: rgba(15, 23, 42, .55); line-height: 1.5; }
+        .training-stat { font-size: 1.35rem; font-weight: 800; color: var(--accent-light); }
+        @media (max-width: 760px) {
+            .training-layout { grid-template-columns: minmax(0, 1fr); }
+            .pass-options { grid-template-columns: minmax(0, 1fr); }
+            .pass-option { min-height: 60px; }
+        }
     </style>
 </head>
 <body>
@@ -374,6 +390,7 @@
     <button class="tab-btn" onclick="cambiarPestana('partido', this)">⚽ Día de Partido y Mapa xG</button>
     <button class="tab-btn" onclick="cambiarPestana('clasificacion', this)">📊 Clasificación y Métricas xG</button>
     <button class="tab-btn" onclick="cambiarPestana('mercado', this)">💶 Mercado y Centro Técnico</button>
+    <button class="tab-btn" onclick="cambiarPestana('entrenamiento', this)">🧠 Laboratorio de juego</button>
 </nav>
 
 <main>
@@ -569,6 +586,47 @@
             </div>
         </div>
     </section>
+
+    <!-- PESTAÑA 5: LABORATORIO DE JUEGO -->
+    <section id="tab-entrenamiento" class="tab-content">
+        <div class="panel" style="margin-bottom:20px">
+            <div class="panel-header">
+                <span class="panel-title">Laboratorio de juego · Pase y progresión</span>
+                <span class="hint-box">Ejercicio táctico simulado; no modifica las valoraciones de la plantilla.</span>
+            </div>
+            <p id="pase-contexto" style="line-height:1.6;margin:10px 0"></p>
+        </div>
+        <div class="training-layout">
+            <div class="panel">
+                <div class="panel-header"><span class="panel-title">¿Qué línea elegirías?</span></div>
+                <p class="hint-box">Valora el avance, la amenaza y la posibilidad de conservar el balón.</p>
+                <svg class="pass-pitch" viewBox="0 0 640 320" role="img" aria-labelledby="pass-pitch-title pass-pitch-desc">
+                    <title id="pass-pitch-title">Pizarra de rutas de pase</title>
+                    <desc id="pass-pitch-desc">Esquema ficticio con tres líneas de pase, dos defensores y espacio de progresión hacia la portería rival.</desc>
+                    <rect x="8" y="8" width="624" height="304" rx="8" fill="#166534" stroke="#dcfce7" stroke-width="3"/>
+                    <path d="M320 8v304M8 160h624M8 90h80v140H8M632 90h-80v140h80" fill="none" stroke="#dcfce7" stroke-width="2" opacity=".72"/>
+                    <circle cx="320" cy="160" r="42" fill="none" stroke="#dcfce7" stroke-width="2" opacity=".72"/>
+                    <path d="M182 160 Q250 70 360 68" fill="none" stroke="#38bdf8" stroke-width="5" stroke-dasharray="9 7"/>
+                    <path d="M182 160 Q280 190 430 220" fill="none" stroke="#facc15" stroke-width="5" stroke-dasharray="9 7"/>
+                    <path d="M182 160 Q135 215 100 180" fill="none" stroke="#cbd5e1" stroke-width="5" stroke-dasharray="9 7"/>
+                    <g fill="#2563eb" stroke="#eff6ff" stroke-width="3"><circle cx="182" cy="160" r="16"/><circle cx="360" cy="68" r="14"/><circle cx="430" cy="220" r="14"/><circle cx="100" cy="180" r="14"/></g>
+                    <g fill="#111827" stroke="#f8fafc" stroke-width="3"><circle cx="300" cy="115" r="15"/><circle cx="330" cy="202" r="15"/></g>
+                    <circle cx="182" cy="160" r="4" fill="#fff"/>
+                    <text x="583" y="160" fill="#f8fafc" font-size="15" font-weight="700" transform="rotate(90 583 160)">PORTERÍA RIVAL</text>
+                </svg>
+                <div id="pase-opciones" class="pass-options" aria-label="Opciones de pase"></div>
+                <p id="pase-feedback" class="training-feedback" role="status" aria-live="polite">Escoge una ruta para ver cómo cambian el avance y el riesgo.</p>
+                <button id="btn-siguiente-pase" class="btn-primary" onclick="iniciarEjercicioPase()" hidden>▶ Siguiente situación</button>
+            </div>
+            <aside class="panel" aria-labelledby="pase-progreso-titulo">
+                <div class="panel-header"><span id="pase-progreso-titulo" class="panel-title">Tu progreso</span></div>
+                <p>Decisiones registradas</p><p id="pase-intentos" class="training-stat">0</p>
+                <p style="margin-top:14px">Mejor valoración</p><p id="pase-mejor" class="training-stat">0/100</p>
+                <p style="margin-top:14px">Media de tus decisiones</p><p id="pase-media" class="training-stat">—</p>
+                <p class="hint-box" style="margin-top:18px">La puntuación es didáctica: combina avance, amenaza y conservación según las reglas de este ejercicio. No es una métrica oficial ni una evaluación real del jugador.</p>
+            </aside>
+        </div>
+    </section>
 </main>
 
 <script>
@@ -608,6 +666,7 @@ const ESTILOS = {
 
 let estadoJuego = null;
 let jugadorSeleccionadoIdx = null;
+let retoPaseActual = null;
 
 // --- 2. FUNCIONES DE MODELO ---
 function rendimientoReal(j) {
@@ -744,7 +803,8 @@ function crearEstadoInicial() {
         jornadaActual: 0,
         equipos,
         mercado,
-        calendario
+        calendario,
+        entrenamiento: { intentos: 0, puntos: 0, mejorPuntuacion: 0 }
     };
 }
 
@@ -828,7 +888,13 @@ function estadoPartidaValido(estado) {
             calendarioValido(estado.calendario, estado.equipos) &&
             Number.isInteger(estado.jornadaActual) && estado.jornadaActual >= 0 &&
             estado.jornadaActual <= estado.calendario.length &&
-            Number.isInteger(estado.temporada) && estado.temporada >= 1);
+            Number.isInteger(estado.temporada) && estado.temporada >= 1 &&
+            (estado.entrenamiento === undefined || (estado.entrenamiento &&
+                Number.isInteger(estado.entrenamiento.intentos) && estado.entrenamiento.intentos >= 0 &&
+                Number.isInteger(estado.entrenamiento.puntos) && estado.entrenamiento.puntos >= 0 &&
+                Number.isInteger(estado.entrenamiento.mejorPuntuacion) &&
+                estado.entrenamiento.mejorPuntuacion >= 0 && estado.entrenamiento.mejorPuntuacion <= 100 &&
+                estado.entrenamiento.puntos <= estado.entrenamiento.intentos * 100)));
     } catch (error) {
         return false;
     }
@@ -999,6 +1065,113 @@ function actualizarUI() {
         `;
         tbodyV.appendChild(tr);
     });
+
+    actualizarPanelEntrenamiento();
+}
+
+// --- 4. LABORATORIO DIDÁCTICO DE PASE Y PROGRESIÓN ---
+const EJERCICIOS_PASE = [
+    {
+        contexto: "Un interior recibe entre líneas. La defensa rival mantiene la última línea, pero aparece un pasillo hacia el área.",
+        opciones: [
+            { nombre: "Pase vertical al espacio", conservacion: 74, avance: 86, amenaza: 80, perdida: 26,
+                explicacion: "La línea vertical aprovecha el pasillo y activa una zona de mayor amenaza. El riesgo sube, pero el contexto permite asumirlo." },
+            { nombre: "Abrir a la banda", conservacion: 87, avance: 61, amenaza: 48, perdida: 13,
+                explicacion: "Es una salida equilibrada y conserva bien el balón, aunque tarda más en atacar la última línea." },
+            { nombre: "Devolver al apoyo", conservacion: 96, avance: 18, amenaza: 12, perdida: 4,
+                explicacion: "La devolución protege la posesión, pero el equipo pierde la oportunidad de progresar mientras el pasillo está abierto." }
+        ]
+    },
+    {
+        contexto: "El rival tapa el carril central con dos jugadores. El extremo recibe abierto y tiene metros para avanzar antes de que llegue la ayuda.",
+        opciones: [
+            { nombre: "Forzar el pase interior", conservacion: 70, avance: 75, amenaza: 72, perdida: 30,
+                explicacion: "El pase interior puede ser peligroso, pero atraviesa una zona congestionada y aumenta la opción de pérdida." },
+            { nombre: "Pase diagonal al espacio", conservacion: 86, avance: 80, amenaza: 70, perdida: 14,
+                explicacion: "La diagonal supera la primera presión y mantiene una amenaza alta con un riesgo razonable para esta situación." },
+            { nombre: "Asegurar atrás", conservacion: 98, avance: 20, amenaza: 15, perdida: 2,
+                explicacion: "Es la opción más segura, pero el rival aún no ha cerrado la banda y no hace falta renunciar al avance." }
+        ]
+    },
+    {
+        contexto: "La presión llega de frente y las dos rutas hacia delante están cerradas. Un compañero libre ofrece apoyo por detrás.",
+        opciones: [
+            { nombre: "Filtrar entre defensas", conservacion: 58, avance: 80, amenaza: 76, perdida: 42,
+                explicacion: "La progresión sería grande si sale, pero las líneas están cerradas y el riesgo de entregar el balón es excesivo." },
+            { nombre: "Cambiar de orientación", conservacion: 72, avance: 64, amenaza: 54, perdida: 28,
+                explicacion: "El cambio puede escapar de la presión, aunque el pase largo tiene riesgo y el receptor queda lejos." },
+            { nombre: "Jugar con el apoyo", conservacion: 95, avance: 38, amenaza: 25, perdida: 5,
+                explicacion: "Reiniciar permite conservar la posesión y atraer al rival antes de buscar otra línea de progresión." }
+        ]
+    }
+];
+
+function valorDecisionPase(opcion) {
+    const valorConBalon = opcion.avance * 0.55 + opcion.amenaza * 0.45;
+    return opcion.conservacion / 100 * valorConBalon - (100 - opcion.conservacion) / 100 * opcion.perdida * 0.45;
+}
+
+function iniciarEjercicioPase() {
+    const anterior = retoPaseActual?.indice;
+    let indice = Math.floor(Math.random() * EJERCICIOS_PASE.length);
+    if (EJERCICIOS_PASE.length > 1 && indice === anterior) indice = (indice + 1) % EJERCICIOS_PASE.length;
+    const ejercicio = EJERCICIOS_PASE[indice];
+    const valores = ejercicio.opciones.map(valorDecisionPase);
+    retoPaseActual = {
+        indice,
+        contexto: ejercicio.contexto,
+        opciones: ejercicio.opciones,
+        opcionRecomendada: valores.indexOf(Math.max(...valores)),
+        resuelto: false
+    };
+    actualizarPanelEntrenamiento();
+}
+
+function actualizarPanelEntrenamiento() {
+    const contexto = document.getElementById('pase-contexto');
+    if (!contexto) return;
+    if (!retoPaseActual) iniciarEjercicioPase();
+    contexto.textContent = retoPaseActual.contexto;
+    const opciones = document.getElementById('pase-opciones');
+    opciones.innerHTML = '';
+    retoPaseActual.opciones.forEach((opcion, indice) => {
+        const boton = document.createElement('button');
+        boton.type = 'button';
+        boton.className = 'pass-option' + (retoPaseActual.seleccion === indice ? ' selected' : '');
+        boton.disabled = retoPaseActual.resuelto;
+        boton.setAttribute('aria-pressed', String(retoPaseActual.seleccion === indice));
+        boton.dataset.opcionIndex = String(indice);
+        boton.innerHTML = `<strong>${opcion.nombre}</strong><span>Avance ${opcion.avance} · Amenaza ${opcion.amenaza} · Conserva ${opcion.conservacion}% · Pérdida ${opcion.perdida}%</span>`;
+        boton.addEventListener('click', () => resolverEjercicioPase(indice));
+        opciones.appendChild(boton);
+    });
+    const feedback = document.getElementById('pase-feedback');
+    feedback.textContent = retoPaseActual.feedback || 'Escoge una ruta para ver cómo cambian el avance y el riesgo.';
+    document.getElementById('btn-siguiente-pase').hidden = !retoPaseActual.resuelto;
+    const progreso = estadoJuego.entrenamiento || { intentos: 0, puntos: 0, mejorPuntuacion: 0 };
+    document.getElementById('pase-intentos').textContent = progreso.intentos;
+    document.getElementById('pase-mejor').textContent = `${progreso.mejorPuntuacion}/100`;
+    document.getElementById('pase-media').textContent = progreso.intentos
+        ? `${Math.round(progreso.puntos / progreso.intentos)}/100` : '—';
+}
+
+function resolverEjercicioPase(indice) {
+    if (!retoPaseActual || retoPaseActual.resuelto || !Number.isInteger(indice) ||
+        indice < 0 || indice >= retoPaseActual.opciones.length) return false;
+    const opcion = retoPaseActual.opciones[indice];
+    const mejorValor = Math.max(...retoPaseActual.opciones.map(valorDecisionPase));
+    const puntos = Math.max(0, Math.min(100, Math.round(valorDecisionPase(opcion) / mejorValor * 100)));
+    if (!estadoJuego.entrenamiento) estadoJuego.entrenamiento = { intentos: 0, puntos: 0, mejorPuntuacion: 0 };
+    const progreso = estadoJuego.entrenamiento;
+    progreso.intentos += 1;
+    progreso.puntos += puntos;
+    progreso.mejorPuntuacion = Math.max(progreso.mejorPuntuacion, puntos);
+    retoPaseActual.resuelto = true;
+    retoPaseActual.seleccion = indice;
+    retoPaseActual.feedback = `${puntos}/100 · ${opcion.explicacion} Valoración didáctica de este escenario; no es xT ni un dato oficial.`;
+    actualizarPanelEntrenamiento();
+    guardarPartidaLocal(false);
+    return true;
 }
 
 // --- 5. DIBUJO EN CANVAS 2D ---

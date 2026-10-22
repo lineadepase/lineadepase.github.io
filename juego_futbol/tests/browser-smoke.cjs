@@ -40,12 +40,13 @@ const fs = require('node:fs/promises');
         'Benito Banderazo', 'Marga Parapenaltis'
       ], 'el mercado debe mostrar los nombres humorísticos ficticios');
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 0);
-      const tabs = ['tactica', 'partido', 'clasificacion', 'mercado'];
+      const tabs = ['tactica', 'partido', 'clasificacion', 'mercado', 'entrenamiento'];
       for (const tab of tabs) {
         await page.locator('button.tab-btn').filter({
           hasText: tab === 'tactica' ? 'Pizarra Táctica' :
             tab === 'partido' ? 'Día de Partido' :
-            tab === 'clasificacion' ? 'Clasificación' : 'Mercado'
+            tab === 'clasificacion' ? 'Clasificación' :
+            tab === 'mercado' ? 'Mercado' : 'Laboratorio de juego'
         }).click();
         assert.equal(await page.locator('#tab-' + tab).evaluate(el => getComputedStyle(el).display !== 'none'), true,
           'pestaña visible: ' + tab);
@@ -57,6 +58,48 @@ const fs = require('node:fs/promises');
           assert.ok(widths.document <= widths.viewport + 2, 'desbordamiento en pestaña ' + tab);
         }
       }
+      await page.locator('button.tab-btn').filter({ hasText: 'Laboratorio de juego' }).click();
+      const trainingBefore = await page.evaluate(() => ({
+        opcion: retoPaseActual.opcionRecomendada,
+        indice: retoPaseActual.indice,
+        intentos: estadoJuego.entrenamiento.intentos,
+        jugadores: obtenerMiEquipo().plantilla.map(j => [j.media, j.cansancio, j.moral])
+      }));
+      await page.locator(`#pase-opciones button[data-opcion-index="${trainingBefore.opcion}"]`).click();
+      assert.match(await page.locator('#pase-feedback').innerText(), /^100\/100/,
+        'la mejor decisión debe recibir la máxima valoración del ejercicio');
+      const trainingAfter = await page.evaluate(() => ({
+        intentos: estadoJuego.entrenamiento.intentos,
+        puntos: estadoJuego.entrenamiento.puntos,
+        mejor: estadoJuego.entrenamiento.mejorPuntuacion,
+        jugadores: obtenerMiEquipo().plantilla.map(j => [j.media, j.cansancio, j.moral]),
+        botonesBloqueados: [...document.querySelectorAll('#pase-opciones button')].every(b => b.disabled)
+      }));
+      assert.equal(trainingAfter.intentos, trainingBefore.intentos + 1);
+      assert.equal(trainingAfter.puntos, 100);
+      assert.equal(trainingAfter.mejor, 100);
+      assert.deepEqual(trainingAfter.jugadores, trainingBefore.jugadores,
+        'el ejercicio no altera atributos ni fatiga de la plantilla');
+      assert.equal(trainingAfter.botonesBloqueados, true,
+        'una misma situación no se puede puntuar varias veces');
+      await page.locator('#btn-siguiente-pase').click();
+      assert.notEqual(await page.evaluate(() => retoPaseActual.indice), trainingBefore.indice,
+        'siguiente ejercicio presenta otro contexto');
+      const corruptTraining = await page.evaluate(() => {
+        const partida = crearEstadoInicial();
+        partida.entrenamiento.mejorPuntuacion = 101;
+        return estadoPartidaValido(partida);
+      });
+      assert.equal(corruptTraining, false, 'las estadísticas de entrenamiento se validan al importar');
+      const legacySave = await page.evaluate(() => {
+        const partida = crearEstadoInicial();
+        delete partida.entrenamiento;
+        return estadoPartidaValido(partida);
+      });
+      assert.equal(legacySave, true, 'los guardados anteriores sin estadísticas de entrenamiento siguen siendo válidos');
+      await page.reload();
+      assert.equal(await page.evaluate(() => estadoJuego.entrenamiento.intentos), 1,
+        'el progreso del ejercicio se conserva al recargar');
       await page.locator('button.tab-btn').filter({ hasText: 'Pizarra Táctica' }).click();
       const availability = await page.locator('#resumen-disponibilidad').innerText();
       assert.match(availability, /Disponibles: \d+\/\d+/);
