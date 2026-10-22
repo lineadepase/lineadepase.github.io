@@ -480,7 +480,8 @@ def cargar_partida(archivo):
         d = json.load(f)
     equipos = [Equipo.from_dict(e) for e in d["equipos"]]
     mercado = [Jugador.from_dict(j) for j in d["mercado"]]
-    return d.get("temporada", 1), d["jornada_actual"], equipos, mercado, d["calendario"]
+    calendario = [[tuple(partido) for partido in jornada] for jornada in d["calendario"]]
+    return d.get("temporada", 1), d["jornada_actual"], equipos, mercado, calendario
 
 
 # --- 5. INICIALIZACIÓN Y BUCLE MULTITEMPORADA ---
