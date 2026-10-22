@@ -107,6 +107,11 @@ const assert = require('node:assert/strict');
       assert.equal(await page.evaluate(() => estadoJuego.calendario.length), 6);
       await page.reload();
       assert.equal(await page.evaluate(() => estadoJuego.temporada), 2);
+      await page.evaluate(() => localStorage.setItem('ldp_manager_save',
+        JSON.stringify({ equipos: [], mercado: [], calendario: [], jornadaActual: 0, temporada: 1 })));
+      await page.reload();
+      assert.equal(await page.evaluate(() => estadoJuego.equipos.length), 4,
+        'partida estructuralmente inválida rechazada');
       await page.evaluate(() => localStorage.setItem('ldp_manager_save', '{bad json'));
       await page.reload();
       assert.equal(await page.evaluate(() => estadoJuego.temporada), 1);
