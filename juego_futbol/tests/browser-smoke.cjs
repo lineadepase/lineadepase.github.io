@@ -291,6 +291,9 @@ const assert = require('node:assert/strict');
       const safeMarkup = await page.evaluate(() =>
         escaparHTML('<img src=x onerror=alert(1)>') === '&lt;img src=x onerror=alert(1)&gt;');
       assert.equal(safeMarkup, true, 'los nombres mostrados en el registro deben escapar HTML');
+      const malformedTeams = await page.evaluate(() =>
+        calendarioValido(crearEstadoInicial().calendario, [null, {}, {}, {}]));
+      assert.equal(malformedTeams, false, 'equipos malformados no deben provocar excepciones');
       const swappedCalendar = await page.evaluate(() => {
         const partida = crearEstadoInicial();
         // Intercambiar jornadas completas entre mitades conserva los doce
