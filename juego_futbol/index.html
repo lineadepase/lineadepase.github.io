@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Línea de Pase | Football Manager & xG Lab</title>
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-panel: #1e293b;
+            --bg-card: #334155;
+            --accent: #2563eb;
+            --accent-light: #38bdf8;
+            --gold: #facc15;
+            --green: #16a34a;
+            --red: #ef4444;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: linear-gradient(rgba(15, 23, 42, 0.92), rgba(15, 23, 42, 0.96));
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* CABECERA */
+        header {
+            background-color: var(--bg-panel);
+            border-bottom: 2px solid var(--accent);
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .club-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .club-brand img {
+            width: 42px;
+            height: 42px;
+            object-fit: contain;
+        }
+
+        .club-brand h1 {
+            font-size: 1.35rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .club-brand span {
+            font-size: 0.85rem;
+            color: var(--accent-light);
+            display: block;
+            font-weight: 600;
+        }
+
+        .top-stats {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .stat-pill {
+            background: var(--bg-dark);
+            padding: 6px 14px;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .stat-pill strong {
+            color: var(--accent-light);
+        }
+
+        /* NAVEGACIÓN */
+        nav {
+            display: flex;
+            background: #162032;
+            padding: 0 24px;
+            gap: 8px;
+            overflow-x: auto;
+            border-bottom: 1px solid #334155;
+        }
+
+        .tab-btn {
+            background: transparent;
+            color: var(--text-muted);
+            border: none;
+            padding: 14px 20px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+        }
+
+        .tab-btn.active {
+            color: white;
+            border-bottom-color: var(--accent-light);
+            background: rgba(56, 189, 248, 0.08);
+        }
+
+        /* CONTENEDOR PRINCIPAL */
+        main {
+            flex: 1;
+            padding: 20px 24px;
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.2s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* LAYOUTS */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1.25fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 1024px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: var(--bg-panel);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 18px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #334155;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .panel-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent-light);
+        }
+
+        /* CONTROLES Y BOTONES */
+        .controls-bar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+
+        select, button {
+            padding: 8px 14px;
+            border-radius: 8px;
+            border: 1px solid #475569;
+            background: var(--bg-dark);
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .btn-primary { background: var(--accent); border-color: var(--accent); }
+        .btn-primary:hover { background: #1d4ed8; }
+        .btn-success { background: var(--green); border-color: var(--green); }
+        .btn-success:hover { background: #15803d; }
+        .btn-warning { background: #d97706; border-color: #d97706; }
+        .btn-danger { background: var(--red); border-color: var(--red); }
+
+        /* TABLAS */
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+        }
+
+        th, td {
+            padding: 9px 10px;
+            text-align: center;
+            border-bottom: 1px solid #334155;
+        }
+
+        th {
+            background: #0f172a;
+            color: var(--text-muted);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.78rem;
+        }
+
+        td.left, th.left { text-align: left; }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        tr.selected-row {
+            background: rgba(56, 189, 248, 0.22) !important;
+            outline: 1px solid var(--accent-light);
+        }
+
+        .badge {
+            padding: 3px 7px;
+            border-radius: 5px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .pos-POR { background: #f59e0b; color: #000; }
+        .pos-DEF { background: #3b82f6; color: #fff; }
+        .pos-CEN { background: #10b981; color: #000; }
+        .pos-DEL { background: #ef4444; color: #fff; }
+
+        /* CANVAS DE FÚTBOL */
+        .canvas-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        canvas {
+            background: #15803d;
+            border: 2px solid #fff;
+            border-radius: 8px;
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* CRÓNICA Y LOGS */
+        .match-log {
+            background: #090d16;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            height: 390px;
+            overflow-y: auto;
+            padding: 14px;
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .log-goal { color: var(--gold); font-weight: bold; }
+        .log-chance { color: var(--accent-light); }
+        .log-injury { color: var(--red); }
+        .log-info { color: var(--text-muted); }
+
+        .hint-box {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="club-brand">
+        <img src="../assets/real-zaragoza-escudo.png" alt="Escudo" onerror="this.style.display='none'">
+        <div>
+            <h1>REAL ZARAGOZA</h1>
+            <span>Línea de Pase · Football Manager & xG Lab</span>
+        </div>
+    </div>
+    <div class="top-stats">
+        <div class="stat-pill" id="lbl-temporada">Temp. 1 · Jornada 1/6</div>
+        <div class="stat-pill">Presupuesto: <strong id="lbl-presupuesto">9.500.000 €</strong></div>
+        <div class="stat-pill">Salarios: <strong id="lbl-salarios">0 €/j</strong></div>
+        <button onclick="guardarPartidaLocal()" title="Guardar en navegador">💾 Guardar</button>
+        <button onclick="reiniciarPartidaLocal()" title="Borrar guardado y empezar de cero">🔄 Reiniciar</button>
+    </div>
+</header>
+
+<nav>
+    <button class="tab-btn active" onclick="cambiarPestana('tactica', this)">📋 Pizarra Táctica y Plantilla</button>
+    <button class="tab-btn" onclick="cambiarPestana('partido', this)">⚽ Día de Partido y Mapa xG</button>
+    <button class="tab-btn" onclick="cambiarPestana('clasificacion', this)">📊 Clasificación y Métricas xG</button>
+    <button class="tab-btn" onclick="cambiarPestana('mercado', this)">💶 Mercado y Centro Técnico</button>
+</nav>
+
+<main>
+    <!-- PESTAÑA 1: TÁCTICA Y PLANTILLA -->
+    <section id="tab-tactica" class="tab-content active">
+        <div class="grid-2">
+            <div class="panel">
+                <div class="panel-header">
+                    <span class="panel-title">Gestión de Plantilla y Rotaciones</span>
+                    <span class="hint-box">Haz clic en dos jugadores para intercambiar Titular ↔ Suplente</span>
+                </div>
+                <div class="controls-bar">
+                    <label>Esquema:
+                        <select id="sel-formacion" onchange="cambiarTactica()">
+                            <option value="4-4-2">4-4-2</option>
+                            <option value="4-3-3">4-3-3</option>
+                            <option value="5-3-2">5-3-2</option>
+                        </select>
+                    </label>
+                    <label>Estilo:
+                        <select id="sel-estilo" onchange="cambiarTactica()">
+                            <option value="Equilibrado">Equilibrado</option>
+                            <option value="Ofensivo">Ofensivo (+Atq / +Desgaste)</option>
+                            <option value="Defensivo">Defensivo (+Def / -Desgaste)</option>
+                        </select>
+                    </label>
+                    <button class="btn-primary" onclick="autoconvocar()">⚡ Auto-Mejor 11</button>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Pos</th>
+                                <th class="left">Jugador</th>
+                                <th>Med</th>
+                                <th>Rend</th>
+                                <th>Cans</th>
+                                <th>Goles</th>
+                                <th>xG</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-plantilla"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="panel canvas-container">
+                <div class="panel-header" style="width:100%">
+                    <span class="panel-title">Pizarra Táctica Titular (2D)</span>
+                    <span id="lbl-fuerza-equipo" class="hint-box"></span>
+                </div>
+                <canvas id="canvas-pizarra" width="460" height="520"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <!-- PESTAÑA 2: DÍA DE PARTIDO Y SHOT MAP -->
+    <section id="tab-partido" class="tab-content">
+        <div class="panel" style="margin-bottom: 20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+            <div>
+                <h2 id="lbl-cartel-partido" style="font-size:1.3rem;">Jornada 1: Real Zaragoza vs SD Huesca</h2>
+                <p class="hint-box" id="lbl-sub-partido">El tamaño de cada círculo en el mapa equivale al xG de la ocasión.</p>
+            </div>
+            <button class="btn-success" style="font-size:1rem; padding:12px 22px;" onclick="simularJornada()">▶️ SIMULAR JORNADA EN VIVO</button>
+        </div>
+
+        <div class="grid-2">
+            <div class="panel">
+                <div class="panel-header">
+                    <span class="panel-title">Crónica del Partido y Eventos xG</span>
+                </div>
+                <div id="match-log" class="match-log">
+                    <p class="log-info">Pulsa "Simular Jornada en Vivo" para disputar el encuentro...</p>
+                </div>
+            </div>
+
+            <div class="panel canvas-container">
+                <div class="panel-header" style="width:100%">
+                    <span class="panel-title">Mapa de Tiros xG (Shot Map)</span>
+                    <span class="hint-box">🟡 Gol | 🔵 Local | 🔴 Visitante</span>
+                </div>
+                <canvas id="canvas-shotmap" width="480" height="420"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <!-- PESTAÑA 3: CLASIFICACIÓN Y MÉTRICAS -->
+    <section id="tab-clasificacion" class="tab-content">
+        <div class="panel" style="margin-bottom: 20px;">
+            <div class="panel-header">
+                <span class="panel-title">Clasificación General y Rendimiento Esperado (xG)</span>
+                <span class="hint-box">Diferencial G - xG positivo indica sobreperformancia finalizadora</span>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Pos</th>
+                            <th class="left">Equipo</th>
+                            <th>PTS</th>
+                            <th>PJ</th>
+                            <th>GF</th>
+                            <th>GC</th>
+                            <th>DG</th>
+                            <th>xG Favor</th>
+                            <th>xG Contra</th>
+                            <th>Dif (G - xG)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-clasificacion"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-title">Ranking de Goleadores vs xG Individual</span>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="left">Jugador</th>
+                            <th class="left">Equipo</th>
+                            <th>Pos</th>
+                            <th>Goles</th>
+                            <th>xG Acumulado</th>
+                            <th>Efectividad (G - xG)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-goleadores"></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- PESTAÑA 4: MERCADO Y CENTRO TÉCNICO -->
+    <section id="tab-mercado" class="tab-content">
+        <div class="panel" style="margin-bottom: 20px;">
+            <div class="panel-header">
+                <span class="panel-title">Centro Técnico y Preparación Física</span>
+                <span class="hint-box">Gestiona la fatiga acumulada para evitar lesiones musculares (>75% cansancio)</span>
+            </div>
+            <div class="controls-bar">
+                <button class="btn-primary" onclick="accionDescansar()">💤 Descansar Plantilla (-30% Cansancio, +10 Moral)</button>
+                <button class="btn-warning" onclick="accionEntrenar()">💪 Sesión Intensiva (+Opción subir Media, +15% Cansancio)</button>
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <div class="panel">
+                <div class="panel-header">
+                    <span class="panel-title">Mercado de Fichajes Disponible</span>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="left">Jugador</th>
+                                <th>Pos</th>
+                                <th>Media</th>
+                                <th>Precio</th>
+                                <th>Salario/j</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-mercado"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                    <span class="panel-title">Vender Jugadores (Recibes el 80% de su valor)</span>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="left">Jugador</th>
+                                <th>Pos</th>
+                                <th>Media</th>
+                                <th>Ingreso Venta</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-ventas"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script>
+// --- 1. CONFIGURACIÓN TÁCTICA Y COORDENADAS ---
+const FORMACIONES = {
+    "4-4-2": { POR: 1, DEF: 4, CEN: 4, DEL: 2 },
+    "4-3-3": { POR: 1, DEF: 4, CEN: 3, DEL: 3 },
+    "5-3-2": { POR: 1, DEF: 5, CEN: 3, DEL: 2 }
+};
+
+const COORDENADAS_PIZARRA = {
+    "4-4-2": [
+        [0.09, 0.50],
+        [0.26, 0.18], [0.26, 0.39], [0.26, 0.61], [0.26, 0.82],
+        [0.52, 0.18], [0.52, 0.39], [0.52, 0.61], [0.52, 0.82],
+        [0.78, 0.35], [0.78, 0.65]
+    ],
+    "4-3-3": [
+        [0.09, 0.50],
+        [0.26, 0.18], [0.26, 0.39], [0.26, 0.61], [0.26, 0.82],
+        [0.52, 0.25], [0.52, 0.50], [0.52, 0.75],
+        [0.78, 0.22], [0.78, 0.50], [0.78, 0.78]
+    ],
+    "5-3-2": [
+        [0.09, 0.50],
+        [0.26, 0.12], [0.26, 0.31], [0.26, 0.50], [0.26, 0.69], [0.26, 0.88],
+        [0.52, 0.25], [0.52, 0.50], [0.52, 0.75],
+        [0.78, 0.35], [0.78, 0.65]
+    ]
+};
+
+const ESTILOS = {
+    "Ofensivo": { ataque: 1.15, defensa: 0.90, desgaste: 1.2 },
+    "Equilibrado": { ataque: 1.00, defensa: 1.00, desgaste: 1.0 },
+    "Defensivo": { ataque: 0.85, defensa: 1.15, desgaste: 0.9 }
+};
+
+let estadoJuego = null;
+let jugadorSeleccionadoIdx = null;
+
+// --- 2. FUNCIONES DE MODELO ---
+function rendimientoReal(j) {
+    if (j.lesionado > 0) return 0;
+    const fCansancio = 1 - (j.cansancio / 200);
+    const fMoral = j.moral / 100;
+    return Math.round(j.media * fCansancio * fMoral);
+}
+
+function masaSalarial(eq) {
+    return eq.plantilla.reduce((acc, j) => acc + j.salario, 0);
+}
+
+function convocarOnceAutomatico(eq) {
+    const esquema = FORMACIONES[eq.formacion];
+    let disponibles = eq.plantilla.filter(j => j.lesionado === 0);
+    let titulares = [];
+
+    for (const [pos, cant] of Object.entries(esquema)) {
+        let candidatos = disponibles.filter(j => j.posicion === pos)
+            .sort((a, b) => rendimientoReal(b) - rendimientoReal(a));
+        let sel = candidatos.slice(0, cant);
+        titulares.push(...sel);
+        disponibles = disponibles.filter(d => !sel.includes(d));
+    }
+
+    while (titulares.length < 11 && disponibles.length > 0) {
+        disponibles.sort((a, b) => rendimientoReal(b) - rendimientoReal(a));
+        titulares.push(disponibles.shift());
+    }
+
+    eq.plantilla.forEach(j => j.titular = titulares.includes(j));
+}
+
+function calcularFuerzas(eq) {
+    let titulares = eq.plantilla.filter(j => j.titular && j.lesionado === 0);
+    if (titulares.length < 11) {
+        convocarOnceAutomatico(eq);
+        titulares = eq.plantilla.filter(j => j.titular);
+    }
+    const media = titulares.reduce((acc, j) => acc + rendimientoReal(j), 0) / Math.max(1, titulares.length);
+    const mod = ESTILOS[eq.estilo];
+    return {
+        ataque: media * mod.ataque,
+        defensa: media * mod.defensa
+    };
+}
+
+// --- 3. INICIALIZACIÓN Y PERSISTENCIA ---
+function crearEstadoInicial() {
+    const crearJugador = (nombre, posicion, media) => ({
+        nombre, posicion, media,
+        moral: 85, cansancio: 0,
+        precio: media * 35000,
+        salario: media * 220,
+        goles: 0, xg: 0.0, lesionado: 0, titular: false
+    });
+
+    const miEquipo = {
+        nombre: "Real Zaragoza",
+        presupuesto: 9500000,
+        aforo: 30000,
+        formacion: "4-4-2",
+        estilo: "Equilibrado",
+        puntos: 0, pj: 0, gf: 0, gc: 0, xgf: 0.0, xgc: 0.0,
+        plantilla: [
+            crearJugador("Poussin", "POR", 72),
+            crearJugador("A. Francés", "DEF", 75),
+            crearJugador("Jair Amador", "DEF", 73),
+            crearJugador("Lluís López", "DEF", 71),
+            crearJugador("Tasende", "DEF", 73),
+            crearJugador("Borge", "DEF", 70),
+            crearJugador("Francho", "CEN", 77),
+            crearJugador("Marc Aguado", "CEN", 75),
+            crearJugador("Maikel Mesa", "CEN", 76),
+            crearJugador("Toni Moya", "CEN", 74),
+            crearJugador("Gori", "CEN", 70),
+            crearJugador("Iván Azón", "DEL", 74),
+            crearJugador("Soberón", "DEL", 75),
+            crearJugador("Bazdar", "DEL", 73)
+        ]
+    };
+    convocarOnceAutomatico(miEquipo);
+
+    const datosRivales = [
+        { nombre: "SD Huesca", aforo: 9000 },
+        { nombre: "Racing Santander", aforo: 22000 },
+        { nombre: "Sporting Gijón", aforo: 29000 }
+    ];
+
+    const rivales = datosRivales.map(r => {
+        const eq = {
+            nombre: r.nombre, presupuesto: 7000000, aforo: r.aforo,
+            formacion: "4-4-2", estilo: "Equilibrado",
+            puntos: 0, pj: 0, gf: 0, gc: 0, xgf: 0.0, xgc: 0.0,
+            plantilla: []
+        };
+        const posList = ["POR", "DEF", "DEF", "DEF", "DEF", "DEF", "CEN", "CEN", "CEN", "CEN", "CEN", "DEL", "DEL", "DEL"];
+        posList.forEach((p, idx) => {
+            const med = Math.floor(Math.random() * 6) + 70;
+            eq.plantilla.push(crearJugador(`${p}_${r.nombre.slice(0,3)}_${idx+1}`, p, med));
+        });
+        convocarOnceAutomatico(eq);
+        return eq;
+    });
+
+    const equipos = [miEquipo, ...rivales];
+    const mercado = [
+        crearJugador("Aketxe", "CEN", 76),
+        crearJugador("Keidi Bare", "CEN", 76),
+        crearJugador("Alberto Marí", "DEL", 74),
+        crearJugador("Bernardo Vital", "DEF", 74),
+        crearJugador("Kervin Arriaga", "CEN", 75)
+    ];
+
+    const calendario = generarCalendario(equipos.map(e => e.nombre));
+
+    return {
+        temporada: 1,
+        jornadaActual: 0,
+        equipos,
+        mercado,
+        calendario
+    };
+}
+
+function generarCalendario(nombres) {
+    let l = [...nombres];
+    const n = l.length;
+    const ida = [];
+    for (let j = 0; j < n - 1; j++) {
+        const partidos = [];
+        for (let i = 0; i < n / 2; i++) {
+            partidos.push([l[i], l[n - 1 - i]]);
+        }
+        ida.push(partidos);
+        l = [l[0], l[n - 1], ...l.slice(1, n - 1)];
+    }
+    const vuelta = ida.map(jornada => jornada.map(([loc, vis]) => [vis, loc]));
+    return [...ida, ...vuelta];
+}
+
+// --- 4. INTERFAZ Y RENDERIZADO ---
+function obtenerMiEquipo() {
+    return estadoJuego.equipos.find(e => e.nombre === "Real Zaragoza");
+}
+
+function cambiarPestana(id, btn) {
+    document.querySelectorAll('.tab-content').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    btn.classList.add('active');
+    actualizarUI();
+}
+
+function actualizarUI() {
+    const miEq = obtenerMiEquipo();
+    const totalJ = estadoJuego.calendario.length;
+    const jTxt = estadoJuego.jornadaActual < totalJ
+        ? `Temp. ${estadoJuego.temporada} · Jornada ${estadoJuego.jornadaActual + 1}/${totalJ}`
+        : `Temp. ${estadoJuego.temporada} · Finalizada`;
+
+    document.getElementById('lbl-temporada').textContent = jTxt;
+    document.getElementById('lbl-presupuesto').textContent = miEq.presupuesto.toLocaleString('es-ES') + ' €';
+    document.getElementById('lbl-salarios').textContent = masaSalarial(miEq).toLocaleString('es-ES') + ' €/j';
+
+    document.getElementById('sel-formacion').value = miEq.formacion;
+    document.getElementById('sel-estilo').value = miEq.estilo;
+
+    const f = calcularFuerzas(miEq);
+    document.getElementById('lbl-fuerza-equipo').textContent = `Atq: ${f.ataque.toFixed(1)} | Def: ${f.defensa.toFixed(1)}`;
+
+    // Tabla Plantilla
+    const tbodyP = document.getElementById('tbody-plantilla');
+    tbodyP.innerHTML = '';
+    miEq.plantilla.forEach((j, idx) => {
+        const tr = document.createElement('tr');
+        if (idx === jugadorSeleccionadoIdx) tr.classList.add('selected-row');
+        tr.style.cursor = 'pointer';
+        tr.onclick = () => clicarJugadorPlantilla(idx);
+
+        let estTxt = j.lesionado > 0 ? `🚑 Baja (${j.lesionado}j)` : (j.titular ? '⭐ Titular' : 'Suplente');
+        tr.innerHTML = `
+            <td><span class="badge pos-${j.posicion}">${j.posicion}</span></td>
+            <td class="left"><strong>${j.nombre}</strong></td>
+            <td>${j.media}</td>
+            <td><strong>${rendimientoReal(j)}</strong></td>
+            <td>${j.cansancio}%</td>
+            <td>${j.goles}</td>
+            <td>${j.xg.toFixed(2)}</td>
+            <td>${estTxt}</td>
+        `;
+        tbodyP.appendChild(tr);
+    });
+
+    dibujarPizarra(miEq);
+
+    // Cartel Próximo Partido
+    const cartel = document.getElementById('lbl-cartel-partido');
+    if (estadoJuego.jornadaActual < totalJ) {
+        const par = estadoJuego.calendario[estadoJuego.jornadaActual].find(
+            ([l, v]) => l === miEq.nombre || v === miEq.nombre
+        );
+        cartel.textContent = `Jornada ${estadoJuego.jornadaActual + 1}: ${par[0]} vs ${par[1]}`;
+    } else {
+        cartel.textContent = `🏆 Temporada ${estadoJuego.temporada} Finalizada`;
+    }
+
+    // Tabla Clasificación
+    const tbodyC = document.getElementById('tbody-clasificacion');
+    tbodyC.innerHTML = '';
+    const ordenados = [...estadoJuego.equipos].sort((a, b) => (b.puntos - a.puntos) || ((b.gf - b.gc) - (a.gf - a.gc)));
+    ordenados.forEach((eq, i) => {
+        const dg = eq.gf - eq.gc;
+        const difXg = eq.gf - eq.xgf;
+        const tr = document.createElement('tr');
+        if (eq.nombre === miEq.nombre) tr.style.background = 'rgba(37, 99, 235, 0.18)';
+        tr.innerHTML = `
+            <td><strong>${i + 1}</strong></td>
+            <td class="left"><strong>${eq.nombre}</strong></td>
+            <td><strong>${eq.puntos}</strong></td>
+            <td>${eq.pj}</td>
+            <td>${eq.gf}</td>
+            <td>${eq.gc}</td>
+            <td>${dg >= 0 ? '+' + dg : dg}</td>
+            <td>${eq.xgf.toFixed(2)}</td>
+            <td>${eq.xgc.toFixed(2)}</td>
+            <td style="color:${difXg >= 0 ? '#4ade80' : '#f87171'}">${difXg >= 0 ? '+' + difXg.toFixed(2) : difXg.toFixed(2)}</td>
+        `;
+        tbodyC.appendChild(tr);
+    });
+
+    // Tabla Goleadores
+    const tbodyG = document.getElementById('tbody-goleadores');
+    tbodyG.innerHTML = '';
+    const todosJug = [];
+    estadoJuego.equipos.forEach(eq => {
+        eq.plantilla.forEach(j => {
+            if (j.goles > 0 || j.xg >= 0.25) todosJug.push({ j, eqNombre: eq.nombre });
+        });
+    });
+    todosJug.sort((a, b) => (b.j.goles - a.j.goles) || (b.j.xg - a.j.xg));
+    todosJug.slice(0, 10).forEach(({ j, eqNombre }) => {
+        const dif = j.goles - j.xg;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td class="left"><strong>${j.nombre}</strong></td>
+            <td class="left">${eqNombre}</td>
+            <td><span class="badge pos-${j.posicion}">${j.posicion}</span></td>
+            <td><strong>${j.goles}</strong></td>
+            <td>${j.xg.toFixed(2)}</td>
+            <td>${dif >= 0 ? '+' + dif.toFixed(2) : dif.toFixed(2)}</td>
+        `;
+        tbodyG.appendChild(tr);
+    });
+
+    // Mercado Compras y Ventas
+    const tbodyM = document.getElementById('tbody-mercado');
+    tbodyM.innerHTML = '';
+    estadoJuego.mercado.forEach((j, idx) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td class="left"><strong>${j.nombre}</strong></td>
+            <td><span class="badge pos-${j.posicion}">${j.posicion}</span></td>
+            <td>${j.media}</td>
+            <td>${j.precio.toLocaleString('es-ES')} €</td>
+            <td>${j.salario.toLocaleString('es-ES')} €</td>
+            <td><button class="btn-success" onclick="ficharJugador(${idx})">Fichar</button></td>
+        `;
+        tbodyM.appendChild(tr);
+    });
+
+    const tbodyV = document.getElementById('tbody-ventas');
+    tbodyV.innerHTML = '';
+    miEq.plantilla.forEach((j, idx) => {
+        const valorVenta = Math.round(j.precio * 0.8);
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td class="left"><strong>${j.nombre}</strong></td>
+            <td><span class="badge pos-${j.posicion}">${j.posicion}</span></td>
+            <td>${j.media}</td>
+            <td>${valorVenta.toLocaleString('es-ES')} €</td>
+            <td><button class="btn-danger" onclick="venderJugador(${idx})">Vender</button></td>
+        `;
+        tbodyV.appendChild(tr);
+    });
+}
+
+// --- 5. DIBUJO EN CANVAS 2D ---
+function dibujarCampoBase(ctx, w, h) {
+    ctx.clearRect(0, 0, w, h);
+    const franja = w / 10;
+    for (let i = 0; i < 10; i++) {
+        ctx.fillStyle = i % 2 === 0 ? "#166534" : "#15803d";
+        ctx.fillRect(i * franja, 0, franja, h);
+    }
+    ctx.strokeStyle = "rgba(255,255,255,0.85)";
+    ctx.lineWidth = 2;
+    ctx.strokeRect(14, 14, w - 28, h - 28);
+    ctx.beginPath();
+    ctx.moveTo(w / 2, 14);
+    ctx.lineTo(w / 2, h - 14);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(w / 2, h / 2, 48, 0, Math.PI * 2);
+    ctx.stroke();
+
+    ctx.strokeRect(14, h / 2 - 90, 70, 180);
+    ctx.strokeRect(w - 84, h / 2 - 90, 70, 180);
+}
+
+function dibujarPizarra(eq) {
+    const canvas = document.getElementById('canvas-pizarra');
+    const ctx = canvas.getContext('2d');
+    const w = canvas.width, h = canvas.height;
+    dibujarCampoBase(ctx, w, h);
+
+    const coords = COORDENADAS_PIZARRA[eq.formacion] || COORDENADAS_PIZARRA["4-4-2"];
+    const ordenPos = { POR: 0, DEF: 1, CEN: 2, DEL: 3 };
+    const titulares = eq.plantilla.filter(j => j.titular)
+        .sort((a, b) => ordenPos[a.posicion] - ordenPos[b.posicion]);
+
+    titulares.slice(0, 11).forEach((j, idx) => {
+        const cx = coords[idx][0] * w;
+        const cy = coords[idx][1] * h;
+
+        ctx.beginPath();
+        ctx.arc(cx, cy, 18, 0, Math.PI * 2);
+        ctx.fillStyle = j.posicion === "POR" ? "#f59e0b" : "#2563eb";
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = "#ffffff";
+        ctx.stroke();
+
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "bold 11px Segoe UI";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(rendimientoReal(j), cx, cy);
+
+        ctx.fillStyle = "rgba(15, 23, 42, 0.85)";
+        ctx.fillRect(cx - 42, cy + 21, 84, 17);
+        ctx.fillStyle = "#f8fafc";
+        ctx.font = "bold 10px Segoe UI";
+        ctx.fillText(j.nombre.slice(0, 12), cx, cy + 30);
+    });
+}
+
+// --- 6. INTERACCIÓN PLANTILLA Y TÁCTICA ---
+function clicarJugadorPlantilla(idx) {
+    const miEq = obtenerMiEquipo();
+    if (jugadorSeleccionadoIdx === null) {
+        jugadorSeleccionadoIdx = idx;
+    } else if (jugadorSeleccionadoIdx === idx) {
+        jugadorSeleccionadoIdx = null;
+    } else {
+        const j1 = miEq.plantilla[jugadorSeleccionadoIdx];
+        const j2 = miEq.plantilla[idx];
+        if (j1.lesionado > 0 || j2.lesionado > 0) {
+            alert("No puedes alinear a un jugador lesionado.");
+        } else if (j1.titular !== j2.titular) {
+            const temp = j1.titular;
+            j1.titular = j2.titular;
+            j2.titular = temp;
+        }
+        jugadorSeleccionadoIdx = null;
+    }
+    actualizarUI();
+}
+
+function cambiarTactica() {
+    const miEq = obtenerMiEquipo();
+    miEq.formacion = document.getElementById('sel-formacion').value;
+    miEq.estilo = document.getElementById('sel-estilo').value;
+    convocarOnceAutomatico(miEq);
+    actualizarUI();
+}
+
+function autoconvocar() {
+    const miEq = obtenerMiEquipo();
+    convocarOnceAutomatico(miEq);
+    actualizarUI();
+}
+
+// --- 7. MOTOR DE SIMULACIÓN DE PARTIDOS Y SHOT MAP ---
+function elegirRematador(titulares) {
+    const pesos = titulares.map(j => j.posicion === "DEL" ? 55 : (j.posicion === "CEN" ? 30 : (j.posicion === "DEF" ? 14 : 1)));
+    const total = pesos.reduce((a, b) => a + b, 0);
+    let r = Math.random() * total;
+    for (let i = 0; i < titulares.length; i++) {
+        if (r < pesos[i]) return titulares[i];
+        r -= pesos[i];
+    }
+    return titulares[0];
+}
+
+function simularJornada() {
+    const totalJ = estadoJuego.calendario.length;
+    const miEq = obtenerMiEquipo();
+
+    if (estadoJuego.jornadaActual >= totalJ) {
+        iniciarNuevaTemporada();
+        return;
+    }
+
+    const logBox = document.getElementById('match-log');
+    logBox.innerHTML = '';
+    const canvasShot = document.getElementById('canvas-shotmap');
+    const ctxShot = canvasShot.getContext('2d');
+    dibujarCampoBase(ctxShot, canvasShot.width, canvasShot.height);
+
+    const partidos = estadoJuego.calendario[estadoJuego.jornadaActual];
+    const mapa = Object.fromEntries(estadoJuego.equipos.map(e => [e.nombre, e]));
+
+    partidos.forEach(([locNom, visNom]) => {
+        const local = mapa[locNom];
+        const vis = mapa[visNom];
+        const esNuestro = (local.nombre === miEq.nombre || vis.nombre === miEq.nombre);
+        simularPartidoIndividual(local, vis, esNuestro, logBox, ctxShot, canvasShot.width, canvasShot.height);
+    });
+
+    estadoJuego.jornadaActual++;
+    guardarPartidaLocal(false);
+    actualizarUI();
+}
+
+function simularPartidoIndividual(local, vis, esNuestro, logBox, ctxShot, w, h) {
+    const fLoc = calcularFuerzas(local);
+    const fVis = calcularFuerzas(vis);
+    const atqL = fLoc.ataque + 3, defL = fLoc.defensa + 3;
+    const atqV = fVis.ataque, defV = fVis.defensa;
+
+    let gL = 0, gV = 0, xgL = 0, xgV = 0;
+    const tramos = [11, 23, 35, 44, 56, 67, 78, 89];
+
+    if (esNuestro) {
+        logBox.innerHTML += `<p><strong>⚽ ${local.nombre} vs ${vis.nombre}</strong></p><hr style="border-color:#334155;margin:6px 0;">`;
+    }
+
+    tramos.forEach(min => {
+        if (Math.random() < 0.82) {
+            const atacaLocal = Math.random() < (atqL / (atqL + atqV));
+            const eqAtq = atacaLocal ? local : vis;
+            const titulares = eqAtq.plantilla.filter(j => j.titular);
+            const rematador = elegirRematador(titulares);
+
+            const esClara = Math.random() < 0.25;
+            const xgTiro = Number((esClara ? (0.30 + Math.random() * 0.25) : (0.04 + Math.random() * 0.18)).toFixed(2));
+            const probGol = Math.min(0.85, xgTiro * (rendimientoReal(rematador) / 72));
+            const esGol = Math.random() < probGol;
+
+            rematador.xg = Number((rematador.xg + xgTiro).toFixed(2));
+            if (atacaLocal) {
+                xgL += xgTiro;
+                if (esGol) gL++;
+            } else {
+                xgV += xgTiro;
+                if (esGol) gV++;
+            }
+            if (esGol) rematador.goles++;
+
+            if (esNuestro) {
+                const radio = 5 + xgTiro * 22;
+                const sx = atacaLocal
+                    ? (esClara ? 360 + Math.random() * 85 : 290 + Math.random() * 85)
+                    : (esClara ? 35 + Math.random() * 85 : 105 + Math.random() * 85);
+                const sy = esClara ? 130 + Math.random() * 160 : 65 + Math.random() * 290;
+
+                ctxShot.beginPath();
+                ctxShot.arc(sx, sy, radio, 0, Math.PI * 2);
+                ctxShot.fillStyle = esGol ? "#facc15" : (atacaLocal ? "#38bdf8" : "#f87171");
+                ctxShot.fill();
+                ctxShot.lineWidth = 2;
+                ctxShot.strokeStyle = "#fff";
+                ctxShot.stroke();
+
+                if (esGol) {
+                    logBox.innerHTML += `<p class="log-goal">[${min}'] ¡GOOOL de ${rematador.nombre} (${eqAtq.nombre})! [xG: ${xgTiro.toFixed(2)}]</p>`;
+                } else if (xgTiro >= 0.28) {
+                    logBox.innerHTML += `<p class="log-chance">[${min}'] ¡Ocasión clara fallada por ${rematador.nombre}! [xG: ${xgTiro.toFixed(2)}]</p>`;
+                }
+            }
+        }
+    });
+
+    local.pj++; vis.pj++;
+    local.gf += gL; local.gc += gV;
+    vis.gf += gV; vis.gc += gL;
+    local.xgf = Number((local.xgf + xgL).toFixed(2));
+    local.xgc = Number((local.xgc + xgV).toFixed(2));
+    vis.xgf = Number((vis.xgf + xgV).toFixed(2));
+    vis.xgc = Number((vis.xgc + xgL).toFixed(2));
+
+    if (gL > gV) local.puntos += 3;
+    else if (gL < gV) vis.puntos += 3;
+    else { local.puntos += 1; vis.puntos += 1; }
+
+    const taquilla = Math.round(local.aforo * (0.75 + Math.random() * 0.2)) * 20;
+    local.presupuesto += taquilla - masaSalarial(local);
+    vis.presupuesto -= masaSalarial(vis);
+
+    [local, vis].forEach(eq => {
+        const mult = ESTILOS[eq.estilo].desgaste;
+        eq.plantilla.forEach(j => {
+            if (!j.titular && j.lesionado > 0) j.lesionado--;
+            if (j.titular) {
+                j.cansancio = Math.min(100, j.cansancio + Math.round((13 + Math.random() * 10) * mult));
+                if (Math.random() < (j.cansancio > 75 ? 0.12 : 0.02)) {
+                    j.lesionado = Math.floor(Math.random() * 2) + 1;
+                    if (esNuestro) {
+                        logBox.innerHTML += `<p class="log-injury">🚑 ${j.nombre} (${eq.nombre}) se lesiona para ${j.lesionado} jornada(s).</p>`;
+                    }
+                }
+            }
+        });
+    });
+
+    if (esNuestro) {
+        logBox.innerHTML += `<hr style="border-color:#334155;margin:8px 0;">`;
+        logBox.innerHTML += `<p><strong>🏁 FINAL: ${local.nombre} ${gL} - ${gV} ${vis.nombre}</strong> (xG: ${xgL.toFixed(2)} vs ${xgV.toFixed(2)})</p>`;
+        logBox.innerHTML += `<p class="log-info">💶 Taquilla local: +${taquilla.toLocaleString('es-ES')} €</p><br>`;
+    } else {
+        logBox.innerHTML += `<p class="log-info">• Otro partido: ${local.nombre} ${gL} - ${gV} ${vis.nombre} (xG: ${xgL.toFixed(2)}-${xgV.toFixed(2)})</p>`;
+    }
+}
+
+// --- 8. MERCADO, ENTRENAMIENTO Y NUEVA TEMPORADA ---
+function accionDescansar() {
+    const miEq = obtenerMiEquipo();
+    miEq.plantilla.forEach(j => {
+        j.cansancio = Math.max(0, j.cansancio - 30);
+        j.moral = Math.min(100, j.moral + 10);
+    });
+    alert("💤 La plantilla ha descansado y recupera frescura física.");
+    actualizarUI();
+}
+
+function accionEntrenar() {
+    const miEq = obtenerMiEquipo();
+    const suben = [];
+    miEq.plantilla.forEach(j => {
+        if (j.lesionado === 0) {
+            j.cansancio = Math.min(100, j.cansancio + 15);
+            if (Math.random() < 0.20 && j.media < 92) {
+                j.media++;
+                suben.push(`${j.nombre} (${j.media})`);
+            }
+        }
+    });
+    alert(suben.length ? `💪 Entrenamiento completado. Suben de media: ${suben.join(', ')}` : "💪 Sesión completada.");
+    actualizarUI();
+}
+
+function ficharJugador(idx) {
+    const miEq = obtenerMiEquipo();
+    const jug = estadoJuego.mercado[idx];
+    if (miEq.presupuesto < jug.precio) {
+        alert("Presupuesto insuficiente para este fichaje.");
+        return;
+    }
+    miEq.presupuesto -= jug.precio;
+    miEq.plantilla.push(jug);
+    estadoJuego.mercado.splice(idx, 1);
+    convocarOnceAutomatico(miEq);
+    actualizarUI();
+}
+
+function venderJugador(idx) {
+    const miEq = obtenerMiEquipo();
+    if (miEq.plantilla.length <= 11) {
+        alert("No puedes quedarte con menos de 11 jugadores en plantilla.");
+        return;
+    }
+    const jug = miEq.plantilla.splice(idx, 1)[0];
+    jug.titular = false;
+    miEq.presupuesto += Math.round(jug.precio * 0.8);
+    estadoJuego.mercado.push(jug);
+    convocarOnceAutomatico(miEq);
+    actualizarUI();
+}
+
+function iniciarNuevaTemporada() {
+    if (!confirm("¡La temporada ha terminado! ¿Quieres cobrar los premios de clasificación y comenzar la siguiente temporada?")) return;
+    estadoJuego.temporada++;
+    estadoJuego.jornadaActual = 0;
+    estadoJuego.equipos.forEach(eq => {
+        eq.presupuesto += 3000000;
+        eq.puntos = 0; eq.pj = 0; eq.gf = 0; eq.gc = 0; eq.xgf = 0; eq.xgc = 0;
+        eq.plantilla.forEach(j => { j.goles = 0; j.xg = 0; j.cansancio = 0; j.lesionado = 0; });
+        convocarOnceAutomatico(eq);
+    });
+    actualizarUI();
+}
+
+function guardarPartidaLocal(mostrarAviso = true) {
+    localStorage.setItem('ldp_manager_save', JSON.stringify(estadoJuego));
+    if (mostrarAviso) alert("💾 Partida guardada en el navegador.");
+}
+
+function reiniciarPartidaLocal() {
+    if (confirm("¿Seguro que quieres reiniciar la partida desde la Temporada 1?")) {
+        localStorage.removeItem('ldp_manager_save');
+        estadoJuego = crearEstadoInicial();
+        actualizarUI();
+    }
+}
+
+window.onload = () => {
+    const guardado = localStorage.getItem('ldp_manager_save');
+    estadoJuego = guardado ? JSON.parse(guardado) : crearEstadoInicial();
+    const cShot = document.getElementById('canvas-shotmap');
+    dibujarCampoBase(cShot.getContext('2d'), cShot.width, cShot.height);
+    actualizarUI();
+};
+</script>
+</body>
+</html>
