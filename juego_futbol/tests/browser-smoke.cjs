@@ -1,9 +1,12 @@
 const { chromium, devices } = require('playwright');
 const assert = require('node:assert/strict');
+const fs = require('node:fs/promises');
 
 (async () => {
   const browser = await chromium.launch({ headless: true });
   const errors = [];
+  const artifactDir = require('node:path').join(__dirname, 'test-artifacts');
+  await fs.mkdir(artifactDir, { recursive: true });
   try {
     for (const mode of ['desktop', 'mobile']) {
       const context = await browser.newContext(mode === 'mobile'
@@ -15,6 +18,7 @@ const assert = require('node:assert/strict');
       await page.goto('http://127.0.0.1:8765/juego_futbol/', { waitUntil: 'load' });
       if (mode === 'mobile') assert.equal(await page.evaluate(() => window.innerWidth), 390, 'ancho de pantalla móvil esperado');
       await page.waitForFunction(() => typeof estadoJuego !== 'undefined' && !!estadoJuego.equipos);
+      await page.screenshot({ path: require('node:path').join(artifactDir, `juego-${mode}.png`), fullPage: true });
       assert.equal(await page.locator('.sim-disclaimer').count(), 1, 'aviso visible de simulación');
       assert.match(await page.locator('.sim-disclaimer').innerText(), /xG.*datos del juego/i);
       assert.equal(await page.evaluate(() => estadoJuego.equipos.length), 4);
@@ -175,6 +179,33 @@ const assert = require('node:assert/strict');
       await page.reload();
       assert.equal(await page.locator('#estado-guardado').textContent(), '✓ Partida recuperada',
         'al reabrir una partida guardada debe indicarse que se recuperó');
+      const exportEvent = page.waitForEvent('download');
+      await page.locator('header button').filter({ hasText: 'Exportar' }).click();
+      const exportFile = await exportEvent;
+      assert.match(exportFile.suggestedFilename(), /^linea-de-pase-temporada-1\.json$/,
+        'la copia de seguridad se descarga con nombre de temporada');
+      const exported = JSON.parse(await fs.readFile(await exportFile.path(), 'utf8'));
+      assert.equal(exported.formato, 'linea-de-pase-partida');
+      assert.equal(exported.version, 1);
+      assert.equal(exported.partida.equipos.length, 4);
+      const importCandidate = structuredClone(exported.partida);
+      importCandidate.equipos.find(e => e.nombre === 'Real Zaragoza').presupuesto = -250000;
+      await page.locator('#archivo-partida').setInputFiles({
+        name: 'copia-linea-de-pase.json', mimeType: 'application/json',
+        buffer: Buffer.from(JSON.stringify({ ...exported, partida: importCandidate }))
+      });
+      await page.waitForFunction(() => document.getElementById('estado-guardado').textContent === '✓ Copia importada');
+      assert.equal(await page.evaluate(() => obtenerMiEquipo().presupuesto), -250000,
+        'la importación conserva los presupuestos negativos válidos');
+      const beforeInvalidImport = await page.evaluate(() => obtenerMiEquipo().presupuesto);
+      const invalidImportDialog = page.waitForEvent('dialog');
+      await page.locator('#archivo-partida').setInputFiles({
+        name: 'copia-danada.json', mimeType: 'application/json',
+        buffer: Buffer.from(JSON.stringify({ formato: 'linea-de-pase-partida', version: 99, partida: {} }))
+      });
+      await invalidImportDialog;
+      assert.equal(await page.evaluate(() => obtenerMiEquipo().presupuesto), beforeInvalidImport,
+        'una importación no válida no modifica la partida activa');
       const resetIndicator = await page.evaluate(() => {
         const originalConfirm = window.confirm;
         window.confirm = () => true;

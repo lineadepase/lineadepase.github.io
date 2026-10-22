@@ -217,6 +217,7 @@
             font-weight: 600;
             font-size: 0.9rem;
             cursor: pointer;
+            min-height: 44px;
         }
 
         .btn-primary { background: var(--accent); border-color: var(--accent); }
@@ -349,6 +350,9 @@
         <div class="stat-pill">Presupuesto: <strong id="lbl-presupuesto">9.500.000 €</strong></div>
         <div class="stat-pill">Salarios: <strong id="lbl-salarios">0 €/j</strong></div>
         <button onclick="guardarPartidaLocal()" title="Guardar en navegador">💾 Guardar</button>
+        <button onclick="exportarPartida()" title="Descargar una copia de seguridad">⬇️ Exportar</button>
+        <button onclick="document.getElementById('archivo-partida').click()" title="Importar una copia de seguridad">⬆️ Importar</button>
+        <input id="archivo-partida" type="file" accept="application/json,.json" hidden onchange="importarPartidaArchivo(this)">
         <span id="estado-guardado" role="status" aria-live="polite" style="font-size:12px;color:#cbd5e1"></span>
         <button onclick="reiniciarPartidaLocal()" title="Borrar guardado y empezar de cero">🔄 Reiniciar</button>
     </div>
@@ -362,7 +366,7 @@
 </nav>
 
 <main>
-    <p class="sim-disclaimer" role="note"><strong>Simulador ficticio:</strong> plantillas, valoraciones, fichajes, resultados y xG son datos del juego, no estadísticas reales ni información actualizada de los clubes.</p>
+    <p class="sim-disclaimer" role="note"><strong>Simulador ficticio:</strong> plantillas, valoraciones, fichajes, resultados y xG son datos del juego, no estadísticas reales ni información actualizada de los clubes. El xG es una estimación didáctica generada por el propio simulador según el tipo de ocasión; no procede de tiros reales ni de un modelo oficial.</p>
     <!-- PESTAÑA 1: TÁCTICA Y PLANTILLA -->
     <p id="resumen-disponibilidad" role="status" aria-live="polite" style="margin:8px 0 14px;color:#cbd5e1;font-size:.9rem;"></p>
     <section id="tab-tactica" class="tab-content active">
@@ -765,6 +769,46 @@ function calendarioValido(calendario, equipos) {
     const vuelta = new Set(cruces.slice(6).map(pareja));
     return enfrentamientos.size === 12 && ida.size === 6 && vuelta.size === 6 &&
         nombres.every(a => nombres.every(b => a === b || enfrentamientos.has(a + '|' + b)));
+}
+
+function estadoPartidaValido(estado) {
+    try {
+        return Boolean(estado && Array.isArray(estado.equipos) && estado.equipos.length === 4 &&
+            new Set(estado.equipos.map(eq => eq?.nombre)).size === 4 &&
+            estado.equipos.some(eq => eq?.nombre === 'Real Zaragoza') &&
+            estado.equipos.every(eq => eq && typeof eq.nombre === 'string' &&
+                Number.isFinite(eq.presupuesto) && Number.isFinite(eq.aforo) && eq.aforo >= 0 &&
+                Object.hasOwn(FORMACIONES, eq.formacion) && Object.hasOwn(ESTILOS, eq.estilo) &&
+                ['puntos', 'pj', 'gf', 'gc', 'xgf', 'xgc'].every(k => Number.isFinite(eq[k]) && eq[k] >= 0) &&
+                Array.isArray(eq.plantilla) && eq.plantilla.length >= 11 &&
+                eq.plantilla.every(j => j && typeof j.nombre === 'string' &&
+                    ['POR', 'DEF', 'CEN', 'DEL'].includes(j.posicion) &&
+                    Number.isFinite(j.media) && j.media > 0 && j.media <= 100 &&
+                    Number.isFinite(j.cansancio) && j.cansancio >= 0 && j.cansancio <= 100 &&
+                    Number.isFinite(j.moral) && j.moral >= 0 && j.moral <= 100 &&
+                    Number.isFinite(j.precio) && j.precio >= 0 &&
+                    Number.isFinite(j.salario) && j.salario >= 0 &&
+                    Number.isInteger(j.lesionado) && j.lesionado >= 0 &&
+                    Number.isFinite(j.xg) && j.xg >= 0 &&
+                    Number.isInteger(j.goles) && j.goles >= 0 && typeof j.titular === 'boolean')) &&
+            Array.isArray(estado.mercado) &&
+            estado.mercado.every(j => j && typeof j.nombre === 'string' &&
+                ['POR', 'DEF', 'CEN', 'DEL'].includes(j.posicion) &&
+                Number.isFinite(j.media) && j.media > 0 && j.media <= 100 &&
+                Number.isFinite(j.precio) && j.precio >= 0 &&
+                Number.isFinite(j.salario) && j.salario >= 0 &&
+                Number.isFinite(j.cansancio) && j.cansancio >= 0 && j.cansancio <= 100 &&
+                Number.isFinite(j.moral) && j.moral >= 0 && j.moral <= 100 &&
+                Number.isInteger(j.lesionado) && j.lesionado >= 0 &&
+                Number.isFinite(j.xg) && j.xg >= 0 &&
+                Number.isInteger(j.goles) && j.goles >= 0 && typeof j.titular === 'boolean') &&
+            calendarioValido(estado.calendario, estado.equipos) &&
+            Number.isInteger(estado.jornadaActual) && estado.jornadaActual >= 0 &&
+            estado.jornadaActual <= estado.calendario.length &&
+            Number.isInteger(estado.temporada) && estado.temporada >= 1);
+    } catch (error) {
+        return false;
+    }
 }
 
 // --- 4. INTERFAZ Y RENDERIZADO ---
@@ -1346,6 +1390,55 @@ function guardarPartidaLocal(mostrarAviso = true) {
     }
 }
 
+function exportarPartida() {
+    const copia = {
+        formato: 'linea-de-pase-partida',
+        version: 1,
+        exportada: new Date().toISOString(),
+        partida: estadoJuego
+    };
+    const blob = new Blob([JSON.stringify(copia, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const enlace = document.createElement('a');
+    enlace.href = url;
+    enlace.download = `linea-de-pase-temporada-${estadoJuego.temporada}.json`;
+    document.body.appendChild(enlace);
+    enlace.click();
+    enlace.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    document.getElementById('estado-guardado').textContent = 'Copia descargada';
+}
+
+function importarPartidaArchivo(input) {
+    const archivo = input.files && input.files[0];
+    if (!archivo) return;
+    const lector = new FileReader();
+    lector.onload = () => {
+        try {
+            const datos = JSON.parse(String(lector.result));
+            const candidata = datos && datos.formato === 'linea-de-pase-partida' && datos.version === 1
+                ? datos.partida : datos;
+            if (!estadoPartidaValido(candidata)) throw new Error('La copia no tiene una estructura de partida válida.');
+            if (!confirm('La copia importada sustituirá la partida actual. ¿Quieres continuar?')) return;
+            // Guardar primero: si el navegador rechaza el almacenamiento, la partida activa no cambia.
+            localStorage.setItem('ldp_manager_save', JSON.stringify(candidata));
+            estadoJuego = candidata;
+            actualizarUI();
+            document.getElementById('estado-guardado').textContent = '✓ Copia importada';
+        } catch (error) {
+            console.warn('No se pudo importar la partida:', error);
+            alert('No se ha importado la copia. El archivo puede estar dañado o no pertenecer a Línea de Pase.');
+        } finally {
+            input.value = '';
+        }
+    };
+    lector.onerror = () => {
+        input.value = '';
+        alert('No se ha podido leer el archivo seleccionado.');
+    };
+    lector.readAsText(archivo, 'UTF-8');
+}
+
 function reiniciarPartidaLocal() {
     if (confirm("¿Seguro que quieres reiniciar la partida desde la Temporada 1?")) {
         const indicador = document.getElementById('estado-guardado');
@@ -1368,42 +1461,7 @@ window.onload = () => {
         const guardado = localStorage.getItem('ldp_manager_save');
         cargaCorrecta = Boolean(guardado);
         estadoJuego = guardado ? JSON.parse(guardado) : crearEstadoInicial();
-        if (!estadoJuego || !Array.isArray(estadoJuego.equipos) ||
-            estadoJuego.equipos.length !== 4 ||
-            new Set(estadoJuego.equipos.map(eq => eq?.nombre)).size !== 4 ||
-            !estadoJuego.equipos.some(eq => eq?.nombre === 'Real Zaragoza') ||
-            !estadoJuego.equipos.every(eq => eq && typeof eq.nombre === 'string' &&
-                Number.isFinite(eq.presupuesto) &&
-                Object.hasOwn(FORMACIONES, eq.formacion) &&
-                Object.hasOwn(ESTILOS, eq.estilo) &&
-                Array.isArray(eq.plantilla) && eq.plantilla.length >= 11 &&
-                eq.plantilla.every(j => j && typeof j.nombre === 'string' &&
-                    ['POR', 'DEF', 'CEN', 'DEL'].includes(j.posicion) &&
-                    Number.isFinite(j.media) && j.media > 0 && j.media <= 100 &&
-                    Number.isFinite(j.cansancio) && j.cansancio >= 0 && j.cansancio <= 100 &&
-                    Number.isFinite(j.moral) && j.moral >= 0 && j.moral <= 100 &&
-                    Number.isFinite(j.precio) && j.precio >= 0 &&
-                    Number.isFinite(j.salario) && j.salario >= 0 &&
-                    Number.isInteger(j.lesionado) && j.lesionado >= 0 &&
-                    Number.isFinite(j.xg) && j.xg >= 0 &&
-                    Number.isInteger(j.goles) && j.goles >= 0)) ||
-            !Array.isArray(estadoJuego.mercado) ||
-            !estadoJuego.mercado.every(j => j && typeof j.nombre === 'string' &&
-                ['POR', 'DEF', 'CEN', 'DEL'].includes(j.posicion) &&
-                Number.isFinite(j.media) && j.media > 0 && j.media <= 100 &&
-                Number.isFinite(j.precio) && j.precio >= 0 &&
-                Number.isFinite(j.salario) && j.salario >= 0 &&
-                Number.isFinite(j.cansancio) && j.cansancio >= 0 && j.cansancio <= 100 &&
-                Number.isFinite(j.moral) && j.moral >= 0 && j.moral <= 100 &&
-                Number.isInteger(j.lesionado) && j.lesionado >= 0 &&
-                Number.isFinite(j.xg) && j.xg >= 0 &&
-                Number.isInteger(j.goles) && j.goles >= 0) ||
-            !Array.isArray(estadoJuego.calendario) ||
-            !calendarioValido(estadoJuego.calendario, estadoJuego.equipos) ||
-            !Number.isInteger(estadoJuego.jornadaActual) ||
-            estadoJuego.jornadaActual < 0 ||
-            estadoJuego.jornadaActual > estadoJuego.calendario.length ||
-            !Number.isInteger(estadoJuego.temporada) || estadoJuego.temporada < 1) {
+        if (!estadoPartidaValido(estadoJuego)) {
             throw new Error("Formato de partida no válido");
         }
     } catch (error) {

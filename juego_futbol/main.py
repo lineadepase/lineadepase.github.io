@@ -3,6 +3,7 @@ import random
 import time
 import json
 import os
+import math
 
 # --- 1. CONFIGURACIÓN TÁCTICA Y CLASES ---
 
@@ -94,9 +95,10 @@ class Equipo:
         if len(self.alineacion_titular) < 11 or any(j.lesionado > 0 for j in self.alineacion_titular):
             self.convocar_once_automatico()
         if not self.alineacion_titular:
-            return 50, 50
+            return 0, 0
 
-        media_base = sum(j.rendimiento_real() for j in self.alineacion_titular) / len(self.alineacion_titular)
+        # Las posiciones vacías reducen la fuerza del equipo en lugar de elevar su media.
+        media_base = sum(j.rendimiento_real() for j in self.alineacion_titular) / 11
         mod = ESTILOS[self.estilo]
         return media_base * mod["ataque"], media_base * mod["defensa"]
 
@@ -127,6 +129,7 @@ class Equipo:
             "xg_contra": round(self.xg_contra, 2),
             "partidos_jugados": self.partidos_jugados,
             "plantilla": [j.to_dict() for j in self.plantilla],
+            "alineacion_titular": [j.nombre for j in self.alineacion_titular],
         }
 
     @classmethod
@@ -139,7 +142,12 @@ class Equipo:
         eq.xg_contra = data.get("xg_contra", 0.0)
         eq.partidos_jugados = data["partidos_jugados"]
         eq.plantilla = [Jugador.from_dict(j) for j in data["plantilla"]]
-        eq.convocar_once_automatico()
+        por_nombre = {j.nombre: j for j in eq.plantilla}
+        nombres_titulares = data.get("alineacion_titular")
+        if nombres_titulares is not None:
+            eq.alineacion_titular = [por_nombre[n] for n in nombres_titulares]
+        else:
+            eq.convocar_once_automatico()
         return eq
 
 
@@ -170,11 +178,13 @@ def simular_partido(local, visitante, mostrar_detalle=True):
     atq_local, def_local = local.calcular_fuerzas()
     atq_vis, def_vis = visitante.calcular_fuerzas()
 
-    # Factor campo (+3 para el local)
-    atq_local += 3
-    def_local += 3
+    # Factor campo (+3 para el local), solo si puede alinear futbolistas.
+    if local.alineacion_titular:
+        atq_local += 3
+        def_local += 3
 
-    posesion_local = int(round((atq_local / (atq_local + atq_vis)) * 100))
+    total_fuerza = atq_local + atq_vis
+    posesion_local = int(round((atq_local / total_fuerza) * 100)) if total_fuerza else 50
     posesion_vis = 100 - posesion_local
 
     goles_local, goles_vis = 0, 0
@@ -183,9 +193,12 @@ def simular_partido(local, visitante, mostrar_detalle=True):
 
     # 8 tramos de partido para generar un volumen realista de tiros y xG
     for minuto in [10, 22, 35, 45, 55, 68, 80, 90]:
-        # Probabilidad de que haya un tiro en este tramo (80%)
-        if random.random() < 0.80:
-            if random.random() < (atq_local / (atq_local + atq_vis)):
+        fuerza_local = atq_local if local.alineacion_titular else 0
+        fuerza_vis = atq_vis if visitante.alineacion_titular else 0
+        total_ataque = fuerza_local + fuerza_vis
+        # Sin jugadores aptos no se generan remates ni se divide por cero.
+        if total_ataque > 0 and random.random() < 0.80:
+            if random.random() < (fuerza_local / total_ataque):
                 tiros_local += 1
                 rematador = elegir_rematador(local.alineacion_titular)
                 desc, xg_tiro = generar_ocasion_xg(atq_local, def_vis)
@@ -478,10 +491,84 @@ def cargar_partida(archivo):
         return None
     with open(archivo, "r", encoding="utf-8") as f:
         d = json.load(f)
+    validar_partida(d)
     equipos = [Equipo.from_dict(e) for e in d["equipos"]]
     mercado = [Jugador.from_dict(j) for j in d["mercado"]]
     calendario = [[tuple(partido) for partido in jornada] for jornada in d["calendario"]]
     return d.get("temporada", 1), d["jornada_actual"], equipos, mercado, calendario
+
+
+def validar_partida(datos):
+    """Valida el guardado antes de crear objetos; admite equipos en déficit."""
+    def numero(valor, minimo=None, maximo=None):
+        return (isinstance(valor, (int, float)) and not isinstance(valor, bool)
+                and math.isfinite(valor)
+                and (minimo is None or valor >= minimo)
+                and (maximo is None or valor <= maximo))
+
+    def jugador_valido(j):
+        return (isinstance(j, dict) and isinstance(j.get("nombre"), str) and bool(j["nombre"].strip())
+                and j.get("posicion") in {"POR", "DEF", "CEN", "DEL"}
+                and numero(j.get("media"), 1, 100) and numero(j.get("moral"), 0, 100)
+                and numero(j.get("cansancio"), 0, 100) and numero(j.get("precio"), 0)
+                and numero(j.get("salario"), 0) and numero(j.get("xg_acumulado"), 0)
+                and isinstance(j.get("goles"), int) and not isinstance(j.get("goles"), bool) and j["goles"] >= 0
+                and isinstance(j.get("lesionado"), int) and not isinstance(j.get("lesionado"), bool) and j["lesionado"] >= 0)
+
+    if not isinstance(datos, dict):
+        raise ValueError("El guardado debe contener un objeto JSON.")
+    equipos = datos.get("equipos")
+    if (not isinstance(equipos, list) or len(equipos) != 4
+            or not isinstance(datos.get("temporada"), int) or datos["temporada"] < 1
+            or not isinstance(datos.get("jornada_actual"), int)):
+        raise ValueError("Temporada o lista de equipos no válidas.")
+
+    nombres = []
+    for eq in equipos:
+        if not isinstance(eq, dict) or not isinstance(eq.get("nombre"), str) or not eq["nombre"].strip():
+            raise ValueError("Hay un equipo no válido.")
+        nombres.append(eq["nombre"])
+        if (not numero(eq.get("presupuesto")) or not numero(eq.get("aforo"), 0)
+                or eq.get("formacion") not in FORMACIONES or eq.get("estilo") not in ESTILOS
+                or not isinstance(eq.get("plantilla"), list) or len(eq["plantilla"]) < 11
+                or not all(jugador_valido(j) for j in eq["plantilla"])
+                or any(not numero(eq.get(k), 0) for k in ("puntos", "goles_a_favor", "goles_en_contra", "xg_favor", "xg_contra", "partidos_jugados"))):
+            raise ValueError(f"Datos no válidos para {eq['nombre']}.")
+        once = eq.get("alineacion_titular")
+        nombres_jugadores = {j["nombre"] for j in eq["plantilla"]}
+        if (once is not None and (not isinstance(once, list) or len(once) > 11
+                or not all(isinstance(n, str) for n in once) or len(set(once)) != len(once)
+                or any(n not in nombres_jugadores for n in once))):
+            raise ValueError(f"Alineación no válida para {eq['nombre']}.")
+    if len(set(nombres)) != 4:
+        raise ValueError("Los nombres de equipo deben ser únicos.")
+
+    mercado = datos.get("mercado")
+    if not isinstance(mercado, list) or not all(jugador_valido(j) for j in mercado):
+        raise ValueError("El mercado contiene datos no válidos.")
+    calendario = datos.get("calendario")
+    if not isinstance(calendario, list) or len(calendario) != 6:
+        raise ValueError("Calendario no válido.")
+    cruces = []
+    for jornada in calendario:
+        if not isinstance(jornada, list) or len(jornada) != 2:
+            raise ValueError("Jornada no válida.")
+        participantes = []
+        for partido in jornada:
+            if (not isinstance(partido, (list, tuple)) or len(partido) != 2
+                    or partido[0] == partido[1] or partido[0] not in nombres or partido[1] not in nombres):
+                raise ValueError("Partido no válido en el calendario.")
+            participantes.extend(partido)
+            cruces.append(tuple(partido))
+        if len(set(participantes)) != 4:
+            raise ValueError("Un equipo aparece dos veces en una jornada.")
+    pares = {tuple(sorted((a, b))) for a, b in cruces}
+    lista_cruces = set(cruces)
+    if (len(cruces) != 12 or len(lista_cruces) != 12 or len(pares) != 6
+            or any((b, a) not in lista_cruces for a, b in cruces)):
+        raise ValueError("El calendario tiene cruces duplicados o incompletos.")
+    if not 0 <= datos["jornada_actual"] <= len(calendario):
+        raise ValueError("Jornada actual fuera de rango.")
 
 
 # --- 5. INICIALIZACIÓN Y BUCLE MULTITEMPORADA ---

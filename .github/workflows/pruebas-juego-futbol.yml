@@ -37,3 +37,11 @@ jobs:
           python -m http.server 8765 --bind 127.0.0.1 &
           sleep 2
           node juego_futbol/tests/browser-smoke.cjs
+      - name: Adjuntar capturas de escritorio y móvil
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: juego-futbol-capturas
+          path: juego_futbol/tests/test-artifacts/*.png
+          if-no-files-found: ignore
+          retention-days: 7

@@ -1,33 +1,35 @@
-# Plan de recuperación y desarrollo — Juego de fútbol · Línea de Pase
+# Auditoría y estado — Juego de fútbol · Línea de Pase
 
-Estado: trabajo en curso. No publicar ni fusionar sin pruebas.
+## Estado del repositorio
 
-## Fuentes preservadas
-- Web avanzada: `estudio/juego-futbol:juego_futbol/index.html` (1179 líneas).
-- Web alternativa y Python: `copilot/create-basic-football-management-game:juego_futbol/`.
-- `main.py`: motor de consola; `consola.py`: otra implementación; `gui.py`: Tkinter para escritorio; `pygame_menu.py`: prototipo Pygame.
-- La rama `main` no contiene todavía `juego_futbol/index.html` ni `juego_futbol/main.py` en esas rutas.
+- Trabajo sobre `desarrollo/juego-futbol-revision-20261022`, PR #3 hacia `main`.
+- El PR debe seguir como borrador; no se fusiona ni se publica desde este trabajo.
+- `juego_futbol/index.html` es la versión web jugable y adaptable.
+- `main.py` y `consola.py` son motores de consola independientes. `gui.py` es una interfaz Tkinter de escritorio y `pygame_menu.py` un prototipo; ninguno es una aplicación móvil.
 
-## Arquitectura prevista
-1. Web: HTML/CSS/JS estático, adaptable a móvil y accesible, con guardado versionado en localStorage.
-2. Móvil: reutilizar y desacoplar el motor Python (sin entrada/salida de consola), construir interfaz táctil y seleccionar empaquetado Android/iOS tras pruebas de viabilidad. Tkinter no es interfaz móvil.
-3. Mantener dos productos diferenciados, con reglas y definiciones estadísticas coherentes.
+## Lo que incluye la versión web
 
-## Revisión obligatoria antes de publicar
-- Verificar la fórmula de xG por ocasión y su calibración; etiquetar los xG como simulados, no procedentes de datos reales.
-- Probar partidos, calendario, clasificación, empate, fin de temporada, mercado, lesiones, presupuesto y guardado/carga.
-- Comprobar que cada simulación respeta la alineación, el cansancio, el estado de los jugadores y la táctica.
-- Añadir pruebas automatizadas deterministas con semillas para Python y JS cuando sea posible.
-- Probar móvil: pantallas pequeñas, controles táctiles, rendimiento, orientación, persistencia y accesibilidad.
-- Evitar usar marcas, escudos, imágenes o nombres de jugadores sin derechos claros.
-- No fusionar ramas divergentes completas: seleccionar los archivos y cambios revisados sobre la rama main actual.
-- Mantener un backup previo a publicación y probar en un entorno de previsualización.
+- Liga ficticia de cuatro equipos, calendario de ida y vuelta y clasificación con desempates.
+- Tres formaciones, tres estilos, selección automática y rotación manual.
+- Simulación de ocasiones, tiros, goles, xG interno, cansancio, lesiones, taquilla y salarios.
+- Mercado, venta de jugadores, preparación, premios y continuidad de temporada.
+- Guardado local en navegador y recuperación con validación estructural. Se admite el presupuesto negativo como estado válido.
+- Copia JSON exportable e importable, con comprobación de estructura antes de sustituir la partida.
 
-## Próximos hitos
-- H1: auditar diferencias entre las dos versiones web y escoger base con pruebas.
-- H2: corregir errores del juego web y crear pruebas reproducibles.
-- H3: separar motor Python de UI; pruebas unitarias.
-- H4: prototipo táctil móvil y evaluación del empaquetado Android/iOS.
-- H5: revisión de producto, documentación, PR y despliegue web; distribución móvil posterior.
+## Reglas de presentación
 
-Este documento no certifica que las aplicaciones estén terminadas ni probadas.
+Los nombres, valoraciones, resultados y xG pertenecen al simulador. El xG es una estimación didáctica por tipo de ocasión, no una métrica oficial ni calculada a partir de datos reales. Revisar los derechos del escudo, imágenes y nombres reales antes de publicar una versión promocional.
+
+## Pruebas y limitaciones conocidas
+
+- Python: compilación y pruebas unitarias para calendario, integridad de temporada, mercado/guardado, xG y plantillas sin jugadores aptos.
+- Navegador: Playwright en Chromium para escritorio y móvil, controles, persistencia, mercado, lesiones, calendario, temporadas, importación/exportación y errores JavaScript. El workflow guarda capturas de ambos tamaños como artefacto temporal.
+- La comprobación local requiere el ejecutable Chromium de Playwright; en este entorno no está instalado. El resultado definitivo de navegador debe confirmarse en GitHub Actions.
+- La simulación web es un prototipo jugable de cuatro equipos, no una base de datos de una competición real. El cliente Python no comparte todavía un único motor con la web ni constituye una app iOS/Android.
+
+## Antes de publicar
+
+1. Confirmar en el PR que las pruebas Python y navegador pasan y revisar las capturas.
+2. Revisar licencias y permisos de los activos gráficos y los nombres de jugadores.
+3. Decidir si se amplía la liga y el mercado; no ampliar la competición hasta tener pruebas para continuidad multitemporada.
+4. Publicar únicamente tras autorización expresa.

@@ -64,16 +64,61 @@ class TestMotor(unittest.TestCase):
         club = engine.Equipo("Equipo prueba")
         engine.crear_plantilla_base(club)
         club.convocar_once_automatico()
+        club.presupuesto = -125000
+        club.alineacion_titular = club.alineacion_titular[1:] + club.alineacion_titular[:1]
+        orden_titulares = [j.nombre for j in club.alineacion_titular]
+        equipos_originales = [club]
+        for nombre in ("Rival A", "Rival B", "Rival C"):
+            rival = engine.Equipo(nombre)
+            engine.crear_plantilla_base(rival)
+            rival.convocar_once_automatico()
+            equipos_originales.append(rival)
         mercado = [engine.Jugador("Fichaje", "DEL", 77)]
-        calendario = engine.generar_calendario_nombres(["Equipo prueba", "Rival"])
+        calendario = engine.generar_calendario_nombres([e.nombre for e in equipos_originales])
         with tempfile.TemporaryDirectory() as temp:
             ruta = str(Path(temp) / "partida.json")
-            engine.guardar_partida(ruta, 2, 1, [club], mercado, calendario)
+            engine.guardar_partida(ruta, 2, 1, equipos_originales, mercado, calendario)
             temporada, jornada, equipos, cargado_mercado, cargado_calendario = engine.cargar_partida(ruta)
         self.assertEqual((temporada, jornada), (2, 1))
         self.assertEqual(equipos[0].nombre, club.nombre)
         self.assertEqual(cargado_mercado[0].nombre, "Fichaje")
         self.assertEqual(cargado_calendario, calendario)
+        self.assertEqual(equipos[0].presupuesto, -125000, "el déficit es un estado válido")
+        self.assertEqual([j.nombre for j in equipos[0].alineacion_titular], orden_titulares,
+                         "el guardado conserva el once elegido")
+
+    def test_guardado_invalido_se_rechaza(self):
+        club = engine.Equipo("A", presupuesto=-10)
+        engine.crear_plantilla_base(club)
+        club.convocar_once_automatico()
+        equipos = [club]
+        for nombre in ("B", "C", "D"):
+            equipo = engine.Equipo(nombre)
+            engine.crear_plantilla_base(equipo)
+            equipo.convocar_once_automatico()
+            equipos.append(equipo)
+        datos = {
+            "temporada": 1, "jornada_actual": 0, "equipos": [e.to_dict() for e in equipos],
+            "mercado": [], "calendario": engine.generar_calendario_nombres([e.nombre for e in equipos])
+        }
+        engine.validar_partida(datos)
+        datos["equipos"][0]["plantilla"][0]["media"] = "no es un número"
+        with self.assertRaises(ValueError):
+            engine.validar_partida(datos)
+
+    def test_partido_sin_jugadores_aptos_no_rompe(self):
+        random.seed(77)
+        local = engine.Equipo("Local")
+        visitante = engine.Equipo("Visitante")
+        engine.crear_plantilla_base(local)
+        engine.crear_plantilla_base(visitante)
+        for equipo in (local, visitante):
+            for jugador in equipo.plantilla:
+                jugador.lesionado = 2
+            equipo.convocar_once_automatico()
+        engine.simular_partido(local, visitante, mostrar_detalle=False)
+        self.assertEqual((local.xg_favor, visitante.xg_favor), (0.0, 0.0))
+        self.assertEqual((local.partidos_jugados, visitante.partidos_jugados), (1, 1))
 
 
 
