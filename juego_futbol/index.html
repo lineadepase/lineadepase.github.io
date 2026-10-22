@@ -770,7 +770,9 @@ function actualizarUI() {
     const disponibles = miEq.plantilla.length - lesionados;
     const resumen = document.getElementById('resumen-disponibilidad');
     if (resumen) {
-        resumen.textContent = `Disponibles: ${disponibles}/${miEq.plantilla.length} · Lesionados: ${lesionados} · Fatigados (≥75 %): ${fatigados}`;
+        const titularesAptos = miEq.plantilla.filter(j => j.titular && j.lesionado === 0).length;
+        const avisoOnce = titularesAptos < 11 ? ` · ⚠️ Solo ${titularesAptos} titulares aptos` : '';
+        resumen.textContent = `Disponibles: ${disponibles}/${miEq.plantilla.length} · Lesionados: ${lesionados} · Fatigados (≥75 %): ${fatigados}${avisoOnce}`;
     }
 
     // Tabla Plantilla
