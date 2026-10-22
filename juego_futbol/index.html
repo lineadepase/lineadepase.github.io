@@ -960,6 +960,7 @@ function clicarJugadorPlantilla(idx) {
             j2.titular = temp;
         }
         jugadorSeleccionadoIdx = null;
+        guardarPartidaLocal(false);
     }
     actualizarUI();
 }
@@ -969,12 +970,14 @@ function cambiarTactica() {
     miEq.formacion = document.getElementById('sel-formacion').value;
     miEq.estilo = document.getElementById('sel-estilo').value;
     convocarOnceAutomatico(miEq);
+    guardarPartidaLocal(false);
     actualizarUI();
 }
 
 function autoconvocar() {
     const miEq = obtenerMiEquipo();
     convocarOnceAutomatico(miEq);
+    guardarPartidaLocal(false);
     actualizarUI();
 }
 
@@ -1178,6 +1181,7 @@ function ficharJugador(idx) {
     miEq.plantilla.push(jug);
     estadoJuego.mercado.splice(idx, 1);
     convocarOnceAutomatico(miEq);
+    guardarPartidaLocal(false);
     actualizarUI();
 }
 
@@ -1196,6 +1200,7 @@ function venderJugador(idx) {
     miEq.presupuesto += Math.round(jug.precio * 0.8);
     estadoJuego.mercado.push(jug);
     convocarOnceAutomatico(miEq);
+    guardarPartidaLocal(false);
     actualizarUI();
 }
 
