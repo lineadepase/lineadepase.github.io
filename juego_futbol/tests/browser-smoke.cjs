@@ -306,6 +306,22 @@ const assert = require('node:assert/strict');
       await page.reload();
       assert.equal(await page.evaluate(() => calendarioValido(estadoJuego.calendario, estadoJuego.equipos)), true,
         'calendario con enfrentamientos duplicados rechazado');
+      await page.evaluate(() => {
+        const partida = crearEstadoInicial();
+        partida.equipos[0].plantilla[0].cansancio = 140;
+        localStorage.setItem('ldp_manager_save', JSON.stringify(partida));
+      });
+      await page.reload();
+      assert.equal(await page.evaluate(() => estadoJuego.equipos[0].plantilla[0].cansancio <= 100), true,
+        'partida con fatiga fuera de rango rechazada');
+      await page.evaluate(() => {
+        const partida = crearEstadoInicial();
+        partida.equipos[0].plantilla[0].salario = -500;
+        localStorage.setItem('ldp_manager_save', JSON.stringify(partida));
+      });
+      await page.reload();
+      assert.equal(await page.evaluate(() => estadoJuego.equipos[0].plantilla[0].salario >= 0), true,
+        'partida con salario negativo rechazada');
       const safeMarkup = await page.evaluate(() =>
         escaparHTML('<img src=x onerror=alert(1)>') === '&lt;img src=x onerror=alert(1)&gt;');
       assert.equal(safeMarkup, true, 'los nombres mostrados en el registro deben escapar HTML');
