@@ -347,6 +347,7 @@
 
         .training-layout { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(260px, .65fr); gap: 20px; }
         .pass-pitch { width: 100%; display: block; border-radius: 12px; background: #14532d; margin: 12px 0; }
+        .pass-pitch[hidden] { display: none; }
         .pass-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
         .pass-option { width: 100%; min-height: 76px; background: #26364b; color: var(--text-main); border: 1px solid #52647a; border-radius: 10px; padding: 12px; text-align: left; cursor: pointer; }
         .pass-option:hover:not(:disabled), .pass-option:focus-visible { border-color: var(--accent-light); outline: 2px solid transparent; background: #304861; }
@@ -591,16 +592,22 @@
     <section id="tab-entrenamiento" class="tab-content">
         <div class="panel" style="margin-bottom:20px">
             <div class="panel-header">
-                <span class="panel-title">Laboratorio de juego · Pase y progresión</span>
+                <span id="titulo-laboratorio" class="panel-title">Laboratorio de juego · Pase y progresión</span>
                 <span class="hint-box">Ejercicio táctico simulado; no modifica las valoraciones de la plantilla.</span>
             </div>
+            <label for="tipo-ejercicio" style="display:inline-flex;align-items:center;gap:8px;margin-top:8px">Entrenamiento:
+                <select id="tipo-ejercicio" onchange="cambiarTipoEjercicio(this.value)">
+                    <option value="pase">Pase y progresión</option>
+                    <option value="presion">Presión coordinada</option>
+                </select>
+            </label>
             <p id="pase-contexto" style="line-height:1.6;margin:10px 0"></p>
         </div>
         <div class="training-layout">
             <div class="panel">
-                <div class="panel-header"><span class="panel-title">¿Qué línea elegirías?</span></div>
-                <p class="hint-box">Valora el avance, la amenaza y la posibilidad de conservar el balón.</p>
-                <svg class="pass-pitch" viewBox="0 0 640 320" role="img" aria-labelledby="pass-pitch-title pass-pitch-desc">
+                <div class="panel-header"><span id="pregunta-ejercicio" class="panel-title">¿Qué línea elegirías?</span></div>
+                <p id="instruccion-ejercicio" class="hint-box">Valora el avance, la amenaza y la posibilidad de conservar el balón.</p>
+                <svg id="svg-pase" class="pass-pitch" viewBox="0 0 640 320" role="img" aria-labelledby="pass-pitch-title pass-pitch-desc">
                     <title id="pass-pitch-title">Pizarra de rutas de pase</title>
                     <desc id="pass-pitch-desc">Esquema ficticio con tres líneas de pase, dos defensores y espacio de progresión hacia la portería rival.</desc>
                     <rect x="8" y="8" width="624" height="304" rx="8" fill="#166534" stroke="#dcfce7" stroke-width="3"/>
@@ -614,6 +621,19 @@
                     <circle cx="182" cy="160" r="4" fill="#fff"/>
                     <text x="583" y="160" fill="#f8fafc" font-size="15" font-weight="700" transform="rotate(90 583 160)">PORTERÍA RIVAL</text>
                 </svg>
+                <svg id="svg-presion" class="pass-pitch" viewBox="0 0 640 320" role="img" aria-labelledby="press-pitch-title press-pitch-desc" hidden>
+                    <title id="press-pitch-title">Pizarra de presión coordinada</title>
+                    <desc id="press-pitch-desc">Esquema ficticio de la salida rival, coberturas y zonas hacia las que orientar la presión.</desc>
+                    <rect x="8" y="8" width="624" height="304" rx="8" fill="#166534" stroke="#dcfce7" stroke-width="3"/>
+                    <path d="M320 8v304M8 160h624M8 90h80v140H8M632 90h-80v140h80" fill="none" stroke="#dcfce7" stroke-width="2" opacity=".72"/>
+                    <circle cx="320" cy="160" r="42" fill="none" stroke="#dcfce7" stroke-width="2" opacity=".72"/>
+                    <path d="M470 160 Q380 105 300 100" fill="none" stroke="#38bdf8" stroke-width="5" stroke-dasharray="9 7"/>
+                    <path d="M470 160 Q390 230 270 225" fill="none" stroke="#facc15" stroke-width="5" stroke-dasharray="9 7"/>
+                    <path d="M470 160 Q425 155 365 160" fill="none" stroke="#cbd5e1" stroke-width="5" stroke-dasharray="9 7"/>
+                    <g fill="#ef4444" stroke="#fff" stroke-width="3"><circle cx="470" cy="160" r="16"/><circle cx="535" cy="82" r="14"/><circle cx="535" cy="238" r="14"/><circle cx="365" cy="160" r="14"/></g>
+                    <g fill="#2563eb" stroke="#eff6ff" stroke-width="3"><circle cx="300" cy="100" r="15"/><circle cx="270" cy="225" r="15"/><circle cx="390" cy="205" r="15"/></g>
+                    <text x="38" y="160" fill="#f8fafc" font-size="15" font-weight="700" transform="rotate(-90 38 160)">PORTERÍA RIVAL</text>
+                </svg>
                 <div id="pase-opciones" class="pass-options" aria-label="Opciones de pase"></div>
                 <p id="pase-feedback" class="training-feedback" role="status" aria-live="polite">Escoge una ruta para ver cómo cambian el avance y el riesgo.</p>
                 <button id="btn-siguiente-pase" class="btn-primary" onclick="iniciarEjercicioPase()" hidden>▶ Siguiente situación</button>
@@ -623,7 +643,7 @@
                 <p>Decisiones registradas</p><p id="pase-intentos" class="training-stat">0</p>
                 <p style="margin-top:14px">Mejor valoración</p><p id="pase-mejor" class="training-stat">0/100</p>
                 <p style="margin-top:14px">Media de tus decisiones</p><p id="pase-media" class="training-stat">—</p>
-                <p class="hint-box" style="margin-top:18px">La puntuación es didáctica: combina avance, amenaza y conservación según las reglas de este ejercicio. No es una métrica oficial ni una evaluación real del jugador.</p>
+                <p id="aviso-metrica-ejercicio" class="hint-box" style="margin-top:18px">La puntuación es didáctica: combina avance, amenaza y conservación según las reglas de este ejercicio. No es una métrica oficial ni una evaluación real del jugador.</p>
             </aside>
         </div>
     </section>
@@ -667,6 +687,7 @@ const ESTILOS = {
 let estadoJuego = null;
 let jugadorSeleccionadoIdx = null;
 let retoPaseActual = null;
+let tipoEjercicioActual = 'pase';
 
 // --- 2. FUNCIONES DE MODELO ---
 function rendimientoReal(j) {
@@ -804,7 +825,13 @@ function crearEstadoInicial() {
         equipos,
         mercado,
         calendario,
-        entrenamiento: { intentos: 0, puntos: 0, mejorPuntuacion: 0 }
+        entrenamiento: {
+            intentos: 0, puntos: 0, mejorPuntuacion: 0,
+            porTipo: {
+                pase: { intentos: 0, puntos: 0, mejorPuntuacion: 0 },
+                presion: { intentos: 0, puntos: 0, mejorPuntuacion: 0 }
+            }
+        }
     };
 }
 
@@ -854,6 +881,26 @@ function calendarioValido(calendario, equipos) {
         nombres.every(a => nombres.every(b => a === b || enfrentamientos.has(a + '|' + b)));
 }
 
+function estadisticasEntrenamientoValidas(entrenamiento) {
+    if (entrenamiento === undefined) return true;
+    if (!entrenamiento || !Number.isInteger(entrenamiento.intentos) || entrenamiento.intentos < 0 ||
+        !Number.isInteger(entrenamiento.puntos) || entrenamiento.puntos < 0 ||
+        !Number.isInteger(entrenamiento.mejorPuntuacion) || entrenamiento.mejorPuntuacion < 0 ||
+        entrenamiento.mejorPuntuacion > 100 || entrenamiento.puntos > entrenamiento.intentos * 100) return false;
+    if (entrenamiento.porTipo === undefined) return true;
+    const tipos = ['pase', 'presion'];
+    const detalleValido = tipos.every(tipo => {
+        const registro = entrenamiento.porTipo?.[tipo];
+        return registro && Number.isInteger(registro.intentos) && registro.intentos >= 0 &&
+            Number.isInteger(registro.puntos) && registro.puntos >= 0 &&
+            Number.isInteger(registro.mejorPuntuacion) && registro.mejorPuntuacion >= 0 &&
+            registro.mejorPuntuacion <= 100 && registro.puntos <= registro.intentos * 100;
+    });
+    return detalleValido &&
+        entrenamiento.porTipo.pase.intentos + entrenamiento.porTipo.presion.intentos === entrenamiento.intentos &&
+        entrenamiento.porTipo.pase.puntos + entrenamiento.porTipo.presion.puntos === entrenamiento.puntos;
+}
+
 function estadoPartidaValido(estado) {
     try {
         return Boolean(estado && Array.isArray(estado.equipos) && estado.equipos.length === 4 &&
@@ -889,12 +936,7 @@ function estadoPartidaValido(estado) {
             Number.isInteger(estado.jornadaActual) && estado.jornadaActual >= 0 &&
             estado.jornadaActual <= estado.calendario.length &&
             Number.isInteger(estado.temporada) && estado.temporada >= 1 &&
-            (estado.entrenamiento === undefined || (estado.entrenamiento &&
-                Number.isInteger(estado.entrenamiento.intentos) && estado.entrenamiento.intentos >= 0 &&
-                Number.isInteger(estado.entrenamiento.puntos) && estado.entrenamiento.puntos >= 0 &&
-                Number.isInteger(estado.entrenamiento.mejorPuntuacion) &&
-                estado.entrenamiento.mejorPuntuacion >= 0 && estado.entrenamiento.mejorPuntuacion <= 100 &&
-                estado.entrenamiento.puntos <= estado.entrenamiento.intentos * 100)));
+            estadisticasEntrenamientoValidas(estado.entrenamiento));
     } catch (error) {
         return false;
     }
@@ -1106,18 +1148,75 @@ const EJERCICIOS_PASE = [
     }
 ];
 
-function valorDecisionPase(opcion) {
-    const valorConBalon = opcion.avance * 0.55 + opcion.amenaza * 0.45;
-    return opcion.conservacion / 100 * valorConBalon - (100 - opcion.conservacion) / 100 * opcion.perdida * 0.45;
+const EJERCICIOS_PRESION = [
+    {
+        contexto: "La salida rival busca el pase al lateral. Tu extremo puede saltar y el interior está cerca para cerrar el pase hacia dentro.",
+        opciones: [
+            { nombre: "Orientar la salida hacia banda", probabilidad: 87, impacto: 88, riesgo: 13,
+                resumen: "Recuperación 87% · Compactación 88 · Riesgo de superación 13%",
+                explicacion: "La carrera curva tapa el centro y conduce el juego rival hacia la banda, donde la cobertura está preparada." },
+            { nombre: "Saltar directo al central", probabilidad: 68, impacto: 76, riesgo: 32,
+                resumen: "Recuperación 68% · Compactación 76 · Riesgo de superación 32%",
+                explicacion: "La presión puede robar arriba, pero deja espacio a la espalda si el central supera el primer salto." },
+            { nombre: "Esperar en bloque", probabilidad: 80, impacto: 58, riesgo: 12,
+                resumen: "Recuperación 80% · Compactación 58 · Riesgo de superación 12%",
+                explicacion: "El bloque mantiene su orden, aunque permite al rival avanzar sin llevarle a una zona incómoda." }
+        ]
+    },
+    {
+        contexto: "El central rival recibe de espaldas y su primer control se aleja. El delantero está cerca y el mediocentro puede cubrir el pase interior.",
+        opciones: [
+            { nombre: "Activar el salto con cobertura", probabilidad: 84, impacto: 86, riesgo: 16,
+                resumen: "Recuperación 84% · Compactación 86 · Riesgo de superación 16%",
+                explicacion: "Hay un desencadenante claro —el mal control— y una cobertura detrás. Es un buen momento para saltar coordinados." },
+            { nombre: "Perseguir sin esperar apoyo", probabilidad: 62, impacto: 82, riesgo: 38,
+                resumen: "Recuperación 62% · Compactación 82 · Riesgo de superación 38%",
+                explicacion: "La intención de robar es buena, pero si el primer defensor salta solo el rival puede encontrar al hombre libre." },
+            { nombre: "Proteger el pase interior", probabilidad: 77, impacto: 68, riesgo: 18,
+                resumen: "Recuperación 77% · Compactación 68 · Riesgo de superación 18%",
+                explicacion: "Cerrar el centro reduce el peligro, pero se desaprovecha el mal control que abría una ventana para presionar." }
+        ]
+    },
+    {
+        contexto: "El rival tiene control orientado, apoyos cercanos y no hay un pase previsible. No aparece todavía una señal clara para iniciar la presión.",
+        opciones: [
+            { nombre: "Saltar sobre el poseedor", probabilidad: 60, impacto: 79, riesgo: 40,
+                resumen: "Recuperación 60% · Compactación 79 · Riesgo de superación 40%",
+                explicacion: "Sin un desencadenante ni cobertura próxima, el salto puede romper la estructura y abrir un pase de salida." },
+            { nombre: "Cerrar el centro y temporizar", probabilidad: 89, impacto: 72, riesgo: 11,
+                resumen: "Recuperación 89% · Compactación 72 · Riesgo de superación 11%",
+                explicacion: "Mantener distancias y proteger el carril central conserva la estructura hasta que aparezca una señal para saltar." },
+            { nombre: "Marcar individualmente arriba", probabilidad: 66, impacto: 74, riesgo: 34,
+                resumen: "Recuperación 66% · Compactación 74 · Riesgo de superación 34%",
+                explicacion: "La marca estrecha opciones, pero puede separar líneas si cada jugador persigue sin una referencia común." }
+        ]
+    }
+];
+
+function valorDecisionEjercicio(opcion) {
+    const probabilidad = opcion.probabilidad ?? opcion.conservacion;
+    const impacto = opcion.impacto ?? (opcion.avance * 0.55 + opcion.amenaza * 0.45);
+    const riesgo = opcion.riesgo ?? opcion.perdida;
+    return probabilidad / 100 * impacto - (100 - probabilidad) / 100 * riesgo * 0.45;
+}
+
+function cambiarTipoEjercicio(tipo) {
+    if (!['pase', 'presion'].includes(tipo)) return false;
+    tipoEjercicioActual = tipo;
+    retoPaseActual = null;
+    actualizarPanelEntrenamiento();
+    return true;
 }
 
 function iniciarEjercicioPase() {
     const anterior = retoPaseActual?.indice;
-    let indice = Math.floor(Math.random() * EJERCICIOS_PASE.length);
-    if (EJERCICIOS_PASE.length > 1 && indice === anterior) indice = (indice + 1) % EJERCICIOS_PASE.length;
-    const ejercicio = EJERCICIOS_PASE[indice];
-    const valores = ejercicio.opciones.map(valorDecisionPase);
+    const ejercicios = tipoEjercicioActual === 'presion' ? EJERCICIOS_PRESION : EJERCICIOS_PASE;
+    let indice = Math.floor(Math.random() * ejercicios.length);
+    if (ejercicios.length > 1 && indice === anterior) indice = (indice + 1) % ejercicios.length;
+    const ejercicio = ejercicios[indice];
+    const valores = ejercicio.opciones.map(valorDecisionEjercicio);
     retoPaseActual = {
+        tipo: tipoEjercicioActual,
         indice,
         contexto: ejercicio.contexto,
         opciones: ejercicio.opciones,
@@ -1131,6 +1230,18 @@ function actualizarPanelEntrenamiento() {
     const contexto = document.getElementById('pase-contexto');
     if (!contexto) return;
     if (!retoPaseActual) iniciarEjercicioPase();
+    const esPresion = retoPaseActual.tipo === 'presion';
+    document.getElementById('tipo-ejercicio').value = retoPaseActual.tipo;
+    document.getElementById('titulo-laboratorio').textContent = `Laboratorio de juego · ${esPresion ? 'Presión coordinada' : 'Pase y progresión'}`;
+    document.getElementById('pregunta-ejercicio').textContent = esPresion ? '¿Cómo organizarías la presión?' : '¿Qué línea elegirías?';
+    document.getElementById('instruccion-ejercicio').textContent = esPresion
+        ? 'Busca el momento para saltar, protege las coberturas y evita que el rival supere el bloque.'
+        : 'Valora el avance, la amenaza y la posibilidad de conservar el balón.';
+    document.getElementById('svg-pase').hidden = esPresion;
+    document.getElementById('svg-presion').hidden = !esPresion;
+    document.getElementById('aviso-metrica-ejercicio').textContent = esPresion
+        ? 'La valoración didáctica combina probabilidad de recuperación, compactación y riesgo de quedar superados. No es una estadística oficial ni una medición real del equipo.'
+        : 'La puntuación es didáctica: combina avance, amenaza y conservación según las reglas de este ejercicio. No es una métrica oficial ni una evaluación real del jugador.';
     contexto.textContent = retoPaseActual.contexto;
     const opciones = document.getElementById('pase-opciones');
     opciones.innerHTML = '';
@@ -1141,14 +1252,20 @@ function actualizarPanelEntrenamiento() {
         boton.disabled = retoPaseActual.resuelto;
         boton.setAttribute('aria-pressed', String(retoPaseActual.seleccion === indice));
         boton.dataset.opcionIndex = String(indice);
-        boton.innerHTML = `<strong>${opcion.nombre}</strong><span>Avance ${opcion.avance} · Amenaza ${opcion.amenaza} · Conserva ${opcion.conservacion}% · Pérdida ${opcion.perdida}%</span>`;
+        const resumen = opcion.resumen || `Avance ${opcion.avance} · Amenaza ${opcion.amenaza} · Conserva ${opcion.conservacion}% · Pérdida ${opcion.perdida}%`;
+        boton.innerHTML = `<strong>${opcion.nombre}</strong><span>${resumen}</span>`;
         boton.addEventListener('click', () => resolverEjercicioPase(indice));
         opciones.appendChild(boton);
     });
     const feedback = document.getElementById('pase-feedback');
-    feedback.textContent = retoPaseActual.feedback || 'Escoge una ruta para ver cómo cambian el avance y el riesgo.';
+    feedback.textContent = retoPaseActual.feedback || (esPresion
+        ? 'Escoge una respuesta defensiva para valorar cuándo saltar y cómo cubrir.'
+        : 'Escoge una ruta para ver cómo cambian el avance y el riesgo.');
     document.getElementById('btn-siguiente-pase').hidden = !retoPaseActual.resuelto;
-    const progreso = estadoJuego.entrenamiento || { intentos: 0, puntos: 0, mejorPuntuacion: 0 };
+    const total = estadoJuego.entrenamiento || { intentos: 0, puntos: 0, mejorPuntuacion: 0 };
+    const progreso = total.porTipo?.[retoPaseActual.tipo] || (retoPaseActual.tipo === 'pase'
+        ? total : { intentos: 0, puntos: 0, mejorPuntuacion: 0 });
+    document.getElementById('pase-progreso-titulo').textContent = `Tu progreso · ${esPresion ? 'Presión' : 'Pase'}`;
     document.getElementById('pase-intentos').textContent = progreso.intentos;
     document.getElementById('pase-mejor').textContent = `${progreso.mejorPuntuacion}/100`;
     document.getElementById('pase-media').textContent = progreso.intentos
@@ -1159,16 +1276,27 @@ function resolverEjercicioPase(indice) {
     if (!retoPaseActual || retoPaseActual.resuelto || !Number.isInteger(indice) ||
         indice < 0 || indice >= retoPaseActual.opciones.length) return false;
     const opcion = retoPaseActual.opciones[indice];
-    const mejorValor = Math.max(...retoPaseActual.opciones.map(valorDecisionPase));
-    const puntos = Math.max(0, Math.min(100, Math.round(valorDecisionPase(opcion) / mejorValor * 100)));
+    const mejorValor = Math.max(...retoPaseActual.opciones.map(valorDecisionEjercicio));
+    const puntos = Math.max(0, Math.min(100, Math.round(valorDecisionEjercicio(opcion) / mejorValor * 100)));
     if (!estadoJuego.entrenamiento) estadoJuego.entrenamiento = { intentos: 0, puntos: 0, mejorPuntuacion: 0 };
     const progreso = estadoJuego.entrenamiento;
+    if (!progreso.porTipo) {
+        // Migra el prototipo anterior: sus intentos correspondían al ejercicio de pase.
+        progreso.porTipo = {
+            pase: { intentos: progreso.intentos, puntos: progreso.puntos, mejorPuntuacion: progreso.mejorPuntuacion },
+            presion: { intentos: 0, puntos: 0, mejorPuntuacion: 0 }
+        };
+    }
+    const detalle = progreso.porTipo[retoPaseActual.tipo];
     progreso.intentos += 1;
     progreso.puntos += puntos;
     progreso.mejorPuntuacion = Math.max(progreso.mejorPuntuacion, puntos);
+    detalle.intentos += 1;
+    detalle.puntos += puntos;
+    detalle.mejorPuntuacion = Math.max(detalle.mejorPuntuacion, puntos);
     retoPaseActual.resuelto = true;
     retoPaseActual.seleccion = indice;
-    retoPaseActual.feedback = `${puntos}/100 · ${opcion.explicacion} Valoración didáctica de este escenario; no es xT ni un dato oficial.`;
+    retoPaseActual.feedback = `${puntos}/100 · ${opcion.explicacion} Valoración didáctica de este escenario; no es una métrica oficial.`;
     actualizarPanelEntrenamiento();
     guardarPartidaLocal(false);
     return true;

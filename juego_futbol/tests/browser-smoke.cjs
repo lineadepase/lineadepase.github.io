@@ -97,9 +97,39 @@ const fs = require('node:fs/promises');
         return estadoPartidaValido(partida);
       });
       assert.equal(legacySave, true, 'los guardados anteriores sin estadísticas de entrenamiento siguen siendo válidos');
+      const passOnlySave = await page.evaluate(() => {
+        const partida = crearEstadoInicial();
+        partida.entrenamiento = { intentos: 1, puntos: 76, mejorPuntuacion: 76 };
+        return estadoPartidaValido(partida);
+      });
+      assert.equal(passOnlySave, true, 'los guardados de la primera versión del laboratorio siguen siendo válidos');
+      const inconsistentTraining = await page.evaluate(() => {
+        const partida = crearEstadoInicial();
+        partida.entrenamiento.porTipo.pase.intentos = 1;
+        return estadoPartidaValido(partida);
+      });
+      assert.equal(inconsistentTraining, false, 'se rechazan contadores de entrenamiento incoherentes');
       await page.reload();
       assert.equal(await page.evaluate(() => estadoJuego.entrenamiento.intentos), 1,
         'el progreso del ejercicio se conserva al recargar');
+      await page.locator('button.tab-btn').filter({ hasText: 'Laboratorio de juego' }).click();
+      await page.locator('#tipo-ejercicio').selectOption('presion');
+      assert.match(await page.locator('#titulo-laboratorio').innerText(), /Presión coordinada/);
+      assert.equal(await page.locator('#svg-presion').isVisible(), true,
+        'la pizarra de presión se muestra al cambiar de ejercicio');
+      const pressingChoice = await page.evaluate(() => retoPaseActual.opcionRecomendada);
+      await page.locator(`#pase-opciones button[data-opcion-index="${pressingChoice}"]`).click();
+      const pressingProgress = await page.evaluate(() => ({
+        total: estadoJuego.entrenamiento.intentos,
+        pass: estadoJuego.entrenamiento.porTipo.pase.intentos,
+        pressure: estadoJuego.entrenamiento.porTipo.presion.intentos,
+        pressureBest: estadoJuego.entrenamiento.porTipo.presion.mejorPuntuacion
+      }));
+      assert.deepEqual(pressingProgress, { total: 2, pass: 1, pressure: 1, pressureBest: 100 },
+        'el ejercicio de presión guarda progreso separado y suma al total');
+      await page.reload();
+      assert.equal(await page.evaluate(() => estadoJuego.entrenamiento.porTipo.presion.intentos), 1,
+        'el progreso de presión también se conserva al recargar');
       await page.locator('button.tab-btn').filter({ hasText: 'Pizarra Táctica' }).click();
       const availability = await page.locator('#resumen-disponibilidad').innerText();
       assert.match(availability, /Disponibles: \d+\/\d+/);
