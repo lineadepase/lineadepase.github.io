@@ -42,6 +42,27 @@
 <meta name="twitter:image:alt" content="Entender el fútbol con datos · Línea de pase">
 <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "WebSite", "@id": "https://lineadepase.com/#website", "url": "https://lineadepase.com/", "name": "Línea de pase", "inLanguage": "es", "description": "Análisis de datos de fútbol por Ángel Marqueta Alonso: Real Zaragoza 2026/27, goles esperados (xG), gráficos y vídeos con datos públicos y fuentes.", "author": {"@id": "https://lineadepase.com/sobre-mi/index.html#autor"}}, {"@type": "Person", "@id": "https://lineadepase.com/sobre-mi/index.html#autor", "name": "Ángel Marqueta Alonso", "url": "https://lineadepase.com/sobre-mi/index.html", "sameAs": ["https://www.linkedin.com/in/angel-marqueta-alonso-a8831164", "https://www.youtube.com/@lineadepasefutbol"]}]}</script>
 <!-- /SEO -->
+<style>
+/* Gráfica editorial propia: no utiliza fotografías ni el escudo del club. */
+.tarjeta-datos-zaragoza{position:relative;isolation:isolate;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;box-sizing:border-box;aspect-ratio:4/3;min-height:270px;padding:clamp(18px,3vw,28px);border-radius:12px;background:linear-gradient(135deg,#16377f 0%,#244f9b 52%,#0e2c67 100%);color:#fff!important;box-shadow:0 16px 40px #071d4530;text-decoration:none!important}
+.tarjeta-datos-zaragoza::before{content:"";position:absolute;inset:0 0 0 68%;background:linear-gradient(90deg,transparent,#ffffff12);transform:skewX(-13deg);pointer-events:none}
+.portada-datos-superior,.portada-datos-pie{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.portada-datos-etiqueta{font-size:.67rem;letter-spacing:.13em;font-weight:800;color:#dceaff}
+.portada-datos-senal{color:#fff;font-size:.8rem}
+.portada-datos-titulo{position:relative;z-index:2;font-family:'Big Shoulders Display',Impact,sans-serif;font-size:clamp(3.1rem,6vw,5.1rem);line-height:.86;letter-spacing:.025em;font-weight:800;text-transform:uppercase;margin:20px 0}
+.portada-datos-titulo span{display:block;margin-top:15px;font-family:Archivo,Arial,sans-serif;font-size:.79rem;line-height:1.3;letter-spacing:0;font-weight:500;text-transform:none;color:#e3edff}
+.portada-datos-campo{position:absolute;right:-8%;top:25%;width:65%;height:55%;border:1px solid #ffffff30;border-radius:3px;transform:rotate(-17deg);pointer-events:none}
+.portada-datos-campo::before{content:"";position:absolute;left:50%;top:0;bottom:0;border-left:1px solid #ffffff30}
+.portada-datos-circulo{position:absolute;width:35%;aspect-ratio:1;border:1px solid #ffffff35;border-radius:50%;left:32.5%;top:27%}
+.portada-datos-trazo{position:absolute;left:16%;top:72%;width:65%;height:2px;background:#cbe1ff;transform:rotate(-29deg);box-shadow:0 0 10px #fff8}
+.portada-datos-punto{position:absolute;width:10px;height:10px;border:2px solid #fff;background:#60a5fa;border-radius:50%;box-shadow:0 0 0 5px #ffffff18}
+.portada-datos-punto.p1{left:13%;top:75%}.portada-datos-punto.p2{left:31%;top:55%}.portada-datos-punto.p3{left:52%;top:64%}.portada-datos-punto.p4{left:70%;top:33%}.portada-datos-punto.p5{left:86%;top:20%}
+.portada-datos-pie{border-top:1px solid #ffffff55;padding-top:13px;font-size:.66rem;color:#e3edff}
+.portada-datos-pie strong{color:#fff;white-space:nowrap;font-size:.73rem}
+.tarjeta-datos-zaragoza:hover,.tarjeta-datos-zaragoza:focus-visible{filter:brightness(1.07)}
+@media(max-width:760px){.foto-portada{max-width:100%;width:100%}.tarjeta-datos-zaragoza{width:100%;aspect-ratio:16/10;min-height:245px}.portada-datos-titulo{font-size:clamp(3.3rem,13vw,5rem)}.portada-datos-campo{width:55%;right:-3%}}
+@media(max-width:380px){.portada-datos-pie{font-size:.58rem}.portada-datos-pie strong{font-size:.65rem}}
+</style>
 </head>
 <body class="inicio">
 <header class="cabecera">
@@ -56,7 +77,7 @@
 <main>
 <section class="apertura-editorial apertura-visual"><div class="envoltorio apertura-visual-rejilla">
   <div class="apertura-texto"><p class="etiqueta">Línea de pase · Fútbol y datos</p><h1>El juego, más allá del marcador.</h1><p class="entradilla">Partidos, protagonistas y contexto para entender el fútbol con datos.</p><p class="firma-editorial">Por Ángel Marqueta Alonso</p><div class="rutas-portada"><a class="boton lleno" href="proyectos/real-zaragoza/jornada-8.html#titulo-claves">Leer el último análisis</a><a class="boton" href="proyectos/index.html">Descubrir los proyectos</a></div></div>
-  <figure class="foto foto-portada"><a class="entrada-fotografica" href="proyectos/real-zaragoza/plantilla.html"><img src="assets/fotos/ander-herrera-zaragoza-2026.webp" width="1200" height="900" fetchpriority="high" alt="Ander Herrera en su presentación con el Real Zaragoza en 2026"><span>La plantilla del Zaragoza →</span></a><figcaption>Ander Herrera · Presentación de 2026. Foto: <a href="https://www.realzaragoza.com/galerias/presentacion-ander-herrera">Real Zaragoza</a>.</figcaption></figure>
+  <figure class="foto foto-portada"><a class="entrada-fotografica tarjeta-datos-zaragoza" href="proyectos/real-zaragoza/index.html" aria-label="Explorar el seguimiento estadístico del Real Zaragoza 2026/27"><div class="portada-datos-superior"><span class="portada-datos-etiqueta">SEGUIMIENTO · 2026/27</span><span class="portada-datos-senal" aria-hidden="true">●</span></div><div class="portada-datos-titulo">REAL<br>ZARAGOZA<span>Datos más allá del resultado</span></div><div class="portada-datos-campo" aria-hidden="true"><span class="portada-datos-circulo"></span><span class="portada-datos-trazo"></span><span class="portada-datos-punto p1"></span><span class="portada-datos-punto p2"></span><span class="portada-datos-punto p3"></span><span class="portada-datos-punto p4"></span><span class="portada-datos-punto p5"></span></div><div class="portada-datos-pie"><span>Resultados · Evolución · Análisis</span><strong>Explorar los datos ↗</strong></div></a><figcaption>Visualización original de Línea de Pase · Temporada 2026/27.</figcaption></figure>
 </div></section>
 <div class="envoltorio">
 <section class="actualidad-editorial actualidad-compacta"><article class="analisis-principal"><p class="etiqueta">Último partido de liga · Jornada 8</p><div class="titulo-resultado"><h2><a href="proyectos/real-zaragoza/jornada-8.html">Real Murcia – Real Zaragoza</a></h2><p class="marcador-editorial">0–0</p></div><h3 class="pregunta-portada">¿Qué explica el empate sin goles en Murcia?</h3><p class="entradilla">El Zaragoza conservó el empate en Murcia, pero le faltó continuidad para crear peligro.</p><p class="fecha-datos">18/10/2026 · Temporada 2026/27</p><div class="enlaces"><a class="boton lleno" href="tras-la-jornada/index.html">Leer las claves del partido →</a><a class="enlace-editorial" href="proyectos/real-zaragoza/jornada-8.html#titulo-claves">El análisis completo →</a></div></article><aside class="mesa-de-datos"><p class="etiqueta">Para explorar</p><h2>Haz tu propia comparación</h2><a href="comparador/index.html"><strong>Dos equipos, frente a frente →</strong><span>Resultados, ocasiones y contexto.</span></a><a href="mapa-grupo/index.html"><strong>El mapa del Grupo 2 →</strong><span>Veinte equipos en una misma vista.</span></a><a href="archivo/index.html"><strong>Buscar un análisis →</strong><span>Por rival, temporada o tema.</span></a></aside></section>
