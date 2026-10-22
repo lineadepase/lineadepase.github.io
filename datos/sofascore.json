@@ -1,17 +1,8 @@
 {
  "_nota": "Calendario facilitado para el seguimiento del Real Zaragoza. Las horas de inicio están en UTC y pueden cambiar. La web muestra el último resultado revisado hasta el martes por la mañana si hay partido entre semana o hasta el miércoles en caso contrario; después, el próximo partido. El estado en directo se consulta en Sofascore y nunca se deduce de la hora. El campo tv contiene únicamente los canales indicados para cada encuentro; si está vacío, la emisión está pendiente de confirmar.",
  "equipo_sofascore": 2815,
- "actualizado": "2026-10-16",
+ "actualizado": "2026-10-22",
  "partidos": [
-  {
-   "id": 16599881,
-   "inicio": "2026-10-11T19:00:00Z",
-   "local": "Atlético Madrileño",
-   "visitante": "Real Zaragoza",
-   "competicion": "Primera Federación",
-   "jornada": 7,
-   "tv": []
-  },
   {
    "id": 16599931,
    "inicio": "2026-10-18T16:15:00Z",
@@ -53,7 +44,28 @@
    "visitante": "Real Zaragoza",
    "competicion": "Primera Federación",
    "jornada": 9,
-   "tv": []
+   "tv": [
+    {
+     "canal": "Esport3 (solo Cataluña)",
+     "abierto": true
+    },
+    {
+     "canal": "DAZN",
+     "abierto": false
+    },
+    {
+     "canal": "Canal Primera Federación (Movistar Plus+)",
+     "abierto": false
+    },
+    {
+     "canal": "Football Club",
+     "abierto": false
+    },
+    {
+     "canal": "FanPlay TV",
+     "abierto": false
+    }
+   ]
   },
   {
    "id": 17259831,
