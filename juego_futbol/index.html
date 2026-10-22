@@ -1151,6 +1151,8 @@ function iniciarNuevaTemporada() {
         eq.plantilla.forEach(j => { j.goles = 0; j.xg = 0; j.cansancio = 0; j.lesionado = 0; });
         convocarOnceAutomatico(eq);
     });
+    estadoJuego.calendario = generarCalendario(estadoJuego.equipos.map(eq => eq.nombre));
+    guardarPartidaLocal(false);
     actualizarUI();
 }
 
@@ -1169,7 +1171,18 @@ function reiniciarPartidaLocal() {
 
 window.onload = () => {
     const guardado = localStorage.getItem('ldp_manager_save');
-    estadoJuego = guardado ? JSON.parse(guardado) : crearEstadoInicial();
+    try {
+        estadoJuego = guardado ? JSON.parse(guardado) : crearEstadoInicial();
+        if (!estadoJuego || !Array.isArray(estadoJuego.equipos) ||
+            !Array.isArray(estadoJuego.calendario) ||
+            !Number.isInteger(estadoJuego.jornadaActual)) {
+            throw new Error("Formato de partida no válido");
+        }
+    } catch (error) {
+        console.warn("No se pudo cargar la partida guardada:", error);
+        estadoJuego = crearEstadoInicial();
+        alert("La partida guardada no se puede recuperar. Se iniciará una nueva. El guardado anterior se conservará hasta el próximo guardado.");
+    }
     const cShot = document.getElementById('canvas-shotmap');
     dibujarCampoBase(cShot.getContext('2d'), cShot.width, cShot.height);
     actualizarUI();
