@@ -37,6 +37,17 @@ const assert = require('node:assert/strict');
         }
       }
       await page.locator('button.tab-btn').filter({ hasText: 'Pizarra Táctica' }).click();
+      const invalidMarket = await page.evaluate(() => {
+        const club = obtenerMiEquipo();
+        const before = { money: club.presupuesto, size: club.plantilla.length,
+          available: estadoJuego.mercado.length };
+        ficharJugador(9999);
+        venderJugador(9999);
+        return { before, after: { money: club.presupuesto, size: club.plantilla.length,
+          available: estadoJuego.mercado.length } };
+      });
+      assert.deepEqual(invalidMarket.after, invalidMarket.before,
+        'índices de mercado inválidos no alteran el estado');
       const market = await page.evaluate(() => {
         const club = obtenerMiEquipo();
         const before = { money: club.presupuesto, size: club.plantilla.length, available: estadoJuego.mercado.length };
