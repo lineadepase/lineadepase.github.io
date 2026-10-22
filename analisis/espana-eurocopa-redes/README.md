@@ -1,6 +1,6 @@
 # Por dónde pasaba el juego de España · Eurocopa femenina 2025
 
-Redes de pases de la selección española en sus seis partidos de la Eurocopa femenina 2025: quién recibía más, qué parejas conectaban más y por quién pasaba el juego. El resultado se publica en [Línea de pase](https://lineadepase.github.io/proyectos/espana-eurocopa-redes/).
+Redes de pases de la selección española en sus seis partidos de la Eurocopa femenina 2025: quién recibía más, qué parejas conectaban más y por quién pasaba el juego. El resultado se publica en [Línea de pase](https://lineadepase.com/proyectos/espana-eurocopa-redes/).
 
 ## La pregunta
 

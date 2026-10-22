@@ -6,7 +6,7 @@
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-10-16T16:16:12.888701</dc:date>
+    <dc:date>2026-10-22T13:16:05.622794</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -35,7 +35,7 @@ L 777.6 61.92
 L 777.6 0 
 L 0 0 
 z
-" clip-path="url(#pf13a5d2f54)" style="fill: #0f3d25; stroke: #0f3d25; stroke-linejoin: miter"/>
+" clip-path="url(#p25a29a46ec)" style="fill: #0f3d25; stroke: #0f3d25; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
     <path d="M 0 61.92 
@@ -43,7 +43,7 @@ L 58.32 61.92
 L 58.32 0 
 L 0 0 
 z
-" clip-path="url(#pf13a5d2f54)" style="fill: #14492d; stroke: #14492d; stroke-linejoin: miter"/>
+" clip-path="url(#p25a29a46ec)" style="fill: #14492d; stroke: #14492d; stroke-linejoin: miter"/>
    </g>
    <g id="patch_4">
     <path d="M 116.64 61.92 
@@ -51,7 +51,7 @@ L 174.96 61.92
 L 174.96 0 
 L 116.64 0 
 z
-" clip-path="url(#pf13a5d2f54)" style="fill: #14492d; stroke: #14492d; stroke-linejoin: miter"/>
+" clip-path="url(#p25a29a46ec)" style="fill: #14492d; stroke: #14492d; stroke-linejoin: miter"/>
    </g>
    <g id="patch_5">
     <path d="M 233.28 61.92 
@@ -59,7 +59,7 @@ L 291.6 61.92
 L 291.6 0 
 L 233.28 0 
 z
-" clip-path="url(#pf13a5d2f54)" style="fill: #14492d; stroke: #14492d; stroke-linejoin: miter"/>
+" clip-path="url(#p25a29a46ec)" style="fill: #14492d; stroke: #14492d; stroke-linejoin: miter"/>
    </g>
    <g id="patch_6">
     <path d="M 349.92 61.92 
@@ -67,7 +67,7 @@ L 408.24 61.92
 L 408.24 0 
 L 349.92 0 
 z
-" clip-path="url(#pf13a5d2f54)" style="fill: #14492d; stroke: #14492d; stroke-linejoin: miter"/>
+" clip-path="url(#p25a29a46ec)" style="fill: #14492d; stroke: #14492d; stroke-linejoin: miter"/>
    </g>
    <g id="patch_7">
     <path d="M 466.56 61.92 
@@ -75,7 +75,7 @@ L 524.88 61.92
 L 524.88 0 
 L 466.56 0 
 z
-" clip-path="url(#pf13a5d2f54)" style="fill: #14492d; stroke: #14492d; stroke-linejoin: miter"/>
+" clip-path="url(#p25a29a46ec)" style="fill: #14492d; stroke: #14492d; stroke-linejoin: miter"/>
    </g>
    <g id="patch_8">
     <path d="M 583.2 61.92 
@@ -83,7 +83,7 @@ L 641.52 61.92
 L 641.52 0 
 L 583.2 0 
 z
-" clip-path="url(#pf13a5d2f54)" style="fill: #14492d; stroke: #14492d; stroke-linejoin: miter"/>
+" clip-path="url(#p25a29a46ec)" style="fill: #14492d; stroke: #14492d; stroke-linejoin: miter"/>
    </g>
    <g id="patch_9">
     <path d="M 699.84 61.92 
@@ -91,7 +91,7 @@ L 758.16 61.92
 L 758.16 0 
 L 699.84 0 
 z
-" clip-path="url(#pf13a5d2f54)" style="fill: #14492d; stroke: #14492d; stroke-linejoin: miter"/>
+" clip-path="url(#p25a29a46ec)" style="fill: #14492d; stroke: #14492d; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
     <!-- Línea de pase -->
@@ -371,7 +371,7 @@ z
    </g>
    <g id="PathCollection_1">
     <defs>
-     <path id="m26cd0bcf26" d="M 0 4.398863 
+     <path id="m36cda8e761" d="M 0 4.398863 
 C 1.166592 4.398863 2.285561 3.935371 3.110466 3.110466 
 C 3.935371 2.285561 4.398863 1.166592 4.398863 0 
 C 4.398863 -1.166592 3.935371 -2.285561 3.110466 -3.110466 
@@ -383,8 +383,8 @@ C -2.285561 3.935371 -1.166592 4.398863 0 4.398863
 z
 " style="stroke: #ff6a2b"/>
     </defs>
-    <g clip-path="url(#pf13a5d2f54)">
-     <use xlink:href="#m26cd0bcf26" x="19.44" y="30.96" style="fill: #ff6a2b; stroke: #ff6a2b"/>
+    <g clip-path="url(#p25a29a46ec)">
+     <use xlink:href="#m36cda8e761" x="19.44" y="30.96" style="fill: #ff6a2b; stroke: #ff6a2b"/>
     </g>
    </g>
   </g>
@@ -1857,8 +1857,8 @@ z
    </g>
   </g>
   <g id="text_12">
-   <!-- lineadepase.github.io -->
-   <g style="fill: #f4f7f1" transform="translate(493.2315 920.385) scale(0.3 -0.3)">
+   <!-- lineadepase.com -->
+   <g style="fill: #f4f7f1" transform="translate(544.179937 920.385) scale(0.3 -0.3)">
     <defs>
      <path id="BigShouldersDisplay-Thin-27a" d="M 285 0 
 L 285 5120 
@@ -1874,152 +1874,36 @@ L 1261 0
 L 266 0 
 z
 " transform="scale(0.015625)"/>
-     <path id="BigShouldersDisplay-Thin-217" d="M 1373 -1229 
-Q 835 -1229 561 -1081 
-Q 288 -934 234 -653 
-Q 224 -614 219 -555 
-Q 214 -496 221 -438 
-Q 240 -285 347 -168 
-Q 454 -51 640 -29 
-L 640 93 
-Q 474 122 374 214 
-Q 275 307 253 454 
-Q 250 496 250 541 
-Q 250 586 253 637 
-Q 269 774 392 860 
-Q 515 947 704 973 
-L 704 1094 
-Q 451 1210 329 1437 
-Q 208 1664 182 2035 
-Q 179 2163 176 2264 
-Q 173 2365 173 2454 
-Q 173 2544 176 2637 
-Q 179 2730 182 2838 
-Q 205 3206 323 3440 
-Q 442 3674 696 3786 
-Q 950 3898 1376 3898 
-Q 1776 3898 2011 3797 
-Q 2246 3696 2378 3475 
-L 2499 3475 
-Q 2522 3667 2637 3753 
-Q 2752 3840 2982 3840 
-L 2982 3213 
-L 2880 3213 
-Q 2726 3213 2640 3136 
-Q 2554 3059 2554 2864 
-L 2554 2637 
-Q 2554 2557 2554 2488 
-Q 2554 2419 2555 2352 
-Q 2557 2285 2555 2208 
-Q 2554 2131 2547 2035 
-Q 2522 1651 2402 1416 
-Q 2282 1181 2032 1077 
-Q 1782 973 1370 973 
-Q 1078 973 969 928 
-Q 861 883 861 778 
-L 861 755 
-Q 861 688 889 648 
-Q 918 608 1020 589 
-Q 1123 570 1354 566 
-Q 1981 557 2272 368 
-Q 2563 179 2618 -192 
-Q 2630 -253 2630 -318 
-Q 2630 -384 2618 -467 
-Q 2592 -730 2446 -898 
-Q 2301 -1066 2033 -1147 
-Q 1766 -1229 1373 -1229 
-z
-M 1392 -659 
-Q 1562 -659 1678 -630 
-Q 1795 -602 1862 -546 
-Q 1930 -490 1952 -406 
-Q 1968 -355 1965 -312 
-Q 1962 -269 1949 -224 
-Q 1923 -138 1854 -86 
-Q 1786 -35 1670 -11 
-Q 1555 13 1392 16 
-Q 1142 19 1022 -38 
-Q 902 -96 870 -224 
-Q 858 -269 859 -317 
-Q 861 -365 870 -406 
-Q 890 -493 950 -549 
-Q 1011 -605 1120 -632 
-Q 1229 -659 1392 -659 
-z
-M 1366 1594 
-Q 1578 1594 1651 1680 
-Q 1725 1766 1734 1920 
-Q 1741 2013 1745 2147 
-Q 1750 2282 1750 2429 
-Q 1750 2576 1745 2712 
-Q 1741 2848 1734 2947 
-Q 1725 3117 1646 3197 
-Q 1568 3277 1366 3277 
-Q 1165 3277 1081 3195 
-Q 998 3114 992 2938 
-Q 986 2778 982 2638 
-Q 979 2499 979 2374 
-Q 979 2250 982 2141 
-Q 986 2032 992 1939 
-Q 1005 1789 1073 1691 
-Q 1142 1594 1366 1594 
-z
-" transform="scale(0.015625)"/>
-     <path id="BigShouldersDisplay-Thin-238" d="M 285 0 
-L 285 5120 
-L 1110 5120 
+     <path id="BigShouldersDisplay-Thin-298" d="M 285 0 
+L 285 3840 
+L 1110 3840 
 L 1110 3443 
 L 1258 3443 
-Q 1382 3664 1523 3781 
+Q 1379 3664 1521 3781 
 Q 1664 3898 1946 3898 
-Q 2320 3898 2528 3667 
-Q 2736 3437 2736 2899 
-L 2736 0 
-L 1910 0 
-L 1910 2966 
-Q 1910 3136 1832 3214 
+Q 2218 3898 2398 3779 
+Q 2579 3661 2662 3389 
+L 2797 3389 
+Q 2922 3610 3090 3754 
+Q 3258 3898 3539 3898 
+Q 3914 3898 4118 3667 
+Q 4323 3437 4323 2899 
+L 4323 0 
+L 3498 0 
+L 3498 2966 
+Q 3498 3136 3421 3214 
+Q 3344 3293 3190 3293 
+Q 3056 3293 2925 3201 
+Q 2794 3110 2730 2973 
+L 2730 0 
+L 1904 0 
+L 1904 2966 
+Q 1904 3136 1829 3214 
 Q 1754 3293 1597 3293 
 Q 1456 3293 1312 3213 
 Q 1168 3133 1110 2989 
 L 1110 0 
 L 285 0 
-z
-" transform="scale(0.015625)"/>
-     <path id="BigShouldersDisplay-Thin-156" d="M 1891 -58 
-Q 1610 -58 1469 59 
-Q 1328 176 1203 397 
-L 1110 397 
-L 1110 0 
-L 285 0 
-L 285 5120 
-L 1110 5120 
-L 1110 3443 
-L 1258 3443 
-Q 1382 3664 1523 3781 
-Q 1664 3898 1946 3898 
-Q 2320 3898 2510 3667 
-Q 2701 3437 2726 2899 
-Q 2733 2710 2736 2451 
-Q 2739 2192 2739 1913 
-Q 2739 1635 2736 1379 
-Q 2733 1123 2726 944 
-Q 2701 406 2485 174 
-Q 2269 -58 1891 -58 
-z
-M 1597 547 
-Q 1754 547 1822 625 
-Q 1891 704 1898 874 
-Q 1910 1085 1916 1347 
-Q 1923 1610 1923 1893 
-Q 1923 2176 1916 2453 
-Q 1910 2730 1898 2966 
-Q 1891 3136 1822 3214 
-Q 1754 3293 1597 3293 
-Q 1456 3293 1312 3213 
-Q 1168 3133 1110 2989 
-L 1110 851 
-Q 1168 707 1312 627 
-Q 1456 547 1597 547 
 z
 " transform="scale(0.015625)"/>
     </defs>
@@ -2035,20 +1919,14 @@ z
     <use xlink:href="#BigShouldersDisplay-Thin-368" transform="translate(355.3125 0)"/>
     <use xlink:href="#BigShouldersDisplay-Thin-1b3" transform="translate(396.15625 0)"/>
     <use xlink:href="#BigShouldersDisplay-Thin-320" transform="translate(439.15625 0)"/>
-    <use xlink:href="#BigShouldersDisplay-Thin-217" transform="translate(463 0)"/>
-    <use xlink:href="#BigShouldersDisplay-Thin-24b" transform="translate(509.703125 0)"/>
-    <use xlink:href="#BigShouldersDisplay-Thin-39b" transform="translate(531.5 0)"/>
-    <use xlink:href="#BigShouldersDisplay-Thin-238" transform="translate(563.703125 0)"/>
-    <use xlink:href="#BigShouldersDisplay-Thin-3c2" transform="translate(610.65625 0)"/>
-    <use xlink:href="#BigShouldersDisplay-Thin-156" transform="translate(657.25 0)"/>
-    <use xlink:href="#BigShouldersDisplay-Thin-320" transform="translate(701.890625 0)"/>
-    <use xlink:href="#BigShouldersDisplay-Thin-24b" transform="translate(725.734375 0)"/>
-    <use xlink:href="#BigShouldersDisplay-Thin-2c2" transform="translate(747.53125 0)"/>
+    <use xlink:href="#BigShouldersDisplay-Thin-171" transform="translate(463 0)"/>
+    <use xlink:href="#BigShouldersDisplay-Thin-2c2" transform="translate(505.90625 0)"/>
+    <use xlink:href="#BigShouldersDisplay-Thin-298" transform="translate(550.75 0)"/>
    </g>
   </g>
  </g>
  <defs>
-  <clipPath id="pf13a5d2f54">
+  <clipPath id="p25a29a46ec">
    <rect x="0" y="0" width="777.6" height="61.92"/>
   </clipPath>
  </defs>

@@ -346,7 +346,7 @@ def portada(titulo, entradilla="", cifra="", cifra_texto="", etiqueta="", paleta
     return fig
 
 
-def cierre(titulo, puntos, enlace="lineadepase.github.io", paleta="web"):
+def cierre(titulo, puntos, enlace="lineadepase.com", paleta="web"):
     """Última diapositiva: límites del estudio y dónde leerlo completo."""
     c = preparar(paleta)
     fig = plt.figure(figsize=(10.8, 13.5), dpi=100, facecolor=c["papel"])

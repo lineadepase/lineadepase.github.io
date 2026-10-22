@@ -13,6 +13,6 @@ Resultado: Laia Aleixandri, María Méndez, Irene Paredes y Patri Guijarro conce
 
 Límites: sin conducciones ni pérdidas, el final de cada partido queda fuera y seis partidos describen un torneo, no un estilo.
 
-https://lineadepase.github.io/proyectos/espana-eurocopa-redes/
+https://lineadepase.com/proyectos/espana-eurocopa-redes/
 
 #AnaliticaDeportiva #Python #NetworkX #FutbolFemenino #CienciaDeDatos
