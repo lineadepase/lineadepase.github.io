@@ -221,6 +221,16 @@ const assert = require('node:assert/strict');
       await page.reload();
       assert.equal(await page.evaluate(() => calendarioValido(estadoJuego.calendario, estadoJuego.equipos)), true,
         'calendario con enfrentamientos duplicados rechazado');
+      const swappedCalendar = await page.evaluate(() => {
+        const partida = crearEstadoInicial();
+        // Permutar dos partidos de distintas mitades mantiene los doce cruces,
+        // pero deja una ida y una vuelta con rivales repetidos.
+        const tmp = partida.calendario[0][0];
+        partida.calendario[0][0] = partida.calendario[3][0];
+        partida.calendario[3][0] = tmp;
+        return calendarioValido(partida.calendario, partida.equipos);
+      });
+      assert.equal(swappedCalendar, false, 'la ida y vuelta no pueden mezclar enfrentamientos');
       await page.evaluate(() => localStorage.setItem('ldp_manager_save', '{bad json'));
       await page.reload();
       assert.equal(await page.evaluate(() => estadoJuego.temporada), 1);
