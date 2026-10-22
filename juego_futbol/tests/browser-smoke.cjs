@@ -68,6 +68,19 @@ const assert = require('node:assert/strict');
         return unchanged;
       });
       assert.equal(injuredShot, true, 'un lesionado no puede rematar');
+      const invalidFixture = await page.evaluate(() => {
+        const original = estadoJuego.calendario[estadoJuego.jornadaActual];
+        const before = estadoJuego.jornadaActual;
+        estadoJuego.calendario[before] = [[estadoJuego.equipos[0].nombre, estadoJuego.equipos[0].nombre]];
+        try {
+          simularJornada();
+          return { before, after: estadoJuego.jornadaActual };
+        } finally {
+          estadoJuego.calendario[before] = original;
+        }
+      });
+      assert.equal(invalidFixture.after, invalidFixture.before,
+        'una jornada corrupta no debe simularse');
       const blockedRead = await page.evaluate(() => {
         const original = Storage.prototype.getItem;
         Storage.prototype.getItem = function () { throw new Error('lectura bloqueada'); };
