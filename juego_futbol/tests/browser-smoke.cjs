@@ -7,12 +7,13 @@ const assert = require('node:assert/strict');
   try {
     for (const mode of ['desktop', 'mobile']) {
       const context = await browser.newContext(mode === 'mobile'
-        ? { ...devices['iPhone 13'], browserName: undefined }
+        ? { ...devices['iPhone 13'], viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true }
         : { viewport: { width: 1366, height: 900 } });
       const page = await context.newPage();
       page.on('pageerror', err => errors.push(mode + ': ' + err.message));
       page.on('dialog', dialog => dialog.accept());
       await page.goto('http://127.0.0.1:8765/juego_futbol/', { waitUntil: 'load' });
+      if (mode === 'mobile') assert.equal(await page.evaluate(() => window.innerWidth), 390, 'ancho de pantalla móvil esperado');
       await page.waitForFunction(() => typeof estadoJuego !== 'undefined' && !!estadoJuego.equipos);
       assert.equal(await page.evaluate(() => estadoJuego.equipos.length), 4);
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 0);
