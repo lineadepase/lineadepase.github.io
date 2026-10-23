@@ -581,7 +581,7 @@
         <div class="panel" style="margin-bottom: 20px;">
             <div class="panel-header">
                 <span class="panel-title">Archivo de temporadas</span>
-                <span class="hint-box">Clasificaciones ya cerradas · hasta 20 temporadas</span>
+                <span class="hint-box">Hasta 20 temporadas · Dif. G-xG = goles marcados − xG a favor</span>
             </div>
             <div class="table-wrap">
                 <table>
@@ -595,6 +595,7 @@
                             <th>GF-GC</th>
                             <th>Remates</th>
                             <th>xG Favor</th>
+                            <th title="Goles marcados menos xG a favor; positivo indica más goles que ocasiones estimadas.">Dif. G-xG</th>
                             <th>xG Contra</th>
                             <th class="left">Máximo(s) goleador(es)</th>
                         </tr>
@@ -1339,7 +1340,7 @@ function actualizarUI() {
     tbodyHistorial.innerHTML = '';
     const historial = [...(estadoJuego.historialTemporadas || [])].sort((a, b) => b.temporada - a.temporada);
     if (historial.length === 0) {
-        tbodyHistorial.innerHTML = '<tr><td colspan="10">Todavía no hay temporadas cerradas. El primer resumen aparecerá al comenzar la segunda.</td></tr>';
+        tbodyHistorial.innerHTML = '<tr><td colspan="11">Todavía no hay temporadas cerradas. El primer resumen aparecerá al comenzar la segunda.</td></tr>';
     } else {
         historial.forEach(resumen => resumen.clasificacion.forEach((eq, i) => {
             const tr = document.createElement('tr');
@@ -1351,9 +1352,11 @@ function actualizarUI() {
             const remates = eq.remates === null ? '—' : eq.remates;
             const xgf = eq.xgf === null ? '—' : eq.xgf.toFixed(2);
             const xgc = eq.xgc === null ? '—' : eq.xgc.toFixed(2);
+            const diferenciaGolesXg = eq.xgf === null ? '—' :
+                `${eq.gf - eq.xgf >= 0 ? '+' : ''}${(eq.gf - eq.xgf).toFixed(2)}`;
             tr.innerHTML = `<td>${resumen.temporada}</td><td><strong>${i + 1}</strong></td>` +
                 `<td class="left">${escaparHTML(eq.nombre)}</td><td>${eq.pj}</td><td>${eq.puntos}</td>` +
-                `<td>${eq.gf}-${eq.gc}</td><td>${remates}</td><td>${xgf}</td><td>${xgc}</td>` +
+                `<td>${eq.gf}-${eq.gc}</td><td>${remates}</td><td>${xgf}</td><td>${diferenciaGolesXg}</td><td>${xgc}</td>` +
                 `<td class="left">${detalleGoleador}</td>`;
             tbodyHistorial.appendChild(tr);
         }));

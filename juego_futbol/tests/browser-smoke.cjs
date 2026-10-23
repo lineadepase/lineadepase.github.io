@@ -761,8 +761,12 @@ const fs = require('node:fs/promises');
       assert.match(celdasArchivo[5], /^\d+-\d+$/);
       assert.match(celdasArchivo[6], /^\d+$/);
       assert.match(celdasArchivo[7], /^\d+\.\d{2}$/);
-      assert.match(celdasArchivo[8], /^\d+\.\d{2}$/,
-        'la tabla histórica muestra goles, remates y ambos xG guardados');
+      const equipoArchivado = archivoPrimeraTemporada.clasificacion[0];
+      const diferenciaEsperada = equipoArchivado.gf - equipoArchivado.xgf;
+      assert.equal(celdasArchivo[8].trim(), `${diferenciaEsperada >= 0 ? '+' : ''}${diferenciaEsperada.toFixed(2)}`,
+        'la diferencia entre goles y xG se calcula desde las métricas archivadas');
+      assert.match(celdasArchivo[9], /^\d+\.\d{2}$/,
+        'la tabla histórica muestra goles, remates y xG a favor, diferencia y en contra');
       assert.equal(await page.evaluate(() => estadoPartidaValido(estadoJuego)), true,
         'el nuevo historial cumple la validación de guardado');
       assert.equal(await page.locator('#tbody-historial-temporadas tr').count(), 4,
