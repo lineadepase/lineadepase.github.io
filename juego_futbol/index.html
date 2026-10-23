@@ -2224,10 +2224,12 @@ function simularPartidoIndividual(local, vis, esNuestro, logBox, ctxShot, w, h) 
             });
         }
         logBox.innerHTML += `<hr style="border-color:#334155;margin:8px 0;">`;
-        logBox.innerHTML += `<p><strong>🏁 FINAL: ${escaparHTML(local.nombre)} ${gL} - ${gV} ${escaparHTML(vis.nombre)}</strong> (xG: ${xgL.toFixed(2)} vs ${xgV.toFixed(2)})</p>`;
+        logBox.innerHTML += `<p><strong>🏁 FINAL: ${escaparHTML(local.nombre)} ${gL} - ${gV} ${escaparHTML(vis.nombre)}</strong> ` +
+            `(Remates: ${rematesL} vs ${rematesV} · xG: ${xgL.toFixed(2)} vs ${xgV.toFixed(2)})</p>`;
         logBox.innerHTML += `<p class="log-info">💶 Taquilla local: +${taquilla.toLocaleString('es-ES')} €</p><br>`;
     } else {
-        logBox.innerHTML += `<p class="log-info">• Otro partido: ${escaparHTML(local.nombre)} ${gL} - ${gV} ${escaparHTML(vis.nombre)} (xG: ${xgL.toFixed(2)}-${xgV.toFixed(2)})</p>`;
+        logBox.innerHTML += `<p class="log-info">• Otro partido: ${escaparHTML(local.nombre)} ${gL} - ${gV} ${escaparHTML(vis.nombre)} ` +
+            `(Remates: ${rematesL}-${rematesV} · xG: ${xgL.toFixed(2)}-${xgV.toFixed(2)})</p>`;
     }
 }
 

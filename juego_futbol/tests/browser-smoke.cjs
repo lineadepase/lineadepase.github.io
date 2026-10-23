@@ -658,6 +658,8 @@ const fs = require('node:fs/promises');
             controls: document.querySelectorAll('#replay-controls [data-replay-index]').length,
             logButtons: document.querySelectorAll('#match-log .replay-trigger').length,
             selected,
+            finalSummary: [...document.querySelectorAll('#match-log p')]
+              .find(line => line.textContent.includes('FINAL:'))?.textContent || '',
             pressed: document.querySelector('#replay-controls [data-replay-index="0"]')?.getAttribute('aria-pressed'),
             xg: document.getElementById('replay-xg').textContent,
             player: document.getElementById('replay-player').textContent,
@@ -672,6 +674,9 @@ const fs = require('node:fs/promises');
       assert.equal(replayCheck.events, 18, 'el partido genera ocasiones en sus 18 ventanas de juego');
       assert.equal(replayCheck.shots.reduce((total, remates) => total + remates, 0), 18,
         'el contador de remates coincide con las ocasiones generadas');
+      assert.ok(replayCheck.finalSummary.includes(`Remates: ${replayCheck.shots[0]} vs ${replayCheck.shots[1]}`) &&
+        replayCheck.finalSummary.includes('xG:'),
+        'la crónica final compara remates y xG con los contadores del motor');
       assert.equal(replayCheck.controls, replayCheck.events, 'cada ocasión tiene control para repetirla');
       assert.equal(replayCheck.logButtons, replayCheck.events, 'la crónica enlaza cada remate a su repetición');
       assert.equal(replayCheck.selected, true);
