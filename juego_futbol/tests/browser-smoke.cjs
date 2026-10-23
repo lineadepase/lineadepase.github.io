@@ -190,6 +190,9 @@ const fs = require('node:fs/promises');
       assert.equal(legacyArchive.resumen.goleadores[0].nombre, 'Paco Manoplas');
       assert.equal(Object.hasOwn(legacyArchive.resumen, 'pichichi'), false,
         'la migración deja el resumen histórico en el formato actual');
+      assert.ok(legacyArchive.resumen.clasificacion.every(eq => eq.pj === 6 &&
+        eq.remates === null && eq.xgf === null && eq.xgc === null),
+        'la migración distingue las métricas históricas desconocidas de los ceros');
       const legacySave = await page.evaluate(() => {
         const partida = crearEstadoInicial();
         delete partida.entrenamiento;
@@ -747,8 +750,13 @@ const fs = require('node:fs/promises');
       assert.ok(archivoPrimeraTemporada.goleadores.some(j => j.equipo !== 'FC Pase y Pifia'));
       assert.ok(archivoPrimeraTemporada.goleadores.every(j => j.goles === 7),
         'el empate se resuelve por goles y no por xG');
+      assert.ok(archivoPrimeraTemporada.clasificacion.every(eq => Number.isInteger(eq.pj) &&
+        Number.isInteger(eq.remates) && Number.isFinite(eq.xgf) && Number.isFinite(eq.xgc)),
+        'el archivo conserva partidos, remates y xG de los cuatro equipos');
       assert.match(await page.locator('#tbody-historial-temporadas tr').first().innerText(), /Empate:.*Paco Manoplas/,
         'el archivo anuncia el empate entre goleadores');
+      assert.match(await page.locator('#tbody-historial-temporadas tr').first().innerText(), /6\s+\d+\s+\d+-\d+\s+\d+\s+\d+\.\d{2}\s+\d+\.\d{2}/,
+        'la tabla histórica muestra todas las métricas guardadas');
       assert.equal(await page.evaluate(() => estadoPartidaValido(estadoJuego)), true,
         'el nuevo historial cumple la validación de guardado');
       assert.equal(await page.locator('#tbody-historial-temporadas tr').count(), 4,

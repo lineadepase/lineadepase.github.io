@@ -590,8 +590,12 @@
                             <th>Temp.</th>
                             <th>Pos.</th>
                             <th class="left">Equipo</th>
+                            <th>PJ</th>
                             <th>PTS</th>
                             <th>GF-GC</th>
+                            <th>Remates</th>
+                            <th>xG Favor</th>
+                            <th>xG Contra</th>
                             <th class="left">Máximo(s) goleador(es)</th>
                         </tr>
                     </thead>
@@ -1094,7 +1098,9 @@ function resumenTemporadaValido(resumen) {
         Array.isArray(resumen.clasificacion) && resumen.clasificacion.length === 4 &&
         new Set(resumen.clasificacion.map(eq => eq?.nombre)).size === 4 &&
         resumen.clasificacion.every(eq => eq && nombreGuardadoValido(eq.nombre) &&
-            ['puntos', 'gf', 'gc'].every(k => Number.isInteger(eq[k]) && eq[k] >= 0)) &&
+            ['puntos', 'pj', 'gf', 'gc'].every(k => Number.isInteger(eq[k]) && eq[k] >= 0) &&
+            (eq.remates === null || (Number.isInteger(eq.remates) && eq.remates >= 0)) &&
+            ['xgf', 'xgc'].every(k => eq[k] === null || (Number.isFinite(eq[k]) && eq[k] >= 0))) &&
         Array.isArray(resumen.goleadores) && resumen.goleadores.length <= 200 &&
         new Set(resumen.goleadores.map(j => `${j?.equipo}|${j?.nombre}`)).size === resumen.goleadores.length &&
         resumen.goleadores.every(j => j && nombreGuardadoValido(j.nombre) && nombreGuardadoValido(j.equipo) &&
@@ -1110,6 +1116,14 @@ function normalizarEstadoPartida(estado) {
     if (estado && estado.historialTemporadas === undefined) estado.historialTemporadas = [];
     if (estado && Array.isArray(estado.historialTemporadas)) {
         estado.historialTemporadas.forEach(resumen => {
+            if (resumen && Array.isArray(resumen.clasificacion)) {
+                resumen.clasificacion.forEach(eq => {
+                    if (!eq) return;
+                    if (eq.pj === undefined) eq.pj = 6;
+                    // Los archivos antiguos no guardaban tiros ni xG; null indica que el dato no existe.
+                    ['remates', 'xgf', 'xgc'].forEach(k => { if (eq[k] === undefined) eq[k] = null; });
+                });
+            }
             if (resumen && resumen.goleadores === undefined) {
                 resumen.goleadores = resumen.pichichi ? [resumen.pichichi] : [];
                 delete resumen.pichichi;
@@ -1325,7 +1339,7 @@ function actualizarUI() {
     tbodyHistorial.innerHTML = '';
     const historial = [...(estadoJuego.historialTemporadas || [])].sort((a, b) => b.temporada - a.temporada);
     if (historial.length === 0) {
-        tbodyHistorial.innerHTML = '<tr><td colspan="6">Todavía no hay temporadas cerradas. El primer resumen aparecerá al comenzar la segunda.</td></tr>';
+        tbodyHistorial.innerHTML = '<tr><td colspan="10">Todavía no hay temporadas cerradas. El primer resumen aparecerá al comenzar la segunda.</td></tr>';
     } else {
         historial.forEach(resumen => resumen.clasificacion.forEach((eq, i) => {
             const tr = document.createElement('tr');
@@ -1334,9 +1348,13 @@ function actualizarUI() {
             const detalleGoleador = i !== 0 ? '—' : (goleadores
                 ? `${resumen.goleadores.length > 1 ? 'Empate: ' : ''}${goleadores} · ${resumen.goleadores[0].goles} goles`
                 : 'Sin goles');
+            const remates = eq.remates === null ? '—' : eq.remates;
+            const xgf = eq.xgf === null ? '—' : eq.xgf.toFixed(2);
+            const xgc = eq.xgc === null ? '—' : eq.xgc.toFixed(2);
             tr.innerHTML = `<td>${resumen.temporada}</td><td><strong>${i + 1}</strong></td>` +
-                `<td class="left">${escaparHTML(eq.nombre)}</td><td>${eq.puntos}</td>` +
-                `<td>${eq.gf}-${eq.gc}</td><td class="left">${detalleGoleador}</td>`;
+                `<td class="left">${escaparHTML(eq.nombre)}</td><td>${eq.pj}</td><td>${eq.puntos}</td>` +
+                `<td>${eq.gf}-${eq.gc}</td><td>${remates}</td><td>${xgf}</td><td>${xgc}</td>` +
+                `<td class="left">${detalleGoleador}</td>`;
             tbodyHistorial.appendChild(tr);
         }));
     }
@@ -2420,7 +2438,8 @@ function iniciarNuevaTemporada() {
     const archivoTemporada = {
         temporada: estadoJuego.temporada,
         clasificacion: [...estadoJuego.equipos].sort(compararClasificacion).map(eq => ({
-            nombre: eq.nombre, puntos: eq.puntos, gf: eq.gf, gc: eq.gc
+            nombre: eq.nombre, puntos: eq.puntos, pj: eq.pj, gf: eq.gf, gc: eq.gc,
+            remates: eq.remates, xgf: eq.xgf, xgc: eq.xgc
         })),
         goleadores: jugadoresOrdenados.length
             ? jugadoresOrdenados.filter(j => j.goles === jugadoresOrdenados[0].goles)
