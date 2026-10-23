@@ -57,7 +57,8 @@ La primera versión es un juego web local de gestión para una liga inventada de
 ### Estado del código
 
 - **Implementado:** el alcance anterior, con interfaz adaptable, controles de teclado, guardados validados y pruebas de motor y navegador.
-- **Verificación automatizada:** CI #193, commit `8282acee341b028afbf199c2ee39f914a2931aa1`: compilación y 11 pruebas de Python correctas; Playwright en Chromium de escritorio y móvil también pasó, incluidos CSV, anchura de las fichas y las métricas móviles.
+- **Acceso desde la web:** el catálogo de Proyectos enlaza al juego con una llamada a la acción que indica que se juega en el navegador; el aviso del simulador enlaza a la explicación de xG ya existente. No se ofrecen descargas nativas ni enlaces a tiendas móviles.
+- **Verificación automatizada:** CI #195, commit `89a1ca4cbaa9270bde63192e1aece1869df12014`: compilación y 11 pruebas de Python correctas; Playwright en Chromium de escritorio y móvil también pasó, incluidos los destinos del CTA y del enlace de xG, además de los flujos de juego, CSV y diseño móvil. Se generaron capturas para escritorio y móvil.
 - **Revisión visual:** inspeccionadas las cuatro capturas del CI #193 (pizarra e informe de partido en escritorio y móvil). Las fichas conservan sus datos sin desbordar el ancho del móvil; el informe compara ambos equipos y deja visible la descarga.
 - **Estado de la primera versión:** el alcance de juego web descrito arriba está implementado y supera sus controles automáticos. No queda una función de producto identificada como bloqueante; falta la aceptación manual de la experiencia.
 
