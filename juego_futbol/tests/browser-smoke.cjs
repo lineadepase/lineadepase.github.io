@@ -217,7 +217,7 @@ const fs = require('node:fs/promises');
       await page.locator('#pestana-mercado').click();
       assert.ok(await page.locator('#swipe-card').isVisible(), 'se presenta la tarjeta de ojeo');
       assert.deepEqual(await page.locator('#tbody-mercado').locator('xpath=ancestor::table').locator('thead th').allInnerTexts(),
-        ['Jugador', 'Pos', 'Rasgos', 'Precio', 'Salario/j', 'Acción'],
+        ['JUGADOR', 'POS', 'RASGOS', 'PRECIO', 'SALARIO/J', 'ACCIÓN'],
         'la tabla de mercado también expone los atributos paródicos en lugar de la media');
       const partidaAntesSwipe = await page.evaluate(() => JSON.parse(JSON.stringify(estadoJuego)));
       const swipeInicial = await page.locator('#swipe-name').innerText();
