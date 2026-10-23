@@ -80,6 +80,17 @@ const fs = require('node:fs/promises');
         'la base incluye las parodias solicitadas de los cuatro equipos');
       assert.equal(integridadPlantillas.control, 'Real Magras de Madrid');
       assert.equal(integridadPlantillas.panelActivo, 'tab-clasificacion', 'la vista inicial coincide con Despacho Míster');
+      const impactoAtributos = await page.evaluate(() => {
+        const jugador = obtenerMiEquipo().plantilla.find(j => !j.lesionado && j.atributos.CHI < 99);
+        const original = jugador.atributos.CHI;
+        const inicial = rendimientoReal(jugador);
+        jugador.atributos.CHI = 99;
+        const mejorado = rendimientoReal(jugador);
+        jugador.atributos.CHI = original;
+        return { inicial, mejorado };
+      });
+      assert.ok(impactoAtributos.mejorado > impactoAtributos.inicial,
+        'los atributos paródicos influyen en el rendimiento según la posición');
       await page.locator('#pestana-tactica').click();
       const anclajesMenu = await page.evaluate(() => {
         const nav = document.querySelector('nav[role="tablist"]');
