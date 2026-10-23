@@ -69,6 +69,14 @@ const fs = require('node:fs/promises');
       ]);
       assert.ok(integridadPlantillas.tamaños.every(n => n >= 14), 'cada club tiene fondo de plantilla para rotar');
       assert.equal(integridadPlantillas.consistencia, true, 'cada jugador declara caricatura IA y cinco atributos paródicos');
+      const nombresImprescindibles = [
+        'Kylian Embozado', 'Vini de la Cadiera', 'Jude el Campanero', 'Fede Chispazo', 'Thibaut el Muro',
+        'Lamine el Almendrón', 'Dani Pasapúes', 'Raphinha el Abentau', 'Gavi Rompetrastes',
+        'Pedri de la Acequia', 'Pau Tozudo', 'Julián la Araña Baturra', 'Alexander el Picador',
+        'Jan Cerrojo', 'Nico Remolino', 'Iñaki el Trillo', 'Oihan el Zagal'
+      ];
+      assert.ok(nombresImprescindibles.every(nombre => integridadPlantillas.jugadores.flat().includes(nombre)),
+        'la base incluye las parodias solicitadas de los cuatro equipos');
       assert.equal(integridadPlantillas.control, 'Real Magras de Madrid');
       const anclajesMenu = await page.evaluate(() => {
         const nav = document.querySelector('nav[role="tablist"]');
@@ -283,7 +291,7 @@ const fs = require('node:fs/promises');
         "Dani del Sendero", "Yuri Espino", "Marcos de la Lumbre", "Frenkie de la Ronda", "Johnny el Rastrojo"
       ], 'el mercado sale de los candidatos declarados en la base actual');
       assert.deepEqual(plantillasFicticias.perfilesRivales, [
-        ['4-3-3', 'Defensivo'], ['4-3-3', 'Ofensivo'], ['4-3-3', 'Equilibrado']
+        ['4-3-3', 'Ofensivo'], ['4-3-3', 'Defensivo'], ['4-3-3', 'Equilibrado']
       ], 'los rivales deben presentar perfiles tácticos diferenciados');
       const perfilProximoRival = await page.evaluate(() => {
         const miEquipo = obtenerMiEquipo();
