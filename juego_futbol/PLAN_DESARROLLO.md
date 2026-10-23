@@ -57,15 +57,15 @@ La primera versión es un juego web local de gestión para una liga inventada de
 ### Estado del código
 
 - **Implementado:** el alcance anterior, con interfaz adaptable, controles de teclado, guardados validados y pruebas de motor y navegador.
-- **Verificación automatizada:** CI #191, commit `00ddb94254baafe277d77504827900739b1706b5`: pruebas de Python y recorridos Playwright en Chromium de escritorio y móvil correctos; artefacto de capturas generado.
-- **Cambios de esta revisión:** fichas móviles para la plantilla y el balance, además de capturas de la pizarra inicial y el informe posterior al partido. El nuevo CI debe confirmarlos.
+- **Verificación automatizada:** CI #193, commit `8282acee341b028afbf199c2ee39f914a2931aa1`: compilación y 11 pruebas de Python correctas; Playwright en Chromium de escritorio y móvil también pasó, incluidos CSV, anchura de las fichas y las métricas móviles.
+- **Revisión visual:** inspeccionadas las cuatro capturas del CI #193 (pizarra e informe de partido en escritorio y móvil). Las fichas conservan sus datos sin desbordar el ancho del móvil; el informe compara ambos equipos y deja visible la descarga.
+- **Estado de la primera versión:** el alcance de juego web descrito arriba está implementado y supera sus controles automáticos. No queda una función de producto identificada como bloqueante; falta la aceptación manual de la experiencia.
 
 ### Lo que falta para cerrar la primera versión
 
-1. Pasar el nuevo CI tras el ajuste de las fichas móviles y revisar las cuatro capturas (pizarra e informe, escritorio y móvil).
-2. Hacer una aceptación manual de una temporada completa en un ordenador y en un móvil real; el CI usa Chromium móvil emulado y no sustituye la comprobación en Safari de iPhone.
-3. Confirmar que el ritmo, los textos y el equilibrio de dificultad resultan claros y entretenidos en una partida real; solo entonces ajustar parámetros si hace falta.
-4. Mantener el PR como borrador hasta que Ángel dé por buena esa revisión. La integración con la web pública o la publicación requieren una decisión posterior y no forman parte del trabajo de este PR.
+1. Jugar una temporada completa en un ordenador y en un móvil real; el CI usa Chromium móvil emulado y no sustituye la comprobación en Safari de iPhone.
+2. Confirmar que el ritmo, los textos y el equilibrio de dificultad resultan claros y entretenidos en una partida real; ajustar únicamente lo que revele esa prueba.
+3. Mantener el PR como borrador hasta que Ángel dé por buena la experiencia. Integrar el juego en la web pública o publicarlo requiere una decisión posterior y queda fuera de este PR.
 
 ### Fuera del alcance de la primera versión
 
