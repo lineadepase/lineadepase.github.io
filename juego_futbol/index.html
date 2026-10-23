@@ -327,6 +327,7 @@
             line-height: 1.5;
         }
 
+        .match-summary { margin: 10px 0 0; padding: 10px 12px; border-left: 3px solid var(--accent-light); background: rgba(15, 23, 42, .65); border-radius: 4px; line-height: 1.5; font-weight: 700; }
         .log-goal { color: var(--gold); font-weight: bold; }
         .log-chance { color: var(--accent-light); }
         .log-injury { color: var(--red); }
@@ -487,6 +488,7 @@
             <div>
                 <h2 id="lbl-cartel-partido" style="font-size:1.3rem;">Jornada 1: FC Pase y Pifia vs Atlético Siestense</h2>
                 <p class="hint-box" id="lbl-sub-partido">El tamaño de cada círculo en el mapa equivale al xG de la ocasión.</p>
+                <p id="match-summary" class="match-summary" role="status" aria-live="polite">Al terminar, aparecerán el marcador, los remates y el xG del partido de FC Pase y Pifia.</p>
             </div>
             <button class="btn-success" style="font-size:1rem; padding:12px 22px;" onclick="simularJornada()">▶️ SIMULAR JORNADA EN VIVO</button>
         </div>
@@ -1907,6 +1909,7 @@ function simularJornada() {
 
     const logBox = document.getElementById('match-log');
     logBox.innerHTML = '';
+    document.getElementById('match-summary').textContent = 'Jornada en curso; el resumen aparecerá al terminar el partido de FC Pase y Pifia.';
     limpiarRepeticionesPartido();
     const canvasShot = document.getElementById('canvas-shotmap');
     const ctxShot = canvasShot.getContext('2d');
@@ -2210,6 +2213,9 @@ function simularPartidoIndividual(local, vis, esNuestro, logBox, ctxShot, w, h) 
     });
 
     if (esNuestro) {
+        const detalleFinal = `(Remates: ${rematesL} vs ${rematesV} · xG: ${xgL.toFixed(2)} vs ${xgV.toFixed(2)})`;
+        document.getElementById('match-summary').textContent =
+            `Último partido: ${local.nombre} ${gL} - ${gV} ${vis.nombre}. ${detalleFinal}`;
         if (eventosPartidoActual.length) {
             document.getElementById('replay-controls').innerHTML = '';
             eventosPartidoActual.forEach((evento, indice) => {
@@ -2225,7 +2231,7 @@ function simularPartidoIndividual(local, vis, esNuestro, logBox, ctxShot, w, h) 
         }
         logBox.innerHTML += `<hr style="border-color:#334155;margin:8px 0;">`;
         logBox.innerHTML += `<p><strong>🏁 FINAL: ${escaparHTML(local.nombre)} ${gL} - ${gV} ${escaparHTML(vis.nombre)}</strong> ` +
-            `(Remates: ${rematesL} vs ${rematesV} · xG: ${xgL.toFixed(2)} vs ${xgV.toFixed(2)})</p>`;
+            `${detalleFinal}</p>`;
         logBox.innerHTML += `<p class="log-info">💶 Taquilla local: +${taquilla.toLocaleString('es-ES')} €</p><br>`;
     } else {
         logBox.innerHTML += `<p class="log-info">• Otro partido: ${escaparHTML(local.nombre)} ${gL} - ${gV} ${escaparHTML(vis.nombre)} ` +

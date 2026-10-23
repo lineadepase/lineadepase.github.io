@@ -655,6 +655,8 @@ const fs = require('node:fs/promises');
           return {
             events: eventosPartidoActual.length,
             shots: [home.remates, away.remates],
+            summary: document.getElementById('match-summary').textContent,
+            summaryIsLive: document.getElementById('match-summary').getAttribute('aria-live'),
             controls: document.querySelectorAll('#replay-controls [data-replay-index]').length,
             logButtons: document.querySelectorAll('#match-log .replay-trigger').length,
             selected,
@@ -677,6 +679,9 @@ const fs = require('node:fs/promises');
       assert.ok(replayCheck.finalSummary.includes(`Remates: ${replayCheck.shots[0]} vs ${replayCheck.shots[1]}`) &&
         replayCheck.finalSummary.includes('xG:'),
         'la crónica final compara remates y xG con los contadores del motor');
+      assert.ok(replayCheck.summary.includes(`Remates: ${replayCheck.shots[0]} vs ${replayCheck.shots[1]}`) &&
+        replayCheck.summary.includes('xG:') && replayCheck.summaryIsLive === 'polite',
+        'el resumen visual y accesible comunica el resultado, remates y xG');
       assert.equal(replayCheck.controls, replayCheck.events, 'cada ocasión tiene control para repetirla');
       assert.equal(replayCheck.logButtons, replayCheck.events, 'la crónica enlaza cada remate a su repetición');
       assert.equal(replayCheck.selected, true);
