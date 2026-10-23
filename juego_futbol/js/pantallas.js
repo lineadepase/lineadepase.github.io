@@ -194,7 +194,8 @@
     window.addEventListener('resize',requestLayout); new ResizeObserver(requestLayout).observe(document.querySelector('main'));
     showSection('clasificacion');
     // Si ya se cerró la introducción, el despacho es el punto de entrada.
-    if($('primeros-pasos').hidden) selectView(1);
+    if($('centro-control')) window.abrirPantallaJuego('centro-control');
+    else if($('primeros-pasos').hidden) selectView(1);
   }
   initialize();
 })();

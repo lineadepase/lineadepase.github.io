@@ -46,6 +46,7 @@ jobs:
           node juego_futbol/tests/screens.cjs
           node juego_futbol/tests/club-browser.cjs
           node juego_futbol/tests/universo-liga.cjs
+          node juego_futbol/tests/centro-control.cjs
       - name: Adjuntar capturas de escritorio y móvil
         if: always()
         uses: actions/upload-artifact@v4
