@@ -1170,8 +1170,8 @@
         },
         {
           "id": "dani-mojon",
-          "nombre": "Dani el Mojón",
-          "jugador_real": "Dani Vivian",
+          "nombre": "Aitor del Mojón",
+          "jugador_real": "Aitor Paredes",
           "posicion": "DEF",
           "valoracion_juego": 89,
           "atributos": {
@@ -1185,10 +1185,10 @@
           "clausula": "El área, bien delimitada; el balón, lejos de la portería.",
           "salario": 14240,
           "valor": 3115000,
-          "avatar_ia": "assets/ia/avatares/dani-mojon.webp",
+          "avatar_ia": "assets/ia/avatares/aitor-mojon.webp",
           "reacciones_ia": {
-            "match": "assets/ia/reacciones/dani-mojon-match.mp4",
-            "rechazo": "assets/ia/reacciones/dani-mojon-rechazo.mp4"
+            "match": "assets/ia/reacciones/aitor-mojon-match.mp4",
+            "rechazo": "assets/ia/reacciones/aitor-mojon-rechazo.mp4"
           },
           "tags": [
             "colocación",
@@ -1198,8 +1198,8 @@
         },
         {
           "id": "oier-ribera",
-          "nombre": "Oier de la Ribera",
-          "jugador_real": "Oier Zarraga",
+          "nombre": "Iñigo de la Ribera",
+          "jugador_real": "Iñigo Ruiz de Galarreta",
           "posicion": "CEN",
           "valoracion_juego": 86,
           "atributos": {
@@ -1213,10 +1213,10 @@
           "clausula": "Pide una salida limpia, sin atascar la acequia.",
           "salario": 13760,
           "valor": 3010000,
-          "avatar_ia": "assets/ia/avatares/oier-ribera.webp",
+          "avatar_ia": "assets/ia/avatares/inigo-ribera.webp",
           "reacciones_ia": {
-            "match": "assets/ia/reacciones/oier-ribera-match.mp4",
-            "rechazo": "assets/ia/reacciones/oier-ribera-rechazo.mp4"
+            "match": "assets/ia/reacciones/inigo-ribera-match.mp4",
+            "rechazo": "assets/ia/reacciones/inigo-ribera-rechazo.mp4"
           },
           "tags": [
             "pase",
