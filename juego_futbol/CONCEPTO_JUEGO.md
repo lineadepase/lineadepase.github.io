@@ -6,8 +6,8 @@ El usuario dirige un club de barrio disparatado y aprende a tomar decisiones de 
 
 ## Identidad y nombres
 
-- **Modo base:** clubes y jugadores inventados, con nombres humorísticos y personalidad propia. No se usan plantillas reales, escudos ajenos ni alias que identifiquen a futbolistas concretos.
-- **Inspiración futbolística:** las mecánicas pueden representar situaciones observadas en fútbol masculino y femenino sin copiar identidades ni afirmar que la plantilla corresponde a una competición real.
+- **Modo base:** cuatro clubes paródicos y alias humorísticos basados en integrantes de las plantillas 2026/27 indicadas en el JSON. Los nombres reales solo sirven para identificar el futbolista representado; la edad de carrera, cumpleaños, atributos, salarios, resultados y xG son datos inventados del juego.
+- **Identidad visual:** no se muestran escudos ni fotografías oficiales. Los retratos son avatares vectoriales originales y no buscan imitar el aspecto de una persona real.
 - **Referencia editorial:** el seguimiento analítico de clubes como el Real Zaragoza se mantiene separado de las plantillas jugables. Si se quiere mostrar nombres, símbolos, datos protegidos o marcas de una competición como La Liga F, se revisarán los permisos, la fuente y la atribución antes de activar esa integración.
 - **Paquete autorizado futuro:** una opción de contenido con identidades reales solo se habilitaría si se han autorizado por escrito los nombres, escudos, fotografías, datos y demás materiales incluidos en su alcance.
 
@@ -15,7 +15,7 @@ El usuario dirige un club de barrio disparatado y aprende a tomar decisiones de 
 
 Estética de **pizarra de entrenador convertida en sala de análisis**: fondo azul noche, paneles azul pizarra, acentos celestes y un verde de césped reservado para el campo. Los datos importantes usan tipografía grande, contraste alto y etiquetas cortas; en móvil, los paneles pasan a una sola columna y las decisiones a botones táctiles apilados.
 
-Los retratos de plantilla, goleadores y mercado se muestran como avatares vectoriales originales de estilo arcade: formas planas, rasgos expresivos y variaciones deterministas de pelo, tono de piel, gafas, barba y camiseta. No son fotos, no se basan en futbolistas reales ni pretenden representar una plantilla oficial. La misma persona ficticia conserva su avatar entre recargas, sin descargar imágenes externas.
+Los retratos de plantilla, goleadores y mercado se muestran como avatares vectoriales originales de estilo arcade: formas planas, rasgos expresivos y variaciones deterministas de pelo, tono de piel, gafas, barba y camiseta. No son fotos ni pretenden reproducir el aspecto de la persona nombrada. La misma carta conserva su avatar entre recargas, sin descargar imágenes externas.
 
 ## Partido y lenguaje de datos
 
@@ -40,5 +40,5 @@ Cada ejercicio tendrá varias soluciones plausibles; la puntuación explicará e
 
 - Añadir un minijuego por vez, con pruebas de teclado, táctil, guardado y accesibilidad.
 - Evitar nuevos datos o imágenes de terceros hasta conocer la licencia y su alcance.
-- Mantener una liga ficticia de cuatro equipos hasta que el calendario, los desempates y los premios tengan cobertura de pruebas para formatos mayores.
+- Mantener la competición en cuatro equipos hasta ampliar el calendario, los desempates, las plantillas y los premios con pruebas para formatos mayores.
 - Conservar exportación/importación y tolerancia a partidas antiguas cuando se añadan campos opcionales al guardado.

@@ -9,7 +9,7 @@
 
 ## Lo que incluye la versión web
 
-- Liga ficticia de cuatro equipos, calendario de ida y vuelta y clasificación con desempates.
+- Liga paródica de cuatro clubes basada en plantillas de Primera 2026/27, con calendario de ida y vuelta y clasificación con desempates. Los alias y rasgos son humorísticos; las edades de carrera, cumpleaños y atributos son ficticios.
 - Tres formaciones, tres estilos, selección automática y rotación manual.
 - Rotación manual accesible: cada jugador apto tiene un control de selección operable con teclado, informa si está seleccionado y explica por qué una baja no se puede elegir.
 - Rotación asistida opcional para titulares con fatiga desde el 75 %: elige suplentes aptos menos fatigados de la misma posición y comunica cada cambio o la falta de relevo.
@@ -22,7 +22,7 @@
 - Descarga CSV del balance final, con cabeceras en castellano, separador de hoja de cálculo y codificación compatible con tildes; se habilita cuando termina el partido.
 - En móvil, la plantilla y el balance del partido se presentan en fichas compactas para consultar todos sus datos sin desplazamiento horizontal.
 - Avatares vectoriales originales, estables para cada nombre ficticio, en las tablas de plantilla, goleadores y mercado.
-- Mercado, venta de jugadores, preparación, premios y continuidad de temporada.
+- Mercado disponible en agosto y diciembre, venta de jugadores, preparación, premios y continuidad de temporada. El calendario avanza cuatro semanas al jugar; los cumpleaños de carrera suman un año y se conservan al guardar la partida.
 - Guía rápida desplegable para el primer uso, previa comparativa con fuerzas propias y del rival, cruces ataque-defensa, localía y estado físico de la plantilla para orientar rotaciones (sin presentar los valores como pronóstico), y botón de jornada que distingue entre jugar una fecha y pasar a la temporada siguiente.
 - Archivo local de hasta 20 temporadas cerradas, con partidos, puntos, goles, remates, xG a favor/en contra, diferencia entre goles y xG a favor, y máximos goleadores (incluye empates). Los datos estadísticos que no existían en un guardado antiguo se indican como no disponibles; las copias exportadas incluyen los resúmenes.
 - Renovación anual del mercado con cuatro perfiles de jugador, cobertura de posiciones y un límite de doce opciones.
@@ -32,12 +32,12 @@
 
 ## Reglas de presentación
 
-Todos los clubes y futbolistas del juego usan nombres ficticios con tono humorístico. La interfaz web utiliza un balón genérico y no incorpora escudos de clubes reales. Las valoraciones, resultados y xG pertenecen al simulador: el xG es una estimación didáctica por tipo de ocasión, no una métrica oficial ni calculada a partir de datos reales.
+Los clubes llevan nombres paródicos y los jugadores, alias humorísticos de integrantes de plantillas de Primera 2026/27 identificados en el JSON. No se incorporan escudos ni fotografías oficiales. Edades, cumpleaños, atributos, salarios, resultados y xG son inventados; el xG es una estimación didáctica del simulador, no una métrica oficial ni calculada con datos reales.
 
 ## Pruebas y limitaciones conocidas
 
 - Python: compilación y pruebas unitarias para calendario, integridad de temporada, mercado/guardado, xG y plantillas sin jugadores aptos.
-- Navegador: Playwright en Chromium para escritorio y móvil, preferencia de movimiento reducido, rotación manual con Enter y Espacio, relevo asistido de titulares fatigados y estado accesible de jugadores seleccionados o lesionados, tabla compacta móvil con todos los datos de plantilla, guía rápida, previa de rival y estado del botón al cerrar temporada, controles, persistencia, mercado, lesiones, calendario, premios, resumen accesible del partido con remates, ocasiones claras y xG, tabla comparativa completa y descarga CSV verificada, categorías legibles en la crónica y la ficha de repetición, archivo multitemporada con sus métricas y diferencia goles-xG, empates de goleadores, migración de resúmenes antiguos, importación/exportación y errores JavaScript. El workflow guarda capturas de la pizarra inicial y del informe de partido en escritorio y móvil.
+- Navegador: Playwright en Chromium para escritorio y móvil, preferencia de movimiento reducido, rotación manual con Enter y Espacio, relevo asistido de titulares fatigados y estado accesible de jugadores seleccionados o lesionados, edad visible, progresión real de fecha y cumpleaños, apertura estacional del mercado, calendario y temporadas, guía rápida, controles, persistencia, resumen accesible del partido, tabla comparativa y descarga CSV, repeticiones, archivo multitemporada, migración e importación/exportación. El workflow guarda capturas de la pizarra inicial y del informe de partido en escritorio y móvil.
 - La comprobación local requiere el ejecutable Chromium de Playwright; en este entorno no está instalado. El resultado definitivo de navegador debe confirmarse en GitHub Actions.
 - La simulación web es un prototipo jugable de cuatro equipos, no una base de datos de una competición real. El cliente Python no comparte todavía un único motor con la web ni constituye una app iOS/Android.
 
@@ -52,7 +52,7 @@ Todos los clubes y futbolistas del juego usan nombres ficticios con tono humorí
 
 ### Alcance incluido
 
-La primera versión es un juego web local de gestión para una liga inventada de cuatro equipos. Incluye el ciclo de temporada completo, gestión de plantilla y presupuesto, táctica y rotaciones, mercado, preparación, simulación de partidos, clasificación, métricas explicadas como simuladas, repetición esquemática, archivo de temporadas y guardado, reinicio e importación/exportación de partidas. No depende de clubes, jugadores ni estadísticas reales.
+La primera versión es un juego web local de gestión para cuatro clubes paródicos basados en integrantes de plantillas de Primera 2026/27. Incluye el ciclo de temporada completo, gestión de plantilla y presupuesto, táctica y rotaciones, mercado estacional, calendario, edades de carrera, preparación, simulación de partidos, clasificación, métricas simuladas, repetición esquemática, archivo de temporadas y guardado, reinicio e importación/exportación de partidas.
 
 ### Estado del código
 
@@ -70,7 +70,7 @@ La primera versión es un juego web local de gestión para una liga inventada de
 
 ### Fuera del alcance de la primera versión
 
-Aplicación nativa para iOS o Android, motor Python compartido con la web, guardado en la nube, juego multijugador, liga ampliada y datos o identidades reales. Se podrán valorar en versiones posteriores.
+Aplicación nativa para iOS o Android, motor Python compartido con la web, guardado en la nube, juego multijugador y ampliación a una liga más extensa. Se podrán valorar en versiones posteriores. Las identidades paródicas actuales son alias de futbolistas de Primera; no se muestran retratos ni escudos oficiales.
 
 ## Próxima ampliación de producto
 

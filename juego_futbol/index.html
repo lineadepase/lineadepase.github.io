@@ -294,6 +294,8 @@
             padding: 4px; border: 0; border-radius: 6px; background: transparent; color: inherit;
             font: inherit; text-align: left; cursor: pointer;
         }
+        .player-name-stack { display: grid; gap: 2px; }
+        .player-name-stack small { color: var(--text-muted); font-size: .72rem; }
         .player-select-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
         .player-select-btn:disabled { cursor: not-allowed; }
         .player-avatar { width: 34px; height: 34px; flex: 0 0 34px; display: block; border-radius: 50%; box-shadow: 0 0 0 1px #64748b; }
@@ -631,7 +633,7 @@ body{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
 
 <!-- Zona principal: táctica, partido, liga, mercado y laboratorio se muestran aquí. -->
 <main>
-    <p class="sim-disclaimer" role="note"><strong>Universo paródico:</strong> los alias representan a futbolistas inscritos en plantillas 2026/27. Los atributos, salarios, fichajes, resultados y xG son valores ficticios de juego, no estadísticas oficiales. El xG es una estimación didáctica del simulador. <a href="../proyectos/xg/index.html">Aprende qué mide el xG y cómo interpretarlo</a>.</p>
+    <p class="sim-disclaimer" role="note"><strong>Universo paródico:</strong> los alias representan a futbolistas inscritos en plantillas 2026/27. Los atributos, edades de carrera, cumpleaños, salarios, fichajes, resultados y xG son valores ficticios de juego, no estadísticas oficiales ni datos biográficos. El xG es una estimación didáctica del simulador. <a href="../proyectos/xg/index.html">Aprende qué mide el xG y cómo interpretarlo</a>.</p>
     <details id="guia-rapida" class="panel quick-guide">
         <summary>Cómo jugar · guía rápida</summary>
         <ol>
@@ -1236,7 +1238,7 @@ function crearEstadoInicial() {
     const crearJugador=(d,e)=>({
         jugador_id:d.id,nombre:d.nombre,jugador_real:d.jugador_real,equipo_origen:e.club_real,equipo_origen_parodia:e.nombre_parodico,
         posicion:d.posicion,media:d.valoracion_juego,atributos:{...d.atributos},rasgo:d.rasgo,clausula:d.clausula,
-        avatar_ia:d.avatar_ia,reacciones_ia:{...d.reacciones_ia},moral:85,cansancio:0,precio:d.valor,salario:d.salario,
+        avatar_ia:d.avatar_ia,reacciones_ia:{...d.reacciones_ia},edad:d.edad_carrera,cumpleanos:d.cumpleanos,moral:85,cansancio:0,precio:d.valor,salario:d.salario,
         goles:0,xg:0.0,lesionado:0,titular:false
     });
     const perfiles=[{presupuesto:9500000,aforo:81000,estilo:'Equilibrado'},{presupuesto:8200000,aforo:55000,estilo:'Ofensivo'},{presupuesto:8800000,aforo:69000,estilo:'Defensivo'},{presupuesto:7600000,aforo:53000,estilo:'Equilibrado'}];
@@ -1300,6 +1302,36 @@ function calendarioValido(calendario, equipos) {
     return enfrentamientos.size === 12 && ida.size === 6 && vuelta.size === 6 &&
         nombres.every(a => nombres.every(b => a === b || enfrentamientos.has(a + '|' + b)));
 }
+
+/** Compruebo que el cumpleaños de carrera use una fecha real del calendario. */
+function cumpleanosValido(valor) {
+    if (typeof valor !== 'string' || !/^\d{2}-\d{2}$/.test(valor)) return false;
+    const [mes, dia] = valor.split('-').map(Number);
+    const fecha = new Date(Date.UTC(2024, mes - 1, dia));
+    return fecha.getUTCMonth() === mes - 1 && fecha.getUTCDate() === dia;
+}
+
+/** Aplico los cumpleaños que caen entre dos fechas, contando el día final y no el inicial. */
+function procesarCumpleanosEnRango(desde, hasta, equipos = estadoJuego?.equipos || [], mercado = estadoJuego?.mercado || []) {
+    if (!desde || !hasta) return 0;
+    const inicio = Date.UTC(desde.year, desde.month - 1, desde.day);
+    const fin = Date.UTC(hasta.year, hasta.month - 1, hasta.day);
+    if (!Number.isFinite(inicio) || !Number.isFinite(fin) || fin < inicio) return 0;
+    const futbolistas = [...equipos.flatMap(eq => eq.plantilla || []), ...mercado];
+    let cumplidos = 0;
+    for (let instante = inicio + 86400000; instante <= fin; instante += 86400000) {
+        const fecha = new Date(instante);
+        const clave = `${String(fecha.getUTCMonth() + 1).padStart(2, '0')}-${String(fecha.getUTCDate()).padStart(2, '0')}`;
+        for (const jugador of futbolistas) {
+            if (jugador.cumpleanos === clave && Number.isInteger(jugador.edad) && jugador.edad < 45) {
+                jugador.edad += 1;
+                cumplidos += 1;
+            }
+        }
+    }
+    return cumplidos;
+}
+window.ldpProcesarCumpleanos = procesarCumpleanosEnRango;
 
 /**
  * Valido los contadores globales y por ejercicio. Además de comprobar tipos y rangos, verifico que los totales coincidan con la suma de pase, presión, espacio y finalización.
@@ -1376,8 +1408,23 @@ function normalizarEstadoPartida(estado) {
         });
     }
     if (estado && Array.isArray(estado.equipos)) {
+        const basePorId = new Map(jugadoresBaseActuales().map(j => [j.id, j]));
         estado.equipos.forEach(eq => {
             if (eq && eq.remates === undefined) eq.remates = 0;
+            if (eq && Array.isArray(eq.plantilla)) eq.plantilla.forEach(j => {
+                const base = basePorId.get(j?.jugador_id);
+                if (base && (!Number.isInteger(j.edad) || !cumpleanosValido(j.cumpleanos))) {
+                    j.edad = base.edad_carrera;
+                    j.cumpleanos = base.cumpleanos;
+                }
+            });
+        });
+        if (Array.isArray(estado.mercado)) estado.mercado.forEach(j => {
+            const base = basePorId.get(j?.jugador_id);
+            if (base && (!Number.isInteger(j.edad) || !cumpleanosValido(j.cumpleanos))) {
+                j.edad = base.edad_carrera;
+                j.cumpleanos = base.cumpleanos;
+            }
         });
     }
     return estado;
@@ -1397,7 +1444,7 @@ function estadoPartidaValido(estado) {
                 ['puntos', 'pj', 'gf', 'gc', 'remates', 'xgf', 'xgc'].every(k => Number.isFinite(eq[k]) && eq[k] >= 0) &&
                 Number.isInteger(eq.remates) &&
                 Array.isArray(eq.plantilla) && eq.plantilla.length >= 11 && eq.plantilla.length <= 50 &&
-                eq.plantilla.every(j => j && nombreGuardadoValido(j.nombre) && jugadoresBaseActuales().some(b=>b.id===j.jugador_id) && j.atributos && ['RAS','TOZ','CHI','RET','ALM'].every(c=>Number.isFinite(j.atributos[c])&&j.atributos[c]>=0&&j.atributos[c]<=100) && typeof j.avatar_ia==='string' && ['POR','DEF','CEN','DEL'].includes(j.posicion) &&
+                eq.plantilla.every(j => j && nombreGuardadoValido(j.nombre) && jugadoresBaseActuales().some(b=>b.id===j.jugador_id) && Number.isInteger(j.edad) && j.edad >= 16 && j.edad <= 45 && cumpleanosValido(j.cumpleanos) && j.atributos && ['RAS','TOZ','CHI','RET','ALM'].every(c=>Number.isFinite(j.atributos[c])&&j.atributos[c]>=0&&j.atributos[c]<=100) && typeof j.avatar_ia==='string' && ['POR','DEF','CEN','DEL'].includes(j.posicion) &&
                     Number.isFinite(j.media) && j.media > 0 && j.media <= 100 &&
                     Number.isFinite(j.cansancio) && j.cansancio >= 0 && j.cansancio <= 100 &&
                     Number.isFinite(j.moral) && j.moral >= 0 && j.moral <= 100 &&
@@ -1407,7 +1454,7 @@ function estadoPartidaValido(estado) {
                     Number.isFinite(j.xg) && j.xg >= 0 &&
                     Number.isInteger(j.goles) && j.goles >= 0 && typeof j.titular === 'boolean')) &&
             Array.isArray(estado.mercado) && estado.mercado.length <= 100 &&
-            estado.mercado.every(j => j && nombreGuardadoValido(j.nombre) && jugadoresBaseActuales().some(b=>b.id===j.jugador_id) && j.atributos && ['RAS','TOZ','CHI','RET','ALM'].every(c=>Number.isFinite(j.atributos[c])&&j.atributos[c]>=0&&j.atributos[c]<=100) && typeof j.avatar_ia==='string' && ['POR','DEF','CEN','DEL'].includes(j.posicion) &&
+            estado.mercado.every(j => j && nombreGuardadoValido(j.nombre) && jugadoresBaseActuales().some(b=>b.id===j.jugador_id) && Number.isInteger(j.edad) && j.edad >= 16 && j.edad <= 45 && cumpleanosValido(j.cumpleanos) && j.atributos && ['RAS','TOZ','CHI','RET','ALM'].every(c=>Number.isFinite(j.atributos[c])&&j.atributos[c]>=0&&j.atributos[c]<=100) && typeof j.avatar_ia==='string' && ['POR','DEF','CEN','DEL'].includes(j.posicion) &&
                 Number.isFinite(j.media) && j.media > 0 && j.media <= 100 &&
                 Number.isFinite(j.precio) && j.precio >= 0 &&
                 Number.isFinite(j.salario) && j.salario >= 0 &&
@@ -1543,7 +1590,7 @@ function actualizarUI() {
             <td class="left" data-label="Jugador"><button type="button" class="player-select-btn" data-player-index="${idx}"
                 aria-label="Seleccionar ${escaparHTML(j.nombre)} (${j.titular ? 'titular' : 'suplente'}) para la rotación"
                 aria-pressed="${idx === jugadorSeleccionadoIdx}" ${j.lesionado > 0 ? 'disabled title="Jugador lesionado"' : ''}
-                onclick="clicarJugadorPlantilla(${idx})">${avatarJugadorHTML(j.nombre, j.posicion)}<strong>${escaparHTML(j.nombre)}</strong></button></td>
+                onclick="clicarJugadorPlantilla(${idx})">${avatarJugadorHTML(j.nombre, j.posicion)}<span class="player-name-stack"><strong>${escaparHTML(j.nombre)}</strong><small>Edad de carrera: ${j.edad}</small></span></button></td>
             <td data-label="Determinación">${j.atributos.RAS}</td><td data-label="Físico">${j.atributos.TOZ}</td><td data-label="Regate">${j.atributos.CHI}</td><td data-label="Juego">${j.atributos.RET}</td><td data-label="Resistencia">${j.atributos.ALM}</td>
             <td data-label="Cans">${j.cansancio}%</td>
             <td data-label="Goles">${j.goles}</td>
@@ -2814,7 +2861,7 @@ function renovarMercadoTemporada() {
  }
  const nuevos=seleccionados.map(({jugador:j,equipo:eq})=>({
   jugador_id:j.id,nombre:j.nombre,jugador_real:j.jugador_real,equipo_origen:eq.club_real,equipo_origen_parodia:eq.nombre_parodico,
-  posicion:j.posicion,media:j.valoracion_juego,atributos:{...j.atributos},rasgo:j.rasgo,clausula:j.clausula,
+  posicion:j.posicion,media:j.valoracion_juego,atributos:{...j.atributos},edad:j.edad_carrera,cumpleanos:j.cumpleanos,rasgo:j.rasgo,clausula:j.clausula,
   avatar_ia:j.avatar_ia,reacciones_ia:{...j.reacciones_ia},moral:82,cansancio:0,precio:j.valor,salario:j.salario,goles:0,xg:0,lesionado:0,titular:false
  }));
  estadoJuego.mercado.push(...nuevos);estadoJuego.mercado=estadoJuego.mercado.slice(0,12);
@@ -2851,8 +2898,10 @@ function iniciarNuevaTemporada() {
     estadoJuego.historialTemporadas = [...(estadoJuego.historialTemporadas || []), archivoTemporada].slice(-20);
     estadoJuego.temporada++;
     estadoJuego.jornadaActual = 0;
-    const fechaBase=estadoJuego.fechaActual||{year:2026,month:8};
-    estadoJuego.fechaActual={year:fechaBase.year+(fechaBase.month>=8?1:0),month:8,day:1};
+    const fechaBase=estadoJuego.fechaActual||{year:2026,month:8,day:1};
+    const fechaSiguiente={year:fechaBase.year+(fechaBase.month>=8?1:0),month:8,day:1};
+    procesarCumpleanosEnRango(fechaBase,fechaSiguiente);
+    estadoJuego.fechaActual=fechaSiguiente;
     estadoJuego.ventanaMercadoAbierta=true;
     estadoJuego.preparacionUsada = false;
     estadoJuego.equipos.forEach(eq => {
@@ -2989,7 +3038,7 @@ function renderFichaSwipe() {
  if(retrato){retrato.dataset.portraitId=id;const ruta=String(jugador.avatar_ia||'');retrato.innerHTML='<img class="swipe-portrait-img" data-src="'+escaparHTML(ruta)+'" alt="Caricatura de '+escaparHTML(nombre)+'"><div class="portrait-fallback">'+avatarJugadorHTML(nombre,jugador.posicion)+'<small>Retrato de vestuario · '+escaparHTML(id)+'</small></div>';const img=retrato.querySelector('img'),fallback=retrato.querySelector('.portrait-fallback');if(ruta)fetch(ruta,{method:'HEAD'}).then(r=>{if(r.ok){img.src=ruta;img.onload=()=>fallback.hidden=true;}}).catch(()=>{});}
  document.getElementById('swipe-name').textContent=nombre+' · '+jugador.posicion;
  document.getElementById('swipe-club').textContent='Plantilla: '+(jugador.equipo_origen_parodia||jugador.equipo_origen||'Primera División')+' · '+(jugador.jugador_real||'futbolista 2026/27');
- const attrs=atributosParodicos(jugador);document.getElementById('swipe-stats').innerHTML=attrs.map(a=>'<span class="attribute-pill" title="'+escaparHTML(a[2])+'"><small>'+a[0]+'</small><b>'+a[1]+'</b></span>').join('')+'<span class="swipe-stat">💶 '+Number(jugador.precio).toLocaleString('es-ES')+' €</span><span class="swipe-stat">🪙 '+Number(jugador.salario).toLocaleString('es-ES')+' €/j</span>';
+ const attrs=atributosParodicos(jugador);document.getElementById('swipe-stats').innerHTML=attrs.map(a=>'<span class="attribute-pill" title="'+escaparHTML(a[2])+'"><small>'+a[0]+'</small><b>'+a[1]+'</b></span>').join('')+'<span class="swipe-stat">🎂 '+Number(jugador.edad)+' años · carrera</span><span class="swipe-stat">💶 '+Number(jugador.precio).toLocaleString('es-ES')+' €</span><span class="swipe-stat">🪙 '+Number(jugador.salario).toLocaleString('es-ES')+' €/j</span>';
  document.getElementById('swipe-clause').textContent='«'+String(jugador.clausula||jugador.rasgo||'Cláusula por negociar con calma.')+'»';
  const valido=club&&club.presupuesto>=jugador.precio&&club.plantilla.length<MAX_PLANTILLA,match=document.getElementById('swipe-match');match.disabled=!valido;match.title=valido?'Iniciar oferta y cerrar el fichaje':(club&&club.plantilla.length>=MAX_PLANTILLA?'Plantilla completa':'Presupuesto insuficiente');card.dataset.index='0';
 }

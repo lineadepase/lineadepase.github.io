@@ -85,7 +85,8 @@ async function recargarPartida(page) {
         jugadores: PLANTILLAS_DB.equipos.map(e => e.jugadores.map(j => j.nombre)),
         consistencia: PLANTILLAS_DB.equipos.every(e => e.jugadores.every(j =>
           j.avatar_ia && j.avatar_ia.includes('assets/ia/avatares/') &&
-          ['RAS','TOZ','CHI','RET','ALM'].every(k => Number.isInteger(j.atributos[k])))),
+          ['RAS','TOZ','CHI','RET','ALM'].every(k => Number.isInteger(j.atributos[k])) &&
+          Number.isInteger(j.edad_carrera) && /^\d{2}-\d{2}$/.test(j.cumpleanos))),
         control: obtenerMiEquipo().nombre,
         panelActivo: document.querySelector('[role="tabpanel"][aria-hidden="false"]')?.id
       }));
@@ -96,6 +97,15 @@ async function recargarPartida(page) {
       ]);
       assert.ok(integridadPlantillas.tamaños.every(n => n >= 14), 'cada club tiene fondo de plantilla para rotar');
       assert.equal(integridadPlantillas.consistencia, true, 'cada jugador declara caricatura IA y cinco atributos paródicos');
+      const progresionCumple = await page.evaluate(() => {
+        const jugador = { edad: 26, cumpleanos: '08-02' };
+        const procesados = window.ldpProcesarCumpleanos(
+          { year: 2026, month: 8, day: 1 }, { year: 2027, month: 8, day: 1 },
+          [{ plantilla: [jugador] }], []);
+        return { edad: jugador.edad, procesados };
+      });
+      assert.deepEqual(progresionCumple, { edad: 27, procesados: 1 },
+        'la edad de carrera sube una vez al cruzar el cumpleaños aunque el calendario abarque varias temporadas');
       const nombresImprescindibles = [
         'Kylian Embozado', 'Vini de la Cadiera', 'Jude el Campanero', 'Fede Chispazo', 'Thibaut el Muro',
         'Lamine el Almendrón', 'Dani Pasapúes', 'Raphinha el Abentau', 'Gavi Rompetrastes',
@@ -305,12 +315,13 @@ async function recargarPartida(page) {
         caricatura: document.getElementById('swipe-portrait').dataset.portraitId,
         clausula: document.getElementById('swipe-clause').textContent,
         datosEconomicos: [...document.querySelectorAll('#swipe-stats .swipe-stat')].length,
+        edadVisible: [...document.querySelectorAll('#swipe-stats .swipe-stat')].some(e => /\d+ años · carrera/.test(e.textContent)),
         atributos: document.querySelectorAll('#swipe-stats .attribute-pill').length,
         codigos: [...document.querySelectorAll('#swipe-stats .attribute-pill small')].map(e=>e.textContent)
       }));
       assert.match(ficha.caricatura, /^caricatura-/);
-      assert.ok(ficha.clausula.length>20 && ficha.datosEconomicos===2,
-        'la ficha muestra cláusula, precio y salario junto al placeholder de ilustración');
+      assert.ok(ficha.clausula.length>20 && ficha.datosEconomicos===3 && ficha.edadVisible,
+        'la ficha muestra cláusula, edad de carrera, precio y salario junto al placeholder de ilustración');
       assert.equal(ficha.atributos, 5, 'la carta ofrece los cinco atributos humorísticos');
       assert.deepEqual(ficha.codigos, ['Determinación','Potencia','Regate','Pase','Resistencia']);
       const equiposParodicos = await page.evaluate(() => window.DATOS_ARAGONESES.equipos);
@@ -1138,6 +1149,13 @@ async function recargarPartida(page) {
       assert.equal(replayCheck.originalStatsUnchanged, true,
         'la prueba de repetición usa datos aislados y no altera la partida activa');
       await page.evaluate(() => { window.__disableRandomVAR = true; });
+      const calendarioPartidoAntes = await page.evaluate(() => {
+        const jugador = obtenerMiEquipo().plantilla[0];
+        const hoy = estadoJuego.fechaActual;
+        const cumple = new Date(Date.UTC(hoy.year, hoy.month - 1, hoy.day + 5));
+        jugador.cumpleanos = `${String(cumple.getUTCMonth() + 1).padStart(2, '0')}-${String(cumple.getUTCDate()).padStart(2, '0')}`;
+        return { fecha: Date.UTC(hoy.year, hoy.month - 1, hoy.day), edad: jugador.edad };
+      });
       await page.evaluate(() => { window.__testMatchSpeed = 50; });
       await page.locator('button').filter({ hasText: 'SIMULAR JORNADA' }).click();
       await page.locator('[data-power="cierzo"]').click();
@@ -1165,6 +1183,14 @@ async function recargarPartida(page) {
         'presionar al árbitro puede influir en el VAR y comunica la decisión');
       await page.waitForFunction(() => estadoJuego.jornadaActual === 1 &&
         document.getElementById('event-backdrop').classList.contains('open'), null, { timeout: 30000 });
+      const calendarioPartidoDespues = await page.evaluate(() => ({
+        fecha: Date.UTC(estadoJuego.fechaActual.year, estadoJuego.fechaActual.month - 1, estadoJuego.fechaActual.day),
+        edad: obtenerMiEquipo().plantilla[0].edad
+      }));
+      assert.equal(calendarioPartidoDespues.fecha - calendarioPartidoAntes.fecha, 28 * 86400000,
+        'cada partido desplaza cuatro semanas el calendario visible');
+      assert.equal(calendarioPartidoDespues.edad, calendarioPartidoAntes.edad + 1,
+        'el flujo real del partido celebra los cumpleaños que caen entre jornadas');
       const eventoAntes = await page.evaluate(() => ({
         presupuesto: obtenerMiEquipo().presupuesto,
         moral: obtenerMiEquipo().plantilla[0].moral,

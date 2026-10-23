@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "temporada": "2026/27",
-  "notas": "Atributos y valoraciones son valores ficticios de balance del juego; nombres reales solo identifican al futbolista vigente representado.",
+  "notas": "Atributos y valoraciones son valores ficticios de balance del juego; nombres reales solo identifican al futbolista vigente representado. La edad de carrera y los cumpleaños son datos ficticios de balance; avanzan con el calendario del juego y no son datos biográficos oficiales.",
   "atributos": {
     "RAS": "Rasmia y empuje",
     "TOZ": "Tozudez y duelo físico",
@@ -44,7 +44,9 @@
             "rasmia",
             "centella",
             "cierzo"
-          ]
+          ],
+          "edad_carrera": 23,
+          "cumpleanos": "10-26"
         },
         {
           "id": "vini-cadiera",
@@ -72,7 +74,9 @@
             "chispa",
             "lumbre",
             "regate"
-          ]
+          ],
+          "edad_carrera": 29,
+          "cumpleanos": "10-16"
         },
         {
           "id": "jude-campanero",
@@ -100,7 +104,9 @@
             "despliegue",
             "campanas",
             "llegada"
-          ]
+          ],
+          "edad_carrera": 25,
+          "cumpleanos": "03-11"
         },
         {
           "id": "fede-chispazo",
@@ -128,7 +134,9 @@
             "trallazo",
             "rasmia",
             "motor"
-          ]
+          ],
+          "edad_carrera": 34,
+          "cumpleanos": "09-17"
         },
         {
           "id": "thibaut-muro",
@@ -156,7 +164,9 @@
             "reflejos",
             "altura",
             "seguridad"
-          ]
+          ],
+          "edad_carrera": 32,
+          "cumpleanos": "04-14"
         },
         {
           "id": "eduardo-cierzo",
@@ -184,7 +194,9 @@
             "polivalencia",
             "cambio ritmo",
             "fondo"
-          ]
+          ],
+          "edad_carrera": 22,
+          "cumpleanos": "12-19"
         },
         {
           "id": "aurélien-tozal",
@@ -212,7 +224,9 @@
             "orden",
             "duelo",
             "pausa"
-          ]
+          ],
+          "edad_carrera": 20,
+          "cumpleanos": "10-03"
         },
         {
           "id": "arda-rastrojo",
@@ -240,7 +254,9 @@
             "visión",
             "pase",
             "pillería"
-          ]
+          ],
+          "edad_carrera": 31,
+          "cumpleanos": "06-06"
         },
         {
           "id": "antonio-cierzo",
@@ -268,7 +284,9 @@
             "duelo",
             "mando",
             "presencia"
-          ]
+          ],
+          "edad_carrera": 26,
+          "cumpleanos": "07-02"
         },
         {
           "id": "trent-brujula",
@@ -296,7 +314,9 @@
             "centro",
             "visión",
             "precisión"
-          ]
+          ],
+          "edad_carrera": 32,
+          "cumpleanos": "01-13"
         },
         {
           "id": "dean-pedregal",
@@ -324,7 +344,9 @@
             "salida",
             "calma",
             "colocación"
-          ]
+          ],
+          "edad_carrera": 29,
+          "cumpleanos": "07-23"
         },
         {
           "id": "andriy-cierzo",
@@ -352,7 +374,9 @@
             "RAS",
             "TOZ",
             "CHI"
-          ]
+          ],
+          "edad_carrera": 27,
+          "cumpleanos": "08-20"
         },
         {
           "id": "ferland-soto",
@@ -380,7 +404,9 @@
             "RAS",
             "TOZ",
             "CHI"
-          ]
+          ],
+          "edad_carrera": 31,
+          "cumpleanos": "09-01"
         },
         {
           "id": "rodrygo-sarten",
@@ -408,7 +434,9 @@
             "RAS",
             "TOZ",
             "CHI"
-          ]
+          ],
+          "edad_carrera": 26,
+          "cumpleanos": "01-26"
         }
       ]
     },
@@ -446,7 +474,9 @@
             "regate",
             "descaro",
             "creatividad"
-          ]
+          ],
+          "edad_carrera": 30,
+          "cumpleanos": "11-28"
         },
         {
           "id": "dani-pasapues",
@@ -474,7 +504,9 @@
             "pillería",
             "llegada",
             "visión"
-          ]
+          ],
+          "edad_carrera": 22,
+          "cumpleanos": "12-18"
         },
         {
           "id": "raphinha-abentau",
@@ -502,7 +534,9 @@
             "presión",
             "velocidad",
             "centro"
-          ]
+          ],
+          "edad_carrera": 30,
+          "cumpleanos": "08-11"
         },
         {
           "id": "gavi-rompetrastes",
@@ -530,7 +564,9 @@
             "duelo",
             "presión",
             "rasmia"
-          ]
+          ],
+          "edad_carrera": 23,
+          "cumpleanos": "10-02"
         },
         {
           "id": "pedri-acequia",
@@ -558,7 +594,9 @@
             "visión",
             "pausa",
             "pase"
-          ]
+          ],
+          "edad_carrera": 23,
+          "cumpleanos": "04-24"
         },
         {
           "id": "pau-tozudo",
@@ -586,7 +624,9 @@
             "salida",
             "colocación",
             "calma"
-          ]
+          ],
+          "edad_carrera": 23,
+          "cumpleanos": "04-01"
         },
         {
           "id": "joan-cierzo",
@@ -614,7 +654,9 @@
             "reflejos",
             "juego pies",
             "anticipación"
-          ]
+          ],
+          "edad_carrera": 23,
+          "cumpleanos": "01-05"
         },
         {
           "id": "alejandro-acequia",
@@ -642,7 +684,9 @@
             "recorrido",
             "velocidad",
             "cobertura"
-          ]
+          ],
+          "edad_carrera": 20,
+          "cumpleanos": "01-28"
         },
         {
           "id": "jules-linde",
@@ -670,7 +714,9 @@
             "anticipación",
             "velocidad",
             "polivalencia"
-          ]
+          ],
+          "edad_carrera": 30,
+          "cumpleanos": "11-21"
         },
         {
           "id": "frenkie-ronda",
@@ -698,7 +744,9 @@
             "conducción",
             "pausa",
             "presión"
-          ]
+          ],
+          "edad_carrera": 27,
+          "cumpleanos": "05-14"
         },
         {
           "id": "gabriel-tizon",
@@ -726,7 +774,9 @@
             "presión",
             "área",
             "asociación"
-          ]
+          ],
+          "edad_carrera": 32,
+          "cumpleanos": "01-13"
         },
         {
           "id": "wojciech-fogón",
@@ -754,7 +804,9 @@
             "RAS",
             "TOZ",
             "CHI"
-          ]
+          ],
+          "edad_carrera": 27,
+          "cumpleanos": "05-21"
         },
         {
           "id": "joao-acequia",
@@ -782,7 +834,9 @@
             "RAS",
             "TOZ",
             "CHI"
-          ]
+          ],
+          "edad_carrera": 22,
+          "cumpleanos": "06-06"
         },
         {
           "id": "fermin-pedregal",
@@ -810,7 +864,9 @@
             "RAS",
             "TOZ",
             "CHI"
-          ]
+          ],
+          "edad_carrera": 25,
+          "cumpleanos": "03-03"
         }
       ]
     },
@@ -848,7 +904,9 @@
             "presión",
             "pillería",
             "remate"
-          ]
+          ],
+          "edad_carrera": 20,
+          "cumpleanos": "10-20"
         },
         {
           "id": "alexander-picador",
@@ -876,7 +934,9 @@
             "juego aéreo",
             "duelo",
             "remate"
-          ]
+          ],
+          "edad_carrera": 26,
+          "cumpleanos": "01-14"
         },
         {
           "id": "johnny-rastrojo",
@@ -904,7 +964,9 @@
             "recuperación",
             "fondo",
             "duelo"
-          ]
+          ],
+          "edad_carrera": 22,
+          "cumpleanos": "03-15"
         },
         {
           "id": "jan-cerrojo",
@@ -932,7 +994,9 @@
             "reflejos",
             "colocación",
             "mando"
-          ]
+          ],
+          "edad_carrera": 21,
+          "cumpleanos": "02-06"
         },
         {
           "id": "juan-musgo",
@@ -960,7 +1024,9 @@
             "reflejos",
             "salida",
             "concentración"
-          ]
+          ],
+          "edad_carrera": 31,
+          "cumpleanos": "03-07"
         },
         {
           "id": "david-hancko",
@@ -988,7 +1054,9 @@
             "anticipación",
             "duelo",
             "recorrido"
-          ]
+          ],
+          "edad_carrera": 21,
+          "cumpleanos": "08-27"
         },
         {
           "id": "robin-carrizo",
@@ -1016,7 +1084,9 @@
             "duelo",
             "juego aéreo",
             "orden"
-          ]
+          ],
+          "edad_carrera": 32,
+          "cumpleanos": "04-23"
         },
         {
           "id": "marc-pedregal",
@@ -1044,7 +1114,9 @@
             "potencia",
             "recorrido",
             "duelo"
-          ]
+          ],
+          "edad_carrera": 22,
+          "cumpleanos": "03-24"
         },
         {
           "id": "marcos-lumbre",
@@ -1072,7 +1144,9 @@
             "fondo",
             "velocidad",
             "remate"
-          ]
+          ],
+          "edad_carrera": 27,
+          "cumpleanos": "08-23"
         },
         {
           "id": "pablo-sendero",
@@ -1100,7 +1174,9 @@
             "conducción",
             "presión",
             "pase"
-          ]
+          ],
+          "edad_carrera": 27,
+          "cumpleanos": "11-25"
         },
         {
           "id": "adama-vendaval",
@@ -1128,7 +1204,9 @@
             "desborde",
             "velocidad",
             "definición"
-          ]
+          ],
+          "edad_carrera": 29,
+          "cumpleanos": "04-11"
         },
         {
           "id": "alejandro-carrizo",
@@ -1156,7 +1234,9 @@
             "recorrido",
             "centro",
             "precisión"
-          ]
+          ],
+          "edad_carrera": 21,
+          "cumpleanos": "08-17"
         },
         {
           "id": "koke-brasa",
@@ -1184,7 +1264,9 @@
             "RAS",
             "TOZ",
             "CHI"
-          ]
+          ],
+          "edad_carrera": 21,
+          "cumpleanos": "11-23"
         },
         {
           "id": "giuliano-senda",
@@ -1212,7 +1294,9 @@
             "RAS",
             "TOZ",
             "CHI"
-          ]
+          ],
+          "edad_carrera": 25,
+          "cumpleanos": "06-17"
         }
       ]
     },
@@ -1250,7 +1334,9 @@
             "velocidad",
             "desborde",
             "uno contra uno"
-          ]
+          ],
+          "edad_carrera": 26,
+          "cumpleanos": "07-20"
         },
         {
           "id": "inaki-trillo",
@@ -1278,7 +1364,9 @@
             "potencia",
             "fondo",
             "velocidad"
-          ]
+          ],
+          "edad_carrera": 28,
+          "cumpleanos": "09-11"
         },
         {
           "id": "oihan-zagal",
@@ -1306,7 +1394,9 @@
             "llegada",
             "remate",
             "pillería"
-          ]
+          ],
+          "edad_carrera": 21,
+          "cumpleanos": "05-13"
         },
         {
           "id": "unai-chopera",
@@ -1334,7 +1424,9 @@
             "reflejos",
             "mando",
             "juego pies"
-          ]
+          ],
+          "edad_carrera": 34,
+          "cumpleanos": "12-12"
         },
         {
           "id": "dani-sendero",
@@ -1362,7 +1454,9 @@
             "cruce",
             "velocidad",
             "duelo"
-          ]
+          ],
+          "edad_carrera": 22,
+          "cumpleanos": "03-01"
         },
         {
           "id": "aymeric-robledal",
@@ -1390,7 +1484,9 @@
             "salida",
             "anticipación",
             "pase"
-          ]
+          ],
+          "edad_carrera": 24,
+          "cumpleanos": "02-02"
         },
         {
           "id": "yuri-espino",
@@ -1418,7 +1514,9 @@
             "experiencia",
             "duelo",
             "recorrido"
-          ]
+          ],
+          "edad_carrera": 20,
+          "cumpleanos": "04-08"
         },
         {
           "id": "dani-mojon",
@@ -1446,7 +1544,9 @@
             "colocación",
             "duelo",
             "despeje"
-          ]
+          ],
+          "edad_carrera": 27,
+          "cumpleanos": "08-23"
         },
         {
           "id": "oier-ribera",
@@ -1474,7 +1574,9 @@
             "pase",
             "apoyo",
             "visión"
-          ]
+          ],
+          "edad_carrera": 29,
+          "cumpleanos": "01-23"
         },
         {
           "id": "benat-rasmia",
@@ -1502,7 +1604,9 @@
             "recuperación",
             "fondo",
             "presión"
-          ]
+          ],
+          "edad_carrera": 31,
+          "cumpleanos": "03-07"
         },
         {
           "id": "gorka-rastro",
@@ -1530,7 +1634,9 @@
             "desmarque",
             "remate",
             "asociación"
-          ]
+          ],
+          "edad_carrera": 20,
+          "cumpleanos": "10-25"
         },
         {
           "id": "alex-padilla",
@@ -1558,7 +1664,9 @@
             "RAS",
             "TOZ",
             "CHI"
-          ]
+          ],
+          "edad_carrera": 24,
+          "cumpleanos": "02-02"
         },
         {
           "id": "yeray-barranco",
@@ -1586,7 +1694,9 @@
             "RAS",
             "TOZ",
             "CHI"
-          ]
+          ],
+          "edad_carrera": 34,
+          "cumpleanos": "09-01"
         },
         {
           "id": "mikel-rastrojo",
@@ -1614,7 +1724,9 @@
             "RAS",
             "TOZ",
             "CHI"
-          ]
+          ],
+          "edad_carrera": 31,
+          "cumpleanos": "06-24"
         }
       ]
     }
