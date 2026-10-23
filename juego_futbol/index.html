@@ -1106,9 +1106,23 @@ let animacionRepeticionId = null;
  */
 function rendimientoReal(j) {
     if (j.lesionado > 0) return 0;
+    const pesosPorPosicion = {
+        POR: { RAS: .15, TOZ: .20, CHI: .10, RET: .20, ALM: .35 },
+        DEF: { RAS: .25, TOZ: .30, CHI: .15, RET: .10, ALM: .20 },
+        CEN: { RAS: .20, TOZ: .15, CHI: .25, RET: .20, ALM: .20 },
+        DEL: { RAS: .20, TOZ: .10, CHI: .35, RET: .20, ALM: .15 }
+    };
+    const pesos = pesosPorPosicion[j.posicion] || { RAS: .20, TOZ: .20, CHI: .20, RET: .20, ALM: .20 };
+    const codigos = Object.keys(pesos);
+    const tieneAtributos = j.atributos && codigos.every(codigo => Number.isFinite(j.atributos[codigo]));
+    const nivelParodico = tieneAtributos
+        ? codigos.reduce((suma, codigo) => suma + j.atributos[codigo] * pesos[codigo], 0)
+        : j.media;
+    const mediaBase = Number.isFinite(j.media) ? j.media : nivelParodico;
+    const nivel = tieneAtributos ? mediaBase * .45 + nivelParodico * .55 : mediaBase;
     const fCansancio = 1 - (j.cansancio / 200);
     const fMoral = j.moral / 100;
-    return Math.round(j.media * fCansancio * fMoral);
+    return Math.round(nivel * fCansancio * fMoral);
 }
 
 /**
