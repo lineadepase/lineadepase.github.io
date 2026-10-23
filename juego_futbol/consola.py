@@ -1,3 +1,4 @@
+"""Versión de consola del juego de gestión de fútbol. Conserva el flujo de menús y simulación de la primera implementación; el motor que pruebo automáticamente está en main.py y la versión web vive en index.html."""
 """Versión de consola del juego de gestión de fútbol (sin Pygame)."""
 import random
 import time
@@ -6,18 +7,21 @@ import os
 
 # --- 1. CONFIGURACIÓN TÁCTICA Y CLASES ---
 
+# Cada formación indica cuántos jugadores necesito por línea; todas suman once.
 FORMACIONES = {
     "4-4-2": {"POR": 1, "DEF": 4, "CEN": 4, "DEL": 2},
     "4-3-3": {"POR": 1, "DEF": 4, "CEN": 3, "DEL": 3},
     "5-3-2": {"POR": 1, "DEF": 5, "CEN": 3, "DEL": 2},
 }
 
+# Los multiplicadores convierten el estilo elegido en ataque, defensa y desgaste físico.
 ESTILOS = {
     "Ofensivo": {"ataque": 1.15, "defensa": 0.90, "desgaste": 1.2},
     "Equilibrado": {"ataque": 1.00, "defensa": 1.00, "desgaste": 1.0},
     "Defensivo": {"ataque": 0.85, "defensa": 1.15, "desgaste": 0.9},
 }
 
+# Mantengo nombres ficticios con humor y los separo por posición para formar plantillas legibles.
 NOMBRES_RIVALES = {
     "POR": ["Iker Guantes", "Marga Parapenaltis", "Paco Manoplas"],
     "DEF": ["Rafa Rechaces", "Blas Banderín", "Tino Tobillo", "Lola Cerrojazo", "Nico Nopuedo"],
@@ -27,8 +31,10 @@ NOMBRES_RIVALES = {
 
 
 class Jugador:
+    """Representa a un futbolista ficticio y reúne sus atributos deportivos, físicos y económicos."""
     def __init__(self, nombre, posicion, media, moral=80, cansancio=0, precio=2000000,
                  salario=15000, goles=0, xg_acumulado=0.0, lesionado=0):
+        """Creo el jugador con valores de partida; los parámetros opcionales permiten reconstruirlo desde un guardado."""
         self.nombre = nombre
         self.posicion = posicion  # POR, DEF, CEN, DEL
         self.media = media
@@ -41,6 +47,7 @@ class Jugador:
         self.lesionado = lesionado
 
     def rendimiento_real(self):
+        """Calculo el rendimiento disponible hoy: una lesión lo anula y la fatiga y la moral lo ajustan."""
         if self.lesionado > 0:
             return 0
         factor_cansancio = 1 - (self.cansancio / 200)
@@ -48,15 +55,19 @@ class Jugador:
         return int(self.media * factor_cansancio * factor_moral)
 
     def to_dict(self):
+        """Convierto el estado del jugador a un diccionario sencillo para guardarlo como JSON."""
         return dict(self.__dict__)
 
     @classmethod
     def from_dict(cls, data):
+        """Reconstruyo un jugador a partir de los datos previamente guardados."""
         return cls(**data)
 
 
 class Equipo:
+    """Agrupa plantilla, once, táctica, economía y estadísticas acumuladas de un club ficticio."""
     def __init__(self, nombre, presupuesto=12000000, formacion="4-4-2", estilo="Equilibrado", aforo=25000):
+        """Inicializo los datos del club y dejo listas vacías para jugadores y alineación."""
         self.nombre = nombre
         self.presupuesto = presupuesto
         self.aforo = aforo
@@ -72,12 +83,15 @@ class Equipo:
         self.partidos_jugados = 0
 
     def agregar_jugador(self, jugador):
+        """Añado un futbolista a la plantilla del equipo."""
         self.plantilla.append(jugador)
 
     def masa_salarial_jornada(self):
+        """Sumo los salarios de todos los jugadores para conocer el gasto de una jornada."""
         return sum(j.salario for j in self.plantilla)
 
     def convocar_once_automatico(self):
+        """Selecciono los mejores jugadores disponibles por posición y completo los puestos vacíos con el resto."""
         esquema = FORMACIONES[self.formacion]
         disponibles = [j for j in self.plantilla if j.lesionado == 0]
         titulares = []
@@ -98,6 +112,7 @@ class Equipo:
         self.alineacion_titular = titulares
 
     def calcular_fuerzas(self):
+        """Obtengo ataque y defensa a partir del once, su rendimiento actual y los multiplicadores del estilo."""
         if len(self.alineacion_titular) < 11 or any(j.lesionado > 0 for j in self.alineacion_titular):
             self.convocar_once_automatico()
         if not self.alineacion_titular:
@@ -108,6 +123,7 @@ class Equipo:
         return media_base * mod["ataque"], media_base * mod["defensa"]
 
     def reiniciar_estadisticas_liga(self):
+        """Borro los datos que pertenecen a la competición anterior y recupero a la plantilla para empezar otra temporada."""
         self.puntos = 0
         self.goles_a_favor = 0
         self.goles_en_contra = 0
@@ -121,6 +137,7 @@ class Equipo:
             j.lesionado = 0
 
     def to_dict(self):
+        """Serializo el equipo, su plantilla y los nombres del once para conservar también la alineación manual."""
         return {
             "nombre": self.nombre,
             "presupuesto": self.presupuesto,
@@ -138,6 +155,7 @@ class Equipo:
 
     @classmethod
     def from_dict(cls, data):
+        """Reconstruyo el club y enlazo los nombres guardados con los objetos de jugador creados."""
         eq = cls(data["nombre"], data["presupuesto"], data["formacion"], data["estilo"], data.get("aforo", 25000))
         eq.puntos = data["puntos"]
         eq.goles_a_favor = data["goles_a_favor"]
@@ -153,6 +171,7 @@ class Equipo:
 # --- 2. MOTOR DE SIMULACIÓN CON xG, POSESIÓN Y FINANZAS ---
 
 def elegir_rematador(alineacion):
+    """Elijo quién finaliza la jugada dando más peso a los delanteros y menos a defensas y centrocampistas."""
     pesos = {"DEL": 55, "CEN": 30, "DEF": 14}
     return random.choices(alineacion, weights=[pesos.get(j.posicion, 1) for j in alineacion], k=1)[0]
 
@@ -171,6 +190,7 @@ def generar_ocasion_xg(atq, dfn):
 
 
 def simular_partido(local, visitante, mostrar_detalle=True):
+    """Simulo las fases del encuentro y actualizo marcador, xG, puntos, economía, cansancio y lesiones."""
     if mostrar_detalle:
         print(f"\n⚽ ¡PARTIDO: {local.nombre} ({local.formacion}) vs {visitante.nombre} ({visitante.formacion})!")
 
@@ -283,6 +303,7 @@ def simular_partido(local, visitante, mostrar_detalle=True):
 # --- 3. MENÚS DE PLANTILLA (CON CAMBIOS MANUALES), MERCADO (COMPRA/VENTA) Y TABLAS ---
 
 def menu_tactica_y_plantilla(equipo):
+    """Muestro la gestión del once y permito cambiar jugadores, formación o estilo desde la consola."""
     if not equipo.alineacion_titular:
         equipo.convocar_once_automatico()
 
@@ -305,6 +326,8 @@ def menu_tactica_y_plantilla(equipo):
         print("5. Volver")
 
         op = input("Elige una opción: ")
+        # Al simular una jornada, se juegan también los encuentros entre rivales
+        # para mantener una clasificación completa, no solo el partido del usuario.
         if op == "1":
             try:
                 id_out = int(input("Número del jugador TITULAR que sale: ")) - 1
@@ -352,6 +375,7 @@ def menu_tactica_y_plantilla(equipo):
 
 
 def mostrar_mercado(equipo, mercado_disponible):
+    """Presento el mercado y proceso compras y ventas comprobando índices y presupuesto disponible."""
     while True:
         print(f"\n--- MERCADO Y FINANZAS ({equipo.nombre}) ---")
         print(f"Presupuesto: {equipo.presupuesto:,} € | Salarios por jornada: {equipo.masa_salarial_jornada():,} €")
@@ -411,6 +435,7 @@ def mostrar_mercado(equipo, mercado_disponible):
 
 
 def mostrar_clasificacion_y_metricas(equipos):
+    """Ordeno los equipos y comparo resultados, xG y producción goleadora de los jugadores."""
     print("\n" + "=" * 72)
     print(f"{'CLASIFICACIÓN LIGA + MÉTRICAS xG':^72}")
     print("=" * 72)
@@ -436,6 +461,7 @@ def mostrar_clasificacion_y_metricas(equipos):
 # --- 4. CENTRO TÉCNICO, GUARDADO Y CAMBIO DE TEMPORADA ---
 
 def centro_tecnico(equipo):
+    """Aplico una acción de descanso o entrenamiento a la plantilla y limito los cambios a valores razonables."""
     print("\n--- CENTRO TÉCNICO ---")
     print("1. Descansar plantilla (-30% cansancio, +10 moral)")
     print("2. Entrenamiento táctico (+15% cansancio, opción de subir media)")
@@ -456,6 +482,7 @@ def centro_tecnico(equipo):
 
 
 def generar_calendario_nombres(nombres_equipos):
+    """Creo una liga a doble vuelta con el método de rotación; la vuelta invierte la localía de cada cruce."""
     n = len(nombres_equipos)  # se asume número par de equipos
     l = nombres_equipos[:]
     ida = []
@@ -467,6 +494,7 @@ def generar_calendario_nombres(nombres_equipos):
 
 
 def guardar_partida(archivo, temporada, jornada_actual, equipos, mercado, calendario):
+    """Convierto equipos y mercado a JSON legible y escribo la partida en la ruta indicada."""
     datos = {
         "temporada": temporada,
         "jornada_actual": jornada_actual,
@@ -480,6 +508,7 @@ def guardar_partida(archivo, temporada, jornada_actual, equipos, mercado, calend
 
 
 def cargar_partida(archivo):
+    """Leo el JSON, valido su estructura antes de reconstruir los objetos y devuelvo el estado de la temporada."""
     if not os.path.exists(archivo):
         print("❌ No hay archivo de guardado.")
         return None
@@ -493,6 +522,7 @@ def cargar_partida(archivo):
 # --- 5. INICIALIZACIÓN Y BUCLE MULTITEMPORADA ---
 
 def crear_plantilla_base(equipo, es_usuario=False):
+    """Creo una plantilla inicial: nombres humorísticos propios para el usuario y nombres diferenciados para los rivales."""
     if es_usuario:
         base = [
             ("Paco Manoplas", "POR", 72), ("Rafa Rechaces", "DEF", 75), ("Tino Tobillo", "DEF", 73),
@@ -516,9 +546,12 @@ def crear_plantilla_base(equipo, es_usuario=False):
 
 
 if __name__ == "__main__":
+    # Esta parte solo se ejecuta al abrir el archivo directamente, no al importarlo
+    # desde las pruebas. Primero preparo el estado inicial y después entro en el menú.
     ARCHIVO_SAVE = "partida_guardada.json"
     temporada = 1
 
+    # El club jugable y los tres rivales comparten las mismas clases y reglas.
     mi_equipo = Equipo("FC Pase y Pifia", presupuesto=8000000, aforo=30000)
     crear_plantilla_base(mi_equipo, es_usuario=True)
     mi_equipo.convocar_once_automatico()
@@ -537,13 +570,18 @@ if __name__ == "__main__":
         Jugador("Benito Banderazo", "DEF", 74, precio=2100000, salario=14500),
     ]
 
+    # El calendario contiene seis jornadas; jornada_actual apunta a la siguiente
+    # que queda por disputar, así que también sirve para reanudar una partida.
     calendario = generar_calendario_nombres([e.nombre for e in lista_equipos])
     jornada_actual = 0
 
+    # Bucle de la carrera: mostrar estado, pedir una acción y modificar solo lo
+    # necesario. Cuando se completan las jornadas, se ofrecen premios y otra campaña.
     while True:
         mapa_equipos = {e.nombre: e for e in lista_equipos}
         mi_equipo = mapa_equipos["FC Pase y Pifia"]
 
+        # El cierre se ejecuta una sola vez antes de permitir avanzar de temporada.
         if jornada_actual >= len(calendario):
             print(f"\n🏆 ¡FIN DE LA TEMPORADA {temporada}!")
             mostrar_clasificacion_y_metricas(lista_equipos)
@@ -582,6 +620,8 @@ if __name__ == "__main__":
         print("7. Cargar Partida")
         print("8. Salir")
 
+        # Cada opción delega en una función concreta para que el bucle principal
+        # coordine el flujo sin mezclar aquí la lógica de cada pantalla.
         op = input("Selecciona una opción: ")
         if op == "1":
             for loc_nom, vis_nom in calendario[jornada_actual]:

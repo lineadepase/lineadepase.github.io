@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Línea de Pase | Manager de fútbol y laboratorio xG (simulación)</title>
     <style>
+        /*
+         * Estilos locales del juego: separo cabecera, navegación, paneles, tablas y
+         * lienzos para que la identidad sea consistente y no dependa de recursos externos.
+         */
         :root {
             --bg-dark: #0f172a;
             --bg-panel: #1e293b;
@@ -381,6 +385,7 @@
     </style>
 </head>
 <body>
+<!-- La interfaz se divide en navegación y cinco pestañas; cada pestaña mantiene su contenido en el mismo documento. -->
 
 <header>
     <div class="club-brand">
@@ -403,6 +408,7 @@
     </div>
 </header>
 
+<!-- Los botones de navegación cambian de pestaña sin recargar ni perder el estado de la partida. -->
 <nav>
     <button class="tab-btn active" onclick="cambiarPestana('tactica', this)">📋 Pizarra Táctica y Plantilla</button>
     <button class="tab-btn" onclick="cambiarPestana('partido', this)">⚽ Día de Partido y Mapa xG</button>
@@ -411,6 +417,7 @@
     <button class="tab-btn" onclick="cambiarPestana('entrenamiento', this)">🧠 Laboratorio de juego</button>
 </nav>
 
+<!-- Zona principal: táctica, partido, liga, mercado y laboratorio se muestran aquí. -->
 <main>
     <p class="sim-disclaimer" role="note"><strong>Simulador ficticio:</strong> plantillas, valoraciones, fichajes, resultados y xG son datos del juego, no estadísticas reales ni información actualizada de los clubes. El xG es una estimación didáctica generada por el propio simulador según el tipo de ocasión; no procede de tiros reales ni de un modelo oficial.</p>
     <!-- PESTAÑA 1: TÁCTICA Y PLANTILLA -->
@@ -737,7 +744,10 @@
 </main>
 
 <script>
+// El motor y la interfaz se mantienen en este archivo para servir como juego estático, sin dependencias de servidor.
 // --- 1. CONFIGURACIÓN TÁCTICA Y COORDENADAS ---
+// Las formaciones deben sumar once puestos; los estilos modifican rendimiento,
+// resistencia y exposición defensiva. Los nombres pertenecen al universo ficticio.
 const FORMACIONES = {
     "4-4-2": { POR: 1, DEF: 4, CEN: 4, DEL: 2 },
     "4-3-3": { POR: 1, DEF: 4, CEN: 3, DEL: 3 },
@@ -780,6 +790,9 @@ let eventosPartidoActual = [];
 let animacionRepeticionId = null;
 
 // --- 2. FUNCIONES DE MODELO ---
+/**
+ * Devuelvo la valoración efectiva del jugador. Una lesión lo deja fuera; la fatiga reduce progresivamente su media y la moral actúa como factor de confianza.
+ */
 function rendimientoReal(j) {
     if (j.lesionado > 0) return 0;
     const fCansancio = 1 - (j.cansancio / 200);
@@ -787,10 +800,16 @@ function rendimientoReal(j) {
     return Math.round(j.media * fCansancio * fMoral);
 }
 
+/**
+ * Sumo los salarios de toda la plantilla. El motor descuenta esta cantidad en cada jornada, también para los equipos controlados por la máquina.
+ */
 function masaSalarial(eq) {
     return eq.plantilla.reduce((acc, j) => acc + j.salario, 0);
 }
 
+/**
+ * Selecciono el once según la formación: primero cubro cada posición con los mejores disponibles y después completo huecos con los futbolistas restantes. Los lesionados nunca entran.
+ */
 function convocarOnceAutomatico(eq) {
     const esquema = FORMACIONES[eq.formacion];
     let disponibles = eq.plantilla.filter(j => j.lesionado === 0);
@@ -812,6 +831,9 @@ function convocarOnceAutomatico(eq) {
     eq.plantilla.forEach(j => j.titular = titulares.includes(j));
 }
 
+/**
+ * Calculo ataque y defensa a partir de los titulares y el estilo. Si faltan titulares aptos, la fuerza disminuye en lugar de fingir que juega un once completo.
+ */
 function calcularFuerzas(eq) {
     let titulares = eq.plantilla.filter(j => j.titular && j.lesionado === 0);
     if (titulares.length < 11) {
@@ -831,6 +853,9 @@ function calcularFuerzas(eq) {
 // Estima cuánto condiciona el ataque de un equipo a la defensa rival. Se usa
 // tanto para generar remates como para su calidad, de modo que el atributo de
 // defensa y los estilos tácticos tengan un efecto visible en el partido.
+/**
+ * Convierto la relación entre el ataque propio y la defensa rival en probabilidades de remate y ocasión clara y en un ajuste pequeño de xG. Los límites evitan valores extremos.
+ */
 function calcularPerfilAtaque(ataque, defensaRival) {
     const ataqueSeguro = Number.isFinite(ataque) ? Math.max(0, ataque) : 0;
     const defensaSegura = Number.isFinite(defensaRival) ? Math.max(35, defensaRival) : 35;
@@ -845,6 +870,11 @@ function calcularPerfilAtaque(ataque, defensaRival) {
 }
 
 // --- 3. INICIALIZACIÓN Y PERSISTENCIA ---
+// Todo lo que puede cambiar durante una partida vive en estadoJuego para poder
+// actualizar la interfaz, guardarlo, exportarlo y validarlo con las mismas reglas.
+/**
+ * Construyo el estado nuevo de una partida: club del usuario, rivales ficticios, plantillas humorísticas, mercado y calendario. Mantengo estos datos juntos para poder guardarlos como una sola unidad.
+ */
 function crearEstadoInicial() {
     const crearJugador = (nombre, posicion, media) => ({
         nombre, posicion, media,
@@ -945,6 +975,9 @@ function crearEstadoInicial() {
     };
 }
 
+/**
+ * Genero seis jornadas para cuatro equipos mediante rotación y alterno la localía; después invierto los cruces para crear la vuelta.
+ */
 function generarCalendario(nombres) {
     let l = [...nombres];
     const n = l.length;
@@ -963,6 +996,9 @@ function generarCalendario(nombres) {
     return [...ida, ...vuelta];
 }
 
+/**
+ * Compruebo que el calendario tenga seis jornadas completas, que todos jueguen una vez por jornada y que cada pareja aparezca una vez en cada mitad con localía invertida.
+ */
 function calendarioValido(calendario, equipos) {
     if (!Array.isArray(calendario) || calendario.length !== 6 ||
         !Array.isArray(equipos) || equipos.length !== 4) return false;
@@ -991,6 +1027,9 @@ function calendarioValido(calendario, equipos) {
         nombres.every(a => nombres.every(b => a === b || enfrentamientos.has(a + '|' + b)));
 }
 
+/**
+ * Valido los contadores globales y por ejercicio. Además de comprobar tipos y rangos, verifico que los totales coincidan con la suma de pase, presión, espacio y finalización.
+ */
 function estadisticasEntrenamientoValidas(entrenamiento) {
     if (entrenamiento === undefined) return true;
     if (!entrenamiento || !Number.isInteger(entrenamiento.intentos) || entrenamiento.intentos < 0 ||
@@ -1013,12 +1052,18 @@ function estadisticasEntrenamientoValidas(entrenamiento) {
         tipos.reduce((total, tipo) => total + (entrenamiento.porTipo[tipo]?.puntos || 0), 0) === entrenamiento.puntos;
 }
 
+/**
+ * Acepto solo nombres de texto no vacíos y de longitud limitada para mantener los datos y las tablas dentro de un tamaño razonable.
+ */
 function nombreGuardadoValido(nombre) {
     return typeof nombre === 'string' && nombre.trim().length > 0 && nombre.length <= 80;
 }
 
 // Los guardados anteriores no tenían el contador de remates; se migran con
 // cero antes de validarlos para conservar temporadas ya empezadas.
+/**
+ * Aplico migraciones pequeñas antes de validar el guardado. Los estados antiguos no tenían el campo de remates y reciben cero sin perder temporada ni presupuesto.
+ */
 function normalizarEstadoPartida(estado) {
     if (estado && Array.isArray(estado.equipos)) {
         estado.equipos.forEach(eq => {
@@ -1028,6 +1073,9 @@ function normalizarEstadoPartida(estado) {
     return estado;
 }
 
+/**
+ * Reviso que la partida completa tenga equipos únicos, estadísticas finitas, plantillas y jugadores coherentes, mercado válido, calendario íntegro y jornada dentro de rango. Un saldo negativo sí es válido.
+ */
 function estadoPartidaValido(estado) {
     try {
         return Boolean(estado && Array.isArray(estado.equipos) && estado.equipos.length === 4 &&
@@ -1071,10 +1119,18 @@ function estadoPartidaValido(estado) {
 }
 
 // --- 4. INTERFAZ Y RENDERIZADO ---
+// Esta capa lee el estado, crea nodos de la página y conecta eventos; no guarda
+// estadísticas reales ni descarga imágenes o datos de terceros.
+/**
+ * Localizo el club controlado por la persona que juega dentro de la lista común de equipos.
+ */
 function obtenerMiEquipo() {
     return estadoJuego.equipos.find(e => e.nombre === "FC Pase y Pifia");
 }
 
+/**
+ * Muestro la sección elegida y actualizo el estado accesible de sus botones de navegación.
+ */
 function cambiarPestana(id, btn) {
     document.querySelectorAll('.tab-content').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -1083,6 +1139,9 @@ function cambiarPestana(id, btn) {
     actualizarUI();
 }
 
+/**
+ * Redibujo todos los datos visibles a partir del estado actual: presupuesto, disponibilidad, plantilla, pizarra, calendario, clasificación, goleadores y mercado.
+ */
 function actualizarUI() {
     const miEq = obtenerMiEquipo();
     const totalJ = estadoJuego.calendario.length;
@@ -1242,6 +1301,8 @@ function actualizarUI() {
 }
 
 // --- 4. LABORATORIO DIDÁCTICO DE PASE Y PROGRESIÓN ---
+// Son ejercicios de decisión con puntuación explicada. Miden el progreso dentro
+// del juego y no modifican las valoraciones ni representan datos de entrenamiento real.
 const EJERCICIOS_PASE = [
     {
         contexto: "Un interior recibe entre líneas. La defensa rival mantiene la última línea, pero aparece un pasillo hacia el área.",
@@ -1413,6 +1474,9 @@ const EJERCICIOS_FINALIZACION = [
     }
 ];
 
+/**
+ * Asigno una puntuación didáctica a una decisión del laboratorio según su calidad y el ejercicio activo; no modifica atributos ni pretende ser una métrica real.
+ */
 function valorDecisionEjercicio(opcion) {
     const probabilidad = opcion.probabilidad ?? opcion.conservacion;
     const impacto = opcion.impacto ?? (opcion.avance * 0.55 + opcion.amenaza * 0.45);
@@ -1420,6 +1484,9 @@ function valorDecisionEjercicio(opcion) {
     return probabilidad / 100 * impacto - (100 - probabilidad) / 100 * riesgo * 0.45;
 }
 
+/**
+ * Cambio el reto de entrenamiento y preparo las instrucciones, opciones y visualización específicas del ejercicio seleccionado.
+ */
 function cambiarTipoEjercicio(tipo) {
     if (!['pase', 'presion', 'espacio', 'finalizacion'].includes(tipo)) return false;
     tipoEjercicioActual = tipo;
@@ -1428,6 +1495,9 @@ function cambiarTipoEjercicio(tipo) {
     return true;
 }
 
+/**
+ * Genero una situación nueva para practicar progresión y pase, con una opción recomendada que sirve para explicar la lectura del espacio.
+ */
 function iniciarEjercicioPase() {
     const anterior = retoPaseActual?.indice;
     const ejercicios = tipoEjercicioActual === 'presion' ? EJERCICIOS_PRESION :
@@ -1448,6 +1518,9 @@ function iniciarEjercicioPase() {
     actualizarPanelEntrenamiento();
 }
 
+/**
+ * Actualizo título, descripción, escenario gráfico, opciones de respuesta y progreso guardado del ejercicio activo.
+ */
 function actualizarPanelEntrenamiento() {
     const contexto = document.getElementById('pase-contexto');
     if (!contexto) return;
@@ -1514,6 +1587,9 @@ function actualizarPanelEntrenamiento() {
         ? `${Math.round(progreso.puntos / progreso.intentos)}/100` : '—';
 }
 
+/**
+ * Registro la decisión del usuario, explico por qué funciona o qué riesgo tiene y guardo el resultado por tipo de ejercicio.
+ */
 function resolverEjercicioPase(indice) {
     if (!retoPaseActual || retoPaseActual.resuelto || !Number.isInteger(indice) ||
         indice < 0 || indice >= retoPaseActual.opciones.length) return false;
@@ -1551,6 +1627,11 @@ function resolverEjercicioPase(indice) {
 }
 
 // --- 5. DIBUJO EN CANVAS 2D ---
+// Dibujo sobre canvas sin imágenes externas; las coordenadas de los jugadores se
+// derivan de la formación y del tamaño disponible del lienzo.
+/**
+ * Pinto el campo de juego en el canvas con césped, líneas, áreas y círculo central. Las dimensiones llegan como parámetros para reutilizarlo en varias vistas.
+ */
 function dibujarCampoBase(ctx, w, h) {
     ctx.clearRect(0, 0, w, h);
     const franja = w / 10;
@@ -1574,6 +1655,9 @@ function dibujarCampoBase(ctx, w, h) {
     ctx.strokeRect(w - 84, h / 2 - 90, 70, 180);
 }
 
+/**
+ * Coloco en el campo a los titulares del usuario según la formación actual, la posición y su valoración efectiva.
+ */
 function dibujarPizarra(eq) {
     const canvas = document.getElementById('canvas-pizarra');
     const ctx = canvas.getContext('2d');
@@ -1612,6 +1696,9 @@ function dibujarPizarra(eq) {
 }
 
 // --- 6. INTERACCIÓN PLANTILLA Y TÁCTICA ---
+/**
+ * Gestiono la selección de jugadores para el cambio manual de titular y suplente, rechazando bajas y selecciones incoherentes.
+ */
 function clicarJugadorPlantilla(idx) {
     const miEq = obtenerMiEquipo();
     if (jugadorSeleccionadoIdx === null) {
@@ -1634,6 +1721,9 @@ function clicarJugadorPlantilla(idx) {
     actualizarUI();
 }
 
+/**
+ * Leo la formación y el estilo de los controles, recalculo el once y actualizo la interfaz.
+ */
 function cambiarTactica() {
     const miEq = obtenerMiEquipo();
     miEq.formacion = document.getElementById('sel-formacion').value;
@@ -1643,6 +1733,9 @@ function cambiarTactica() {
     actualizarUI();
 }
 
+/**
+ * Rehago el once con el criterio automático y muestro el resultado en la plantilla y el campo.
+ */
 function autoconvocar() {
     const miEq = obtenerMiEquipo();
     convocarOnceAutomatico(miEq);
@@ -1651,6 +1744,11 @@ function autoconvocar() {
 }
 
 // --- 7. MOTOR DE SIMULACIÓN DE PARTIDOS Y SHOT MAP ---
+// Las métricas de esta sección son resultados internos del simulador. xG es una
+// estimación didáctica por ocasión, no una estadística oficial calculada desde vídeo.
+/**
+ * Elijo un finalizador entre los titulares, dando mayor probabilidad a delanteros y centrocampistas que a defensas.
+ */
 function elegirRematador(titulares) {
     const pesos = titulares.map(j => j.posicion === "DEL" ? 55 : (j.posicion === "CEN" ? 30 : (j.posicion === "DEF" ? 14 : 1)));
     const total = pesos.reduce((a, b) => a + b, 0);
@@ -1662,6 +1760,9 @@ function elegirRematador(titulares) {
     return titulares[0];
 }
 
+/**
+ * Compruebo que la jornada esté completa y válida antes de resolver sus partidos. Luego aplico preparación, resultados, tabla, guardado y mensajes de final de temporada.
+ */
 function simularJornada() {
     const totalJ = estadoJuego.calendario.length;
     const miEq = obtenerMiEquipo();
@@ -1711,6 +1812,9 @@ function simularJornada() {
     actualizarUI();
 }
 
+/**
+ * Convierto los caracteres especiales en entidades HTML para que los nombres guardados se muestren como texto y no se interpreten como etiquetas.
+ */
 function escaparHTML(valor) {
     return String(valor).replace(/[&<>"']/g, caracter => ({
         '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
@@ -1719,6 +1823,9 @@ function escaparHTML(valor) {
 
 // Retrato vectorial de estilo arcade, creado con formas originales y sin fotos ni
 // rasgos tomados de futbolistas reales. La semilla hace que cada cara sea estable.
+/**
+ * Genero un retrato vectorial original y estable a partir del nombre y la posición. Es una ilustración ficticia, no una foto ni un parecido con un jugador real.
+ */
 function avatarJugadorHTML(nombre, posicion) {
     const texto = String(nombre);
     let semilla = 0;
@@ -1753,6 +1860,9 @@ function avatarJugadorHTML(nombre, posicion) {
     </svg>`;
 }
 
+/**
+ * Vacío los datos y controles de la repetición anterior y detengo cualquier animación que siguiera pendiente.
+ */
 function limpiarRepeticionesPartido() {
     if (animacionRepeticionId !== null) cancelAnimationFrame(animacionRepeticionId);
     animacionRepeticionId = null;
@@ -1781,6 +1891,9 @@ function limpiarRepeticionesPartido() {
     ball?.setAttribute('cy', '160');
 }
 
+/**
+ * Guardo los datos de un remate y añado a la crónica un acceso a su reconstrucción animada.
+ */
 function registrarEventoTiro(evento, logBox) {
     const indice = eventosPartidoActual.push(evento) - 1;
     const linea = document.createElement('p');
@@ -1798,6 +1911,9 @@ function registrarEventoTiro(evento, logBox) {
     logBox.appendChild(linea);
 }
 
+/**
+ * Valido el índice elegido, actualizo la ficha accesible del remate y animo una reconstrucción esquemática, sin cargar vídeo real.
+ */
 function mostrarRepeticion(indice) {
     if (!Number.isInteger(indice) || indice < 0 || indice >= eventosPartidoActual.length) return false;
     const evento = eventosPartidoActual[indice];
@@ -1845,6 +1961,9 @@ function mostrarRepeticion(indice) {
     return true;
 }
 
+/**
+ * Resuelvo el partido por ventanas de ataque. Las fuerzas, táctica y defensa determinan quién ataca y con qué calidad; actualizo goles, remates, xG, puntos, taquilla, salarios, fatiga y lesiones.
+ */
 function simularPartidoIndividual(local, vis, esNuestro, logBox, ctxShot, w, h) {
     const fLoc = calcularFuerzas(local);
     const fVis = calcularFuerzas(vis);
@@ -1992,6 +2111,11 @@ function simularPartidoIndividual(local, vis, esNuestro, logBox, ctxShot, w, h) 
 }
 
 // --- 8. MERCADO, ENTRENAMIENTO Y NUEVA TEMPORADA ---
+// Agrupo aquí las operaciones que cambian recursos y el avance de campaña; cada
+// acción relevante valida sus límites antes de guardar el nuevo estado.
+/**
+ * Reduce el cansancio y recupera una jornada de lesión, una sola vez antes del siguiente partido.
+ */
 function accionDescansar() {
     if (estadoJuego.preparacionUsada) {
         alert("Ya has realizado una acción de preparación esta jornada.");
@@ -2010,6 +2134,9 @@ function accionDescansar() {
     actualizarUI();
 }
 
+/**
+ * Aplica una sesión a los jugadores aptos: aumenta fatiga y puede mejorar ligeramente la media. La acción consume la preparación previa de la jornada.
+ */
 function accionEntrenar() {
     if (estadoJuego.preparacionUsada) {
         alert("Ya has realizado una acción de preparación esta jornada.");
@@ -2032,6 +2159,9 @@ function accionEntrenar() {
     actualizarUI();
 }
 
+/**
+ * Compruebo el jugador seleccionado, el límite de plantilla y los fondos disponibles antes de descontar precio, incorporar al futbolista y guardar.
+ */
 function ficharJugador(idx) {
     const miEq = obtenerMiEquipo();
     if (!Number.isInteger(idx) || idx < 0 || idx >= estadoJuego.mercado.length) {
@@ -2061,6 +2191,9 @@ function ficharJugador(idx) {
     actualizarUI();
 }
 
+/**
+ * Vendo al jugador seleccionado, devuelvo el 80 % de su valor y actualizo la plantilla, el mercado y la alineación.
+ */
 function venderJugador(idx) {
     const miEq = obtenerMiEquipo();
     if (miEq.plantilla.length <= 11) {
@@ -2087,12 +2220,18 @@ function venderJugador(idx) {
 
 // Criterios simplificados de esta liga ficticia: puntos, diferencia de goles,
  // goles a favor y, por último, nombre para desempates estables.
+/**
+ * Ordeno los equipos por puntos, diferencia de goles, goles a favor y nombre como desempate estable.
+ */
 function compararClasificacion(a, b) {
     return (b.puntos - a.puntos) ||
         ((b.gf - b.gc) - (a.gf - a.gc)) ||
         (b.gf - a.gf) || a.nombre.localeCompare(b.nombre, 'es');
 }
 
+/**
+ * Asocio un premio a cada puesto después de ordenar la clasificación con el mismo criterio que la tabla.
+ */
 function calcularPremiosClasificacion(equipos) {
     const premios = [5000000, 3500000, 2500000, 1500000];
     return [...equipos].sort(compararClasificacion).map((eq, i) => ({
@@ -2100,6 +2239,9 @@ function calcularPremiosClasificacion(equipos) {
     }));
 }
 
+/**
+ * Añado cuatro candidatos ficticios, uno por posición, reinicio sus estadísticas y limito el mercado a doce opciones.
+ */
 function renovarMercadoTemporada() {
     const nombres = [
         'Rulo', 'Vera', 'Nico', 'Berta', 'Teo', 'Mili', 'Lucho', 'Cata', 'Pipo', 'Lola',
@@ -2157,6 +2299,9 @@ function renovarMercadoTemporada() {
         .slice(0, 12);
 }
 
+/**
+ * Solo inicio otra campaña al terminar todas las jornadas y confirmar los premios. Reinicio estadísticas, preparo plantilla y mercado y genero un calendario nuevo.
+ */
 function iniciarNuevaTemporada() {
     if (estadoJuego.jornadaActual < estadoJuego.calendario.length) {
         alert("Debes terminar las seis jornadas antes de comenzar otra temporada.");
@@ -2182,6 +2327,9 @@ function iniciarNuevaTemporada() {
     actualizarUI();
 }
 
+/**
+ * Guardo el estado completo en localStorage y actualizo el indicador. Si el navegador rechaza el almacenamiento, informo sin bloquear la partida en pantalla.
+ */
 function guardarPartidaLocal(mostrarAviso = true) {
     try {
         localStorage.setItem('ldp_manager_save', JSON.stringify(estadoJuego));
@@ -2196,6 +2344,9 @@ function guardarPartidaLocal(mostrarAviso = true) {
     }
 }
 
+/**
+ * Descargo una copia JSON de la temporada con una etiqueta de formato y versión para facilitar copias de seguridad.
+ */
 function exportarPartida() {
     const copia = {
         formato: 'linea-de-pase-partida',
@@ -2215,6 +2366,9 @@ function exportarPartida() {
     document.getElementById('estado-guardado').textContent = 'Copia descargada';
 }
 
+/**
+ * Leo el JSON, migro campos conocidos y valido la estructura antes de pedir confirmación y sustituir el guardado actual.
+ */
 function importarPartidaArchivo(input) {
     const archivo = input.files && input.files[0];
     if (!archivo) return;
@@ -2245,6 +2399,9 @@ function importarPartidaArchivo(input) {
     lector.readAsText(archivo, 'UTF-8');
 }
 
+/**
+ * Pido confirmación, elimino la copia local si el navegador lo permite y creo una partida nueva.
+ */
 function reiniciarPartidaLocal() {
     if (confirm("¿Seguro que quieres reiniciar la partida desde la Temporada 1?")) {
         const indicador = document.getElementById('estado-guardado');

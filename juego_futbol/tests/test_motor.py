@@ -1,4 +1,4 @@
-"""Pruebas de invariantes del motor Python. Ejecutar: python -m unittest discover -s juego_futbol/tests -v"""
+"""Pruebas automáticas del motor Python. Fijo la semilla aleatoria cuando necesito resultados repetibles y compruebo invariantes, no un marcador concreto."""
 import importlib.util
 from pathlib import Path
 import random
@@ -11,7 +11,9 @@ spec.loader.exec_module(engine)
 
 
 class TestMotor(unittest.TestCase):
+    """Pruebas de invariantes del motor: verifico reglas que deben mantenerse aunque cambien los resultados aleatorios."""
     def test_ocasion_xg_acotada(self):
+        """Compruebo con una muestra amplia que cada ocasión tiene etiqueta y un xG dentro de 0 y 1."""
         random.seed(123)
         for ataque, defensa in [(20, 20), (90, 50), (30, 100)]:
             for _ in range(500):
@@ -21,15 +23,18 @@ class TestMotor(unittest.TestCase):
                 self.assertLessEqual(xg, 1)
 
     def test_jugador_roundtrip(self):
+        """Verifico que serializar y reconstruir un jugador conserva todos sus atributos."""
         j = engine.Jugador("Prueba", "DEL", 75)
         restored = engine.Jugador.from_dict(j.to_dict())
         self.assertEqual(j.to_dict(), restored.to_dict())
 
     def test_formaciones_once(self):
+        """Compruebo que cada esquema asigna exactamente once posiciones."""
         for formacion, posiciones in engine.FORMACIONES.items():
             self.assertEqual(sum(posiciones.values()), 11, formacion)
 
     def test_plantillas_rivales_usan_nombres_ficticios_legibles(self):
+        """Confirmo que los rivales tienen plantilla completa y nombres de humor legibles."""
         rival = engine.Equipo("Atlético Siestense")
         engine.crear_plantilla_base(rival)
         self.assertEqual(len(rival.plantilla), 14)
@@ -38,6 +43,7 @@ class TestMotor(unittest.TestCase):
 
 
     def test_calendario_ida_vuelta_sin_duplicados(self):
+        """Compruebo que la liga genera seis jornadas, doce cruces únicos y cuatro equipos por jornada."""
         nombres = ["A", "B", "C", "D"]
         jornadas = engine.generar_calendario_nombres(nombres)
         self.assertEqual(len(jornadas), 6)
@@ -49,6 +55,7 @@ class TestMotor(unittest.TestCase):
             self.assertEqual(set(x for partido in jornada for x in partido), set(nombres))
 
     def test_simulacion_actualiza_estadisticas_y_puntos(self):
+        """Compruebo la coherencia de los marcadores, los puntos, los partidos jugados y el xG al simular."""
         random.seed(42)
         local = engine.Equipo("Local")
         visitante = engine.Equipo("Visitante")
@@ -66,6 +73,7 @@ class TestMotor(unittest.TestCase):
         self.assertEqual(visitante.xg_favor, local.xg_contra)
 
     def test_guardado_y_carga_partida(self):
+        """Verifico una vuelta completa del guardado y la carga, incluido déficit y once manual."""
         import tempfile
         random.seed(42)
         club = engine.Equipo("FC Pase y Pifia")
@@ -95,6 +103,7 @@ class TestMotor(unittest.TestCase):
                          "el guardado conserva el once elegido")
 
     def test_guardado_invalido_se_rechaza(self):
+        """Confirmo que la validación detecta atributos corruptos sin confundir un saldo negativo con corrupción."""
         club = engine.Equipo("FC Pase y Pifia", presupuesto=-10)
         engine.crear_plantilla_base(club)
         club.convocar_once_automatico()
@@ -114,6 +123,7 @@ class TestMotor(unittest.TestCase):
             engine.validar_partida(datos)
 
     def test_partido_sin_jugadores_aptos_no_rompe(self):
+        """Compruebo que las bajas totales no producen división inválida ni ocasiones imposibles."""
         random.seed(77)
         local = engine.Equipo("Local")
         visitante = engine.Equipo("Visitante")
@@ -130,6 +140,7 @@ class TestMotor(unittest.TestCase):
 
 
     def test_temporada_completa_integridad(self):
+        """Simulo todas las jornadas y verifico la conservación de partidos, goles, puntos y xG."""
         random.seed(2026)
         equipos = [engine.Equipo(nombre) for nombre in ("A", "B", "C", "D")]
         for equipo in equipos:

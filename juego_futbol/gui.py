@@ -1,4 +1,4 @@
-"""Versión con interfaz gráfica (Tkinter) del juego de gestión de fútbol."""
+"""Prototipo de escritorio con Tkinter. Mantengo en este archivo el modelo de datos de esta interfaz, la construcción de pestañas, el mapa de tiros y los eventos de usuario. No es una aplicación móvil."""
 import tkinter as tk
 from tkinter import ttk, messagebox
 import random
@@ -6,6 +6,7 @@ import os
 
 # --- 1. CONFIGURACIÓN TÁCTICA Y COORDENADAS EN EL CAMPO (PIZARRA 2D) ---
 
+# Cada formación indica cuántos jugadores necesito por línea; todas suman once.
 FORMACIONES = {
     "4-4-2": {"POR": 1, "DEF": 4, "CEN": 4, "DEL": 2},
     "4-3-3": {"POR": 1, "DEF": 4, "CEN": 3, "DEL": 3},
@@ -34,12 +35,14 @@ COORDENADAS_FORMACION = {
     ],
 }
 
+# Los multiplicadores convierten el estilo elegido en ataque, defensa y desgaste físico.
 ESTILOS = {
     "Ofensivo": {"ataque": 1.15, "defensa": 0.90, "desgaste": 1.2},
     "Equilibrado": {"ataque": 1.00, "defensa": 1.00, "desgaste": 1.0},
     "Defensivo": {"ataque": 0.85, "defensa": 1.15, "desgaste": 0.9},
 }
 
+# Mantengo nombres ficticios con humor y los separo por posición para formar plantillas legibles.
 NOMBRES_RIVALES = {
     "POR": ["Iker Guantes", "Marga Parapenaltis", "Paco Manoplas"],
     "DEF": ["Rafa Rechaces", "Blas Banderín", "Tino Tobillo", "Lola Cerrojazo", "Nico Nopuedo"],
@@ -51,7 +54,9 @@ NOMBRES_RIVALES = {
 # --- 2. MODELO DE DATOS ---
 
 class Jugador:
+    """Modelo reducido de futbolista que utiliza la interfaz Tkinter."""
     def __init__(self, nombre, posicion, media, precio=2000000, salario=15000):
+        """Guardo los datos básicos del jugador y preparo sus estadísticas para una temporada nueva."""
         self.nombre = nombre
         self.posicion = posicion
         self.media = media
@@ -64,6 +69,7 @@ class Jugador:
         self.lesionado = 0
 
     def rendimiento_real(self):
+        """Ajusto la media por fatiga y moral; mientras haya lesión, el jugador no aporta rendimiento."""
         if self.lesionado > 0:
             return 0
         factor_cansancio = 1 - (self.cansancio / 200)
@@ -72,7 +78,9 @@ class Jugador:
 
 
 class Equipo:
+    """Modelo de club para la versión gráfica; mantiene su once y estadísticas junto a la plantilla."""
     def __init__(self, nombre, presupuesto=10000000, aforo=28000):
+        """Inicializo el club, la táctica por defecto y los contadores de liga."""
         self.nombre = nombre
         self.presupuesto = presupuesto
         self.aforo = aforo
@@ -88,12 +96,15 @@ class Equipo:
         self.xg_c = 0.0
 
     def agregar_jugador(self, j):
+        """Incorporo el jugador al listado de la plantilla."""
         self.plantilla.append(j)
 
     def masa_salarial(self):
+        """Calculo el coste salarial de una jornada sumando todos los contratos."""
         return sum(j.salario for j in self.plantilla)
 
     def convocar_once_automatico(self):
+        """Formo el once respetando primero las posiciones previstas y cubriendo después los huecos con los mejores disponibles."""
         esquema = FORMACIONES[self.formacion]
         disponibles = [j for j in self.plantilla if j.lesionado == 0]
         titulares = []
@@ -109,6 +120,7 @@ class Equipo:
         self.alineacion_titular = titulares
 
     def calcular_fuerzas(self):
+        """Calculo las fuerzas de ataque y defensa del once después de aplicar el estilo táctico."""
         if len(self.alineacion_titular) < 11 or any(j.lesionado > 0 for j in self.alineacion_titular):
             self.convocar_once_automatico()
         media_base = sum(j.rendimiento_real() for j in self.alineacion_titular) / max(1, len(self.alineacion_titular))
@@ -119,7 +131,9 @@ class Equipo:
 # --- 3. INTERFAZ GRÁFICA (TKINTER GUI) ---
 
 class FootballManagerGUI:
+    """Coordina los datos de la versión de escritorio, construye las pestañas y conecta botones con la simulación."""
     def __init__(self, root):
+        """Preparo la ventana principal y construyo los datos, estilos y controles en ese orden."""
         self.root = root
         self.root.title("Línea de Pase - Football Manager & xG Lab")
         self.root.geometry("1120x720")
@@ -143,6 +157,7 @@ class FootballManagerGUI:
         return None
 
     def inicializar_datos(self):
+        """Creo el club, los rivales ficticios, el mercado y el calendario de ida y vuelta inicial."""
         self.mi_equipo = Equipo("FC Pase y Pifia", presupuesto=9500000, aforo=30000)
         base_rz = [
             ("Paco Manoplas", "POR", 72), ("Rafa Rechaces", "DEF", 75), ("Tino Tobillo", "DEF", 73),
@@ -189,6 +204,7 @@ class FootballManagerGUI:
         self.jornada_actual = 0
 
     def configurar_estilos(self):
+        """Defino los colores, tamaños y estados visuales de los controles ttk."""
         style = ttk.Style()
         style.theme_use("clam")
         style.configure("TNotebook", background="#0f172a", borderwidth=0)
@@ -200,6 +216,7 @@ class FootballManagerGUI:
 
     def crear_interfaz(self):
         # Cabecera superior
+        """Monto la cabecera, las pestañas principales y sus paneles de trabajo."""
         self.header = tk.Frame(self.root, bg="#1e293b", height=65, padx=20, pady=10)
         self.header.pack(fill="x")
 
@@ -230,6 +247,7 @@ class FootballManagerGUI:
 
     # --- PESTAÑA 1: PIZARRA TÁCTICA Y PLANTILLA ---
     def construir_tab_tactica(self):
+        """Construyo los selectores de formación y estilo, la tabla de plantilla y la pizarra táctica."""
         panel_izq = tk.Frame(self.tab_tactica, bg="#0f172a")
         panel_izq.pack(side="left", fill="both", expand=True, padx=10, pady=10)
 
@@ -269,6 +287,7 @@ class FootballManagerGUI:
         self.canvas_pizarra.pack()
 
     def dibujar_campo_base(self, canvas, w, h):
+        """Limpio el lienzo y pinto un campo con líneas, áreas y franjas de césped."""
         canvas.delete("all")
         # Franjas de césped
         for i in range(0, w, 46):
@@ -283,6 +302,7 @@ class FootballManagerGUI:
         canvas.create_rectangle(w - 85, h // 2 - 95, w - 15, h // 2 + 95, outline="white", width=2)
 
     def dibujar_pizarra_tactica(self):
+        """Coloco en el campo a los titulares según su posición y las coordenadas de la formación elegida."""
         w, h = 460, 520
         self.dibujar_campo_base(self.canvas_pizarra, w, h)
         coords = COORDENADAS_FORMACION.get(self.mi_equipo.formacion, COORDENADAS_FORMACION["4-4-2"])
@@ -303,6 +323,7 @@ class FootballManagerGUI:
 
     # --- PESTAÑA 2: DÍA DE PARTIDO Y MAPA DE TIROS (xG SHOT MAP) ---
     def construir_tab_partido(self):
+        """Preparo la crónica del partido y el lienzo del mapa de remates."""
         top_partido = tk.Frame(self.tab_partido, bg="#1e293b", pady=12, padx=20)
         top_partido.pack(fill="x", padx=10, pady=10)
 
@@ -334,6 +355,7 @@ class FootballManagerGUI:
 
     # --- PESTAÑA 3: CLASIFICACIÓN Y MÉTRICAS xG ---
     def construir_tab_liga(self):
+        """Creo las tablas de clasificación y de goleadores con las columnas analíticas."""
         tk.Label(self.tab_liga, text="Clasificación General y Rendimiento Esperado (xG)", fg="#38bdf8", bg="#0f172a", font=("Segoe UI", 13, "bold")).pack(pady=10)
         cols = ("Pos", "Equipo", "PTS", "PJ", "GF", "GC", "DG", "xG Favor", "xG Contra", "Diferencial (G - xG)")
         self.tree_liga = ttk.Treeview(self.tab_liga, columns=cols, show="headings", height=8)
@@ -352,6 +374,7 @@ class FootballManagerGUI:
 
     # --- PESTAÑA 4: MERCADO Y CENTRO TÉCNICO ---
     def construir_tab_mercado(self):
+        """Construyo los controles de entrenamiento y la tabla de jugadores disponibles."""
         frame_sup = tk.Frame(self.tab_mercado, bg="#1e293b", padx=15, pady=12)
         frame_sup.pack(fill="x", padx=15, pady=10)
 
@@ -372,16 +395,19 @@ class FootballManagerGUI:
 
     # --- LÓGICA DE EVENTOS Y SIMULACIÓN ---
     def cambiar_tactica(self, event=None):
+        """Leo las opciones seleccionadas, rehago el once y refresco lo que ve el usuario."""
         self.mi_equipo.formacion = self.combo_form.get()
         self.mi_equipo.estilo = self.combo_estilo.get()
         self.mi_equipo.convocar_once_automatico()
         self.actualizar_todo()
 
     def autoconvocar(self):
+        """Vuelvo a elegir automáticamente el once y actualizo las tablas y la pizarra."""
         self.mi_equipo.convocar_once_automatico()
         self.actualizar_todo()
 
     def accion_descansar(self):
+        """Reduce el cansancio, mejora la moral y comunica el resultado antes de refrescar la pantalla."""
         for j in self.mi_equipo.plantilla:
             j.cansancio = max(0, j.cansancio - 30)
             j.moral = min(100, j.moral + 10)
@@ -389,6 +415,7 @@ class FootballManagerGUI:
         self.actualizar_todo()
 
     def accion_entrenar(self):
+        """Entreno a los jugadores aptos, aplico fatiga y muestro qué medias han mejorado."""
         mejorados = []
         for j in self.mi_equipo.plantilla:
             if j.lesionado == 0:
@@ -403,6 +430,7 @@ class FootballManagerGUI:
         self.actualizar_todo()
 
     def fichar_jugador(self):
+        """Compruebo que haya selección y presupuesto suficiente antes de transferir jugador y dinero."""
         sel = self.tree_mercado.selection()
         if not sel:
             messagebox.showwarning("Mercado", "Selecciona primero un jugador de la tabla.")
@@ -420,6 +448,7 @@ class FootballManagerGUI:
             messagebox.showerror("Presupuesto Insuficiente", "No tienes fondos suficientes para esta operación.")
 
     def jugar_jornada_gui(self):
+        """Simulo todos los encuentros de la jornada una vez y actualizo el marcador, la crónica y las tablas."""
         if self.jornada_actual >= len(self.calendario):
             messagebox.showinfo("Fin de Temporada", "¡La temporada ha concluido! Revisa la clasificación final.")
             return
@@ -441,6 +470,7 @@ class FootballManagerGUI:
         self.actualizar_todo()
 
     def simular_partido_motor(self, local, vis, dibujar_mapa=False):
+        """Resuelvo un partido y aplico sus consecuencias deportivas, financieras y físicas; dibujo los remates del partido del usuario."""
         atq_l, def_l = local.calcular_fuerzas()
         atq_v, def_v = vis.calcular_fuerzas()
         atq_l += 3
@@ -531,6 +561,7 @@ class FootballManagerGUI:
 
     def actualizar_todo(self):
         # Cabecera
+        """Sincronizo cabecera, próximo rival, plantilla, pizarra, clasificación, goleadores y mercado con el estado actual."""
         j_txt = f"Jornada {self.jornada_actual + 1}/{len(self.calendario)}" if self.jornada_actual < len(self.calendario) else "Fin de Liga"
         self.lbl_info_top.config(text=f"📅 {j_txt}   |   💶 Presupuesto: {self.mi_equipo.presupuesto:,} €   |   Salarios: {self.mi_equipo.masa_salarial():,} €/j")
 

@@ -1,3 +1,5 @@
+// Prueba integral con navegador real: el workflow sirve el HTML y genera capturas.
+// Repito los flujos en ordenador y en un viewport táctil con tamaño de iPhone.
 const { chromium, devices } = require('playwright');
 const assert = require('node:assert/strict');
 const fs = require('node:fs/promises');
@@ -8,6 +10,7 @@ const fs = require('node:fs/promises');
   const artifactDir = require('node:path').join(__dirname, 'test-artifacts');
   await fs.mkdir(artifactDir, { recursive: true });
   try {
+    // Uso el mismo recorrido para detectar diferencias entre escritorio y móvil.
     for (const mode of ['desktop', 'mobile']) {
       const context = await browser.newContext(mode === 'mobile'
         ? { ...devices['iPhone 13'], viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true }
@@ -19,6 +22,7 @@ const fs = require('node:fs/promises');
       if (mode === 'mobile') assert.equal(await page.evaluate(() => window.innerWidth), 390, 'ancho de pantalla móvil esperado');
       await page.waitForFunction(() => typeof estadoJuego !== 'undefined' && !!estadoJuego.equipos);
       await page.screenshot({ path: require('node:path').join(artifactDir, `juego-${mode}.png`), fullPage: true });
+      // Identidad ficticia, aviso de métricas simuladas, avatares propios y modelo de ataque/defensa.
       assert.equal(await page.locator('.sim-disclaimer').count(), 1, 'aviso visible de simulación');
       assert.match(await page.locator('.sim-disclaimer').innerText(), /xG.*datos del juego/i);
       assert.equal(await page.evaluate(() => estadoJuego.equipos.length), 4);
@@ -86,6 +90,7 @@ const fs = require('node:fs/promises');
         acotado: true
       }, 'el motor debe reflejar ataque y defensa rivales al generar remates y xG');
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 0);
+      // Verifico navegación completa y ausencia de desplazamiento horizontal en móvil.
       const tabs = ['tactica', 'partido', 'clasificacion', 'mercado', 'entrenamiento'];
       for (const tab of tabs) {
         await page.locator('button.tab-btn').filter({
@@ -104,6 +109,7 @@ const fs = require('node:fs/promises');
           assert.ok(widths.document <= widths.viewport + 2, 'desbordamiento en pestaña ' + tab);
         }
       }
+      // Compruebo ejercicios, sus marcadores de progreso y la persistencia de cada modalidad.
       await page.locator('button.tab-btn').filter({ hasText: 'Laboratorio de juego' }).click();
       const trainingBefore = await page.evaluate(() => ({
         opcion: retoPaseActual.opcionRecomendada,
@@ -248,6 +254,7 @@ const fs = require('node:fs/promises');
       await page.reload();
       assert.equal(await page.evaluate(() => estadoJuego.entrenamiento.porTipo.finalizacion.intentos), 1,
         'el progreso de finalización se conserva al recargar');
+      // Compruebo que lesiones y fatiga influyen en el once y que descanso solo se aplica una vez.
       await page.locator('button.tab-btn').filter({ hasText: 'Pizarra Táctica' }).click();
       const availability = await page.locator('#resumen-disponibilidad').innerText();
       assert.match(availability, /Disponibles: \d+\/\d+/);
@@ -327,6 +334,7 @@ const fs = require('node:fs/promises');
       });
       assert.deepEqual(injuredRecovery, { lesionado: 1, cansancio: 31 },
         'el lesionado se recupera sin acumular fatiga');
+      // Una jornada mal formada, incluso en el futuro, no debe alterar el estado de liga.
       const invalidFixture = await page.evaluate(() => {
         const original = estadoJuego.calendario[estadoJuego.jornadaActual];
         const before = estadoJuego.jornadaActual;
@@ -358,6 +366,7 @@ const fs = require('node:fs/promises');
         'una jornada futura corrupta también debe impedir simular');
       assert.equal(futureFixture.pointsUnchanged, true,
         'no deben cambiar los puntos cuando el calendario es inválido');
+      // El juego debe seguir arrancando si el navegador bloquea localStorage y señalar los fallos de guardado.
       const blockedRead = await page.evaluate(() => {
         const original = Storage.prototype.getItem;
         Storage.prototype.getItem = function () { throw new Error('lectura bloqueada'); };
@@ -387,6 +396,7 @@ const fs = require('node:fs/promises');
       await page.reload();
       assert.equal(await page.locator('#estado-guardado').textContent(), '✓ Partida recuperada',
         'al reabrir una partida guardada debe indicarse que se recuperó');
+      // Exportar e importar debe conservar una partida válida y rechazar una copia corrupta sin sustituirla.
       const exportEvent = page.waitForEvent('download');
       await page.locator('header button').filter({ hasText: 'Exportar' }).click();
       const exportFile = await exportEvent;
@@ -473,6 +483,7 @@ const fs = require('node:fs/promises');
       });
       assert.equal(resetIndicator, 'Nueva partida sin guardar',
         'el reinicio debe indicar que la partida nueva no está guardada');
+      // Verifico los límites deportivos y económicos que protegen los estados extremos.
       const shortSquad = await page.evaluate(() => {
         const club = obtenerMiEquipo();
         const original = club.plantilla.map(j => j.lesionado);
@@ -518,6 +529,7 @@ const fs = require('node:fs/promises');
       await page.reload();
       assert.equal(await page.evaluate(() => estadoJuego.preparacionUsada), true,
         'preparación persistente tras recarga');
+      // Las compras/ventas válidas actualizan plantilla y presupuesto; las inválidas no hacen nada.
       const invalidMarket = await page.evaluate(() => {
         const club = obtenerMiEquipo();
         const before = { money: club.presupuesto, size: club.plantilla.length,
@@ -564,6 +576,7 @@ const fs = require('node:fs/promises');
       });
       assert.deepEqual(squadLimit, { botonesBloqueados: true, noHuboCompra: true },
         'la plantilla de 25 jugadores bloquea visualmente y también impide fichajes');
+      // Un partido determinista permite comparar el número de remates con mapa, crónica y repeticiones.
       const beforeReload = await page.evaluate(() => ({
         money: obtenerMiEquipo().presupuesto,
         squad: obtenerMiEquipo().plantilla.length,
@@ -623,6 +636,7 @@ const fs = require('node:fs/promises');
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 1, 'partida persistente');
       await page.evaluate(() => { for (let i = 1; i < 6; i++) simularJornada(); });
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 6);
+      // Cierro una temporada para probar desempates, premios, reinicio estadístico y renovación del mercado.
       const empate = await page.evaluate(() => {
         const clubes = crearEstadoInicial().equipos;
         clubes.forEach(e => { e.puntos = 10; e.gf = 8; e.gc = 5; });
@@ -697,7 +711,7 @@ const fs = require('node:fs/promises');
       });
       assert.deepEqual(limiteMercado, { temporada: 3, cantidad: 12, distintos: 12 },
         'el mercado renueva opciones sin crecer indefinidamente en temporadas largas');
-      // El déficit es una situación económica válida, no una partida corrupta.
+      // El déficit es válido; además, este caso cubre la migración de guardados sin el nuevo contador de remates.
       await page.evaluate(() => {
         const partida = crearEstadoInicial();
         partida.equipos.find(e => e.nombre === 'FC Pase y Pifia').presupuesto = -250000;
@@ -784,6 +798,7 @@ const fs = require('node:fs/promises');
       await page.reload();
       assert.equal(await page.evaluate(() => estadoJuego.temporada), 1);
       if (mode === 'mobile') {
+        // Mido el documento completo después de todas las interacciones, no solo al cargar.
         const size = await page.evaluate(() => ({
           documentWidth: document.documentElement.scrollWidth,
           viewportWidth: window.innerWidth
