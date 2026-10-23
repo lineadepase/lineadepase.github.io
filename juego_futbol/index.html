@@ -2733,7 +2733,17 @@ function renovarMercadoTemporada() {
  const usados=new Set([...estadoJuego.equipos[0].plantilla.map(j=>j.jugador_id),...estadoJuego.mercado.map(j=>j.jugador_id)]);
  const elegibles=PLANTILLAS_DB.equipos.flatMap(eq=>eq.jugadores.map(j=>({jugador:j,equipo:eq}))).filter(x=>!usados.has(x.jugador.id));
  const giro=(estadoJuego.temporada*7)%Math.max(elegibles.length,1),rotados=[...elegibles.slice(giro),...elegibles.slice(0,giro)];
- const nuevos=rotados.slice(0,Math.min(4,Math.max(0,12-estadoJuego.mercado.length))).map(({jugador:j,equipo:eq})=>({
+ const cantidad=Math.min(4,Math.max(0,12-estadoJuego.mercado.length)),seleccionados=[];
+ for(const posicion of ['POR','DEF','CEN','DEL']){
+  if(seleccionados.length>=cantidad)break;
+  const candidato=rotados.find(x=>x.jugador.posicion===posicion&&!seleccionados.some(s=>s.jugador.id===x.jugador.id));
+  if(candidato)seleccionados.push(candidato);
+ }
+ for(const candidato of rotados){
+  if(seleccionados.length>=cantidad)break;
+  if(!seleccionados.some(s=>s.jugador.id===candidato.jugador.id))seleccionados.push(candidato);
+ }
+ const nuevos=seleccionados.map(({jugador:j,equipo:eq})=>({
   jugador_id:j.id,nombre:j.nombre,jugador_real:j.jugador_real,equipo_origen:eq.club_real,equipo_origen_parodia:eq.nombre_parodico,
   posicion:j.posicion,media:j.valoracion_juego,atributos:{...j.atributos},rasgo:j.rasgo,clausula:j.clausula,
   avatar_ia:j.avatar_ia,reacciones_ia:{...j.reacciones_ia},moral:82,cansancio:0,precio:j.valor,salario:j.salario,goles:0,xg:0,lesionado:0,titular:false

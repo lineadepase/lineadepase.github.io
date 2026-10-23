@@ -4,6 +4,13 @@ const { chromium, devices } = require('playwright');
 const assert = require('node:assert/strict');
 const fs = require('node:fs/promises');
 
+async function recargarPartida(page) {
+  await page.reload();
+  // El JSON de plantillas se carga de forma asíncrona antes de crear estadoJuego.
+  await page.waitForFunction(() => typeof estadoJuego !== 'undefined' && !!estadoJuego?.entrenamiento,
+    null, { timeout: 10000 });
+}
+
 (async () => {
   const browser = await chromium.launch({ headless: true });
   const errors = [];
@@ -18,7 +25,26 @@ const fs = require('node:fs/promises');
       const page = await context.newPage();
       page.on('pageerror', err => errors.push(mode + ': ' + err.message));
       page.on('console', message => {
-        if (message.type() === 'error') errors.push(mode + ' consola: ' + message.text());
+        // Los recursos IA son opcionales y todavía no están generados; sus 404 tienen fallback visual.
+        if (message.type() === 'error' && !message.text().includes('Failed to load resource')) {
+          errors.push(mode + ' consola: ' + message.text());
+        }
+      });
+      page.on('response', response => {
+        const ruta = new URL(response.url()).pathname;
+        if (response.status() >= 400 && !ruta.includes('/assets/ia/')) {
+          errors.push(`${mode} HTTP ${response.status()}: ${ruta}`);
+        }
+      });
+      page.on('requestfailed', request => {
+        const url = new URL(request.url());
+        const ruta = url.pathname;
+        const fallo = request.failure()?.errorText || 'fallo de red';
+        const recursoOpcional = ruta.includes('/assets/ia/') ||
+          ['fonts.googleapis.com', 'fonts.gstatic.com'].includes(url.hostname);
+        if (!recursoOpcional && fallo !== 'net::ERR_ABORTED') {
+          errors.push(`${mode} ${fallo}: ${ruta}`);
+        }
       });
       page.on('dialog', dialog => dialog.accept());
       // La web presenta el juego en el catálogo y ofrece una explicación real de xG.
@@ -232,16 +258,18 @@ const fs = require('node:fs/promises');
       const ficha = await page.evaluate(() => ({
         caricatura: document.getElementById('swipe-portrait').dataset.portraitId,
         clausula: document.getElementById('swipe-clause').textContent,
-        etiquetas: [...document.querySelectorAll('#swipe-stats .swipe-stat')].length,
+        datosEconomicos: [...document.querySelectorAll('#swipe-stats .swipe-stat')].length,
         atributos: document.querySelectorAll('#swipe-stats .attribute-pill').length,
         codigos: [...document.querySelectorAll('#swipe-stats .attribute-pill small')].map(e=>e.textContent)
       }));
       assert.match(ficha.caricatura, /^caricatura-/);
-      assert.ok(ficha.clausula.length>20 && ficha.etiquetas>=4, 'ficha lista atributos, cláusula y placeholder de ilustración');
+      assert.ok(ficha.clausula.length>20 && ficha.datosEconomicos===2,
+        'la ficha muestra cláusula, precio y salario junto al placeholder de ilustración');
       assert.equal(ficha.atributos, 5, 'la carta ofrece los cinco atributos humorísticos');
       assert.deepEqual(ficha.codigos, ['RAS','TOZ','CHI','RET','ALM']);
-      assert.ok(window.DATOS_ARAGONESES.equipos.includes('Real Magras de Madrid') &&
-        window.DATOS_ARAGONESES.equipos.includes('Athletic de la Tronca'), 'el universo incluye clubes aragoneses ficticios');
+      const equiposParodicos = await page.evaluate(() => window.DATOS_ARAGONESES.equipos);
+      assert.ok(equiposParodicos.includes('Real Magras de Madrid') &&
+        equiposParodicos.includes('Athletic de la Tronca'), 'el universo incluye clubes aragoneses ficticios');
 
       await page.locator('#pestana-clasificacion').click();
       assert.equal(await page.locator('.cta-card button').count(), 2, 'despacho ofrece dos acciones siguientes');
@@ -251,13 +279,15 @@ const fs = require('node:fs/promises');
       assert.match(await page.locator('#finance-wages').innerText(), /€/);
       assert.equal(await page.locator('#sponsor-options .sponsor-card').count(), 3, 'hay tres contratos absurdos disponibles');
       await page.locator('[data-sponsor="cero-cero"]').click();
-      assert.match(await page.locator('#sponsor-status').innerText(), /Contrato firmado/, 'la firma activa un objetivo y una prima');
+      assert.match(await page.locator('#sponsor-status').innerText(), /Contrato activo/,
+        'la firma activa el objetivo y detalla cuándo se cobra la prima');
       assert.equal(await page.locator('#floating-cta').isVisible(), true, 'la llamada a la acción permanece fija en pantalla');
       const candidatoLocalizado = await page.evaluate(() => {
         const j = estadoJuego.mercado[0];
         const rival = estadoJuego.equipos.find(eq => eq.plantilla.some(p => p.jugador_id === j.jugador_id));
         return { jugador: j.nombre, id: j.jugador_id, clubId: rival?.id };
       });
+      await page.locator('#pestana-mercado').click();
       await page.locator('#swipe-match').click();
       const rosterTrasMatch = await page.evaluate(({ id, clubId }) => ({
         fichado: obtenerMiEquipo().plantilla.filter(j => j.jugador_id === id).length,
@@ -278,7 +308,8 @@ const fs = require('node:fs/promises');
       await page.screenshot({ path: require('node:path').join(artifactDir, `juego-${mode}.png`), fullPage: true });
       // Identidad ficticia, aviso de métricas simuladas, avatares propios y modelo de ataque/defensa.
       assert.equal(await page.locator('.sim-disclaimer').count(), 1, 'aviso visible de simulación');
-      assert.match(await page.locator('.sim-disclaimer').innerText(), /xG.*datos del juego/i);
+      assert.match(await page.locator('.sim-disclaimer').innerText(), /xG.*estimación didáctica del simulador/i,
+        'el aviso distingue el xG didáctico de una métrica oficial');
       assert.match(await page.locator('#guia-rapida summary').innerText(), /Cómo jugar/);
       await page.locator('#guia-rapida summary').click();
       assert.match(await page.locator('#guia-rapida').innerText(), /una vez antes de cada jornada/);
@@ -501,7 +532,7 @@ const fs = require('node:fs/promises');
         return estadoPartidaValido(partida);
       });
       assert.equal(inconsistentTraining, false, 'se rechazan contadores de entrenamiento incoherentes');
-      await page.reload();
+      await recargarPartida(page);
       assert.equal(await page.evaluate(() => estadoJuego.entrenamiento.intentos), 1,
         'el progreso del ejercicio se conserva al recargar');
       await page.locator('#pestana-clasificacion').click();
@@ -531,7 +562,7 @@ const fs = require('node:fs/promises');
       }));
       assert.deepEqual(pressingProgress, { total: 2, pass: 1, pressure: 1, pressureBest: 100 },
         'el ejercicio de presión guarda progreso separado y suma al total');
-      await page.reload();
+      await recargarPartida(page);
       assert.equal(await page.evaluate(() => estadoJuego.entrenamiento.porTipo.presion.intentos), 1,
         'el progreso de presión también se conserva al recargar');
       const olderPressureSave = await page.evaluate(() => {
@@ -566,7 +597,7 @@ const fs = require('node:fs/promises');
       }));
       assert.deepEqual(spaceProgress, { total: 3, passes: 1, pressure: 1, space: 1, spaceBest: 100 },
         'lectura del espacio conserva progreso separado y suma al total');
-      await page.reload();
+      await recargarPartida(page);
       assert.equal(await page.evaluate(() => estadoJuego.entrenamiento.porTipo.espacio.intentos), 1,
         'el progreso de lectura del espacio se conserva al recargar');
       await page.locator('#pestana-clasificacion').click();
@@ -594,7 +625,7 @@ const fs = require('node:fs/promises');
       }));
       assert.deepEqual(finishProgress, { total: 4, attempts: 1, best: 100, playerDataUnchanged: true },
         'finalización registra progreso sin alterar estadísticas reales del simulador');
-      await page.reload();
+      await recargarPartida(page);
       assert.equal(await page.evaluate(() => estadoJuego.entrenamiento.porTipo.finalizacion.intentos), 1,
         'el progreso de finalización se conserva al recargar');
       // Compruebo que lesiones y fatiga influyen en el once y que descanso solo se aplica una vez.
@@ -736,7 +767,7 @@ const fs = require('node:fs/promises');
       await page.evaluate(() => guardarPartidaLocal(false));
       assert.equal(await page.locator('#estado-guardado').textContent(), '✓ Guardado',
         'el indicador debe recuperarse tras guardar correctamente');
-      await page.reload();
+      await recargarPartida(page);
       assert.equal(await page.locator('#estado-guardado').textContent(), '✓ Partida recuperada',
         'al reabrir una partida guardada debe indicarse que se recuperó');
       // Exportar e importar debe conservar una partida válida y rechazar una copia corrupta sin sustituirla.
@@ -869,7 +900,7 @@ const fs = require('node:fs/promises');
         'no se puede descansar tras entrenar en la misma jornada');
       assert.ok(training.fatigueAfter.some((n, i) => n > training.fatigueBefore[i]),
         'el entrenamiento genera cansancio');
-      await page.reload();
+      await recargarPartida(page);
       assert.equal(await page.evaluate(() => estadoJuego.preparacionUsada), true,
         'preparación persistente tras recarga');
       // Las compras/ventas válidas actualizan plantilla y presupuesto; las inválidas no hacen nada.
@@ -946,14 +977,14 @@ const fs = require('node:fs/promises');
         squad: obtenerMiEquipo().plantilla.length,
         market: estadoJuego.mercado.length
       }));
-      await page.reload();
+      await recargarPartida(page);
       const afterReload = await page.evaluate(() => ({
         money: obtenerMiEquipo().presupuesto,
         squad: obtenerMiEquipo().plantilla.length,
         market: estadoJuego.mercado.length
       }));
       assert.deepEqual(afterReload, beforeReload, 'mercado y presupuesto guardados automáticamente');
-      await page.locator('button').filter({ hasText: 'Partido' }).click();
+      await page.locator('#pestana-partido').click();
       const replayCheck = await page.evaluate(() => {
         const random = Math.random;
         const originalStats = obtenerMiEquipo().plantilla.map(j => [j.goles, j.xg]);
@@ -1078,14 +1109,14 @@ const fs = require('node:fs/promises');
         moral: obtenerMiEquipo().plantilla[0].moral,
         pendiente: eventoVestuarioActual
       }));
-      assert.equal(eventoAntes.contrato, null, 'el contrato se liquida tras la jornada');
+      assert.equal(eventoAntes.contrato ?? null, null, 'no queda contrato pendiente tras liquidar la jornada');
       assert.equal(eventoDespues.presupuesto, Math.max(0, eventoAntes.presupuesto + eventoAntes.opcion.dinero),
         'el mini-evento altera y guarda las finanzas');
       assert.equal(eventoDespues.moral, Math.max(0, Math.min(100, eventoAntes.moral + eventoAntes.opcion.moral)),
         'el mini-evento modifica la moral del vestuario');
       assert.equal(eventoDespues.pendiente, null, 'la decisión cierra el popup');
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 1);
-      await page.reload();
+      await recargarPartida(page);
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 1, 'partida persistente');
       await page.evaluate(() => { for (let i = 1; i < 6; i++) simularJornada(); });
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 6);
@@ -1207,7 +1238,7 @@ const fs = require('node:fs/promises');
       assert.equal(mercadoRenovado.duplicados, false, 'el mercado no duplica nombres');
       assert.ok(mercadoRenovado.jugadores.every(j => j.goles === 0 && j.xg === 0),
         'las estadísticas del mercado empiezan limpias cada temporada');
-      await page.reload();
+      await recargarPartida(page);
       assert.equal(await page.evaluate(() => estadoJuego.temporada), 2);
       assert.equal(await page.evaluate(() => estadoJuego.historialTemporadas[0].goleadores.length), 2,
         'el empate de goleadores se conserva al recargar la partida');
@@ -1227,7 +1258,7 @@ const fs = require('node:fs/promises');
         delete partida.historialTemporadas;
         localStorage.setItem('ldp_manager_save', JSON.stringify(partida));
       });
-      await page.reload();
+      await recargarPartida(page);
       assert.equal(await page.evaluate(() => obtenerMiEquipo().presupuesto), -250000,
         'una partida con déficit se recupera sin reiniciarse');
       assert.deepEqual(await page.evaluate(() => estadoJuego.equipos.map(eq => eq.remates)), [0, 0, 0, 0],
@@ -1250,7 +1281,7 @@ const fs = require('node:fs/promises');
         'el déficit desactiva las compras y explica el motivo');
       await page.evaluate(() => localStorage.setItem('ldp_manager_save',
         JSON.stringify({ equipos: [], mercado: [], calendario: [], jornadaActual: 0, temporada: 1 })));
-      await page.reload();
+      await recargarPartida(page);
       assert.equal(await page.evaluate(() => estadoJuego.equipos.length), 4,
         'partida estructuralmente inválida rechazada');
       await page.evaluate(() => {
@@ -1258,7 +1289,7 @@ const fs = require('node:fs/promises');
         partida.equipos[0].plantilla[0].media = 'incorrecta';
         localStorage.setItem('ldp_manager_save', JSON.stringify(partida));
       });
-      await page.reload();
+      await recargarPartida(page);
       assert.equal(await page.evaluate(() => typeof estadoJuego.equipos[0].plantilla[0].media), 'number',
         'partida con valoración de jugador corrupta rechazada');
       await page.evaluate(() => {
@@ -1266,7 +1297,7 @@ const fs = require('node:fs/promises');
         partida.calendario[1] = partida.calendario[0];
         localStorage.setItem('ldp_manager_save', JSON.stringify(partida));
       });
-      await page.reload();
+      await recargarPartida(page);
       assert.equal(await page.evaluate(() => calendarioValido(estadoJuego.calendario, estadoJuego.equipos)), true,
         'calendario con enfrentamientos duplicados rechazado');
       await page.evaluate(() => {
@@ -1274,7 +1305,7 @@ const fs = require('node:fs/promises');
         partida.equipos[0].plantilla[0].cansancio = 140;
         localStorage.setItem('ldp_manager_save', JSON.stringify(partida));
       });
-      await page.reload();
+      await recargarPartida(page);
       assert.equal(await page.evaluate(() => estadoJuego.equipos[0].plantilla[0].cansancio <= 100), true,
         'partida con fatiga fuera de rango rechazada');
       await page.evaluate(() => {
@@ -1282,7 +1313,7 @@ const fs = require('node:fs/promises');
         partida.equipos[0].plantilla[0].salario = -500;
         localStorage.setItem('ldp_manager_save', JSON.stringify(partida));
       });
-      await page.reload();
+      await recargarPartida(page);
       assert.equal(await page.evaluate(() => estadoJuego.equipos[0].plantilla[0].salario >= 0), true,
         'partida con salario negativo rechazada');
       const safeMarkup = await page.evaluate(() =>
@@ -1306,11 +1337,11 @@ const fs = require('node:fs/promises');
         partida.equipos[0].nombre = 'Equipo inexistente';
         localStorage.setItem('ldp_manager_save', JSON.stringify(partida));
       });
-      await page.reload();
+      await recargarPartida(page);
       assert.equal(await page.evaluate(() => obtenerMiEquipo()?.nombre), 'Real Magras de Madrid',
         'una partida sin el equipo controlado se debe rechazar');
       await page.evaluate(() => localStorage.setItem('ldp_manager_save', '{bad json'));
-      await page.reload();
+      await recargarPartida(page);
       assert.equal(await page.evaluate(() => estadoJuego.temporada), 1);
       if (mode === 'mobile') {
         // Mido el documento completo después de todas las interacciones, no solo al cargar.
