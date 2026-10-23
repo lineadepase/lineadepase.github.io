@@ -1442,13 +1442,16 @@ function actualizarUI() {
     estadoJuego.mercado.forEach((j, idx) => {
         const tr = document.createElement('tr');
         const plantillaCompleta = miEq.plantilla.length >= MAX_PLANTILLA;
+        const presupuestoInsuficiente = miEq.presupuesto < 0 || miEq.presupuesto < j.precio;
+        const motivoBloqueo = plantillaCompleta ? 'La plantilla ya tiene 25 jugadores'
+            : presupuestoInsuficiente ? 'Presupuesto insuficiente para este fichaje' : '';
         tr.innerHTML = `
             <td class="left"><span class="player-name-cell">${avatarJugadorHTML(j.nombre, j.posicion)}<strong>${escaparHTML(j.nombre)}</strong></span></td>
             <td><span class="badge pos-${j.posicion}">${j.posicion}</span></td>
             <td>${j.media}</td>
             <td>${j.precio.toLocaleString('es-ES')} €</td>
             <td>${j.salario.toLocaleString('es-ES')} €</td>
-            <td><button class="btn-success" onclick="ficharJugador(${idx})" ${plantillaCompleta ? 'disabled title="La plantilla ya tiene 25 jugadores"' : ''}>${plantillaCompleta ? 'Plantilla completa' : 'Fichar'}</button></td>
+            <td><button class="btn-success" onclick="ficharJugador(${idx})" ${motivoBloqueo ? `disabled title="${motivoBloqueo}"` : ''}>${plantillaCompleta ? 'Plantilla completa' : presupuestoInsuficiente ? 'Sin presupuesto' : 'Fichar'}</button></td>
         `;
         tbodyM.appendChild(tr);
     });

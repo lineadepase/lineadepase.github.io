@@ -633,6 +633,27 @@ const fs = require('node:fs/promises');
       });
       assert.deepEqual(invalidMarket.after, invalidMarket.before,
         'índices de mercado inválidos no alteran el estado');
+      const marketAffordance = await page.evaluate(() => {
+        const club = obtenerMiEquipo();
+        const presupuestoOriginal = club.presupuesto;
+        const precio = estadoJuego.mercado[0].precio;
+        club.presupuesto = precio - 1;
+        actualizarUI();
+        const sinFondos = document.querySelector('#tbody-mercado button');
+        const resultadoSinFondos = {
+          disabled: sinFondos.disabled,
+          title: sinFondos.title,
+          texto: sinFondos.innerText
+        };
+        club.presupuesto = presupuestoOriginal;
+        actualizarUI();
+        return resultadoSinFondos;
+      });
+      assert.deepEqual(marketAffordance, {
+        disabled: true,
+        title: 'Presupuesto insuficiente para este fichaje',
+        texto: 'Sin presupuesto'
+      }, 'el mercado explica y bloquea visualmente un fichaje fuera del presupuesto');
       const market = await page.evaluate(() => {
         const club = obtenerMiEquipo();
         const before = { money: club.presupuesto, size: club.plantilla.length, available: estadoJuego.mercado.length };
@@ -887,11 +908,15 @@ const fs = require('node:fs/promises');
       const compraEnDeficit = await page.evaluate(() => {
         const club = obtenerMiEquipo();
         const antes = [club.presupuesto, club.plantilla.length, estadoJuego.mercado.length];
+        const botonesBloqueados = [...document.querySelectorAll('#tbody-mercado button')].every(boton =>
+          boton.disabled && boton.title === 'Presupuesto insuficiente para este fichaje');
         ficharJugador(0);
-        return { antes, despues: [club.presupuesto, club.plantilla.length, estadoJuego.mercado.length] };
+        return { antes, despues: [club.presupuesto, club.plantilla.length, estadoJuego.mercado.length], botonesBloqueados };
       });
       assert.deepEqual(compraEnDeficit.despues, compraEnDeficit.antes,
         'no se permite comprar jugadores con déficit');
+      assert.equal(compraEnDeficit.botonesBloqueados, true,
+        'el déficit desactiva las compras y explica el motivo');
       await page.evaluate(() => localStorage.setItem('ldp_manager_save',
         JSON.stringify({ equipos: [], mercado: [], calendario: [], jornadaActual: 0, temporada: 1 })));
       await page.reload();
