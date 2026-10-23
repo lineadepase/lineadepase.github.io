@@ -646,6 +646,14 @@ const fs = require('node:fs/promises');
       });
       assert.equal(empate[0], 'FC Pase y Pifia',
         'a igualdad de puntos y diferencia de goles, mandan los goles a favor');
+      const empateTotal = await page.evaluate(() => {
+        const clubes = crearEstadoInicial().equipos;
+        clubes.forEach(e => { e.puntos = 10; e.gf = 8; e.gc = 5; });
+        return calcularPremiosClasificacion(clubes).map(e => e.nombre);
+      });
+      assert.deepEqual(empateTotal, [
+        'Atlético Siestense', 'Deportivo Balón Perdido', 'FC Pase y Pifia', 'Unión Deportiva Patapalo'
+      ], 'si puntos, diferencia y goles a favor empatan, el nombre ordena de forma estable');
       const temporadaIncompleta = await page.evaluate(() => {
         const actual = estadoJuego.jornadaActual;
         const temporada = estadoJuego.temporada;

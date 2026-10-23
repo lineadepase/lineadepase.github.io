@@ -4,6 +4,17 @@ from tkinter import ttk, messagebox
 import random
 import os
 
+
+def ordenar_clasificacion(equipos):
+    """Ordeno la liga por puntos, diferencia de goles, goles a favor y nombre para desempates estables."""
+    return sorted(equipos, key=lambda eq: (
+        -eq.puntos,
+        -(eq.gf - eq.gc),
+        -eq.gf,
+        eq.nombre.casefold(),
+    ))
+
+
 # --- 1. CONFIGURACIÓN TÁCTICA Y COORDENADAS EN EL CAMPO (PIZARRA 2D) ---
 
 # Cada formación indica cuántos jugadores necesito por línea; todas suman once.
@@ -586,7 +597,7 @@ class FootballManagerGUI:
         # Tabla clasificación
         for row in self.tree_liga.get_children():
             self.tree_liga.delete(row)
-        ord_eq = sorted(self.equipos, key=lambda e: (e.puntos, e.gf - e.gc), reverse=True)
+        ord_eq = ordenar_clasificacion(self.equipos)
         for idx, eq in enumerate(ord_eq):
             dg = eq.gf - eq.gc
             dif_xg = eq.gf - eq.xg_f

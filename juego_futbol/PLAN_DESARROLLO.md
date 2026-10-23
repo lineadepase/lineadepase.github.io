@@ -43,3 +43,8 @@ Todos los clubes y futbolistas del juego usan nombres ficticios con tono humorí
 ## Próxima ampliación de producto
 
 El laboratorio ya contiene ejercicios jugables de pase y progresión, presión coordinada, lectura del espacio y finalización. Miden decisiones ficticias mediante escalas didácticas explicadas en pantalla; no cambian las valoraciones de los jugadores ni se presentan como métricas oficiales. La pestaña de partido también incorpora repeticiones esquemáticas de remates, generadas por el motor y claramente diferenciadas de un vídeo o dato oficial. La plantilla usa avatares vectoriales originales sin fotografías ni referencias a futbolistas concretos. Una ampliación posterior podría explorar mapas de presión y ocupación espacial. Los nombres humorísticos y las caras ilustradas originales siguen siendo el modo base; cualquier contenido identificable de clubes, competiciones o futbolistas reales requeriría una revisión de permisos antes de incorporarse.
+
+
+## Criterio de desempate
+
+La clasificación y los premios usan el mismo orden en la web, la consola y la interfaz de escritorio: puntos, diferencia de goles, goles a favor y nombre del equipo. El último criterio hace que las posiciones no dependan del orden interno de la plantilla cuando todos los datos deportivos coinciden. Las pruebas cubren los cuatro niveles y el reparto de premios web.

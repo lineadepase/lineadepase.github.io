@@ -446,6 +446,16 @@ def mostrar_mercado(equipo, mercado_disponible):
             print("Opción no válida.")
 
 
+def ordenar_clasificacion(equipos):
+    """Ordeno la liga por puntos, diferencia de goles, goles a favor y nombre para desempates estables."""
+    return sorted(equipos, key=lambda eq: (
+        -eq.puntos,
+        -(eq.goles_a_favor - eq.goles_en_contra),
+        -eq.goles_a_favor,
+        eq.nombre.casefold(),
+    ))
+
+
 def mostrar_clasificacion_y_metricas(equipos):
     """Ordeno los equipos y comparo resultados, xG y producción goleadora de los jugadores."""
     print("\n" + "=" * 72)
@@ -453,7 +463,7 @@ def mostrar_clasificacion_y_metricas(equipos):
     print("=" * 72)
     print(f"{'Pos':<4} {'Equipo':<18} {'PTS':<5} {'PJ':<4} {'GF':<4} {'GC':<4} {'DG':<5} {'xG':<6} {'xGA':<6} {'G - xG'}")
     print("-" * 72)
-    ordenados = sorted(equipos, key=lambda e: (e.puntos, e.goles_a_favor - e.goles_en_contra), reverse=True)
+    ordenados = ordenar_clasificacion(equipos)
     for i, eq in enumerate(ordenados):
         dg = eq.goles_a_favor - eq.goles_en_contra
         diff_xg = eq.goles_a_favor - eq.xg_favor
@@ -678,7 +688,7 @@ if __name__ == "__main__":
             mostrar_clasificacion_y_metricas(lista_equipos)
 
             # Premios por clasificación final
-            ordenados = sorted(lista_equipos, key=lambda e: (e.puntos, e.goles_a_favor - e.goles_en_contra), reverse=True)
+            ordenados = ordenar_clasificacion(lista_equipos)
             premios = [5000000, 3500000, 2500000, 1500000]
             for idx, eq in enumerate(ordenados):
                 premio = premios[idx] if idx < len(premios) else 1000000

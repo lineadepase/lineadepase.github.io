@@ -28,6 +28,25 @@ class TestMotor(unittest.TestCase):
         restored = engine.Jugador.from_dict(j.to_dict())
         self.assertEqual(j.to_dict(), restored.to_dict())
 
+    def test_desempates_clasificacion_estables(self):
+        """Compruebo que el desempate use puntos, diferencia, goles a favor y nombre en ese orden."""
+        equipos = [
+            engine.Equipo("Zeta", presupuesto=0),
+            engine.Equipo("Beta", presupuesto=0),
+            engine.Equipo("Alfa", presupuesto=0),
+            engine.Equipo("Delta", presupuesto=0),
+        ]
+        for equipo in equipos:
+            equipo.puntos = 10
+            equipo.goles_a_favor = 8
+            equipo.goles_en_contra = 5
+        equipos[0].goles_a_favor = 9
+        equipos[0].goles_en_contra = 6  # mismo diferencial que el resto; más goles a favor
+        equipos[1].goles_a_favor = 7
+        equipos[1].goles_en_contra = 4  # mejor diferencia; menos goles a favor
+        orden = engine.ordenar_clasificacion(equipos)
+        self.assertEqual([equipo.nombre for equipo in orden], ["Zeta", "Alfa", "Delta", "Beta"])
+
     def test_formaciones_once(self):
         """Compruebo que cada esquema asigna exactamente once posiciones."""
         for formacion, posiciones in engine.FORMACIONES.items():
