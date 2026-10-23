@@ -558,6 +558,7 @@
                         </tbody>
                     </table>
                 </div>
+                <button id="btn-exportar-balance" type="button" disabled onclick="exportarBalancePartido()">Descargar balance CSV</button>
                 <p id="match-breakdown-help" class="hint-box">Goles − xG compara los goles con la calidad estimada por el simulador. Las ocasiones claras son una categoría interna del juego.</p>
             </div>
         </div>
@@ -2034,6 +2035,7 @@ function simularJornada() {
     logBox.innerHTML = '';
     document.getElementById('match-summary').textContent = 'Jornada en curso; el resumen aparecerá al terminar el partido de FC Pase y Pifia.';
     actualizarDesglosePartido();
+    document.getElementById('btn-exportar-balance').disabled = true;
     limpiarRepeticionesPartido();
     const canvasShot = document.getElementById('canvas-shotmap');
     const ctxShot = canvasShot.getContext('2d');
@@ -2241,6 +2243,30 @@ function actualizarDesglosePartido(equipos = []) {
         });
         cuerpo.appendChild(fila);
     });
+    document.getElementById('btn-exportar-balance').disabled = false;
+}
+
+/**
+ * Descargo el balance visible con encabezados en castellano y delimitadores compatibles con hojas de cálculo locales.
+ */
+function exportarBalancePartido() {
+    const tabla = document.getElementById('match-breakdown');
+    const filas = [
+        [...tabla.querySelectorAll('thead th')].map(celda => celda.textContent.trim()),
+        ...[...tabla.querySelectorAll('tbody tr')].map(fila => [...fila.cells].map(celda => celda.textContent.trim()))
+    ];
+    if (filas.length !== 3 || filas.some(fila => fila.length !== 6)) return;
+    const escaparCampo = valor => `"${String(valor).replace(/"/g, '""')}"`;
+    const contenido = filas.map(fila => fila.map(escaparCampo).join(';')).join('\r\n');
+    const archivo = new Blob(['\uFEFF', contenido], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(archivo);
+    const enlace = document.createElement('a');
+    enlace.href = url;
+    enlace.download = `linea-de-pase-partido-temporada-${estadoJuego.temporada}-jornada-${Math.max(1, estadoJuego.jornadaActual)}.csv`;
+    document.body.appendChild(enlace);
+    enlace.click();
+    enlace.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
 /**

@@ -135,6 +135,8 @@ const fs = require('node:fs/promises');
       assert.equal(await page.evaluate(() => estadoJuego.equipos.length), 4);
       assert.equal(await page.locator('#tbody-match-breakdown tr').innerText(),
         'El balance aparecerá al terminar el partido.', 'la tabla explica cuándo estará disponible');
+      assert.equal(await page.locator('#btn-exportar-balance').isDisabled(), true,
+        'el CSV no se ofrece antes de tener un balance');
       const plantillasFicticias = await page.evaluate(() => ({
         clubes: estadoJuego.equipos.map(e => e.nombre),
         jugadores: estadoJuego.equipos.flatMap(e => e.plantilla.map(j => j.nombre)),
@@ -849,6 +851,20 @@ const fs = require('node:fs/promises');
         'el contador de remates coincide con las ocasiones generadas');
       assert.deepEqual(replayCheck.breakdownRows, replayCheck.expectedBreakdownRows,
         'la tabla de partido compara los dos equipos con goles, remates, xG y ocasiones claras');
+      assert.equal(await page.locator('#btn-exportar-balance').isDisabled(), false,
+        'el informe CSV se activa al terminar el partido');
+      const reportDownloadEvent = page.waitForEvent('download');
+      await page.locator('#btn-exportar-balance').click();
+      const reportDownload = await reportDownloadEvent;
+      assert.match(reportDownload.suggestedFilename(), /^linea-de-pase-partido-temporada-1-jornada-1\.csv$/,
+        'el informe usa un nombre de archivo en castellano con temporada y jornada');
+      const csvReport = await fs.readFile(await reportDownload.path(), 'utf8');
+      assert.equal(csvReport.charCodeAt(0), 0xFEFF, 'el CSV empieza con BOM para conservar tildes en hojas de cálculo');
+      const csvRows = csvReport.slice(1).trimEnd().split(/\r?\n/);
+      assert.deepEqual(csvRows.slice(1), replayCheck.expectedBreakdownRows.map(row =>
+        row.map(value => `"${value.replace(/"/g, '""')}"`).join(';')),
+      'el CSV contiene las mismas estadísticas que el balance visible');
+      assert.equal(csvRows.length, 3, 'el archivo incluye cabecera y los dos equipos');
       assert.ok(replayCheck.finalSummary.includes(`Remates: ${replayCheck.shots[0]} vs ${replayCheck.shots[1]}`) &&
         replayCheck.finalSummary.includes('xG:') &&
         replayCheck.finalSummary.includes(`ocasiones claras: ${replayCheck.clearChances[0]} vs ${replayCheck.clearChances[1]}`),
