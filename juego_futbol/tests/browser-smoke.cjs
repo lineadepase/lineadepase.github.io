@@ -163,6 +163,12 @@ const fs = require('node:fs/promises');
         return estadoPartidaValido(partida);
       });
       assert.equal(corruptTraining, false, 'las estadísticas de entrenamiento se validan al importar');
+      const corruptArchive = await page.evaluate(() => {
+        const partida = crearEstadoInicial();
+        partida.historialTemporadas = [{ temporada: 1, clasificacion: [], pichichi: null }];
+        return estadoPartidaValido(partida);
+      });
+      assert.equal(corruptArchive, false, 'un resumen histórico incompleto se rechaza al importar');
       const legacySave = await page.evaluate(() => {
         const partida = crearEstadoInicial();
         delete partida.entrenamiento;
@@ -701,8 +707,22 @@ const fs = require('node:fs/promises');
         cantidad: estadoJuego.mercado.length,
         nombres: estadoJuego.mercado.map(j => j.nombre)
       }));
+      await page.evaluate(() => {
+        const goleador = obtenerMiEquipo().plantilla.find(j => j.nombre === 'Paco Manoplas');
+        goleador.goles = 7;
+        goleador.xg = 4.25;
+      });
       await page.evaluate(() => iniciarNuevaTemporada());
       assert.equal(await page.evaluate(() => estadoJuego.temporada), 2);
+      const archivoPrimeraTemporada = await page.evaluate(() => estadoJuego.historialTemporadas[0]);
+      assert.equal(archivoPrimeraTemporada.temporada, 1, 'el cambio de temporada archiva la campaña que termina');
+      assert.equal(archivoPrimeraTemporada.pichichi.nombre, 'Paco Manoplas',
+        'el resumen conserva el máximo goleador antes de reiniciar sus estadísticas');
+      assert.equal(archivoPrimeraTemporada.pichichi.goles, 7);
+      assert.equal(await page.evaluate(() => estadoPartidaValido(estadoJuego)), true,
+        'el nuevo historial cumple la validación de guardado');
+      assert.equal(await page.locator('#tbody-historial-temporadas tr').count(), 4,
+        'el archivo muestra la clasificación completa de la campaña');
       assert.deepEqual(await page.evaluate(() => estadoJuego.equipos.map(eq => eq.remates)), [0, 0, 0, 0],
         'los remates se reinician al comenzar la temporada');
       const presupuestosDespues = await page.evaluate(() =>
@@ -731,6 +751,8 @@ const fs = require('node:fs/promises');
         'las estadísticas del mercado empiezan limpias cada temporada');
       await page.reload();
       assert.equal(await page.evaluate(() => estadoJuego.temporada), 2);
+      assert.equal(await page.evaluate(() => estadoJuego.historialTemporadas[0].pichichi.nombre), 'Paco Manoplas',
+        'el archivo histórico se conserva al recargar la partida');
       const limiteMercado = await page.evaluate(() => {
         estadoJuego.jornadaActual = estadoJuego.calendario.length;
         iniciarNuevaTemporada();
@@ -739,11 +761,12 @@ const fs = require('node:fs/promises');
       });
       assert.deepEqual(limiteMercado, { temporada: 3, cantidad: 12, distintos: 12 },
         'el mercado renueva opciones sin crecer indefinidamente en temporadas largas');
-      // El déficit es válido; además, este caso cubre la migración de guardados sin el nuevo contador de remates.
+      // El déficit es válido; además, este caso cubre la migración de guardados sin remates ni archivo histórico.
       await page.evaluate(() => {
         const partida = crearEstadoInicial();
         partida.equipos.find(e => e.nombre === 'FC Pase y Pifia').presupuesto = -250000;
         partida.equipos.forEach(e => { delete e.remates; });
+        delete partida.historialTemporadas;
         localStorage.setItem('ldp_manager_save', JSON.stringify(partida));
       });
       await page.reload();
@@ -751,6 +774,8 @@ const fs = require('node:fs/promises');
         'una partida con déficit se recupera sin reiniciarse');
       assert.deepEqual(await page.evaluate(() => estadoJuego.equipos.map(eq => eq.remates)), [0, 0, 0, 0],
         'los guardados anteriores migran el contador de remates sin perder datos');
+      assert.deepEqual(await page.evaluate(() => estadoJuego.historialTemporadas), [],
+        'los guardados antiguos reciben un archivo vacío sin reiniciar la temporada');
       assert.match(await page.locator('#lbl-presupuesto').innerText(), /Déficit/,
         'el déficit se señala en la interfaz');
       const compraEnDeficit = await page.evaluate(() => {
