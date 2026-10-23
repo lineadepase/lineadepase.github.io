@@ -416,7 +416,7 @@ const fs = require('node:fs/promises');
       await page.reload();
       assert.equal(await page.evaluate(() => estadoJuego.entrenamiento.intentos), 1,
         'el progreso del ejercicio se conserva al recargar');
-      await page.locator('button.tab-btn').filter({ hasText: 'Laboratorio de juego' }).click();
+      await page.locator('button.tab-btn').filter({ hasText: 'Finanzas' }).click();
       await page.locator('#tipo-ejercicio').selectOption('presion');
       assert.match(await page.locator('#titulo-laboratorio').innerText(), /Presión coordinada/);
       const pressBoardState = await page.locator('#svg-presion').evaluate(el => ({
@@ -452,7 +452,7 @@ const fs = require('node:fs/promises');
         return estadoPartidaValido(partida);
       });
       assert.equal(olderPressureSave, true, 'los guardados de dos ejercicios siguen siendo válidos');
-      await page.locator('button.tab-btn').filter({ hasText: 'Laboratorio de juego' }).click();
+      await page.locator('button.tab-btn').filter({ hasText: 'Finanzas' }).click();
       await page.locator('#tipo-ejercicio').selectOption('espacio');
       assert.match(await page.locator('#titulo-laboratorio').innerText(), /Lectura del espacio/);
       const spaceBoard = await page.locator('#svg-espacio').evaluate(el => ({
@@ -479,7 +479,7 @@ const fs = require('node:fs/promises');
       await page.reload();
       assert.equal(await page.evaluate(() => estadoJuego.entrenamiento.porTipo.espacio.intentos), 1,
         'el progreso de lectura del espacio se conserva al recargar');
-      await page.locator('button.tab-btn').filter({ hasText: 'Laboratorio de juego' }).click();
+      await page.locator('button.tab-btn').filter({ hasText: 'Finanzas' }).click();
       await page.locator('#tipo-ejercicio').selectOption('finalizacion');
       assert.match(await page.locator('#titulo-laboratorio').innerText(), /Finalización/);
       const finishBoard = await page.locator('#svg-finalizacion').evaluate(el => ({
