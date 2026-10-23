@@ -16,7 +16,7 @@
       "club_real": "Real Madrid CF",
       "fuente_oficial": "https://www.realmadrid.com/es-ES/futbol/primer-equipo/plantilla",
       "temporada": "2026/27",
-      "formacion": "4-3-3",
+      "formacion": "4-4-2",
       "jugadores": [
         {
           "id": "kylian-embozado",
@@ -960,6 +960,34 @@
             "desborde",
             "velocidad",
             "definición"
+          ]
+        },
+        {
+          "id": "alejandro-carrizo",
+          "nombre": "Alejandro del Carrizo",
+          "jugador_real": "Álex Grimaldo",
+          "posicion": "DEF",
+          "valoracion_juego": 88,
+          "atributos": {
+            "RAS": 88,
+            "TOZ": 84,
+            "CHI": 91,
+            "RET": 86,
+            "ALM": 89
+          },
+          "rasgo": "Recorrido y centro preciso desde el carril.",
+          "clausula": "Pide el carril despejado y una señal clara para subir.",
+          "salario": 14080,
+          "valor": 3080000,
+          "avatar_ia": "assets/ia/avatares/alejandro-carrizo.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/alejandro-carrizo-match.mp4",
+            "rechazo": "assets/ia/reacciones/alejandro-carrizo-rechazo.mp4"
+          },
+          "tags": [
+            "recorrido",
+            "centro",
+            "precisión"
           ]
         }
       ]
