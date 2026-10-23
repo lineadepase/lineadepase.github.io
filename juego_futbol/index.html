@@ -1528,7 +1528,498 @@ const EJERCICIOS_FINALIZACION = [
                 resumen: "Tiro a puerta 72% · Amenaza 78 · Riesgo de bloqueo 28%",
                 explicacion: "El disparo es posible, pero el defensor está en la línea y el compañero ofrece una opción de mayor calidad." },
             { nombre: "Acomodar un toque más", probabilidad: 61, impacto: 82, riesgo: 39,
-                resumen: "Ventaja al contro…6618 tokens truncated… `${evento.minuto}'`;
+                resumen: "Ventaja al controlar 61% · Amenaza 82 · Riesgo de cierre 39%",
+                explicacion: "El control puede mejorar el ángulo, aunque da tiempo a que el portero y la defensa reduzcan el espacio." }
+        ]
+    },
+    {
+        contexto: "El pase al espacio te deja mano a mano. El portero sale rápido y se inclina hacia un lado; el central ya no puede alcanzarte.",
+        opciones: [
+            { nombre: "Definir raso al lado contrario", probabilidad: 81, impacto: 90, riesgo: 19,
+                resumen: "Tiro a puerta 81% · Amenaza 90 · Riesgo de parada 19%",
+                explicacion: "El portero ya carga su peso hacia un lado. Definir raso al otro aprovecha esa señal sin dar tiempo a que recupere la posición." },
+            { nombre: "Picar el balón", probabilidad: 68, impacto: 83, riesgo: 32,
+                resumen: "Ejecución 68% · Amenaza 83 · Riesgo de perder control 32%",
+                explicacion: "La vaselina supera al portero si la distancia es adecuada, pero exige precisión y el margen de error es mayor." },
+            { nombre: "Esperar a que se venza", probabilidad: 73, impacto: 76, riesgo: 27,
+                resumen: "Engaño 73% · Amenaza 76 · Riesgo de contacto 27%",
+                explicacion: "La pausa puede provocar un movimiento, pero el portero está cerca y puede reducir el tiempo para decidir." }
+        ]
+    },
+    {
+        contexto: "Un rechace cae en la frontal. El balón viene botando, tienes un defensor acercándose y el extremo está libre a tu izquierda.",
+        opciones: [
+            { nombre: "Control orientado y pase al extremo", probabilidad: 86, impacto: 84, riesgo: 14,
+                resumen: "Control y pase 86% · Amenaza 84 · Riesgo 14%",
+                explicacion: "El control orientado protege el balón y abre una línea limpia hacia el extremo, que tiene más tiempo para centrar o encarar." },
+            { nombre: "Volea inmediata", probabilidad: 55, impacto: 73, riesgo: 45,
+                resumen: "Tiro a puerta 55% · Amenaza 73 · Riesgo de golpeo 45%",
+                explicacion: "La volea sorprende, pero el balón bota y el golpeo es difícil. El defensor puede bloquear una ejecución imprecisa." },
+            { nombre: "Dejar pasar para un compañero", probabilidad: 74, impacto: 70, riesgo: 26,
+                resumen: "Recepción 74% · Amenaza 70 · Riesgo de pérdida 26%",
+                explicacion: "La dejada puede funcionar si el compañero ha leído el rechace; si no llega, el rival recupera el balón." }
+        ]
+    }
+];
+
+/**
+ * Asigno una puntuación didáctica a una decisión del laboratorio según su calidad y el ejercicio activo; no modifica atributos ni pretende ser una métrica real.
+ */
+function valorDecisionEjercicio(opcion) {
+    const probabilidad = opcion.probabilidad ?? opcion.conservacion;
+    const impacto = opcion.impacto ?? (opcion.avance * 0.55 + opcion.amenaza * 0.45);
+    const riesgo = opcion.riesgo ?? opcion.perdida;
+    return probabilidad / 100 * impacto - (100 - probabilidad) / 100 * riesgo * 0.45;
+}
+
+/**
+ * Cambio el reto de entrenamiento y preparo las instrucciones, opciones y visualización específicas del ejercicio seleccionado.
+ */
+function cambiarTipoEjercicio(tipo) {
+    if (!['pase', 'presion', 'espacio', 'finalizacion'].includes(tipo)) return false;
+    tipoEjercicioActual = tipo;
+    retoPaseActual = null;
+    actualizarPanelEntrenamiento();
+    return true;
+}
+
+/**
+ * Genero una situación nueva para practicar progresión y pase, con una opción recomendada que sirve para explicar la lectura del espacio.
+ */
+function iniciarEjercicioPase() {
+    const anterior = retoPaseActual?.indice;
+    const ejercicios = tipoEjercicioActual === 'presion' ? EJERCICIOS_PRESION :
+        tipoEjercicioActual === 'espacio' ? EJERCICIOS_ESPACIO :
+            tipoEjercicioActual === 'finalizacion' ? EJERCICIOS_FINALIZACION : EJERCICIOS_PASE;
+    let indice = Math.floor(Math.random() * ejercicios.length);
+    if (ejercicios.length > 1 && indice === anterior) indice = (indice + 1) % ejercicios.length;
+    const ejercicio = ejercicios[indice];
+    const valores = ejercicio.opciones.map(valorDecisionEjercicio);
+    retoPaseActual = {
+        tipo: tipoEjercicioActual,
+        indice,
+        contexto: ejercicio.contexto,
+        opciones: ejercicio.opciones,
+        opcionRecomendada: valores.indexOf(Math.max(...valores)),
+        resuelto: false
+    };
+    actualizarPanelEntrenamiento();
+}
+
+/**
+ * Actualizo título, descripción, escenario gráfico, opciones de respuesta y progreso guardado del ejercicio activo.
+ */
+function actualizarPanelEntrenamiento() {
+    const contexto = document.getElementById('pase-contexto');
+    if (!contexto) return;
+    if (!retoPaseActual) iniciarEjercicioPase();
+    const esPresion = retoPaseActual.tipo === 'presion';
+    const esEspacio = retoPaseActual.tipo === 'espacio';
+    const esFinalizacion = retoPaseActual.tipo === 'finalizacion';
+    const tituloTipo = esPresion ? 'Presión coordinada' : esEspacio ? 'Lectura del espacio' :
+        esFinalizacion ? 'Finalización' : 'Pase y progresión';
+    document.getElementById('tipo-ejercicio').value = retoPaseActual.tipo;
+    document.getElementById('titulo-laboratorio').textContent = `Laboratorio de juego · ${tituloTipo}`;
+    document.getElementById('pregunta-ejercicio').textContent = esPresion ? '¿Cómo organizarías la presión?' :
+        esEspacio ? '¿Cómo aprovecharías el espacio?' : esFinalizacion ? '¿Cómo acabarías la jugada?' : '¿Qué línea elegirías?';
+    document.getElementById('instruccion-ejercicio').textContent = esPresion
+        ? 'Busca el momento para saltar, protege las coberturas y evita que el rival supere el bloque.'
+        : esEspacio ? 'Identifica qué jugador fija, cuál ataca el espacio y cuándo conviene soltar el pase.'
+            : esFinalizacion ? 'Compara la calidad del remate con el tiempo disponible y las opciones de pase.'
+                : 'Valora el avance, la amenaza y la posibilidad de conservar el balón.';
+    const esPase = !esPresion && !esEspacio && !esFinalizacion;
+    document.getElementById('svg-pase').classList.toggle('active', esPase);
+    document.getElementById('svg-pase').setAttribute('aria-hidden', String(!esPase));
+    document.getElementById('svg-presion').classList.toggle('active', esPresion);
+    document.getElementById('svg-presion').setAttribute('aria-hidden', String(!esPresion));
+    document.getElementById('svg-espacio').classList.toggle('active', esEspacio);
+    document.getElementById('svg-espacio').setAttribute('aria-hidden', String(!esEspacio));
+    document.getElementById('svg-finalizacion').classList.toggle('active', esFinalizacion);
+    document.getElementById('svg-finalizacion').setAttribute('aria-hidden', String(!esFinalizacion));
+    document.getElementById('aviso-metrica-ejercicio').textContent = esPresion
+        ? 'La valoración didáctica combina probabilidad de recuperación, compactación y riesgo de quedar superados. No es una estadística oficial ni una medición real del equipo.'
+        : esEspacio ? 'La valoración es didáctica: combina creación de espacio, amenaza y riesgo según las reglas de este ejercicio. No mide una acción real ni es una estadística oficial.'
+            : esFinalizacion ? 'La valoración es didáctica: combina calidad de la decisión, amenaza y riesgo. No equivale a xG real ni a datos oficiales de un partido.'
+                : 'La puntuación es didáctica: combina avance, amenaza y conservación según las reglas de este ejercicio. No es una métrica oficial ni una evaluación real del jugador.';
+    contexto.textContent = retoPaseActual.contexto;
+    const opciones = document.getElementById('pase-opciones');
+    opciones.setAttribute('aria-label', `Opciones de ${esPresion ? 'presión' : esEspacio ? 'lectura del espacio' : esFinalizacion ? 'finalización' : 'pase'}`);
+    opciones.innerHTML = '';
+    retoPaseActual.opciones.forEach((opcion, indice) => {
+        const boton = document.createElement('button');
+        boton.type = 'button';
+        boton.className = 'pass-option' + (retoPaseActual.seleccion === indice ? ' selected' : '');
+        boton.disabled = retoPaseActual.resuelto;
+        boton.setAttribute('aria-pressed', String(retoPaseActual.seleccion === indice));
+        boton.dataset.opcionIndex = String(indice);
+        const resumen = opcion.resumen || `Avance ${opcion.avance} · Amenaza ${opcion.amenaza} · Conserva ${opcion.conservacion}% · Pérdida ${opcion.perdida}%`;
+        boton.innerHTML = `<strong>${opcion.nombre}</strong><span>${resumen}</span>`;
+        boton.addEventListener('click', () => resolverEjercicioPase(indice));
+        opciones.appendChild(boton);
+    });
+    const feedback = document.getElementById('pase-feedback');
+    feedback.textContent = retoPaseActual.feedback || (esPresion
+        ? 'Escoge una respuesta defensiva para valorar cuándo saltar y cómo cubrir.'
+        : esEspacio ? 'Escoge una acción para identificar cómo se crea o se cierra el espacio.'
+            : esFinalizacion ? 'Escoge entre rematar, asistir o conservar según la situación.'
+                : 'Escoge una ruta para ver cómo cambian el avance y el riesgo.');
+    document.getElementById('btn-siguiente-pase').hidden = !retoPaseActual.resuelto;
+    const total = estadoJuego.entrenamiento || { intentos: 0, puntos: 0, mejorPuntuacion: 0 };
+    const progreso = total.porTipo?.[retoPaseActual.tipo] || (retoPaseActual.tipo === 'pase'
+        ? total : { intentos: 0, puntos: 0, mejorPuntuacion: 0 });
+    document.getElementById('pase-progreso-titulo').textContent = `Tu progreso · ${esPresion ? 'Presión' :
+        esEspacio ? 'Espacio' : esFinalizacion ? 'Finalización' : 'Pase'}`;
+    document.getElementById('pase-intentos').textContent = progreso.intentos;
+    document.getElementById('pase-mejor').textContent = `${progreso.mejorPuntuacion}/100`;
+    document.getElementById('pase-media').textContent = progreso.intentos
+        ? `${Math.round(progreso.puntos / progreso.intentos)}/100` : '—';
+}
+
+/**
+ * Registro la decisión del usuario, explico por qué funciona o qué riesgo tiene y guardo el resultado por tipo de ejercicio.
+ */
+function resolverEjercicioPase(indice) {
+    if (!retoPaseActual || retoPaseActual.resuelto || !Number.isInteger(indice) ||
+        indice < 0 || indice >= retoPaseActual.opciones.length) return false;
+    const opcion = retoPaseActual.opciones[indice];
+    const mejorValor = Math.max(...retoPaseActual.opciones.map(valorDecisionEjercicio));
+    const puntos = Math.max(0, Math.min(100, Math.round(valorDecisionEjercicio(opcion) / mejorValor * 100)));
+    if (!estadoJuego.entrenamiento) estadoJuego.entrenamiento = { intentos: 0, puntos: 0, mejorPuntuacion: 0 };
+    const progreso = estadoJuego.entrenamiento;
+    if (!progreso.porTipo) {
+        // Migra el prototipo anterior: sus intentos correspondían al ejercicio de pase.
+        progreso.porTipo = {
+            pase: { intentos: progreso.intentos, puntos: progreso.puntos, mejorPuntuacion: progreso.mejorPuntuacion },
+            presion: { intentos: 0, puntos: 0, mejorPuntuacion: 0 },
+            espacio: { intentos: 0, puntos: 0, mejorPuntuacion: 0 },
+            finalizacion: { intentos: 0, puntos: 0, mejorPuntuacion: 0 }
+        };
+    }
+    // Mantiene compatibles guardados de la fase anterior del laboratorio.
+    ['presion', 'espacio', 'finalizacion'].forEach(tipo => {
+        if (!progreso.porTipo[tipo]) progreso.porTipo[tipo] = { intentos: 0, puntos: 0, mejorPuntuacion: 0 };
+    });
+    const detalle = progreso.porTipo[retoPaseActual.tipo];
+    progreso.intentos += 1;
+    progreso.puntos += puntos;
+    progreso.mejorPuntuacion = Math.max(progreso.mejorPuntuacion, puntos);
+    detalle.intentos += 1;
+    detalle.puntos += puntos;
+    detalle.mejorPuntuacion = Math.max(detalle.mejorPuntuacion, puntos);
+    retoPaseActual.resuelto = true;
+    retoPaseActual.seleccion = indice;
+    retoPaseActual.feedback = `${puntos}/100 · ${opcion.explicacion} Valoración didáctica de este escenario; no es una métrica oficial.`;
+    actualizarPanelEntrenamiento();
+    guardarPartidaLocal(false);
+    return true;
+}
+
+// --- 5. DIBUJO EN CANVAS 2D ---
+// Dibujo sobre canvas sin imágenes externas; las coordenadas de los jugadores se
+// derivan de la formación y del tamaño disponible del lienzo.
+/**
+ * Pinto el campo de juego en el canvas con césped, líneas, áreas y círculo central. Las dimensiones llegan como parámetros para reutilizarlo en varias vistas.
+ */
+function dibujarCampoBase(ctx, w, h) {
+    ctx.clearRect(0, 0, w, h);
+    const franja = w / 10;
+    for (let i = 0; i < 10; i++) {
+        ctx.fillStyle = i % 2 === 0 ? "#166534" : "#15803d";
+        ctx.fillRect(i * franja, 0, franja, h);
+    }
+    ctx.strokeStyle = "rgba(255,255,255,0.85)";
+    ctx.lineWidth = 2;
+    ctx.strokeRect(14, 14, w - 28, h - 28);
+    ctx.beginPath();
+    ctx.moveTo(w / 2, 14);
+    ctx.lineTo(w / 2, h - 14);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(w / 2, h / 2, 48, 0, Math.PI * 2);
+    ctx.stroke();
+
+    ctx.strokeRect(14, h / 2 - 90, 70, 180);
+    ctx.strokeRect(w - 84, h / 2 - 90, 70, 180);
+}
+
+/**
+ * Coloco en el campo a los titulares del usuario según la formación actual, la posición y su valoración efectiva.
+ */
+function dibujarPizarra(eq) {
+    const canvas = document.getElementById('canvas-pizarra');
+    const ctx = canvas.getContext('2d');
+    const w = canvas.width, h = canvas.height;
+    dibujarCampoBase(ctx, w, h);
+
+    const coords = COORDENADAS_PIZARRA[eq.formacion] || COORDENADAS_PIZARRA["4-4-2"];
+    const ordenPos = { POR: 0, DEF: 1, CEN: 2, DEL: 3 };
+    const titulares = eq.plantilla.filter(j => j.titular)
+        .sort((a, b) => ordenPos[a.posicion] - ordenPos[b.posicion]);
+
+    titulares.slice(0, 11).forEach((j, idx) => {
+        const cx = coords[idx][0] * w;
+        const cy = coords[idx][1] * h;
+
+        ctx.beginPath();
+        ctx.arc(cx, cy, 18, 0, Math.PI * 2);
+        ctx.fillStyle = j.posicion === "POR" ? "#f59e0b" : "#2563eb";
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = "#ffffff";
+        ctx.stroke();
+
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "bold 11px Segoe UI";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(rendimientoReal(j), cx, cy);
+
+        ctx.fillStyle = "rgba(15, 23, 42, 0.85)";
+        ctx.fillRect(cx - 42, cy + 21, 84, 17);
+        ctx.fillStyle = "#f8fafc";
+        ctx.font = "bold 10px Segoe UI";
+        ctx.fillText(j.nombre.slice(0, 12), cx, cy + 30);
+    });
+}
+
+// --- 6. INTERACCIÓN PLANTILLA Y TÁCTICA ---
+/**
+ * Gestiono la selección de jugadores para el cambio manual de titular y suplente, rechazando bajas y selecciones incoherentes.
+ */
+function clicarJugadorPlantilla(idx) {
+    const miEq = obtenerMiEquipo();
+    if (jugadorSeleccionadoIdx === null) {
+        jugadorSeleccionadoIdx = idx;
+    } else if (jugadorSeleccionadoIdx === idx) {
+        jugadorSeleccionadoIdx = null;
+    } else {
+        const j1 = miEq.plantilla[jugadorSeleccionadoIdx];
+        const j2 = miEq.plantilla[idx];
+        if (j1.lesionado > 0 || j2.lesionado > 0) {
+            alert("No puedes alinear a un jugador lesionado.");
+        } else if (j1.titular !== j2.titular) {
+            const temp = j1.titular;
+            j1.titular = j2.titular;
+            j2.titular = temp;
+        }
+        jugadorSeleccionadoIdx = null;
+        guardarPartidaLocal(false);
+    }
+    actualizarUI();
+}
+
+/**
+ * Leo la formación y el estilo de los controles, recalculo el once y actualizo la interfaz.
+ */
+function cambiarTactica() {
+    const miEq = obtenerMiEquipo();
+    miEq.formacion = document.getElementById('sel-formacion').value;
+    miEq.estilo = document.getElementById('sel-estilo').value;
+    convocarOnceAutomatico(miEq);
+    guardarPartidaLocal(false);
+    actualizarUI();
+}
+
+/**
+ * Rehago el once con el criterio automático y muestro el resultado en la plantilla y el campo.
+ */
+function autoconvocar() {
+    const miEq = obtenerMiEquipo();
+    convocarOnceAutomatico(miEq);
+    guardarPartidaLocal(false);
+    actualizarUI();
+}
+
+// --- 7. MOTOR DE SIMULACIÓN DE PARTIDOS Y SHOT MAP ---
+// Las métricas de esta sección son resultados internos del simulador. xG es una
+// estimación didáctica por ocasión, no una estadística oficial calculada desde vídeo.
+/**
+ * Elijo un finalizador entre los titulares, dando mayor probabilidad a delanteros y centrocampistas que a defensas.
+ */
+function elegirRematador(titulares) {
+    const pesos = titulares.map(j => j.posicion === "DEL" ? 55 : (j.posicion === "CEN" ? 30 : (j.posicion === "DEF" ? 14 : 1)));
+    const total = pesos.reduce((a, b) => a + b, 0);
+    let r = Math.random() * total;
+    for (let i = 0; i < titulares.length; i++) {
+        if (r < pesos[i]) return titulares[i];
+        r -= pesos[i];
+    }
+    return titulares[0];
+}
+
+/**
+ * Compruebo que la jornada esté completa y válida antes de resolver sus partidos. Luego aplico preparación, resultados, tabla, guardado y mensajes de final de temporada.
+ */
+function simularJornada() {
+    const totalJ = estadoJuego.calendario.length;
+    const miEq = obtenerMiEquipo();
+
+    if (estadoJuego.jornadaActual >= totalJ) {
+        iniciarNuevaTemporada();
+        return;
+    }
+
+    // Verificar la temporada completa antes de modificar puntos, dinero o lesiones.
+    // Una alteración en jornadas futuras también debe impedir simular.
+    if (!calendarioValido(estadoJuego.calendario, estadoJuego.equipos)) {
+        alert("El calendario de la temporada no es válido. No se ha simulado ningún partido.");
+        return;
+    }
+    const partidos = estadoJuego.calendario[estadoJuego.jornadaActual];
+
+    // Una jornada consume la preparación previa: no se puede entrenar o descansar
+    // ilimitadamente entre dos partidos.
+    estadoJuego.preparacionUsada = false;
+
+    const logBox = document.getElementById('match-log');
+    logBox.innerHTML = '';
+    limpiarRepeticionesPartido();
+    const canvasShot = document.getElementById('canvas-shotmap');
+    const ctxShot = canvasShot.getContext('2d');
+    dibujarCampoBase(ctxShot, canvasShot.width, canvasShot.height);
+
+    const mapa = Object.fromEntries(estadoJuego.equipos.map(e => [e.nombre, e]));
+
+    partidos.forEach(([locNom, visNom]) => {
+        const local = mapa[locNom];
+        const vis = mapa[visNom];
+        const esNuestro = (local.nombre === miEq.nombre || vis.nombre === miEq.nombre);
+        simularPartidoIndividual(local, vis, esNuestro, logBox, ctxShot, canvasShot.width, canvasShot.height);
+    });
+
+    if (eventosPartidoActual.length) {
+        mostrarRepeticion(0);
+    } else {
+        document.getElementById('replay-status').textContent = 'Esta jornada no produjo remates para el partido de FC Pase y Pifia.';
+        document.getElementById('replay-controls').innerHTML = '<p class="hint-box">No hay ocasiones registradas en este encuentro.</p>';
+    }
+
+    estadoJuego.jornadaActual++;
+    guardarPartidaLocal(false);
+    actualizarUI();
+}
+
+/**
+ * Convierto los caracteres especiales en entidades HTML para que los nombres guardados se muestren como texto y no se interpreten como etiquetas.
+ */
+function escaparHTML(valor) {
+    return String(valor).replace(/[&<>"']/g, caracter => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    })[caracter]);
+}
+
+// Retrato vectorial de estilo arcade, creado con formas originales y sin fotos ni
+// rasgos tomados de futbolistas reales. La semilla hace que cada cara sea estable.
+/**
+ * Genero un retrato vectorial original y estable a partir del nombre y la posición. Es una ilustración ficticia, no una foto ni un parecido con un jugador real.
+ */
+function avatarJugadorHTML(nombre, posicion) {
+    const texto = String(nombre);
+    let semilla = 0;
+    for (const caracter of texto) semilla = (semilla * 31 + caracter.codePointAt(0)) >>> 0;
+    const pieles = ['#f3c28b', '#e5ad78', '#c98250', '#955b3c', '#f0d2b4', '#ae704d'];
+    const cabellos = ['#202938', '#4b3528', '#713f24', '#172554', '#293241', '#6b4f3b'];
+    const camisetas = { POR: '#f59e0b', DEF: '#3b82f6', CEN: '#10b981', DEL: '#ef4444' };
+    const cortes = [
+        '<path d="M11 25c-2-13 4-21 14-21 11 0 15 8 12 20-3-5-7-7-12-7-5 0-9 3-14 8Z"/>',
+        '<path d="M10 24c-1-14 5-22 15-22 12 0 16 9 13 23l-5-5-3-8-4 5-5-5-4 8Z"/>',
+        '<path d="M10 23c-2-12 4-21 15-21 12 0 16 9 13 22l-4 13-4-9-2-16-5 5-4-5-3 16-3 9Z"/>'
+    ];
+    const piel = pieles[semilla % pieles.length];
+    const pelo = cabellos[Math.floor(semilla / 7) % cabellos.length];
+    const camiseta = camisetas[posicion] || '#64748b';
+    const gafas = semilla % 5 === 0
+        ? '<path d="M14 22h8m4 0h8m-12 0 2 1" fill="none" stroke="#172033" stroke-width="2.5"/><circle cx="18" cy="22" r="4" fill="none" stroke="#172033" stroke-width="2"/><circle cx="30" cy="22" r="4" fill="none" stroke="#172033" stroke-width="2"/>'
+        : '';
+    const barba = semilla % 4 === 0
+        ? '<path d="M15 27c2 7 5 10 9 10s8-3 9-10c-2 3-5 4-9 4s-7-1-9-4Z" fill="#49372f"/>'
+        : '';
+    return `<svg class="player-avatar" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+        <circle cx="24" cy="24" r="23" fill="#0f172a"/>
+        <path d="M5 48c1-10 8-15 19-15s18 5 19 15Z" fill="${camiseta}"/>
+        <path d="m18 34 6 7 6-7" fill="#f8fafc" opacity=".82"/>
+        <circle cx="11" cy="24" r="3" fill="${piel}"/><circle cx="37" cy="24" r="3" fill="${piel}"/>
+        <ellipse cx="24" cy="23" rx="12" ry="15" fill="${piel}"/>
+        <g fill="${pelo}">${cortes[semilla % cortes.length]}</g>
+        <path d="M17 27q2 1 4 0m6 0q2 1 4 0" fill="none" stroke="#243041" stroke-width="1.7" stroke-linecap="round"/>
+        <path d="M22 31q2 2 4 0" fill="none" stroke="#8b3e3e" stroke-width="1.5" stroke-linecap="round"/>
+        ${gafas}${barba}
+    </svg>`;
+}
+
+/**
+ * Vacío los datos y controles de la repetición anterior y detengo cualquier animación que siguiera pendiente.
+ */
+function limpiarRepeticionesPartido() {
+    if (animacionRepeticionId !== null) cancelAnimationFrame(animacionRepeticionId);
+    animacionRepeticionId = null;
+    eventosPartidoActual = [];
+    const controles = document.getElementById('replay-controls');
+    if (controles) controles.innerHTML = '<p class="hint-box">Cargando ocasiones del partido…</p>';
+    const estado = document.getElementById('replay-status');
+    if (estado) estado.textContent = 'La animación se construye con los eventos ficticios del motor.';
+    const title = document.getElementById('replay-title');
+    if (title) title.textContent = 'Sin repetición seleccionada';
+    const metricas = {
+        'replay-minute': '—',
+        'replay-player': '—',
+        'replay-team': '—',
+        'replay-xg': '—',
+        'replay-outcome': '—'
+    };
+    Object.entries(metricas).forEach(([id, valor]) => {
+        const elemento = document.getElementById(id);
+        if (elemento) elemento.textContent = valor;
+    });
+    document.getElementById('replay-trajectory')?.setAttribute('d', '');
+    document.getElementById('replay-shot-marker')?.setAttribute('visibility', 'hidden');
+    const ball = document.getElementById('replay-ball');
+    ball?.setAttribute('cx', '82');
+    ball?.setAttribute('cy', '160');
+}
+
+/**
+ * Guardo los datos de un remate y añado a la crónica un acceso a su reconstrucción animada.
+ */
+function registrarEventoTiro(evento, logBox) {
+    const indice = eventosPartidoActual.push(evento) - 1;
+    const linea = document.createElement('p');
+    linea.className = evento.esGol ? 'log-goal' : 'log-chance';
+    linea.textContent = `[${evento.minuto}'] ${evento.esGol ? '¡GOOOL' : 'Remate'} de ${evento.rematador} (${evento.equipo}) · xG simulado ${evento.xg.toFixed(2)}`;
+    const boton = document.createElement('button');
+    boton.type = 'button';
+    boton.className = 'replay-trigger';
+    boton.dataset.replayIndex = String(indice);
+    boton.setAttribute('aria-pressed', 'false');
+    boton.setAttribute('aria-label', `Repetir remate de ${evento.rematador}, minuto ${evento.minuto}, xG simulado ${evento.xg.toFixed(2)}`);
+    boton.textContent = `▶ Repetir · ${evento.minuto}'`;
+    boton.addEventListener('click', () => mostrarRepeticion(indice));
+    linea.appendChild(boton);
+    logBox.appendChild(linea);
+}
+
+/**
+ * Valido el índice elegido, actualizo la ficha accesible del remate y animo una reconstrucción esquemática, sin cargar vídeo real.
+ */
+function mostrarRepeticion(indice) {
+    if (!Number.isInteger(indice) || indice < 0 || indice >= eventosPartidoActual.length) return false;
+    const evento = eventosPartidoActual[indice];
+    const ball = document.getElementById('replay-ball');
+    const marker = document.getElementById('replay-shot-marker');
+    const path = document.getElementById('replay-trajectory');
+    const start = { x: evento.inicio.x, y: evento.inicio.y };
+    const end = { x: evento.remate.x, y: evento.remate.y };
+    if (animacionRepeticionId !== null) cancelAnimationFrame(animacionRepeticionId);
+    animacionRepeticionId = null;
+    path.setAttribute('d', `M ${start.x} ${start.y} Q ${(start.x + end.x) / 2} ${Math.max(24, Math.min(296, Math.min(start.y, end.y) - 24))} ${end.x} ${end.y}`);
+    marker.setAttribute('cx', String(end.x));
+    marker.setAttribute('cy', String(end.y));
+    marker.setAttribute('visibility', 'visible');
+    ball.setAttribute('cx', String(start.x));
+    ball.setAttribute('cy', String(start.y));
+    document.getElementById('replay-title').textContent = evento.esGol ? 'Remate con gol simulado' : 'Remate sin gol';
+    document.getElementById('replay-minute').textContent = `${evento.minuto}'`;
     document.getElementById('replay-player').textContent = evento.rematador;
     document.getElementById('replay-team').textContent = evento.equipo;
     document.getElementById('replay-xg').textContent = evento.xg.toFixed(2);
