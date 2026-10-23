@@ -348,6 +348,8 @@
         }
 
         .match-summary { margin: 10px 0 0; padding: 10px 12px; border-left: 3px solid var(--accent-light); background: rgba(15, 23, 42, .65); border-radius: 4px; line-height: 1.5; font-weight: 700; }
+        .match-breakdown-wrap { margin-top: 12px; }
+        #match-breakdown caption { padding: 8px; color: var(--accent-light); font-weight: 700; text-align: left; }
         .log-goal { color: var(--gold); font-weight: bold; }
         .log-chance { color: var(--accent-light); }
         .log-injury { color: var(--red); }
@@ -545,6 +547,18 @@
                     <span class="hint-box">🟡 Gol | 🔵 Local | 🔴 Visitante</span>
                 </div>
                 <canvas id="canvas-shotmap" width="480" height="420"></canvas>
+                <div class="table-wrap match-breakdown-wrap" role="region" aria-label="Balance estadístico del partido" tabindex="0">
+                    <table id="match-breakdown" aria-describedby="match-breakdown-help">
+                        <caption>Balance del partido simulado</caption>
+                        <thead>
+                            <tr><th class="left">Equipo</th><th>Goles</th><th>Remates</th><th>xG</th><th>Goles − xG</th><th>Ocasiones claras</th></tr>
+                        </thead>
+                        <tbody id="tbody-match-breakdown">
+                            <tr><td colspan="6">El balance aparecerá al terminar el partido.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p id="match-breakdown-help" class="hint-box">Goles − xG compara los goles con la calidad estimada por el simulador. Las ocasiones claras son una categoría interna del juego.</p>
             </div>
         </div>
         <section class="panel replay-panel" aria-labelledby="replay-heading">
@@ -2019,6 +2033,7 @@ function simularJornada() {
     const logBox = document.getElementById('match-log');
     logBox.innerHTML = '';
     document.getElementById('match-summary').textContent = 'Jornada en curso; el resumen aparecerá al terminar el partido de FC Pase y Pifia.';
+    actualizarDesglosePartido();
     limpiarRepeticionesPartido();
     const canvasShot = document.getElementById('canvas-shotmap');
     const ctxShot = canvasShot.getContext('2d');
@@ -2198,6 +2213,37 @@ function mostrarRepeticion(indice) {
 }
 
 /**
+ * Muestro el mismo resumen del partido en una tabla para poder comparar ambos equipos y leerlo sin depender del mapa visual.
+ */
+function actualizarDesglosePartido(equipos = []) {
+    const cuerpo = document.getElementById('tbody-match-breakdown');
+    if (!cuerpo) return;
+    cuerpo.replaceChildren();
+    if (equipos.length === 0) {
+        const fila = document.createElement('tr');
+        const celda = document.createElement('td');
+        celda.colSpan = 6;
+        celda.textContent = 'El balance aparecerá al terminar el partido.';
+        fila.appendChild(celda);
+        cuerpo.appendChild(fila);
+        return;
+    }
+
+    equipos.forEach(({ nombre, goles, remates, xg, ocasionesClaras }) => {
+        const fila = document.createElement('tr');
+        const diferencia = goles - xg;
+        const valores = [nombre, goles, remates, xg.toFixed(2), `${diferencia > 0 ? '+' : ''}${diferencia.toFixed(2)}`, ocasionesClaras];
+        valores.forEach((valor, indice) => {
+            const celda = document.createElement('td');
+            if (indice === 0) celda.classList.add('left');
+            celda.textContent = String(valor);
+            fila.appendChild(celda);
+        });
+        cuerpo.appendChild(fila);
+    });
+}
+
+/**
  * Resuelvo el partido por ventanas de ataque. Las fuerzas, táctica y defensa determinan quién ataca y con qué calidad; actualizo goles, remates, xG, puntos, taquilla, salarios, fatiga y lesiones.
  */
 function simularPartidoIndividual(local, vis, esNuestro, logBox, ctxShot, w, h) {
@@ -2334,6 +2380,10 @@ function simularPartidoIndividual(local, vis, esNuestro, logBox, ctxShot, w, h) 
         const detalleFinal = `(Remates: ${rematesL} vs ${rematesV} · xG: ${xgL.toFixed(2)} vs ${xgV.toFixed(2)} · ocasiones claras: ${ocasionesClarasL} vs ${ocasionesClarasV})`;
         document.getElementById('match-summary').textContent =
             `Último partido: ${local.nombre} ${gL} - ${gV} ${vis.nombre}. ${detalleFinal}`;
+        actualizarDesglosePartido([
+            { nombre: local.nombre, goles: gL, remates: rematesL, xg: xgL, ocasionesClaras: ocasionesClarasL },
+            { nombre: vis.nombre, goles: gV, remates: rematesV, xg: xgV, ocasionesClaras: ocasionesClarasV }
+        ]);
         if (eventosPartidoActual.length) {
             document.getElementById('replay-controls').innerHTML = '';
             eventosPartidoActual.forEach((evento, indice) => {

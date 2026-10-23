@@ -133,6 +133,8 @@ const fs = require('node:fs/promises');
       await page.locator('#guia-rapida summary').click();
       assert.equal(await page.locator('#btn-simular-jornada').innerText(), '▶️ SIMULAR JORNADA EN VIVO');
       assert.equal(await page.evaluate(() => estadoJuego.equipos.length), 4);
+      assert.equal(await page.locator('#tbody-match-breakdown tr').innerText(),
+        'El balance aparecerá al terminar el partido.', 'la tabla explica cuándo estará disponible');
       const plantillasFicticias = await page.evaluate(() => ({
         clubes: estadoJuego.equipos.map(e => e.nombre),
         jugadores: estadoJuego.equipos.flatMap(e => e.plantilla.map(j => j.nombre)),
@@ -811,6 +813,14 @@ const fs = require('node:fs/promises');
             events: eventosPartidoActual.length,
             shots: [home.remates, away.remates],
             clearChances: [home, away].map(eq => eventosPartidoActual.filter(e => e.equipo === eq.nombre && e.esClara).length),
+            breakdownRows: [...document.querySelectorAll('#tbody-match-breakdown tr')]
+              .map(row => [...row.cells].map(cell => cell.textContent)),
+            expectedBreakdownRows: [home, away].map(eq => {
+              const diferencia = eq.gf - eq.xgf;
+              return [eq.nombre, String(eq.gf), String(eq.remates), eq.xgf.toFixed(2),
+                `${diferencia > 0 ? '+' : ''}${diferencia.toFixed(2)}`,
+                String(eventosPartidoActual.filter(e => e.equipo === eq.nombre && e.esClara).length)];
+            }),
             summary: document.getElementById('match-summary').textContent,
             summaryIsLive: document.getElementById('match-summary').getAttribute('aria-live'),
             controls: document.querySelectorAll('#replay-controls [data-replay-index]').length,
@@ -837,6 +847,8 @@ const fs = require('node:fs/promises');
       assert.equal(replayCheck.events, 18, 'el partido genera ocasiones en sus 18 ventanas de juego');
       assert.equal(replayCheck.shots.reduce((total, remates) => total + remates, 0), 18,
         'el contador de remates coincide con las ocasiones generadas');
+      assert.deepEqual(replayCheck.breakdownRows, replayCheck.expectedBreakdownRows,
+        'la tabla de partido compara los dos equipos con goles, remates, xG y ocasiones claras');
       assert.ok(replayCheck.finalSummary.includes(`Remates: ${replayCheck.shots[0]} vs ${replayCheck.shots[1]}`) &&
         replayCheck.finalSummary.includes('xG:') &&
         replayCheck.finalSummary.includes(`ocasiones claras: ${replayCheck.clearChances[0]} vs ${replayCheck.clearChances[1]}`),
