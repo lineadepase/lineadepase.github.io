@@ -52,9 +52,9 @@
  function esGenerado(j){return /^cantera-\d+-\d+$/.test(j?.jugador_id||'')&&jugadorValido(j);}
  function validar(s){
   try{
-   if(!s.carrera||s.carrera.version!==1||!Number.isInteger(s.carrera.secuencia)||!fin(s.carrera.secuencia,1,1e9)||!Number.isInteger(s.carrera.ultimaEvolucion)||!fin(s.carrera.ultimaEvolucion,0,s.temporada)||!['dirigir','jugar'].includes(s.carrera.modoPartido)||!Array.isArray(s.carrera.liquidados)||!Array.isArray(s.carrera.bajasBase)||s.carrera.bajasBase.length>100||!Array.isArray(s.carrera.retirados)||s.carrera.retirados.length>200||!Array.isArray(s.carrera.noticias)||s.carrera.noticias.length>100)return false;
+   if(!s.carrera||s.carrera.version!==1||!Number.isInteger(s.carrera.secuencia)||!fin(s.carrera.secuencia,1,1e9)||!Number.isInteger(s.carrera.ultimaEvolucion)||!fin(s.carrera.ultimaEvolucion,0,s.temporada)||!['dirigir','jugar'].includes(s.carrera.modoPartido)||!Array.isArray(s.carrera.liquidados)||!Array.isArray(s.carrera.bajasBase)||s.carrera.bajasBase.length>1000||!Array.isArray(s.carrera.retirados)||s.carrera.retirados.length>200||!Array.isArray(s.carrera.noticias)||s.carrera.noticias.length>100)return false;
    if(!fin(s.carrera.mentalidad,0,100)||!s.carrera.noticias.every(t=>typeof t==='string'&&t.length<2000))return false;
-   if(!s.carrera.retirados.every(r=>r&&typeof r.id==='string'&&typeof r.nombre==='string'&&fin(r.edad,16,99)&&Number.isInteger(r.temporada)&&typeof r.regen==='string')||!s.carrera.bajasBase.every(id=>typeof id==='string'&&id.length<=100)||s.carrera.liquidados.length>100||!s.carrera.liquidados.every(k=>typeof k==='string'&&k.length<=300))return false;
+   if(!s.carrera.retirados.every(r=>r&&typeof r.id==='string'&&typeof r.nombre==='string'&&fin(r.edad,16,99)&&Number.isInteger(r.temporada)&&typeof r.regen==='string')||!s.carrera.bajasBase.every(id=>typeof id==='string'&&id.length<=100)||s.carrera.liquidados.length>1000||!s.carrera.liquidados.every(k=>typeof k==='string'&&k.length<=300))return false;
    const ids=[];
    for(const eq of s.equipos){
     const g=eq.gestion;

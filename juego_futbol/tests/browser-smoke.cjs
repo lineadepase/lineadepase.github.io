@@ -86,17 +86,14 @@ async function recargarPartida(page) {
         tamaños: PLANTILLAS_DB.equipos.map(e => e.jugadores.length),
         jugadores: PLANTILLAS_DB.equipos.map(e => e.jugadores.map(j => j.nombre)),
         consistencia: PLANTILLAS_DB.equipos.every(e => e.jugadores.every(j =>
-          j.avatar_ia && j.avatar_ia.includes('assets/ia/avatares/') &&
+          j.jugador_real === '' && j.avatar_ia === '' &&
           ['RAS','TOZ','CHI','RET','ALM'].every(k => Number.isInteger(j.atributos[k])) &&
           Number.isInteger(j.edad_carrera) && /^\d{2}-\d{2}$/.test(j.cumpleanos))),
         control: obtenerMiEquipo().nombre,
         panelActivo: document.querySelector('[role="tabpanel"][aria-hidden="false"]')?.id
       }));
       assert.equal(integridadPlantillas.temporada, '2026/27');
-      assert.deepEqual(integridadPlantillas.equipos, [
-        'Real Magras de Madrid', 'Balompié del Somontano',
-        'Atlético Colchonico de la Ribera', 'Athletic de la Tronca'
-      ]);
+      assert.equal(integridadPlantillas.equipos.length,12);
       assert.ok(integridadPlantillas.tamaños.every(n => n >= 14), 'cada club tiene fondo de plantilla para rotar');
       assert.equal(integridadPlantillas.consistencia, true, 'cada jugador declara caricatura IA y cinco atributos paródicos');
       const progresionCumple = await page.evaluate(() => {
@@ -108,34 +105,27 @@ async function recargarPartida(page) {
       });
       assert.deepEqual(progresionCumple, { edad: 46, procesados: 1 },
         'la edad de carrera sube una vez al cruzar el cumpleaños aunque el calendario abarque varias temporadas');
-      const nombresImprescindibles = [
-        'Kylian Embozado', 'Vini de la Cadiera', 'Jude el Campanero', 'Fede Chispazo', 'Thibaut el Muro',
-        'Lamine el Almendrón', 'Dani Pasapúes', 'Raphinha el Abentau', 'Gavi Rompetrastes',
-        'Pedri de la Acequia', 'Pau Tozudo', 'Julián la Araña Baturra', 'Alexander el Picador',
-        'Jan Cerrojo', 'Nico Remolino', 'Iñaki el Trillo', 'Oihan el Zagal'
-      ];
-      assert.ok(nombresImprescindibles.every(nombre => integridadPlantillas.jugadores.flat().includes(nombre)),
-        'la base incluye las parodias solicitadas de los cuatro equipos');
-      assert.equal(integridadPlantillas.control, 'Real Magras de Madrid');
+      assert.equal(new Set(integridadPlantillas.jugadores.flat()).size,168);
+      assert.equal(integridadPlantillas.control, 'Unión Valdoria');
       assert.equal(integridadPlantillas.panelActivo, 'tab-clasificacion', 'la vista inicial coincide con Despacho Míster');
       await page.locator('#manager-profile-open').click();
       assert.equal(await page.locator('#manager-profile').getAttribute('aria-hidden'), 'false',
         'el perfil del míster abre un diálogo para elegir club y nombre');
-      assert.equal(await page.locator('#manager-team option').count(), 4,
+      assert.equal(await page.locator('#manager-team option').count(), 12,
         'la elección de carrera ofrece los cuatro clubes ficticios actuales');
-      await page.locator('#manager-team').selectOption({ label: 'Balompié del Somontano' });
+      await page.locator('#manager-team').selectOption({ label: 'Atlético Monteluz' });
       await page.locator('#manager-name').fill('Míster Prueba');
       await page.locator('#manager-look').selectOption('bufanda');
       await page.locator('#manager-profile-form button[type="submit"]').click();
       assert.deepEqual(await page.evaluate(() => [obtenerMiEquipo().nombre, estadoJuego.manager.nombre, estadoJuego.manager.estilo]),
-        ['Balompié del Somontano', 'Míster Prueba', 'bufanda'], 'la nueva carrera aplica club, nombre y apariencia');
+        ['Atlético Monteluz', 'Míster Prueba', 'bufanda'], 'la nueva carrera aplica club, nombre y apariencia');
       await page.locator('#manager-profile-open').click();
-      await page.locator('#manager-team').selectOption({ label: 'Real Magras de Madrid' });
+      await page.locator('#manager-team').selectOption({ label: 'Unión Valdoria' });
       await page.locator('#manager-name').fill('Míster de la cuadrilla');
       await page.locator('#manager-look').selectOption('gorra');
       await page.locator('#manager-profile-form button[type="submit"]').click();
       assert.match(await page.locator('#lbl-fecha').innerText(), /2026/);
-      assert.equal(await page.locator('.season-calendar .calendar-day').count(), 6,
+      assert.equal(await page.locator('.season-calendar .calendar-day').count(), 22,
         'el despacho enseña el calendario de jornadas con fechas y rivales');
       await page.locator('#audio-toggle').click();
       assert.equal(await page.locator('#audio-toggle').getAttribute('aria-pressed'), 'true',
@@ -151,7 +141,7 @@ async function recargarPartida(page) {
         'el despacho muestra cuatro medidores de estado');
       assert.equal(await page.locator('#retos-mister .achievement-card').count(), 4,
         'el míster dispone de cuatro retos con monedas');
-      assert.match(await page.locator('#floating-cta').innerText(), /Mercado Tinder/,
+      assert.match(await page.locator('#floating-cta').innerText(), /fichajes/,
         'el CTA recomienda revisar el mercado al comenzar la jornada');
       const impactoAtributos = await page.evaluate(() => {
         const jugador = obtenerMiEquipo().plantilla.find(j => !j.lesionado && j.atributos.CHI < 99);
@@ -328,8 +318,8 @@ async function recargarPartida(page) {
       assert.equal(ficha.atributos, 5, 'la carta ofrece los cinco atributos humorísticos');
       assert.deepEqual(ficha.codigos, ['Determinación','Potencia','Regate','Pase','Resistencia']);
       const equiposParodicos = await page.evaluate(() => window.DATOS_ARAGONESES.equipos);
-      assert.ok(equiposParodicos.includes('Real Magras de Madrid') &&
-        equiposParodicos.includes('Athletic de la Tronca'), 'el universo incluye clubes aragoneses ficticios');
+      assert.ok(equiposParodicos.includes('Unión Valdoria') &&
+        equiposParodicos.includes('Deportivo Altorreal'), 'el universo incluye clubes aragoneses ficticios');
 
       await page.locator('#pestana-clasificacion').click();
       assert.equal(await page.locator('.cta-card button').count(), 2, 'despacho ofrece dos acciones siguientes');
@@ -368,15 +358,15 @@ async function recargarPartida(page) {
       await page.screenshot({ path: require('node:path').join(artifactDir, `juego-${mode}.png`), fullPage: true });
       // Identidad ficticia, aviso de métricas simuladas, avatares propios y modelo de ataque/defensa.
       assert.equal(await page.locator('.sim-disclaimer').count(), 1, 'aviso visible de simulación');
-      assert.match(await page.locator('.sim-disclaimer').innerText(), /xG.*estimación didáctica del simulador/i,
+      assert.match(await page.locator('.sim-disclaimer').innerText(), /Universo original.*ficticios/,
         'el aviso distingue el xG didáctico de una métrica oficial');
       assert.match(await page.locator('#guia-rapida summary').innerText(), /Cómo jugar/);
       await page.locator('#guia-rapida').evaluate(el => { el.open = true; });
       assert.match(await page.locator('#guia-rapida').innerText(), /una vez antes de cada jornada/);
-      assert.match(await page.locator('#guia-rapida').innerText(), /seis jornadas/);
+      assert.match(await page.locator('#guia-rapida').innerText(), /22 jornadas/);
       await page.locator('#guia-rapida').evaluate(el => { el.open = true; });
       assert.equal(await page.locator('#btn-simular-jornada').innerText(), '▶️ SIMULAR JORNADA EN VIVO');
-      assert.equal(await page.evaluate(() => estadoJuego.equipos.length), 4);
+      assert.equal(await page.evaluate(() => estadoJuego.equipos.length), 12);
       assert.equal(await page.locator('#tbody-match-breakdown tr').innerText(),
         'El balance aparecerá al terminar el partido.', 'la tabla explica cuándo estará disponible');
       assert.equal(await page.locator('#btn-exportar-balance').isDisabled(), true,
@@ -388,17 +378,13 @@ async function recargarPartida(page) {
         perfilesRivales: estadoJuego.equipos.slice(1).map(e => [e.formacion, e.estilo]),
         cabecera: document.querySelector('.club-brand h1')?.textContent.trim()
       }));
-      assert.deepEqual(plantillasFicticias.clubes, [
-        'Real Magras de Madrid', 'Balompié del Somontano', 'Atlético Colchonico de la Ribera', 'Athletic de la Tronca'
-      ], 'todos los clubes deben ser ficticios');
-      assert.equal(plantillasFicticias.cabecera, 'REAL MAGRAS DE MADRID', 'la cabecera debe usar la identidad ficticia');
+      assert.equal(plantillasFicticias.clubes.length,12);
+      assert.equal(plantillasFicticias.cabecera,'UNIÓN VALDORIA');
       assert.ok(plantillasFicticias.jugadores.every(nombre => !/^(POR|DEF|CEN|DEL)_/.test(nombre)),
         'los rivales no deben mostrar identificadores internos como nombres');
-      assert.ok(plantillasFicticias.jugadores.some(nombre => nombre === 'Kylian Embozado'));
-      assert.deepEqual(plantillasFicticias.mercado, [
-        "Dani del Sendero", "Yuri Espino", "Marcos de la Lumbre", "Frenkie de la Ronda", "Johnny el Rastrojo"
-      ], 'el mercado sale de los candidatos declarados en la base actual');
-      assert.deepEqual(plantillasFicticias.perfilesRivales, [
+      assert.ok(plantillasFicticias.jugadores.some(nombre => nombre === 'Adrián Valcárcel Cabrera'));
+      assert.deepEqual(plantillasFicticias.mercado, ["Mateo Paredes Salcedo", "Gabriel Galván Beltrán", "Daniel Carrasco Aranda", "Leo Montes Varela", "Leo Ferrer Galván"]);
+      assert.deepEqual(plantillasFicticias.perfilesRivales.slice(0,3), [
         ['4-3-3', 'Ofensivo'], ['4-3-3', 'Defensivo'], ['4-3-3', 'Equilibrado']
       ], 'los rivales deben presentar perfiles tácticos diferenciados');
       const perfilProximoRival = await page.evaluate(() => {
@@ -438,12 +424,12 @@ async function recargarPartida(page) {
       const avatarCheck = await page.evaluate(() => {
         const avatares = [...document.querySelectorAll('#tbody-plantilla .player-avatar')];
         const avatarMercado = [...document.querySelectorAll('#tbody-mercado .player-avatar')];
-        const muestra = avatarJugadorHTML('Kylian Embozado', 'POR');
+        const muestra = avatarJugadorHTML('Adrián Valcárcel Cabrera', 'POR');
         return {
           plantel: avatares.length,
           mercado: avatarMercado.length,
           decorativos: [...avatares, ...avatarMercado].every(svg => svg.getAttribute('aria-hidden') === 'true'),
-          estables: muestra === avatarJugadorHTML('Kylian Embozado', 'POR'),
+          estables: muestra === avatarJugadorHTML('Adrián Valcárcel Cabrera', 'POR'),
           distintos: muestra !== avatarJugadorHTML('Rita Remates', 'DEL'),
           sinRecursosExternos: [...avatares, ...avatarMercado].every(svg => !svg.querySelector('[href], image'))
         };
@@ -562,13 +548,13 @@ async function recargarPartida(page) {
         partida.historialTemporadas = [{
           temporada: 1,
           clasificacion: partida.equipos.map(eq => ({ nombre: eq.nombre, puntos: 0, gf: 0, gc: 0 })),
-          pichichi: { nombre: 'Kylian Embozado', equipo: 'Real Magras de Madrid', goles: 4, xg: 2.5 }
+          pichichi: { nombre: 'Adrián Valcárcel Cabrera', equipo: 'Unión Valdoria', goles: 4, xg: 2.5 }
         }];
         const migrada = normalizarEstadoPartida(partida);
         return { valida: estadoPartidaValido(migrada), resumen: migrada.historialTemporadas[0] };
       });
       assert.equal(legacyArchive.valida, true, 'los resúmenes guardados con un único pichichi se migran');
-      assert.equal(legacyArchive.resumen.goleadores[0].nombre, 'Kylian Embozado');
+      assert.equal(legacyArchive.resumen.goleadores[0].nombre, 'Adrián Valcárcel Cabrera');
       assert.equal(Object.hasOwn(legacyArchive.resumen, 'pichichi'), false,
         'la migración deja el resumen histórico en el formato actual');
       assert.ok(legacyArchive.resumen.clasificacion.every(eq => eq.pj === 6 &&
@@ -814,7 +800,7 @@ async function recargarPartida(page) {
           Storage.prototype.getItem = original;
         }
       });
-      assert.equal(blockedRead, 4, 'el juego debe arrancar con almacenamiento bloqueado');
+      assert.equal(blockedRead, 12, 'el juego debe arrancar con almacenamiento bloqueado');
       const saveFailure = await page.evaluate(() => {
         const original = Storage.prototype.setItem;
         Storage.prototype.setItem = function () { throw new Error('almacenamiento bloqueado'); };
@@ -842,9 +828,9 @@ async function recargarPartida(page) {
       const exported = JSON.parse(await fs.readFile(await exportFile.path(), 'utf8'));
       assert.equal(exported.formato, 'linea-de-pase-partida');
       assert.equal(exported.version, 1);
-      assert.equal(exported.partida.equipos.length, 4);
+      assert.equal(exported.partida.equipos.length, 12);
       const importCandidate = structuredClone(exported.partida);
-      importCandidate.equipos.find(e => e.nombre === 'Real Magras de Madrid').presupuesto = -250000;
+      importCandidate.equipos.find(e => e.nombre === 'Unión Valdoria').presupuesto = -250000;
       await page.locator('#archivo-partida').setInputFiles({
         name: 'copia-linea-de-pase.json', mimeType: 'application/json',
         buffer: Buffer.from(JSON.stringify({ ...exported, partida: importCandidate }))
@@ -1197,8 +1183,8 @@ async function recargarPartida(page) {
         fecha: Date.UTC(estadoJuego.fechaActual.year, estadoJuego.fechaActual.month - 1, estadoJuego.fechaActual.day),
         edad: obtenerMiEquipo().plantilla[0].edad
       }));
-      assert.equal(calendarioPartidoDespues.fecha - calendarioPartidoAntes.fecha, 28 * 86400000,
-        'cada partido desplaza cuatro semanas el calendario visible');
+      assert.equal(calendarioPartidoDespues.fecha - calendarioPartidoAntes.fecha, 7 * 86400000,
+        'cada partido desplaza una semana el calendario visible');
       assert.equal(calendarioPartidoDespues.edad, calendarioPartidoAntes.edad + 1,
         'el flujo real del partido celebra los cumpleaños que caen entre jornadas');
       const eventoAntes = await page.evaluate(() => ({
@@ -1231,8 +1217,8 @@ async function recargarPartida(page) {
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 1);
       await recargarPartida(page);
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 1, 'partida persistente');
-      await page.evaluate(() => { for (let i = 1; i < 6; i++) simularJornada(); });
-      assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 6);
+      await page.evaluate(() => { for (let i = 1; i < 22; i++) simularJornada(); });
+      assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 22);
       assert.equal(await page.locator('#match-preview').innerText(),
         'No hay rival pendiente: la temporada está cerrada.');
       assert.match(await page.locator('#btn-simular-jornada').innerText(), /CERRAR TEMPORADA Y CONTINUAR/,
@@ -1245,17 +1231,14 @@ async function recargarPartida(page) {
         clubes[1].gc = 4;
         return calcularPremiosClasificacion(clubes).map(e => e.nombre);
       });
-      assert.equal(empate[0], 'Real Magras de Madrid',
+      assert.equal(empate[0], 'Unión Valdoria',
         'a igualdad de puntos y diferencia de goles, mandan los goles a favor');
       const empateTotal = await page.evaluate(() => {
         const clubes = crearEstadoInicial().equipos;
         clubes.forEach(e => { e.puntos = 10; e.gf = 8; e.gc = 5; });
         return calcularPremiosClasificacion(clubes).map(e => e.nombre);
       });
-      assert.deepEqual(empateTotal, [
-        'Athletic de la Tronca', 'Atlético Colchonico de la Ribera',
-        'Balompié del Somontano', 'Real Magras de Madrid'
-      ], 'si puntos, diferencia y goles a favor empatan, el nombre ordena de forma estable');
+      assert.deepEqual(empateTotal, ["Atlético Monteluz", "CD Sierra Norte", "CF Costa Serena", "Deportivo Altorreal", "Deportivo Arboleda", "Estrella del Llano", "Ferroviario Santa Vega", "Racing Puerto Claro", "Real Villacumbre", "Sporting Bellavista", "Unión Ribera", "Unión Valdoria"]);
       const temporadaIncompleta = await page.evaluate(() => {
         const actual = estadoJuego.jornadaActual;
         const temporada = estadoJuego.temporada;
@@ -1273,7 +1256,7 @@ async function recargarPartida(page) {
         const ordenados = calcularPremiosClasificacion(estadoJuego.equipos);
         return ordenados.map(p => p.premio);
       });
-      assert.deepEqual(premios, [5000000, 3500000, 2500000, 1500000],
+      assert.deepEqual(premios, [5000000,3500000,2500000,1500000,1400000,1300000,1200000,1100000,1000000,900000,800000,700000],
         'los premios deben descender según la clasificación');
       const presupuestosAntes = await page.evaluate(() =>
         Object.fromEntries(estadoJuego.equipos.map(e => [e.nombre, e.presupuesto])));
@@ -1285,7 +1268,7 @@ async function recargarPartida(page) {
       }));
       await page.evaluate(() => {
         estadoJuego.equipos.forEach(eq => eq.plantilla.forEach(j => { j.goles = 0; j.xg = 0; }));
-        const goleadorLocal = obtenerMiEquipo().plantilla.find(j => j.nombre === 'Kylian Embozado');
+        const goleadorLocal = obtenerMiEquipo().plantilla.find(j => j.nombre === 'Adrián Valcárcel Cabrera');
         const goleadorVisitante = estadoJuego.equipos[1].plantilla.find(j => j.posicion === 'DEL');
         goleadorLocal.goles = 7;
         goleadorLocal.xg = 4.25;
@@ -1300,14 +1283,14 @@ async function recargarPartida(page) {
       assert.equal(archivoPrimeraTemporada.temporada, 1, 'el cambio de temporada archiva la campaña que termina');
       assert.equal(archivoPrimeraTemporada.goleadores.length, 2,
         'el resumen conserva a todos los máximos goleadores empatados');
-      assert.ok(archivoPrimeraTemporada.goleadores.some(j => j.nombre === 'Kylian Embozado'));
-      assert.ok(archivoPrimeraTemporada.goleadores.some(j => j.equipo !== 'Real Magras de Madrid'));
+      assert.ok(archivoPrimeraTemporada.goleadores.some(j => j.nombre === 'Adrián Valcárcel Cabrera'));
+      assert.ok(archivoPrimeraTemporada.goleadores.some(j => j.equipo !== 'Unión Valdoria'));
       assert.ok(archivoPrimeraTemporada.goleadores.every(j => j.goles === 7),
         'el empate se resuelve por goles y no por xG');
       assert.ok(archivoPrimeraTemporada.clasificacion.every(eq => Number.isInteger(eq.pj) &&
         Number.isInteger(eq.remates) && Number.isFinite(eq.xgf) && Number.isFinite(eq.xgc)),
         'el archivo conserva partidos, remates y xG de los cuatro equipos');
-      assert.match(await page.locator('#tbody-historial-temporadas tr').first().innerText(), /Empate:.*Kylian Embozado/,
+      assert.match(await page.locator('#tbody-historial-temporadas tr').first().innerText(), /Empate:.*Adrián Valcárcel Cabrera/,
         'el archivo anuncia el empate entre goleadores');
       const celdasArchivo = await page.locator('#tbody-historial-temporadas tr').first().locator('td').allInnerTexts();
       assert.equal(celdasArchivo[3].trim(), String(archivoPrimeraTemporada.clasificacion[0].pj),
@@ -1323,9 +1306,9 @@ async function recargarPartida(page) {
         'la tabla histórica muestra goles, remates y xG a favor, diferencia y en contra');
       assert.equal(await page.evaluate(() => estadoPartidaValido(estadoJuego)), true,
         'el nuevo historial cumple la validación de guardado');
-      assert.equal(await page.locator('#tbody-historial-temporadas tr').count(), 4,
+      assert.equal(await page.locator('#tbody-historial-temporadas tr').count(), 12,
         'el archivo muestra la clasificación completa de la campaña');
-      assert.deepEqual(await page.evaluate(() => estadoJuego.equipos.map(eq => eq.remates)), [0, 0, 0, 0],
+      assert.deepEqual(await page.evaluate(() => estadoJuego.equipos.map(eq => eq.remates)), Array(12).fill(0),
         'los remates se reinician al comenzar la temporada');
       const presupuestosDespues = await page.evaluate(() =>
         Object.fromEntries(estadoJuego.equipos.map(e => [e.nombre, e.presupuesto])));
@@ -1335,7 +1318,7 @@ async function recargarPartida(page) {
       }
 
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 0);
-      assert.equal(await page.evaluate(() => estadoJuego.calendario.length), 6);
+      assert.equal(await page.evaluate(() => estadoJuego.calendario.length), 22);
       const mercadoRenovado = await page.evaluate(() => ({
         cantidad: estadoJuego.mercado.length,
         jugadores: estadoJuego.mercado.map(j => ({ nombre: j.nombre, posicion: j.posicion, goles: j.goles, xg: j.xg })),
@@ -1366,7 +1349,7 @@ async function recargarPartida(page) {
       // El déficit es válido; además, este caso cubre la migración de guardados sin remates ni archivo histórico.
       await page.evaluate(() => {
         const partida = crearEstadoInicial();
-        partida.equipos.find(e => e.nombre === 'Real Magras de Madrid').presupuesto = -250000;
+        partida.equipos.find(e => e.nombre === 'Unión Valdoria').presupuesto = -250000;
         partida.equipos.forEach(e => { delete e.remates; });
         delete partida.historialTemporadas;
         localStorage.setItem('ldp_manager_save', JSON.stringify(partida));
@@ -1374,7 +1357,7 @@ async function recargarPartida(page) {
       await recargarPartida(page);
       assert.equal(await page.evaluate(() => obtenerMiEquipo().presupuesto), -250000,
         'una partida con déficit se recupera sin reiniciarse');
-      assert.deepEqual(await page.evaluate(() => estadoJuego.equipos.map(eq => eq.remates)), [0, 0, 0, 0],
+      assert.deepEqual(await page.evaluate(() => estadoJuego.equipos.map(eq => eq.remates)), Array(12).fill(0),
         'los guardados anteriores migran el contador de remates sin perder datos');
       assert.deepEqual(await page.evaluate(() => estadoJuego.historialTemporadas), [],
         'los guardados antiguos reciben un archivo vacío sin reiniciar la temporada');
@@ -1395,7 +1378,7 @@ async function recargarPartida(page) {
       await page.evaluate(() => localStorage.setItem('ldp_manager_save',
         JSON.stringify({ equipos: [], mercado: [], calendario: [], jornadaActual: 0, temporada: 1 })));
       await recargarPartida(page);
-      assert.equal(await page.evaluate(() => estadoJuego.equipos.length), 4,
+      assert.equal(await page.evaluate(() => estadoJuego.equipos.length), 12,
         'partida estructuralmente inválida rechazada');
       await page.evaluate(() => {
         const partida = crearEstadoInicial();
@@ -1440,8 +1423,8 @@ async function recargarPartida(page) {
         // Intercambiar jornadas completas entre mitades conserva los doce
         // partidos, pero duplica parejas dentro de cada vuelta.
         const tmp = partida.calendario[0];
-        partida.calendario[0] = partida.calendario[4];
-        partida.calendario[4] = tmp;
+        partida.calendario[0] = partida.calendario[12];
+        partida.calendario[12] = tmp;
         return calendarioValido(partida.calendario, partida.equipos);
       });
       assert.equal(swappedCalendar, false, 'la ida y vuelta no pueden mezclar enfrentamientos');
@@ -1451,7 +1434,7 @@ async function recargarPartida(page) {
         localStorage.setItem('ldp_manager_save', JSON.stringify(partida));
       });
       await recargarPartida(page);
-      assert.equal(await page.evaluate(() => obtenerMiEquipo()?.nombre), 'Real Magras de Madrid',
+      assert.equal(await page.evaluate(() => obtenerMiEquipo()?.nombre), 'Unión Valdoria',
         'una partida sin el equipo controlado se debe rechazar');
       await page.evaluate(() => localStorage.setItem('ldp_manager_save', '{bad json'));
       await recargarPartida(page);

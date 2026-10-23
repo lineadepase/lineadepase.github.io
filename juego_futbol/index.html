@@ -605,7 +605,7 @@ body{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
     <div class="club-brand">
         <div class="club-mark" aria-hidden="true"><svg class="club-emblem" viewBox="0 0 64 72" role="img" aria-label="Emblema de Línea de Pase"><path d="M8 5h48v34c0 14-10 23-24 29C18 62 8 53 8 39Z" fill="#0f172a" stroke="#facc15" stroke-width="4"/><path d="M13 11h38v27c0 9-6 16-19 22V11Z" fill="#2563eb"/><path d="M13 38h38v0c0 9-6 16-19 22-13-6-19-13-19-22" fill="#f97316"/><path d="m18 36 10-10 8 6 10-13" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><text x="32" y="51" text-anchor="middle" font-size="10" font-weight="900" fill="#fff">LP</text></svg></div>
         <div>
-            <h1>REAL MAGRAS DE MADRID</h1>
+            <h1>UNIÓN VALDORIA</h1>
             <span>Línea de Pase · Manager de fútbol y xG simulado</span>
         </div>
     </div>
@@ -626,21 +626,21 @@ body{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
 <!-- Los botones de navegación cambian de pestaña sin recargar ni perder el estado de la partida. -->
 <nav role="tablist" aria-label="Secciones del juego" onkeydown="navegarPestanas(event)">
     <button id="pestana-clasificacion" class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab-clasificacion" tabindex="0" onclick="cambiarPestana('clasificacion', this)">🏠 Despacho Míster</button>
-    <button id="pestana-mercado" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-mercado" tabindex="-1" onclick="cambiarPestana('mercado', this)">🔥 Tinder Fichajes</button>
+    <button id="pestana-mercado" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-mercado" tabindex="-1" onclick="cambiarPestana('mercado', this)">🔥 Secretaría · Fichajes</button>
     <button id="pestana-tactica" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-tactica" tabindex="-1" onclick="cambiarPestana('tactica', this)">📋 Táctica</button>
     <button id="pestana-partido" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-partido" tabindex="-1" onclick="cambiarPestana('partido', this)">⚽ Partido</button>
 </nav>
 
 <!-- Zona principal: táctica, partido, liga, mercado y laboratorio se muestran aquí. -->
 <main>
-    <p class="sim-disclaimer" role="note"><strong>Universo paródico:</strong> los alias representan a futbolistas inscritos en plantillas 2026/27. Los atributos, edades de carrera, cumpleaños, salarios, fichajes, resultados y xG son valores ficticios de juego, no estadísticas oficiales ni datos biográficos. El xG es una estimación didáctica del simulador. <a href="../proyectos/xg/index.html">Aprende qué mide el xG y cómo interpretarlo</a>.</p>
+    <p class="sim-disclaimer" role="note"><strong>Universo original:</strong> los clubes, jugadores y biografías son ficticios. Los resultados y el xG se calculan dentro del simulador. <a href="../proyectos/xg/index.html">Aprende qué mide el xG y cómo interpretarlo</a>.</p>
     <details id="guia-rapida" class="panel quick-guide">
         <summary>Cómo jugar · guía rápida</summary>
         <ol>
             <li><strong>Prepara el equipo:</strong> en Pizarra Táctica, elige formación y estilo; puedes intercambiar jugadores, pedir el mejor once o relevar titulares fatigados por suplentes de la misma posición.</li>
             <li><strong>Gestiona la plantilla:</strong> en Mercado y Centro Técnico, descansa o entrena una vez antes de cada jornada. También puedes fichar o vender dentro de tu presupuesto.</li>
             <li><strong>Juega y revisa:</strong> en Día de Partido, consulta formación y estilo del rival, simula la jornada y revisa el marcador, los remates y el xG estimado.</li>
-            <li><strong>Sigue la temporada:</strong> hay seis jornadas. Después, el botón te ofrecerá cerrar la campaña y empezar la siguiente; las clasificaciones quedan en el archivo.</li>
+            <li><strong>Sigue la temporada:</strong> hay 22 jornadas semanales. Después, el botón te ofrecerá cerrar la campaña y empezar la siguiente; las clasificaciones quedan en el archivo.</li>
         </ol>
         <p>La partida se guarda en este navegador. Usa Exportar para conservar una copia de seguridad.</p>
     </details>
@@ -713,7 +713,7 @@ body{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
     <section id="tab-partido" class="tab-content" role="tabpanel" aria-labelledby="pestana-partido" tabindex="0" aria-hidden="true">
         <div class="match-board" aria-label="Marcador y ritmo en directo">
             <div class="match-minute"><span id="match-clock">00′</span> · <span id="match-rhythm">Previa</span></div>
-            <div id="match-scoreboard" class="match-score">Real Magras de Madrid · 0 — 0 · Rival</div>
+            <div id="match-scoreboard" class="match-score">Unión Valdoria · 0 — 0 · Rival</div>
             <div class="match-meter" role="img" aria-label="Ritmo de partido"><span id="match-meter-fill"></span></div>
             <div id="match-meter-label" class="hint-box">Ritmo de la simulación</div>
             <div class="match-playback-controls" role="group" aria-label="Controles del partido">
@@ -739,9 +739,9 @@ body{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
         <div class="chiri-feed" id="chiri-feed" aria-live="polite"><strong>📱 Chirincirco · esperando el pitido final</strong><p>La afición prepara memes. Que nadie publique el Excel del míster.</p></div>
         <div class="panel" style="margin-bottom: 20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
             <div>
-                <h2 id="lbl-cartel-partido" style="font-size:1.3rem;">Jornada 1: Real Magras de Madrid vs Atlético Siestense</h2>
+                <h2 id="lbl-cartel-partido" style="font-size:1.3rem;">Jornada 1: Unión Valdoria vs Atlético Siestense</h2>
                 <p class="hint-box" id="lbl-sub-partido">El tamaño de cada círculo equivale al xG simulado. La crónica distingue ocasiones claras según el motor, no según vídeo real.</p>
-                <p id="match-summary" class="match-summary" role="status" aria-live="polite">Al terminar, aparecerán el marcador, los remates y el xG del partido de Real Magras de Madrid.</p>
+                <p id="match-summary" class="match-summary" role="status" aria-live="polite">Al terminar, aparecerán el marcador, los remates y el xG del partido de Unión Valdoria.</p>
                 <p id="match-preview" class="hint-box" role="note">El perfil del próximo rival aparecerá antes de la jornada.</p>
             </div>
             <button id="btn-simular-jornada" class="btn-success" style="font-size:1rem; padding:12px 22px;" onclick="vivirJornada()">▶️ SIMULAR JORNADA EN VIVO</button>
@@ -783,7 +783,7 @@ body{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
                 <span id="replay-heading" class="panel-title">Repetición analítica</span>
                 <span class="hint-box">Animación esquemática generada por el simulador; no es vídeo real.</span>
             </div>
-            <p id="replay-status" class="hint-box" role="status" aria-live="polite">Al simular una jornada, podrás revisar las ocasiones del partido de Real Magras de Madrid.</p>
+            <p id="replay-status" class="hint-box" role="status" aria-live="polite">Al simular una jornada, podrás revisar las ocasiones del partido de Unión Valdoria.</p>
             <div class="replay-layout">
                 <div>
                     <svg id="svg-replay" class="replay-board" viewBox="0 0 640 320" role="img" aria-labelledby="replay-svg-title replay-svg-desc">
@@ -1125,7 +1125,7 @@ const MAX_PLANTILLA = 25;
 
 let estadoJuego = null;
 let PLANTILLAS_DB = null;
-let EQUIPO_CONTROLADO = 'Real Magras de Madrid';
+let EQUIPO_CONTROLADO = 'Unión Valdoria';
 function jugadoresBaseActuales() { return PLANTILLAS_DB?.equipos?.flatMap(e => e.jugadores) || []; }
 let jugadorSeleccionadoIdx = null;
 let retoPaseActual = null;
@@ -1231,7 +1231,7 @@ function calcularPerfilAtaque(ataque, defensaRival) {
 // Todo lo que puede cambiar durante una partida vive en estadoJuego para poder
 // actualizar la interfaz, guardarlo, exportarlo y validarlo con las mismas reglas.
 /**
- * Construyo el estado nuevo de una partida: club del usuario, rivales ficticios, plantillas humorísticas, mercado y calendario. Mantengo estos datos juntos para poder guardarlos como una sola unidad.
+ * Construyo el estado nuevo de una partida: club del usuario, rivales ficticios, plantillas originales, mercado y calendario. Mantengo estos datos juntos para poder guardarlos como una sola unidad.
  */
 function crearEstadoInicial() {
     if (!PLANTILLAS_DB || PLANTILLAS_DB.schema_version !== 1) throw new Error('No se ha cargado la base 2026/27.');
@@ -1243,7 +1243,7 @@ function crearEstadoInicial() {
     });
     const perfiles=[{presupuesto:9500000,aforo:81000,estilo:'Equilibrado'},{presupuesto:8200000,aforo:55000,estilo:'Ofensivo'},{presupuesto:8800000,aforo:69000,estilo:'Defensivo'},{presupuesto:7600000,aforo:53000,estilo:'Equilibrado'}];
     const equipos=PLANTILLAS_DB.equipos.map((d,i)=>{
-        const p=perfiles[i],eq={id:d.id,club_real:d.club_real,nombre:d.nombre_parodico,presupuesto:p.presupuesto,aforo:p.aforo,formacion:d.formacion,estilo:p.estilo,puntos:0,pj:0,gf:0,gc:0,remates:0,xgf:0,xgc:0,plantilla:d.jugadores.map(j=>crearJugador(j,d))};
+        const p=perfiles[i]||{presupuesto:6500000+(i%3)*400000,aforo:26000+(i%5)*3000,estilo:['Equilibrado','Defensivo','Ofensivo'][i%3]},eq={id:d.id,ciudad:d.ciudad,estadio:d.estadio,color:d.color,filosofia:d.filosofia,club_real:d.club_real,nombre:d.nombre_parodico,presupuesto:p.presupuesto,aforo:p.aforo,formacion:d.formacion,estilo:p.estilo,puntos:0,pj:0,gf:0,gc:0,remates:0,xgf:0,xgc:0,plantilla:d.jugadores.map(j=>crearJugador(j,d))};
         convocarOnceAutomatico(eq);return eq;
     });
     const porId=new Map(PLANTILLAS_DB.equipos.flatMap(e=>e.jugadores.map(j=>[j.id,{jugador:j,equipo:e}])));
@@ -1252,7 +1252,7 @@ function crearEstadoInicial() {
 }
 
 /**
- * Genero seis jornadas para cuatro equipos mediante rotación y alterno la localía; después invierto los cruces para crear la vuelta.
+ * Genero la liga mediante rotación y alterno la localía; después invierto los cruces para crear la vuelta.
  */
 function generarCalendario(nombres) {
     let l = [...nombres];
@@ -1273,17 +1273,17 @@ function generarCalendario(nombres) {
 }
 
 /**
- * Compruebo que el calendario tenga seis jornadas completas, que todos jueguen una vez por jornada y que cada pareja aparezca una vez en cada mitad con localía invertida.
+ * Compruebo que el calendario tenga todas sus jornadas completas, que todos jueguen una vez por jornada y que cada pareja aparezca una vez en cada mitad con localía invertida.
  */
 function calendarioValido(calendario, equipos) {
-    if (!Array.isArray(calendario) || calendario.length !== 6 ||
-        !Array.isArray(equipos) || equipos.length !== 4) return false;
+    if (!Array.isArray(calendario) || calendario.length !== (equipos?.length-1)*2 ||
+        !Array.isArray(equipos) || ![4,12].includes(equipos.length)) return false;
     if (!equipos.every(eq => eq && typeof eq.nombre === 'string')) return false;
     const nombres = equipos.map(eq => eq.nombre);
-    if (new Set(nombres).size !== 4) return false;
+    if (new Set(nombres).size !== equipos.length) return false;
     const cruces = [];
     for (const jornada of calendario) {
-        if (!Array.isArray(jornada) || jornada.length !== 2) return false;
+        if (!Array.isArray(jornada) || jornada.length !== equipos.length/2) return false;
         const participantes = [];
         for (const partido of jornada) {
             if (!Array.isArray(partido) || partido.length !== 2) return false;
@@ -1292,14 +1292,14 @@ function calendarioValido(calendario, equipos) {
             participantes.push(local, visitante);
             cruces.push([local, visitante]);
         }
-        if (new Set(participantes).size !== 4) return false;
+        if (new Set(participantes).size !== equipos.length) return false;
     }
     const enfrentamientos = new Set(cruces.map(([a, b]) => a + '|' + b));
     // Cada mitad de la temporada debe enfrentar una vez a cada pareja.
     const pareja = ([a, b]) => [a, b].sort().join('|');
-    const ida = new Set(cruces.slice(0, 6).map(pareja));
-    const vuelta = new Set(cruces.slice(6).map(pareja));
-    return enfrentamientos.size === 12 && ida.size === 6 && vuelta.size === 6 &&
+    const ida = new Set(cruces.slice(0, equipos.length*(equipos.length-1)/2).map(pareja));
+    const vuelta = new Set(cruces.slice(equipos.length*(equipos.length-1)/2).map(pareja));
+    return enfrentamientos.size === equipos.length*(equipos.length-1) && ida.size === equipos.length*(equipos.length-1)/2 && vuelta.size === ida.size &&
         nombres.every(a => nombres.every(b => a === b || enfrentamientos.has(a + '|' + b)));
 }
 
@@ -1368,8 +1368,8 @@ function nombreGuardadoValido(nombre) {
 /** Compruebo el resumen compacto que conserva una temporada ya cerrada. */
 function resumenTemporadaValido(resumen) {
     return Boolean(resumen && Number.isInteger(resumen.temporada) && resumen.temporada >= 1 &&
-        Array.isArray(resumen.clasificacion) && resumen.clasificacion.length === 4 &&
-        new Set(resumen.clasificacion.map(eq => eq?.nombre)).size === 4 &&
+        Array.isArray(resumen.clasificacion) && [4,12].includes(resumen.clasificacion.length) &&
+        new Set(resumen.clasificacion.map(eq => eq?.nombre)).size === resumen.clasificacion.length &&
         resumen.clasificacion.every(eq => eq && nombreGuardadoValido(eq.nombre) &&
             ['puntos', 'pj', 'gf', 'gc'].every(k => Number.isInteger(eq[k]) && eq[k] >= 0) &&
             (eq.remates === null || (Number.isInteger(eq.remates) && eq.remates >= 0)) &&
@@ -1386,7 +1386,7 @@ function resumenTemporadaValido(resumen) {
  * Migro campos que se añadieron después: los guardados antiguos no pierden la temporada en curso ni el presupuesto.
  */
 function normalizarEstadoPartida(estado) {
-    if (estado && !estado.equipoControlado) estado.equipoControlado = 'Real Magras de Madrid';
+    if (estado && !estado.equipoControlado) estado.equipoControlado = 'Unión Valdoria';
     if (estado && !estado.manager) estado.manager = { nombre: 'Míster de la cuadrilla', estilo: 'gorra' };
     if (estado && !estado.fechaActual) estado.fechaActual = {year:2026,month:8,day:1};
     if (estado && typeof estado.ventanaMercadoAbierta !== 'boolean') estado.ventanaMercadoAbierta = true;
@@ -1435,8 +1435,8 @@ function normalizarEstadoPartida(estado) {
  */
 function estadoPartidaValido(estado) {
     try {
-        return Boolean(estado && Array.isArray(estado.equipos) && estado.equipos.length === 4 &&
-            new Set(estado.equipos.map(eq => eq?.nombre)).size === 4 &&
+        return Boolean(estado && Array.isArray(estado.equipos) && [4,12].includes(estado.equipos.length) &&
+            new Set(estado.equipos.map(eq => eq?.nombre)).size === estado.equipos.length &&
             typeof estado.equipoControlado === 'string' && estado.equipos.some(eq => eq?.nombre === estado.equipoControlado) &&
             estado.equipos.every(eq => eq && nombreGuardadoValido(eq.nombre) &&
                 Number.isFinite(eq.presupuesto) && Number.isFinite(eq.aforo) && eq.aforo >= 0 &&
@@ -2313,6 +2313,7 @@ function simularJornada() {
     }
 
     estadoJuego.jornadaActual++;
+    if(!partidoEnCurso){window.avanzarSemanaLiga?.();window.ClubManager?.finJornada();}
     guardarPartidaLocal(false);
     actualizarUI();
 }
@@ -2840,7 +2841,7 @@ function compararClasificacion(a, b) {
 function calcularPremiosClasificacion(equipos) {
     const premios = [5000000, 3500000, 2500000, 1500000];
     return [...equipos].sort(compararClasificacion).map((eq, i) => ({
-        nombre: eq.nombre, posicion: i + 1, premio: premios[i]
+        nombre: eq.nombre, posicion: i + 1, premio: premios[i] ?? Math.max(500000,1500000-(i-3)*100000)
     }));
 }
 
@@ -2874,7 +2875,7 @@ function renovarMercadoTemporada() {
  */
 function iniciarNuevaTemporada() {
     if (estadoJuego.jornadaActual < estadoJuego.calendario.length) {
-        alert("Debes terminar las seis jornadas antes de comenzar otra temporada.");
+        alert("Debes terminar todas las jornadas antes de comenzar otra temporada.");
         return;
     }
     const premios = calcularPremiosClasificacion(estadoJuego.equipos);
@@ -2914,6 +2915,7 @@ function iniciarNuevaTemporada() {
         convocarOnceAutomatico(eq);
     });
     renovarMercadoTemporada();
+    window.UniversoLiga?.ampliar(estadoJuego);
     estadoJuego.calendario = generarCalendario(estadoJuego.equipos.map(eq => eq.nombre));
     guardarPartidaLocal(false);
     actualizarUI();
@@ -3015,7 +3017,7 @@ window.onload = async () => {
         const r=await fetch('./data/plantillas-parodicas.json',{cache:'no-store'});
         if(!r.ok)throw new Error('No se pudo cargar el JSON de plantillas.');
         PLANTILLAS_DB=await r.json();
-        if(PLANTILLAS_DB.schema_version!==1||PLANTILLAS_DB.equipos?.length!==4||PLANTILLAS_DB.equipos.some(e=>!Array.isArray(e.jugadores)||e.jugadores.length<11))throw new Error('Base incompleta.');
+        if(PLANTILLAS_DB.schema_version!==1||PLANTILLAS_DB.equipos?.length!==12||PLANTILLAS_DB.equipos.some(e=>!Array.isArray(e.jugadores)||e.jugadores.length<11))throw new Error('Base incompleta.');
         window.DATOS_ARAGONESES=Object.freeze({equipos:PLANTILLAS_DB.equipos.map(e=>e.nombre_parodico),despedidas:['Gracias por pasarte por el despacho; seguimos con el ojeo.','Que el viaje vaya tranquilo y el balón ruede bien.','Nos quedamos con la conversación; hasta la próxima ventana.']});
     }catch(error){console.error('Error en la base de jugadores:',error);document.querySelector('.sim-disclaimer').textContent='No se pudo cargar la base local de plantillas. Recarga para intentarlo de nuevo.';return;}
     let cargaCorrecta=false;
@@ -3038,9 +3040,9 @@ function renderFichaSwipe() {
  const jugador=estadoJuego.mercado[0],club=obtenerMiEquipo(),nombre=String(jugador.nombre||'Jugador disponible');
  const id='caricatura-'+String(jugador.jugador_id||nombre).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
  const retrato=document.getElementById('swipe-portrait');
- if(retrato){retrato.dataset.portraitId=id;const ruta=String(jugador.avatar_ia||'');retrato.innerHTML='<img class="swipe-portrait-img" data-src="'+escaparHTML(ruta)+'" alt="Caricatura de '+escaparHTML(nombre)+'"><div class="portrait-fallback">'+avatarJugadorHTML(nombre,jugador.posicion)+'<small>Retrato de vestuario · '+escaparHTML(id)+'</small></div>';const img=retrato.querySelector('img'),fallback=retrato.querySelector('.portrait-fallback');if(ruta)fetch(ruta,{method:'HEAD'}).then(r=>{if(r.ok){img.src=ruta;img.onload=()=>fallback.hidden=true;}}).catch(()=>{});}
+ if(retrato){retrato.dataset.portraitId=id;const ruta=String(jugador.avatar_ia||'');retrato.innerHTML='<img class="swipe-portrait-img" data-src="'+escaparHTML(ruta)+'" alt="Retrato de '+escaparHTML(nombre)+'"><div class="portrait-fallback">'+avatarJugadorHTML(nombre,jugador.posicion)+'<small>Perfil profesional</small></div>';const img=retrato.querySelector('img'),fallback=retrato.querySelector('.portrait-fallback');if(ruta)fetch(ruta,{method:'HEAD'}).then(r=>{if(r.ok){img.src=ruta;img.onload=()=>fallback.hidden=true;}}).catch(()=>{});}
  document.getElementById('swipe-name').textContent=nombre+' · '+jugador.posicion;
- document.getElementById('swipe-club').textContent='Plantilla: '+(jugador.equipo_origen_parodia||jugador.equipo_origen||'Primera División')+' · '+(jugador.jugador_real||'futbolista 2026/27');
+ document.getElementById('swipe-club').textContent='Plantilla: '+(jugador.equipo_origen_parodia||jugador.equipo_origen||'Primera División')+' · '+'Futbolista ficticio';
  const attrs=atributosParodicos(jugador);document.getElementById('swipe-stats').innerHTML='<strong class="market-overall">Media '+Math.round(jugador.media)+'</strong>'+attrs.map(a=>'<span class="attribute-pill" title="'+escaparHTML(a[2])+'"><small>'+a[0]+'</small><b>'+a[1]+'</b></span>').join('')+'<span class="swipe-stat">🎂 '+Number(jugador.edad)+' años · carrera</span><span class="swipe-stat">💶 '+Number(jugador.precio).toLocaleString('es-ES')+' €</span><span class="swipe-stat">🪙 '+Number(jugador.salario).toLocaleString('es-ES')+' €/j</span>';
  document.getElementById('swipe-clause').textContent='«'+String(jugador.clausula||jugador.rasgo||'Cláusula por negociar con calma.')+'»';
  const valido=club&&club.presupuesto>=jugador.precio&&club.plantilla.length<MAX_PLANTILLA,match=document.getElementById('swipe-match');match.disabled=!valido;match.title=valido?'Iniciar oferta y cerrar el fichaje':(club&&club.plantilla.length>=MAX_PLANTILLA?'Plantilla completa':'Presupuesto insuficiente');card.dataset.index='0';
@@ -3398,6 +3400,7 @@ mostrarRepeticion=function(indice){
 <script src="./js/club-motor.js"></script>
 <script src="./js/partido-2d.js"></script>
 <script src="./js/club-manager.js"></script>
+<script src="./js/universo-liga.js"></script>
 <script src="./js/pantallas.js"></script>
 </body>
 </html>

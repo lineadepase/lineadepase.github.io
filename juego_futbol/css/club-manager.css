@@ -1,4 +1,18 @@
 /* Inspiración de revista deportiva: cabeceras azules, fichas claras y media visible. */
+.screen-mode .club-identity{font-size:.72rem;color:#dce8f6;border-left:4px solid var(--club-color);padding:3px 8px;flex-basis:100%;line-height:1.25}
+.screen-mode .panel-header{align-items:center;flex-wrap:wrap}
+.screen-mode button:focus-visible,.screen-mode select:focus-visible,.screen-mode input:focus-visible{outline:3px solid #e9c651;outline-offset:2px}
+.screen-mode button:disabled{opacity:.48;cursor:default}
+.screen-mode .screen-tools select{border-radius:8px;padding:7px 10px}
+.screen-mode .screen-footer{box-shadow:0 -4px 16px #0002}
+.screen-mode .screen-footer button{border-radius:8px}
+.screen-mode table tbody tr:hover{outline:1px solid #6888ab;outline-offset:-1px}
+.screen-mode table td[style*="4ade80"]{color:#14613d!important}
+.screen-mode table td[style*="f87171"]{color:#a12839!important}
+.screen-mode .calendar-day{border:1px solid #52759a;border-radius:8px;padding:10px;background:#152c45}
+.screen-mode .calendar-day.current{border-color:#e9c651;box-shadow:inset 3px 0 #e9c651}
+.screen-mode .calendar-day strong{line-height:1.35}
+@media(max-width:700px){.screen-mode .club-identity{font-size:.65rem;padding-block:1px}.screen-mode header{gap:4px;padding-block:5px}}
 .screen-mode nav[role="tablist"]{grid-template-columns:repeat(8,minmax(0,1fr));background:#092653}
 .screen-mode nav[role="tablist"] .tab-btn{border-radius:5px;background:linear-gradient(#173e80,#102b59);border-color:#567eb0;color:#edf4ff;font-size:.78rem}
 .screen-mode nav[role="tablist"] .tab-btn.active{background:linear-gradient(#f3d067,#cc9f2c);color:#102649;border-color:#fff3ad}

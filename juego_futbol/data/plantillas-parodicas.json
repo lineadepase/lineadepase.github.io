@@ -1,27 +1,26 @@
 {
   "schema_version": 1,
   "temporada": "2026/27",
-  "notas": "Atributos y valoraciones son valores ficticios de balance del juego; nombres reales solo identifican al futbolista vigente representado. La edad de carrera y los cumpleaños son datos ficticios de balance; avanzan con el calendario del juego y no son datos biográficos oficiales.",
+  "notas": "Universo original: clubes, ciudades, jugadores y biografías son ficticios. Los identificadores antiguos se conservan para migrar partidas.",
   "atributos": {
-    "RAS": "Rasmia y empuje",
-    "TOZ": "Tozudez y duelo físico",
-    "CHI": "Chispa y desborde",
-    "RET": "Retranca arbitral y pillería",
-    "ALM": "Aguante físico y fondo de almuerzo"
+    "RAS": "Determinación",
+    "TOZ": "Fuerza y duelos",
+    "CHI": "Técnica y desborde",
+    "RET": "Visión y pase",
+    "ALM": "Resistencia"
   },
   "equipos": [
     {
       "id": "real-magras",
-      "nombre_parodico": "Real Magras de Madrid",
-      "club_real": "Real Madrid CF",
-      "fuente_oficial": "https://www.realmadrid.com/es-ES/futbol/primer-equipo/plantilla",
+      "nombre_parodico": "Unión Valdoria",
+      "club_real": "",
       "temporada": "2026/27",
       "formacion": "4-4-2",
       "jugadores": [
         {
           "id": "kylian-embozado",
-          "nombre": "Kylian Embozado",
-          "jugador_real": "Kylian Mbappé",
+          "nombre": "Adrián Valcárcel Cabrera",
+          "jugador_real": "",
           "posicion": "DEL",
           "valoracion_juego": 90,
           "atributos": {
@@ -31,15 +30,12 @@
             "RET": 78,
             "ALM": 92
           },
-          "rasgo": "Rápido como una centella tapado del cierzo.",
-          "clausula": "Pide una bufanda de repuesto para cada sprint.",
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
           "salario": 14400,
           "valor": 3150000,
-          "avatar_ia": "assets/ia/avatares/kylian-embozado.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/kylian-embozado-match.mp4",
-            "rechazo": "assets/ia/reacciones/kylian-embozado-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "rasmia",
             "centella",
@@ -50,8 +46,8 @@
         },
         {
           "id": "vini-cadiera",
-          "nombre": "Vini de la Cadiera",
-          "jugador_real": "Vinícius Júnior",
+          "nombre": "Mateo Montero Santamaría",
+          "jugador_real": "",
           "posicion": "DEL",
           "valoracion_juego": 86,
           "atributos": {
@@ -61,15 +57,12 @@
             "RET": 75,
             "ALM": 89
           },
-          "rasgo": "Pura chispa y quejas en la lumbre.",
-          "clausula": "Quiere que el extremo izquierdo tenga orientación sur.",
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
           "salario": 13760,
           "valor": 3010000,
-          "avatar_ia": "assets/ia/avatares/vini-cadiera.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/vini-cadiera-match.mp4",
-            "rechazo": "assets/ia/reacciones/vini-cadiera-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "chispa",
             "lumbre",
@@ -80,8 +73,8 @@
         },
         {
           "id": "jude-campanero",
-          "nombre": "Jude el Campanero",
-          "jugador_real": "Jude Bellingham",
+          "nombre": "Darío Castañeda Olmedo",
+          "jugador_real": "",
           "posicion": "CEN",
           "valoracion_juego": 90,
           "atributos": {
@@ -91,15 +84,12 @@
             "RET": 84,
             "ALM": 93
           },
-          "rasgo": "Despliegue y celebración señorial.",
-          "clausula": "Solicita permiso para repicar tras cada gol.",
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
           "salario": 14400,
           "valor": 3150000,
-          "avatar_ia": "assets/ia/avatares/jude-campanero.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/jude-campanero-match.mp4",
-            "rechazo": "assets/ia/reacciones/jude-campanero-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "despliegue",
             "campanas",
@@ -110,8 +100,8 @@
         },
         {
           "id": "fede-chispazo",
-          "nombre": "Fede Chispazo",
-          "jugador_real": "Federico Valverde",
+          "nombre": "Gabriel Aranda Ferrer",
+          "jugador_real": "",
           "posicion": "CEN",
           "valoracion_juego": 94,
           "atributos": {
@@ -121,15 +111,12 @@
             "RET": 83,
             "ALM": 98
           },
-          "rasgo": "Trallazos como pedregada y pura rasmia.",
-          "clausula": "El banquillo debe tener agua y una toma para el cargador.",
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
           "salario": 15040,
           "valor": 3290000,
-          "avatar_ia": "assets/ia/avatares/fede-chispazo.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/fede-chispazo-match.mp4",
-            "rechazo": "assets/ia/reacciones/fede-chispazo-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "trallazo",
             "rasmia",
@@ -140,8 +127,8 @@
         },
         {
           "id": "thibaut-muro",
-          "nombre": "Thibaut el Muro",
-          "jugador_real": "Thibaut Courtois",
+          "nombre": "Iván Salcedo Navarro",
+          "jugador_real": "",
           "posicion": "POR",
           "valoracion_juego": 90,
           "atributos": {
@@ -151,15 +138,12 @@
             "RET": 80,
             "ALM": 91
           },
-          "rasgo": "Alto y seguro como un chopo ribereño.",
-          "clausula": "En los córneres pide que le avisen si hay cierzo.",
+          "rasgo": "Seguro bajo palos",
+          "clausula": "Contrato profesional",
           "salario": 14400,
           "valor": 3150000,
-          "avatar_ia": "assets/ia/avatares/thibaut-muro.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/thibaut-muro-match.mp4",
-            "rechazo": "assets/ia/reacciones/thibaut-muro-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "reflejos",
             "altura",
@@ -170,8 +154,8 @@
         },
         {
           "id": "eduardo-cierzo",
-          "nombre": "Eduardo Cierzo",
-          "jugador_real": "Eduardo Camavinga",
+          "nombre": "Bruno Montalvo Montes",
+          "jugador_real": "",
           "posicion": "CEN",
           "valoracion_juego": 86,
           "atributos": {
@@ -181,15 +165,12 @@
             "RET": 75,
             "ALM": 91
           },
-          "rasgo": "Cambio de ritmo y piernas para cubrir media provincia.",
-          "clausula": "Le basta una banda ancha y un camino despejado.",
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
           "salario": 13760,
           "valor": 3010000,
-          "avatar_ia": "assets/ia/avatares/eduardo-cierzo.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/eduardo-cierzo-match.mp4",
-            "rechazo": "assets/ia/reacciones/eduardo-cierzo-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "polivalencia",
             "cambio ritmo",
@@ -200,8 +181,8 @@
         },
         {
           "id": "aurélien-tozal",
-          "nombre": "Aurélien Tozal",
-          "jugador_real": "Aurélien Tchouaméni",
+          "nombre": "Samuel Beltrán Cortés",
+          "jugador_real": "",
           "posicion": "CEN",
           "valoracion_juego": 88,
           "atributos": {
@@ -211,15 +192,12 @@
             "RET": 82,
             "ALM": 90
           },
-          "rasgo": "Orden en la medular y duelo sin aspavientos.",
-          "clausula": "No quiere que el parte del partido se escriba con prisas.",
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
           "salario": 14080,
           "valor": 3080000,
-          "avatar_ia": "assets/ia/avatares/aurélien-tozal.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/aurélien-tozal-match.mp4",
-            "rechazo": "assets/ia/reacciones/aurélien-tozal-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "orden",
             "duelo",
@@ -230,8 +208,8 @@
         },
         {
           "id": "arda-rastrojo",
-          "nombre": "Arda del Rastrojo",
-          "jugador_real": "Arda Güler",
+          "nombre": "Nicolás Robledo Aguirre",
+          "jugador_real": "",
           "posicion": "CEN",
           "valoracion_juego": 84,
           "atributos": {
@@ -241,15 +219,12 @@
             "RET": 87,
             "ALM": 82
           },
-          "rasgo": "Pase filtrado con vista de milano.",
-          "clausula": "Pide un balón limpio y una ventana para mirar al campo.",
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
           "salario": 13440,
           "valor": 2940000,
-          "avatar_ia": "assets/ia/avatares/arda-rastrojo.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/arda-rastrojo-match.mp4",
-            "rechazo": "assets/ia/reacciones/arda-rastrojo-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "visión",
             "pase",
@@ -260,8 +235,8 @@
         },
         {
           "id": "antonio-cierzo",
-          "nombre": "Antonio Cierzo",
-          "jugador_real": "Antonio Rüdiger",
+          "nombre": "Héctor Serrano Soler",
+          "jugador_real": "",
           "posicion": "DEF",
           "valoracion_juego": 92,
           "atributos": {
@@ -271,15 +246,12 @@
             "RET": 90,
             "ALM": 93
           },
-          "rasgo": "Duelo firme y presencia que ordena el área.",
-          "clausula": "Antes del partido pregunta si el cierzo viene de cara.",
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
           "salario": 14720,
           "valor": 3220000,
-          "avatar_ia": "assets/ia/avatares/antonio-cierzo.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/antonio-cierzo-match.mp4",
-            "rechazo": "assets/ia/reacciones/antonio-cierzo-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "duelo",
             "mando",
@@ -290,8 +262,8 @@
         },
         {
           "id": "trent-brujula",
-          "nombre": "Trent la Brújula",
-          "jugador_real": "Trent Alexander-Arnold",
+          "nombre": "Rubén Cabrera Carrasco",
+          "jugador_real": "",
           "posicion": "DEF",
           "valoracion_juego": 87,
           "atributos": {
@@ -301,15 +273,12 @@
             "RET": 91,
             "ALM": 85
           },
-          "rasgo": "Centros con mapa y cambio de orientación.",
-          "clausula": "Solicita que el córner tenga buena cobertura de datos.",
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
           "salario": 13920,
           "valor": 3045000,
-          "avatar_ia": "assets/ia/avatares/trent-brujula.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/trent-brujula-match.mp4",
-            "rechazo": "assets/ia/reacciones/trent-brujula-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "centro",
             "visión",
@@ -320,8 +289,8 @@
         },
         {
           "id": "dean-pedregal",
-          "nombre": "Dean del Pedregal",
-          "jugador_real": "Dean Huijsen",
+          "nombre": "Álvaro Santamaría Paredes",
+          "jugador_real": "",
           "posicion": "DEF",
           "valoracion_juego": 83,
           "atributos": {
@@ -331,15 +300,12 @@
             "RET": 80,
             "ALM": 87
           },
-          "rasgo": "Salida limpia y calma de piedra bien asentada.",
-          "clausula": "Le gusta recibir de cara y que nadie le meta prisa.",
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
           "salario": 13280,
           "valor": 2905000,
-          "avatar_ia": "assets/ia/avatares/dean-pedregal.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/dean-pedregal-match.mp4",
-            "rechazo": "assets/ia/reacciones/dean-pedregal-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "salida",
             "calma",
@@ -350,8 +316,8 @@
         },
         {
           "id": "andriy-cierzo",
-          "nombre": "Andriy del Cierzo",
-          "jugador_real": "Andriy Lunin",
+          "nombre": "Marcos Olmedo Vidal",
+          "jugador_real": "",
           "posicion": "POR",
           "valoracion_juego": 83,
           "atributos": {
@@ -361,15 +327,12 @@
             "RET": 81,
             "ALM": 86
           },
-          "rasgo": "Reflejos atentos y calma para iniciar desde atrás.",
-          "clausula": "Pide guantes de repuesto cuando cambia el viento.",
+          "rasgo": "Seguro bajo palos",
+          "clausula": "Contrato profesional",
           "salario": 13280,
           "valor": 2905000,
-          "avatar_ia": "assets/ia/avatares/andriy-cierzo.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/andriy-cierzo-match.mp4",
-            "rechazo": "assets/ia/reacciones/andriy-cierzo-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "RAS",
             "TOZ",
@@ -380,8 +343,8 @@
         },
         {
           "id": "ferland-soto",
-          "nombre": "Ferland del Soto",
-          "jugador_real": "Ferland Mendy",
+          "nombre": "Joel Ferrer Galván",
+          "jugador_real": "",
           "posicion": "DEF",
           "valoracion_juego": 87,
           "atributos": {
@@ -391,15 +354,12 @@
             "RET": 82,
             "ALM": 93
           },
-          "rasgo": "Duelos firmes y recorrido largo por el carril.",
-          "clausula": "Que el lateral tenga sombra y espacio para volver.",
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
           "salario": 13920,
           "valor": 3045000,
-          "avatar_ia": "assets/ia/avatares/ferland-soto.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/ferland-soto-match.mp4",
-            "rechazo": "assets/ia/reacciones/ferland-soto-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "RAS",
             "TOZ",
@@ -410,8 +370,8 @@
         },
         {
           "id": "rodrygo-sarten",
-          "nombre": "Rodrygo de la Sartén",
-          "jugador_real": "Rodrygo Goes",
+          "nombre": "Sergio Navarro Molina",
+          "jugador_real": "",
           "posicion": "DEL",
           "valoracion_juego": 88,
           "atributos": {
@@ -421,15 +381,12 @@
             "RET": 86,
             "ALM": 90
           },
-          "rasgo": "Cambio de ritmo y definición con pausa.",
-          "clausula": "Solicita una buena sobremesa antes de salir al campo.",
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
           "salario": 14080,
           "valor": 3080000,
-          "avatar_ia": "assets/ia/avatares/rodrygo-sarten.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/rodrygo-sarten-match.mp4",
-            "rechazo": "assets/ia/reacciones/rodrygo-sarten-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "RAS",
             "TOZ",
@@ -438,20 +395,23 @@
           "edad_carrera": 26,
           "cumpleanos": "01-26"
         }
-      ]
+      ],
+      "ciudad": "Valdoria",
+      "estadio": "La Alameda",
+      "color": "#2055a0",
+      "filosofia": "Cantera y juego asociado"
     },
     {
       "id": "somontano",
-      "nombre_parodico": "Balompié del Somontano",
-      "club_real": "FC Barcelona",
-      "fuente_oficial": "https://www.fcbarcelona.com/en/football/first-team/players",
+      "nombre_parodico": "Atlético Monteluz",
+      "club_real": "",
       "temporada": "2026/27",
       "formacion": "4-3-3",
       "jugadores": [
         {
           "id": "lamine-almendron",
-          "nombre": "Lamine el Almendrón",
-          "jugador_real": "Lamine Yamal",
+          "nombre": "Nicolás Montalvo Montes",
+          "jugador_real": "",
           "posicion": "DEL",
           "valoracion_juego": 90,
           "atributos": {
@@ -461,15 +421,12 @@
             "RET": 85,
             "ALM": 88
           },
-          "rasgo": "Descaro y regate fino en una baldosa.",
-          "clausula": "Pide una baldosa libre para ensayar el recorte.",
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
           "salario": 14400,
           "valor": 3150000,
-          "avatar_ia": "assets/ia/avatares/lamine-almendron.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/lamine-almendron-match.mp4",
-            "rechazo": "assets/ia/reacciones/lamine-almendron-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "regate",
             "descaro",
@@ -480,8 +437,8 @@
         },
         {
           "id": "dani-pasapues",
-          "nombre": "Dani Pasapúes",
-          "jugador_real": "Dani Olmo",
+          "nombre": "Héctor Beltrán Cortés",
+          "jugador_real": "",
           "posicion": "CEN",
           "valoracion_juego": 88,
           "atributos": {
@@ -491,15 +448,12 @@
             "RET": 91,
             "ALM": 86
           },
-          "rasgo": "Pillería entre líneas como liebre en rastrojo.",
-          "clausula": "Quiere que la pizarra marque los pasillos interiores.",
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
           "salario": 14080,
           "valor": 3080000,
-          "avatar_ia": "assets/ia/avatares/dani-pasapues.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/dani-pasapues-match.mp4",
-            "rechazo": "assets/ia/reacciones/dani-pasapues-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "pillería",
             "llegada",
@@ -510,8 +464,8 @@
         },
         {
           "id": "raphinha-abentau",
-          "nombre": "Raphinha el Abentau",
-          "jugador_real": "Raphinha",
+          "nombre": "Rubén Robledo Aguirre",
+          "jugador_real": "",
           "posicion": "DEL",
           "valoracion_juego": 92,
           "atributos": {
@@ -521,15 +475,12 @@
             "RET": 84,
             "ALM": 96
           },
-          "rasgo": "Presión desbocada por la banda sin freno.",
-          "clausula": "En el contrato pide una banda con arcén.",
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
           "salario": 14720,
           "valor": 3220000,
-          "avatar_ia": "assets/ia/avatares/raphinha-abentau.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/raphinha-abentau-match.mp4",
-            "rechazo": "assets/ia/reacciones/raphinha-abentau-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "presión",
             "velocidad",
@@ -540,8 +491,8 @@
         },
         {
           "id": "gavi-rompetrastes",
-          "nombre": "Gavi Rompetrastes",
-          "jugador_real": "Gavi",
+          "nombre": "Álvaro Serrano Soler",
+          "jugador_real": "",
           "posicion": "CEN",
           "valoracion_juego": 93,
           "atributos": {
@@ -551,15 +502,12 @@
             "RET": 94,
             "ALM": 95
           },
-          "rasgo": "Choque continuo y valentía sin medida.",
-          "clausula": "No negocia el último balón dividido.",
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
           "salario": 14880,
           "valor": 3255000,
-          "avatar_ia": "assets/ia/avatares/gavi-rompetrastes.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/gavi-rompetrastes-match.mp4",
-            "rechazo": "assets/ia/reacciones/gavi-rompetrastes-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "duelo",
             "presión",
@@ -570,8 +518,8 @@
         },
         {
           "id": "pedri-acequia",
-          "nombre": "Pedri de la Acequia",
-          "jugador_real": "Pedri",
+          "nombre": "Marcos Cabrera Carrasco",
+          "jugador_real": "",
           "posicion": "CEN",
           "valoracion_juego": 89,
           "atributos": {
@@ -581,15 +529,12 @@
             "RET": 91,
             "ALM": 90
           },
-          "rasgo": "Visión y pausa de agua mansa.",
-          "clausula": "Necesita un segundo para ordenar el tráfico del pase.",
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
           "salario": 14240,
           "valor": 3115000,
-          "avatar_ia": "assets/ia/avatares/pedri-acequia.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/pedri-acequia-match.mp4",
-            "rechazo": "assets/ia/reacciones/pedri-acequia-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "visión",
             "pausa",
@@ -600,8 +545,8 @@
         },
         {
           "id": "pau-tozudo",
-          "nombre": "Pau Tozudo",
-          "jugador_real": "Pau Cubarsí",
+          "nombre": "Joel Santamaría Paredes",
+          "jugador_real": "",
           "posicion": "DEF",
           "valoracion_juego": 87,
           "atributos": {
@@ -611,15 +556,12 @@
             "RET": 86,
             "ALM": 89
           },
-          "rasgo": "Salida de balón templada y colocación.",
-          "clausula": "Prefiere iniciar la jugada con el balón por el suelo.",
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
           "salario": 13920,
           "valor": 3045000,
-          "avatar_ia": "assets/ia/avatares/pau-tozudo.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/pau-tozudo-match.mp4",
-            "rechazo": "assets/ia/reacciones/pau-tozudo-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "salida",
             "colocación",
@@ -630,8 +572,8 @@
         },
         {
           "id": "joan-cierzo",
-          "nombre": "Joan del Cierzo",
-          "jugador_real": "Joan García",
+          "nombre": "Sergio Olmedo Vidal",
+          "jugador_real": "",
           "posicion": "POR",
           "valoracion_juego": 88,
           "atributos": {
@@ -641,15 +583,12 @@
             "RET": 82,
             "ALM": 89
           },
-          "rasgo": "Reflejos rápidos y buen primer pase.",
-          "clausula": "Pide guantes secos si sopla del Moncayo.",
+          "rasgo": "Seguro bajo palos",
+          "clausula": "Contrato profesional",
           "salario": 14080,
           "valor": 3080000,
-          "avatar_ia": "assets/ia/avatares/joan-cierzo.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/joan-cierzo-match.mp4",
-            "rechazo": "assets/ia/reacciones/joan-cierzo-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "reflejos",
             "juego pies",
@@ -660,8 +599,8 @@
         },
         {
           "id": "alejandro-acequia",
-          "nombre": "Alejandro de la Acequia",
-          "jugador_real": "Alejandro Balde",
+          "nombre": "Diego Ferrer Galván",
+          "jugador_real": "",
           "posicion": "DEF",
           "valoracion_juego": 88,
           "atributos": {
@@ -671,15 +610,12 @@
             "RET": 78,
             "ALM": 93
           },
-          "rasgo": "Recorrido largo por fuera y vuelta a tiempo.",
-          "clausula": "Que la banda esté regada y sin baches.",
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
           "salario": 14080,
           "valor": 3080000,
-          "avatar_ia": "assets/ia/avatares/alejandro-acequia.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/alejandro-acequia-match.mp4",
-            "rechazo": "assets/ia/reacciones/alejandro-acequia-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "recorrido",
             "velocidad",
@@ -690,8 +626,8 @@
         },
         {
           "id": "jules-linde",
-          "nombre": "Jules el Linde",
-          "jugador_real": "Jules Koundé",
+          "nombre": "Tomás Navarro Molina",
+          "jugador_real": "",
           "posicion": "DEF",
           "valoracion_juego": 89,
           "atributos": {
@@ -701,15 +637,12 @@
             "RET": 87,
             "ALM": 90
           },
-          "rasgo": "Atento al cruce y rápido al espacio.",
-          "clausula": "Le vale cualquier puesto si el equipo está bien colocado.",
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
           "salario": 14240,
           "valor": 3115000,
-          "avatar_ia": "assets/ia/avatares/jules-linde.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/jules-linde-match.mp4",
-            "rechazo": "assets/ia/reacciones/jules-linde-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "anticipación",
             "velocidad",
@@ -720,8 +653,8 @@
         },
         {
           "id": "frenkie-ronda",
-          "nombre": "Frenkie de la Ronda",
-          "jugador_real": "Frenkie de Jong",
+          "nombre": "Leo Montes Varela",
+          "jugador_real": "",
           "posicion": "CEN",
           "valoracion_juego": 89,
           "atributos": {
@@ -731,15 +664,12 @@
             "RET": 86,
             "ALM": 93
           },
-          "rasgo": "Conduce entre líneas como quien conoce todos los caminos.",
-          "clausula": "Pide que le dejen girar antes de cerrar el pasillo.",
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
           "salario": 14240,
           "valor": 3115000,
-          "avatar_ia": "assets/ia/avatares/frenkie-ronda.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/frenkie-ronda-match.mp4",
-            "rechazo": "assets/ia/reacciones/frenkie-ronda-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "conducción",
             "pausa",
@@ -750,8 +680,8 @@
         },
         {
           "id": "gabriel-tizon",
-          "nombre": "Gabriel el Tizón",
-          "jugador_real": "Gabriel Jesus",
+          "nombre": "Andrés Cortés Valcárcel",
+          "jugador_real": "",
           "posicion": "DEL",
           "valoracion_juego": 89,
           "atributos": {
@@ -761,15 +691,12 @@
             "RET": 86,
             "ALM": 91
           },
-          "rasgo": "Presión arriba y olfato para el área.",
-          "clausula": "Quiere tener siempre una segunda jugada cerca.",
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
           "salario": 14240,
           "valor": 3115000,
-          "avatar_ia": "assets/ia/avatares/gabriel-tizon.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/gabriel-tizon-match.mp4",
-            "rechazo": "assets/ia/reacciones/gabriel-tizon-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "presión",
             "área",
@@ -780,8 +707,8 @@
         },
         {
           "id": "wojciech-fogón",
-          "nombre": "Wojciech del Fogón",
-          "jugador_real": "Wojciech Szczęsny",
+          "nombre": "Pablo Aguirre Montero",
+          "jugador_real": "",
           "posicion": "POR",
           "valoracion_juego": 88,
           "atributos": {
@@ -791,15 +718,12 @@
             "RET": 87,
             "ALM": 89
           },
-          "rasgo": "Experiencia y reflejos para sujetar el área.",
-          "clausula": "Prefiere que le avisen antes de que llegue el balón.",
+          "rasgo": "Seguro bajo palos",
+          "clausula": "Contrato profesional",
           "salario": 14080,
           "valor": 3080000,
-          "avatar_ia": "assets/ia/avatares/wojciech-fogón.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/wojciech-fogón-match.mp4",
-            "rechazo": "assets/ia/reacciones/wojciech-fogón-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "RAS",
             "TOZ",
@@ -810,8 +734,8 @@
         },
         {
           "id": "joao-acequia",
-          "nombre": "João de la Acequia",
-          "jugador_real": "João Cancelo",
+          "nombre": "Lucas Soler Castañeda",
+          "jugador_real": "",
           "posicion": "DEF",
           "valoracion_juego": 88,
           "atributos": {
@@ -821,15 +745,12 @@
             "RET": 88,
             "ALM": 88
           },
-          "rasgo": "Creatividad y pase para abrir caminos por banda.",
-          "clausula": "Pide libertad con responsabilidad y una buena línea de pase.",
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
           "salario": 14080,
           "valor": 3080000,
-          "avatar_ia": "assets/ia/avatares/joao-acequia.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/joao-acequia-match.mp4",
-            "rechazo": "assets/ia/reacciones/joao-acequia-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "RAS",
             "TOZ",
@@ -840,8 +761,8 @@
         },
         {
           "id": "fermin-pedregal",
-          "nombre": "Fermín del Pedregal",
-          "jugador_real": "Fermín López",
+          "nombre": "Martín Carrasco Aranda",
+          "jugador_real": "",
           "posicion": "CEN",
           "valoracion_juego": 90,
           "atributos": {
@@ -851,15 +772,12 @@
             "RET": 87,
             "ALM": 93
           },
-          "rasgo": "Llegada con energía y remate desde segunda línea.",
-          "clausula": "No hace falta llamarle dos veces si hay espacio.",
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
           "salario": 14400,
           "valor": 3150000,
-          "avatar_ia": "assets/ia/avatares/fermin-pedregal.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/fermin-pedregal-match.mp4",
-            "rechazo": "assets/ia/reacciones/fermin-pedregal-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "RAS",
             "TOZ",
@@ -868,20 +786,23 @@
           "edad_carrera": 25,
           "cumpleanos": "03-03"
         }
-      ]
+      ],
+      "ciudad": "Monteluz",
+      "estadio": "El Mirador",
+      "color": "#ad273e",
+      "filosofia": "Presión y transiciones"
     },
     {
       "id": "colchonico",
-      "nombre_parodico": "Atlético Colchonico de la Ribera",
-      "club_real": "Atlético de Madrid",
-      "fuente_oficial": "https://www.atleticodemadrid.com/jugadores-primer-equipo/",
+      "nombre_parodico": "Racing Puerto Claro",
+      "club_real": "",
       "temporada": "2026/27",
       "formacion": "4-3-3",
       "jugadores": [
         {
           "id": "julian-arana-baturra",
-          "nombre": "Julián la Araña Baturra",
-          "jugador_real": "Julián Álvarez",
+          "nombre": "Diego Santamaría Paredes",
+          "jugador_real": "",
           "posicion": "DEL",
           "valoracion_juego": 94,
           "atributos": {
@@ -891,15 +812,12 @@
             "RET": 90,
             "ALM": 96
           },
-          "rasgo": "Picardía y presión en el área.",
-          "clausula": "Pide un balón cerca y permiso para apretar la salida.",
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
           "salario": 15040,
           "valor": 3290000,
-          "avatar_ia": "assets/ia/avatares/julian-arana-baturra.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/julian-arana-baturra-match.mp4",
-            "rechazo": "assets/ia/reacciones/julian-arana-baturra-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "presión",
             "pillería",
@@ -910,8 +828,8 @@
         },
         {
           "id": "alexander-picador",
-          "nombre": "Alexander el Picador",
-          "jugador_real": "Alexander Sørloth",
+          "nombre": "Tomás Olmedo Vidal",
+          "jugador_real": "",
           "posicion": "DEL",
           "valoracion_juego": 90,
           "atributos": {
@@ -921,15 +839,12 @@
             "RET": 82,
             "ALM": 91
           },
-          "rasgo": "Fuerza aérea y choque de ariete.",
-          "clausula": "Quiere centros con tiempo para cargar el remate.",
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
           "salario": 14400,
           "valor": 3150000,
-          "avatar_ia": "assets/ia/avatares/alexander-picador.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/alexander-picador-match.mp4",
-            "rechazo": "assets/ia/reacciones/alexander-picador-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "juego aéreo",
             "duelo",
@@ -940,8 +855,8 @@
         },
         {
           "id": "johnny-rastrojo",
-          "nombre": "Johnny el Rastrojo",
-          "jugador_real": "Johnny Cardoso",
+          "nombre": "Leo Ferrer Galván",
+          "jugador_real": "",
           "posicion": "CEN",
           "valoracion_juego": 89,
           "atributos": {
@@ -951,15 +866,12 @@
             "RET": 85,
             "ALM": 93
           },
-          "rasgo": "Recuperación y despliegue de ida y vuelta.",
-          "clausula": "Pide un mapa del medio campo, aunque se lo sabe de memoria.",
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
           "salario": 14240,
           "valor": 3115000,
-          "avatar_ia": "assets/ia/avatares/johnny-rastrojo.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/johnny-rastrojo-match.mp4",
-            "rechazo": "assets/ia/reacciones/johnny-rastrojo-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "recuperación",
             "fondo",
@@ -970,8 +882,8 @@
         },
         {
           "id": "jan-cerrojo",
-          "nombre": "Jan Cerrojo",
-          "jugador_real": "Jan Oblak",
+          "nombre": "Andrés Navarro Molina",
+          "jugador_real": "",
           "posicion": "POR",
           "valoracion_juego": 90,
           "atributos": {
@@ -981,15 +893,12 @@
             "RET": 85,
             "ALM": 91
           },
-          "rasgo": "Paradas decisivas bajo palos.",
-          "clausula": "Quiere una defensa que avise cuando cambie el viento.",
+          "rasgo": "Seguro bajo palos",
+          "clausula": "Contrato profesional",
           "salario": 14400,
           "valor": 3150000,
-          "avatar_ia": "assets/ia/avatares/jan-cerrojo.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/jan-cerrojo-match.mp4",
-            "rechazo": "assets/ia/reacciones/jan-cerrojo-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "reflejos",
             "colocación",
@@ -1000,8 +909,8 @@
         },
         {
           "id": "juan-musgo",
-          "nombre": "Juan del Musgo",
-          "jugador_real": "Juan Musso",
+          "nombre": "Pablo Montes Varela",
+          "jugador_real": "",
           "posicion": "POR",
           "valoracion_juego": 87,
           "atributos": {
@@ -1011,15 +920,12 @@
             "RET": 82,
             "ALM": 88
           },
-          "rasgo": "Atento en el área y listo para salir jugando.",
-          "clausula": "Le gusta calentar con tiempo y sin carreras por el pasillo.",
+          "rasgo": "Seguro bajo palos",
+          "clausula": "Contrato profesional",
           "salario": 13920,
           "valor": 3045000,
-          "avatar_ia": "assets/ia/avatares/juan-musgo.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/juan-musgo-match.mp4",
-            "rechazo": "assets/ia/reacciones/juan-musgo-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "reflejos",
             "salida",
@@ -1030,8 +936,8 @@
         },
         {
           "id": "david-hancko",
-          "nombre": "David del Hayedo",
-          "jugador_real": "David Hancko",
+          "nombre": "Lucas Cortés Valcárcel",
+          "jugador_real": "",
           "posicion": "DEF",
           "valoracion_juego": 90,
           "atributos": {
@@ -1041,15 +947,12 @@
             "RET": 85,
             "ALM": 92
           },
-          "rasgo": "Anticipación y zancada para corregir a tiempo.",
-          "clausula": "Pide líneas juntas y comunicación sin aspavientos.",
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
           "salario": 14400,
           "valor": 3150000,
-          "avatar_ia": "assets/ia/avatares/david-hancko.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/david-hancko-match.mp4",
-            "rechazo": "assets/ia/reacciones/david-hancko-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "anticipación",
             "duelo",
@@ -1060,8 +963,8 @@
         },
         {
           "id": "robin-carrizo",
-          "nombre": "Robin el Carrizo",
-          "jugador_real": "Robin Le Normand",
+          "nombre": "Martín Aguirre Montero",
+          "jugador_real": "",
           "posicion": "DEF",
           "valoracion_juego": 89,
           "atributos": {
@@ -1071,15 +974,12 @@
             "RET": 86,
             "ALM": 90
           },
-          "rasgo": "Firme en el cuerpo a cuerpo y sereno por arriba.",
-          "clausula": "Quiere que el área esté ordenada como un huerto.",
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
           "salario": 14240,
           "valor": 3115000,
-          "avatar_ia": "assets/ia/avatares/robin-carrizo.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/robin-carrizo-match.mp4",
-            "rechazo": "assets/ia/reacciones/robin-carrizo-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "duelo",
             "juego aéreo",
@@ -1090,8 +990,8 @@
         },
         {
           "id": "marc-pedregal",
-          "nombre": "Marc del Pedregal",
-          "jugador_real": "Marc Pubill",
+          "nombre": "Óscar Soler Castañeda",
+          "jugador_real": "",
           "posicion": "DEF",
           "valoracion_juego": 88,
           "atributos": {
@@ -1101,15 +1001,12 @@
             "RET": 83,
             "ALM": 90
           },
-          "rasgo": "Potencia por fuera y llegada con decisión.",
-          "clausula": "Pide carril libre para subir y vuelta sin atasco.",
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
           "salario": 14080,
           "valor": 3080000,
-          "avatar_ia": "assets/ia/avatares/marc-pedregal.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/marc-pedregal-match.mp4",
-            "rechazo": "assets/ia/reacciones/marc-pedregal-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "potencia",
             "recorrido",
@@ -1120,8 +1017,8 @@
         },
         {
           "id": "marcos-lumbre",
-          "nombre": "Marcos de la Lumbre",
-          "jugador_real": "Marcos Llorente",
+          "nombre": "Daniel Carrasco Aranda",
+          "jugador_real": "",
           "posicion": "CEN",
           "valoracion_juego": 93,
           "atributos": {
@@ -1131,15 +1028,12 @@
             "RET": 82,
             "ALM": 99
           },
-          "rasgo": "Pulmón largo y zancada de camino abierto.",
-          "clausula": "Con una cantimplora y un objetivo claro, no pregunta por el reloj.",
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
           "salario": 14880,
           "valor": 3255000,
-          "avatar_ia": "assets/ia/avatares/marcos-lumbre.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/marcos-lumbre-match.mp4",
-            "rechazo": "assets/ia/reacciones/marcos-lumbre-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "fondo",
             "velocidad",
@@ -1150,8 +1044,8 @@
         },
         {
           "id": "pablo-sendero",
-          "nombre": "Pablo del Sendero",
-          "jugador_real": "Pablo Barrios",
+          "nombre": "Miguel Paredes Salcedo",
+          "jugador_real": "",
           "posicion": "CEN",
           "valoracion_juego": 89,
           "atributos": {
@@ -1161,15 +1055,12 @@
             "RET": 88,
             "ALM": 92
           },
-          "rasgo": "Control orientado y trabajo entre líneas.",
-          "clausula": "Le gusta que la presión se coordine como una ronda.",
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
           "salario": 14240,
           "valor": 3115000,
-          "avatar_ia": "assets/ia/avatares/pablo-sendero.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/pablo-sendero-match.mp4",
-            "rechazo": "assets/ia/reacciones/pablo-sendero-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "conducción",
             "presión",
@@ -1180,8 +1071,8 @@
         },
         {
           "id": "adama-vendaval",
-          "nombre": "Adama el Vendaval",
-          "jugador_real": "Ademola Lookman",
+          "nombre": "Adrián Vidal Montalvo",
+          "jugador_real": "",
           "posicion": "DEL",
           "valoracion_juego": 89,
           "atributos": {
@@ -1191,15 +1082,12 @@
             "RET": 84,
             "ALM": 89
           },
-          "rasgo": "Desborde eléctrico y cambio de ritmo.",
-          "clausula": "Pide espacio para arrancar antes de que llegue el cierzo.",
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
           "salario": 14240,
           "valor": 3115000,
-          "avatar_ia": "assets/ia/avatares/adama-vendaval.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/adama-vendaval-match.mp4",
-            "rechazo": "assets/ia/reacciones/adama-vendaval-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "desborde",
             "velocidad",
@@ -1210,8 +1098,8 @@
         },
         {
           "id": "alejandro-carrizo",
-          "nombre": "Alejandro del Carrizo",
-          "jugador_real": "Álex Grimaldo",
+          "nombre": "Mateo Galván Beltrán",
+          "jugador_real": "",
           "posicion": "DEF",
           "valoracion_juego": 88,
           "atributos": {
@@ -1221,15 +1109,12 @@
             "RET": 86,
             "ALM": 89
           },
-          "rasgo": "Recorrido y centro preciso desde el carril.",
-          "clausula": "Pide el carril despejado y una señal clara para subir.",
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
           "salario": 14080,
           "valor": 3080000,
-          "avatar_ia": "assets/ia/avatares/alejandro-carrizo.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/alejandro-carrizo-match.mp4",
-            "rechazo": "assets/ia/reacciones/alejandro-carrizo-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "recorrido",
             "centro",
@@ -1240,8 +1125,8 @@
         },
         {
           "id": "koke-brasa",
-          "nombre": "Koke de la Brasa",
-          "jugador_real": "Koke",
+          "nombre": "Darío Molina Robledo",
+          "jugador_real": "",
           "posicion": "CEN",
           "valoracion_juego": 91,
           "atributos": {
@@ -1251,15 +1136,12 @@
             "RET": 93,
             "ALM": 96
           },
-          "rasgo": "Pausa, lectura y liderazgo de muchos inviernos.",
-          "clausula": "Pide que el equipo se mueva como una cuadrilla bien avenida.",
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
           "salario": 14560,
           "valor": 3185000,
-          "avatar_ia": "assets/ia/avatares/koke-brasa.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/koke-brasa-match.mp4",
-            "rechazo": "assets/ia/reacciones/koke-brasa-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "RAS",
             "TOZ",
@@ -1270,8 +1152,8 @@
         },
         {
           "id": "giuliano-senda",
-          "nombre": "Giuliano de la Senda",
-          "jugador_real": "Giuliano Simeone",
+          "nombre": "Gabriel Varela Serrano",
+          "jugador_real": "",
           "posicion": "DEL",
           "valoracion_juego": 91,
           "atributos": {
@@ -1281,15 +1163,12 @@
             "RET": 83,
             "ALM": 96
           },
-          "rasgo": "Desmarque, energía y presión en campo abierto.",
-          "clausula": "Solo necesita una ruta hacia el área y otra de vuelta.",
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
           "salario": 14560,
           "valor": 3185000,
-          "avatar_ia": "assets/ia/avatares/giuliano-senda.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/giuliano-senda-match.mp4",
-            "rechazo": "assets/ia/reacciones/giuliano-senda-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "RAS",
             "TOZ",
@@ -1298,20 +1177,23 @@
           "edad_carrera": 25,
           "cumpleanos": "06-17"
         }
-      ]
+      ],
+      "ciudad": "Puerto Claro",
+      "estadio": "Las Dársenas",
+      "color": "#227a72",
+      "filosofia": "Solidez y balón parado"
     },
     {
       "id": "tronca",
-      "nombre_parodico": "Athletic de la Tronca",
-      "club_real": "Athletic Club",
-      "fuente_oficial": "https://www.athletic-club.eus/en/teams/athletic-club/2026-27/squad/",
+      "nombre_parodico": "Deportivo Altorreal",
+      "club_real": "",
       "temporada": "2026/27",
       "formacion": "4-3-3",
       "jugadores": [
         {
           "id": "nico-remolino",
-          "nombre": "Nico Remolino",
-          "jugador_real": "Nico Williams",
+          "nombre": "Óscar Cortés Valcárcel",
+          "jugador_real": "",
           "posicion": "DEL",
           "valoracion_juego": 92,
           "atributos": {
@@ -1321,15 +1203,12 @@
             "RET": 81,
             "ALM": 94
           },
-          "rasgo": "Velocidad de vendaval en banda.",
-          "clausula": "Pide una banda larga y un balón que ruede fino.",
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
           "salario": 14720,
           "valor": 3220000,
-          "avatar_ia": "assets/ia/avatares/nico-remolino.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/nico-remolino-match.mp4",
-            "rechazo": "assets/ia/reacciones/nico-remolino-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "velocidad",
             "desborde",
@@ -1340,8 +1219,8 @@
         },
         {
           "id": "inaki-trillo",
-          "nombre": "Iñaki el Trillo",
-          "jugador_real": "Iñaki Williams",
+          "nombre": "Daniel Aguirre Montero",
+          "jugador_real": "",
           "posicion": "DEL",
           "valoracion_juego": 93,
           "atributos": {
@@ -1351,15 +1230,12 @@
             "RET": 82,
             "ALM": 98
           },
-          "rasgo": "Potencia y resistencia de tractor.",
-          "clausula": "No quiere que le aparquen el balón: prefiere conducirlo.",
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
           "salario": 14880,
           "valor": 3255000,
-          "avatar_ia": "assets/ia/avatares/inaki-trillo.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/inaki-trillo-match.mp4",
-            "rechazo": "assets/ia/reacciones/inaki-trillo-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "potencia",
             "fondo",
@@ -1370,8 +1246,8 @@
         },
         {
           "id": "oihan-zagal",
-          "nombre": "Oihan el Zagal",
-          "jugador_real": "Oihan Sancet",
+          "nombre": "Miguel Soler Castañeda",
+          "jugador_real": "",
           "posicion": "CEN",
           "valoracion_juego": 88,
           "atributos": {
@@ -1381,15 +1257,12 @@
             "RET": 88,
             "ALM": 87
           },
-          "rasgo": "Llegada sorpresiva y definición.",
-          "clausula": "Pide aparecer tarde, cuando el rival ya mira al banderín.",
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
           "salario": 14080,
           "valor": 3080000,
-          "avatar_ia": "assets/ia/avatares/oihan-zagal.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/oihan-zagal-match.mp4",
-            "rechazo": "assets/ia/reacciones/oihan-zagal-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "llegada",
             "remate",
@@ -1400,8 +1273,8 @@
         },
         {
           "id": "unai-chopera",
-          "nombre": "Unai de la Chopera",
-          "jugador_real": "Unai Simón",
+          "nombre": "Adrián Carrasco Aranda",
+          "jugador_real": "",
           "posicion": "POR",
           "valoracion_juego": 90,
           "atributos": {
@@ -1411,15 +1284,12 @@
             "RET": 83,
             "ALM": 91
           },
-          "rasgo": "Reacción rápida y voz para ordenar el área.",
-          "clausula": "Le gusta que la zaga hable claro y sin rodeos.",
+          "rasgo": "Seguro bajo palos",
+          "clausula": "Contrato profesional",
           "salario": 14400,
           "valor": 3150000,
-          "avatar_ia": "assets/ia/avatares/unai-chopera.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/unai-chopera-match.mp4",
-            "rechazo": "assets/ia/reacciones/unai-chopera-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "reflejos",
             "mando",
@@ -1430,8 +1300,8 @@
         },
         {
           "id": "dani-sendero",
-          "nombre": "Dani del Sendero",
-          "jugador_real": "Dani Vivian",
+          "nombre": "Mateo Paredes Salcedo",
+          "jugador_real": "",
           "posicion": "DEF",
           "valoracion_juego": 90,
           "atributos": {
@@ -1441,15 +1311,12 @@
             "RET": 84,
             "ALM": 92
           },
-          "rasgo": "Firme al cruce y atento a la espalda.",
-          "clausula": "Pide que nadie se quede mirando el paisaje en transición.",
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
           "salario": 14400,
           "valor": 3150000,
-          "avatar_ia": "assets/ia/avatares/dani-sendero.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/dani-sendero-match.mp4",
-            "rechazo": "assets/ia/reacciones/dani-sendero-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "cruce",
             "velocidad",
@@ -1460,8 +1327,8 @@
         },
         {
           "id": "aymeric-robledal",
-          "nombre": "Aymeric del Robledal",
-          "jugador_real": "Aymeric Laporte",
+          "nombre": "Darío Vidal Montalvo",
+          "jugador_real": "",
           "posicion": "DEF",
           "valoracion_juego": 90,
           "atributos": {
@@ -1471,15 +1338,12 @@
             "RET": 91,
             "ALM": 90
           },
-          "rasgo": "Salida limpia y lectura para anticipar.",
-          "clausula": "Quiere línea de pase, no una rotonda de jugadores.",
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
           "salario": 14400,
           "valor": 3150000,
-          "avatar_ia": "assets/ia/avatares/aymeric-robledal.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/aymeric-robledal-match.mp4",
-            "rechazo": "assets/ia/reacciones/aymeric-robledal-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "salida",
             "anticipación",
@@ -1490,8 +1354,8 @@
         },
         {
           "id": "yuri-espino",
-          "nombre": "Yuri Espino",
-          "jugador_real": "Yuri Berchiche",
+          "nombre": "Gabriel Galván Beltrán",
+          "jugador_real": "",
           "posicion": "DEF",
           "valoracion_juego": 88,
           "atributos": {
@@ -1501,15 +1365,12 @@
             "RET": 88,
             "ALM": 91
           },
-          "rasgo": "Experiencia y empuje en el carril.",
-          "clausula": "Pide una banda libre y un café corto antes del calentamiento.",
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
           "salario": 14080,
           "valor": 3080000,
-          "avatar_ia": "assets/ia/avatares/yuri-espino.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/yuri-espino-match.mp4",
-            "rechazo": "assets/ia/reacciones/yuri-espino-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "experiencia",
             "duelo",
@@ -1520,8 +1381,8 @@
         },
         {
           "id": "dani-mojon",
-          "nombre": "Aitor del Mojón",
-          "jugador_real": "Aitor Paredes",
+          "nombre": "Iván Molina Robledo",
+          "jugador_real": "",
           "posicion": "DEF",
           "valoracion_juego": 89,
           "atributos": {
@@ -1531,15 +1392,12 @@
             "RET": 83,
             "ALM": 94
           },
-          "rasgo": "Colocación y contundencia sin complicarse.",
-          "clausula": "El área, bien delimitada; el balón, lejos de la portería.",
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
           "salario": 14240,
           "valor": 3115000,
-          "avatar_ia": "assets/ia/avatares/aitor-mojon.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/aitor-mojon-match.mp4",
-            "rechazo": "assets/ia/reacciones/aitor-mojon-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "colocación",
             "duelo",
@@ -1550,8 +1408,8 @@
         },
         {
           "id": "oier-ribera",
-          "nombre": "Iñigo de la Ribera",
-          "jugador_real": "Iñigo Ruiz de Galarreta",
+          "nombre": "Bruno Varela Serrano",
+          "jugador_real": "",
           "posicion": "CEN",
           "valoracion_juego": 86,
           "atributos": {
@@ -1561,15 +1419,12 @@
             "RET": 86,
             "ALM": 88
           },
-          "rasgo": "Pase sencillo y buen apoyo para salir jugando.",
-          "clausula": "Pide una salida limpia, sin atascar la acequia.",
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
           "salario": 13760,
           "valor": 3010000,
-          "avatar_ia": "assets/ia/avatares/inigo-ribera.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/inigo-ribera-match.mp4",
-            "rechazo": "assets/ia/reacciones/inigo-ribera-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "pase",
             "apoyo",
@@ -1580,8 +1435,8 @@
         },
         {
           "id": "benat-rasmia",
-          "nombre": "Beñat Rasmia",
-          "jugador_real": "Beñat Prados",
+          "nombre": "Samuel Valcárcel Cabrera",
+          "jugador_real": "",
           "posicion": "CEN",
           "valoracion_juego": 89,
           "atributos": {
@@ -1591,15 +1446,12 @@
             "RET": 87,
             "ALM": 95
           },
-          "rasgo": "Energía y recuperación en campo abierto.",
-          "clausula": "Pide permiso para correr; suele salir antes de que contesten.",
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
           "salario": 14240,
           "valor": 3115000,
-          "avatar_ia": "assets/ia/avatares/benat-rasmia.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/benat-rasmia-match.mp4",
-            "rechazo": "assets/ia/reacciones/benat-rasmia-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "recuperación",
             "fondo",
@@ -1610,8 +1462,8 @@
         },
         {
           "id": "gorka-rastro",
-          "nombre": "Gorka del Rastro",
-          "jugador_real": "Gorka Guruzeta",
+          "nombre": "Nicolás Montero Santamaría",
+          "jugador_real": "",
           "posicion": "DEL",
           "valoracion_juego": 88,
           "atributos": {
@@ -1621,15 +1473,12 @@
             "RET": 88,
             "ALM": 87
           },
-          "rasgo": "Desmarque oportuno y remate de primera.",
-          "clausula": "Quiere centros con intención y un segundo balón atento.",
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
           "salario": 14080,
           "valor": 3080000,
-          "avatar_ia": "assets/ia/avatares/gorka-rastro.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/gorka-rastro-match.mp4",
-            "rechazo": "assets/ia/reacciones/gorka-rastro-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "desmarque",
             "remate",
@@ -1640,8 +1489,8 @@
         },
         {
           "id": "alex-padilla",
-          "nombre": "Alex de la Campa",
-          "jugador_real": "Álex Padilla",
+          "nombre": "Héctor Castañeda Olmedo",
+          "jugador_real": "",
           "posicion": "POR",
           "valoracion_juego": 84,
           "atributos": {
@@ -1651,15 +1500,12 @@
             "RET": 81,
             "ALM": 86
           },
-          "rasgo": "Agilidad y buena lectura para salir a tiempo.",
-          "clausula": "Pide calentamiento con balón y un poco de tranquilidad.",
+          "rasgo": "Seguro bajo palos",
+          "clausula": "Contrato profesional",
           "salario": 13440,
           "valor": 2940000,
-          "avatar_ia": "assets/ia/avatares/alex-padilla.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/alex-padilla-match.mp4",
-            "rechazo": "assets/ia/reacciones/alex-padilla-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "RAS",
             "TOZ",
@@ -1670,8 +1516,8 @@
         },
         {
           "id": "yeray-barranco",
-          "nombre": "Yeray del Barranco",
-          "jugador_real": "Yeray Álvarez",
+          "nombre": "Rubén Aranda Ferrer",
+          "jugador_real": "",
           "posicion": "DEF",
           "valoracion_juego": 86,
           "atributos": {
@@ -1681,15 +1527,12 @@
             "RET": 84,
             "ALM": 88
           },
-          "rasgo": "Anticipación y firmeza en el duelo.",
-          "clausula": "Le basta una línea defensiva atenta y bien colocada.",
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
           "salario": 13760,
           "valor": 3010000,
-          "avatar_ia": "assets/ia/avatares/yeray-barranco.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/yeray-barranco-match.mp4",
-            "rechazo": "assets/ia/reacciones/yeray-barranco-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "RAS",
             "TOZ",
@@ -1700,8 +1543,8 @@
         },
         {
           "id": "mikel-rastrojo",
-          "nombre": "Mikel Rastrojo",
-          "jugador_real": "Mikel Jauregizar",
+          "nombre": "Álvaro Salcedo Navarro",
+          "jugador_real": "",
           "posicion": "CEN",
           "valoracion_juego": 88,
           "atributos": {
@@ -1711,15 +1554,12 @@
             "RET": 84,
             "ALM": 93
           },
-          "rasgo": "Pase vertical, recuperación y energía para sostener el ritmo.",
-          "clausula": "Pide el balón al pie y un pasillo para jugar hacia delante.",
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
           "salario": 14080,
           "valor": 3080000,
-          "avatar_ia": "assets/ia/avatares/mikel-rastrojo.webp",
-          "reacciones_ia": {
-            "match": "assets/ia/reacciones/mikel-rastrojo-match.mp4",
-            "rechazo": "assets/ia/reacciones/mikel-rastrojo-rechazo.mp4"
-          },
+          "avatar_ia": "",
+          "reacciones_ia": {},
           "tags": [
             "RAS",
             "TOZ",
@@ -1728,7 +1568,3139 @@
           "edad_carrera": 31,
           "cumpleanos": "06-24"
         }
-      ]
+      ],
+      "ciudad": "Altorreal",
+      "estadio": "Los Olivos",
+      "color": "#7150a2",
+      "filosofia": "Ataque por las bandas"
+    },
+    {
+      "id": "club-ficticio-5",
+      "nombre_parodico": "Sporting Bellavista",
+      "club_real": "",
+      "temporada": "2026/27",
+      "formacion": "4-4-2",
+      "jugadores": [
+        {
+          "id": "liga-5-1",
+          "nombre": "Iván Vidal Montalvo",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 76,
+          "atributos": {
+            "RAS": 70,
+            "TOZ": 73,
+            "CHI": 76,
+            "RET": 79,
+            "ALM": 82
+          },
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
+          "salario": 5320,
+          "valor": 1368000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 22,
+          "cumpleanos": "10-26"
+        },
+        {
+          "id": "liga-5-2",
+          "nombre": "Bruno Galván Beltrán",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 81,
+          "atributos": {
+            "RAS": 76,
+            "TOZ": 79,
+            "CHI": 82,
+            "RET": 85,
+            "ALM": 75
+          },
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
+          "salario": 5670,
+          "valor": 1458000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "chispa",
+            "lumbre",
+            "regate"
+          ],
+          "edad_carrera": 23,
+          "cumpleanos": "10-16"
+        },
+        {
+          "id": "liga-5-3",
+          "nombre": "Samuel Molina Robledo",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 67,
+          "atributos": {
+            "RAS": 63,
+            "TOZ": 66,
+            "CHI": 69,
+            "RET": 72,
+            "ALM": 62
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 4690,
+          "valor": 1206000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "despliegue",
+            "campanas",
+            "llegada"
+          ],
+          "edad_carrera": 24,
+          "cumpleanos": "03-11"
+        },
+        {
+          "id": "liga-5-4",
+          "nombre": "Nicolás Varela Serrano",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 72,
+          "atributos": {
+            "RAS": 69,
+            "TOZ": 72,
+            "CHI": 75,
+            "RET": 78,
+            "ALM": 68
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 5040,
+          "valor": 1296000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "trallazo",
+            "rasmia",
+            "motor"
+          ],
+          "edad_carrera": 25,
+          "cumpleanos": "09-17"
+        },
+        {
+          "id": "liga-5-5",
+          "nombre": "Héctor Valcárcel Cabrera",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 77,
+          "atributos": {
+            "RAS": 75,
+            "TOZ": 78,
+            "CHI": 81,
+            "RET": 71,
+            "ALM": 74
+          },
+          "rasgo": "Seguro bajo palos",
+          "clausula": "Contrato profesional",
+          "salario": 5390,
+          "valor": 1386000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "reflejos",
+            "altura",
+            "seguridad"
+          ],
+          "edad_carrera": 26,
+          "cumpleanos": "04-14"
+        },
+        {
+          "id": "liga-5-6",
+          "nombre": "Rubén Montero Santamaría",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 82,
+          "atributos": {
+            "RAS": 81,
+            "TOZ": 84,
+            "CHI": 87,
+            "RET": 77,
+            "ALM": 80
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 5740,
+          "valor": 1476000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "polivalencia",
+            "cambio ritmo",
+            "fondo"
+          ],
+          "edad_carrera": 27,
+          "cumpleanos": "12-19"
+        },
+        {
+          "id": "liga-5-7",
+          "nombre": "Álvaro Castañeda Olmedo",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 68,
+          "atributos": {
+            "RAS": 68,
+            "TOZ": 71,
+            "CHI": 74,
+            "RET": 64,
+            "ALM": 67
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 4760,
+          "valor": 1224000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "orden",
+            "duelo",
+            "pausa"
+          ],
+          "edad_carrera": 28,
+          "cumpleanos": "10-03"
+        },
+        {
+          "id": "liga-5-8",
+          "nombre": "Marcos Aranda Ferrer",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 73,
+          "atributos": {
+            "RAS": 74,
+            "TOZ": 77,
+            "CHI": 67,
+            "RET": 70,
+            "ALM": 73
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 5110,
+          "valor": 1314000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "visión",
+            "pase",
+            "pillería"
+          ],
+          "edad_carrera": 29,
+          "cumpleanos": "06-06"
+        },
+        {
+          "id": "liga-5-9",
+          "nombre": "Joel Salcedo Navarro",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 78,
+          "atributos": {
+            "RAS": 80,
+            "TOZ": 83,
+            "CHI": 73,
+            "RET": 76,
+            "ALM": 79
+          },
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
+          "salario": 5460,
+          "valor": 1404000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "duelo",
+            "mando",
+            "presencia"
+          ],
+          "edad_carrera": 30,
+          "cumpleanos": "07-02"
+        },
+        {
+          "id": "liga-5-10",
+          "nombre": "Sergio Montalvo Montes",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 64,
+          "atributos": {
+            "RAS": 67,
+            "TOZ": 70,
+            "CHI": 60,
+            "RET": 63,
+            "ALM": 66
+          },
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
+          "salario": 4480,
+          "valor": 1152000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "centro",
+            "visión",
+            "precisión"
+          ],
+          "edad_carrera": 31,
+          "cumpleanos": "01-13"
+        },
+        {
+          "id": "liga-5-11",
+          "nombre": "Diego Beltrán Cortés",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 69,
+          "atributos": {
+            "RAS": 73,
+            "TOZ": 63,
+            "CHI": 66,
+            "RET": 69,
+            "ALM": 72
+          },
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
+          "salario": 4830,
+          "valor": 1242000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "salida",
+            "calma",
+            "colocación"
+          ],
+          "edad_carrera": 32,
+          "cumpleanos": "07-23"
+        },
+        {
+          "id": "liga-5-12",
+          "nombre": "Tomás Robledo Aguirre",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 74,
+          "atributos": {
+            "RAS": 79,
+            "TOZ": 69,
+            "CHI": 72,
+            "RET": 75,
+            "ALM": 78
+          },
+          "rasgo": "Seguro bajo palos",
+          "clausula": "Contrato profesional",
+          "salario": 5180,
+          "valor": 1332000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "RAS",
+            "TOZ",
+            "CHI"
+          ],
+          "edad_carrera": 33,
+          "cumpleanos": "08-20"
+        },
+        {
+          "id": "liga-5-13",
+          "nombre": "Leo Serrano Soler",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 79,
+          "atributos": {
+            "RAS": 85,
+            "TOZ": 75,
+            "CHI": 78,
+            "RET": 81,
+            "ALM": 84
+          },
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
+          "salario": 5530,
+          "valor": 1422000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "RAS",
+            "TOZ",
+            "CHI"
+          ],
+          "edad_carrera": 18,
+          "cumpleanos": "09-01"
+        },
+        {
+          "id": "liga-5-14",
+          "nombre": "Andrés Cabrera Carrasco",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 65,
+          "atributos": {
+            "RAS": 59,
+            "TOZ": 62,
+            "CHI": 65,
+            "RET": 68,
+            "ALM": 71
+          },
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
+          "salario": 4550,
+          "valor": 1170000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "RAS",
+            "TOZ",
+            "CHI"
+          ],
+          "edad_carrera": 19,
+          "cumpleanos": "01-26"
+        }
+      ],
+      "ciudad": "Bellavista",
+      "estadio": "La Colina",
+      "color": "#1b6845",
+      "filosofia": "Fútbol ofensivo"
+    },
+    {
+      "id": "club-ficticio-6",
+      "nombre_parodico": "CD Sierra Norte",
+      "club_real": "",
+      "temporada": "2026/27",
+      "formacion": "4-3-3",
+      "jugadores": [
+        {
+          "id": "liga-6-1",
+          "nombre": "Marcos Montero Santamaría",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 79,
+          "atributos": {
+            "RAS": 73,
+            "TOZ": 76,
+            "CHI": 79,
+            "RET": 82,
+            "ALM": 85
+          },
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
+          "salario": 5530,
+          "valor": 1422000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "regate",
+            "descaro",
+            "creatividad"
+          ],
+          "edad_carrera": 23,
+          "cumpleanos": "11-28"
+        },
+        {
+          "id": "liga-6-2",
+          "nombre": "Joel Castañeda Olmedo",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 65,
+          "atributos": {
+            "RAS": 60,
+            "TOZ": 63,
+            "CHI": 66,
+            "RET": 69,
+            "ALM": 59
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 4550,
+          "valor": 1170000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "pillería",
+            "llegada",
+            "visión"
+          ],
+          "edad_carrera": 24,
+          "cumpleanos": "12-18"
+        },
+        {
+          "id": "liga-6-3",
+          "nombre": "Sergio Aranda Ferrer",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 70,
+          "atributos": {
+            "RAS": 66,
+            "TOZ": 69,
+            "CHI": 72,
+            "RET": 75,
+            "ALM": 65
+          },
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
+          "salario": 4900,
+          "valor": 1260000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "presión",
+            "velocidad",
+            "centro"
+          ],
+          "edad_carrera": 25,
+          "cumpleanos": "08-11"
+        },
+        {
+          "id": "liga-6-4",
+          "nombre": "Diego Salcedo Navarro",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 75,
+          "atributos": {
+            "RAS": 72,
+            "TOZ": 75,
+            "CHI": 78,
+            "RET": 81,
+            "ALM": 71
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 5250,
+          "valor": 1350000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "duelo",
+            "presión",
+            "rasmia"
+          ],
+          "edad_carrera": 26,
+          "cumpleanos": "10-02"
+        },
+        {
+          "id": "liga-6-5",
+          "nombre": "Tomás Montalvo Montes",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 80,
+          "atributos": {
+            "RAS": 78,
+            "TOZ": 81,
+            "CHI": 84,
+            "RET": 74,
+            "ALM": 77
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 5600,
+          "valor": 1440000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "visión",
+            "pausa",
+            "pase"
+          ],
+          "edad_carrera": 27,
+          "cumpleanos": "04-24"
+        },
+        {
+          "id": "liga-6-6",
+          "nombre": "Leo Beltrán Cortés",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 66,
+          "atributos": {
+            "RAS": 65,
+            "TOZ": 68,
+            "CHI": 71,
+            "RET": 61,
+            "ALM": 64
+          },
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
+          "salario": 4620,
+          "valor": 1188000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "salida",
+            "colocación",
+            "calma"
+          ],
+          "edad_carrera": 28,
+          "cumpleanos": "04-01"
+        },
+        {
+          "id": "liga-6-7",
+          "nombre": "Andrés Robledo Aguirre",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 71,
+          "atributos": {
+            "RAS": 71,
+            "TOZ": 74,
+            "CHI": 77,
+            "RET": 67,
+            "ALM": 70
+          },
+          "rasgo": "Seguro bajo palos",
+          "clausula": "Contrato profesional",
+          "salario": 4970,
+          "valor": 1278000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "reflejos",
+            "juego pies",
+            "anticipación"
+          ],
+          "edad_carrera": 29,
+          "cumpleanos": "01-05"
+        },
+        {
+          "id": "liga-6-8",
+          "nombre": "Pablo Serrano Soler",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 76,
+          "atributos": {
+            "RAS": 77,
+            "TOZ": 80,
+            "CHI": 70,
+            "RET": 73,
+            "ALM": 76
+          },
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
+          "salario": 5320,
+          "valor": 1368000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "recorrido",
+            "velocidad",
+            "cobertura"
+          ],
+          "edad_carrera": 30,
+          "cumpleanos": "01-28"
+        },
+        {
+          "id": "liga-6-9",
+          "nombre": "Lucas Cabrera Carrasco",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 81,
+          "atributos": {
+            "RAS": 83,
+            "TOZ": 86,
+            "CHI": 76,
+            "RET": 79,
+            "ALM": 82
+          },
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
+          "salario": 5670,
+          "valor": 1458000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "anticipación",
+            "velocidad",
+            "polivalencia"
+          ],
+          "edad_carrera": 31,
+          "cumpleanos": "11-21"
+        },
+        {
+          "id": "liga-6-10",
+          "nombre": "Martín Santamaría Paredes",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 67,
+          "atributos": {
+            "RAS": 70,
+            "TOZ": 73,
+            "CHI": 63,
+            "RET": 66,
+            "ALM": 69
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 4690,
+          "valor": 1206000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "conducción",
+            "pausa",
+            "presión"
+          ],
+          "edad_carrera": 32,
+          "cumpleanos": "05-14"
+        },
+        {
+          "id": "liga-6-11",
+          "nombre": "Óscar Olmedo Vidal",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 72,
+          "atributos": {
+            "RAS": 76,
+            "TOZ": 66,
+            "CHI": 69,
+            "RET": 72,
+            "ALM": 75
+          },
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
+          "salario": 5040,
+          "valor": 1296000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "presión",
+            "área",
+            "asociación"
+          ],
+          "edad_carrera": 33,
+          "cumpleanos": "01-13"
+        },
+        {
+          "id": "liga-6-12",
+          "nombre": "Daniel Ferrer Galván",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 77,
+          "atributos": {
+            "RAS": 82,
+            "TOZ": 72,
+            "CHI": 75,
+            "RET": 78,
+            "ALM": 81
+          },
+          "rasgo": "Seguro bajo palos",
+          "clausula": "Contrato profesional",
+          "salario": 5390,
+          "valor": 1386000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "RAS",
+            "TOZ",
+            "CHI"
+          ],
+          "edad_carrera": 18,
+          "cumpleanos": "05-21"
+        },
+        {
+          "id": "liga-6-13",
+          "nombre": "Miguel Navarro Molina",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 82,
+          "atributos": {
+            "RAS": 88,
+            "TOZ": 78,
+            "CHI": 81,
+            "RET": 84,
+            "ALM": 87
+          },
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
+          "salario": 5740,
+          "valor": 1476000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "RAS",
+            "TOZ",
+            "CHI"
+          ],
+          "edad_carrera": 19,
+          "cumpleanos": "06-06"
+        },
+        {
+          "id": "liga-6-14",
+          "nombre": "Adrián Montes Varela",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 68,
+          "atributos": {
+            "RAS": 62,
+            "TOZ": 65,
+            "CHI": 68,
+            "RET": 71,
+            "ALM": 74
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 4760,
+          "valor": 1224000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "RAS",
+            "TOZ",
+            "CHI"
+          ],
+          "edad_carrera": 20,
+          "cumpleanos": "03-03"
+        }
+      ],
+      "ciudad": "Sierra Norte",
+      "estadio": "El Pinar",
+      "color": "#31537a",
+      "filosofia": "Defensa organizada"
+    },
+    {
+      "id": "club-ficticio-7",
+      "nombre_parodico": "Unión Ribera",
+      "club_real": "",
+      "temporada": "2026/27",
+      "formacion": "4-3-3",
+      "jugadores": [
+        {
+          "id": "liga-7-1",
+          "nombre": "Pablo Beltrán Cortés",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 82,
+          "atributos": {
+            "RAS": 76,
+            "TOZ": 79,
+            "CHI": 82,
+            "RET": 85,
+            "ALM": 88
+          },
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
+          "salario": 5740,
+          "valor": 1476000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "presión",
+            "pillería",
+            "remate"
+          ],
+          "edad_carrera": 24,
+          "cumpleanos": "10-20"
+        },
+        {
+          "id": "liga-7-2",
+          "nombre": "Lucas Robledo Aguirre",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 68,
+          "atributos": {
+            "RAS": 63,
+            "TOZ": 66,
+            "CHI": 69,
+            "RET": 72,
+            "ALM": 62
+          },
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
+          "salario": 4760,
+          "valor": 1224000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "juego aéreo",
+            "duelo",
+            "remate"
+          ],
+          "edad_carrera": 25,
+          "cumpleanos": "01-14"
+        },
+        {
+          "id": "liga-7-3",
+          "nombre": "Martín Serrano Soler",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 73,
+          "atributos": {
+            "RAS": 69,
+            "TOZ": 72,
+            "CHI": 75,
+            "RET": 78,
+            "ALM": 68
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 5110,
+          "valor": 1314000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "recuperación",
+            "fondo",
+            "duelo"
+          ],
+          "edad_carrera": 26,
+          "cumpleanos": "03-15"
+        },
+        {
+          "id": "liga-7-4",
+          "nombre": "Óscar Cabrera Carrasco",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 78,
+          "atributos": {
+            "RAS": 75,
+            "TOZ": 78,
+            "CHI": 81,
+            "RET": 84,
+            "ALM": 74
+          },
+          "rasgo": "Seguro bajo palos",
+          "clausula": "Contrato profesional",
+          "salario": 5460,
+          "valor": 1404000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "reflejos",
+            "colocación",
+            "mando"
+          ],
+          "edad_carrera": 27,
+          "cumpleanos": "02-06"
+        },
+        {
+          "id": "liga-7-5",
+          "nombre": "Daniel Santamaría Paredes",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 64,
+          "atributos": {
+            "RAS": 62,
+            "TOZ": 65,
+            "CHI": 68,
+            "RET": 58,
+            "ALM": 61
+          },
+          "rasgo": "Seguro bajo palos",
+          "clausula": "Contrato profesional",
+          "salario": 4480,
+          "valor": 1152000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "reflejos",
+            "salida",
+            "concentración"
+          ],
+          "edad_carrera": 28,
+          "cumpleanos": "03-07"
+        },
+        {
+          "id": "liga-7-6",
+          "nombre": "Miguel Olmedo Vidal",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 69,
+          "atributos": {
+            "RAS": 68,
+            "TOZ": 71,
+            "CHI": 74,
+            "RET": 64,
+            "ALM": 67
+          },
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
+          "salario": 4830,
+          "valor": 1242000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "anticipación",
+            "duelo",
+            "recorrido"
+          ],
+          "edad_carrera": 29,
+          "cumpleanos": "08-27"
+        },
+        {
+          "id": "liga-7-7",
+          "nombre": "Adrián Ferrer Galván",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 74,
+          "atributos": {
+            "RAS": 74,
+            "TOZ": 77,
+            "CHI": 80,
+            "RET": 70,
+            "ALM": 73
+          },
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
+          "salario": 5180,
+          "valor": 1332000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "duelo",
+            "juego aéreo",
+            "orden"
+          ],
+          "edad_carrera": 30,
+          "cumpleanos": "04-23"
+        },
+        {
+          "id": "liga-7-8",
+          "nombre": "Mateo Navarro Molina",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 79,
+          "atributos": {
+            "RAS": 80,
+            "TOZ": 83,
+            "CHI": 73,
+            "RET": 76,
+            "ALM": 79
+          },
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
+          "salario": 5530,
+          "valor": 1422000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "potencia",
+            "recorrido",
+            "duelo"
+          ],
+          "edad_carrera": 31,
+          "cumpleanos": "03-24"
+        },
+        {
+          "id": "liga-7-9",
+          "nombre": "Darío Montes Varela",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 65,
+          "atributos": {
+            "RAS": 67,
+            "TOZ": 70,
+            "CHI": 60,
+            "RET": 63,
+            "ALM": 66
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 4550,
+          "valor": 1170000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "fondo",
+            "velocidad",
+            "remate"
+          ],
+          "edad_carrera": 32,
+          "cumpleanos": "08-23"
+        },
+        {
+          "id": "liga-7-10",
+          "nombre": "Gabriel Cortés Valcárcel",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 70,
+          "atributos": {
+            "RAS": 73,
+            "TOZ": 76,
+            "CHI": 66,
+            "RET": 69,
+            "ALM": 72
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 4900,
+          "valor": 1260000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "conducción",
+            "presión",
+            "pase"
+          ],
+          "edad_carrera": 33,
+          "cumpleanos": "11-25"
+        },
+        {
+          "id": "liga-7-11",
+          "nombre": "Iván Aguirre Montero",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 75,
+          "atributos": {
+            "RAS": 79,
+            "TOZ": 69,
+            "CHI": 72,
+            "RET": 75,
+            "ALM": 78
+          },
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
+          "salario": 5250,
+          "valor": 1350000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "desborde",
+            "velocidad",
+            "definición"
+          ],
+          "edad_carrera": 18,
+          "cumpleanos": "04-11"
+        },
+        {
+          "id": "liga-7-12",
+          "nombre": "Bruno Soler Castañeda",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 80,
+          "atributos": {
+            "RAS": 85,
+            "TOZ": 75,
+            "CHI": 78,
+            "RET": 81,
+            "ALM": 84
+          },
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
+          "salario": 5600,
+          "valor": 1440000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "recorrido",
+            "centro",
+            "precisión"
+          ],
+          "edad_carrera": 19,
+          "cumpleanos": "08-17"
+        },
+        {
+          "id": "liga-7-13",
+          "nombre": "Samuel Carrasco Aranda",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 66,
+          "atributos": {
+            "RAS": 72,
+            "TOZ": 62,
+            "CHI": 65,
+            "RET": 68,
+            "ALM": 71
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 4620,
+          "valor": 1188000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "RAS",
+            "TOZ",
+            "CHI"
+          ],
+          "edad_carrera": 20,
+          "cumpleanos": "11-23"
+        },
+        {
+          "id": "liga-7-14",
+          "nombre": "Nicolás Paredes Salcedo",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 71,
+          "atributos": {
+            "RAS": 65,
+            "TOZ": 68,
+            "CHI": 71,
+            "RET": 74,
+            "ALM": 77
+          },
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
+          "salario": 4970,
+          "valor": 1278000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "RAS",
+            "TOZ",
+            "CHI"
+          ],
+          "edad_carrera": 21,
+          "cumpleanos": "06-17"
+        }
+      ],
+      "ciudad": "Ribera",
+      "estadio": "La Isla",
+      "color": "#a34325",
+      "filosofia": "Talento joven"
+    },
+    {
+      "id": "club-ficticio-8",
+      "nombre_parodico": "Ferroviario Santa Vega",
+      "club_real": "",
+      "temporada": "2026/27",
+      "formacion": "4-3-3",
+      "jugadores": [
+        {
+          "id": "liga-8-1",
+          "nombre": "Mateo Olmedo Vidal",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 66,
+          "atributos": {
+            "RAS": 60,
+            "TOZ": 63,
+            "CHI": 66,
+            "RET": 69,
+            "ALM": 72
+          },
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
+          "salario": 4620,
+          "valor": 1188000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "velocidad",
+            "desborde",
+            "uno contra uno"
+          ],
+          "edad_carrera": 25,
+          "cumpleanos": "07-20"
+        },
+        {
+          "id": "liga-8-2",
+          "nombre": "Darío Ferrer Galván",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 71,
+          "atributos": {
+            "RAS": 66,
+            "TOZ": 69,
+            "CHI": 72,
+            "RET": 75,
+            "ALM": 65
+          },
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
+          "salario": 4970,
+          "valor": 1278000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "potencia",
+            "fondo",
+            "velocidad"
+          ],
+          "edad_carrera": 26,
+          "cumpleanos": "09-11"
+        },
+        {
+          "id": "liga-8-3",
+          "nombre": "Gabriel Navarro Molina",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 76,
+          "atributos": {
+            "RAS": 72,
+            "TOZ": 75,
+            "CHI": 78,
+            "RET": 81,
+            "ALM": 71
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 5320,
+          "valor": 1368000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "llegada",
+            "remate",
+            "pillería"
+          ],
+          "edad_carrera": 27,
+          "cumpleanos": "05-13"
+        },
+        {
+          "id": "liga-8-4",
+          "nombre": "Iván Montes Varela",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 81,
+          "atributos": {
+            "RAS": 78,
+            "TOZ": 81,
+            "CHI": 84,
+            "RET": 87,
+            "ALM": 77
+          },
+          "rasgo": "Seguro bajo palos",
+          "clausula": "Contrato profesional",
+          "salario": 5670,
+          "valor": 1458000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "reflejos",
+            "mando",
+            "juego pies"
+          ],
+          "edad_carrera": 28,
+          "cumpleanos": "12-12"
+        },
+        {
+          "id": "liga-8-5",
+          "nombre": "Bruno Cortés Valcárcel",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 67,
+          "atributos": {
+            "RAS": 65,
+            "TOZ": 68,
+            "CHI": 71,
+            "RET": 61,
+            "ALM": 64
+          },
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
+          "salario": 4690,
+          "valor": 1206000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "cruce",
+            "velocidad",
+            "duelo"
+          ],
+          "edad_carrera": 29,
+          "cumpleanos": "03-01"
+        },
+        {
+          "id": "liga-8-6",
+          "nombre": "Samuel Aguirre Montero",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 72,
+          "atributos": {
+            "RAS": 71,
+            "TOZ": 74,
+            "CHI": 77,
+            "RET": 67,
+            "ALM": 70
+          },
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
+          "salario": 5040,
+          "valor": 1296000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "salida",
+            "anticipación",
+            "pase"
+          ],
+          "edad_carrera": 30,
+          "cumpleanos": "02-02"
+        },
+        {
+          "id": "liga-8-7",
+          "nombre": "Nicolás Soler Castañeda",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 77,
+          "atributos": {
+            "RAS": 77,
+            "TOZ": 80,
+            "CHI": 83,
+            "RET": 73,
+            "ALM": 76
+          },
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
+          "salario": 5390,
+          "valor": 1386000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "experiencia",
+            "duelo",
+            "recorrido"
+          ],
+          "edad_carrera": 31,
+          "cumpleanos": "04-08"
+        },
+        {
+          "id": "liga-8-8",
+          "nombre": "Héctor Carrasco Aranda",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 82,
+          "atributos": {
+            "RAS": 83,
+            "TOZ": 86,
+            "CHI": 76,
+            "RET": 79,
+            "ALM": 82
+          },
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
+          "salario": 5740,
+          "valor": 1476000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "colocación",
+            "duelo",
+            "despeje"
+          ],
+          "edad_carrera": 32,
+          "cumpleanos": "08-23"
+        },
+        {
+          "id": "liga-8-9",
+          "nombre": "Rubén Paredes Salcedo",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 68,
+          "atributos": {
+            "RAS": 70,
+            "TOZ": 73,
+            "CHI": 63,
+            "RET": 66,
+            "ALM": 69
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 4760,
+          "valor": 1224000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "pase",
+            "apoyo",
+            "visión"
+          ],
+          "edad_carrera": 33,
+          "cumpleanos": "01-23"
+        },
+        {
+          "id": "liga-8-10",
+          "nombre": "Álvaro Vidal Montalvo",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 73,
+          "atributos": {
+            "RAS": 76,
+            "TOZ": 79,
+            "CHI": 69,
+            "RET": 72,
+            "ALM": 75
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 5110,
+          "valor": 1314000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "recuperación",
+            "fondo",
+            "presión"
+          ],
+          "edad_carrera": 18,
+          "cumpleanos": "03-07"
+        },
+        {
+          "id": "liga-8-11",
+          "nombre": "Marcos Galván Beltrán",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 78,
+          "atributos": {
+            "RAS": 82,
+            "TOZ": 72,
+            "CHI": 75,
+            "RET": 78,
+            "ALM": 81
+          },
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
+          "salario": 5460,
+          "valor": 1404000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "desmarque",
+            "remate",
+            "asociación"
+          ],
+          "edad_carrera": 19,
+          "cumpleanos": "10-25"
+        },
+        {
+          "id": "liga-8-12",
+          "nombre": "Joel Molina Robledo",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 64,
+          "atributos": {
+            "RAS": 69,
+            "TOZ": 59,
+            "CHI": 62,
+            "RET": 65,
+            "ALM": 68
+          },
+          "rasgo": "Seguro bajo palos",
+          "clausula": "Contrato profesional",
+          "salario": 4480,
+          "valor": 1152000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "RAS",
+            "TOZ",
+            "CHI"
+          ],
+          "edad_carrera": 20,
+          "cumpleanos": "02-02"
+        },
+        {
+          "id": "liga-8-13",
+          "nombre": "Sergio Varela Serrano",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 69,
+          "atributos": {
+            "RAS": 75,
+            "TOZ": 65,
+            "CHI": 68,
+            "RET": 71,
+            "ALM": 74
+          },
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
+          "salario": 4830,
+          "valor": 1242000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "RAS",
+            "TOZ",
+            "CHI"
+          ],
+          "edad_carrera": 21,
+          "cumpleanos": "09-01"
+        },
+        {
+          "id": "liga-8-14",
+          "nombre": "Diego Valcárcel Cabrera",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 74,
+          "atributos": {
+            "RAS": 68,
+            "TOZ": 71,
+            "CHI": 74,
+            "RET": 77,
+            "ALM": 80
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 5180,
+          "valor": 1332000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "RAS",
+            "TOZ",
+            "CHI"
+          ],
+          "edad_carrera": 22,
+          "cumpleanos": "06-24"
+        }
+      ],
+      "ciudad": "Santa Vega",
+      "estadio": "La Estación",
+      "color": "#5f4974",
+      "filosofia": "Intensidad y duelos"
+    },
+    {
+      "id": "club-ficticio-9",
+      "nombre_parodico": "CF Costa Serena",
+      "club_real": "",
+      "temporada": "2026/27",
+      "formacion": "4-4-2",
+      "jugadores": [
+        {
+          "id": "liga-9-1",
+          "nombre": "Héctor Aguirre Montero",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 69,
+          "atributos": {
+            "RAS": 63,
+            "TOZ": 66,
+            "CHI": 69,
+            "RET": 72,
+            "ALM": 75
+          },
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
+          "salario": 4830,
+          "valor": 1242000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 26,
+          "cumpleanos": "10-26"
+        },
+        {
+          "id": "liga-9-2",
+          "nombre": "Rubén Soler Castañeda",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 74,
+          "atributos": {
+            "RAS": 69,
+            "TOZ": 72,
+            "CHI": 75,
+            "RET": 78,
+            "ALM": 68
+          },
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
+          "salario": 5180,
+          "valor": 1332000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "chispa",
+            "lumbre",
+            "regate"
+          ],
+          "edad_carrera": 27,
+          "cumpleanos": "10-16"
+        },
+        {
+          "id": "liga-9-3",
+          "nombre": "Álvaro Carrasco Aranda",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 79,
+          "atributos": {
+            "RAS": 75,
+            "TOZ": 78,
+            "CHI": 81,
+            "RET": 84,
+            "ALM": 74
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 5530,
+          "valor": 1422000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "despliegue",
+            "campanas",
+            "llegada"
+          ],
+          "edad_carrera": 28,
+          "cumpleanos": "03-11"
+        },
+        {
+          "id": "liga-9-4",
+          "nombre": "Marcos Paredes Salcedo",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 65,
+          "atributos": {
+            "RAS": 62,
+            "TOZ": 65,
+            "CHI": 68,
+            "RET": 71,
+            "ALM": 61
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 4550,
+          "valor": 1170000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "trallazo",
+            "rasmia",
+            "motor"
+          ],
+          "edad_carrera": 29,
+          "cumpleanos": "09-17"
+        },
+        {
+          "id": "liga-9-5",
+          "nombre": "Joel Vidal Montalvo",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 70,
+          "atributos": {
+            "RAS": 68,
+            "TOZ": 71,
+            "CHI": 74,
+            "RET": 64,
+            "ALM": 67
+          },
+          "rasgo": "Seguro bajo palos",
+          "clausula": "Contrato profesional",
+          "salario": 4900,
+          "valor": 1260000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "reflejos",
+            "altura",
+            "seguridad"
+          ],
+          "edad_carrera": 30,
+          "cumpleanos": "04-14"
+        },
+        {
+          "id": "liga-9-6",
+          "nombre": "Sergio Galván Beltrán",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 75,
+          "atributos": {
+            "RAS": 74,
+            "TOZ": 77,
+            "CHI": 80,
+            "RET": 70,
+            "ALM": 73
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 5250,
+          "valor": 1350000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "polivalencia",
+            "cambio ritmo",
+            "fondo"
+          ],
+          "edad_carrera": 31,
+          "cumpleanos": "12-19"
+        },
+        {
+          "id": "liga-9-7",
+          "nombre": "Diego Molina Robledo",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 80,
+          "atributos": {
+            "RAS": 80,
+            "TOZ": 83,
+            "CHI": 86,
+            "RET": 76,
+            "ALM": 79
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 5600,
+          "valor": 1440000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "orden",
+            "duelo",
+            "pausa"
+          ],
+          "edad_carrera": 32,
+          "cumpleanos": "10-03"
+        },
+        {
+          "id": "liga-9-8",
+          "nombre": "Tomás Varela Serrano",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 66,
+          "atributos": {
+            "RAS": 67,
+            "TOZ": 70,
+            "CHI": 60,
+            "RET": 63,
+            "ALM": 66
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 4620,
+          "valor": 1188000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "visión",
+            "pase",
+            "pillería"
+          ],
+          "edad_carrera": 33,
+          "cumpleanos": "06-06"
+        },
+        {
+          "id": "liga-9-9",
+          "nombre": "Leo Valcárcel Cabrera",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 71,
+          "atributos": {
+            "RAS": 73,
+            "TOZ": 76,
+            "CHI": 66,
+            "RET": 69,
+            "ALM": 72
+          },
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
+          "salario": 4970,
+          "valor": 1278000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "duelo",
+            "mando",
+            "presencia"
+          ],
+          "edad_carrera": 18,
+          "cumpleanos": "07-02"
+        },
+        {
+          "id": "liga-9-10",
+          "nombre": "Andrés Montero Santamaría",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 76,
+          "atributos": {
+            "RAS": 79,
+            "TOZ": 82,
+            "CHI": 72,
+            "RET": 75,
+            "ALM": 78
+          },
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
+          "salario": 5320,
+          "valor": 1368000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "centro",
+            "visión",
+            "precisión"
+          ],
+          "edad_carrera": 19,
+          "cumpleanos": "01-13"
+        },
+        {
+          "id": "liga-9-11",
+          "nombre": "Pablo Castañeda Olmedo",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 81,
+          "atributos": {
+            "RAS": 85,
+            "TOZ": 75,
+            "CHI": 78,
+            "RET": 81,
+            "ALM": 84
+          },
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
+          "salario": 5670,
+          "valor": 1458000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "salida",
+            "calma",
+            "colocación"
+          ],
+          "edad_carrera": 20,
+          "cumpleanos": "07-23"
+        },
+        {
+          "id": "liga-9-12",
+          "nombre": "Lucas Aranda Ferrer",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 67,
+          "atributos": {
+            "RAS": 72,
+            "TOZ": 62,
+            "CHI": 65,
+            "RET": 68,
+            "ALM": 71
+          },
+          "rasgo": "Seguro bajo palos",
+          "clausula": "Contrato profesional",
+          "salario": 4690,
+          "valor": 1206000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "RAS",
+            "TOZ",
+            "CHI"
+          ],
+          "edad_carrera": 21,
+          "cumpleanos": "08-20"
+        },
+        {
+          "id": "liga-9-13",
+          "nombre": "Martín Salcedo Navarro",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 72,
+          "atributos": {
+            "RAS": 78,
+            "TOZ": 68,
+            "CHI": 71,
+            "RET": 74,
+            "ALM": 77
+          },
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
+          "salario": 5040,
+          "valor": 1296000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "RAS",
+            "TOZ",
+            "CHI"
+          ],
+          "edad_carrera": 22,
+          "cumpleanos": "09-01"
+        },
+        {
+          "id": "liga-9-14",
+          "nombre": "Óscar Montalvo Montes",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 77,
+          "atributos": {
+            "RAS": 71,
+            "TOZ": 74,
+            "CHI": 77,
+            "RET": 80,
+            "ALM": 83
+          },
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
+          "salario": 5390,
+          "valor": 1386000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "RAS",
+            "TOZ",
+            "CHI"
+          ],
+          "edad_carrera": 23,
+          "cumpleanos": "01-26"
+        }
+      ],
+      "ciudad": "Costa Serena",
+      "estadio": "El Faro",
+      "color": "#15829e",
+      "filosofia": "Posesión paciente"
+    },
+    {
+      "id": "club-ficticio-10",
+      "nombre_parodico": "Real Villacumbre",
+      "club_real": "",
+      "temporada": "2026/27",
+      "formacion": "4-3-3",
+      "jugadores": [
+        {
+          "id": "liga-10-1",
+          "nombre": "Tomás Galván Beltrán",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 72,
+          "atributos": {
+            "RAS": 66,
+            "TOZ": 69,
+            "CHI": 72,
+            "RET": 75,
+            "ALM": 78
+          },
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
+          "salario": 5040,
+          "valor": 1296000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "regate",
+            "descaro",
+            "creatividad"
+          ],
+          "edad_carrera": 27,
+          "cumpleanos": "11-28"
+        },
+        {
+          "id": "liga-10-2",
+          "nombre": "Leo Molina Robledo",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 77,
+          "atributos": {
+            "RAS": 72,
+            "TOZ": 75,
+            "CHI": 78,
+            "RET": 81,
+            "ALM": 71
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 5390,
+          "valor": 1386000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "pillería",
+            "llegada",
+            "visión"
+          ],
+          "edad_carrera": 28,
+          "cumpleanos": "12-18"
+        },
+        {
+          "id": "liga-10-3",
+          "nombre": "Andrés Varela Serrano",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 82,
+          "atributos": {
+            "RAS": 78,
+            "TOZ": 81,
+            "CHI": 84,
+            "RET": 87,
+            "ALM": 77
+          },
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
+          "salario": 5740,
+          "valor": 1476000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "presión",
+            "velocidad",
+            "centro"
+          ],
+          "edad_carrera": 29,
+          "cumpleanos": "08-11"
+        },
+        {
+          "id": "liga-10-4",
+          "nombre": "Pablo Valcárcel Cabrera",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 68,
+          "atributos": {
+            "RAS": 65,
+            "TOZ": 68,
+            "CHI": 71,
+            "RET": 74,
+            "ALM": 64
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 4760,
+          "valor": 1224000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "duelo",
+            "presión",
+            "rasmia"
+          ],
+          "edad_carrera": 30,
+          "cumpleanos": "10-02"
+        },
+        {
+          "id": "liga-10-5",
+          "nombre": "Lucas Montero Santamaría",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 73,
+          "atributos": {
+            "RAS": 71,
+            "TOZ": 74,
+            "CHI": 77,
+            "RET": 67,
+            "ALM": 70
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 5110,
+          "valor": 1314000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "visión",
+            "pausa",
+            "pase"
+          ],
+          "edad_carrera": 31,
+          "cumpleanos": "04-24"
+        },
+        {
+          "id": "liga-10-6",
+          "nombre": "Martín Castañeda Olmedo",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 78,
+          "atributos": {
+            "RAS": 77,
+            "TOZ": 80,
+            "CHI": 83,
+            "RET": 73,
+            "ALM": 76
+          },
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
+          "salario": 5460,
+          "valor": 1404000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "salida",
+            "colocación",
+            "calma"
+          ],
+          "edad_carrera": 32,
+          "cumpleanos": "04-01"
+        },
+        {
+          "id": "liga-10-7",
+          "nombre": "Óscar Aranda Ferrer",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 64,
+          "atributos": {
+            "RAS": 64,
+            "TOZ": 67,
+            "CHI": 70,
+            "RET": 60,
+            "ALM": 63
+          },
+          "rasgo": "Seguro bajo palos",
+          "clausula": "Contrato profesional",
+          "salario": 4480,
+          "valor": 1152000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "reflejos",
+            "juego pies",
+            "anticipación"
+          ],
+          "edad_carrera": 33,
+          "cumpleanos": "01-05"
+        },
+        {
+          "id": "liga-10-8",
+          "nombre": "Daniel Salcedo Navarro",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 69,
+          "atributos": {
+            "RAS": 70,
+            "TOZ": 73,
+            "CHI": 63,
+            "RET": 66,
+            "ALM": 69
+          },
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
+          "salario": 4830,
+          "valor": 1242000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "recorrido",
+            "velocidad",
+            "cobertura"
+          ],
+          "edad_carrera": 18,
+          "cumpleanos": "01-28"
+        },
+        {
+          "id": "liga-10-9",
+          "nombre": "Miguel Montalvo Montes",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 74,
+          "atributos": {
+            "RAS": 76,
+            "TOZ": 79,
+            "CHI": 69,
+            "RET": 72,
+            "ALM": 75
+          },
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
+          "salario": 5180,
+          "valor": 1332000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "anticipación",
+            "velocidad",
+            "polivalencia"
+          ],
+          "edad_carrera": 19,
+          "cumpleanos": "11-21"
+        },
+        {
+          "id": "liga-10-10",
+          "nombre": "Adrián Beltrán Cortés",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 79,
+          "atributos": {
+            "RAS": 82,
+            "TOZ": 85,
+            "CHI": 75,
+            "RET": 78,
+            "ALM": 81
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 5530,
+          "valor": 1422000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "conducción",
+            "pausa",
+            "presión"
+          ],
+          "edad_carrera": 20,
+          "cumpleanos": "05-14"
+        },
+        {
+          "id": "liga-10-11",
+          "nombre": "Mateo Robledo Aguirre",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 65,
+          "atributos": {
+            "RAS": 69,
+            "TOZ": 59,
+            "CHI": 62,
+            "RET": 65,
+            "ALM": 68
+          },
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
+          "salario": 4550,
+          "valor": 1170000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "presión",
+            "área",
+            "asociación"
+          ],
+          "edad_carrera": 21,
+          "cumpleanos": "01-13"
+        },
+        {
+          "id": "liga-10-12",
+          "nombre": "Darío Serrano Soler",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 70,
+          "atributos": {
+            "RAS": 75,
+            "TOZ": 65,
+            "CHI": 68,
+            "RET": 71,
+            "ALM": 74
+          },
+          "rasgo": "Seguro bajo palos",
+          "clausula": "Contrato profesional",
+          "salario": 4900,
+          "valor": 1260000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "RAS",
+            "TOZ",
+            "CHI"
+          ],
+          "edad_carrera": 22,
+          "cumpleanos": "05-21"
+        },
+        {
+          "id": "liga-10-13",
+          "nombre": "Gabriel Cabrera Carrasco",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 75,
+          "atributos": {
+            "RAS": 81,
+            "TOZ": 71,
+            "CHI": 74,
+            "RET": 77,
+            "ALM": 80
+          },
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
+          "salario": 5250,
+          "valor": 1350000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "RAS",
+            "TOZ",
+            "CHI"
+          ],
+          "edad_carrera": 23,
+          "cumpleanos": "06-06"
+        },
+        {
+          "id": "liga-10-14",
+          "nombre": "Iván Santamaría Paredes",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 80,
+          "atributos": {
+            "RAS": 74,
+            "TOZ": 77,
+            "CHI": 80,
+            "RET": 83,
+            "ALM": 86
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 5600,
+          "valor": 1440000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "RAS",
+            "TOZ",
+            "CHI"
+          ],
+          "edad_carrera": 24,
+          "cumpleanos": "03-03"
+        }
+      ],
+      "ciudad": "Villacumbre",
+      "estadio": "La Corona",
+      "color": "#846817",
+      "filosofia": "Equilibrio y experiencia"
+    },
+    {
+      "id": "club-ficticio-11",
+      "nombre_parodico": "Estrella del Llano",
+      "club_real": "",
+      "temporada": "2026/27",
+      "formacion": "4-3-3",
+      "jugadores": [
+        {
+          "id": "liga-11-1",
+          "nombre": "Daniel Castañeda Olmedo",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 75,
+          "atributos": {
+            "RAS": 69,
+            "TOZ": 72,
+            "CHI": 75,
+            "RET": 78,
+            "ALM": 81
+          },
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
+          "salario": 5250,
+          "valor": 1350000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "presión",
+            "pillería",
+            "remate"
+          ],
+          "edad_carrera": 28,
+          "cumpleanos": "10-20"
+        },
+        {
+          "id": "liga-11-2",
+          "nombre": "Miguel Aranda Ferrer",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 80,
+          "atributos": {
+            "RAS": 75,
+            "TOZ": 78,
+            "CHI": 81,
+            "RET": 84,
+            "ALM": 74
+          },
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
+          "salario": 5600,
+          "valor": 1440000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "juego aéreo",
+            "duelo",
+            "remate"
+          ],
+          "edad_carrera": 29,
+          "cumpleanos": "01-14"
+        },
+        {
+          "id": "liga-11-3",
+          "nombre": "Adrián Salcedo Navarro",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 66,
+          "atributos": {
+            "RAS": 62,
+            "TOZ": 65,
+            "CHI": 68,
+            "RET": 71,
+            "ALM": 61
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 4620,
+          "valor": 1188000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "recuperación",
+            "fondo",
+            "duelo"
+          ],
+          "edad_carrera": 30,
+          "cumpleanos": "03-15"
+        },
+        {
+          "id": "liga-11-4",
+          "nombre": "Mateo Montalvo Montes",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 71,
+          "atributos": {
+            "RAS": 68,
+            "TOZ": 71,
+            "CHI": 74,
+            "RET": 77,
+            "ALM": 67
+          },
+          "rasgo": "Seguro bajo palos",
+          "clausula": "Contrato profesional",
+          "salario": 4970,
+          "valor": 1278000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "reflejos",
+            "colocación",
+            "mando"
+          ],
+          "edad_carrera": 31,
+          "cumpleanos": "02-06"
+        },
+        {
+          "id": "liga-11-5",
+          "nombre": "Darío Beltrán Cortés",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 76,
+          "atributos": {
+            "RAS": 74,
+            "TOZ": 77,
+            "CHI": 80,
+            "RET": 70,
+            "ALM": 73
+          },
+          "rasgo": "Seguro bajo palos",
+          "clausula": "Contrato profesional",
+          "salario": 5320,
+          "valor": 1368000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "reflejos",
+            "salida",
+            "concentración"
+          ],
+          "edad_carrera": 32,
+          "cumpleanos": "03-07"
+        },
+        {
+          "id": "liga-11-6",
+          "nombre": "Gabriel Robledo Aguirre",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 81,
+          "atributos": {
+            "RAS": 80,
+            "TOZ": 83,
+            "CHI": 86,
+            "RET": 76,
+            "ALM": 79
+          },
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
+          "salario": 5670,
+          "valor": 1458000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "anticipación",
+            "duelo",
+            "recorrido"
+          ],
+          "edad_carrera": 33,
+          "cumpleanos": "08-27"
+        },
+        {
+          "id": "liga-11-7",
+          "nombre": "Iván Serrano Soler",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 67,
+          "atributos": {
+            "RAS": 67,
+            "TOZ": 70,
+            "CHI": 73,
+            "RET": 63,
+            "ALM": 66
+          },
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
+          "salario": 4690,
+          "valor": 1206000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "duelo",
+            "juego aéreo",
+            "orden"
+          ],
+          "edad_carrera": 18,
+          "cumpleanos": "04-23"
+        },
+        {
+          "id": "liga-11-8",
+          "nombre": "Bruno Cabrera Carrasco",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 72,
+          "atributos": {
+            "RAS": 73,
+            "TOZ": 76,
+            "CHI": 66,
+            "RET": 69,
+            "ALM": 72
+          },
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
+          "salario": 5040,
+          "valor": 1296000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "potencia",
+            "recorrido",
+            "duelo"
+          ],
+          "edad_carrera": 19,
+          "cumpleanos": "03-24"
+        },
+        {
+          "id": "liga-11-9",
+          "nombre": "Samuel Santamaría Paredes",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 77,
+          "atributos": {
+            "RAS": 79,
+            "TOZ": 82,
+            "CHI": 72,
+            "RET": 75,
+            "ALM": 78
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 5390,
+          "valor": 1386000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "fondo",
+            "velocidad",
+            "remate"
+          ],
+          "edad_carrera": 20,
+          "cumpleanos": "08-23"
+        },
+        {
+          "id": "liga-11-10",
+          "nombre": "Nicolás Olmedo Vidal",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 82,
+          "atributos": {
+            "RAS": 85,
+            "TOZ": 88,
+            "CHI": 78,
+            "RET": 81,
+            "ALM": 84
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 5740,
+          "valor": 1476000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "conducción",
+            "presión",
+            "pase"
+          ],
+          "edad_carrera": 21,
+          "cumpleanos": "11-25"
+        },
+        {
+          "id": "liga-11-11",
+          "nombre": "Héctor Ferrer Galván",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 68,
+          "atributos": {
+            "RAS": 72,
+            "TOZ": 62,
+            "CHI": 65,
+            "RET": 68,
+            "ALM": 71
+          },
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
+          "salario": 4760,
+          "valor": 1224000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "desborde",
+            "velocidad",
+            "definición"
+          ],
+          "edad_carrera": 22,
+          "cumpleanos": "04-11"
+        },
+        {
+          "id": "liga-11-12",
+          "nombre": "Rubén Navarro Molina",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 73,
+          "atributos": {
+            "RAS": 78,
+            "TOZ": 68,
+            "CHI": 71,
+            "RET": 74,
+            "ALM": 77
+          },
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
+          "salario": 5110,
+          "valor": 1314000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "recorrido",
+            "centro",
+            "precisión"
+          ],
+          "edad_carrera": 23,
+          "cumpleanos": "08-17"
+        },
+        {
+          "id": "liga-11-13",
+          "nombre": "Álvaro Montes Varela",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 78,
+          "atributos": {
+            "RAS": 84,
+            "TOZ": 74,
+            "CHI": 77,
+            "RET": 80,
+            "ALM": 83
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 5460,
+          "valor": 1404000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "RAS",
+            "TOZ",
+            "CHI"
+          ],
+          "edad_carrera": 24,
+          "cumpleanos": "11-23"
+        },
+        {
+          "id": "liga-11-14",
+          "nombre": "Marcos Cortés Valcárcel",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 64,
+          "atributos": {
+            "RAS": 58,
+            "TOZ": 61,
+            "CHI": 64,
+            "RET": 67,
+            "ALM": 70
+          },
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
+          "salario": 4480,
+          "valor": 1152000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "RAS",
+            "TOZ",
+            "CHI"
+          ],
+          "edad_carrera": 25,
+          "cumpleanos": "06-17"
+        }
+      ],
+      "ciudad": "El Llano",
+      "estadio": "Los Trigales",
+      "color": "#94405c",
+      "filosofia": "Cantera y velocidad"
+    },
+    {
+      "id": "club-ficticio-12",
+      "nombre_parodico": "Deportivo Arboleda",
+      "club_real": "",
+      "temporada": "2026/27",
+      "formacion": "4-3-3",
+      "jugadores": [
+        {
+          "id": "liga-12-1",
+          "nombre": "Bruno Robledo Aguirre",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 78,
+          "atributos": {
+            "RAS": 72,
+            "TOZ": 75,
+            "CHI": 78,
+            "RET": 81,
+            "ALM": 84
+          },
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
+          "salario": 5460,
+          "valor": 1404000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "velocidad",
+            "desborde",
+            "uno contra uno"
+          ],
+          "edad_carrera": 29,
+          "cumpleanos": "07-20"
+        },
+        {
+          "id": "liga-12-2",
+          "nombre": "Samuel Serrano Soler",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 64,
+          "atributos": {
+            "RAS": 59,
+            "TOZ": 62,
+            "CHI": 65,
+            "RET": 68,
+            "ALM": 58
+          },
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
+          "salario": 4480,
+          "valor": 1152000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "potencia",
+            "fondo",
+            "velocidad"
+          ],
+          "edad_carrera": 30,
+          "cumpleanos": "09-11"
+        },
+        {
+          "id": "liga-12-3",
+          "nombre": "Nicolás Cabrera Carrasco",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 69,
+          "atributos": {
+            "RAS": 65,
+            "TOZ": 68,
+            "CHI": 71,
+            "RET": 74,
+            "ALM": 64
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 4830,
+          "valor": 1242000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "llegada",
+            "remate",
+            "pillería"
+          ],
+          "edad_carrera": 31,
+          "cumpleanos": "05-13"
+        },
+        {
+          "id": "liga-12-4",
+          "nombre": "Héctor Santamaría Paredes",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 74,
+          "atributos": {
+            "RAS": 71,
+            "TOZ": 74,
+            "CHI": 77,
+            "RET": 80,
+            "ALM": 70
+          },
+          "rasgo": "Seguro bajo palos",
+          "clausula": "Contrato profesional",
+          "salario": 5180,
+          "valor": 1332000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "reflejos",
+            "mando",
+            "juego pies"
+          ],
+          "edad_carrera": 32,
+          "cumpleanos": "12-12"
+        },
+        {
+          "id": "liga-12-5",
+          "nombre": "Rubén Olmedo Vidal",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 79,
+          "atributos": {
+            "RAS": 77,
+            "TOZ": 80,
+            "CHI": 83,
+            "RET": 73,
+            "ALM": 76
+          },
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
+          "salario": 5530,
+          "valor": 1422000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "cruce",
+            "velocidad",
+            "duelo"
+          ],
+          "edad_carrera": 33,
+          "cumpleanos": "03-01"
+        },
+        {
+          "id": "liga-12-6",
+          "nombre": "Álvaro Ferrer Galván",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 65,
+          "atributos": {
+            "RAS": 64,
+            "TOZ": 67,
+            "CHI": 70,
+            "RET": 60,
+            "ALM": 63
+          },
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
+          "salario": 4550,
+          "valor": 1170000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "salida",
+            "anticipación",
+            "pase"
+          ],
+          "edad_carrera": 18,
+          "cumpleanos": "02-02"
+        },
+        {
+          "id": "liga-12-7",
+          "nombre": "Marcos Navarro Molina",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 70,
+          "atributos": {
+            "RAS": 70,
+            "TOZ": 73,
+            "CHI": 76,
+            "RET": 66,
+            "ALM": 69
+          },
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
+          "salario": 4900,
+          "valor": 1260000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "experiencia",
+            "duelo",
+            "recorrido"
+          ],
+          "edad_carrera": 19,
+          "cumpleanos": "04-08"
+        },
+        {
+          "id": "liga-12-8",
+          "nombre": "Joel Montes Varela",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 75,
+          "atributos": {
+            "RAS": 76,
+            "TOZ": 79,
+            "CHI": 69,
+            "RET": 72,
+            "ALM": 75
+          },
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
+          "salario": 5250,
+          "valor": 1350000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "colocación",
+            "duelo",
+            "despeje"
+          ],
+          "edad_carrera": 20,
+          "cumpleanos": "08-23"
+        },
+        {
+          "id": "liga-12-9",
+          "nombre": "Sergio Cortés Valcárcel",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 80,
+          "atributos": {
+            "RAS": 82,
+            "TOZ": 85,
+            "CHI": 75,
+            "RET": 78,
+            "ALM": 81
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 5600,
+          "valor": 1440000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "pase",
+            "apoyo",
+            "visión"
+          ],
+          "edad_carrera": 21,
+          "cumpleanos": "01-23"
+        },
+        {
+          "id": "liga-12-10",
+          "nombre": "Diego Aguirre Montero",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 66,
+          "atributos": {
+            "RAS": 69,
+            "TOZ": 72,
+            "CHI": 62,
+            "RET": 65,
+            "ALM": 68
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 4620,
+          "valor": 1188000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "recuperación",
+            "fondo",
+            "presión"
+          ],
+          "edad_carrera": 22,
+          "cumpleanos": "03-07"
+        },
+        {
+          "id": "liga-12-11",
+          "nombre": "Tomás Soler Castañeda",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 71,
+          "atributos": {
+            "RAS": 75,
+            "TOZ": 65,
+            "CHI": 68,
+            "RET": 71,
+            "ALM": 74
+          },
+          "rasgo": "Movilidad entre líneas",
+          "clausula": "Contrato profesional",
+          "salario": 4970,
+          "valor": 1278000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "desmarque",
+            "remate",
+            "asociación"
+          ],
+          "edad_carrera": 23,
+          "cumpleanos": "10-25"
+        },
+        {
+          "id": "liga-12-12",
+          "nombre": "Leo Carrasco Aranda",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 76,
+          "atributos": {
+            "RAS": 81,
+            "TOZ": 71,
+            "CHI": 74,
+            "RET": 77,
+            "ALM": 80
+          },
+          "rasgo": "Seguro bajo palos",
+          "clausula": "Contrato profesional",
+          "salario": 5320,
+          "valor": 1368000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "RAS",
+            "TOZ",
+            "CHI"
+          ],
+          "edad_carrera": 24,
+          "cumpleanos": "02-02"
+        },
+        {
+          "id": "liga-12-13",
+          "nombre": "Andrés Paredes Salcedo",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 81,
+          "atributos": {
+            "RAS": 87,
+            "TOZ": 77,
+            "CHI": 80,
+            "RET": 83,
+            "ALM": 86
+          },
+          "rasgo": "Concentración defensiva",
+          "clausula": "Contrato profesional",
+          "salario": 5670,
+          "valor": 1458000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "RAS",
+            "TOZ",
+            "CHI"
+          ],
+          "edad_carrera": 25,
+          "cumpleanos": "09-01"
+        },
+        {
+          "id": "liga-12-14",
+          "nombre": "Pablo Vidal Montalvo",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 67,
+          "atributos": {
+            "RAS": 61,
+            "TOZ": 64,
+            "CHI": 67,
+            "RET": 70,
+            "ALM": 73
+          },
+          "rasgo": "Lectura y distribución",
+          "clausula": "Contrato profesional",
+          "salario": 4690,
+          "valor": 1206000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "RAS",
+            "TOZ",
+            "CHI"
+          ],
+          "edad_carrera": 26,
+          "cumpleanos": "06-24"
+        }
+      ],
+      "ciudad": "Arboleda",
+      "estadio": "El Robledal",
+      "color": "#367239",
+      "filosofia": "Equipo compacto"
     }
   ],
   "mercado_ids": [
