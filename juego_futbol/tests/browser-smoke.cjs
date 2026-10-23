@@ -109,6 +109,26 @@ const fs = require('node:fs/promises');
           assert.ok(widths.document <= widths.viewport + 2, 'desbordamiento en pestaña ' + tab);
         }
       }
+      const accesibilidadTabs = await page.evaluate(() => ({
+        total: document.querySelectorAll('[role="tab"]').length,
+        seleccionadas: [...document.querySelectorAll('[role="tab"][aria-selected="true"]')].map(tab => tab.id),
+        paneles: [...document.querySelectorAll('[role="tabpanel"]')].every(panel =>
+          panel.getAttribute('aria-labelledby') && panel.hasAttribute('aria-hidden'))
+      }));
+      assert.equal(accesibilidadTabs.total, 5, 'la navegación expone cinco pestañas accesibles');
+      assert.deepEqual(accesibilidadTabs.seleccionadas, ['pestana-entrenamiento']);
+      assert.equal(accesibilidadTabs.paneles, true, 'cada pestaña identifica su panel');
+      await page.locator('#pestana-entrenamiento').focus();
+      await page.keyboard.press('ArrowRight');
+      assert.equal(await page.locator('#pestana-tactica').getAttribute('aria-selected'), 'true',
+        'la flecha derecha recorre las pestañas y vuelve al inicio');
+      assert.equal(await page.evaluate(() => document.activeElement.id), 'pestana-tactica');
+      await page.keyboard.press('End');
+      assert.equal(await page.locator('#pestana-entrenamiento').getAttribute('aria-selected'), 'true',
+        'Fin selecciona la última pestaña');
+      await page.keyboard.press('Home');
+      assert.equal(await page.locator('#pestana-tactica').getAttribute('aria-selected'), 'true',
+        'Inicio selecciona la primera pestaña');
       // Compruebo ejercicios, sus marcadores de progreso y la persistencia de cada modalidad.
       await page.locator('button.tab-btn').filter({ hasText: 'Laboratorio de juego' }).click();
       const trainingBefore = await page.evaluate(() => ({

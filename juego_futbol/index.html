@@ -153,6 +153,12 @@
             background: rgba(56, 189, 248, 0.08);
         }
 
+        .tab-btn:focus-visible {
+            outline: 3px solid #facc15;
+            outline-offset: -3px;
+            color: white;
+        }
+
         /* CONTENEDOR PRINCIPAL */
         main {
             flex: 1;
@@ -409,12 +415,12 @@
 </header>
 
 <!-- Los botones de navegación cambian de pestaña sin recargar ni perder el estado de la partida. -->
-<nav>
-    <button class="tab-btn active" onclick="cambiarPestana('tactica', this)">📋 Pizarra Táctica y Plantilla</button>
-    <button class="tab-btn" onclick="cambiarPestana('partido', this)">⚽ Día de Partido y Mapa xG</button>
-    <button class="tab-btn" onclick="cambiarPestana('clasificacion', this)">📊 Clasificación y Métricas xG</button>
-    <button class="tab-btn" onclick="cambiarPestana('mercado', this)">💶 Mercado y Centro Técnico</button>
-    <button class="tab-btn" onclick="cambiarPestana('entrenamiento', this)">🧠 Laboratorio de juego</button>
+<nav role="tablist" aria-label="Secciones del juego" onkeydown="navegarPestanas(event)">
+    <button id="pestana-tactica" class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab-tactica" tabindex="0" onclick="cambiarPestana('tactica', this)">📋 Pizarra Táctica y Plantilla</button>
+    <button id="pestana-partido" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-partido" tabindex="-1" onclick="cambiarPestana('partido', this)">⚽ Día de Partido y Mapa xG</button>
+    <button id="pestana-clasificacion" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-clasificacion" tabindex="-1" onclick="cambiarPestana('clasificacion', this)">📊 Clasificación y Métricas xG</button>
+    <button id="pestana-mercado" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-mercado" tabindex="-1" onclick="cambiarPestana('mercado', this)">💶 Mercado y Centro Técnico</button>
+    <button id="pestana-entrenamiento" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-entrenamiento" tabindex="-1" onclick="cambiarPestana('entrenamiento', this)">🧠 Laboratorio de juego</button>
 </nav>
 
 <!-- Zona principal: táctica, partido, liga, mercado y laboratorio se muestran aquí. -->
@@ -422,7 +428,7 @@
     <p class="sim-disclaimer" role="note"><strong>Simulador ficticio:</strong> plantillas, valoraciones, fichajes, resultados y xG son datos del juego, no estadísticas reales ni información actualizada de los clubes. El xG es una estimación didáctica generada por el propio simulador según el tipo de ocasión; no procede de tiros reales ni de un modelo oficial.</p>
     <!-- PESTAÑA 1: TÁCTICA Y PLANTILLA -->
     <p id="resumen-disponibilidad" role="status" aria-live="polite" style="margin:8px 0 14px;color:#cbd5e1;font-size:.9rem;"></p>
-    <section id="tab-tactica" class="tab-content active">
+    <section id="tab-tactica" class="tab-content active" role="tabpanel" aria-labelledby="pestana-tactica" tabindex="0" aria-hidden="false">
         <div class="grid-2">
             <div class="panel">
                 <div class="panel-header">
@@ -476,7 +482,7 @@
     </section>
 
     <!-- PESTAÑA 2: DÍA DE PARTIDO Y SHOT MAP -->
-    <section id="tab-partido" class="tab-content">
+    <section id="tab-partido" class="tab-content" role="tabpanel" aria-labelledby="pestana-partido" tabindex="0" aria-hidden="true">
         <div class="panel" style="margin-bottom: 20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
             <div>
                 <h2 id="lbl-cartel-partido" style="font-size:1.3rem;">Jornada 1: FC Pase y Pifia vs Atlético Siestense</h2>
@@ -544,7 +550,7 @@
     </section>
 
     <!-- PESTAÑA 3: CLASIFICACIÓN Y MÉTRICAS -->
-    <section id="tab-clasificacion" class="tab-content">
+    <section id="tab-clasificacion" class="tab-content" role="tabpanel" aria-labelledby="pestana-clasificacion" tabindex="0" aria-hidden="true">
         <div class="panel" style="margin-bottom: 20px;">
             <div class="panel-header">
                 <span class="panel-title">Clasificación General y Rendimiento Esperado (xG)</span>
@@ -595,7 +601,7 @@
     </section>
 
     <!-- PESTAÑA 4: MERCADO Y CENTRO TÉCNICO -->
-    <section id="tab-mercado" class="tab-content">
+    <section id="tab-mercado" class="tab-content" role="tabpanel" aria-labelledby="pestana-mercado" tabindex="0" aria-hidden="true">
         <div class="panel" style="margin-bottom: 20px;">
             <div class="panel-header">
                 <span class="panel-title">Centro Técnico y Preparación Física</span>
@@ -652,7 +658,7 @@
     </section>
 
     <!-- PESTAÑA 5: LABORATORIO DE JUEGO -->
-    <section id="tab-entrenamiento" class="tab-content">
+    <section id="tab-entrenamiento" class="tab-content" role="tabpanel" aria-labelledby="pestana-entrenamiento" tabindex="0" aria-hidden="true">
         <div class="panel" style="margin-bottom:20px">
             <div class="panel-header">
                 <span id="titulo-laboratorio" class="panel-title">Laboratorio de juego · Pase y progresión</span>
@@ -1132,11 +1138,38 @@ function obtenerMiEquipo() {
  * Muestro la sección elegida y actualizo el estado accesible de sus botones de navegación.
  */
 function cambiarPestana(id, btn) {
-    document.querySelectorAll('.tab-content').forEach(s => s.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('tab-' + id).classList.add('active');
-    btn.classList.add('active');
+    document.querySelectorAll('.tab-content').forEach(panel => {
+        const seleccionado = panel.id === 'tab-' + id;
+        panel.classList.toggle('active', seleccionado);
+        panel.setAttribute('aria-hidden', String(!seleccionado));
+    });
+    document.querySelectorAll('.tab-btn').forEach(pestana => {
+        const seleccionada = pestana === btn;
+        pestana.classList.toggle('active', seleccionada);
+        pestana.setAttribute('aria-selected', String(seleccionada));
+        pestana.tabIndex = seleccionada ? 0 : -1;
+    });
     actualizarUI();
+}
+
+/**
+ * Permito recorrer las secciones con flechas, Inicio y Fin como en una lista de pestañas accesible; el clic conserva el mismo comportamiento para ratón y pantalla táctil.
+ */
+function navegarPestanas(evento) {
+    const pestanas = [...document.querySelectorAll('.tab-btn')];
+    const indiceActual = pestanas.indexOf(document.activeElement);
+    if (indiceActual < 0) return;
+
+    let indiceSiguiente = indiceActual;
+    if (evento.key === 'ArrowRight') indiceSiguiente = (indiceActual + 1) % pestanas.length;
+    else if (evento.key === 'ArrowLeft') indiceSiguiente = (indiceActual - 1 + pestanas.length) % pestanas.length;
+    else if (evento.key === 'Home') indiceSiguiente = 0;
+    else if (evento.key === 'End') indiceSiguiente = pestanas.length - 1;
+    else return;
+
+    evento.preventDefault();
+    pestanas[indiceSiguiente].focus();
+    pestanas[indiceSiguiente].click();
 }
 
 /**

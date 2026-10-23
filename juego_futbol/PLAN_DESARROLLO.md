@@ -48,3 +48,7 @@ El laboratorio ya contiene ejercicios jugables de pase y progresión, presión c
 ## Criterio de desempate
 
 La clasificación y los premios usan el mismo orden en la web, la consola y la interfaz de escritorio: puntos, diferencia de goles, goles a favor y nombre del equipo. El último criterio hace que las posiciones no dependan del orden interno de la plantilla cuando todos los datos deportivos coinciden. Las pruebas cubren los cuatro niveles y el reparto de premios web.
+
+## Navegación accesible
+
+Las cinco secciones web se anuncian como pestañas vinculadas a sus paneles. El teclado permite recorrerlas con las flechas izquierda y derecha y saltar al principio o al final con Inicio y Fin; el foco visible se distingue con un contorno amarillo. Las pruebas de navegador recorren las cinco secciones y comprueban su estado accesible en escritorio y móvil.
