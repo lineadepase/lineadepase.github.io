@@ -60,7 +60,8 @@ const fs = require('node:fs/promises');
         consistencia: PLANTILLAS_DB.equipos.every(e => e.jugadores.every(j =>
           j.avatar_ia && j.avatar_ia.includes('assets/ia/avatares/') &&
           ['RAS','TOZ','CHI','RET','ALM'].every(k => Number.isInteger(j.atributos[k])))),
-        control: obtenerMiEquipo().nombre
+        control: obtenerMiEquipo().nombre,
+        panelActivo: document.querySelector('[role="tabpanel"][aria-hidden="false"]')?.id
       }));
       assert.equal(integridadPlantillas.temporada, '2026/27');
       assert.deepEqual(integridadPlantillas.equipos, [
@@ -78,6 +79,7 @@ const fs = require('node:fs/promises');
       assert.ok(nombresImprescindibles.every(nombre => integridadPlantillas.jugadores.flat().includes(nombre)),
         'la base incluye las parodias solicitadas de los cuatro equipos');
       assert.equal(integridadPlantillas.control, 'Real Magras de Madrid');
+      assert.equal(integridadPlantillas.panelActivo, 'tab-clasificacion', 'la vista inicial coincide con Despacho Míster');
       const anclajesMenu = await page.evaluate(() => {
         const nav = document.querySelector('nav[role="tablist"]');
         const cta = document.getElementById('floating-cta');
