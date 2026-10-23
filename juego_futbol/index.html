@@ -452,7 +452,7 @@
     <details id="guia-rapida" class="panel quick-guide">
         <summary>Cómo jugar · guía rápida</summary>
         <ol>
-            <li><strong>Prepara el equipo:</strong> en Pizarra Táctica, elige formación y estilo; puedes intercambiar dos jugadores o pedir al juego que elija el mejor once.</li>
+            <li><strong>Prepara el equipo:</strong> en Pizarra Táctica, elige formación y estilo; puedes intercambiar jugadores, pedir el mejor once o relevar titulares fatigados por suplentes de la misma posición.</li>
             <li><strong>Gestiona la plantilla:</strong> en Mercado y Centro Técnico, descansa o entrena una vez antes de cada jornada. También puedes fichar o vender dentro de tu presupuesto.</li>
             <li><strong>Juega y revisa:</strong> en Día de Partido, consulta formación y estilo del rival, simula la jornada y revisa el marcador, los remates y el xG estimado.</li>
             <li><strong>Sigue la temporada:</strong> hay seis jornadas. Después, el botón te ofrecerá cerrar la campaña y empezar la siguiente; las clasificaciones quedan en el archivo.</li>
@@ -484,7 +484,10 @@
                         </select>
                     </label>
                     <button class="btn-primary" onclick="autoconvocar()">⚡ Auto-Mejor 11</button>
+                    <button id="btn-rotar-fatigados" class="btn-primary" onclick="rotarTitularesFatigados()"
+                        title="Cambiar titulares con fatiga alta por suplentes aptos y menos fatigados de la misma posición">🔄 Rotar titulares fatigados</button>
                 </div>
+                <p id="resultado-rotacion" class="hint-box" role="status" aria-live="polite"></p>
                 <div class="table-wrap">
                     <table>
                         <thead>
@@ -1274,6 +1277,9 @@ function navegarPestanas(evento) {
  */
 function actualizarUI() {
     const miEq = obtenerMiEquipo();
+    // Limpio el aviso anterior; la acción de rotación lo vuelve a anunciar tras redibujar la tabla.
+    const avisoRotacion = document.getElementById('resultado-rotacion');
+    if (avisoRotacion) avisoRotacion.textContent = '';
     const totalJ = estadoJuego.calendario.length;
     const jTxt = estadoJuego.jornadaActual < totalJ
         ? `Temp. ${estadoJuego.temporada} · Jornada ${estadoJuego.jornadaActual + 1}/${totalJ}`
@@ -1925,6 +1931,47 @@ function autoconvocar() {
     convocarOnceAutomatico(miEq);
     guardarPartidaLocal(false);
     actualizarUI();
+}
+
+/**
+ * Relevo titulares muy fatigados por suplentes aptos menos cansados de su misma posición y explico los cambios aplicados.
+ */
+function rotarTitularesFatigados() {
+    const miEq = obtenerMiEquipo();
+    const candidatos = miEq.plantilla
+        .filter(j => j.titular && j.lesionado === 0 && j.cansancio >= 75)
+        .sort((a, b) => b.cansancio - a.cansancio);
+    const cambios = [];
+    const sinRelevo = [];
+
+    candidatos.forEach(titular => {
+        const suplente = miEq.plantilla
+            .filter(j => !j.titular && j.lesionado === 0 && j.posicion === titular.posicion && j.cansancio < titular.cansancio)
+            .sort((a, b) => rendimientoReal(b) - rendimientoReal(a) || a.cansancio - b.cansancio)[0];
+        if (!suplente) {
+            sinRelevo.push(titular.nombre);
+            return;
+        }
+        titular.titular = false;
+        suplente.titular = true;
+        cambios.push(`${titular.nombre} por ${suplente.nombre}`);
+    });
+
+    let mensaje;
+    if (cambios.length) {
+        mensaje = `Rotaciones aplicadas: ${cambios.join('; ')}.`;
+        if (sinRelevo.length) mensaje += ` Sin relevo menos fatigado de su posición: ${sinRelevo.join(', ')}.`;
+        jugadorSeleccionadoIdx = null;
+        guardarPartidaLocal(false);
+    } else if (candidatos.length) {
+        mensaje = `No hay suplentes aptos y menos fatigados de la misma posición para: ${sinRelevo.join(', ')}.`;
+    } else {
+        mensaje = 'No hay titulares aptos con fatiga igual o superior al 75 % que necesiten relevo.';
+    }
+
+    actualizarUI();
+    const aviso = document.getElementById('resultado-rotacion');
+    if (aviso) aviso.textContent = mensaje;
 }
 
 // --- 7. MOTOR DE SIMULACIÓN DE PARTIDOS Y SHOT MAP ---

@@ -83,8 +83,45 @@ const fs = require('node:fs/promises');
         plantilla[titular].titular = true;
         plantilla[suplente].titular = false;
         jugadorSeleccionadoIdx = null;
+        guardarPartidaLocal(false);
         actualizarUI();
       }, indicesRotacion);
+      // La ayuda de rotación solo releva con un suplente apto de la misma posición y menos fatiga.
+      const escenarioRotacion = await page.evaluate(() => {
+        const plantilla = obtenerMiEquipo().plantilla;
+        const titular = plantilla.findIndex(j => j.titular && j.lesionado === 0 &&
+          plantilla.some(s => !s.titular && s.lesionado === 0 && s.posicion === j.posicion));
+        const suplente = plantilla.findIndex(j => !j.titular && j.lesionado === 0 &&
+          j.posicion === plantilla[titular]?.posicion);
+        const original = plantilla.map(j => ({ titular: j.titular, cansancio: j.cansancio }));
+        plantilla.forEach(j => { j.cansancio = 10; });
+        plantilla[titular].cansancio = 90;
+        plantilla[suplente].cansancio = 20;
+        actualizarUI();
+        return { titular, suplente, nombreTitular: plantilla[titular].nombre,
+          nombreSuplente: plantilla[suplente].nombre, original };
+      });
+      assert.ok(escenarioRotacion.titular >= 0 && escenarioRotacion.suplente >= 0,
+        'la plantilla base debe incluir un relevo de la misma posición');
+      await page.locator('#btn-rotar-fatigados').click();
+      const cambioFatiga = await page.evaluate(({ titular, suplente }) => ({
+        titular: obtenerMiEquipo().plantilla[titular].titular,
+        suplente: obtenerMiEquipo().plantilla[suplente].titular,
+        mensaje: document.getElementById('resultado-rotacion').textContent
+      }), escenarioRotacion);
+      assert.deepEqual({ titular: cambioFatiga.titular, suplente: cambioFatiga.suplente },
+        { titular: false, suplente: true }, 'el relevo cambia a los dos jugadores sin alterar su posición');
+      assert.match(cambioFatiga.mensaje,
+        new RegExp(`Rotaciones aplicadas: ${escenarioRotacion.nombreTitular} por ${escenarioRotacion.nombreSuplente}`),
+        'la herramienta anuncia el cambio concreto');
+      await page.evaluate(({ original }) => {
+        obtenerMiEquipo().plantilla.forEach((j, indice) => {
+          j.titular = original[indice].titular;
+          j.cansancio = original[indice].cansancio;
+        });
+        guardarPartidaLocal(false);
+        actualizarUI();
+      }, escenarioRotacion);
       await page.screenshot({ path: require('node:path').join(artifactDir, `juego-${mode}.png`), fullPage: true });
       // Identidad ficticia, aviso de métricas simuladas, avatares propios y modelo de ataque/defensa.
       assert.equal(await page.locator('.sim-disclaimer').count(), 1, 'aviso visible de simulación');
