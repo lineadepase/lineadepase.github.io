@@ -427,13 +427,8 @@
                 border: 0;
             }
             .squad-table tbody tr {
-                display: grid;
-                grid-template-columns: minmax(72px, .75fr) minmax(0, 1.25fr);
-                grid-template-areas:
-                    "pos jugador"
-                    "media rendimiento"
-                    "cansancio goles"
-                    "xg estado";
+                display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+                grid-template-areas:"jugador jugador" "pos estado" "ras toz" "chi ret" "alm cansancio" "goles xg";
                 gap: 2px;
                 padding: 7px 3px;
                 border-bottom: 1px solid #475569;
@@ -459,8 +454,7 @@
             }
             .squad-table td[data-label="Pos"] { grid-area: pos; }
             .squad-table td[data-label="Jugador"] { grid-area: jugador; align-items: flex-start; }
-            .squad-table td[data-label="Med"] { grid-area: media; }
-            .squad-table td[data-label="Rend"] { grid-area: rendimiento; }
+            .squad-table td[data-label="RAS"]{grid-area:ras}.squad-table td[data-label="TOZ"]{grid-area:toz}.squad-table td[data-label="CHI"]{grid-area:chi}.squad-table td[data-label="RET"]{grid-area:ret}.squad-table td[data-label="ALM"]{grid-area:alm}
             .squad-table td[data-label="Cans"] { grid-area: cansancio; }
             .squad-table td[data-label="Goles"] { grid-area: goles; }
             .squad-table td[data-label="xG"] { grid-area: xg; }
@@ -550,6 +544,42 @@
 
     .attribute-pill{min-width:58px;text-align:center;border:1px solid #facc15;color:#fff7ed;background:linear-gradient(145deg,#7c2d12,#1f2937);padding:7px 9px;border-radius:9px;font-weight:900}.attribute-pill small{display:block;color:#fed7aa;font-size:.64rem;text-transform:uppercase}.attribute-pill b{display:block;font-size:1.05rem}#swipe-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(58px,1fr))}.power-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:12px 0}.power-card{min-height:88px;border:1px solid #facc15;background:linear-gradient(145deg,#78350f,#292033);text-align:left;white-space:normal}.power-card strong{display:block;color:#fef08a;margin-bottom:4px}.power-card small{display:block;color:#e2e8f0;font-weight:500;line-height:1.35}.power-card.used,.power-card:disabled{filter:grayscale(1);opacity:.55}.event-backdrop{position:fixed;inset:0;z-index:90;display:none;place-items:center;padding:16px;background:#020617d9}.event-backdrop.open{display:grid}.event-dialog{width:min(620px,100%);max-height:90vh;overflow:auto;padding:22px;border:2px solid #fb923c;border-radius:18px;background:linear-gradient(145deg,#2b3549,#111827);box-shadow:0 24px 80px #0009}.event-dialog h2{color:#facc15;font-size:1.5rem;margin-bottom:8px}.event-dialog p{line-height:1.55}.event-choice-list{display:grid;gap:9px;margin:16px 0}.event-choice{text-align:left;white-space:normal;background:#172554;border-color:#60a5fa}.event-impact{color:#bbf7d0;font-size:.82rem;display:block;margin-top:5px}.chiri-feed{border-left:5px solid #38bdf8;background:linear-gradient(110deg,#0c4a6e,#172033);border-radius:12px;padding:14px 16px;margin:12px 0 18px}.chiri-feed strong{color:#bae6fd;display:block;font-size:1.05rem}.chiri-feed p{margin-top:6px;line-height:1.5}.sponsor-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:12px}.sponsor-card{border:1px solid #64748b;border-radius:12px;padding:12px;background:#111827}.sponsor-card h3{color:#fdba74;font-size:1rem;margin-bottom:5px}.sponsor-card p{min-height:44px;color:#cbd5e1;line-height:1.4;font-size:.88rem}.sponsor-card button{margin-top:8px;width:100%;background:#7c3aed;border-color:#c4b5fd}#sponsor-status{margin-top:10px;color:#fde68a;font-weight:700}.floating-cta{position:fixed;z-index:45;right:max(14px,env(safe-area-inset-right));bottom:max(14px,env(safe-area-inset-bottom));min-height:52px;padding:12px 18px;border:2px solid #fff;border-radius:999px;background:linear-gradient(110deg,#f97316,#eab308);color:#111827;font-weight:1000;box-shadow:0 7px 24px #0009}.floating-cta:hover{transform:translateY(-2px)}body{padding-bottom:78px}#celebration-layer{position:fixed;inset:0;z-index:110;overflow:hidden;pointer-events:none}.confetti-bit{position:absolute;top:-24px;font-size:1.25rem;animation:confettiFall 1.65s ease-in forwards}@keyframes confettiFall{to{transform:translateY(110vh) rotate(700deg);opacity:0}}.swipe-card.match-pop{animation:matchPop .48s cubic-bezier(.2,.9,.2,1.3)}@keyframes matchPop{50%{transform:scale(1.035) rotate(-1deg);box-shadow:0 0 40px #22c55eaa}}@media(max-width:600px){.floating-cta{right:10px;bottom:10px;padding:10px 14px;font-size:.88rem}.event-dialog{padding:16px}.power-cards{grid-template-columns:1fr}}
     </style>
+<style>
+nav[role="tablist"]{position:fixed;inset:auto 0 0;z-index:60;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding:8px max(10px,env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));background:#101526f5;border-top:2px solid #f97316;box-shadow:0 -8px 28px #0008;backdrop-filter:blur(12px)}
+nav[role="tablist"] .tab-btn{min-width:0;min-height:52px;padding:7px 5px;border:1px solid #475569;border-radius:12px;background:#20283b;color:#f8fafc;font-size:clamp(.68rem,1.8vw,.9rem);line-height:1.15;white-space:normal}
+nav[role="tablist"] .tab-btn.active{background:linear-gradient(135deg,#f97316,#b45309);color:#fff;border-color:#fed7aa}
+nav[role="tablist"] .tab-btn:focus-visible{outline:3px solid #facc15;outline-offset:2px}
+body{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
+.floating-cta{bottom:calc(78px + env(safe-area-inset-bottom))}
+.video-action-shortcuts{display:flex;flex-wrap:wrap;gap:8px;margin:10px auto;justify-content:center}
+.video-action-shortcuts button{min-height:42px;background:#253148;border-color:#64748b}
+.video-action-player,.video-action-fallback{width:100%;max-height:300px;aspect-ratio:16/9;border-radius:12px;margin:12px 0;background:#0f172a}
+.video-action-fallback{position:relative;display:grid;place-items:center;overflow:hidden;background:repeating-linear-gradient(90deg,#166534 0 55px,#15803d 55px 110px)}
+.video-action-fallback[hidden]{display:none}
+.video-action-fallback .clip-ball{position:absolute;left:10%;top:58%;animation:videoBallRun 1.5s ease-in-out infinite}
+.video-action-fallback .clip-reaction{z-index:1;padding:9px 14px;border:2px solid #fff;border-radius:12px;background:#101526d9;font-weight:900;animation:videoCaptionPop 1.5s ease-in-out infinite}
+.video-action-fallback[data-scene="save"] .clip-ball{animation:videoSave 1.5s ease-in-out infinite}
+.video-action-fallback[data-scene="foul"] .clip-ball{animation:videoFoul 1.3s ease-in-out infinite}
+.video-action-fallback[data-scene="var"] .clip-reaction{animation:videoVar 1.3s steps(2,end) infinite}
+.video-action-fallback[data-scene="coach"] .clip-reaction{animation:videoCoach 1s ease-in-out infinite}
+.video-action-fallback[data-scene="match"] .clip-reaction{animation:videoCoach 1s ease-in-out infinite}
+.video-action-fallback[data-scene="reject"] .clip-reaction{animation:videoVar 1s ease-in-out infinite}
+@keyframes videoBallRun{0%{left:10%;top:70%;transform:rotate(0)}70%{left:76%;top:32%;transform:rotate(540deg)}100%{left:88%;top:28%;transform:rotate(720deg)}}
+@keyframes videoSave{0%,100%{left:85%;top:40%;transform:scale(1)}50%{left:45%;top:20%;transform:scale(1.3)}}
+@keyframes videoFoul{0%,100%{left:15%;top:68%;transform:rotate(0)}50%{left:58%;top:35%;transform:rotate(140deg)}}
+@keyframes videoVar{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.65;transform:scale(1.1)}}
+@keyframes videoCoach{0%,100%{transform:translateX(-8px) rotate(-2deg)}50%{transform:translateX(8px) rotate(2deg)}}
+.swipe-portrait-img{width:100%;height:100%;object-fit:cover;border-radius:18px}
+.player-illustration{position:relative}
+.player-illustration .portrait-fallback{position:absolute;inset:0;display:grid;place-content:center;text-align:center;background:radial-gradient(circle at 50% 32%,#fb923c,#7c2d12 65%,#1f2937);color:white}
+.player-illustration .portrait-fallback[hidden]{display:none}
+@media(max-width:420px){nav[role="tablist"]{gap:4px;padding-left:5px;padding-right:5px}nav[role="tablist"] .tab-btn{font-size:.66rem;padding:6px 2px}}
+</style>
+<style>
+/* El botón flotante queda por encima de la barra inferior y respeta la zona segura del móvil. */
+.floating-cta{bottom:calc(76px + env(safe-area-inset-bottom))}
+@media(max-width:600px){.floating-cta{bottom:calc(70px + env(safe-area-inset-bottom))}}
+</style>
 </head>
 <body>
 <!-- La interfaz se divide en navegación y cinco pestañas; cada pestaña mantiene su contenido en el mismo documento. -->
@@ -558,7 +588,7 @@
     <div class="club-brand">
         <div class="club-mark" aria-hidden="true">⚽</div>
         <div>
-            <h1>FC PASE Y PIFIA</h1>
+            <h1>REAL MAGRAS DE MADRID</h1>
             <span>Línea de Pase · Manager de fútbol y xG simulado</span>
         </div>
     </div>
@@ -577,16 +607,15 @@
 
 <!-- Los botones de navegación cambian de pestaña sin recargar ni perder el estado de la partida. -->
 <nav role="tablist" aria-label="Secciones del juego" onkeydown="navegarPestanas(event)">
-    <button id="pestana-clasificacion" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-clasificacion" tabindex="-1" onclick="cambiarPestana('clasificacion', this)">🏠 Despacho / Resumen</button>
+    <button id="pestana-clasificacion" class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab-clasificacion" tabindex="0" onclick="cambiarPestana('clasificacion', this)">🏠 Despacho Míster</button>
+    <button id="pestana-mercado" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-mercado" tabindex="-1" onclick="cambiarPestana('mercado', this)">🔥 Tinder Fichajes</button>
+    <button id="pestana-tactica" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-tactica" tabindex="-1" onclick="cambiarPestana('tactica', this)">📋 Táctica</button>
     <button id="pestana-partido" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-partido" tabindex="-1" onclick="cambiarPestana('partido', this)">⚽ Partido</button>
-    <button id="pestana-mercado" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-mercado" tabindex="-1" onclick="cambiarPestana('mercado', this)">🔥 Fichajes (Tinder)</button>
-    <button id="pestana-tactica" class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab-tactica" tabindex="0" onclick="cambiarPestana('tactica', this)">📋 Alineación</button>
-    <button id="pestana-entrenamiento" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-entrenamiento" tabindex="-1" onclick="cambiarPestana('entrenamiento', this)">💰 Finanzas</button>
 </nav>
 
 <!-- Zona principal: táctica, partido, liga, mercado y laboratorio se muestran aquí. -->
 <main>
-    <p class="sim-disclaimer" role="note"><strong>Simulador ficticio:</strong> plantillas, valoraciones, fichajes, resultados y xG son datos del juego, no estadísticas reales ni información actualizada de los clubes. El xG es una estimación didáctica generada por el propio simulador según el tipo de ocasión; no procede de tiros reales ni de un modelo oficial. <a href="../proyectos/xg/index.html">Aprende qué mide el xG y cómo interpretarlo</a>.</p>
+    <p class="sim-disclaimer" role="note"><strong>Universo paródico:</strong> los alias representan a futbolistas inscritos en plantillas 2026/27. Los atributos, salarios, fichajes, resultados y xG son valores ficticios de juego, no estadísticas oficiales. El xG es una estimación didáctica del simulador. <a href="../proyectos/xg/index.html">Aprende qué mide el xG y cómo interpretarlo</a>.</p>
     <details id="guia-rapida" class="panel quick-guide">
         <summary>Cómo jugar · guía rápida</summary>
         <ol>
@@ -632,7 +661,7 @@
                             <tr>
                                 <th>Pos</th>
                                 <th class="left">Jugador</th>
-                                <th>Med</th>
+                                <th>RAS</th><th>TOZ</th><th>CHI</th><th>RET</th><th>ALM</th>
                                 <th>Rend</th>
                                 <th>Cans</th>
                                 <th>Goles</th>
@@ -659,10 +688,10 @@
     <section id="tab-partido" class="tab-content" role="tabpanel" aria-labelledby="pestana-partido" tabindex="0" aria-hidden="true">
         <div class="match-board" aria-label="Marcador y ritmo en directo">
             <div class="match-minute"><span id="match-clock">00′</span> · <span id="match-rhythm">Previa</span></div>
-            <div id="match-scoreboard" class="match-score">FC Pase y Pifia · 0 — 0 · Rival</div>
+            <div id="match-scoreboard" class="match-score">Real Magras de Madrid · 0 — 0 · Rival</div>
             <div class="match-meter" role="img" aria-label="Ritmo de partido"><span id="match-meter-fill"></span></div>
             <div id="match-meter-label" class="hint-box">Ritmo de la simulación</div>
-            <div class="match-quick-actions" role="group" aria-label="Decisión táctica rápida">
+            <div class="video-action-shortcuts" role="group" aria-label="Reproducir recreación de lance destacado"><button type="button" data-video-action="goal">⚽ Gol</button><button type="button" data-video-action="save">🧤 Paradón</button><button type="button" data-video-action="foul">💨 Tozolón</button><button type="button" data-video-action="var">📺 VAR de pueblo</button><button type="button" data-video-action="coach">📣 Míster en banda</button></div><div class="match-quick-actions" role="group" aria-label="Decisión táctica rápida">
                 <button type="button" data-quick-plan="Equilibrado">⚖️ Cerrar líneas</button>
                 <button type="button" class="btn-warning" data-quick-plan="Ofensivo">🚀 Apretar arriba</button>
                 <button type="button" class="btn-primary" data-quick-plan="Defensivo">🧱 Proteger el área</button>
@@ -679,9 +708,9 @@
         <div class="chiri-feed" id="chiri-feed" aria-live="polite"><strong>📱 Chirincirco · esperando el pitido final</strong><p>La afición prepara memes. Que nadie publique el Excel del míster.</p></div>
         <div class="panel" style="margin-bottom: 20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
             <div>
-                <h2 id="lbl-cartel-partido" style="font-size:1.3rem;">Jornada 1: FC Pase y Pifia vs Atlético Siestense</h2>
+                <h2 id="lbl-cartel-partido" style="font-size:1.3rem;">Jornada 1: Real Magras de Madrid vs Atlético Siestense</h2>
                 <p class="hint-box" id="lbl-sub-partido">El tamaño de cada círculo equivale al xG simulado. La crónica distingue ocasiones claras según el motor, no según vídeo real.</p>
-                <p id="match-summary" class="match-summary" role="status" aria-live="polite">Al terminar, aparecerán el marcador, los remates y el xG del partido de FC Pase y Pifia.</p>
+                <p id="match-summary" class="match-summary" role="status" aria-live="polite">Al terminar, aparecerán el marcador, los remates y el xG del partido de Real Magras de Madrid.</p>
                 <p id="match-preview" class="hint-box" role="note">El perfil del próximo rival aparecerá antes de la jornada.</p>
             </div>
             <button id="btn-simular-jornada" class="btn-success" style="font-size:1rem; padding:12px 22px;" onclick="vivirJornada()">▶️ SIMULAR JORNADA EN VIVO</button>
@@ -723,7 +752,7 @@
                 <span id="replay-heading" class="panel-title">Repetición analítica</span>
                 <span class="hint-box">Animación esquemática generada por el simulador; no es vídeo real.</span>
             </div>
-            <p id="replay-status" class="hint-box" role="status" aria-live="polite">Al simular una jornada, podrás revisar las ocasiones del partido de FC Pase y Pifia.</p>
+            <p id="replay-status" class="hint-box" role="status" aria-live="polite">Al simular una jornada, podrás revisar las ocasiones del partido de Real Magras de Madrid.</p>
             <div class="replay-layout">
                 <div>
                     <svg id="svg-replay" class="replay-board" viewBox="0 0 640 320" role="img" aria-labelledby="replay-svg-title replay-svg-desc">
@@ -1018,7 +1047,7 @@
 
 <div id="event-backdrop" class="event-backdrop" role="dialog" aria-modal="true" aria-labelledby="event-title" aria-hidden="true"><div class="event-dialog"><p class="hint-box">ENTRE JORNADAS · DECISIÓN DE VESTUARIO</p><h2 id="event-title"></h2><p id="event-description"></p><div id="event-choices" class="event-choice-list"></div><p id="event-result" role="status" aria-live="polite"></p></div></div><div id="celebration-layer" aria-hidden="true"></div><button id="floating-cta" class="floating-cta" type="button">⚽ Avanzar jornada</button>
     <div id="microclip-backdrop" class="microclip-backdrop" role="dialog" aria-modal="true" aria-labelledby="microclip-title" aria-hidden="true">
-        <div class="microclip"><h2 id="microclip-title">Repetición animada</h2><p id="microclip-caption">Secuencia esquemática generada por el simulador.</p><div class="clip-pitch" aria-hidden="true"><span class="clip-ball">⚽</span></div><p class="hint-box">Animación original del juego; no es metraje de un partido real.</p><button type="button" id="microclip-close" class="btn-primary">Cerrar repetición</button></div>
+        <div class="microclip"><h2 id="microclip-title">Repetición animada</h2><p id="microclip-caption">Recreación del simulador; no es clip real de competición.</p><video id="video-action-player" class="video-action-player" playsinline controls hidden></video><div id="video-action-fallback" class="clip-pitch video-action-fallback" data-scene="goal" aria-hidden="true"><span class="clip-ball">⚽</span><span class="clip-reaction">¡A la olla!</span></div><p id="video-action-status" class="hint-box" role="status">Ranura para el asset IA; se mostrará la recreación animada hasta que exista el clip.</p><button type="button" id="microclip-close" class="btn-primary">Cerrar repetición</button></div>
     </div>
 
 <script>
@@ -1061,6 +1090,9 @@ const ESTILOS = {
 const MAX_PLANTILLA = 25;
 
 let estadoJuego = null;
+let PLANTILLAS_DB = null;
+const EQUIPO_CONTROLADO = 'Real Magras de Madrid';
+function jugadoresBaseActuales() { return PLANTILLAS_DB?.equipos?.flatMap(e => e.jugadores) || []; }
 let jugadorSeleccionadoIdx = null;
 let retoPaseActual = null;
 let tipoEjercicioActual = 'pase';
@@ -1154,104 +1186,21 @@ function calcularPerfilAtaque(ataque, defensaRival) {
  * Construyo el estado nuevo de una partida: club del usuario, rivales ficticios, plantillas humorísticas, mercado y calendario. Mantengo estos datos juntos para poder guardarlos como una sola unidad.
  */
 function crearEstadoInicial() {
-    const crearJugador = (nombre, posicion, media) => ({
-        nombre, posicion, media,
-        moral: 85, cansancio: 0,
-        precio: media * 35000,
-        salario: media * 220,
-        goles: 0, xg: 0.0, lesionado: 0, titular: false
+    if (!PLANTILLAS_DB || PLANTILLAS_DB.schema_version !== 1) throw new Error('No se ha cargado la base 2026/27.');
+    const crearJugador=(d,e)=>({
+        jugador_id:d.id,nombre:d.nombre,jugador_real:d.jugador_real,equipo_origen:e.club_real,equipo_origen_parodia:e.nombre_parodico,
+        posicion:d.posicion,media:d.valoracion_juego,atributos:{...d.atributos},rasgo:d.rasgo,clausula:d.clausula,
+        avatar_ia:d.avatar_ia,reacciones_ia:{...d.reacciones_ia},moral:85,cansancio:0,precio:d.valor,salario:d.salario,
+        goles:0,xg:0.0,lesionado:0,titular:false
     });
-
-    const miEquipo = {
-        nombre: "FC Pase y Pifia",
-        presupuesto: 9500000,
-        aforo: 30000,
-        formacion: "4-4-2",
-        estilo: "Equilibrado",
-        puntos: 0, pj: 0, gf: 0, gc: 0, remates: 0, xgf: 0.0, xgc: 0.0,
-        plantilla: [
-            crearJugador("Paco Manoplas", "POR", 72),
-            crearJugador("Rafa Rechaces", "DEF", 75),
-            crearJugador("Tino Tobillo", "DEF", 73),
-            crearJugador("Blas Banderín", "DEF", 71),
-            crearJugador("Lola Cerrojazo", "DEF", 73),
-            crearJugador("Nico Nopuedo", "DEF", 70),
-            crearJugador("Pili Pasecorto", "CEN", 77),
-            crearJugador("Rolo Rondo", "CEN", 75),
-            crearJugador("Mauri MediaVuelta", "CEN", 76),
-            crearJugador("Cris Cañito", "CEN", 74),
-            crearJugador("Fede FueraJuego", "CEN", 70),
-            crearJugador("Golo Goloso", "DEL", 74),
-            crearJugador("Rita Remates", "DEL", 75),
-            crearJugador("Charly Trallazo", "DEL", 73)
-        ]
-    };
-    convocarOnceAutomatico(miEquipo);
-
-    const datosRivales = [
-        { nombre: "Atlético Siestense", apodo: "Siestense", aforo: 9000, formacion: "5-3-2", estilo: "Defensivo" },
-        { nombre: "Unión Deportiva Patapalo", apodo: "Patapalo", aforo: 22000, formacion: "4-3-3", estilo: "Ofensivo" },
-        { nombre: "Deportivo Balón Perdido", apodo: "Balonazo", aforo: 29000, formacion: "4-4-2", estilo: "Equilibrado" }
-    ];
-
-    const nombresRivales = {
-        POR: ["Iker Guantes", "Marga Parapenaltis", "Paco Manoplas"],
-        DEF: ["Rafa Rechaces", "Blas Banderín", "Tino Tobillo", "Lola Cerrojazo", "Nico Nopuedo"],
-        CEN: ["Pili Pasecorto", "Rolo Rondo", "Mauri MediaVuelta", "Cris Cañito", "Fede FueraJuego"],
-        DEL: ["Golo Goloso", "Rita Remates", "Charly Trallazo", "Tere Taconazo"]
-    };
-
-    const rivales = datosRivales.map(r => {
-        const eq = {
-            nombre: r.nombre, presupuesto: 7000000, aforo: r.aforo,
-            // Cada rival conserva una identidad táctica distinta y utilizable
-            // por el motor de ataque, defensa y desgaste.
-            formacion: r.formacion, estilo: r.estilo,
-            puntos: 0, pj: 0, gf: 0, gc: 0, remates: 0, xgf: 0.0, xgc: 0.0,
-            plantilla: []
-        };
-        const posList = ["POR", "DEF", "DEF", "DEF", "DEF", "DEF", "CEN", "CEN", "CEN", "CEN", "CEN", "DEL", "DEL", "DEL"];
-        const contadorPosiciones = { POR: 0, DEF: 0, CEN: 0, DEL: 0 };
-        posList.forEach(p => {
-            const med = Math.floor(Math.random() * 6) + 70;
-            const nombres = nombresRivales[p];
-            const apodo = r.apodo || r.nombre.split(" ")[0];
-            const nombre = `${nombres[contadorPosiciones[p] % nombres.length]} (${apodo})`;
-            contadorPosiciones[p] += 1;
-            eq.plantilla.push(crearJugador(nombre, p, med));
-        });
-        convocarOnceAutomatico(eq);
-        return eq;
+    const perfiles=[{presupuesto:9500000,aforo:81000,estilo:'Equilibrado'},{presupuesto:8200000,aforo:55000,estilo:'Ofensivo'},{presupuesto:8800000,aforo:69000,estilo:'Defensivo'},{presupuesto:7600000,aforo:53000,estilo:'Equilibrado'}];
+    const equipos=PLANTILLAS_DB.equipos.map((d,i)=>{
+        const p=perfiles[i],eq={id:d.id,club_real:d.club_real,nombre:d.nombre_parodico,presupuesto:p.presupuesto,aforo:p.aforo,formacion:d.formacion,estilo:p.estilo,puntos:0,pj:0,gf:0,gc:0,remates:0,xgf:0,xgc:0,plantilla:d.jugadores.map(j=>crearJugador(j,d))};
+        convocarOnceAutomatico(eq);return eq;
     });
-
-    const equipos = [miEquipo, ...rivales];
-    const mercado = [
-        crearJugador("Crispín Chutapiedras", "CEN", 76),
-        crearJugador("Pipo Puntería", "CEN", 76),
-        crearJugador("Tere Taconazo", "DEL", 74),
-        crearJugador("Benito Banderazo", "DEF", 74),
-        crearJugador("Marga Parapenaltis", "CEN", 75)
-    ];
-
-    const calendario = generarCalendario(equipos.map(e => e.nombre));
-
-    return {
-        temporada: 1,
-        jornadaActual: 0,
-        historialTemporadas: [],
-        equipos,
-        mercado,
-        calendario,
-        entrenamiento: {
-            intentos: 0, puntos: 0, mejorPuntuacion: 0,
-            porTipo: {
-                pase: { intentos: 0, puntos: 0, mejorPuntuacion: 0 },
-                presion: { intentos: 0, puntos: 0, mejorPuntuacion: 0 },
-                espacio: { intentos: 0, puntos: 0, mejorPuntuacion: 0 },
-                finalizacion: { intentos: 0, puntos: 0, mejorPuntuacion: 0 }
-            }
-        }
-    };
+    const porId=new Map(PLANTILLAS_DB.equipos.flatMap(e=>e.jugadores.map(j=>[j.id,{jugador:j,equipo:e}])));
+    const mercado=PLANTILLAS_DB.mercado_ids.map(id=>{const x=porId.get(id);return x?crearJugador(x.jugador,x.equipo):null;}).filter(Boolean);
+    return {temporada:1,jornadaActual:0,historialTemporadas:[],equipos,mercado,calendario:generarCalendario(equipos.map(e=>e.nombre)),entrenamiento:{intentos:0,puntos:0,mejorPuntuacion:0,porTipo:{pase:{intentos:0,puntos:0,mejorPuntuacion:0},presion:{intentos:0,puntos:0,mejorPuntuacion:0},espacio:{intentos:0,puntos:0,mejorPuntuacion:0},finalizacion:{intentos:0,puntos:0,mejorPuntuacion:0}}}};
 }
 
 /**
@@ -1391,15 +1340,14 @@ function estadoPartidaValido(estado) {
     try {
         return Boolean(estado && Array.isArray(estado.equipos) && estado.equipos.length === 4 &&
             new Set(estado.equipos.map(eq => eq?.nombre)).size === 4 &&
-            estado.equipos.some(eq => eq?.nombre === 'FC Pase y Pifia') &&
+            estado.equipos.some(eq => eq?.nombre === EQUIPO_CONTROLADO) &&
             estado.equipos.every(eq => eq && nombreGuardadoValido(eq.nombre) &&
                 Number.isFinite(eq.presupuesto) && Number.isFinite(eq.aforo) && eq.aforo >= 0 &&
                 Object.hasOwn(FORMACIONES, eq.formacion) && Object.hasOwn(ESTILOS, eq.estilo) &&
                 ['puntos', 'pj', 'gf', 'gc', 'remates', 'xgf', 'xgc'].every(k => Number.isFinite(eq[k]) && eq[k] >= 0) &&
                 Number.isInteger(eq.remates) &&
                 Array.isArray(eq.plantilla) && eq.plantilla.length >= 11 && eq.plantilla.length <= 50 &&
-                eq.plantilla.every(j => j && nombreGuardadoValido(j.nombre) &&
-                    ['POR', 'DEF', 'CEN', 'DEL'].includes(j.posicion) &&
+                eq.plantilla.every(j => j && nombreGuardadoValido(j.nombre) && jugadoresBaseActuales().some(b=>b.id===j.jugador_id) && j.atributos && ['RAS','TOZ','CHI','RET','ALM'].every(c=>Number.isFinite(j.atributos[c])&&j.atributos[c]>=0&&j.atributos[c]<=100) && typeof j.avatar_ia==='string' && ['POR','DEF','CEN','DEL'].includes(j.posicion) &&
                     Number.isFinite(j.media) && j.media > 0 && j.media <= 100 &&
                     Number.isFinite(j.cansancio) && j.cansancio >= 0 && j.cansancio <= 100 &&
                     Number.isFinite(j.moral) && j.moral >= 0 && j.moral <= 100 &&
@@ -1409,8 +1357,7 @@ function estadoPartidaValido(estado) {
                     Number.isFinite(j.xg) && j.xg >= 0 &&
                     Number.isInteger(j.goles) && j.goles >= 0 && typeof j.titular === 'boolean')) &&
             Array.isArray(estado.mercado) && estado.mercado.length <= 100 &&
-            estado.mercado.every(j => j && nombreGuardadoValido(j.nombre) &&
-                ['POR', 'DEF', 'CEN', 'DEL'].includes(j.posicion) &&
+            estado.mercado.every(j => j && nombreGuardadoValido(j.nombre) && jugadoresBaseActuales().some(b=>b.id===j.jugador_id) && j.atributos && ['RAS','TOZ','CHI','RET','ALM'].every(c=>Number.isFinite(j.atributos[c])&&j.atributos[c]>=0&&j.atributos[c]<=100) && typeof j.avatar_ia==='string' && ['POR','DEF','CEN','DEL'].includes(j.posicion) &&
                 Number.isFinite(j.media) && j.media > 0 && j.media <= 100 &&
                 Number.isFinite(j.precio) && j.precio >= 0 &&
                 Number.isFinite(j.salario) && j.salario >= 0 &&
@@ -1437,9 +1384,7 @@ function estadoPartidaValido(estado) {
 /**
  * Localizo el club controlado por la persona que juega dentro de la lista común de equipos.
  */
-function obtenerMiEquipo() {
-    return estadoJuego.equipos.find(e => e.nombre === "FC Pase y Pifia");
-}
+function obtenerMiEquipo() { return estadoJuego.equipos.find(e => e.nombre === EQUIPO_CONTROLADO); }
 
 /**
  * Muestro la sección elegida y actualizo el estado accesible de sus botones de navegación.
@@ -1546,8 +1491,7 @@ function actualizarUI() {
                 aria-label="Seleccionar ${escaparHTML(j.nombre)} (${j.titular ? 'titular' : 'suplente'}) para la rotación"
                 aria-pressed="${idx === jugadorSeleccionadoIdx}" ${j.lesionado > 0 ? 'disabled title="Jugador lesionado"' : ''}
                 onclick="clicarJugadorPlantilla(${idx})">${avatarJugadorHTML(j.nombre, j.posicion)}<strong>${escaparHTML(j.nombre)}</strong></button></td>
-            <td data-label="Med">${j.media}</td>
-            <td data-label="Rend"><strong>${rendimientoReal(j)}</strong></td>
+            <td data-label="RAS">${j.atributos.RAS}</td><td data-label="TOZ">${j.atributos.TOZ}</td><td data-label="CHI">${j.atributos.CHI}</td><td data-label="RET">${j.atributos.RET}</td><td data-label="ALM">${j.atributos.ALM}</td>
             <td data-label="Cans">${j.cansancio}%</td>
             <td data-label="Goles">${j.goles}</td>
             <td data-label="xG">${j.xg.toFixed(2)}</td>
@@ -2224,7 +2168,7 @@ function simularJornada() {
 
     const logBox = document.getElementById('match-log');
     logBox.innerHTML = '';
-    document.getElementById('match-summary').textContent = 'Jornada en curso; el resumen aparecerá al terminar el partido de FC Pase y Pifia.';
+    document.getElementById('match-summary').textContent = 'Jornada en curso; el resumen aparecerá al terminar el partido de Real Magras de Madrid.';
     actualizarDesglosePartido();
     document.getElementById('btn-exportar-balance').disabled = true;
     limpiarRepeticionesPartido();
@@ -2244,7 +2188,7 @@ function simularJornada() {
     if (eventosPartidoActual.length) {
         mostrarRepeticion(0);
     } else {
-        document.getElementById('replay-status').textContent = 'Esta jornada no produjo remates para el partido de FC Pase y Pifia.';
+        document.getElementById('replay-status').textContent = 'Esta jornada no produjo remates para el partido de Real Magras de Madrid.';
         document.getElementById('replay-controls').innerHTML = '<p class="hint-box">No hay ocasiones registradas en este encuentro.</p>';
     }
 
@@ -2701,6 +2645,13 @@ function ficharJugador(idx) {
         return;
     }
     miEq.presupuesto -= jug.precio;
+    const clubOrigen = jug.jugador_id
+        ? estadoJuego.equipos.find(eq => eq !== miEq && eq.plantilla.some(j => j.jugador_id === jug.jugador_id))
+        : null;
+    if (clubOrigen) {
+        clubOrigen.plantilla = clubOrigen.plantilla.filter(j => j.jugador_id !== jug.jugador_id);
+        convocarOnceAutomatico(clubOrigen);
+    }
     miEq.plantilla.push(jug);
     estadoJuego.mercado.splice(idx, 1);
     convocarOnceAutomatico(miEq);
@@ -2760,60 +2711,15 @@ function calcularPremiosClasificacion(equipos) {
  * Añado cuatro candidatos ficticios, uno por posición, reinicio sus estadísticas y limito el mercado a doce opciones.
  */
 function renovarMercadoTemporada() {
-    const nombres = [
-        'Rulo', 'Vera', 'Nico', 'Berta', 'Teo', 'Mili', 'Lucho', 'Cata', 'Pipo', 'Lola',
-        'Toni', 'Rita', 'Fede', 'Nora', 'Beto', 'Inés', 'Gabi', 'Susi', 'Mauro', 'Kike'
-    ];
-    const apellidos = [
-        'Larguero', 'Taconazo', 'Cañonazo', 'Dejada', 'Despeje', 'FueraJuego', 'Pelotazo',
-        'Parapenaltis', 'Chutapiedras', 'Pasecorto', 'Trallazo', 'Rechaces', 'Balonazo',
-        'Tobillo', 'MediaVuelta', 'Manoplas', 'Banderín', 'Rondo', 'Vaselina', 'Nopuedo'
-    ];
-    const posiciones = ['POR', 'DEF', 'CEN', 'DEL'];
-    const usados = new Set([
-        ...estadoJuego.equipos.flatMap(eq => eq.plantilla.map(j => j.nombre)),
-        ...estadoJuego.mercado.map(j => j.nombre)
-    ].map(nombre => nombre.toLocaleLowerCase('es')));
-    const temporada = estadoJuego.temporada;
-    const nuevos = [];
-
-    posiciones.forEach((posicion, indice) => {
-        let nombre = '';
-        for (let intento = 0; intento < nombres.length * apellidos.length; intento++) {
-            const combinacion = (temporada * 17 + indice * 97 + intento) % (nombres.length * apellidos.length);
-            const nombrePila = nombres[Math.floor(combinacion / apellidos.length)];
-            const apellido = apellidos[combinacion % apellidos.length];
-            const candidato = `${nombrePila} ${apellido}`;
-            if (!usados.has(candidato.toLocaleLowerCase('es'))) {
-                nombre = candidato;
-                break;
-            }
-        }
-        if (!nombre) return;
-
-        const media = Math.min(86, 68 + Math.floor(Math.random() * 9) + Math.min(temporada - 1, 4));
-        const factorTemporada = 1 + Math.min(0.2, (temporada - 1) * 0.035);
-        nuevos.push({
-            nombre, posicion, media, moral: 82, cansancio: 0,
-            precio: Math.round(media * 35000 * factorTemporada),
-            salario: Math.round(media * 220 * factorTemporada),
-            goles: 0, xg: 0, lesionado: 0, titular: false
-        });
-        usados.add(nombre.toLocaleLowerCase('es'));
-    });
-
-    // Se reinicia el estado de los jugadores que siguen disponibles y se limita
-    // la oferta para que una partida larga no genere una tabla interminable.
-    estadoJuego.mercado.forEach(j => {
-        j.goles = 0;
-        j.xg = 0;
-        j.cansancio = 0;
-        j.lesionado = 0;
-        j.titular = false;
-    });
-    estadoJuego.mercado = [...estadoJuego.mercado, ...nuevos]
-        .sort((a, b) => b.media - a.media || a.nombre.localeCompare(b.nombre, 'es'))
-        .slice(0, 12);
+ const usados=new Set([...estadoJuego.equipos[0].plantilla.map(j=>j.jugador_id),...estadoJuego.mercado.map(j=>j.jugador_id)]);
+ const elegibles=PLANTILLAS_DB.equipos.flatMap(eq=>eq.jugadores.map(j=>({jugador:j,equipo:eq}))).filter(x=>!usados.has(x.jugador.id));
+ const giro=(estadoJuego.temporada*7)%Math.max(elegibles.length,1),rotados=[...elegibles.slice(giro),...elegibles.slice(0,giro)];
+ const nuevos=rotados.slice(0,Math.min(4,Math.max(0,12-estadoJuego.mercado.length))).map(({jugador:j,equipo:eq})=>({
+  jugador_id:j.id,nombre:j.nombre,jugador_real:j.jugador_real,equipo_origen:eq.club_real,equipo_origen_parodia:eq.nombre_parodico,
+  posicion:j.posicion,media:j.valoracion_juego,atributos:{...j.atributos},rasgo:j.rasgo,clausula:j.clausula,
+  avatar_ia:j.avatar_ia,reacciones_ia:{...j.reacciones_ia},moral:82,cansancio:0,precio:j.valor,salario:j.salario,goles:0,xg:0,lesionado:0,titular:false
+ }));
+ estadoJuego.mercado.push(...nuevos);estadoJuego.mercado=estadoJuego.mercado.slice(0,12);
 }
 
 /**
@@ -2825,10 +2731,10 @@ function iniciarNuevaTemporada() {
         return;
     }
     const premios = calcularPremiosClasificacion(estadoJuego.equipos);
-    const miPremio = premios.find(p => p.nombre === 'FC Pase y Pifia');
+    const miPremio = premios.find(p => p.nombre === 'Real Magras de Madrid');
     const resumenPremios = premios.map(p =>
         `${p.posicion}.º ${p.nombre}: ${p.premio.toLocaleString('es-ES')} €`).join('\n');
-    if (!confirm(`¡Temporada terminada! FC Pase y Pifia: ${miPremio.posicion}.º puesto.\n\nPremios por clasificación:\n${resumenPremios}\n\n¿Comenzar la siguiente temporada?`)) return;
+    if (!confirm(`¡Temporada terminada! Real Magras de Madrid: ${miPremio.posicion}.º puesto.\n\nPremios por clasificación:\n${resumenPremios}\n\n¿Comenzar la siguiente temporada?`)) return;
     const jugadoresOrdenados = estadoJuego.equipos.flatMap(eq => eq.plantilla
         .filter(j => j.goles > 0)
         .map(j => ({ nombre: j.nombre, equipo: eq.nombre, goles: j.goles, xg: j.xg })))
@@ -2951,77 +2857,40 @@ function reiniciarPartidaLocal() {
     }
 }
 
-window.onload = () => {
-    let cargaCorrecta = false;
+window.onload = async () => {
     try {
-        const guardado = localStorage.getItem('ldp_manager_save');
-        cargaCorrecta = Boolean(guardado);
-        estadoJuego = guardado ? normalizarEstadoPartida(JSON.parse(guardado)) : crearEstadoInicial();
-        if (!estadoPartidaValido(estadoJuego)) {
-            throw new Error("Formato de partida no válido");
-        }
-    } catch (error) {
-        cargaCorrecta = false;
-        console.warn("No se pudo cargar la partida guardada:", error);
-        estadoJuego = crearEstadoInicial();
-        alert("La partida guardada no se puede recuperar. Se iniciará una nueva. El guardado anterior se conservará hasta el próximo guardado.");
-    }
-    const indicador = document.getElementById('estado-guardado');
-    if (indicador && !indicador.textContent) {
-        indicador.textContent = cargaCorrecta ? '✓ Partida recuperada' : 'Nueva partida sin guardar';
-    }
-    const cShot = document.getElementById('canvas-shotmap');
-    dibujarCampoBase(cShot.getContext('2d'), cShot.width, cShot.height);
-    actualizarUI();
+        const r=await fetch('./data/plantillas-parodicas.json',{cache:'no-store'});
+        if(!r.ok)throw new Error('No se pudo cargar el JSON de plantillas.');
+        PLANTILLAS_DB=await r.json();
+        if(PLANTILLAS_DB.schema_version!==1||PLANTILLAS_DB.equipos?.length!==4||PLANTILLAS_DB.equipos.some(e=>!Array.isArray(e.jugadores)||e.jugadores.length<11))throw new Error('Base incompleta.');
+        window.DATOS_ARAGONESES=Object.freeze({equipos:PLANTILLAS_DB.equipos.map(e=>e.nombre_parodico),despedidas:['Gracias por pasarte por el despacho; seguimos con el ojeo.','Que el viaje vaya tranquilo y el balón ruede bien.','Nos quedamos con la conversación; hasta la próxima ventana.']});
+    }catch(error){console.error('Error en la base de jugadores:',error);document.querySelector('.sim-disclaimer').textContent='No se pudo cargar la base local de plantillas. Recarga para intentarlo de nuevo.';return;}
+    let cargaCorrecta=false;
+    try{const g=localStorage.getItem('ldp_manager_save');cargaCorrecta=Boolean(g);estadoJuego=g?normalizarEstadoPartida(JSON.parse(g)):crearEstadoInicial();if(!estadoPartidaValido(estadoJuego))throw new Error('El guardado no coincide con las plantillas 2026/27.');}
+    catch(error){cargaCorrecta=false;console.warn('Nueva partida para aplicar la base actual:',error);estadoJuego=crearEstadoInicial();}
+    const indicador=document.getElementById('estado-guardado');if(indicador&&!indicador.textContent)indicador.textContent=cargaCorrecta?'✓ Partida recuperada':'Nueva temporada · plantillas 2026/27';
+    const finanzas=document.getElementById('tab-entrenamiento'),despacho=document.getElementById('tab-clasificacion');
+    if(finanzas&&despacho){const d=document.createElement('details');d.className='panel quick-guide';d.innerHTML='<summary>💰 Finanzas y gestión del club</summary>';while(finanzas.firstChild)d.appendChild(finanzas.firstChild);despacho.appendChild(d);finanzas.remove();}
+    const c=document.getElementById('canvas-shotmap');dibujarCampoBase(c.getContext('2d'),c.width,c.height);actualizarUI();
 };
+// Se conserva el onload asíncrono anterior, que carga la base 2026/27 y adapta guardados incompatibles.
 
 // --- Módulos visuales de la primera versión aragonesa ---
-window.DATOS_ARAGONESES = Object.freeze({
-    equipos: ['Real Zaragocica', 'SD Huesqueta', 'Teruel Existe CF', 'Atlético Monzón Casetas'],
-    clausulas: [
-        'Cláusula: si hay cierzo, el saque de banda cuenta como asistencia.',
-        'Pide bonus por cada ternasco que aparezca en la grada.',
-        'Incluye en el contrato una excursión al Moncayo y dos bocadillos.',
-        'No juega los martes: tiene rondalla y lo lleva muy en serio.',
-        'Prima especial si el balón no acaba en el aparcamiento de La Romareda.'
-    ],
-    despedidas: ['¡Que te vaya bonito y que el larguero te sea propicio!', 'Seguimos ojeando; no te nos vayas al cierzo.', 'Despedida con abrazo y un mapa para volver.']
-});
+window.DATOS_ARAGONESES=Object.freeze({equipos:PLANTILLAS_DB?.equipos?.map(e=>e.nombre_parodico)||[],despedidas:['Gracias por pasarte por el despacho; seguimos con el ojeo.','Que el viaje vaya tranquilo y el balón ruede bien.','Nos quedamos con la conversación; hasta la próxima ventana.']});
 const frasesSwipe = window.DATOS_ARAGONESES.clausulas;
 function renderFichaSwipe() {
-    const card=document.getElementById('swipe-card');
-    if(!card || typeof estadoJuego==='undefined' || !estadoJuego.mercado) return;
-    if(!estadoJuego.mercado.length) {
-        document.getElementById('swipe-name').textContent='Sin candidatos por ahora';
-        document.getElementById('swipe-club').textContent='Vuelve al mercado después del próximo partido.';
-        document.getElementById('swipe-stats').textContent='';
-        document.getElementById('swipe-clause').textContent='El ojeador ha revisado todos los nombres disponibles.';
-        document.getElementById('swipe-match').disabled=true;
-        document.getElementById('swipe-reject').disabled=true;
-        const retratoVacio=document.getElementById('swipe-portrait');
-        if(retratoVacio) retratoVacio.innerHTML='<div><div class="portrait-face">✓</div><small>Ojeo completado</small></div>';
-        return;
-    }
-    document.getElementById('swipe-reject').disabled=false;
-    const jugador=estadoJuego.mercado[0];
-    const club=estadoJuego.equipos.find(e=>e.nombre==='FC Pase y Pifia');
-    const nombre=String(jugador.nombre||'Fichaje misterioso');
-    const id='caricatura-'+nombre.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-    const retrato=document.getElementById('swipe-portrait');
-    if(retrato) { retrato.dataset.portraitId=id; retrato.innerHTML='<div><div class="portrait-face" aria-hidden="true">'+nombre.split(/\s+/).map(p=>p[0]).slice(0,2).join('').toUpperCase()+'</div><small>Ilustración original · ID '+id+'</small></div>'; }
-    document.getElementById('swipe-name').textContent=nombre+' · '+jugador.posicion;
-    const clubParodia=window.DATOS_ARAGONESES.equipos[(estadoJuego.mercado.length-1)%window.DATOS_ARAGONESES.equipos.length];
-    document.getElementById('swipe-club').textContent='Ojeado en '+clubParodia+' · '+jugador.media+' de media';
-    const atributos=atributosParodicos(jugador);
-    document.getElementById('swipe-stats').innerHTML=atributos.map(a=>'<span class="attribute-pill" title="'+a[2]+'"><small>'+a[0]+'</small><b>'+a[1]+'</b></span>').join('')+
-        '<span class="swipe-stat">💶 '+Number(jugador.precio).toLocaleString('es-ES')+' €</span><span class="swipe-stat">🪙 '+Number(jugador.salario).toLocaleString('es-ES')+' €/j</span>';
-    const frase=frasesSwipe[(estadoJuego.mercado.length-1)%frasesSwipe.length];
-    document.getElementById('swipe-clause').textContent='«'+frase+'»';
-    const match=document.getElementById('swipe-match');
-    const valido=club && club.presupuesto>=jugador.precio && club.plantilla.length<MAX_PLANTILLA;
-    match.disabled=!valido;
-    match.title=valido?'Iniciar oferta y cerrar el fichaje':(club && club.plantilla.length>=MAX_PLANTILLA?'Plantilla completa':'Presupuesto insuficiente');
-    card.dataset.index='0';
+ const card=document.getElementById('swipe-card');if(!card||typeof estadoJuego==='undefined'||!estadoJuego.mercado)return;
+ if(!estadoJuego.mercado.length){document.getElementById('swipe-name').textContent='Sin candidatos por ahora';document.getElementById('swipe-club').textContent='El ojeador ha revisado las plantillas 2026/27; vuelve tras la próxima jornada.';document.getElementById('swipe-stats').textContent='';document.getElementById('swipe-clause').textContent='No quedan candidatos en esta ronda de ojeo.';document.getElementById('swipe-match').disabled=true;document.getElementById('swipe-reject').disabled=true;const vacia=document.getElementById('swipe-portrait');if(vacia)vacia.innerHTML='<div><div class="portrait-face">✓</div><small>Ojeo completado</small></div>';return;}
+ document.getElementById('swipe-reject').disabled=false;
+ const jugador=estadoJuego.mercado[0],club=obtenerMiEquipo(),nombre=String(jugador.nombre||'Jugador disponible');
+ const id='caricatura-'+String(jugador.jugador_id||nombre).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+ const retrato=document.getElementById('swipe-portrait');
+ if(retrato){retrato.dataset.portraitId=id;const iniciales=nombre.split(/\s+/).map(p=>p[0]).slice(0,2).join('').toUpperCase();const ruta=String(jugador.avatar_ia||'');retrato.innerHTML='<img class="swipe-portrait-img" data-src="'+escaparHTML(ruta)+'" alt="Caricatura de '+escaparHTML(nombre)+'"><div class="portrait-fallback"><span class="portrait-face" aria-hidden="true">'+escaparHTML(iniciales)+'</span><small>Caricatura IA pendiente · '+escaparHTML(id)+'</small></div>';const img=retrato.querySelector('img'),fallback=retrato.querySelector('.portrait-fallback');if(ruta)fetch(ruta,{method:'HEAD'}).then(r=>{if(r.ok){img.src=ruta;img.onload=()=>fallback.hidden=true;}}).catch(()=>{});}
+ document.getElementById('swipe-name').textContent=nombre+' · '+jugador.posicion;
+ document.getElementById('swipe-club').textContent='Plantilla: '+(jugador.equipo_origen_parodia||jugador.equipo_origen||'Primera División')+' · '+(jugador.jugador_real||'futbolista 2026/27');
+ const attrs=atributosParodicos(jugador);document.getElementById('swipe-stats').innerHTML=attrs.map(a=>'<span class="attribute-pill" title="'+escaparHTML(a[2])+'"><small>'+a[0]+'</small><b>'+a[1]+'</b></span>').join('')+'<span class="swipe-stat">💶 '+Number(jugador.precio).toLocaleString('es-ES')+' €</span><span class="swipe-stat">🪙 '+Number(jugador.salario).toLocaleString('es-ES')+' €/j</span>';
+ document.getElementById('swipe-clause').textContent='«'+String(jugador.clausula||jugador.rasgo||'Cláusula por negociar con calma.')+'»';
+ const valido=club&&club.presupuesto>=jugador.precio&&club.plantilla.length<MAX_PLANTILLA,match=document.getElementById('swipe-match');match.disabled=!valido;match.title=valido?'Iniciar oferta y cerrar el fichaje':(club&&club.plantilla.length>=MAX_PLANTILLA?'Plantilla completa':'Presupuesto insuficiente');card.dataset.index='0';
 }
 function decidirSwipe(aceptar) {
     if(!estadoJuego.mercado.length) return;
@@ -3042,7 +2911,7 @@ function decidirSwipe(aceptar) {
 }
 function actualizarFinanzas() {
     if(typeof estadoJuego==='undefined' || !estadoJuego.equipos) return;
-    const club=estadoJuego.equipos.find(e=>e.nombre==='FC Pase y Pifia');
+    const club=estadoJuego.equipos.find(e=>e.nombre==='Real Magras de Madrid');
     if(!club) return;
     const poner=(id,texto)=>{const e=document.getElementById(id);if(e)e.textContent=texto;};
     poner('finance-budget',Number(club.presupuesto).toLocaleString('es-ES')+' €');
@@ -3075,7 +2944,7 @@ async function vivirJornada() {
     const fill=document.getElementById('match-meter-fill');
     const label=document.getElementById('match-meter-label');
     boton.disabled=true;
-    document.getElementById('match-scoreboard').textContent='FC Pase y Pifia · 0 — 0 · Partido en juego';
+    document.getElementById('match-scoreboard').textContent='Real Magras de Madrid · 0 — 0 · Partido en juego';
     for(let minuto=0;minuto<=90;minuto+=3) {
         clock.textContent=String(minuto).padStart(2,'0')+'′';
         ritmo.textContent=minuto<45?'Primera parte':'Segunda parte';
@@ -3143,17 +3012,8 @@ let rivalEstiloTemporal=null;
 let cambiosTemporalesCierzo=[];
 let contratoMensaje='';
 function atributosParodicos(jugador) {
-    const texto=String(jugador.nombre||'');
-    const semilla=[...texto].reduce((s,c)=>s+c.charCodeAt(0),0);
-    const base=Number(jugador.media)||70;
-    const valor=(n)=>Math.max(35,Math.min(99,Math.round(base+(semilla*n%25)-12)));
-    return [
-        ['CAB',valor(3),'Cabezonería / determinación'],
-        ['PAT',valor(5),'Potencia de patada / disparo'],
-        ['ALM',valor(7),'Fondo físico / tolerancia al almuerzo'],
-        ['PRO',valor(11),'Protesta arbitral / retranca'],
-        ['PIQ',valor(13),'Picardía / picaresca']
-    ];
+ const defs={RAS:'Rasmia y empuje',TOZ:'Tozudez / duelo físico',CHI:'Chispa / desborde',RET:'Retranca arbitral / pillería',ALM:'Aguante físico / fondo de almuerzo'};
+ return Object.entries(defs).map(([c,d])=>[c,Math.max(0,Math.min(100,Number(jugador.atributos?.[c])||0)),d]);
 }
 function renderPatrocinios() {
     const lista=document.getElementById('sponsor-options');
@@ -3303,7 +3163,7 @@ vivirJornada=async function() {
     document.querySelectorAll('#power-cards [data-power]').forEach(btn=>{btn.disabled=false;btn.classList.remove('used');});
     document.getElementById('power-feedback').textContent='¡Reloj en marcha! Lanza hasta tres poderes tácticos.';
     boton.disabled=true;actualizarCTAFlotante();
-    document.getElementById('match-scoreboard').textContent='FC Pase y Pifia · 0 — 0 · Partido en juego';
+    document.getElementById('match-scoreboard').textContent='Real Magras de Madrid · 0 — 0 · Partido en juego';
     for(let minuto=0;minuto<=90;minuto+=3){
         clock.textContent=String(minuto).padStart(2,'0')+'′';ritmo.textContent=minuto<45?'Primera parte':'Segunda parte';
         const porcentaje=45+Math.round(25*Math.sin(minuto/8));fill.style.width=porcentaje+'%';
@@ -3321,7 +3181,7 @@ vivirJornada=async function() {
     let gf=0,gc=0;
     if(cuenta){
         const goles1=Number(cuenta[2]),goles2=Number(cuenta[3]);
-        gf=cuenta[1]==='FC Pase y Pifia'?goles1:goles2;gc=cuenta[1]==='FC Pase y Pifia'?goles2:goles1;
+        gf=cuenta[1]==='Real Magras de Madrid'?goles1:goles2;gc=cuenta[1]==='Real Magras de Madrid'?goles2:goles1;
         document.getElementById('match-scoreboard').textContent=cuenta[1]+' · '+goles1+' — '+goles2+' · '+cuenta[4];
         mostrarChirincirco(gf,gc);liquidarPatrocinio(gf,gc);
     }
@@ -3330,6 +3190,48 @@ vivirJornada=async function() {
     guardarPartidaLocal(false);actualizarUI();boton.disabled=false;actualizarCTAFlotante();
     if(cuenta)abrirEventoVestuario();
 };
+
+// Reproductor con ranuras de clip IA y fallback animado; solo solicita assets que existen.
+const VIDEO_ACTION_ASSETS=Object.freeze({
+ goal:{src:'assets/ia/partido/gol.mp4',title:'⚽ Gol de la jornada',caption:'Recreación humorística del gol simulado.',label:'¡La pelota encuentra la red!'},
+ save:{src:'assets/ia/partido/paradon.mp4',title:'🧤 Paradón de reflejos',caption:'Recreación del paradón simulado.',label:'¡Manopla salvadora!'},
+ foul:{src:'assets/ia/partido/tozolon.mp4',title:'💨 Tozolón con deportividad',caption:'Disputa intensa recreada sin daño ni burla.',label:'¡Choque y a levantarse!'},
+ var:{src:'assets/ia/partido/var-pueblo.mp4',title:'📺 VAR de pueblo',caption:'Revisión cómica ficticia de la jugada.',label:'El VAR consulta al bar de la esquina…'},
+ coach:{src:'assets/ia/partido/mister-banda.mp4',title:'📣 El míster en la banda',caption:'Reacción animada del banquillo ficticio.',label:'¡Rasmia, cabeza y a jugar!'},
+ match:{src:'',title:'💚 ¡Match!',caption:'Reacción alegre del fichaje.',label:'¡Trato hecho y a por el primer pase!'},
+ reject:{src:'',title:'👋 Despedida del ojeador',caption:'Reacción amable al cerrar el ojeo.',label:'¡Gracias por venir; que ruede bien!'}
+});
+class VideoActionTrigger {
+ static async play(kind,detail={},customSrc=''){
+  const c=VIDEO_ACTION_ASSETS[kind]||VIDEO_ACTION_ASSETS.goal,m=document.getElementById('microclip-backdrop'),v=document.getElementById('video-action-player'),f=document.getElementById('video-action-fallback'),st=document.getElementById('video-action-status');
+  document.getElementById('microclip-title').textContent=c.title;
+  document.getElementById('microclip-caption').textContent=c.caption+(detail.rematador?' · '+detail.rematador:detail.nombre?' · '+detail.nombre:'');
+  f.dataset.scene=kind;f.querySelector('.clip-reaction').textContent=c.label;f.hidden=false;v.hidden=true;v.pause();v.removeAttribute('src');v.load();
+  st.textContent='Recreación animada activa · los clips IA se incorporarán cuando estén generados.';
+  m.classList.add('open');m.setAttribute('aria-hidden','false');document.getElementById('microclip-close').focus();
+  const src=customSrc||c.src;if(!src)return;
+  try{const res=await fetch(src,{method:'HEAD',cache:'no-store'});if(!res.ok)return;v.src=src;v.hidden=false;f.hidden=true;st.textContent='Reproduciendo clip IA del juego.';await v.play().catch(()=>{});}catch(error){/* Fallback animado mientras no se pueda cargar el asset. */}
+ }
+ static close(){
+  const m=document.getElementById('microclip-backdrop'),v=document.getElementById('video-action-player');
+  v.pause();v.removeAttribute('src');v.load();m.classList.remove('open');m.setAttribute('aria-hidden','true');document.getElementById('video-action-status').textContent='Repetición cerrada.';
+ }
+}
+document.getElementById('microclip-close').addEventListener('click',()=>VideoActionTrigger.close());
+document.getElementById('microclip-backdrop').addEventListener('click',event=>{if(event.target.id==='microclip-backdrop')VideoActionTrigger.close();});
+document.addEventListener('keydown',event=>{if(event.key==='Escape'&&document.getElementById('microclip-backdrop').classList.contains('open'))VideoActionTrigger.close();});
+document.querySelectorAll('[data-video-action]').forEach(b=>b.addEventListener('click',()=>VideoActionTrigger.play(b.dataset.videoAction)));
+const decidirSwipeConReaccion=decidirSwipe;
+decidirSwipe=function(aceptar){
+ const j=estadoJuego?.mercado?.[0],antes=estadoJuego?.mercado?.length||0;decidirSwipeConReaccion(aceptar);
+ if(j&&estadoJuego.mercado.length<antes)VideoActionTrigger.play(aceptar?'match':'reject',{nombre:j.nombre},j.reacciones_ia?.[aceptar?'match':'rechazo']||'');
+};
+const mostrarRepeticionConVideo=mostrarRepeticion;
+mostrarRepeticion=function(indice){
+ const resultado=mostrarRepeticionConVideo(indice);if(!resultado)return resultado;
+ const e=eventosPartidoActual[indice];VideoActionTrigger.play(e.esGol?'goal':'save',e);return resultado;
+};
+
 </script>
 </body>
 </html>
