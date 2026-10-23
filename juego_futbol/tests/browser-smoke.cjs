@@ -21,6 +21,19 @@ const fs = require('node:fs/promises');
         if (message.type() === 'error') errors.push(mode + ' consola: ' + message.text());
       });
       page.on('dialog', dialog => dialog.accept());
+      // La web presenta el juego en el catálogo y ofrece una explicación real de xG.
+      await page.goto('http://127.0.0.1:8765/proyectos/', { waitUntil: 'load' });
+      const ctaJuego = page.getByRole('link', { name: 'Probar el juego web' });
+      assert.equal(await ctaJuego.getAttribute('href'), '../juego_futbol/index.html',
+        'el catálogo enlaza al juego web y no promete una descarga móvil');
+      await ctaJuego.click();
+      await page.waitForURL('**/juego_futbol/index.html');
+      const enlaceXg = page.getByRole('link', { name: 'Aprende qué mide el xG y cómo interpretarlo' });
+      assert.equal(await enlaceXg.getAttribute('href'), '../proyectos/xg/index.html',
+        'el aviso del simulador enlaza a la explicación de xG existente');
+      await enlaceXg.click();
+      await page.waitForURL('**/proyectos/xg/index.html');
+      assert.match(await page.locator('h1').innerText(), /xG/i, 'la explicación enlazada se puede abrir');
       await page.goto('http://127.0.0.1:8765/juego_futbol/', { waitUntil: 'load' });
       if (mode === 'mobile') assert.equal(await page.evaluate(() => window.innerWidth), 390, 'ancho de pantalla móvil esperado');
       await page.emulateMedia({ reducedMotion: 'reduce' });

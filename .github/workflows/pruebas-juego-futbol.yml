@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'juego_futbol/**'
+      - 'proyectos/index.html'
       - '.github/workflows/pruebas-juego-futbol.yml'
   workflow_dispatch:
 concurrency:

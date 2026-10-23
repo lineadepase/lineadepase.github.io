@@ -41,6 +41,12 @@
 <!-- /SEO -->
 
 <style>
+/* Acceso al prototipo web desde el catálogo de proyectos. */
+.promo-juego { display:flex; align-items:center; justify-content:space-between; gap:1.5rem; margin:1.5rem auto 2rem; padding:1.5rem; border:1px solid #cbd8ce; border-radius:1rem; background:linear-gradient(115deg,#eef6ef,#f8f5e9); }
+.promo-juego h2 { margin:0 0 .35rem; }
+.promo-juego p { margin:0; max-width:58ch; }
+.promo-juego .boton { flex:0 0 auto; }
+@media (max-width:600px) { .promo-juego { align-items:stretch; flex-direction:column; gap:1rem; } .promo-juego .boton { align-self:flex-start; } }
 /* Tarjetas de proyectos: imágenes horizontales completas en pantallas pequeñas. */
 @media (max-width: 760px) {
   #catalogo.tarjetas-proyecto { display:grid; grid-template-columns:minmax(0,1fr); gap:1.25rem; }
@@ -71,6 +77,14 @@
       <p class="entradilla">Análisis de fútbol con datos públicos, con las fuentes y el código a la vista.</p>
     </div>
   </header>
+  <aside class="envoltorio promo-juego" aria-labelledby="promo-juego-titulo">
+    <div>
+      <p class="etiqueta">Prototipo jugable · solo navegador</p>
+      <h2 id="promo-juego-titulo">Toma el mando de FC Pase y Pifia</h2>
+      <p>Gestiona una liga ficticia, prepara cada jornada y descubre qué pasa cuando el xG lo calcula un simulador con demasiada confianza.</p>
+    </div>
+    <a class="boton lleno" href="../juego_futbol/index.html">Probar el juego web</a>
+  </aside>
   <section class="catalogo" aria-label="Catálogo de proyectos">
     <div class="envoltorio">
       <div class="filtros" role="group" aria-label="Filtrar por tipo de proyecto" hidden>
