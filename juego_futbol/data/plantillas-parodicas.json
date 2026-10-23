@@ -325,6 +325,90 @@
             "calma",
             "colocación"
           ]
+        },
+        {
+          "id": "andriy-cierzo",
+          "nombre": "Andriy del Cierzo",
+          "jugador_real": "Andriy Lunin",
+          "posicion": "POR",
+          "valoracion_juego": 83,
+          "atributos": {
+            "RAS": 84,
+            "TOZ": 82,
+            "CHI": 83,
+            "RET": 81,
+            "ALM": 86
+          },
+          "rasgo": "Reflejos atentos y calma para iniciar desde atrás.",
+          "clausula": "Pide guantes de repuesto cuando cambia el viento.",
+          "salario": 13280,
+          "valor": 2905000,
+          "avatar_ia": "assets/ia/avatares/andriy-cierzo.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/andriy-cierzo-match.mp4",
+            "rechazo": "assets/ia/reacciones/andriy-cierzo-rechazo.mp4"
+          },
+          "tags": [
+            "RAS",
+            "TOZ",
+            "CHI"
+          ]
+        },
+        {
+          "id": "ferland-soto",
+          "nombre": "Ferland del Soto",
+          "jugador_real": "Ferland Mendy",
+          "posicion": "DEF",
+          "valoracion_juego": 87,
+          "atributos": {
+            "RAS": 87,
+            "TOZ": 91,
+            "CHI": 84,
+            "RET": 82,
+            "ALM": 93
+          },
+          "rasgo": "Duelos firmes y recorrido largo por el carril.",
+          "clausula": "Que el lateral tenga sombra y espacio para volver.",
+          "salario": 13920,
+          "valor": 3045000,
+          "avatar_ia": "assets/ia/avatares/ferland-soto.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/ferland-soto-match.mp4",
+            "rechazo": "assets/ia/reacciones/ferland-soto-rechazo.mp4"
+          },
+          "tags": [
+            "RAS",
+            "TOZ",
+            "CHI"
+          ]
+        },
+        {
+          "id": "rodrygo-sarten",
+          "nombre": "Rodrygo de la Sartén",
+          "jugador_real": "Rodrygo Goes",
+          "posicion": "DEL",
+          "valoracion_juego": 88,
+          "atributos": {
+            "RAS": 89,
+            "TOZ": 84,
+            "CHI": 93,
+            "RET": 86,
+            "ALM": 90
+          },
+          "rasgo": "Cambio de ritmo y definición con pausa.",
+          "clausula": "Solicita una buena sobremesa antes de salir al campo.",
+          "salario": 14080,
+          "valor": 3080000,
+          "avatar_ia": "assets/ia/avatares/rodrygo-sarten.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/rodrygo-sarten-match.mp4",
+            "rechazo": "assets/ia/reacciones/rodrygo-sarten-rechazo.mp4"
+          },
+          "tags": [
+            "RAS",
+            "TOZ",
+            "CHI"
+          ]
         }
       ]
     },
@@ -642,6 +726,90 @@
             "presión",
             "área",
             "asociación"
+          ]
+        },
+        {
+          "id": "wojciech-fogón",
+          "nombre": "Wojciech del Fogón",
+          "jugador_real": "Wojciech Szczęsny",
+          "posicion": "POR",
+          "valoracion_juego": 88,
+          "atributos": {
+            "RAS": 88,
+            "TOZ": 89,
+            "CHI": 86,
+            "RET": 87,
+            "ALM": 89
+          },
+          "rasgo": "Experiencia y reflejos para sujetar el área.",
+          "clausula": "Prefiere que le avisen antes de que llegue el balón.",
+          "salario": 14080,
+          "valor": 3080000,
+          "avatar_ia": "assets/ia/avatares/wojciech-fogón.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/wojciech-fogón-match.mp4",
+            "rechazo": "assets/ia/reacciones/wojciech-fogón-rechazo.mp4"
+          },
+          "tags": [
+            "RAS",
+            "TOZ",
+            "CHI"
+          ]
+        },
+        {
+          "id": "joao-acequia",
+          "nombre": "João de la Acequia",
+          "jugador_real": "João Cancelo",
+          "posicion": "DEF",
+          "valoracion_juego": 88,
+          "atributos": {
+            "RAS": 86,
+            "TOZ": 84,
+            "CHI": 92,
+            "RET": 88,
+            "ALM": 88
+          },
+          "rasgo": "Creatividad y pase para abrir caminos por banda.",
+          "clausula": "Pide libertad con responsabilidad y una buena línea de pase.",
+          "salario": 14080,
+          "valor": 3080000,
+          "avatar_ia": "assets/ia/avatares/joao-acequia.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/joao-acequia-match.mp4",
+            "rechazo": "assets/ia/reacciones/joao-acequia-rechazo.mp4"
+          },
+          "tags": [
+            "RAS",
+            "TOZ",
+            "CHI"
+          ]
+        },
+        {
+          "id": "fermin-pedregal",
+          "nombre": "Fermín del Pedregal",
+          "jugador_real": "Fermín López",
+          "posicion": "CEN",
+          "valoracion_juego": 90,
+          "atributos": {
+            "RAS": 93,
+            "TOZ": 88,
+            "CHI": 91,
+            "RET": 87,
+            "ALM": 93
+          },
+          "rasgo": "Llegada con energía y remate desde segunda línea.",
+          "clausula": "No hace falta llamarle dos veces si hay espacio.",
+          "salario": 14400,
+          "valor": 3150000,
+          "avatar_ia": "assets/ia/avatares/fermin-pedregal.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/fermin-pedregal-match.mp4",
+            "rechazo": "assets/ia/reacciones/fermin-pedregal-rechazo.mp4"
+          },
+          "tags": [
+            "RAS",
+            "TOZ",
+            "CHI"
           ]
         }
       ]
@@ -989,6 +1157,62 @@
             "centro",
             "precisión"
           ]
+        },
+        {
+          "id": "koke-brasa",
+          "nombre": "Koke de la Brasa",
+          "jugador_real": "Koke",
+          "posicion": "CEN",
+          "valoracion_juego": 91,
+          "atributos": {
+            "RAS": 92,
+            "TOZ": 91,
+            "CHI": 84,
+            "RET": 93,
+            "ALM": 96
+          },
+          "rasgo": "Pausa, lectura y liderazgo de muchos inviernos.",
+          "clausula": "Pide que el equipo se mueva como una cuadrilla bien avenida.",
+          "salario": 14560,
+          "valor": 3185000,
+          "avatar_ia": "assets/ia/avatares/koke-brasa.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/koke-brasa-match.mp4",
+            "rechazo": "assets/ia/reacciones/koke-brasa-rechazo.mp4"
+          },
+          "tags": [
+            "RAS",
+            "TOZ",
+            "CHI"
+          ]
+        },
+        {
+          "id": "giuliano-senda",
+          "nombre": "Giuliano de la Senda",
+          "jugador_real": "Giuliano Simeone",
+          "posicion": "DEL",
+          "valoracion_juego": 91,
+          "atributos": {
+            "RAS": 94,
+            "TOZ": 88,
+            "CHI": 92,
+            "RET": 83,
+            "ALM": 96
+          },
+          "rasgo": "Desmarque, energía y presión en campo abierto.",
+          "clausula": "Solo necesita una ruta hacia el área y otra de vuelta.",
+          "salario": 14560,
+          "valor": 3185000,
+          "avatar_ia": "assets/ia/avatares/giuliano-senda.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/giuliano-senda-match.mp4",
+            "rechazo": "assets/ia/reacciones/giuliano-senda-rechazo.mp4"
+          },
+          "tags": [
+            "RAS",
+            "TOZ",
+            "CHI"
+          ]
         }
       ]
     },
@@ -1306,6 +1530,90 @@
             "desmarque",
             "remate",
             "asociación"
+          ]
+        },
+        {
+          "id": "alex-padilla",
+          "nombre": "Alex de la Campa",
+          "jugador_real": "Álex Padilla",
+          "posicion": "POR",
+          "valoracion_juego": 84,
+          "atributos": {
+            "RAS": 84,
+            "TOZ": 84,
+            "CHI": 83,
+            "RET": 81,
+            "ALM": 86
+          },
+          "rasgo": "Agilidad y buena lectura para salir a tiempo.",
+          "clausula": "Pide calentamiento con balón y un poco de tranquilidad.",
+          "salario": 13440,
+          "valor": 2940000,
+          "avatar_ia": "assets/ia/avatares/alex-padilla.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/alex-padilla-match.mp4",
+            "rechazo": "assets/ia/reacciones/alex-padilla-rechazo.mp4"
+          },
+          "tags": [
+            "RAS",
+            "TOZ",
+            "CHI"
+          ]
+        },
+        {
+          "id": "yeray-barranco",
+          "nombre": "Yeray del Barranco",
+          "jugador_real": "Yeray Álvarez",
+          "posicion": "DEF",
+          "valoracion_juego": 86,
+          "atributos": {
+            "RAS": 87,
+            "TOZ": 90,
+            "CHI": 82,
+            "RET": 84,
+            "ALM": 88
+          },
+          "rasgo": "Anticipación y firmeza en el duelo.",
+          "clausula": "Le basta una línea defensiva atenta y bien colocada.",
+          "salario": 13760,
+          "valor": 3010000,
+          "avatar_ia": "assets/ia/avatares/yeray-barranco.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/yeray-barranco-match.mp4",
+            "rechazo": "assets/ia/reacciones/yeray-barranco-rechazo.mp4"
+          },
+          "tags": [
+            "RAS",
+            "TOZ",
+            "CHI"
+          ]
+        },
+        {
+          "id": "mikel-rastrojo",
+          "nombre": "Mikel Rastrojo",
+          "jugador_real": "Mikel Jauregizar",
+          "posicion": "CEN",
+          "valoracion_juego": 88,
+          "atributos": {
+            "RAS": 89,
+            "TOZ": 87,
+            "CHI": 86,
+            "RET": 84,
+            "ALM": 93
+          },
+          "rasgo": "Pase vertical, recuperación y energía para sostener el ritmo.",
+          "clausula": "Pide el balón al pie y un pasillo para jugar hacia delante.",
+          "salario": 14080,
+          "valor": 3080000,
+          "avatar_ia": "assets/ia/avatares/mikel-rastrojo.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/mikel-rastrojo-match.mp4",
+            "rechazo": "assets/ia/reacciones/mikel-rastrojo-rechazo.mp4"
+          },
+          "tags": [
+            "RAS",
+            "TOZ",
+            "CHI"
           ]
         }
       ]
