@@ -32,6 +32,12 @@ const fs = require('node:fs/promises');
       // Identidad ficticia, aviso de métricas simuladas, avatares propios y modelo de ataque/defensa.
       assert.equal(await page.locator('.sim-disclaimer').count(), 1, 'aviso visible de simulación');
       assert.match(await page.locator('.sim-disclaimer').innerText(), /xG.*datos del juego/i);
+      assert.match(await page.locator('#guia-rapida summary').innerText(), /Cómo jugar/);
+      await page.locator('#guia-rapida summary').click();
+      assert.match(await page.locator('#guia-rapida').innerText(), /una vez antes de cada jornada/);
+      assert.match(await page.locator('#guia-rapida').innerText(), /seis jornadas/);
+      await page.locator('#guia-rapida summary').click();
+      assert.equal(await page.locator('#btn-simular-jornada').innerText(), '▶️ SIMULAR JORNADA EN VIVO');
       assert.equal(await page.evaluate(() => estadoJuego.equipos.length), 4);
       const plantillasFicticias = await page.evaluate(() => ({
         clubes: estadoJuego.equipos.map(e => e.nombre),
@@ -696,6 +702,8 @@ const fs = require('node:fs/promises');
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 1, 'partida persistente');
       await page.evaluate(() => { for (let i = 1; i < 6; i++) simularJornada(); });
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 6);
+      assert.match(await page.locator('#btn-simular-jornada').innerText(), /CERRAR TEMPORADA Y CONTINUAR/,
+        'el botón explica que empieza la gestión de la siguiente campaña');
       // Cierro una temporada para probar desempates, premios, reinicio estadístico y renovación del mercado.
       const empate = await page.evaluate(() => {
         const clubes = crearEstadoInicial().equipos;
@@ -752,6 +760,8 @@ const fs = require('node:fs/promises');
       });
       await page.evaluate(() => iniciarNuevaTemporada());
       assert.equal(await page.evaluate(() => estadoJuego.temporada), 2);
+      assert.match(await page.locator('#btn-simular-jornada').innerText(), /SIMULAR JORNADA EN VIVO/,
+        'el botón vuelve a indicar que toca jugar una jornada');
       const archivoPrimeraTemporada = await page.evaluate(() => estadoJuego.historialTemporadas[0]);
       assert.equal(archivoPrimeraTemporada.temporada, 1, 'el cambio de temporada archiva la campaña que termina');
       assert.equal(archivoPrimeraTemporada.goleadores.length, 2,

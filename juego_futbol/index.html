@@ -202,6 +202,10 @@
             padding: 18px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.25);
         }
+        .quick-guide { margin: 0 0 14px; }
+        .quick-guide summary { cursor: pointer; font-weight: 800; }
+        .quick-guide summary:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
+        .quick-guide ol { margin-bottom: 8px; padding-left: 24px; line-height: 1.6; }
 
         .panel-header {
             display: flex;
@@ -427,6 +431,16 @@
 <!-- Zona principal: táctica, partido, liga, mercado y laboratorio se muestran aquí. -->
 <main>
     <p class="sim-disclaimer" role="note"><strong>Simulador ficticio:</strong> plantillas, valoraciones, fichajes, resultados y xG son datos del juego, no estadísticas reales ni información actualizada de los clubes. El xG es una estimación didáctica generada por el propio simulador según el tipo de ocasión; no procede de tiros reales ni de un modelo oficial.</p>
+    <details id="guia-rapida" class="panel quick-guide">
+        <summary>Cómo jugar · guía rápida</summary>
+        <ol>
+            <li><strong>Prepara el equipo:</strong> en Pizarra Táctica, elige formación y estilo; puedes intercambiar dos jugadores o pedir al juego que elija el mejor once.</li>
+            <li><strong>Gestiona la plantilla:</strong> en Mercado y Centro Técnico, descansa o entrena una vez antes de cada jornada. También puedes fichar o vender dentro de tu presupuesto.</li>
+            <li><strong>Juega y revisa:</strong> en Día de Partido, simula la jornada. Consulta el marcador, los remates, el xG estimado y las ocasiones del FC Pase y Pifia.</li>
+            <li><strong>Sigue la temporada:</strong> hay seis jornadas. Después, el botón te ofrecerá cerrar la campaña y empezar la siguiente; las clasificaciones quedan en el archivo.</li>
+        </ol>
+        <p>La partida se guarda en este navegador. Usa Exportar para conservar una copia de seguridad.</p>
+    </details>
     <!-- PESTAÑA 1: TÁCTICA Y PLANTILLA -->
     <p id="resumen-disponibilidad" role="status" aria-live="polite" style="margin:8px 0 14px;color:#cbd5e1;font-size:.9rem;"></p>
     <section id="tab-tactica" class="tab-content active" role="tabpanel" aria-labelledby="pestana-tactica" tabindex="0" aria-hidden="false">
@@ -490,7 +504,7 @@
                 <p class="hint-box" id="lbl-sub-partido">El tamaño de cada círculo en el mapa equivale al xG de la ocasión.</p>
                 <p id="match-summary" class="match-summary" role="status" aria-live="polite">Al terminar, aparecerán el marcador, los remates y el xG del partido de FC Pase y Pifia.</p>
             </div>
-            <button class="btn-success" style="font-size:1rem; padding:12px 22px;" onclick="simularJornada()">▶️ SIMULAR JORNADA EN VIVO</button>
+            <button id="btn-simular-jornada" class="btn-success" style="font-size:1rem; padding:12px 22px;" onclick="simularJornada()">▶️ SIMULAR JORNADA EN VIVO</button>
         </div>
 
         <div class="grid-2">
@@ -1247,6 +1261,14 @@ function actualizarUI() {
         : `Temp. ${estadoJuego.temporada} · Finalizada`;
 
     document.getElementById('lbl-temporada').textContent = jTxt;
+    const botonJornada = document.getElementById('btn-simular-jornada');
+    const temporadaFinalizada = estadoJuego.jornadaActual >= totalJ;
+    botonJornada.textContent = temporadaFinalizada
+        ? '🏆 CERRAR TEMPORADA Y CONTINUAR'
+        : '▶️ SIMULAR JORNADA EN VIVO';
+    botonJornada.title = temporadaFinalizada
+        ? 'Revisar premios y confirmar el inicio de la siguiente temporada'
+        : 'Simular los partidos de la jornada actual';
     document.getElementById('lbl-presupuesto').textContent =
         miEq.presupuesto.toLocaleString('es-ES') + ' €' +
         (miEq.presupuesto < 0 ? ' ⚠️ Déficit: vende jugadores o espera ingresos' : '');

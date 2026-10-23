@@ -17,6 +17,7 @@
 - Repeticiones analíticas esquemáticas de los remates del equipo del usuario, enlazadas desde la crónica y etiquetadas como contenido ficticio del simulador.
 - Avatares vectoriales originales, estables para cada nombre ficticio, en las tablas de plantilla, goleadores y mercado.
 - Mercado, venta de jugadores, preparación, premios y continuidad de temporada.
+- Guía rápida desplegable para el primer uso y botón de jornada que distingue entre jugar una fecha y pasar a la temporada siguiente.
 - Archivo local de hasta 20 temporadas cerradas, con partidos, puntos, goles, remates, xG a favor/en contra, diferencia entre goles y xG a favor, y máximos goleadores (incluye empates). Los datos estadísticos que no existían en un guardado antiguo se indican como no disponibles; las copias exportadas incluyen los resúmenes.
 - Renovación anual del mercado con cuatro perfiles de jugador, cobertura de posiciones y un límite de doce opciones.
 - Plantillas con un máximo operativo de 25 futbolistas para conservar rotaciones manejables y bloquear fichajes al alcanzar el límite.
@@ -30,7 +31,7 @@ Todos los clubes y futbolistas del juego usan nombres ficticios con tono humorí
 ## Pruebas y limitaciones conocidas
 
 - Python: compilación y pruebas unitarias para calendario, integridad de temporada, mercado/guardado, xG y plantillas sin jugadores aptos.
-- Navegador: Playwright en Chromium para escritorio y móvil, controles, persistencia, mercado, lesiones, calendario, premios, resumen accesible del partido con remates y xG, crónica de ocasiones, archivo multitemporada con sus métricas y diferencia goles-xG, empates de goleadores, migración de resúmenes antiguos, importación/exportación y errores JavaScript. El workflow guarda capturas de ambos tamaños como artefacto temporal.
+- Navegador: Playwright en Chromium para escritorio y móvil, guía rápida y estado del botón al cerrar temporada, controles, persistencia, mercado, lesiones, calendario, premios, resumen accesible del partido con remates y xG, crónica de ocasiones, archivo multitemporada con sus métricas y diferencia goles-xG, empates de goleadores, migración de resúmenes antiguos, importación/exportación y errores JavaScript. El workflow guarda capturas de ambos tamaños como artefacto temporal.
 - La comprobación local requiere el ejecutable Chromium de Playwright; en este entorno no está instalado. El resultado definitivo de navegador debe confirmarse en GitHub Actions.
 - La simulación web es un prototipo jugable de cuatro equipos, no una base de datos de una competición real. El cliente Python no comparte todavía un único motor con la web ni constituye una app iOS/Android.
 
