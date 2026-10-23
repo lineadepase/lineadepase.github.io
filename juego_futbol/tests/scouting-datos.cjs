@@ -1,0 +1,24 @@
+const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs/promises');
+const {installScreenNavigation}=require('./screen-navigation.cjs');
+(async()=>{const b=await chromium.launch({headless:true});try{for(const [width,height] of [[1366,900],[390,844]]){
+ const p=await b.newPage({viewport:{width,height}});installScreenNavigation(p);const errors=[];p.on('pageerror',e=>errors.push(e.message));p.on('dialog',d=>d.accept());
+ await p.goto('http://127.0.0.1:8765/juego_futbol/');await p.waitForSelector('.screen-mode');
+ const cash=await p.evaluate(()=>obtenerMiEquipo().presupuesto);await p.locator('#scout-position').selectOption('CEN');await p.locator('#scout-profile').selectOption('pase');await p.locator('#scout-start').click();
+ assert.equal(await p.evaluate(()=>obtenerMiEquipo().presupuesto),cash-8000);assert.equal(await p.evaluate(()=>obtenerMiEquipo().gestion.scouting.informes.length),0);
+ await p.locator('#infra-type').selectOption('marcador');await p.locator('#infra-option').selectOption('1');await p.locator('#infra-build').click();
+ await p.locator('#infra-type').selectOption('techo');await p.locator('#infra-option').selectOption('2');assert.match(await p.locator('#infra-quote').textContent(),/14 semanas/);await p.locator('#infra-build').click();
+ await p.evaluate(()=>{simularJornada();VideoActionTrigger.close();if(eventoVestuarioActual)resolverEventoVestuario(0);});
+ assert.equal(await p.evaluate(()=>obtenerMiEquipo().gestion.planEstadio.niveles.marcador),0);assert.equal(await p.evaluate(()=>obtenerMiEquipo().gestion.scouting.informes.length),2);
+ await p.locator('[data-scout-deep]').first().click();await p.evaluate(()=>{simularJornada();VideoActionTrigger.close();if(eventoVestuarioActual)resolverEventoVestuario(0);});
+ assert.equal(await p.evaluate(()=>obtenerMiEquipo().gestion.scouting.informes[0].confianza),100);assert.equal(await p.evaluate(()=>obtenerMiEquipo().gestion.planEstadio.niveles.marcador),1);assert.equal(await p.evaluate(()=>obtenerMiEquipo().gestion.planEstadio.niveles.techo),0);
+ const fee=await p.evaluate(()=>obtenerMiEquipo().gestion.scouting.informes[0].precio),before=await p.evaluate(()=>obtenerMiEquipo().presupuesto);await p.locator('[data-scout-sign]').first().click();assert.equal(await p.evaluate(()=>obtenerMiEquipo().presupuesto),before-fee);assert.equal(await p.evaluate(()=>obtenerMiEquipo().gestion.cantera.length),4);
+ await p.locator('#analysis-x').selectOption('puntos');await p.locator('#analysis-y').selectOption('gc');await p.locator('#analysis-min').fill('3');assert.match(await p.locator('#analysis-chart').textContent(),/Sin clubes/);await p.locator('#analysis-export').scrollIntoViewIfNeeded();const [selection]=await Promise.all([p.waitForEvent('download'),p.click('#analysis-export')]);const csv=await fs.readFile(await selection.path(),'utf8');assert.match(csv,/Puntos/);assert.equal(csv.trim().split('\r\n').length,1);await p.locator('#analysis-min').fill('0');
+ await p.locator('#analysis-club').selectOption({index:1});const club=await p.locator('#analysis-club').inputValue();assert.match(await p.locator('#analysis-details').textContent(),new RegExp(club));
+ // El punto también se puede activar por teclado, sin depender de la precisión del ratón.
+ await p.evaluate(()=>abrirPantallaJuego('analysis-chart'));const point=p.locator('#analysis-chart [data-analysis-club]').first();const name=await point.getAttribute('data-analysis-club');await point.focus();await p.keyboard.press('Enter');assert.equal(await p.locator('#analysis-club').inputValue(),name);
+ await p.locator('#recruit-sort').selectOption('pase');assert.match(await p.locator('#recruit-results').textContent(),/Encaje/);await p.locator('#rival-report button').click();assert.match(await p.locator('#screen-view option:checked').textContent(),/Alineación completa/);
+ await p.evaluate(()=>{while(estadoJuego.jornadaActual<estadoJuego.calendario.length){simularJornada();if(eventoVestuarioActual)resolverEventoVestuario(0);}VideoActionTrigger.close();iniciarNuevaTemporada();});
+ await p.locator('#analysis-season').selectOption('2');await p.locator('#analysis-compare').selectOption('1');assert.match(await p.locator('#analysis-comparison').textContent(),/temporada 1/);assert.equal(await p.evaluate(()=>estadoPartidaValido(estadoJuego)),true);
+ await p.evaluate(()=>guardarPartidaLocal(false));await p.reload();await p.waitForSelector('.screen-mode');assert.equal(await p.evaluate(()=>obtenerMiEquipo().gestion.planEstadio.niveles.techo),2);assert.equal(await p.evaluate(()=>estadoPartidaValido(estadoJuego)),true);
+ assert.deepEqual(errors,[]);console.log(`${width}: scouting con plazo e incertidumbre, fichaje, instalaciones, gráfico interactivo, perfiles, rival, historia y guardado correctos`);await p.close();
+}}finally{await b.close();}})().catch(e=>{console.error(e);process.exitCode=1;});
