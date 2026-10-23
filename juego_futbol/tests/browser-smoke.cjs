@@ -605,7 +605,7 @@ const fs = require('node:fs/promises');
           Math.random = random;
         }
       });
-      assert.equal(replayCheck.events, 8, 'el remate del simulador produce eventos de repetición');
+      assert.equal(replayCheck.events, 18, 'el partido genera ocasiones en sus 18 ventanas de juego');
       assert.equal(replayCheck.controls, replayCheck.events, 'cada ocasión tiene control para repetirla');
       assert.equal(replayCheck.logButtons, replayCheck.events, 'la crónica enlaza cada remate a su repetición');
       assert.equal(replayCheck.selected, true);

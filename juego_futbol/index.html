@@ -1840,7 +1840,9 @@ function simularPartidoIndividual(local, vis, esNuestro, logBox, ctxShot, w, h) 
     const atqV = fVis.ataque;
 
     let gL = 0, gV = 0, xgL = 0, xgV = 0;
-    const tramos = [11, 23, 35, 44, 56, 67, 78, 89];
+    // Dieciocho ventanas dan un volumen de ocasiones más creíble que ocho
+    // acciones aisladas, manteniendo la simulación rápida y determinista en coste.
+    const tramos = [3, 8, 13, 18, 23, 28, 33, 38, 43, 48, 53, 58, 63, 68, 73, 78, 83, 88];
 
     if (esNuestro) {
         logBox.innerHTML += `<p><strong>⚽ ${escaparHTML(local.nombre)} vs ${escaparHTML(vis.nombre)}</strong></p><hr style="border-color:#334155;margin:6px 0;">`;
