@@ -884,6 +884,22 @@ const fs = require('node:fs/promises');
         row.map(value => `"${value.replace(/"/g, '""')}"`).join(';')),
       'el CSV contiene las mismas estadísticas que el balance visible');
       assert.equal(csvRows.length, 3, 'el archivo incluye cabecera y los dos equipos');
+      if (mode === 'mobile') {
+        const informeMovil = await page.evaluate(() => {
+          const tabla = document.getElementById('match-breakdown');
+          const campos = [...tabla.tBodies[0].rows].flatMap(fila => [...fila.cells])
+            .filter(celda => celda.dataset.label)
+            .map(celda => ({ etiqueta: celda.dataset.label, visible: getComputedStyle(celda).display !== 'none',
+              ancho: celda.getBoundingClientRect().width }));
+          return { sinDesbordamiento: tabla.scrollWidth <= tabla.clientWidth + 1,
+            filasComoFicha: getComputedStyle(tabla.tBodies[0].rows[0]).display === 'grid', campos };
+        });
+        assert.equal(informeMovil.sinDesbordamiento, true,
+          'el balance usa el ancho de móvil sin exigir desplazamiento lateral');
+        assert.equal(informeMovil.filasComoFicha, true, 'cada equipo del balance se presenta como ficha móvil');
+        assert.ok(informeMovil.campos.every(campo => campo.visible && campo.ancho > 0),
+          'todos los datos del informe siguen visibles en móvil');
+      }
       await page.screenshot({ path: require('node:path').join(artifactDir, `partido-${mode}.png`), fullPage: true });
       assert.ok(replayCheck.finalSummary.includes(`Remates: ${replayCheck.shots[0]} vs ${replayCheck.shots[1]}`) &&
         replayCheck.finalSummary.includes('xG:') &&

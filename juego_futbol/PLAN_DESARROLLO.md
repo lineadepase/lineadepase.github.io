@@ -20,7 +20,7 @@
 - Crónica y resumen accesibles que distinguen gol/remate sin gol, ocasiones claras según el motor, remates totales y xG por equipo; cada repetición muestra también la categoría interna de la ocasión.
 - Tabla de balance posterior al partido con una fila por equipo para goles, remates, xG, diferencia goles−xG y ocasiones claras, utilizable sin depender del mapa de tiros.
 - Descarga CSV del balance final, con cabeceras en castellano, separador de hoja de cálculo y codificación compatible con tildes; se habilita cuando termina el partido.
-- En móvil, la plantilla se presenta en fichas compactas para consultar posición, rendimiento, fatiga, goles, xG y estado sin desplazamiento horizontal.
+- En móvil, la plantilla y el balance del partido se presentan en fichas compactas para consultar todos sus datos sin desplazamiento horizontal.
 - Avatares vectoriales originales, estables para cada nombre ficticio, en las tablas de plantilla, goleadores y mercado.
 - Mercado, venta de jugadores, preparación, premios y continuidad de temporada.
 - Guía rápida desplegable para el primer uso, previa comparativa con fuerzas propias y del rival, cruces ataque-defensa, localía y estado físico de la plantilla para orientar rotaciones (sin presentar los valores como pronóstico), y botón de jornada que distingue entre jugar una fecha y pasar a la temporada siguiente.
@@ -58,11 +58,11 @@ La primera versión es un juego web local de gestión para una liga inventada de
 
 - **Implementado:** el alcance anterior, con interfaz adaptable, controles de teclado, guardados validados y pruebas de motor y navegador.
 - **Verificación automatizada:** CI #191, commit `00ddb94254baafe277d77504827900739b1706b5`: pruebas de Python y recorridos Playwright en Chromium de escritorio y móvil correctos; artefacto de capturas generado.
-- **Mejora en curso:** el control visual de la plantilla en móvil y nuevas capturas del informe de partido se incorporarán en el siguiente CI.
+- **Cambios de esta revisión:** fichas móviles para la plantilla y el balance, además de capturas de la pizarra inicial y el informe posterior al partido. El nuevo CI debe confirmarlos.
 
 ### Lo que falta para cerrar la primera versión
 
-1. Pasar el nuevo CI tras el ajuste móvil de plantilla y revisar las cuatro capturas (pizarra e informe, escritorio y móvil).
+1. Pasar el nuevo CI tras el ajuste de las fichas móviles y revisar las cuatro capturas (pizarra e informe, escritorio y móvil).
 2. Hacer una aceptación manual de una temporada completa en un ordenador y en un móvil real; el CI usa Chromium móvil emulado y no sustituye la comprobación en Safari de iPhone.
 3. Confirmar que el ritmo, los textos y el equilibrio de dificultad resultan claros y entretenidos en una partida real; solo entonces ajustar parámetros si hace falta.
 4. Mantener el PR como borrador hasta que Ángel dé por buena esa revisión. La integración con la web pública o la publicación requieren una decisión posterior y no forman parte del trabajo de este PR.

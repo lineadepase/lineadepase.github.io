@@ -415,7 +415,7 @@
             .replay-layout { grid-template-columns: minmax(0, 1fr); }
         }
         @media (max-width: 600px) {
-            .squad-table thead {
+            .squad-table thead, #match-breakdown thead {
                 position: absolute;
                 width: 1px;
                 height: 1px;
@@ -428,11 +428,12 @@
             }
             .squad-table tbody tr {
                 display: grid;
-                grid-template-columns: repeat(3, minmax(0, 1fr));
+                grid-template-columns: minmax(72px, .75fr) minmax(0, 1.25fr);
                 grid-template-areas:
-                    "pos jugador jugador"
-                    "media rendimiento cansancio"
-                    "goles xg estado";
+                    "pos jugador"
+                    "media rendimiento"
+                    "cansancio goles"
+                    "xg estado";
                 gap: 2px;
                 padding: 7px 3px;
                 border-bottom: 1px solid #475569;
@@ -451,7 +452,7 @@
                 display: block;
                 margin-bottom: 3px;
                 color: var(--text-muted);
-                font-size: .65rem;
+                font-size: .72rem;
                 font-weight: 700;
                 line-height: 1.2;
                 text-transform: uppercase;
@@ -467,6 +468,45 @@
             .squad-table .player-name-cell { min-width: 0; }
             .squad-table .player-select-btn { min-width: 0; white-space: normal; }
             .squad-table .player-select-btn strong { overflow-wrap: anywhere; }
+            #match-breakdown tbody tr {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                grid-template-areas:
+                    "equipo equipo"
+                    "goles remates"
+                    "xg diferencia"
+                    "claras claras";
+                gap: 2px;
+                padding: 7px 3px;
+                border-bottom: 1px solid #475569;
+            }
+            #match-breakdown tbody td, #match-breakdown tbody th[scope="row"] {
+                display: flex;
+                min-width: 0;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 6px 4px;
+                border: 0;
+                overflow-wrap: anywhere;
+            }
+            #match-breakdown tbody th[scope="row"] { align-items: flex-start; }
+            #match-breakdown tbody [data-label]::before {
+                display: block;
+                margin-bottom: 3px;
+                color: var(--text-muted);
+                font-size: .72rem;
+                font-weight: 700;
+                line-height: 1.2;
+                text-transform: uppercase;
+            }
+            #match-breakdown td[colspan="6"] { grid-column: 1 / -1; }
+            #match-breakdown [data-label="Equipo"] { grid-area: equipo; }
+            #match-breakdown [data-label="Goles"] { grid-area: goles; }
+            #match-breakdown [data-label="Remates"] { grid-area: remates; }
+            #match-breakdown [data-label="xG"] { grid-area: xg; }
+            #match-breakdown [data-label="Goles − xG"] { grid-area: diferencia; }
+            #match-breakdown [data-label="Ocasiones claras"] { grid-area: claras; }
         }
     </style>
 </head>
@@ -2274,6 +2314,7 @@ function mostrarRepeticion(indice) {
  */
 function actualizarDesglosePartido(equipos = []) {
     const cuerpo = document.getElementById('tbody-match-breakdown');
+    const etiquetas = ['Equipo', 'Goles', 'Remates', 'xG', 'Goles − xG', 'Ocasiones claras'];
     if (!cuerpo) return;
     cuerpo.replaceChildren();
     if (equipos.length === 0) {
@@ -2291,7 +2332,9 @@ function actualizarDesglosePartido(equipos = []) {
         const diferencia = goles - xg;
         const valores = [nombre, goles, remates, xg.toFixed(2), `${diferencia > 0 ? '+' : ''}${diferencia.toFixed(2)}`, ocasionesClaras];
         valores.forEach((valor, indice) => {
-            const celda = document.createElement('td');
+            const celda = document.createElement(indice === 0 ? 'th' : 'td');
+            celda.dataset.label = etiquetas[indice];
+            if (indice === 0) celda.scope = 'row';
             if (indice === 0) celda.classList.add('left');
             celda.textContent = String(valor);
             fila.appendChild(celda);
