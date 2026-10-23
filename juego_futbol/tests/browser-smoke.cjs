@@ -98,13 +98,13 @@ async function recargarPartida(page) {
       assert.ok(integridadPlantillas.tamaños.every(n => n >= 14), 'cada club tiene fondo de plantilla para rotar');
       assert.equal(integridadPlantillas.consistencia, true, 'cada jugador declara caricatura IA y cinco atributos paródicos');
       const progresionCumple = await page.evaluate(() => {
-        const jugador = { edad: 26, cumpleanos: '08-02' };
+        const jugador = { edad: 45, cumpleanos: '08-02' };
         const procesados = window.ldpProcesarCumpleanos(
           { year: 2026, month: 8, day: 1 }, { year: 2027, month: 8, day: 1 },
           [{ plantilla: [jugador] }], []);
         return { edad: jugador.edad, procesados };
       });
-      assert.deepEqual(progresionCumple, { edad: 27, procesados: 1 },
+      assert.deepEqual(progresionCumple, { edad: 46, procesados: 1 },
         'la edad de carrera sube una vez al cruzar el cumpleaños aunque el calendario abarque varias temporadas');
       const nombresImprescindibles = [
         'Kylian Embozado', 'Vini de la Cadiera', 'Jude el Campanero', 'Fede Chispazo', 'Thibaut el Muro',
