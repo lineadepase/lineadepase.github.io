@@ -80,6 +80,7 @@ const fs = require('node:fs/promises');
         'la base incluye las parodias solicitadas de los cuatro equipos');
       assert.equal(integridadPlantillas.control, 'Real Magras de Madrid');
       assert.equal(integridadPlantillas.panelActivo, 'tab-clasificacion', 'la vista inicial coincide con Despacho Míster');
+      await page.locator('#pestana-tactica').click();
       const anclajesMenu = await page.evaluate(() => {
         const nav = document.querySelector('nav[role="tablist"]');
         const cta = document.getElementById('floating-cta');
