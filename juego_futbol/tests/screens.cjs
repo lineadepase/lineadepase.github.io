@@ -13,16 +13,16 @@ const base=process.env.GAME_URL||'http://127.0.0.1:8765/juego_futbol/';
   page.on('pageerror',e=>errors.push(e.message));await page.goto(base);
   await page.waitForSelector('.screen-mode');await page.waitForTimeout(150);
   let count=0;
-  for(const section of ['clasificacion','tactica','mercado','partido','entrenamiento','ajustes']){
+  for(const section of ['clasificacion','tactica','mercado','partido','entrenamiento','finanzas','estadio','ajustes']){
    await page.locator('#pestana-'+section).click();
    const options=await page.locator('#screen-view option').count();
    for(let i=0;i<options;i++){
     await page.locator('#screen-view').selectOption(String(i));await page.waitForTimeout(30);
     const expected=await page.evaluate(()=>[...document.querySelector('.screen-view:not([hidden])').querySelectorAll('*')]
-      .filter(n=>!n.children.length&&!n.closest('thead,svg,select,[hidden],.pass-pitch:not(.active)')&&n.textContent.trim())
+      .filter(n=>!n.children.length&&!n.closest('thead,svg,select,[hidden],[data-player-detail],.pass-pitch:not(.active)')&&n.textContent.trim())
       .map(n=>n.textContent.replace(/\s+/g,' ').trim()));
     const seen=new Set();
-    for(let n=0;n<100;n++){
+    for(let n=0;n<200;n++){
      const result=await page.evaluate(()=>{
       const root=document.querySelector('.screen-view:not([hidden])');
       return {title:root.dataset.title,page:document.getElementById('screen-page').textContent,
@@ -40,7 +40,7 @@ const base=process.env.GAME_URL||'http://127.0.0.1:8765/juego_futbol/';
      count++;
      if(await page.locator('#screen-next').isDisabled())break;
      await page.locator('#screen-next').click();
-     assert.ok(n<99,'paginación infinita');
+     assert.ok(n<199,'paginación infinita');
     }
     expected.forEach(text=>assert.ok(seen.has(text),`${name}/${section}/${i}: texto inaccesible: ${text}`));
    }

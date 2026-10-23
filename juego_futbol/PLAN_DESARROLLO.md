@@ -1,5 +1,41 @@
 # Auditoría y estado — Juego de fútbol · Línea de Pase
 
+## Ampliación de carrera y gestión clásica · 23 octubre 2026
+
+Esta revisión amplía la anterior navegación sin scroll a **ocho departamentos**: Despacho, Plantilla/Táctica, Secretaría/Fichajes, Entrenador, Partido, Finanzas, Estadio y Ajustes. Las capturas aportadas por el usuario inspiran las fichas claras, las cabeceras azules y la media 1–100, con gráficos originales propios. La vista de plantilla prioriza la media y permite abrir sus atributos mediante un botón. No se reutilizan escudos, retratos ni interfaces gráficas de PC Fútbol.
+
+### Carrera y continuidad
+
+- Se conservan los cumpleaños por calendario y ahora también envejece la cantera.
+- Los menores de 25 años que juegan al menos el 55 % de los partidos oficiales pueden mejorar hasta tres puntos, limitados por su potencial. En nuestra liga corta son cuatro de seis partidos; en una de 38 serían 21. No se presenta este balance como una reproducción exacta del juego histórico.
+- Desde los 31 años desciende la habilidad; en porteros comienza a los 34. La edad de retirada individual se fija entre 35 y 38, o 37 y 40 para porteros.
+- El relevo generacional tiene nombre e identidad nuevos, entre 18 y 24 años, y conserva el perfil base y el potencial. Su habilidad actual, contrato y sueldo se ajustan a una promesa; no hereda el salario de la estrella. Puede pasar a cantera, primer equipo o mercado según su edad y las plazas disponibles.
+- La CPU repone puestos prioritarios y mantiene dos porteros y al menos catorce jugadores. Los identificadores de los jugadores base retirados quedan registrados para que el mercado estacional no los resucite desde el JSON. La cantera tiene doce plazas; el primer equipo, veinticinco. El mercado y los archivos tienen límites de tamaño.
+- Contratos de 1–5 temporadas, salario por jornada, primas por gol y cláusula económica. Oferta, contraoferta o rechazo inmediatos, con firma separada que aplica el gasto. La renovación exige más sueldo si la cláusula supera tres veces el valor. Los rivales pueden pagar cláusulas inferiores al 65 % del valor durante el mercado; el dinero llega al vendedor y se cubre el puesto.
+
+### Gestión del club
+
+- Entradas y abonos: demanda sensible al precio y al rival, previsión antes de guardar y campaña de abonos una vez antes del estreno. No se vuelve a cobrar entrada a un abonado.
+- Gradas independientes: +1.000 localidades por obra; coste 250.000 €, dos jornadas de ejecución. Parking, comida, tienda y transporte tienen tres niveles y dos jornadas de obra. El aumento de capacidad o servicio se aplica al terminar, no al pagarlo.
+- Acuerdos de camiseta y vallas con fijo, victoria o goles; son contratos de temporada. Los patrocinios puntuales anteriores siguen siendo acuerdos de una jornada.
+- Médico, psicólogo, entrenador de cantera y comercial de nivel 0–3. Altas y nóminas explícitas; sus efectos modifican recuperación, moral, desarrollo e ingresos. El balance de cada encuentro separa entradas, servicios, publicidad, sueldos, empleados, primas y neto. Una liquidación no se puede cobrar dos veces.
+
+### Partido
+
+- Se mantiene el visionado 2D, con líneas que responden a la mentalidad, energía visible, nombres asociados a las acciones de la crónica y trayectorias de recreación.
+- La mentalidad cambia ataque y defensa durante el partido; «Pedir gol» da +10 ataque y −5 defensa una vez. No garantiza marcar. Los poderes también se incorporan al cálculo de fuerzas.
+- **Modo jugable de ocasiones 2D**, no un partido completo de control de once futbolistas: en dos ataques oficiales se controla al jugador con flechas/WASD o cruceta táctil, Espacio para disparar y X para pasar. Hay balón independiente, rebotes, defensores, portero y límite de 18 segundos. Los goles de estas ocasiones se añaden al marcador real de la simulación. La práctica es independiente y no modifica la liga.
+
+### Implementación y comprobación
+
+`club-motor.js` contiene reglas sin DOM; `club-manager.js` las conecta con las pantallas y migra guardados anteriores; `partido-2d.js` separa física y controles; `club-manager.css` aporta el estilo de fichas y departamentos. Se conserva el motor Python como cliente independiente.
+
+Las pruebas de Node incluyen cien temporadas, crecimiento, jubilación, relevos, límites e identidad de jugadores, contratos y pagos atómicos, cláusulas, previsiones de taquilla, abonos, obras, personal y física 2D. El navegador recorre las nuevas operaciones, guardado antiguo, una temporada completa y una ocasión jugable conectada al marcador en escritorio y móvil. Se mantiene la batería anterior y la inspección de todas las páginas en cuatro tamaños.
+
+Referencia de diseño aportada por el usuario: [experiencia de cien temporadas de PC Fútbol 6.0](https://www.elgeneralfailure.com/2024/06/he-llegado-la-temporada-20962097-100.html). Se usan sus observaciones de continuidad como casos que prevenir, sin reproducir sus fallos como reglas.
+
+Pendiente: afinar economía y dificultad con juego humano, probar dispositivos físicos/Safari y mando, ampliar la competición y terminar recursos visuales. El modo de once contra once con control continuo, las jugadas a balón parado dibujables y el clima con física propia quedan para una ampliación posterior. El PR sigue en borrador y no se publica.
+
 ## Recuperación y navegación sin desplazamiento · 23 octubre 2026
 
 Se recuperó la rama a partir de `da0ae47`, incluyendo edades, cumpleaños y compatibilidad de guardados. La interfaz dispone de seis secciones: Despacho, Fichajes, Táctica, Partido, Entrenar y club, y Ajustes y ayuda. Cada sección ofrece un selector de pantallas concretas. Calendario, decisiones, poderes, plan de partido, patrocinadores, finanzas, tablas, crónica y repeticiones tienen destinos propios.

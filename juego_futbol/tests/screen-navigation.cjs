@@ -6,7 +6,10 @@ exports.installScreenNavigation=page=>{
  const prototype=Object.getPrototypeOf(page.locator('body'));
  async function reveal(locator){
   const page=locator.page();
-  if(!await page.locator('.screen-mode').count()||!await locator.count())return;
+  if(!await page.locator('.screen-mode').count()){
+   if(page.url().includes('/juego_futbol/'))await page.waitForSelector('.screen-mode');else return;
+  }
+  if(!await locator.count())return;
   const destination=await locator.first().evaluate(el=>{
    const view=el.closest('.screen-view');if(!view)return null;
    return {section:view.closest('.tab-content').id.replace('tab-',''),index:[...view.parentNode.children].indexOf(view)};

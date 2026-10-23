@@ -297,8 +297,8 @@ async function recargarPartida(page) {
       await page.locator('#microclip-close').click();
       // Navegación rediseñada, módulo Tinder, CTAs y finanzas.
       assert.deepEqual(await page.locator('button.tab-btn').allInnerTexts().then(xs=>xs.map(x=>x.trim())), [
-        '🏠 Despacho Míster', '🔥 Tinder Fichajes', '📋 Táctica', '⚽ Partido', '🏋️ Entrenar y club', '⚙️ Ajustes y ayuda'
-      ], 'las seis secciones usan nombres y orden claros');
+        '🏠 Despacho Míster', '📋 Plantilla · Táctica', '🔎 Secretaría · Fichajes', '🏋️ Entrenador', '⚽ Partido', '💶 Finanzas', '🏟️ Estadio', '⚙️ Ajustes y ayuda'
+      ], 'los ocho departamentos usan nombres y orden claros');
       await page.locator('#pestana-mercado').click();
       assert.ok(await page.locator('#swipe-card').isVisible(), 'se presenta la tarjeta de ojeo');
       assert.deepEqual(await page.locator('#tbody-mercado').locator('xpath=ancestor::table').locator('thead th').allInnerTexts(),
@@ -502,14 +502,14 @@ async function recargarPartida(page) {
         paneles: [...document.querySelectorAll('[role="tabpanel"]')].every(panel =>
           panel.getAttribute('aria-labelledby') && panel.hasAttribute('aria-hidden'))
       }));
-      assert.equal(accesibilidadTabs.total, 6, 'la navegación expone seis pestañas accesibles');
+      assert.equal(accesibilidadTabs.total, 8, 'la navegación expone ocho pestañas accesibles');
       assert.deepEqual(accesibilidadTabs.seleccionadas, ['pestana-clasificacion']);
       assert.equal(accesibilidadTabs.paneles, true, 'cada pestaña identifica su panel');
       await page.locator('#pestana-clasificacion').focus();
       await page.keyboard.press('ArrowRight');
-      assert.equal(await page.locator('#pestana-mercado').getAttribute('aria-selected'), 'true',
-        'la flecha derecha avanza a Tinder Fichajes');
-      assert.equal(await page.evaluate(() => document.activeElement.id), 'pestana-mercado');
+      assert.equal(await page.locator('#pestana-tactica').getAttribute('aria-selected'), 'true',
+        'la flecha derecha avanza a Plantilla');
+      assert.equal(await page.evaluate(() => document.activeElement.id), 'pestana-tactica');
       await page.keyboard.press('End');
       assert.equal(await page.locator('#pestana-ajustes').getAttribute('aria-selected'), 'true',
         'Fin selecciona la última pestaña');

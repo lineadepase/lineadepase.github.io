@@ -134,7 +134,11 @@
     // onload carga las plantillas de forma asíncrona; no sustituimos su arranque.
     if (!estadoJuego) { setTimeout(initialize,50); return; }
     document.body.classList.add('screen-mode');
-    addTab('entrenamiento','🏋️ Entrenar y club'); addTab('ajustes','⚙️ Ajustes y ayuda');
+    addTab('entrenamiento','🏋️ Entrenador'); addTab('ajustes','⚙️ Ajustes y ayuda');
+    $('pestana-tactica').textContent='📋 Plantilla · Táctica';
+    $('pestana-mercado').textContent='🔎 Secretaría · Fichajes';
+    const nav=document.querySelector('nav');
+    ['clasificacion','tactica','mercado','entrenamiento','partido','finanzas','estadio','ajustes'].forEach(id=>{const b=$('pestana-'+id);if(b)nav.append(b);});
     const settings = document.createElement('section'); settings.id='tab-ajustes'; settings.className='tab-content';
     settings.setAttribute('role','tabpanel'); settings.setAttribute('aria-labelledby','pestana-ajustes'); settings.setAttribute('aria-hidden','true');
     const settingsPanel=document.createElement('div'); settingsPanel.className='panel';
@@ -167,6 +171,7 @@
     const sponsors=document.createElement('div');sponsors.className='panel';
     const sponsorOptions=$('sponsor-options'),finance=sponsorOptions.closest('.panel');
     sponsors.append(sponsorOptions.previousElementSibling,sponsorOptions,$('sponsor-status'));finance.after(sponsors);
+    if($('tab-finanzas'))$('tab-finanzas').append(finance,sponsors);
     // Cada panel importante obtiene un destino explícito; se mantienen sus nodos.
     document.querySelectorAll('main > .tab-content').forEach(section => {
       const id=section.id.replace('tab-',''); sections.set(id,{views:[],index:0});
