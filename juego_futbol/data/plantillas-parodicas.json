@@ -1,0 +1,1293 @@
+{
+  "schema_version": 1,
+  "temporada": "2026/27",
+  "notas": "Atributos y valoraciones son valores ficticios de balance del juego; nombres reales solo identifican al futbolista vigente representado.",
+  "atributos": {
+    "RAS": "Rasmia y empuje",
+    "TOZ": "Tozudez y duelo físico",
+    "CHI": "Chispa y desborde",
+    "RET": "Retranca arbitral y pillería",
+    "ALM": "Aguante físico y fondo de almuerzo"
+  },
+  "equipos": [
+    {
+      "id": "real-magras",
+      "nombre_parodico": "Real Magras de Madrid",
+      "club_real": "Real Madrid CF",
+      "fuente_oficial": "https://www.realmadrid.com/es-ES/futbol/primer-equipo/plantilla",
+      "temporada": "2026/27",
+      "formacion": "4-3-3",
+      "jugadores": [
+        {
+          "id": "kylian-embozado",
+          "nombre": "Kylian Embozado",
+          "jugador_real": "Kylian Mbappé",
+          "posicion": "DEL",
+          "valoracion_juego": 90,
+          "atributos": {
+            "RAS": 99,
+            "TOZ": 83,
+            "CHI": 99,
+            "RET": 78,
+            "ALM": 92
+          },
+          "rasgo": "Rápido como una centella tapado del cierzo.",
+          "clausula": "Pide una bufanda de repuesto para cada sprint.",
+          "salario": 14400,
+          "valor": 3150000,
+          "avatar_ia": "assets/ia/avatares/kylian-embozado.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/kylian-embozado-match.mp4",
+            "rechazo": "assets/ia/reacciones/kylian-embozado-rechazo.mp4"
+          },
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ]
+        },
+        {
+          "id": "vini-cadiera",
+          "nombre": "Vini de la Cadiera",
+          "jugador_real": "Vinícius Júnior",
+          "posicion": "DEL",
+          "valoracion_juego": 86,
+          "atributos": {
+            "RAS": 92,
+            "TOZ": 77,
+            "CHI": 98,
+            "RET": 75,
+            "ALM": 89
+          },
+          "rasgo": "Pura chispa y quejas en la lumbre.",
+          "clausula": "Quiere que el extremo izquierdo tenga orientación sur.",
+          "salario": 13760,
+          "valor": 3010000,
+          "avatar_ia": "assets/ia/avatares/vini-cadiera.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/vini-cadiera-match.mp4",
+            "rechazo": "assets/ia/reacciones/vini-cadiera-rechazo.mp4"
+          },
+          "tags": [
+            "chispa",
+            "lumbre",
+            "regate"
+          ]
+        },
+        {
+          "id": "jude-campanero",
+          "nombre": "Jude el Campanero",
+          "jugador_real": "Jude Bellingham",
+          "posicion": "CEN",
+          "valoracion_juego": 90,
+          "atributos": {
+            "RAS": 94,
+            "TOZ": 88,
+            "CHI": 90,
+            "RET": 84,
+            "ALM": 93
+          },
+          "rasgo": "Despliegue y celebración señorial.",
+          "clausula": "Solicita permiso para repicar tras cada gol.",
+          "salario": 14400,
+          "valor": 3150000,
+          "avatar_ia": "assets/ia/avatares/jude-campanero.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/jude-campanero-match.mp4",
+            "rechazo": "assets/ia/reacciones/jude-campanero-rechazo.mp4"
+          },
+          "tags": [
+            "despliegue",
+            "campanas",
+            "llegada"
+          ]
+        },
+        {
+          "id": "fede-chispazo",
+          "nombre": "Fede Chispazo",
+          "jugador_real": "Federico Valverde",
+          "posicion": "CEN",
+          "valoracion_juego": 94,
+          "atributos": {
+            "RAS": 98,
+            "TOZ": 96,
+            "CHI": 97,
+            "RET": 83,
+            "ALM": 98
+          },
+          "rasgo": "Trallazos como pedregada y pura rasmia.",
+          "clausula": "El banquillo debe tener agua y una toma para el cargador.",
+          "salario": 15040,
+          "valor": 3290000,
+          "avatar_ia": "assets/ia/avatares/fede-chispazo.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/fede-chispazo-match.mp4",
+            "rechazo": "assets/ia/reacciones/fede-chispazo-rechazo.mp4"
+          },
+          "tags": [
+            "trallazo",
+            "rasmia",
+            "motor"
+          ]
+        },
+        {
+          "id": "thibaut-muro",
+          "nombre": "Thibaut el Muro",
+          "jugador_real": "Thibaut Courtois",
+          "posicion": "POR",
+          "valoracion_juego": 90,
+          "atributos": {
+            "RAS": 96,
+            "TOZ": 92,
+            "CHI": 91,
+            "RET": 80,
+            "ALM": 91
+          },
+          "rasgo": "Alto y seguro como un chopo ribereño.",
+          "clausula": "En los córneres pide que le avisen si hay cierzo.",
+          "salario": 14400,
+          "valor": 3150000,
+          "avatar_ia": "assets/ia/avatares/thibaut-muro.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/thibaut-muro-match.mp4",
+            "rechazo": "assets/ia/reacciones/thibaut-muro-rechazo.mp4"
+          },
+          "tags": [
+            "reflejos",
+            "altura",
+            "seguridad"
+          ]
+        },
+        {
+          "id": "eduardo-cierzo",
+          "nombre": "Eduardo Cierzo",
+          "jugador_real": "Eduardo Camavinga",
+          "posicion": "CEN",
+          "valoracion_juego": 86,
+          "atributos": {
+            "RAS": 89,
+            "TOZ": 82,
+            "CHI": 94,
+            "RET": 75,
+            "ALM": 91
+          },
+          "rasgo": "Cambio de ritmo y piernas para cubrir media provincia.",
+          "clausula": "Le basta una banda ancha y un camino despejado.",
+          "salario": 13760,
+          "valor": 3010000,
+          "avatar_ia": "assets/ia/avatares/eduardo-cierzo.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/eduardo-cierzo-match.mp4",
+            "rechazo": "assets/ia/reacciones/eduardo-cierzo-rechazo.mp4"
+          },
+          "tags": [
+            "polivalencia",
+            "cambio ritmo",
+            "fondo"
+          ]
+        },
+        {
+          "id": "aurélien-tozal",
+          "nombre": "Aurélien Tozal",
+          "jugador_real": "Aurélien Tchouaméni",
+          "posicion": "CEN",
+          "valoracion_juego": 88,
+          "atributos": {
+            "RAS": 86,
+            "TOZ": 91,
+            "CHI": 89,
+            "RET": 82,
+            "ALM": 90
+          },
+          "rasgo": "Orden en la medular y duelo sin aspavientos.",
+          "clausula": "No quiere que el parte del partido se escriba con prisas.",
+          "salario": 14080,
+          "valor": 3080000,
+          "avatar_ia": "assets/ia/avatares/aurélien-tozal.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/aurélien-tozal-match.mp4",
+            "rechazo": "assets/ia/reacciones/aurélien-tozal-rechazo.mp4"
+          },
+          "tags": [
+            "orden",
+            "duelo",
+            "pausa"
+          ]
+        },
+        {
+          "id": "arda-rastrojo",
+          "nombre": "Arda del Rastrojo",
+          "jugador_real": "Arda Güler",
+          "posicion": "CEN",
+          "valoracion_juego": 84,
+          "atributos": {
+            "RAS": 84,
+            "TOZ": 81,
+            "CHI": 86,
+            "RET": 87,
+            "ALM": 82
+          },
+          "rasgo": "Pase filtrado con vista de milano.",
+          "clausula": "Pide un balón limpio y una ventana para mirar al campo.",
+          "salario": 13440,
+          "valor": 2940000,
+          "avatar_ia": "assets/ia/avatares/arda-rastrojo.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/arda-rastrojo-match.mp4",
+            "rechazo": "assets/ia/reacciones/arda-rastrojo-rechazo.mp4"
+          },
+          "tags": [
+            "visión",
+            "pase",
+            "pillería"
+          ]
+        },
+        {
+          "id": "antonio-cierzo",
+          "nombre": "Antonio Cierzo",
+          "jugador_real": "Antonio Rüdiger",
+          "posicion": "DEF",
+          "valoracion_juego": 92,
+          "atributos": {
+            "RAS": 95,
+            "TOZ": 88,
+            "CHI": 93,
+            "RET": 90,
+            "ALM": 93
+          },
+          "rasgo": "Duelo firme y presencia que ordena el área.",
+          "clausula": "Antes del partido pregunta si el cierzo viene de cara.",
+          "salario": 14720,
+          "valor": 3220000,
+          "avatar_ia": "assets/ia/avatares/antonio-cierzo.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/antonio-cierzo-match.mp4",
+            "rechazo": "assets/ia/reacciones/antonio-cierzo-rechazo.mp4"
+          },
+          "tags": [
+            "duelo",
+            "mando",
+            "presencia"
+          ]
+        },
+        {
+          "id": "trent-brujula",
+          "nombre": "Trent la Brújula",
+          "jugador_real": "Trent Alexander-Arnold",
+          "posicion": "DEF",
+          "valoracion_juego": 87,
+          "atributos": {
+            "RAS": 86,
+            "TOZ": 88,
+            "CHI": 87,
+            "RET": 91,
+            "ALM": 85
+          },
+          "rasgo": "Centros con mapa y cambio de orientación.",
+          "clausula": "Solicita que el córner tenga buena cobertura de datos.",
+          "salario": 13920,
+          "valor": 3045000,
+          "avatar_ia": "assets/ia/avatares/trent-brujula.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/trent-brujula-match.mp4",
+            "rechazo": "assets/ia/reacciones/trent-brujula-rechazo.mp4"
+          },
+          "tags": [
+            "centro",
+            "visión",
+            "precisión"
+          ]
+        },
+        {
+          "id": "dean-pedregal",
+          "nombre": "Dean del Pedregal",
+          "jugador_real": "Dean Huijsen",
+          "posicion": "DEF",
+          "valoracion_juego": 83,
+          "atributos": {
+            "RAS": 84,
+            "TOZ": 78,
+            "CHI": 88,
+            "RET": 80,
+            "ALM": 87
+          },
+          "rasgo": "Salida limpia y calma de piedra bien asentada.",
+          "clausula": "Le gusta recibir de cara y que nadie le meta prisa.",
+          "salario": 13280,
+          "valor": 2905000,
+          "avatar_ia": "assets/ia/avatares/dean-pedregal.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/dean-pedregal-match.mp4",
+            "rechazo": "assets/ia/reacciones/dean-pedregal-rechazo.mp4"
+          },
+          "tags": [
+            "salida",
+            "calma",
+            "colocación"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "somontano",
+      "nombre_parodico": "Balompié del Somontano",
+      "club_real": "FC Barcelona",
+      "fuente_oficial": "https://www.fcbarcelona.com/en/football/first-team/players",
+      "temporada": "2026/27",
+      "formacion": "4-3-3",
+      "jugadores": [
+        {
+          "id": "lamine-almendron",
+          "nombre": "Lamine el Almendrón",
+          "jugador_real": "Lamine Yamal",
+          "posicion": "DEL",
+          "valoracion_juego": 90,
+          "atributos": {
+            "RAS": 94,
+            "TOZ": 85,
+            "CHI": 97,
+            "RET": 85,
+            "ALM": 88
+          },
+          "rasgo": "Descaro y regate fino en una baldosa.",
+          "clausula": "Pide una baldosa libre para ensayar el recorte.",
+          "salario": 14400,
+          "valor": 3150000,
+          "avatar_ia": "assets/ia/avatares/lamine-almendron.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/lamine-almendron-match.mp4",
+            "rechazo": "assets/ia/reacciones/lamine-almendron-rechazo.mp4"
+          },
+          "tags": [
+            "regate",
+            "descaro",
+            "creatividad"
+          ]
+        },
+        {
+          "id": "dani-pasapues",
+          "nombre": "Dani Pasapúes",
+          "jugador_real": "Dani Olmo",
+          "posicion": "CEN",
+          "valoracion_juego": 88,
+          "atributos": {
+            "RAS": 88,
+            "TOZ": 84,
+            "CHI": 89,
+            "RET": 91,
+            "ALM": 86
+          },
+          "rasgo": "Pillería entre líneas como liebre en rastrojo.",
+          "clausula": "Quiere que la pizarra marque los pasillos interiores.",
+          "salario": 14080,
+          "valor": 3080000,
+          "avatar_ia": "assets/ia/avatares/dani-pasapues.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/dani-pasapues-match.mp4",
+            "rechazo": "assets/ia/reacciones/dani-pasapues-rechazo.mp4"
+          },
+          "tags": [
+            "pillería",
+            "llegada",
+            "visión"
+          ]
+        },
+        {
+          "id": "raphinha-abentau",
+          "nombre": "Raphinha el Abentau",
+          "jugador_real": "Raphinha",
+          "posicion": "DEL",
+          "valoracion_juego": 92,
+          "atributos": {
+            "RAS": 95,
+            "TOZ": 92,
+            "CHI": 94,
+            "RET": 84,
+            "ALM": 96
+          },
+          "rasgo": "Presión desbocada por la banda sin freno.",
+          "clausula": "En el contrato pide una banda con arcén.",
+          "salario": 14720,
+          "valor": 3220000,
+          "avatar_ia": "assets/ia/avatares/raphinha-abentau.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/raphinha-abentau-match.mp4",
+            "rechazo": "assets/ia/reacciones/raphinha-abentau-rechazo.mp4"
+          },
+          "tags": [
+            "presión",
+            "velocidad",
+            "centro"
+          ]
+        },
+        {
+          "id": "gavi-rompetrastes",
+          "nombre": "Gavi Rompetrastes",
+          "jugador_real": "Gavi",
+          "posicion": "CEN",
+          "valoracion_juego": 93,
+          "atributos": {
+            "RAS": 97,
+            "TOZ": 86,
+            "CHI": 92,
+            "RET": 94,
+            "ALM": 95
+          },
+          "rasgo": "Choque continuo y valentía sin medida.",
+          "clausula": "No negocia el último balón dividido.",
+          "salario": 14880,
+          "valor": 3255000,
+          "avatar_ia": "assets/ia/avatares/gavi-rompetrastes.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/gavi-rompetrastes-match.mp4",
+            "rechazo": "assets/ia/reacciones/gavi-rompetrastes-rechazo.mp4"
+          },
+          "tags": [
+            "duelo",
+            "presión",
+            "rasmia"
+          ]
+        },
+        {
+          "id": "pedri-acequia",
+          "nombre": "Pedri de la Acequia",
+          "jugador_real": "Pedri",
+          "posicion": "CEN",
+          "valoracion_juego": 89,
+          "atributos": {
+            "RAS": 90,
+            "TOZ": 83,
+            "CHI": 91,
+            "RET": 91,
+            "ALM": 90
+          },
+          "rasgo": "Visión y pausa de agua mansa.",
+          "clausula": "Necesita un segundo para ordenar el tráfico del pase.",
+          "salario": 14240,
+          "valor": 3115000,
+          "avatar_ia": "assets/ia/avatares/pedri-acequia.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/pedri-acequia-match.mp4",
+            "rechazo": "assets/ia/reacciones/pedri-acequia-rechazo.mp4"
+          },
+          "tags": [
+            "visión",
+            "pausa",
+            "pase"
+          ]
+        },
+        {
+          "id": "pau-tozudo",
+          "nombre": "Pau Tozudo",
+          "jugador_real": "Pau Cubarsí",
+          "posicion": "DEF",
+          "valoracion_juego": 87,
+          "atributos": {
+            "RAS": 90,
+            "TOZ": 81,
+            "CHI": 91,
+            "RET": 86,
+            "ALM": 89
+          },
+          "rasgo": "Salida de balón templada y colocación.",
+          "clausula": "Prefiere iniciar la jugada con el balón por el suelo.",
+          "salario": 13920,
+          "valor": 3045000,
+          "avatar_ia": "assets/ia/avatares/pau-tozudo.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/pau-tozudo-match.mp4",
+            "rechazo": "assets/ia/reacciones/pau-tozudo-rechazo.mp4"
+          },
+          "tags": [
+            "salida",
+            "colocación",
+            "calma"
+          ]
+        },
+        {
+          "id": "joan-cierzo",
+          "nombre": "Joan del Cierzo",
+          "jugador_real": "Joan García",
+          "posicion": "POR",
+          "valoracion_juego": 88,
+          "atributos": {
+            "RAS": 91,
+            "TOZ": 88,
+            "CHI": 91,
+            "RET": 82,
+            "ALM": 89
+          },
+          "rasgo": "Reflejos rápidos y buen primer pase.",
+          "clausula": "Pide guantes secos si sopla del Moncayo.",
+          "salario": 14080,
+          "valor": 3080000,
+          "avatar_ia": "assets/ia/avatares/joan-cierzo.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/joan-cierzo-match.mp4",
+            "rechazo": "assets/ia/reacciones/joan-cierzo-rechazo.mp4"
+          },
+          "tags": [
+            "reflejos",
+            "juego pies",
+            "anticipación"
+          ]
+        },
+        {
+          "id": "alejandro-acequia",
+          "nombre": "Alejandro de la Acequia",
+          "jugador_real": "Alejandro Balde",
+          "posicion": "DEF",
+          "valoracion_juego": 88,
+          "atributos": {
+            "RAS": 91,
+            "TOZ": 83,
+            "CHI": 95,
+            "RET": 78,
+            "ALM": 93
+          },
+          "rasgo": "Recorrido largo por fuera y vuelta a tiempo.",
+          "clausula": "Que la banda esté regada y sin baches.",
+          "salario": 14080,
+          "valor": 3080000,
+          "avatar_ia": "assets/ia/avatares/alejandro-acequia.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/alejandro-acequia-match.mp4",
+            "rechazo": "assets/ia/reacciones/alejandro-acequia-rechazo.mp4"
+          },
+          "tags": [
+            "recorrido",
+            "velocidad",
+            "cobertura"
+          ]
+        },
+        {
+          "id": "jules-linde",
+          "nombre": "Jules el Linde",
+          "jugador_real": "Jules Koundé",
+          "posicion": "DEF",
+          "valoracion_juego": 89,
+          "atributos": {
+            "RAS": 92,
+            "TOZ": 84,
+            "CHI": 91,
+            "RET": 87,
+            "ALM": 90
+          },
+          "rasgo": "Atento al cruce y rápido al espacio.",
+          "clausula": "Le vale cualquier puesto si el equipo está bien colocado.",
+          "salario": 14240,
+          "valor": 3115000,
+          "avatar_ia": "assets/ia/avatares/jules-linde.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/jules-linde-match.mp4",
+            "rechazo": "assets/ia/reacciones/jules-linde-rechazo.mp4"
+          },
+          "tags": [
+            "anticipación",
+            "velocidad",
+            "polivalencia"
+          ]
+        },
+        {
+          "id": "frenkie-ronda",
+          "nombre": "Frenkie de la Ronda",
+          "jugador_real": "Frenkie de Jong",
+          "posicion": "CEN",
+          "valoracion_juego": 89,
+          "atributos": {
+            "RAS": 90,
+            "TOZ": 82,
+            "CHI": 94,
+            "RET": 86,
+            "ALM": 93
+          },
+          "rasgo": "Conduce entre líneas como quien conoce todos los caminos.",
+          "clausula": "Pide que le dejen girar antes de cerrar el pasillo.",
+          "salario": 14240,
+          "valor": 3115000,
+          "avatar_ia": "assets/ia/avatares/frenkie-ronda.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/frenkie-ronda-match.mp4",
+            "rechazo": "assets/ia/reacciones/frenkie-ronda-rechazo.mp4"
+          },
+          "tags": [
+            "conducción",
+            "pausa",
+            "presión"
+          ]
+        },
+        {
+          "id": "gabriel-tizon",
+          "nombre": "Gabriel el Tizón",
+          "jugador_real": "Gabriel Jesus",
+          "posicion": "DEL",
+          "valoracion_juego": 89,
+          "atributos": {
+            "RAS": 89,
+            "TOZ": 87,
+            "CHI": 90,
+            "RET": 86,
+            "ALM": 91
+          },
+          "rasgo": "Presión arriba y olfato para el área.",
+          "clausula": "Quiere tener siempre una segunda jugada cerca.",
+          "salario": 14240,
+          "valor": 3115000,
+          "avatar_ia": "assets/ia/avatares/gabriel-tizon.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/gabriel-tizon-match.mp4",
+            "rechazo": "assets/ia/reacciones/gabriel-tizon-rechazo.mp4"
+          },
+          "tags": [
+            "presión",
+            "área",
+            "asociación"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "colchonico",
+      "nombre_parodico": "Atlético Colchonico de la Ribera",
+      "club_real": "Atlético de Madrid",
+      "fuente_oficial": "https://www.atleticodemadrid.com/jugadores-primer-equipo/",
+      "temporada": "2026/27",
+      "formacion": "4-3-3",
+      "jugadores": [
+        {
+          "id": "julian-arana-baturra",
+          "nombre": "Julián la Araña Baturra",
+          "jugador_real": "Julián Álvarez",
+          "posicion": "DEL",
+          "valoracion_juego": 94,
+          "atributos": {
+            "RAS": 96,
+            "TOZ": 91,
+            "CHI": 95,
+            "RET": 90,
+            "ALM": 96
+          },
+          "rasgo": "Picardía y presión en el área.",
+          "clausula": "Pide un balón cerca y permiso para apretar la salida.",
+          "salario": 15040,
+          "valor": 3290000,
+          "avatar_ia": "assets/ia/avatares/julian-arana-baturra.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/julian-arana-baturra-match.mp4",
+            "rechazo": "assets/ia/reacciones/julian-arana-baturra-rechazo.mp4"
+          },
+          "tags": [
+            "presión",
+            "pillería",
+            "remate"
+          ]
+        },
+        {
+          "id": "alexander-picador",
+          "nombre": "Alexander el Picador",
+          "jugador_real": "Alexander Sørloth",
+          "posicion": "DEL",
+          "valoracion_juego": 90,
+          "atributos": {
+            "RAS": 91,
+            "TOZ": 96,
+            "CHI": 90,
+            "RET": 82,
+            "ALM": 91
+          },
+          "rasgo": "Fuerza aérea y choque de ariete.",
+          "clausula": "Quiere centros con tiempo para cargar el remate.",
+          "salario": 14400,
+          "valor": 3150000,
+          "avatar_ia": "assets/ia/avatares/alexander-picador.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/alexander-picador-match.mp4",
+            "rechazo": "assets/ia/reacciones/alexander-picador-rechazo.mp4"
+          },
+          "tags": [
+            "juego aéreo",
+            "duelo",
+            "remate"
+          ]
+        },
+        {
+          "id": "johnny-rastrojo",
+          "nombre": "Johnny el Rastrojo",
+          "jugador_real": "Johnny Cardoso",
+          "posicion": "CEN",
+          "valoracion_juego": 89,
+          "atributos": {
+            "RAS": 88,
+            "TOZ": 84,
+            "CHI": 93,
+            "RET": 85,
+            "ALM": 93
+          },
+          "rasgo": "Recuperación y despliegue de ida y vuelta.",
+          "clausula": "Pide un mapa del medio campo, aunque se lo sabe de memoria.",
+          "salario": 14240,
+          "valor": 3115000,
+          "avatar_ia": "assets/ia/avatares/johnny-rastrojo.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/johnny-rastrojo-match.mp4",
+            "rechazo": "assets/ia/reacciones/johnny-rastrojo-rechazo.mp4"
+          },
+          "tags": [
+            "recuperación",
+            "fondo",
+            "duelo"
+          ]
+        },
+        {
+          "id": "jan-cerrojo",
+          "nombre": "Jan Cerrojo",
+          "jugador_real": "Jan Oblak",
+          "posicion": "POR",
+          "valoracion_juego": 90,
+          "atributos": {
+            "RAS": 97,
+            "TOZ": 88,
+            "CHI": 91,
+            "RET": 85,
+            "ALM": 91
+          },
+          "rasgo": "Paradas decisivas bajo palos.",
+          "clausula": "Quiere una defensa que avise cuando cambie el viento.",
+          "salario": 14400,
+          "valor": 3150000,
+          "avatar_ia": "assets/ia/avatares/jan-cerrojo.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/jan-cerrojo-match.mp4",
+            "rechazo": "assets/ia/reacciones/jan-cerrojo-rechazo.mp4"
+          },
+          "tags": [
+            "reflejos",
+            "colocación",
+            "mando"
+          ]
+        },
+        {
+          "id": "juan-musgo",
+          "nombre": "Juan del Musgo",
+          "jugador_real": "Juan Musso",
+          "posicion": "POR",
+          "valoracion_juego": 87,
+          "atributos": {
+            "RAS": 87,
+            "TOZ": 87,
+            "CHI": 89,
+            "RET": 82,
+            "ALM": 88
+          },
+          "rasgo": "Atento en el área y listo para salir jugando.",
+          "clausula": "Le gusta calentar con tiempo y sin carreras por el pasillo.",
+          "salario": 13920,
+          "valor": 3045000,
+          "avatar_ia": "assets/ia/avatares/juan-musgo.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/juan-musgo-match.mp4",
+            "rechazo": "assets/ia/reacciones/juan-musgo-rechazo.mp4"
+          },
+          "tags": [
+            "reflejos",
+            "salida",
+            "concentración"
+          ]
+        },
+        {
+          "id": "david-hancko",
+          "nombre": "David del Hayedo",
+          "jugador_real": "David Hancko",
+          "posicion": "DEF",
+          "valoracion_juego": 90,
+          "atributos": {
+            "RAS": 90,
+            "TOZ": 88,
+            "CHI": 94,
+            "RET": 85,
+            "ALM": 92
+          },
+          "rasgo": "Anticipación y zancada para corregir a tiempo.",
+          "clausula": "Pide líneas juntas y comunicación sin aspavientos.",
+          "salario": 14400,
+          "valor": 3150000,
+          "avatar_ia": "assets/ia/avatares/david-hancko.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/david-hancko-match.mp4",
+            "rechazo": "assets/ia/reacciones/david-hancko-rechazo.mp4"
+          },
+          "tags": [
+            "anticipación",
+            "duelo",
+            "recorrido"
+          ]
+        },
+        {
+          "id": "robin-carrizo",
+          "nombre": "Robin el Carrizo",
+          "jugador_real": "Robin Le Normand",
+          "posicion": "DEF",
+          "valoracion_juego": 89,
+          "atributos": {
+            "RAS": 89,
+            "TOZ": 92,
+            "CHI": 89,
+            "RET": 86,
+            "ALM": 90
+          },
+          "rasgo": "Firme en el cuerpo a cuerpo y sereno por arriba.",
+          "clausula": "Quiere que el área esté ordenada como un huerto.",
+          "salario": 14240,
+          "valor": 3115000,
+          "avatar_ia": "assets/ia/avatares/robin-carrizo.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/robin-carrizo-match.mp4",
+            "rechazo": "assets/ia/reacciones/robin-carrizo-rechazo.mp4"
+          },
+          "tags": [
+            "duelo",
+            "juego aéreo",
+            "orden"
+          ]
+        },
+        {
+          "id": "marc-pedregal",
+          "nombre": "Marc del Pedregal",
+          "jugador_real": "Marc Pubill",
+          "posicion": "DEF",
+          "valoracion_juego": 88,
+          "atributos": {
+            "RAS": 87,
+            "TOZ": 89,
+            "CHI": 91,
+            "RET": 83,
+            "ALM": 90
+          },
+          "rasgo": "Potencia por fuera y llegada con decisión.",
+          "clausula": "Pide carril libre para subir y vuelta sin atasco.",
+          "salario": 14080,
+          "valor": 3080000,
+          "avatar_ia": "assets/ia/avatares/marc-pedregal.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/marc-pedregal-match.mp4",
+            "rechazo": "assets/ia/reacciones/marc-pedregal-rechazo.mp4"
+          },
+          "tags": [
+            "potencia",
+            "recorrido",
+            "duelo"
+          ]
+        },
+        {
+          "id": "marcos-lumbre",
+          "nombre": "Marcos de la Lumbre",
+          "jugador_real": "Marcos Llorente",
+          "posicion": "CEN",
+          "valoracion_juego": 93,
+          "atributos": {
+            "RAS": 94,
+            "TOZ": 92,
+            "CHI": 97,
+            "RET": 82,
+            "ALM": 99
+          },
+          "rasgo": "Pulmón largo y zancada de camino abierto.",
+          "clausula": "Con una cantimplora y un objetivo claro, no pregunta por el reloj.",
+          "salario": 14880,
+          "valor": 3255000,
+          "avatar_ia": "assets/ia/avatares/marcos-lumbre.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/marcos-lumbre-match.mp4",
+            "rechazo": "assets/ia/reacciones/marcos-lumbre-rechazo.mp4"
+          },
+          "tags": [
+            "fondo",
+            "velocidad",
+            "remate"
+          ]
+        },
+        {
+          "id": "pablo-sendero",
+          "nombre": "Pablo del Sendero",
+          "jugador_real": "Pablo Barrios",
+          "posicion": "CEN",
+          "valoracion_juego": 89,
+          "atributos": {
+            "RAS": 89,
+            "TOZ": 83,
+            "CHI": 93,
+            "RET": 88,
+            "ALM": 92
+          },
+          "rasgo": "Control orientado y trabajo entre líneas.",
+          "clausula": "Le gusta que la presión se coordine como una ronda.",
+          "salario": 14240,
+          "valor": 3115000,
+          "avatar_ia": "assets/ia/avatares/pablo-sendero.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/pablo-sendero-match.mp4",
+            "rechazo": "assets/ia/reacciones/pablo-sendero-rechazo.mp4"
+          },
+          "tags": [
+            "conducción",
+            "presión",
+            "pase"
+          ]
+        },
+        {
+          "id": "adama-vendaval",
+          "nombre": "Adama el Vendaval",
+          "jugador_real": "Ademola Lookman",
+          "posicion": "DEL",
+          "valoracion_juego": 89,
+          "atributos": {
+            "RAS": 92,
+            "TOZ": 89,
+            "CHI": 90,
+            "RET": 84,
+            "ALM": 89
+          },
+          "rasgo": "Desborde eléctrico y cambio de ritmo.",
+          "clausula": "Pide espacio para arrancar antes de que llegue el cierzo.",
+          "salario": 14240,
+          "valor": 3115000,
+          "avatar_ia": "assets/ia/avatares/adama-vendaval.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/adama-vendaval-match.mp4",
+            "rechazo": "assets/ia/reacciones/adama-vendaval-rechazo.mp4"
+          },
+          "tags": [
+            "desborde",
+            "velocidad",
+            "definición"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tronca",
+      "nombre_parodico": "Athletic de la Tronca",
+      "club_real": "Athletic Club",
+      "fuente_oficial": "https://www.athletic-club.eus/en/teams/athletic-club/2026-27/squad/",
+      "temporada": "2026/27",
+      "formacion": "4-3-3",
+      "jugadores": [
+        {
+          "id": "nico-remolino",
+          "nombre": "Nico Remolino",
+          "jugador_real": "Nico Williams",
+          "posicion": "DEL",
+          "valoracion_juego": 92,
+          "atributos": {
+            "RAS": 97,
+            "TOZ": 89,
+            "CHI": 98,
+            "RET": 81,
+            "ALM": 94
+          },
+          "rasgo": "Velocidad de vendaval en banda.",
+          "clausula": "Pide una banda larga y un balón que ruede fino.",
+          "salario": 14720,
+          "valor": 3220000,
+          "avatar_ia": "assets/ia/avatares/nico-remolino.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/nico-remolino-match.mp4",
+            "rechazo": "assets/ia/reacciones/nico-remolino-rechazo.mp4"
+          },
+          "tags": [
+            "velocidad",
+            "desborde",
+            "uno contra uno"
+          ]
+        },
+        {
+          "id": "inaki-trillo",
+          "nombre": "Iñaki el Trillo",
+          "jugador_real": "Iñaki Williams",
+          "posicion": "DEL",
+          "valoracion_juego": 93,
+          "atributos": {
+            "RAS": 95,
+            "TOZ": 92,
+            "CHI": 97,
+            "RET": 82,
+            "ALM": 98
+          },
+          "rasgo": "Potencia y resistencia de tractor.",
+          "clausula": "No quiere que le aparquen el balón: prefiere conducirlo.",
+          "salario": 14880,
+          "valor": 3255000,
+          "avatar_ia": "assets/ia/avatares/inaki-trillo.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/inaki-trillo-match.mp4",
+            "rechazo": "assets/ia/reacciones/inaki-trillo-rechazo.mp4"
+          },
+          "tags": [
+            "potencia",
+            "fondo",
+            "velocidad"
+          ]
+        },
+        {
+          "id": "oihan-zagal",
+          "nombre": "Oihan el Zagal",
+          "jugador_real": "Oihan Sancet",
+          "posicion": "CEN",
+          "valoracion_juego": 88,
+          "atributos": {
+            "RAS": 90,
+            "TOZ": 89,
+            "CHI": 88,
+            "RET": 88,
+            "ALM": 87
+          },
+          "rasgo": "Llegada sorpresiva y definición.",
+          "clausula": "Pide aparecer tarde, cuando el rival ya mira al banderín.",
+          "salario": 14080,
+          "valor": 3080000,
+          "avatar_ia": "assets/ia/avatares/oihan-zagal.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/oihan-zagal-match.mp4",
+            "rechazo": "assets/ia/reacciones/oihan-zagal-rechazo.mp4"
+          },
+          "tags": [
+            "llegada",
+            "remate",
+            "pillería"
+          ]
+        },
+        {
+          "id": "unai-chopera",
+          "nombre": "Unai de la Chopera",
+          "jugador_real": "Unai Simón",
+          "posicion": "POR",
+          "valoracion_juego": 90,
+          "atributos": {
+            "RAS": 94,
+            "TOZ": 91,
+            "CHI": 93,
+            "RET": 83,
+            "ALM": 91
+          },
+          "rasgo": "Reacción rápida y voz para ordenar el área.",
+          "clausula": "Le gusta que la zaga hable claro y sin rodeos.",
+          "salario": 14400,
+          "valor": 3150000,
+          "avatar_ia": "assets/ia/avatares/unai-chopera.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/unai-chopera-match.mp4",
+            "rechazo": "assets/ia/reacciones/unai-chopera-rechazo.mp4"
+          },
+          "tags": [
+            "reflejos",
+            "mando",
+            "juego pies"
+          ]
+        },
+        {
+          "id": "dani-sendero",
+          "nombre": "Dani del Sendero",
+          "jugador_real": "Dani Vivian",
+          "posicion": "DEF",
+          "valoracion_juego": 90,
+          "atributos": {
+            "RAS": 91,
+            "TOZ": 90,
+            "CHI": 92,
+            "RET": 84,
+            "ALM": 92
+          },
+          "rasgo": "Firme al cruce y atento a la espalda.",
+          "clausula": "Pide que nadie se quede mirando el paisaje en transición.",
+          "salario": 14400,
+          "valor": 3150000,
+          "avatar_ia": "assets/ia/avatares/dani-sendero.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/dani-sendero-match.mp4",
+            "rechazo": "assets/ia/reacciones/dani-sendero-rechazo.mp4"
+          },
+          "tags": [
+            "cruce",
+            "velocidad",
+            "duelo"
+          ]
+        },
+        {
+          "id": "aymeric-robledal",
+          "nombre": "Aymeric del Robledal",
+          "jugador_real": "Aymeric Laporte",
+          "posicion": "DEF",
+          "valoracion_juego": 90,
+          "atributos": {
+            "RAS": 92,
+            "TOZ": 88,
+            "CHI": 89,
+            "RET": 91,
+            "ALM": 90
+          },
+          "rasgo": "Salida limpia y lectura para anticipar.",
+          "clausula": "Quiere línea de pase, no una rotonda de jugadores.",
+          "salario": 14400,
+          "valor": 3150000,
+          "avatar_ia": "assets/ia/avatares/aymeric-robledal.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/aymeric-robledal-match.mp4",
+            "rechazo": "assets/ia/reacciones/aymeric-robledal-rechazo.mp4"
+          },
+          "tags": [
+            "salida",
+            "anticipación",
+            "pase"
+          ]
+        },
+        {
+          "id": "yuri-espino",
+          "nombre": "Yuri Espino",
+          "jugador_real": "Yuri Berchiche",
+          "posicion": "DEF",
+          "valoracion_juego": 88,
+          "atributos": {
+            "RAS": 88,
+            "TOZ": 85,
+            "CHI": 90,
+            "RET": 88,
+            "ALM": 91
+          },
+          "rasgo": "Experiencia y empuje en el carril.",
+          "clausula": "Pide una banda libre y un café corto antes del calentamiento.",
+          "salario": 14080,
+          "valor": 3080000,
+          "avatar_ia": "assets/ia/avatares/yuri-espino.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/yuri-espino-match.mp4",
+            "rechazo": "assets/ia/reacciones/yuri-espino-rechazo.mp4"
+          },
+          "tags": [
+            "experiencia",
+            "duelo",
+            "recorrido"
+          ]
+        },
+        {
+          "id": "dani-mojon",
+          "nombre": "Dani el Mojón",
+          "jugador_real": "Dani Vivian",
+          "posicion": "DEF",
+          "valoracion_juego": 89,
+          "atributos": {
+            "RAS": 90,
+            "TOZ": 87,
+            "CHI": 93,
+            "RET": 83,
+            "ALM": 94
+          },
+          "rasgo": "Colocación y contundencia sin complicarse.",
+          "clausula": "El área, bien delimitada; el balón, lejos de la portería.",
+          "salario": 14240,
+          "valor": 3115000,
+          "avatar_ia": "assets/ia/avatares/dani-mojon.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/dani-mojon-match.mp4",
+            "rechazo": "assets/ia/reacciones/dani-mojon-rechazo.mp4"
+          },
+          "tags": [
+            "colocación",
+            "duelo",
+            "despeje"
+          ]
+        },
+        {
+          "id": "oier-ribera",
+          "nombre": "Oier de la Ribera",
+          "jugador_real": "Oier Zarraga",
+          "posicion": "CEN",
+          "valoracion_juego": 86,
+          "atributos": {
+            "RAS": 86,
+            "TOZ": 81,
+            "CHI": 90,
+            "RET": 86,
+            "ALM": 88
+          },
+          "rasgo": "Pase sencillo y buen apoyo para salir jugando.",
+          "clausula": "Pide una salida limpia, sin atascar la acequia.",
+          "salario": 13760,
+          "valor": 3010000,
+          "avatar_ia": "assets/ia/avatares/oier-ribera.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/oier-ribera-match.mp4",
+            "rechazo": "assets/ia/reacciones/oier-ribera-rechazo.mp4"
+          },
+          "tags": [
+            "pase",
+            "apoyo",
+            "visión"
+          ]
+        },
+        {
+          "id": "benat-rasmia",
+          "nombre": "Beñat Rasmia",
+          "jugador_real": "Beñat Prados",
+          "posicion": "CEN",
+          "valoracion_juego": 89,
+          "atributos": {
+            "RAS": 88,
+            "TOZ": 83,
+            "CHI": 94,
+            "RET": 87,
+            "ALM": 95
+          },
+          "rasgo": "Energía y recuperación en campo abierto.",
+          "clausula": "Pide permiso para correr; suele salir antes de que contesten.",
+          "salario": 14240,
+          "valor": 3115000,
+          "avatar_ia": "assets/ia/avatares/benat-rasmia.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/benat-rasmia-match.mp4",
+            "rechazo": "assets/ia/reacciones/benat-rasmia-rechazo.mp4"
+          },
+          "tags": [
+            "recuperación",
+            "fondo",
+            "presión"
+          ]
+        },
+        {
+          "id": "gorka-rastro",
+          "nombre": "Gorka del Rastro",
+          "jugador_real": "Gorka Guruzeta",
+          "posicion": "DEL",
+          "valoracion_juego": 88,
+          "atributos": {
+            "RAS": 87,
+            "TOZ": 91,
+            "CHI": 88,
+            "RET": 88,
+            "ALM": 87
+          },
+          "rasgo": "Desmarque oportuno y remate de primera.",
+          "clausula": "Quiere centros con intención y un segundo balón atento.",
+          "salario": 14080,
+          "valor": 3080000,
+          "avatar_ia": "assets/ia/avatares/gorka-rastro.webp",
+          "reacciones_ia": {
+            "match": "assets/ia/reacciones/gorka-rastro-match.mp4",
+            "rechazo": "assets/ia/reacciones/gorka-rastro-rechazo.mp4"
+          },
+          "tags": [
+            "desmarque",
+            "remate",
+            "asociación"
+          ]
+        }
+      ]
+    }
+  ],
+  "mercado_ids": [
+    "dani-sendero",
+    "yuri-espino",
+    "marcos-lumbre",
+    "frenkie-ronda",
+    "johnny-rastrojo"
+  ]
+}
