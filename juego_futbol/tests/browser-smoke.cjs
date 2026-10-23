@@ -17,10 +17,17 @@ const fs = require('node:fs/promises');
         : { viewport: { width: 1366, height: 900 } });
       const page = await context.newPage();
       page.on('pageerror', err => errors.push(mode + ': ' + err.message));
+      page.on('console', message => {
+        if (message.type() === 'error') errors.push(mode + ' consola: ' + message.text());
+      });
       page.on('dialog', dialog => dialog.accept());
       await page.goto('http://127.0.0.1:8765/juego_futbol/', { waitUntil: 'load' });
       if (mode === 'mobile') assert.equal(await page.evaluate(() => window.innerWidth), 390, 'ancho de pantalla móvil esperado');
-      await page.waitForFunction(() => typeof estadoJuego !== 'undefined' && !!estadoJuego.equipos);
+      try {
+        await page.waitForFunction(() => typeof estadoJuego !== 'undefined' && !!estadoJuego.equipos);
+      } catch (error) {
+        throw new Error(`${error.message}; errores de página: ${JSON.stringify(errors)}`);
+      }
       await page.screenshot({ path: require('node:path').join(artifactDir, `juego-${mode}.png`), fullPage: true });
       // Identidad ficticia, aviso de métricas simuladas, avatares propios y modelo de ataque/defensa.
       assert.equal(await page.locator('.sim-disclaimer').count(), 1, 'aviso visible de simulación');
