@@ -1,5 +1,15 @@
 # Auditoría y estado — Juego de fútbol · Línea de Pase
 
+## Recuperación y navegación sin desplazamiento · 23 octubre 2026
+
+Se recuperó la rama a partir de `da0ae47`, incluyendo edades, cumpleaños y compatibilidad de guardados. La interfaz dispone de seis secciones: Despacho, Fichajes, Táctica, Partido, Entrenar y club, y Ajustes y ayuda. Cada sección ofrece un selector de pantallas concretas. Calendario, decisiones, poderes, plan de partido, patrocinadores, finanzas, tablas, crónica y repeticiones tienen destinos propios.
+
+`css/pantallas.css` distribuye la interfaz dentro de la altura del dispositivo. `js/pantallas.js` conserva los nodos y controles existentes y reparte su contenido en páginas medidas, con Anterior/Siguiente y contador. También divide fichas y explicaciones cuando cambia el espacio disponible. La navegación, los controles de página y el siguiente paso ocupan filas propias. Los accesos directos abren la página de la acción, sin `scrollIntoView`. El guardado continúa siendo el anterior.
+
+Se corrigió la animación de descarte que podía dejar la siguiente tarjeta fuera de pantalla. La introducción utiliza términos de juego en lugar de CTA/QTE.
+
+Las pruebas de navegador existentes navegan ahora a la pantalla y página de cada control antes de utilizarlo. `tests/screens.cjs` recorre todas las páginas en 1366×900, 390×844, 320×568 y 844×390, comprueba límites del contenido y del botón principal, y verifica que los textos sean consultables. El workflow ejecuta ambos recorridos y conserva sus capturas. La validación en dispositivos físicos continúa pendiente.
+
 ## Estado del repositorio
 
 - Trabajo sobre `desarrollo/juego-futbol-revision-20261022`, PR #3 hacia `main`.

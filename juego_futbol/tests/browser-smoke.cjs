@@ -3,6 +3,7 @@
 const { chromium, devices } = require('playwright');
 const assert = require('node:assert/strict');
 const fs = require('node:fs/promises');
+const { installScreenNavigation } = require('./screen-navigation.cjs');
 
 async function recargarPartida(page) {
   await page.reload();
@@ -23,6 +24,7 @@ async function recargarPartida(page) {
         ? { ...devices['iPhone 13'], viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true }
         : { viewport: { width: 1366, height: 900 } });
       const page = await context.newPage();
+      installScreenNavigation(page);
       page.on('pageerror', err => errors.push(mode + ': ' + err.message));
       page.on('console', message => {
         // Los recursos IA son opcionales y todavía no están generados; sus 404 tienen fallback visual.
@@ -54,7 +56,7 @@ async function recargarPartida(page) {
         'el catálogo enlaza al juego web y no promete una descarga móvil');
       await ctaJuego.click();
       await page.waitForURL('**/juego_futbol/index.html');
-      const enlaceXg = page.getByRole('link', { name: 'Aprende qué mide el xG y cómo interpretarlo' });
+      const enlaceXg = page.getByRole('link', { name: 'Aprende qué mide el xG y cómo interpretarlo', includeHidden: true });
       assert.equal(await enlaceXg.getAttribute('href'), '../proyectos/xg/index.html',
         'el aviso del simulador enlaza a la explicación de xG existente');
       await enlaceXg.click();
@@ -168,10 +170,10 @@ async function recargarPartida(page) {
       const anclajesMenu = await page.evaluate(() => {
         const nav = document.querySelector('nav[role="tablist"]');
         const cta = document.getElementById('floating-cta');
-        return { nav: getComputedStyle(nav).position, ctaVisible: !!cta && getComputedStyle(cta).position === 'fixed',
-          separados: cta.getBoundingClientRect().bottom <= nav.getBoundingClientRect().top + 2 };
+        return { nav: getComputedStyle(nav).position, ctaVisible: !!cta && cta.getBoundingClientRect().bottom <= innerHeight,
+          separados: nav.getBoundingClientRect().bottom <= cta.getBoundingClientRect().top };
       });
-      assert.equal(anclajesMenu.nav, 'fixed', 'la navegación inferior permanece fija');
+      assert.equal(anclajesMenu.nav, 'static', 'la navegación ocupa su propia fila sin tapar contenido');
       assert.equal(anclajesMenu.ctaVisible, true, 'el CTA de avance queda fijo y visible');
       assert.equal(anclajesMenu.separados, true, 'el CTA no queda debajo de la navegación');
       // La rotación manual es operable con teclado y comunica selección y bajas.
@@ -185,6 +187,7 @@ async function recargarPartida(page) {
       assert.ok(indicesRotacion.titular >= 0 && indicesRotacion.suplente >= 0,
         'debe haber un titular y un suplente aptos para probar la rotación');
       if (mode === 'mobile') {
+        await page.locator('#tbody-plantilla tr').first().scrollIntoViewIfNeeded();
         const tablaPlantillaMovil = await page.evaluate(() => {
           const tabla = document.querySelector('.squad-table');
           const estilo = getComputedStyle(tabla.querySelector('tbody tr'));
@@ -294,12 +297,12 @@ async function recargarPartida(page) {
       await page.locator('#microclip-close').click();
       // Navegación rediseñada, módulo Tinder, CTAs y finanzas.
       assert.deepEqual(await page.locator('button.tab-btn').allInnerTexts().then(xs=>xs.map(x=>x.trim())), [
-        '🏠 Despacho Míster', '🔥 Tinder Fichajes', '📋 Táctica', '⚽ Partido'
-      ], 'las cuatro secciones usan nombres y orden claros');
+        '🏠 Despacho Míster', '🔥 Tinder Fichajes', '📋 Táctica', '⚽ Partido', '🏋️ Entrenar y club', '⚙️ Ajustes y ayuda'
+      ], 'las seis secciones usan nombres y orden claros');
       await page.locator('#pestana-mercado').click();
       assert.ok(await page.locator('#swipe-card').isVisible(), 'se presenta la tarjeta de ojeo');
       assert.deepEqual(await page.locator('#tbody-mercado').locator('xpath=ancestor::table').locator('thead th').allInnerTexts(),
-        ['JUGADOR', 'POS', 'RASGOS', 'PRECIO', 'SALARIO/J', 'ACCIÓN'],
+        ['Jugador', 'Pos', 'Rasgos', 'Precio', 'Salario/j', 'Acción'],
         'la tabla de mercado también expone los atributos paródicos en lugar de la media');
       const partidaAntesSwipe = await page.evaluate(() => JSON.parse(JSON.stringify(estadoJuego)));
       const swipeInicial = await page.locator('#swipe-name').innerText();
@@ -331,7 +334,7 @@ async function recargarPartida(page) {
       await page.locator('#pestana-clasificacion').click();
       assert.equal(await page.locator('.cta-card button').count(), 2, 'despacho ofrece dos acciones siguientes');
       await page.locator('#pestana-clasificacion').click();
-      await page.locator('#tab-clasificacion details').last().evaluate(el => { el.open = true; });
+      await page.locator('#pestana-entrenamiento').click();
       assert.match(await page.locator('#finance-budget').innerText(), /€/);
       assert.match(await page.locator('#finance-wages').innerText(), /€/);
       assert.equal(await page.locator('#sponsor-options .sponsor-card').count(), 3, 'hay tres contratos absurdos disponibles');
@@ -368,10 +371,10 @@ async function recargarPartida(page) {
       assert.match(await page.locator('.sim-disclaimer').innerText(), /xG.*estimación didáctica del simulador/i,
         'el aviso distingue el xG didáctico de una métrica oficial');
       assert.match(await page.locator('#guia-rapida summary').innerText(), /Cómo jugar/);
-      await page.locator('#guia-rapida summary').click();
+      await page.locator('#guia-rapida').evaluate(el => { el.open = true; });
       assert.match(await page.locator('#guia-rapida').innerText(), /una vez antes de cada jornada/);
       assert.match(await page.locator('#guia-rapida').innerText(), /seis jornadas/);
-      await page.locator('#guia-rapida summary').click();
+      await page.locator('#guia-rapida').evaluate(el => { el.open = true; });
       assert.equal(await page.locator('#btn-simular-jornada').innerText(), '▶️ SIMULAR JORNADA EN VIVO');
       assert.equal(await page.evaluate(() => estadoJuego.equipos.length), 4);
       assert.equal(await page.locator('#tbody-match-breakdown tr').innerText(),
@@ -499,7 +502,7 @@ async function recargarPartida(page) {
         paneles: [...document.querySelectorAll('[role="tabpanel"]')].every(panel =>
           panel.getAttribute('aria-labelledby') && panel.hasAttribute('aria-hidden'))
       }));
-      assert.equal(accesibilidadTabs.total, 4, 'la navegación expone cuatro pestañas accesibles');
+      assert.equal(accesibilidadTabs.total, 6, 'la navegación expone seis pestañas accesibles');
       assert.deepEqual(accesibilidadTabs.seleccionadas, ['pestana-clasificacion']);
       assert.equal(accesibilidadTabs.paneles, true, 'cada pestaña identifica su panel');
       await page.locator('#pestana-clasificacion').focus();
@@ -508,14 +511,14 @@ async function recargarPartida(page) {
         'la flecha derecha avanza a Tinder Fichajes');
       assert.equal(await page.evaluate(() => document.activeElement.id), 'pestana-mercado');
       await page.keyboard.press('End');
-      assert.equal(await page.locator('#pestana-partido').getAttribute('aria-selected'), 'true',
+      assert.equal(await page.locator('#pestana-ajustes').getAttribute('aria-selected'), 'true',
         'Fin selecciona la última pestaña');
       await page.keyboard.press('Home');
       assert.equal(await page.locator('#pestana-clasificacion').getAttribute('aria-selected'), 'true',
         'Inicio selecciona la primera pestaña');
       // Compruebo ejercicios, sus marcadores de progreso y la persistencia de cada modalidad.
       await page.locator('#pestana-clasificacion').click();
-      await page.locator('#tab-clasificacion details').last().evaluate(el => { el.open = true; });
+      await page.locator('#pestana-entrenamiento').click();
       const trainingBefore = await page.evaluate(() => ({
         opcion: retoPaseActual.opcionRecomendada,
         indice: retoPaseActual.indice,
@@ -593,9 +596,10 @@ async function recargarPartida(page) {
       assert.equal(await page.evaluate(() => estadoJuego.entrenamiento.intentos), 1,
         'el progreso del ejercicio se conserva al recargar');
       await page.locator('#pestana-clasificacion').click();
-      await page.locator('#tab-clasificacion details').last().evaluate(el => { el.open = true; });
+      await page.locator('#pestana-entrenamiento').click();
       await page.locator('#tipo-ejercicio').selectOption('presion');
       assert.match(await page.locator('#titulo-laboratorio').innerText(), /Presión coordinada/);
+      await page.locator('#svg-presion').scrollIntoViewIfNeeded();
       const pressBoardState = await page.locator('#svg-presion').evaluate(el => ({
         active: el.classList.contains('active'),
         ariaHidden: el.getAttribute('aria-hidden'),
@@ -603,7 +607,7 @@ async function recargarPartida(page) {
         visibility: getComputedStyle(el).visibility,
         width: el.getBoundingClientRect().width,
         height: el.getBoundingClientRect().height,
-        tabActive: Boolean(document.querySelector('#tab-clasificacion details[open] #pase-opciones'))
+        tabActive: Boolean(document.querySelector('#tab-entrenamiento.active #pase-opciones'))
       }));
       assert.ok(pressBoardState.active && pressBoardState.ariaHidden === 'false' &&
         pressBoardState.display !== 'none' && pressBoardState.visibility !== 'hidden' &&
@@ -630,9 +634,10 @@ async function recargarPartida(page) {
       });
       assert.equal(olderPressureSave, true, 'los guardados de dos ejercicios siguen siendo válidos');
       await page.locator('#pestana-clasificacion').click();
-      await page.locator('#tab-clasificacion details').last().evaluate(el => { el.open = true; });
+      await page.locator('#pestana-entrenamiento').click();
       await page.locator('#tipo-ejercicio').selectOption('espacio');
       assert.match(await page.locator('#titulo-laboratorio').innerText(), /Lectura del espacio/);
+      await page.locator('#svg-espacio').scrollIntoViewIfNeeded();
       const spaceBoard = await page.locator('#svg-espacio').evaluate(el => ({
         active: el.classList.contains('active'),
         ariaHidden: el.getAttribute('aria-hidden'),
@@ -658,9 +663,10 @@ async function recargarPartida(page) {
       assert.equal(await page.evaluate(() => estadoJuego.entrenamiento.porTipo.espacio.intentos), 1,
         'el progreso de lectura del espacio se conserva al recargar');
       await page.locator('#pestana-clasificacion').click();
-      await page.locator('#tab-clasificacion details').last().evaluate(el => { el.open = true; });
+      await page.locator('#pestana-entrenamiento').click();
       await page.locator('#tipo-ejercicio').selectOption('finalizacion');
       assert.match(await page.locator('#titulo-laboratorio').innerText(), /Finalización/);
+      await page.locator('#svg-finalizacion').scrollIntoViewIfNeeded();
       const finishBoard = await page.locator('#svg-finalizacion').evaluate(el => ({
         active: el.classList.contains('active'),
         ariaHidden: el.getAttribute('aria-hidden'),
@@ -829,7 +835,7 @@ async function recargarPartida(page) {
         'al reabrir una partida guardada debe indicarse que se recuperó');
       // Exportar e importar debe conservar una partida válida y rechazar una copia corrupta sin sustituirla.
       const exportEvent = page.waitForEvent('download');
-      await page.locator('header button').filter({ hasText: 'Exportar' }).click();
+      await page.locator('button').filter({ hasText: 'Exportar' }).click();
       const exportFile = await exportEvent;
       assert.match(exportFile.suggestedFilename(), /^linea-de-pase-temporada-1\.json$/,
         'la copia de seguridad se descarga con nombre de temporada');
@@ -1111,14 +1117,18 @@ async function recargarPartida(page) {
       'el CSV contiene las mismas estadísticas que el balance visible');
       assert.equal(csvRows.length, 3, 'el archivo incluye cabecera y los dos equipos');
       if (mode === 'mobile') {
+        for (const row of await page.locator('#tbody-match-breakdown tr').all()) {
+          await row.scrollIntoViewIfNeeded();
+          assert.ok(await row.evaluate(el => [...el.cells].every(td => td.getBoundingClientRect().width > 0)), 'cada ficha del balance se consulta con sus datos');
+        }
         const informeMovil = await page.evaluate(() => {
           const tabla = document.getElementById('match-breakdown');
           const campos = [...tabla.tBodies[0].rows].flatMap(fila => [...fila.cells])
-            .filter(celda => celda.dataset.label)
+            .filter(celda => celda.dataset.label && celda.closest('tr').getClientRects().length)
             .map(celda => ({ etiqueta: celda.dataset.label, visible: getComputedStyle(celda).display !== 'none',
               ancho: celda.getBoundingClientRect().width }));
           return { sinDesbordamiento: tabla.scrollWidth <= tabla.clientWidth + 1,
-            filasComoFicha: getComputedStyle(tabla.tBodies[0].rows[0]).display === 'grid', campos };
+            filasComoFicha: [...tabla.tBodies[0].rows].filter(row => row.getClientRects().length).every(row => getComputedStyle(row).display === 'grid'), campos };
         });
         assert.equal(informeMovil.sinDesbordamiento, true,
           'el balance usa el ancho de móvil sin exigir desplazamiento lateral');

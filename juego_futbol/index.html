@@ -3020,7 +3020,7 @@ window.onload = async () => {
     catch(error){cargaCorrecta=false;console.warn('Nueva partida para aplicar la base actual:',error);estadoJuego=crearEstadoInicial();}
     const indicador=document.getElementById('estado-guardado');if(indicador&&!indicador.textContent)indicador.textContent=cargaCorrecta?'✓ Partida recuperada':'Nueva temporada · plantillas 2026/27';
     const finanzas=document.getElementById('tab-entrenamiento'),despacho=document.getElementById('tab-clasificacion');
-    if(finanzas&&despacho){const d=document.createElement('details');d.className='panel quick-guide';d.innerHTML='<summary>💰 Finanzas y gestión del club</summary>';while(finanzas.firstChild)d.appendChild(finanzas.firstChild);despacho.appendChild(d);finanzas.remove();}
+    // Entrenamiento y finanzas conservan una sección propia en la navegación.
     const c=document.getElementById('canvas-shotmap');dibujarCampoBase(c.getContext('2d'),c.width,c.height);actualizarUI();
 };
 // Se conserva el onload asíncrono anterior, que carga la base 2026/27 y adapta guardados incompatibles.
@@ -3390,5 +3390,7 @@ mostrarRepeticion=function(indice){
 
 </script>
 <script src="./js/experiencia-manager.js"></script>
+<link rel="stylesheet" href="./css/pantallas.css">
+<script src="./js/pantallas.js"></script>
 </body>
 </html>
