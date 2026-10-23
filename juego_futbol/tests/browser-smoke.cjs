@@ -51,6 +51,34 @@ const fs = require('node:fs/promises');
       } catch (error) {
         throw new Error(`${error.message}; errores de página: ${JSON.stringify(errors)}`);
       }
+      // Compruebo que el simulador arranca con las plantillas paródicas separadas de sus clubes reales.
+      const integridadPlantillas = await page.evaluate(() => ({
+        temporada: PLANTILLAS_DB.temporada,
+        equipos: PLANTILLAS_DB.equipos.map(e => e.nombre_parodico),
+        tamaños: PLANTILLAS_DB.equipos.map(e => e.jugadores.length),
+        jugadores: PLANTILLAS_DB.equipos.map(e => e.jugadores.map(j => j.nombre)),
+        consistencia: PLANTILLAS_DB.equipos.every(e => e.jugadores.every(j =>
+          j.avatar_ia && j.avatar_ia.includes('assets/ia/avatares/') &&
+          ['RAS','TOZ','CHI','RET','ALM'].every(k => Number.isInteger(j.atributos[k])))),
+        control: obtenerMiEquipo().nombre
+      }));
+      assert.equal(integridadPlantillas.temporada, '2026/27');
+      assert.deepEqual(integridadPlantillas.equipos, [
+        'Real Magras de Madrid', 'Balompié del Somontano',
+        'Atlético Colchonico de la Ribera', 'Athletic de la Tronca'
+      ]);
+      assert.ok(integridadPlantillas.tamaños.every(n => n >= 14), 'cada club tiene fondo de plantilla para rotar');
+      assert.equal(integridadPlantillas.consistencia, true, 'cada jugador declara caricatura IA y cinco atributos paródicos');
+      assert.equal(integridadPlantillas.control, 'Real Magras de Madrid');
+      const anclajesMenu = await page.evaluate(() => {
+        const nav = document.querySelector('nav[role="tablist"]');
+        const cta = document.getElementById('floating-cta');
+        return { nav: getComputedStyle(nav).position, ctaVisible: !!cta && getComputedStyle(cta).position === 'fixed',
+          separados: cta.getBoundingClientRect().bottom <= nav.getBoundingClientRect().top + 2 };
+      });
+      assert.equal(anclajesMenu.nav, 'fixed', 'la navegación inferior permanece fija');
+      assert.equal(anclajesMenu.ctaVisible, true, 'el CTA de avance queda fijo y visible');
+      assert.equal(anclajesMenu.separados, true, 'el CTA no queda debajo de la navegación');
       // La rotación manual es operable con teclado y comunica selección y bajas.
       const indicesRotacion = await page.evaluate(() => {
         const plantilla = obtenerMiEquipo().plantilla;
@@ -154,17 +182,28 @@ const fs = require('node:fs/promises');
         guardarPartidaLocal(false);
         actualizarUI();
       }, escenarioRotacion);
+      await page.locator('#pestana-partido').click();
+      await page.locator('[data-video-action="var"]').click();
+      assert.equal(await page.locator('#microclip-backdrop').getAttribute('aria-hidden'), 'false',
+        'el disparador VAR abre el reproductor/fallback visual');
+      assert.match(await page.locator('#microclip-title').innerText(), /VAR de pueblo/);
+      await page.locator('#microclip-close').click();
       // Navegación rediseñada, módulo Tinder, CTAs y finanzas.
       assert.deepEqual(await page.locator('button.tab-btn').allInnerTexts().then(xs=>xs.map(x=>x.trim())), [
-        '🏠 Despacho / Resumen', '⚽ Partido', '🔥 Fichajes (Tinder)', '📋 Alineación', '💰 Finanzas'
-      ], 'las cinco secciones usan nombres y orden claros');
+        '🏠 Despacho Míster', '🔥 Tinder Fichajes', '📋 Táctica', '⚽ Partido'
+      ], 'las cuatro secciones usan nombres y orden claros');
       await page.locator('#pestana-mercado').click();
       assert.ok(await page.locator('#swipe-card').isVisible(), 'se presenta la tarjeta de ojeo');
-      const mercadoAntesSwipe = await page.evaluate(() => estadoJuego.mercado.map(j => ({...j})));
+      const partidaAntesSwipe = await page.evaluate(() => JSON.parse(JSON.stringify(estadoJuego)));
       const swipeInicial = await page.locator('#swipe-name').innerText();
       await page.locator('#swipe-reject').click();
       assert.notEqual(await page.locator('#swipe-name').innerText(), swipeInicial, 'descartar avanza al siguiente candidato');
       assert.match(await page.locator('#swipe-feedback').innerText(), /cierzo|abrazo|propicio/i, 'el descarte responde con retranca');
+      assert.equal(await page.locator('#microclip-backdrop').getAttribute('aria-hidden'), 'false',
+        'el descarte abre la reacción visual preparada para el clip IA');
+      assert.match(await page.locator('#video-action-status').innerText(), /clips IA se incorporarán/,
+        'el fallback explica que el asset de vídeo aún no está generado');
+      await page.locator('#microclip-close').click();
       const ficha = await page.evaluate(() => ({
         caricatura: document.getElementById('swipe-portrait').dataset.portraitId,
         clausula: document.getElementById('swipe-clause').textContent,
@@ -175,20 +214,34 @@ const fs = require('node:fs/promises');
       assert.match(ficha.caricatura, /^caricatura-/);
       assert.ok(ficha.clausula.length>20 && ficha.etiquetas>=4, 'ficha lista atributos, cláusula y placeholder de ilustración');
       assert.equal(ficha.atributos, 5, 'la carta ofrece los cinco atributos humorísticos');
-      assert.deepEqual(ficha.codigos, ['CAB','PAT','ALM','PRO','PIQ']);
-      assert.ok(window.DATOS_ARAGONESES.equipos.includes('Real Zaragocica') &&
-        window.DATOS_ARAGONESES.equipos.includes('Teruel Existe CF'), 'el universo incluye clubes aragoneses ficticios');
+      assert.deepEqual(ficha.codigos, ['RAS','TOZ','CHI','RET','ALM']);
+      assert.ok(window.DATOS_ARAGONESES.equipos.includes('Real Magras de Madrid') &&
+        window.DATOS_ARAGONESES.equipos.includes('Athletic de la Tronca'), 'el universo incluye clubes aragoneses ficticios');
 
       await page.locator('#pestana-clasificacion').click();
       assert.equal(await page.locator('.cta-card button').count(), 2, 'despacho ofrece dos acciones siguientes');
-      await page.locator('#pestana-entrenamiento').click();
+      await page.locator('#pestana-clasificacion').click();
+      await page.locator('#tab-clasificacion details').last().evaluate(el => { el.open = true; });
       assert.match(await page.locator('#finance-budget').innerText(), /€/);
       assert.match(await page.locator('#finance-wages').innerText(), /€/);
       assert.equal(await page.locator('#sponsor-options .sponsor-card').count(), 3, 'hay tres contratos absurdos disponibles');
       await page.locator('[data-sponsor="cero-cero"]').click();
       assert.match(await page.locator('#sponsor-status').innerText(), /Contrato firmado/, 'la firma activa un objetivo y una prima');
       assert.equal(await page.locator('#floating-cta').isVisible(), true, 'la llamada a la acción permanece fija en pantalla');
-      await page.evaluate(mercado => { estadoJuego.mercado=mercado; guardarPartidaLocal(false); actualizarUI(); }, mercadoAntesSwipe);
+      const candidatoLocalizado = await page.evaluate(() => {
+        const j = estadoJuego.mercado[0];
+        const rival = estadoJuego.equipos.find(eq => eq.plantilla.some(p => p.jugador_id === j.jugador_id));
+        return { jugador: j.nombre, id: j.jugador_id, clubId: rival?.id };
+      });
+      await page.locator('#swipe-match').click();
+      const rosterTrasMatch = await page.evaluate(({ id, clubId }) => ({
+        fichado: obtenerMiEquipo().plantilla.filter(j => j.jugador_id === id).length,
+        sigueEnOrigen: estadoJuego.equipos.find(eq => eq.id === clubId)?.plantilla.some(j => j.jugador_id === id) || false
+      }), candidatoLocalizado);
+      assert.equal(rosterTrasMatch.fichado, 1, 'el match incorpora al jugador exactamente una vez');
+      assert.equal(rosterTrasMatch.sigueEnOrigen, false, 'el traspaso lo retira de su club de origen');
+      await page.locator('#microclip-close').click();
+      await page.evaluate(partida => { estadoJuego=partida; guardarPartidaLocal(false); actualizarUI(); }, partidaAntesSwipe);
       assert.equal(await page.locator('#finance-squad').innerText(), '14 jugadores · 11 titulares');
       await page.locator('#pestana-partido').click();
       assert.equal(await page.locator('#match-clock').innerText(), '00′');
@@ -220,18 +273,17 @@ const fs = require('node:fs/promises');
         cabecera: document.querySelector('.club-brand h1')?.textContent.trim()
       }));
       assert.deepEqual(plantillasFicticias.clubes, [
-        'FC Pase y Pifia', 'Atlético Siestense', 'Unión Deportiva Patapalo', 'Deportivo Balón Perdido'
+        'Real Magras de Madrid', 'Balompié del Somontano', 'Atlético Colchonico de la Ribera', 'Athletic de la Tronca'
       ], 'todos los clubes deben ser ficticios');
-      assert.equal(plantillasFicticias.cabecera, 'FC PASE Y PIFIA', 'la cabecera debe usar la identidad ficticia');
+      assert.equal(plantillasFicticias.cabecera, 'REAL MAGRAS DE MADRID', 'la cabecera debe usar la identidad ficticia');
       assert.ok(plantillasFicticias.jugadores.every(nombre => !/^(POR|DEF|CEN|DEL)_/.test(nombre)),
         'los rivales no deben mostrar identificadores internos como nombres');
-      assert.ok(plantillasFicticias.jugadores.some(nombre => nombre === 'Paco Manoplas'));
+      assert.ok(plantillasFicticias.jugadores.some(nombre => nombre === 'Kylian Embozado'));
       assert.deepEqual(plantillasFicticias.mercado, [
-        'Crispín Chutapiedras', 'Pipo Puntería', 'Tere Taconazo',
-        'Benito Banderazo', 'Marga Parapenaltis'
-      ], 'el mercado debe mostrar los nombres humorísticos ficticios');
+        "Dani del Sendero", "Yuri Espino", "Marcos de la Lumbre", "Frenkie de la Ronda", "Johnny el Rastrojo"
+      ], 'el mercado sale de los candidatos declarados en la base actual');
       assert.deepEqual(plantillasFicticias.perfilesRivales, [
-        ['5-3-2', 'Defensivo'], ['4-3-3', 'Ofensivo'], ['4-4-2', 'Equilibrado']
+        ['4-3-3', 'Defensivo'], ['4-3-3', 'Ofensivo'], ['4-3-3', 'Equilibrado']
       ], 'los rivales deben presentar perfiles tácticos diferenciados');
       const perfilProximoRival = await page.evaluate(() => {
         const miEquipo = obtenerMiEquipo();
@@ -270,12 +322,12 @@ const fs = require('node:fs/promises');
       const avatarCheck = await page.evaluate(() => {
         const avatares = [...document.querySelectorAll('#tbody-plantilla .player-avatar')];
         const avatarMercado = [...document.querySelectorAll('#tbody-mercado .player-avatar')];
-        const muestra = avatarJugadorHTML('Paco Manoplas', 'POR');
+        const muestra = avatarJugadorHTML('Kylian Embozado', 'POR');
         return {
           plantel: avatares.length,
           mercado: avatarMercado.length,
           decorativos: [...avatares, ...avatarMercado].every(svg => svg.getAttribute('aria-hidden') === 'true'),
-          estables: muestra === avatarJugadorHTML('Paco Manoplas', 'POR'),
+          estables: muestra === avatarJugadorHTML('Kylian Embozado', 'POR'),
           distintos: muestra !== avatarJugadorHTML('Rita Remates', 'DEL'),
           sinRecursosExternos: [...avatares, ...avatarMercado].every(svg => !svg.querySelector('[href], image'))
         };
@@ -311,13 +363,12 @@ const fs = require('node:fs/promises');
       }, 'el motor debe reflejar ataque y defensa rivales al generar remates y xG');
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 0);
       // Verifico navegación completa y ausencia de desplazamiento horizontal en móvil.
-      const tabs = ['tactica', 'partido', 'clasificacion', 'mercado', 'entrenamiento'];
+      const tabs = ['mercado', 'tactica', 'partido', 'clasificacion'];
       for (const tab of tabs) {
         await page.locator('button.tab-btn').filter({
-          hasText: tab === 'tactica' ? 'Alineación' :
+          hasText: tab === 'tactica' ? 'Táctica' :
             tab === 'partido' ? 'Partido' :
-            tab === 'clasificacion' ? 'Despacho' :
-            tab === 'mercado' ? 'Fichajes' : 'Finanzas'
+            tab === 'clasificacion' ? 'Despacho' : 'Fichajes'
         }).click();
         assert.equal(await page.locator('#tab-' + tab).evaluate(el => getComputedStyle(el).display !== 'none'), true,
           'pestaña visible: ' + tab);
@@ -335,22 +386,23 @@ const fs = require('node:fs/promises');
         paneles: [...document.querySelectorAll('[role="tabpanel"]')].every(panel =>
           panel.getAttribute('aria-labelledby') && panel.hasAttribute('aria-hidden'))
       }));
-      assert.equal(accesibilidadTabs.total, 5, 'la navegación expone cinco pestañas accesibles');
-      assert.deepEqual(accesibilidadTabs.seleccionadas, ['pestana-entrenamiento']);
+      assert.equal(accesibilidadTabs.total, 4, 'la navegación expone cuatro pestañas accesibles');
+      assert.deepEqual(accesibilidadTabs.seleccionadas, ['pestana-clasificacion']);
       assert.equal(accesibilidadTabs.paneles, true, 'cada pestaña identifica su panel');
-      await page.locator('#pestana-entrenamiento').focus();
+      await page.locator('#pestana-clasificacion').focus();
       await page.keyboard.press('ArrowRight');
-      assert.equal(await page.locator('#pestana-clasificacion').getAttribute('aria-selected'), 'true',
-        'la flecha derecha recorre las pestañas y vuelve al inicio');
-      assert.equal(await page.evaluate(() => document.activeElement.id), 'pestana-clasificacion');
+      assert.equal(await page.locator('#pestana-mercado').getAttribute('aria-selected'), 'true',
+        'la flecha derecha avanza a Tinder Fichajes');
+      assert.equal(await page.evaluate(() => document.activeElement.id), 'pestana-mercado');
       await page.keyboard.press('End');
-      assert.equal(await page.locator('#pestana-entrenamiento').getAttribute('aria-selected'), 'true',
+      assert.equal(await page.locator('#pestana-partido').getAttribute('aria-selected'), 'true',
         'Fin selecciona la última pestaña');
       await page.keyboard.press('Home');
       assert.equal(await page.locator('#pestana-clasificacion').getAttribute('aria-selected'), 'true',
         'Inicio selecciona la primera pestaña');
       // Compruebo ejercicios, sus marcadores de progreso y la persistencia de cada modalidad.
-      await page.locator('button.tab-btn').filter({ hasText: 'Finanzas' }).click();
+      await page.locator('#pestana-clasificacion').click();
+      await page.locator('#tab-clasificacion details').last().evaluate(el => { el.open = true; });
       const trainingBefore = await page.evaluate(() => ({
         opcion: retoPaseActual.opcionRecomendada,
         indice: retoPaseActual.indice,
@@ -394,13 +446,13 @@ const fs = require('node:fs/promises');
         partida.historialTemporadas = [{
           temporada: 1,
           clasificacion: partida.equipos.map(eq => ({ nombre: eq.nombre, puntos: 0, gf: 0, gc: 0 })),
-          pichichi: { nombre: 'Paco Manoplas', equipo: 'FC Pase y Pifia', goles: 4, xg: 2.5 }
+          pichichi: { nombre: 'Kylian Embozado', equipo: 'Real Magras de Madrid', goles: 4, xg: 2.5 }
         }];
         const migrada = normalizarEstadoPartida(partida);
         return { valida: estadoPartidaValido(migrada), resumen: migrada.historialTemporadas[0] };
       });
       assert.equal(legacyArchive.valida, true, 'los resúmenes guardados con un único pichichi se migran');
-      assert.equal(legacyArchive.resumen.goleadores[0].nombre, 'Paco Manoplas');
+      assert.equal(legacyArchive.resumen.goleadores[0].nombre, 'Kylian Embozado');
       assert.equal(Object.hasOwn(legacyArchive.resumen, 'pichichi'), false,
         'la migración deja el resumen histórico en el formato actual');
       assert.ok(legacyArchive.resumen.clasificacion.every(eq => eq.pj === 6 &&
@@ -427,7 +479,8 @@ const fs = require('node:fs/promises');
       await page.reload();
       assert.equal(await page.evaluate(() => estadoJuego.entrenamiento.intentos), 1,
         'el progreso del ejercicio se conserva al recargar');
-      await page.locator('button.tab-btn').filter({ hasText: 'Finanzas' }).click();
+      await page.locator('#pestana-clasificacion').click();
+      await page.locator('#tab-clasificacion details').last().evaluate(el => { el.open = true; });
       await page.locator('#tipo-ejercicio').selectOption('presion');
       assert.match(await page.locator('#titulo-laboratorio').innerText(), /Presión coordinada/);
       const pressBoardState = await page.locator('#svg-presion').evaluate(el => ({
@@ -437,7 +490,7 @@ const fs = require('node:fs/promises');
         visibility: getComputedStyle(el).visibility,
         width: el.getBoundingClientRect().width,
         height: el.getBoundingClientRect().height,
-        tabActive: document.querySelector('#tab-entrenamiento').classList.contains('active')
+        tabActive: Boolean(document.querySelector('#tab-clasificacion details[open] #pase-opciones'))
       }));
       assert.ok(pressBoardState.active && pressBoardState.ariaHidden === 'false' &&
         pressBoardState.display !== 'none' && pressBoardState.visibility !== 'hidden' &&
@@ -463,7 +516,8 @@ const fs = require('node:fs/promises');
         return estadoPartidaValido(partida);
       });
       assert.equal(olderPressureSave, true, 'los guardados de dos ejercicios siguen siendo válidos');
-      await page.locator('button.tab-btn').filter({ hasText: 'Finanzas' }).click();
+      await page.locator('#pestana-clasificacion').click();
+      await page.locator('#tab-clasificacion details').last().evaluate(el => { el.open = true; });
       await page.locator('#tipo-ejercicio').selectOption('espacio');
       assert.match(await page.locator('#titulo-laboratorio').innerText(), /Lectura del espacio/);
       const spaceBoard = await page.locator('#svg-espacio').evaluate(el => ({
@@ -490,7 +544,8 @@ const fs = require('node:fs/promises');
       await page.reload();
       assert.equal(await page.evaluate(() => estadoJuego.entrenamiento.porTipo.espacio.intentos), 1,
         'el progreso de lectura del espacio se conserva al recargar');
-      await page.locator('button.tab-btn').filter({ hasText: 'Finanzas' }).click();
+      await page.locator('#pestana-clasificacion').click();
+      await page.locator('#tab-clasificacion details').last().evaluate(el => { el.open = true; });
       await page.locator('#tipo-ejercicio').selectOption('finalizacion');
       assert.match(await page.locator('#titulo-laboratorio').innerText(), /Finalización/);
       const finishBoard = await page.locator('#svg-finalizacion').evaluate(el => ({
@@ -518,7 +573,7 @@ const fs = require('node:fs/promises');
       assert.equal(await page.evaluate(() => estadoJuego.entrenamiento.porTipo.finalizacion.intentos), 1,
         'el progreso de finalización se conserva al recargar');
       // Compruebo que lesiones y fatiga influyen en el once y que descanso solo se aplica una vez.
-      await page.locator('button.tab-btn').filter({ hasText: 'Alineación' }).click();
+      await page.locator('button.tab-btn').filter({ hasText: 'Táctica' }).click();
       const availability = await page.locator('#resumen-disponibilidad').innerText();
       assert.match(availability, /Disponibles: \d+\/\d+/);
       assert.match(availability, /Lesionados: \d+/);
@@ -670,7 +725,7 @@ const fs = require('node:fs/promises');
       assert.equal(exported.version, 1);
       assert.equal(exported.partida.equipos.length, 4);
       const importCandidate = structuredClone(exported.partida);
-      importCandidate.equipos.find(e => e.nombre === 'FC Pase y Pifia').presupuesto = -250000;
+      importCandidate.equipos.find(e => e.nombre === 'Real Magras de Madrid').presupuesto = -250000;
       await page.locator('#archivo-partida').setInputFiles({
         name: 'copia-linea-de-pase.json', mimeType: 'application/json',
         buffer: Buffer.from(JSON.stringify({ ...exported, partida: importCandidate }))
@@ -1021,7 +1076,7 @@ const fs = require('node:fs/promises');
         clubes[1].gc = 4;
         return calcularPremiosClasificacion(clubes).map(e => e.nombre);
       });
-      assert.equal(empate[0], 'FC Pase y Pifia',
+      assert.equal(empate[0], 'Real Magras de Madrid',
         'a igualdad de puntos y diferencia de goles, mandan los goles a favor');
       const empateTotal = await page.evaluate(() => {
         const clubes = crearEstadoInicial().equipos;
@@ -1029,7 +1084,8 @@ const fs = require('node:fs/promises');
         return calcularPremiosClasificacion(clubes).map(e => e.nombre);
       });
       assert.deepEqual(empateTotal, [
-        'Atlético Siestense', 'Deportivo Balón Perdido', 'FC Pase y Pifia', 'Unión Deportiva Patapalo'
+        'Athletic de la Tronca', 'Atlético Colchonico de la Ribera',
+        'Balompié del Somontano', 'Real Magras de Madrid'
       ], 'si puntos, diferencia y goles a favor empatan, el nombre ordena de forma estable');
       const temporadaIncompleta = await page.evaluate(() => {
         const actual = estadoJuego.jornadaActual;
@@ -1060,7 +1116,7 @@ const fs = require('node:fs/promises');
       }));
       await page.evaluate(() => {
         estadoJuego.equipos.forEach(eq => eq.plantilla.forEach(j => { j.goles = 0; j.xg = 0; }));
-        const goleadorLocal = obtenerMiEquipo().plantilla.find(j => j.nombre === 'Paco Manoplas');
+        const goleadorLocal = obtenerMiEquipo().plantilla.find(j => j.nombre === 'Kylian Embozado');
         const goleadorVisitante = estadoJuego.equipos[1].plantilla.find(j => j.posicion === 'DEL');
         goleadorLocal.goles = 7;
         goleadorLocal.xg = 4.25;
@@ -1075,14 +1131,14 @@ const fs = require('node:fs/promises');
       assert.equal(archivoPrimeraTemporada.temporada, 1, 'el cambio de temporada archiva la campaña que termina');
       assert.equal(archivoPrimeraTemporada.goleadores.length, 2,
         'el resumen conserva a todos los máximos goleadores empatados');
-      assert.ok(archivoPrimeraTemporada.goleadores.some(j => j.nombre === 'Paco Manoplas'));
-      assert.ok(archivoPrimeraTemporada.goleadores.some(j => j.equipo !== 'FC Pase y Pifia'));
+      assert.ok(archivoPrimeraTemporada.goleadores.some(j => j.nombre === 'Kylian Embozado'));
+      assert.ok(archivoPrimeraTemporada.goleadores.some(j => j.equipo !== 'Real Magras de Madrid'));
       assert.ok(archivoPrimeraTemporada.goleadores.every(j => j.goles === 7),
         'el empate se resuelve por goles y no por xG');
       assert.ok(archivoPrimeraTemporada.clasificacion.every(eq => Number.isInteger(eq.pj) &&
         Number.isInteger(eq.remates) && Number.isFinite(eq.xgf) && Number.isFinite(eq.xgc)),
         'el archivo conserva partidos, remates y xG de los cuatro equipos');
-      assert.match(await page.locator('#tbody-historial-temporadas tr').first().innerText(), /Empate:.*Paco Manoplas/,
+      assert.match(await page.locator('#tbody-historial-temporadas tr').first().innerText(), /Empate:.*Kylian Embozado/,
         'el archivo anuncia el empate entre goleadores');
       const celdasArchivo = await page.locator('#tbody-historial-temporadas tr').first().locator('td').allInnerTexts();
       assert.equal(celdasArchivo[3].trim(), String(archivoPrimeraTemporada.clasificacion[0].pj),
@@ -1141,7 +1197,7 @@ const fs = require('node:fs/promises');
       // El déficit es válido; además, este caso cubre la migración de guardados sin remates ni archivo histórico.
       await page.evaluate(() => {
         const partida = crearEstadoInicial();
-        partida.equipos.find(e => e.nombre === 'FC Pase y Pifia').presupuesto = -250000;
+        partida.equipos.find(e => e.nombre === 'Real Magras de Madrid').presupuesto = -250000;
         partida.equipos.forEach(e => { delete e.remates; });
         delete partida.historialTemporadas;
         localStorage.setItem('ldp_manager_save', JSON.stringify(partida));
@@ -1226,7 +1282,7 @@ const fs = require('node:fs/promises');
         localStorage.setItem('ldp_manager_save', JSON.stringify(partida));
       });
       await page.reload();
-      assert.equal(await page.evaluate(() => obtenerMiEquipo()?.nombre), 'FC Pase y Pifia',
+      assert.equal(await page.evaluate(() => obtenerMiEquipo()?.nombre), 'Real Magras de Madrid',
         'una partida sin el equipo controlado se debe rechazar');
       await page.evaluate(() => localStorage.setItem('ldp_manager_save', '{bad json'));
       await page.reload();
