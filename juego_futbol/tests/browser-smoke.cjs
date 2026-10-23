@@ -23,6 +23,16 @@ const fs = require('node:fs/promises');
       page.on('dialog', dialog => dialog.accept());
       await page.goto('http://127.0.0.1:8765/juego_futbol/', { waitUntil: 'load' });
       if (mode === 'mobile') assert.equal(await page.evaluate(() => window.innerWidth), 390, 'ancho de pantalla móvil esperado');
+      await page.emulateMedia({ reducedMotion: 'reduce' });
+      const movimientoReducido = await page.evaluate(() => ({
+        preferencia: matchMedia('(prefers-reduced-motion: reduce)').matches,
+        animacionPanel: parseFloat(getComputedStyle(document.querySelector('.tab-content')).animationDuration),
+        transicionPestana: parseFloat(getComputedStyle(document.querySelector('.tab-btn')).transitionDuration)
+      }));
+      assert.equal(movimientoReducido.preferencia, true, 'el navegador puede solicitar movimiento reducido');
+      assert.ok(movimientoReducido.animacionPanel <= 0.001, 'los paneles reducen su animación');
+      assert.ok(movimientoReducido.transicionPestana <= 0.001, 'las pestañas reducen su transición');
+      await page.emulateMedia({ reducedMotion: 'no-preference' });
       try {
         await page.waitForFunction(() => typeof estadoJuego !== 'undefined' && !!estadoJuego.equipos);
       } catch (error) {

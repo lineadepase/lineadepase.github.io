@@ -31,7 +31,7 @@ Todos los clubes y futbolistas del juego usan nombres ficticios con tono humorí
 ## Pruebas y limitaciones conocidas
 
 - Python: compilación y pruebas unitarias para calendario, integridad de temporada, mercado/guardado, xG y plantillas sin jugadores aptos.
-- Navegador: Playwright en Chromium para escritorio y móvil, guía rápida, previa de rival y estado del botón al cerrar temporada, controles, persistencia, mercado, lesiones, calendario, premios, resumen accesible del partido con remates y xG, crónica de ocasiones, archivo multitemporada con sus métricas y diferencia goles-xG, empates de goleadores, migración de resúmenes antiguos, importación/exportación y errores JavaScript. El workflow guarda capturas de ambos tamaños como artefacto temporal.
+- Navegador: Playwright en Chromium para escritorio y móvil, preferencia de movimiento reducido, guía rápida, previa de rival y estado del botón al cerrar temporada, controles, persistencia, mercado, lesiones, calendario, premios, resumen accesible del partido con remates y xG, crónica de ocasiones, archivo multitemporada con sus métricas y diferencia goles-xG, empates de goleadores, migración de resúmenes antiguos, importación/exportación y errores JavaScript. El workflow guarda capturas de ambos tamaños como artefacto temporal.
 - La comprobación local requiere el ejecutable Chromium de Playwright; en este entorno no está instalado. El resultado definitivo de navegador debe confirmarse en GitHub Actions.
 - La simulación web es un prototipo jugable de cuatro equipos, no una base de datos de una competición real. El cliente Python no comparte todavía un único motor con la web ni constituye una app iOS/Android.
 
