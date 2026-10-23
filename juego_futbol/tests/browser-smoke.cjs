@@ -489,11 +489,11 @@ const fs = require('node:fs/promises');
         const [home, away] = estadoJuego.equipos;
         const original = [home, away].map(eq => eq.plantilla.map(j => j.lesionado));
         for (const eq of [home, away]) eq.plantilla.forEach(j => { j.lesionado = 4; });
-        const before = [home, away].map(eq => eq.xgf);
+        const before = [home, away].map(eq => ({ xgf: eq.xgf, remates: eq.remates }));
         const log = document.getElementById('match-log');
         const canvas = document.getElementById('canvas-shotmap');
         simularPartidoIndividual(home, away, false, log, canvas.getContext('2d'), canvas.width, canvas.height);
-        const after = [home, away].map(eq => eq.xgf);
+        const after = [home, away].map(eq => ({ xgf: eq.xgf, remates: eq.remates }));
         [home, away].forEach((eq, i) => eq.plantilla.forEach((j, k) => { j.lesionado = original[i][k]; }));
         convocarOnceAutomatico(home);
         convocarOnceAutomatico(away);
@@ -591,6 +591,7 @@ const fs = require('node:fs/promises');
           const selected = mostrarRepeticion(0);
           return {
             events: eventosPartidoActual.length,
+            shots: [home.remates, away.remates],
             controls: document.querySelectorAll('#replay-controls [data-replay-index]').length,
             logButtons: document.querySelectorAll('#match-log .replay-trigger').length,
             selected,
@@ -606,6 +607,8 @@ const fs = require('node:fs/promises');
         }
       });
       assert.equal(replayCheck.events, 18, 'el partido genera ocasiones en sus 18 ventanas de juego');
+      assert.equal(replayCheck.shots.reduce((total, remates) => total + remates, 0), 18,
+        'el contador de remates coincide con las ocasiones generadas');
       assert.equal(replayCheck.controls, replayCheck.events, 'cada ocasión tiene control para repetirla');
       assert.equal(replayCheck.logButtons, replayCheck.events, 'la crónica enlaza cada remate a su repetición');
       assert.equal(replayCheck.selected, true);
@@ -658,6 +661,8 @@ const fs = require('node:fs/promises');
       }));
       await page.evaluate(() => iniciarNuevaTemporada());
       assert.equal(await page.evaluate(() => estadoJuego.temporada), 2);
+      assert.deepEqual(await page.evaluate(() => estadoJuego.equipos.map(eq => eq.remates)), [0, 0, 0, 0],
+        'los remates se reinician al comenzar la temporada');
       const presupuestosDespues = await page.evaluate(() =>
         Object.fromEntries(estadoJuego.equipos.map(e => [e.nombre, e.presupuesto])));
       for (const nombre of Object.keys(presupuestosAntes)) {
@@ -696,11 +701,14 @@ const fs = require('node:fs/promises');
       await page.evaluate(() => {
         const partida = crearEstadoInicial();
         partida.equipos.find(e => e.nombre === 'FC Pase y Pifia').presupuesto = -250000;
+        partida.equipos.forEach(e => { delete e.remates; });
         localStorage.setItem('ldp_manager_save', JSON.stringify(partida));
       });
       await page.reload();
       assert.equal(await page.evaluate(() => obtenerMiEquipo().presupuesto), -250000,
         'una partida con déficit se recupera sin reiniciarse');
+      assert.deepEqual(await page.evaluate(() => estadoJuego.equipos.map(eq => eq.remates)), [0, 0, 0, 0],
+        'los guardados anteriores migran el contador de remates sin perder datos');
       assert.match(await page.locator('#lbl-presupuesto').innerText(), /Déficit/,
         'el déficit se señala en la interfaz');
       const compraEnDeficit = await page.evaluate(() => {

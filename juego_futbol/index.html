@@ -554,6 +554,7 @@
                             <th>GF</th>
                             <th>GC</th>
                             <th>DG</th>
+                            <th title="Remates simulados en la temporada">Remates</th>
                             <th>xG Favor</th>
                             <th>xG Contra</th>
                             <th>Dif (G - xG)</th>
@@ -859,7 +860,7 @@ function crearEstadoInicial() {
         aforo: 30000,
         formacion: "4-4-2",
         estilo: "Equilibrado",
-        puntos: 0, pj: 0, gf: 0, gc: 0, xgf: 0.0, xgc: 0.0,
+        puntos: 0, pj: 0, gf: 0, gc: 0, remates: 0, xgf: 0.0, xgc: 0.0,
         plantilla: [
             crearJugador("Paco Manoplas", "POR", 72),
             crearJugador("Rafa Rechaces", "DEF", 75),
@@ -898,7 +899,7 @@ function crearEstadoInicial() {
             // Cada rival conserva una identidad táctica distinta y utilizable
             // por el motor de ataque, defensa y desgaste.
             formacion: r.formacion, estilo: r.estilo,
-            puntos: 0, pj: 0, gf: 0, gc: 0, xgf: 0.0, xgc: 0.0,
+            puntos: 0, pj: 0, gf: 0, gc: 0, remates: 0, xgf: 0.0, xgc: 0.0,
             plantilla: []
         };
         const posList = ["POR", "DEF", "DEF", "DEF", "DEF", "DEF", "CEN", "CEN", "CEN", "CEN", "CEN", "DEL", "DEL", "DEL"];
@@ -1016,6 +1017,17 @@ function nombreGuardadoValido(nombre) {
     return typeof nombre === 'string' && nombre.trim().length > 0 && nombre.length <= 80;
 }
 
+// Los guardados anteriores no tenían el contador de remates; se migran con
+// cero antes de validarlos para conservar temporadas ya empezadas.
+function normalizarEstadoPartida(estado) {
+    if (estado && Array.isArray(estado.equipos)) {
+        estado.equipos.forEach(eq => {
+            if (eq && eq.remates === undefined) eq.remates = 0;
+        });
+    }
+    return estado;
+}
+
 function estadoPartidaValido(estado) {
     try {
         return Boolean(estado && Array.isArray(estado.equipos) && estado.equipos.length === 4 &&
@@ -1024,7 +1036,8 @@ function estadoPartidaValido(estado) {
             estado.equipos.every(eq => eq && nombreGuardadoValido(eq.nombre) &&
                 Number.isFinite(eq.presupuesto) && Number.isFinite(eq.aforo) && eq.aforo >= 0 &&
                 Object.hasOwn(FORMACIONES, eq.formacion) && Object.hasOwn(ESTILOS, eq.estilo) &&
-                ['puntos', 'pj', 'gf', 'gc', 'xgf', 'xgc'].every(k => Number.isFinite(eq[k]) && eq[k] >= 0) &&
+                ['puntos', 'pj', 'gf', 'gc', 'remates', 'xgf', 'xgc'].every(k => Number.isFinite(eq[k]) && eq[k] >= 0) &&
+                Number.isInteger(eq.remates) &&
                 Array.isArray(eq.plantilla) && eq.plantilla.length >= 11 && eq.plantilla.length <= 50 &&
                 eq.plantilla.every(j => j && nombreGuardadoValido(j.nombre) &&
                     ['POR', 'DEF', 'CEN', 'DEL'].includes(j.posicion) &&
@@ -1161,6 +1174,7 @@ function actualizarUI() {
             <td>${eq.gf}</td>
             <td>${eq.gc}</td>
             <td>${dg >= 0 ? '+' + dg : dg}</td>
+            <td>${eq.remates}</td>
             <td>${eq.xgf.toFixed(2)}</td>
             <td>${eq.xgc.toFixed(2)}</td>
             <td style="color:${difXg >= 0 ? '#4ade80' : '#f87171'}">${difXg >= 0 ? '+' + difXg.toFixed(2) : difXg.toFixed(2)}</td>
@@ -1839,7 +1853,7 @@ function simularPartidoIndividual(local, vis, esNuestro, logBox, ctxShot, w, h) 
     const atqL = fLoc.ataque > 0 ? fLoc.ataque + 3 : 0;
     const atqV = fVis.ataque;
 
-    let gL = 0, gV = 0, xgL = 0, xgV = 0;
+    let gL = 0, gV = 0, xgL = 0, xgV = 0, rematesL = 0, rematesV = 0;
     // Dieciocho ventanas dan un volumen de ocasiones más creíble que ocho
     // acciones aisladas, manteniendo la simulación rápida y determinista en coste.
     const tramos = [3, 8, 13, 18, 23, 28, 33, 38, 43, 48, 53, 58, 63, 68, 73, 78, 83, 88];
@@ -1863,6 +1877,8 @@ function simularPartidoIndividual(local, vis, esNuestro, logBox, ctxShot, w, h) 
             const titulares = eqAtq.plantilla.filter(j => j.titular && j.lesionado === 0);
             if (titulares.length === 0) return;
             const rematador = elegirRematador(titulares);
+            if (atacaLocal) rematesL++;
+            else rematesV++;
 
             const esClara = Math.random() < perfilAtaque.probabilidadOcasionClara;
             const xgBase = esClara ? (0.30 + Math.random() * 0.25) : (0.04 + Math.random() * 0.18);
@@ -1917,6 +1933,8 @@ function simularPartidoIndividual(local, vis, esNuestro, logBox, ctxShot, w, h) 
     local.pj++; vis.pj++;
     local.gf += gL; local.gc += gV;
     vis.gf += gV; vis.gc += gL;
+    local.remates += rematesL;
+    vis.remates += rematesV;
     local.xgf = Number((local.xgf + xgL).toFixed(2));
     local.xgc = Number((local.xgc + xgV).toFixed(2));
     vis.xgf = Number((vis.xgf + xgV).toFixed(2));
@@ -2154,7 +2172,7 @@ function iniciarNuevaTemporada() {
     estadoJuego.preparacionUsada = false;
     estadoJuego.equipos.forEach(eq => {
         eq.presupuesto += premios.find(p => p.nombre === eq.nombre).premio;
-        eq.puntos = 0; eq.pj = 0; eq.gf = 0; eq.gc = 0; eq.xgf = 0; eq.xgc = 0;
+        eq.puntos = 0; eq.pj = 0; eq.gf = 0; eq.gc = 0; eq.remates = 0; eq.xgf = 0; eq.xgc = 0;
         eq.plantilla.forEach(j => { j.goles = 0; j.xg = 0; j.cansancio = 0; j.lesionado = 0; });
         convocarOnceAutomatico(eq);
     });
@@ -2204,8 +2222,8 @@ function importarPartidaArchivo(input) {
     lector.onload = () => {
         try {
             const datos = JSON.parse(String(lector.result));
-            const candidata = datos && datos.formato === 'linea-de-pase-partida' && datos.version === 1
-                ? datos.partida : datos;
+            const candidata = normalizarEstadoPartida(datos && datos.formato === 'linea-de-pase-partida' && datos.version === 1
+                ? datos.partida : datos);
             if (!estadoPartidaValido(candidata)) throw new Error('La copia no tiene una estructura de partida válida.');
             if (!confirm('La copia importada sustituirá la partida actual. ¿Quieres continuar?')) return;
             // Guardar primero: si el navegador rechaza el almacenamiento, la partida activa no cambia.
@@ -2248,7 +2266,7 @@ window.onload = () => {
     try {
         const guardado = localStorage.getItem('ldp_manager_save');
         cargaCorrecta = Boolean(guardado);
-        estadoJuego = guardado ? JSON.parse(guardado) : crearEstadoInicial();
+        estadoJuego = guardado ? normalizarEstadoPartida(JSON.parse(guardado)) : crearEstadoInicial();
         if (!estadoPartidaValido(estadoJuego)) {
             throw new Error("Formato de partida no válido");
         }
