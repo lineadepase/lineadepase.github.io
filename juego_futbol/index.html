@@ -385,6 +385,8 @@
             margin-top: 8px;
         }
 
+        .match-preview { white-space: pre-line; line-height: 1.5; }
+
         .training-layout { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(260px, .65fr); gap: 20px; }
         .pass-pitch { width: 100%; display: block; border-radius: 12px; background: #14532d; margin: 12px 0; }
         .pass-pitch:not(.active) { display: none; }
@@ -1344,10 +1346,14 @@ function actualizarUI() {
         cartel.textContent = `Jornada ${estadoJuego.jornadaActual + 1}: ${par[0]} vs ${par[1]}`;
         const nombreRival = par.find(nombre => nombre !== miEq.nombre);
         const rival = estadoJuego.equipos.find(eq => eq.nombre === nombreRival);
+        const fuerzasPropias = calcularFuerzas(miEq);
         const fuerzasRival = calcularFuerzas(rival);
-        previaRival.textContent = `Rival: ${rival.nombre} · ${rival.formacion} · ${rival.estilo} · ` +
-            `Ataque ${fuerzasRival.ataque.toFixed(1)} / Defensa ${fuerzasRival.defensa.toFixed(1)} ` +
-            '(valores del simulador)';
+        previaRival.textContent = `Rival: ${rival.nombre} · ${rival.formacion} · ${rival.estilo}\n` +
+            `Fuerzas: tu equipo, ataque ${fuerzasPropias.ataque.toFixed(1)} / defensa ${fuerzasPropias.defensa.toFixed(1)} · ` +
+            `rival, ataque ${fuerzasRival.ataque.toFixed(1)} / defensa ${fuerzasRival.defensa.toFixed(1)}\n` +
+            `Cruces: tu ataque vs defensa rival ${fuerzasPropias.ataque.toFixed(1)} vs ${fuerzasRival.defensa.toFixed(1)} · ` +
+            `tu defensa vs ataque rival ${fuerzasPropias.defensa.toFixed(1)} vs ${fuerzasRival.ataque.toFixed(1)}\n` +
+            'Valores del simulador; describen fuerzas, no predicen el resultado.';
     } else {
         cartel.textContent = `🏆 Temporada ${estadoJuego.temporada} Finalizada`;
         previaRival.textContent = 'No hay rival pendiente: la temporada está cerrada.';

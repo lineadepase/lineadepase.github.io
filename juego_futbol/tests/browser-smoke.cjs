@@ -81,14 +81,19 @@ const fs = require('node:fs/promises');
           formacion: rival.formacion,
           estilo: rival.estilo,
           ataque: fuerzas.ataque.toFixed(1),
-          defensa: fuerzas.defensa.toFixed(1)
+          defensa: fuerzas.defensa.toFixed(1),
+          ataquePropio: calcularFuerzas(miEquipo).ataque.toFixed(1),
+          defensaPropia: calcularFuerzas(miEquipo).defensa.toFixed(1)
         };
       });
       const textoPreviaRival = await page.locator('#match-preview').innerText();
       assert.ok(textoPreviaRival.includes(perfilProximoRival.nombre) &&
         textoPreviaRival.includes(`${perfilProximoRival.formacion} · ${perfilProximoRival.estilo}`) &&
-        textoPreviaRival.includes(`Ataque ${perfilProximoRival.ataque} / Defensa ${perfilProximoRival.defensa}`),
-        'la previa muestra el perfil y las fuerzas calculadas del rival que toca');
+        textoPreviaRival.includes(`rival, ataque ${perfilProximoRival.ataque} / defensa ${perfilProximoRival.defensa}`) &&
+        textoPreviaRival.includes(`tu ataque vs defensa rival ${perfilProximoRival.ataquePropio} vs ${perfilProximoRival.defensa}`) &&
+        textoPreviaRival.includes(`tu defensa vs ataque rival ${perfilProximoRival.defensaPropia} vs ${perfilProximoRival.ataque}`) &&
+        textoPreviaRival.includes('no predicen el resultado'),
+        'la previa muestra ambos perfiles, los cruces de fuerzas y aclara que no es un pronóstico');
       const avatarCheck = await page.evaluate(() => {
         const avatares = [...document.querySelectorAll('#tbody-plantilla .player-avatar')];
         const avatarMercado = [...document.querySelectorAll('#tbody-mercado .player-avatar')];
