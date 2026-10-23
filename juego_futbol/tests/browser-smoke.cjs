@@ -60,6 +60,25 @@ const fs = require('node:fs/promises');
       assert.deepEqual(plantillasFicticias.perfilesRivales, [
         ['5-3-2', 'Defensivo'], ['4-3-3', 'Ofensivo'], ['4-4-2', 'Equilibrado']
       ], 'los rivales deben presentar perfiles tácticos diferenciados');
+      const perfilProximoRival = await page.evaluate(() => {
+        const miEquipo = obtenerMiEquipo();
+        const cruce = estadoJuego.calendario[estadoJuego.jornadaActual]
+          .find(([local, visitante]) => local === miEquipo.nombre || visitante === miEquipo.nombre);
+        const rival = estadoJuego.equipos.find(eq => eq.nombre === cruce.find(nombre => nombre !== miEquipo.nombre));
+        const fuerzas = calcularFuerzas(rival);
+        return {
+          nombre: rival.nombre,
+          formacion: rival.formacion,
+          estilo: rival.estilo,
+          ataque: fuerzas.ataque.toFixed(1),
+          defensa: fuerzas.defensa.toFixed(1)
+        };
+      });
+      const textoPreviaRival = await page.locator('#match-preview').innerText();
+      assert.ok(textoPreviaRival.includes(perfilProximoRival.nombre) &&
+        textoPreviaRival.includes(`${perfilProximoRival.formacion} · ${perfilProximoRival.estilo}`) &&
+        textoPreviaRival.includes(`Ataque ${perfilProximoRival.ataque} / Defensa ${perfilProximoRival.defensa}`),
+        'la previa muestra el perfil y las fuerzas calculadas del rival que toca');
       const avatarCheck = await page.evaluate(() => {
         const avatares = [...document.querySelectorAll('#tbody-plantilla .player-avatar')];
         const avatarMercado = [...document.querySelectorAll('#tbody-mercado .player-avatar')];
@@ -702,6 +721,8 @@ const fs = require('node:fs/promises');
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 1, 'partida persistente');
       await page.evaluate(() => { for (let i = 1; i < 6; i++) simularJornada(); });
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 6);
+      assert.equal(await page.locator('#match-preview').innerText(),
+        'No hay rival pendiente: la temporada está cerrada.');
       assert.match(await page.locator('#btn-simular-jornada').innerText(), /CERRAR TEMPORADA Y CONTINUAR/,
         'el botón explica que empieza la gestión de la siguiente campaña');
       // Cierro una temporada para probar desempates, premios, reinicio estadístico y renovación del mercado.
