@@ -755,8 +755,13 @@ const fs = require('node:fs/promises');
         'el archivo conserva partidos, remates y xG de los cuatro equipos');
       assert.match(await page.locator('#tbody-historial-temporadas tr').first().innerText(), /Empate:.*Paco Manoplas/,
         'el archivo anuncia el empate entre goleadores');
-      assert.match(await page.locator('#tbody-historial-temporadas tr').first().innerText(), /6\s+\d+\s+\d+-\d+\s+\d+\s+\d+\.\d{2}\s+\d+\.\d{2}/,
-        'la tabla histórica muestra todas las métricas guardadas');
+      const celdasArchivo = await page.locator('#tbody-historial-temporadas tr').first().locator('td').allInnerTexts();
+      assert.equal(celdasArchivo[3].trim(), '6', 'la tabla histórica muestra los partidos jugados');
+      assert.match(celdasArchivo[5], /^\d+-\d+$/);
+      assert.match(celdasArchivo[6], /^\d+$/);
+      assert.match(celdasArchivo[7], /^\d+\.\d{2}$/);
+      assert.match(celdasArchivo[8], /^\d+\.\d{2}$/,
+        'la tabla histórica muestra goles, remates y ambos xG guardados');
       assert.equal(await page.evaluate(() => estadoPartidaValido(estadoJuego)), true,
         'el nuevo historial cumple la validación de guardado');
       assert.equal(await page.locator('#tbody-historial-temporadas tr').count(), 4,
