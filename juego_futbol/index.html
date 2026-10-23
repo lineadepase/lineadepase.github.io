@@ -587,7 +587,7 @@ body{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
 
 <header>
     <div class="club-brand">
-        <div class="club-mark" aria-hidden="true">⚽</div>
+        <div class="club-mark" aria-hidden="true"><svg class="club-emblem" viewBox="0 0 64 72" role="img" aria-label="Emblema de Línea de Pase"><path d="M8 5h48v34c0 14-10 23-24 29C18 62 8 53 8 39Z" fill="#0f172a" stroke="#facc15" stroke-width="4"/><path d="M13 11h38v27c0 9-6 16-19 22V11Z" fill="#2563eb"/><path d="M13 38h38v0c0 9-6 16-19 22-13-6-19-13-19-22" fill="#f97316"/><path d="m18 36 10-10 8 6 10-13" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><text x="32" y="51" text-anchor="middle" font-size="10" font-weight="900" fill="#fff">LP</text></svg></div>
         <div>
             <h1>REAL MAGRAS DE MADRID</h1>
             <span>Línea de Pase · Manager de fútbol y xG simulado</span>
@@ -635,6 +635,12 @@ body{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
                 <div class="panel-header">
                     <span class="panel-title">Gestión de Plantilla y Rotaciones</span>
                     <span class="hint-box">Selecciona dos jugadores para cambiar Titular ↔ Suplente; también puedes usar Enter o Espacio.</span>
+                </div>
+                <div class="roster-controls" aria-label="Filtros de plantilla">
+                    <strong id="roster-view-label">Once titular</strong>
+                    <label class="roster-search">Buscar <input id="roster-search" type="search" placeholder="Nombre de jugador" aria-label="Buscar jugador por nombre"></label>
+                    <label>Posición <select id="roster-position"><option value="">Todas</option><option value="POR">Portero</option><option value="DEF">Defensa</option><option value="CEN">Centro</option><option value="DEL">Delantero</option></select></label>
+                    <button id="toggle-bench" type="button" aria-expanded="false">👥 Mostrar suplentes</button>
                 </div>
                 <div class="controls-bar">
                     <label>Esquema:
@@ -792,6 +798,7 @@ body{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
 
     <!-- PESTAÑA 3: CLASIFICACIÓN Y MÉTRICAS -->
     <section id="tab-clasificacion" class="tab-content active" role="tabpanel" aria-labelledby="pestana-clasificacion" tabindex="0" aria-hidden="false">
+        <div id="primeros-pasos" class="panel" aria-label="Guía de inicio"></div>
         <div id="reigns-panel" class="panel" aria-label="Despacho del míster"></div>
         <div id="retos-mister" class="panel" aria-label="Retos del míster"></div>
         <div class="panel cta-row" aria-label="Próximas acciones">

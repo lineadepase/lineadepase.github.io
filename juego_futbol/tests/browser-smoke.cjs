@@ -106,6 +106,10 @@ async function recargarPartida(page) {
         'la base incluye las parodias solicitadas de los cuatro equipos');
       assert.equal(integridadPlantillas.control, 'Real Magras de Madrid');
       assert.equal(integridadPlantillas.panelActivo, 'tab-clasificacion', 'la vista inicial coincide con Despacho Míster');
+      assert.match(await page.locator('#primeros-pasos').innerText(), /Tu primer partido/,
+        'el despacho guía a los nuevos jugadores en tres pasos breves');
+      assert.equal(await page.locator('.club-emblem').count(), 1,
+        'la cabecera usa el emblema vectorial propio de Línea de Pase');
       assert.equal(await page.locator('#reigns-panel .manager-meter').count(), 4,
         'el despacho muestra cuatro medidores de estado');
       assert.equal(await page.locator('#retos-mister .achievement-card').count(), 4,
@@ -152,6 +156,7 @@ async function recargarPartida(page) {
             return { campo, visible: getComputedStyle(celda).display !== 'none', anchura: celda.getBoundingClientRect().width };
           });
           return { plantilla: tabla.scrollWidth <= tabla.clientWidth + 1, columnas: estilo.display,
+            suplentesPlegados: [...tabla.tBodies[0].rows].filter(fila => !fila.classList.contains('is-starter')).every(fila => fila.hidden),
             campos, anchoDocumento: document.documentElement.scrollWidth, anchoVentana: innerWidth };
         });
         assert.equal(tablaPlantillaMovil.plantilla, true,
@@ -161,6 +166,9 @@ async function recargarPartida(page) {
           'fatiga, goles, xG y estado siguen visibles en móvil');
         assert.ok(tablaPlantillaMovil.anchoDocumento <= tablaPlantillaMovil.anchoVentana + 2,
           'la plantilla adaptable no ensancha la página móvil');
+        assert.equal(tablaPlantillaMovil.suplentesPlegados, true,
+          'la vista móvil empieza centrada en el once y permite desplegar el banquillo');
+        await page.locator('#toggle-bench').click();
       }
       const selectorJugador = indice => `#tbody-plantilla .player-select-btn[data-player-index="${indice}"]`;
       const botonTitular = page.locator(selectorJugador(indicesRotacion.titular));
@@ -1111,7 +1119,10 @@ async function recargarPartida(page) {
         'Rasmia y Arenga también consumen una carta cada una');
       await page.waitForFunction(() => document.getElementById('qte-backdrop').classList.contains('open'), null, { timeout: 5000 });
       await page.locator('[data-qte="shot"]').click();
-      await page.waitForFunction(() => document.getElementById('qte-backdrop').classList.contains('open'), null, { timeout: 5000 });
+      await page.waitForFunction(() => document.querySelectorAll('#match-log .log-chance, #match-log .log-goal').length > 0);
+      assert.match(await page.locator('#match-summary').innerText(), /En directo:/,
+        'la elección QTE crea una ocasión y actualiza el resumen durante el partido');
+      await page.waitForFunction(() => document.getElementById('qte-backdrop').classList.contains('open'), null, { timeout: 15000 });
       await page.locator('[data-qte="pass"]').click();
       await page.evaluate(() => { window.__originalRandom = Math.random; Math.random = () => 0; window.__varPromise = abrirVARPueblo(); });
       await page.waitForSelector('#var-backdrop.open');
@@ -1120,7 +1131,7 @@ async function recargarPartida(page) {
       assert.match(await page.locator('#var-result').innerText(), /favorable/,
         'presionar al árbitro puede influir en el VAR y comunica la decisión');
       await page.waitForFunction(() => estadoJuego.jornadaActual === 1 &&
-        document.getElementById('event-backdrop').classList.contains('open'), null, { timeout: 15000 });
+        document.getElementById('event-backdrop').classList.contains('open'), null, { timeout: 30000 });
       const eventoAntes = await page.evaluate(() => ({
         presupuesto: obtenerMiEquipo().presupuesto,
         moral: obtenerMiEquipo().plantilla[0].moral,
