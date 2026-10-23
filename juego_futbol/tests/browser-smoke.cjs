@@ -38,6 +38,53 @@ const fs = require('node:fs/promises');
       } catch (error) {
         throw new Error(`${error.message}; errores de página: ${JSON.stringify(errors)}`);
       }
+      // La rotación manual es operable con teclado y comunica selección y bajas.
+      const indicesRotacion = await page.evaluate(() => {
+        const plantilla = obtenerMiEquipo().plantilla;
+        return {
+          titular: plantilla.findIndex(j => j.titular && j.lesionado === 0),
+          suplente: plantilla.findIndex(j => !j.titular && j.lesionado === 0)
+        };
+      });
+      assert.ok(indicesRotacion.titular >= 0 && indicesRotacion.suplente >= 0,
+        'debe haber un titular y un suplente aptos para probar la rotación');
+      const selectorJugador = indice => `#tbody-plantilla .player-select-btn[data-player-index="${indice}"]`;
+      const botonTitular = page.locator(selectorJugador(indicesRotacion.titular));
+      assert.equal(await botonTitular.getAttribute('aria-pressed'), 'false', 'ningún jugador está seleccionado al cargar');
+      await botonTitular.focus();
+      await page.keyboard.press('Enter');
+      assert.equal(await page.locator(selectorJugador(indicesRotacion.titular)).getAttribute('aria-pressed'), 'true',
+        'Enter selecciona un jugador y expone el estado accesible');
+      const botonSuplente = page.locator(selectorJugador(indicesRotacion.suplente));
+      await botonSuplente.focus();
+      await page.keyboard.press('Space');
+      const rotacionTeclado = await page.evaluate(({ titular, suplente }) => ({
+        titular: obtenerMiEquipo().plantilla[titular].titular,
+        suplente: obtenerMiEquipo().plantilla[suplente].titular,
+        seleccionCancelada: document.querySelector('.player-select-btn[aria-pressed="true"]') === null
+      }), indicesRotacion);
+      assert.deepEqual(rotacionTeclado, { titular: false, suplente: true, seleccionCancelada: true },
+        'Espacio completa el intercambio y limpia la selección');
+      const baja = await page.evaluate(indice => {
+        const club = obtenerMiEquipo();
+        const original = club.plantilla[indice].lesionado;
+        club.plantilla[indice].lesionado = 1;
+        actualizarUI();
+        const boton = document.querySelector(`.player-select-btn[data-player-index="${indice}"]`);
+        const resultado = { desactivado: boton.disabled, explicacion: boton.title };
+        club.plantilla[indice].lesionado = original;
+        actualizarUI();
+        return resultado;
+      }, indicesRotacion.titular);
+      assert.deepEqual(baja, { desactivado: true, explicacion: 'Jugador lesionado' },
+        'una baja no se puede elegir y el control explica por qué');
+      await page.evaluate(({ titular, suplente }) => {
+        const plantilla = obtenerMiEquipo().plantilla;
+        plantilla[titular].titular = true;
+        plantilla[suplente].titular = false;
+        jugadorSeleccionadoIdx = null;
+        actualizarUI();
+      }, indicesRotacion);
       await page.screenshot({ path: require('node:path').join(artifactDir, `juego-${mode}.png`), fullPage: true });
       // Identidad ficticia, aviso de métricas simuladas, avatares propios y modelo de ataque/defensa.
       assert.equal(await page.locator('.sim-disclaimer').count(), 1, 'aviso visible de simulación');

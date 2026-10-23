@@ -11,6 +11,7 @@
 
 - Liga ficticia de cuatro equipos, calendario de ida y vuelta y clasificación con desempates.
 - Tres formaciones, tres estilos, selección automática y rotación manual.
+- Rotación manual accesible: cada jugador apto tiene un control de selección operable con teclado, informa si está seleccionado y explica por qué una baja no se puede elegir.
 - Rivales con identidades tácticas distintas: bloque defensivo 5-3-2, propuesta ofensiva 4-3-3 y perfil equilibrado 4-4-2.
 - Laboratorio de juego con ejercicios interactivos de pase y progresión, presión coordinada, lectura del espacio y finalización, explicación de las decisiones y progreso separado por ejercicio.
 - Simulación de ocasiones, tiros, goles, xG interno, cansancio, lesiones, taquilla y salarios. El partido distribuye 18 ventanas de ataque y la relación entre ataque y defensa rival afecta tanto a la selección de rematador y al volumen de remates como a la calidad estimada de las ocasiones. La clasificación muestra los remates simulados acumulados; los guardados previos migran sin reiniciar la temporada.
@@ -31,7 +32,7 @@ Todos los clubes y futbolistas del juego usan nombres ficticios con tono humorí
 ## Pruebas y limitaciones conocidas
 
 - Python: compilación y pruebas unitarias para calendario, integridad de temporada, mercado/guardado, xG y plantillas sin jugadores aptos.
-- Navegador: Playwright en Chromium para escritorio y móvil, preferencia de movimiento reducido, guía rápida, previa de rival y estado del botón al cerrar temporada, controles, persistencia, mercado, lesiones, calendario, premios, resumen accesible del partido con remates y xG, crónica de ocasiones, archivo multitemporada con sus métricas y diferencia goles-xG, empates de goleadores, migración de resúmenes antiguos, importación/exportación y errores JavaScript. El workflow guarda capturas de ambos tamaños como artefacto temporal.
+- Navegador: Playwright en Chromium para escritorio y móvil, preferencia de movimiento reducido, rotación manual con Enter y Espacio y estado accesible de jugadores seleccionados o lesionados, guía rápida, previa de rival y estado del botón al cerrar temporada, controles, persistencia, mercado, lesiones, calendario, premios, resumen accesible del partido con remates y xG, crónica de ocasiones, archivo multitemporada con sus métricas y diferencia goles-xG, empates de goleadores, migración de resúmenes antiguos, importación/exportación y errores JavaScript. El workflow guarda capturas de ambos tamaños como artefacto temporal.
 - La comprobación local requiere el ejecutable Chromium de Playwright; en este entorno no está instalado. El resultado definitivo de navegador debe confirmarse en GitHub Actions.
 - La simulación web es un prototipo jugable de cuatro equipos, no una base de datos de una competición real. El cliente Python no comparte todavía un único motor con la web ni constituye una app iOS/Android.
 
@@ -54,3 +55,5 @@ La clasificación y los premios usan el mismo orden en la web, la consola y la i
 ## Navegación accesible
 
 Las cinco secciones web se anuncian como pestañas vinculadas a sus paneles. El teclado permite recorrerlas con las flechas izquierda y derecha y saltar al principio o al final con Inicio y Fin; el foco visible se distingue con un contorno amarillo. Las pruebas de navegador recorren las cinco secciones y comprueban su estado accesible en escritorio y móvil.
+
+La rotación manual usa un botón por jugador apto, con nombre accesible y estado de selección; Enter y Espacio permiten elegir e intercambiar titulares y suplentes. Los jugadores lesionados muestran el motivo y quedan desactivados. La prueba de navegador comprueba este flujo en escritorio y móvil.

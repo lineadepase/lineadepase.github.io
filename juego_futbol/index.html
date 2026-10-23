@@ -289,6 +289,13 @@
 
         td.left, th.left { text-align: left; }
         .player-name-cell { display: inline-flex; align-items: center; gap: 9px; min-width: 150px; text-align: left; }
+        .player-select-btn {
+            display: inline-flex; align-items: center; gap: 9px; width: 100%; min-height: 44px;
+            padding: 4px; border: 0; border-radius: 6px; background: transparent; color: inherit;
+            font: inherit; text-align: left; cursor: pointer;
+        }
+        .player-select-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+        .player-select-btn:disabled { cursor: not-allowed; }
         .player-avatar { width: 34px; height: 34px; flex: 0 0 34px; display: block; border-radius: 50%; box-shadow: 0 0 0 1px #64748b; }
 
         tr:hover {
@@ -459,7 +466,7 @@
             <div class="panel">
                 <div class="panel-header">
                     <span class="panel-title">Gestión de Plantilla y Rotaciones</span>
-                    <span class="hint-box">Haz clic en dos jugadores para intercambiar Titular ↔ Suplente</span>
+                    <span class="hint-box">Selecciona dos jugadores para cambiar Titular ↔ Suplente; también puedes usar Enter o Espacio.</span>
                 </div>
                 <div class="controls-bar">
                     <label>Esquema:
@@ -1316,15 +1323,16 @@ function actualizarUI() {
     miEq.plantilla.forEach((j, idx) => {
         const tr = document.createElement('tr');
         if (idx === jugadorSeleccionadoIdx) tr.classList.add('selected-row');
-        tr.style.cursor = 'pointer';
-        tr.onclick = () => clicarJugadorPlantilla(idx);
 
         let estTxt = j.lesionado > 0 ? `🚑 Baja (${j.lesionado}j)`
             : (j.cansancio >= 75 ? (j.titular ? '⚠️ Titular fatigado' : '⚠️ Fatigado')
             : (j.titular ? '⭐ Titular' : 'Suplente'));
         tr.innerHTML = `
             <td><span class="badge pos-${j.posicion}">${j.posicion}</span></td>
-            <td class="left"><span class="player-name-cell">${avatarJugadorHTML(j.nombre, j.posicion)}<strong>${escaparHTML(j.nombre)}</strong></span></td>
+            <td class="left"><button type="button" class="player-select-btn" data-player-index="${idx}"
+                aria-label="Seleccionar ${escaparHTML(j.nombre)} (${j.titular ? 'titular' : 'suplente'}) para la rotación"
+                aria-pressed="${idx === jugadorSeleccionadoIdx}" ${j.lesionado > 0 ? 'disabled title="Jugador lesionado"' : ''}
+                onclick="clicarJugadorPlantilla(${idx})">${avatarJugadorHTML(j.nombre, j.posicion)}<strong>${escaparHTML(j.nombre)}</strong></button></td>
             <td>${j.media}</td>
             <td><strong>${rendimientoReal(j)}</strong></td>
             <td>${j.cansancio}%</td>
