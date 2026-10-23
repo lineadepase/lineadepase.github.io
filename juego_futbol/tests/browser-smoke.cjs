@@ -154,6 +154,38 @@ const fs = require('node:fs/promises');
         guardarPartidaLocal(false);
         actualizarUI();
       }, escenarioRotacion);
+      // Navegación rediseñada, módulo Tinder, CTAs y finanzas.
+      assert.deepEqual(await page.locator('button.tab-btn').allInnerTexts().then(xs=>xs.map(x=>x.trim())), [
+        '🏠 Despacho / Resumen', '⚽ Partido', '🔥 Fichajes (Tinder)', '📋 Alineación', '💰 Finanzas'
+      ], 'las cinco secciones usan nombres y orden claros');
+      await page.locator('#pestana-mercado').click();
+      assert.ok(await page.locator('#swipe-card').isVisible(), 'se presenta la tarjeta de ojeo');
+      const mercadoAntesSwipe = await page.evaluate(() => estadoJuego.mercado.map(j => ({...j})));
+      const swipeInicial = await page.locator('#swipe-name').innerText();
+      await page.locator('#swipe-reject').click();
+      assert.notEqual(await page.locator('#swipe-name').innerText(), swipeInicial, 'descartar avanza al siguiente candidato');
+      assert.match(await page.locator('#swipe-feedback').innerText(), /cierzo|abrazo|propicio/i, 'el descarte responde con retranca');
+      const ficha = await page.evaluate(() => ({
+        caricatura: document.getElementById('swipe-portrait').dataset.portraitId,
+        clausula: document.getElementById('swipe-clause').textContent,
+        etiquetas: [...document.querySelectorAll('#swipe-stats .swipe-stat')].length
+      }));
+      assert.match(ficha.caricatura, /^caricatura-/);
+      assert.ok(ficha.clausula.length>20 && ficha.etiquetas>=4, 'ficha lista atributos, cláusula y placeholder de ilustración');
+      await page.locator('#pestana-clasificacion').click();
+      assert.equal(await page.locator('.cta-card button').count(), 2, 'despacho ofrece dos acciones siguientes');
+      await page.locator('#pestana-entrenamiento').click();
+      assert.match(await page.locator('#finance-budget').innerText(), /€/);
+      assert.match(await page.locator('#finance-wages').innerText(), /€/);
+      await page.evaluate(mercado => { estadoJuego.mercado=mercado; guardarPartidaLocal(false); actualizarUI(); }, mercadoAntesSwipe);
+      assert.equal(await page.locator('#finance-squad').innerText(), '14 jugadores · 11 titulares');
+      await page.locator('#pestana-partido').click();
+      assert.equal(await page.locator('#match-clock').innerText(), '00′');
+      assert.equal(await page.locator('#sel-estilo').inputValue(), 'Equilibrado');
+      await page.locator('[data-quick-plan="Ofensivo"]').click();
+      assert.equal(await page.locator('#sel-estilo').inputValue(), 'Ofensivo', 'la decisión rápida actualiza el estilo del motor');
+      assert.match(await page.locator('#match-decision-feedback').innerText(), /próxima jornada/);
+      await page.locator('#pestana-tactica').click();
       await page.screenshot({ path: require('node:path').join(artifactDir, `juego-${mode}.png`), fullPage: true });
       // Identidad ficticia, aviso de métricas simuladas, avatares propios y modelo de ataque/defensa.
       assert.equal(await page.locator('.sim-disclaimer').count(), 1, 'aviso visible de simulación');
@@ -271,10 +303,10 @@ const fs = require('node:fs/promises');
       const tabs = ['tactica', 'partido', 'clasificacion', 'mercado', 'entrenamiento'];
       for (const tab of tabs) {
         await page.locator('button.tab-btn').filter({
-          hasText: tab === 'tactica' ? 'Pizarra Táctica' :
-            tab === 'partido' ? 'Día de Partido' :
-            tab === 'clasificacion' ? 'Clasificación' :
-            tab === 'mercado' ? 'Mercado' : 'Laboratorio de juego'
+          hasText: tab === 'tactica' ? 'Alineación' :
+            tab === 'partido' ? 'Partido' :
+            tab === 'clasificacion' ? 'Despacho' :
+            tab === 'mercado' ? 'Fichajes' : 'Finanzas'
         }).click();
         assert.equal(await page.locator('#tab-' + tab).evaluate(el => getComputedStyle(el).display !== 'none'), true,
           'pestaña visible: ' + tab);
@@ -297,17 +329,17 @@ const fs = require('node:fs/promises');
       assert.equal(accesibilidadTabs.paneles, true, 'cada pestaña identifica su panel');
       await page.locator('#pestana-entrenamiento').focus();
       await page.keyboard.press('ArrowRight');
-      assert.equal(await page.locator('#pestana-tactica').getAttribute('aria-selected'), 'true',
+      assert.equal(await page.locator('#pestana-clasificacion').getAttribute('aria-selected'), 'true',
         'la flecha derecha recorre las pestañas y vuelve al inicio');
-      assert.equal(await page.evaluate(() => document.activeElement.id), 'pestana-tactica');
+      assert.equal(await page.evaluate(() => document.activeElement.id), 'pestana-clasificacion');
       await page.keyboard.press('End');
       assert.equal(await page.locator('#pestana-entrenamiento').getAttribute('aria-selected'), 'true',
         'Fin selecciona la última pestaña');
       await page.keyboard.press('Home');
-      assert.equal(await page.locator('#pestana-tactica').getAttribute('aria-selected'), 'true',
+      assert.equal(await page.locator('#pestana-clasificacion').getAttribute('aria-selected'), 'true',
         'Inicio selecciona la primera pestaña');
       // Compruebo ejercicios, sus marcadores de progreso y la persistencia de cada modalidad.
-      await page.locator('button.tab-btn').filter({ hasText: 'Laboratorio de juego' }).click();
+      await page.locator('button.tab-btn').filter({ hasText: 'Finanzas' }).click();
       const trainingBefore = await page.evaluate(() => ({
         opcion: retoPaseActual.opcionRecomendada,
         indice: retoPaseActual.indice,
@@ -475,7 +507,7 @@ const fs = require('node:fs/promises');
       assert.equal(await page.evaluate(() => estadoJuego.entrenamiento.porTipo.finalizacion.intentos), 1,
         'el progreso de finalización se conserva al recargar');
       // Compruebo que lesiones y fatiga influyen en el once y que descanso solo se aplica una vez.
-      await page.locator('button.tab-btn').filter({ hasText: 'Pizarra Táctica' }).click();
+      await page.locator('button.tab-btn').filter({ hasText: 'Alineación' }).click();
       const availability = await page.locator('#resumen-disponibilidad').innerText();
       assert.match(availability, /Disponibles: \d+\/\d+/);
       assert.match(availability, /Lesionados: \d+/);
@@ -830,7 +862,7 @@ const fs = require('node:fs/promises');
         market: estadoJuego.mercado.length
       }));
       assert.deepEqual(afterReload, beforeReload, 'mercado y presupuesto guardados automáticamente');
-      await page.locator('button').filter({ hasText: 'Día de Partido' }).click();
+      await page.locator('button').filter({ hasText: 'Partido' }).click();
       const replayCheck = await page.evaluate(() => {
         const random = Math.random;
         const originalStats = obtenerMiEquipo().plantilla.map(j => [j.goles, j.xg]);
@@ -878,6 +910,8 @@ const fs = require('node:fs/promises');
           Math.random = random;
         }
       });
+      assert.equal(await page.locator('#microclip-backdrop').getAttribute('aria-hidden'), 'false', 'la repetición abre el microclip animado');
+      await page.locator('#microclip-close').click();
       assert.equal(replayCheck.events, 18, 'el partido genera ocasiones en sus 18 ventanas de juego');
       assert.equal(replayCheck.shots.reduce((total, remates) => total + remates, 0), 18,
         'el contador de remates coincide con las ocasiones generadas');

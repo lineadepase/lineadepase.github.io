@@ -508,6 +508,46 @@
             #match-breakdown [data-label="Goles − xG"] { grid-area: diferencia; }
             #match-breakdown [data-label="Ocasiones claras"] { grid-area: claras; }
         }
+    
+        /* Nueva identidad de manager aragonés: color, jerarquía y tarjetas táctiles. */
+        :root { --accent:#f97316; --accent-light:#facc15; --green:#22c55e; --bg-dark:#101526; --bg-panel:#20283b; }
+        body { background-image:radial-gradient(ellipse at 15% 0%,rgba(249,115,22,.16),transparent 38%),linear-gradient(#101526,#111827); }
+        header { border-bottom:3px solid #f97316; }
+        .club-brand h1 { letter-spacing:.04em; }
+        nav { position:sticky; top:0; z-index:20; background:#111827; border-bottom:2px solid #f97316; box-shadow:0 8px 24px #0005; }
+        .tab-btn { color:#cbd5e1; border-bottom-width:4px; }
+        .tab-btn.active { color:#fff; border-bottom-color:#facc15; background:linear-gradient(180deg,#f9731624,#facc1510); }
+        .cta-row,.finance-grid,.match-quick-actions { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin:14px 0; }
+        .cta-card { border:1px solid #fb923c; border-radius:12px; padding:14px; background:linear-gradient(135deg,#7c2d12,#422006); color:#fff; }
+        .cta-card p { margin:5px 0 12px; color:#ffedd5; line-height:1.45; }
+        .cta-card button { width:100%; background:#f97316; border-color:#fdba74; color:#1c1917; font-weight:900; }
+        .finance-tile { background:linear-gradient(145deg,#263449,#162333); border:1px solid #475569; border-radius:12px; padding:16px; }
+        .finance-tile strong { display:block; color:#facc15; font-size:.78rem; text-transform:uppercase; }
+        .finance-tile span { display:block; font-size:1.35rem; font-weight:900; margin-top:5px; overflow-wrap:anywhere; }
+        .swipe-card { position:relative; max-width:640px; margin:14px auto 20px; padding:18px; border:2px solid #fb923c; border-radius:20px; background:linear-gradient(145deg,#283449,#111827 75%); box-shadow:0 18px 40px #0006; touch-action:pan-y; user-select:none; }
+        .swipe-card.is-dragging { transition:none; }
+        .swipe-card h3 { font-size:1.45rem; }
+        .player-illustration { min-height:210px; display:grid; place-items:center; margin:-2px -2px 14px; border-radius:14px; background:radial-gradient(circle at 50% 35%,#fed7aa,#fb923c 45%,#7c2d12); color:#431407; text-align:center; }
+        .player-illustration .portrait-face { width:110px; height:110px; border-radius:48% 48% 42% 42%; display:grid; place-items:center; background:#ffedd5; border:5px solid #7c2d12; font-size:2rem; font-weight:1000; box-shadow:0 7px 0 #7c2d12; }
+        .player-illustration small { display:block; margin-top:12px; font-weight:800; }
+        .swipe-stats { display:flex; flex-wrap:wrap; gap:8px; margin:10px 0; }
+        .swipe-stat { padding:7px 10px; border-radius:99px; background:#111827; border:1px solid #64748b; font-weight:800; }
+        .player-clause { padding:12px; background:#422006; border-left:4px solid #facc15; border-radius:8px; line-height:1.5; }
+        .swipe-actions { display:flex; justify-content:center; gap:14px; margin-top:14px; }
+        .swipe-actions button { min-width:145px; min-height:50px; font-size:1rem; }
+        .match-board { margin:16px 0; padding:16px; background:linear-gradient(120deg,#14532d,#064e3b); border:2px solid #86efac; border-radius:16px; text-align:center; }
+        .match-score { font-size:clamp(1.65rem,5vw,2.7rem); font-weight:1000; }
+        .match-minute { color:#facc15; font-size:1.3rem; font-weight:900; }
+        .match-meter { height:14px; border-radius:99px; overflow:hidden; background:#991b1b; margin:10px auto 4px; max-width:560px; }
+        .match-meter span { display:block; height:100%; width:50%; background:linear-gradient(90deg,#22c55e,#facc15); transition:width .2s; }
+        .microclip-backdrop { position:fixed; inset:0; z-index:80; display:none; place-items:center; background:#020617dd; padding:18px; }
+        .microclip-backdrop.open { display:grid; }
+        .microclip { width:min(540px,100%); padding:20px; text-align:center; border-radius:18px; border:2px solid #facc15; background:#172033; }
+        .clip-pitch { position:relative; height:170px; margin:12px 0; border-radius:12px; overflow:hidden; background:repeating-linear-gradient(90deg,#166534 0 75px,#15803d 75px 150px); border:2px solid #dcfce7; }
+        .clip-ball { position:absolute; top:75px; left:10%; font-size:2rem; animation:clipShot 1.25s ease-in-out 2 alternate; }
+        @keyframes clipShot { to { left:82%; transform:scale(1.5) rotate(240deg); } }
+        @media (max-width:600px) { .swipe-card { padding:12px; } .swipe-actions { gap:8px; } .swipe-actions button { min-width:0; flex:1; } .match-board { padding:12px; } }
+
     </style>
 </head>
 <body>
@@ -536,11 +576,11 @@
 
 <!-- Los botones de navegación cambian de pestaña sin recargar ni perder el estado de la partida. -->
 <nav role="tablist" aria-label="Secciones del juego" onkeydown="navegarPestanas(event)">
-    <button id="pestana-tactica" class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab-tactica" tabindex="0" onclick="cambiarPestana('tactica', this)">📋 Pizarra Táctica y Plantilla</button>
-    <button id="pestana-partido" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-partido" tabindex="-1" onclick="cambiarPestana('partido', this)">⚽ Día de Partido y Mapa xG</button>
-    <button id="pestana-clasificacion" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-clasificacion" tabindex="-1" onclick="cambiarPestana('clasificacion', this)">📊 Clasificación y Métricas xG</button>
-    <button id="pestana-mercado" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-mercado" tabindex="-1" onclick="cambiarPestana('mercado', this)">💶 Mercado y Centro Técnico</button>
-    <button id="pestana-entrenamiento" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-entrenamiento" tabindex="-1" onclick="cambiarPestana('entrenamiento', this)">🧠 Laboratorio de juego</button>
+    <button id="pestana-clasificacion" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-clasificacion" tabindex="-1" onclick="cambiarPestana('clasificacion', this)">🏠 Despacho / Resumen</button>
+    <button id="pestana-partido" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-partido" tabindex="-1" onclick="cambiarPestana('partido', this)">⚽ Partido</button>
+    <button id="pestana-mercado" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-mercado" tabindex="-1" onclick="cambiarPestana('mercado', this)">🔥 Fichajes (Tinder)</button>
+    <button id="pestana-tactica" class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab-tactica" tabindex="0" onclick="cambiarPestana('tactica', this)">📋 Alineación</button>
+    <button id="pestana-entrenamiento" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-entrenamiento" tabindex="-1" onclick="cambiarPestana('entrenamiento', this)">💰 Finanzas</button>
 </nav>
 
 <!-- Zona principal: táctica, partido, liga, mercado y laboratorio se muestran aquí. -->
@@ -616,6 +656,18 @@
 
     <!-- PESTAÑA 2: DÍA DE PARTIDO Y SHOT MAP -->
     <section id="tab-partido" class="tab-content" role="tabpanel" aria-labelledby="pestana-partido" tabindex="0" aria-hidden="true">
+        <div class="match-board" aria-label="Marcador y ritmo en directo">
+            <div class="match-minute"><span id="match-clock">00′</span> · <span id="match-rhythm">Previa</span></div>
+            <div id="match-scoreboard" class="match-score">FC Pase y Pifia · 0 — 0 · Rival</div>
+            <div class="match-meter" role="img" aria-label="Ritmo de partido"><span id="match-meter-fill"></span></div>
+            <div id="match-meter-label" class="hint-box">Ritmo de la simulación</div>
+            <div class="match-quick-actions" role="group" aria-label="Decisión táctica rápida">
+                <button type="button" data-quick-plan="Equilibrado">⚖️ Cerrar líneas</button>
+                <button type="button" class="btn-warning" data-quick-plan="Ofensivo">🚀 Apretar arriba</button>
+                <button type="button" class="btn-primary" data-quick-plan="Defensivo">🧱 Proteger el área</button>
+            </div>
+            <p id="match-decision-feedback" role="status" aria-live="polite" class="hint-box">Elige un plan: se aplicará a la siguiente jornada.</p>
+        </div>
         <div class="panel" style="margin-bottom: 20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
             <div>
                 <h2 id="lbl-cartel-partido" style="font-size:1.3rem;">Jornada 1: FC Pase y Pifia vs Atlético Siestense</h2>
@@ -623,7 +675,7 @@
                 <p id="match-summary" class="match-summary" role="status" aria-live="polite">Al terminar, aparecerán el marcador, los remates y el xG del partido de FC Pase y Pifia.</p>
                 <p id="match-preview" class="hint-box" role="note">El perfil del próximo rival aparecerá antes de la jornada.</p>
             </div>
-            <button id="btn-simular-jornada" class="btn-success" style="font-size:1rem; padding:12px 22px;" onclick="simularJornada()">▶️ SIMULAR JORNADA EN VIVO</button>
+            <button id="btn-simular-jornada" class="btn-success" style="font-size:1rem; padding:12px 22px;" onclick="vivirJornada()">▶️ SIMULAR JORNADA EN VIVO</button>
         </div>
 
         <div class="grid-2">
@@ -700,6 +752,10 @@
 
     <!-- PESTAÑA 3: CLASIFICACIÓN Y MÉTRICAS -->
     <section id="tab-clasificacion" class="tab-content" role="tabpanel" aria-labelledby="pestana-clasificacion" tabindex="0" aria-hidden="true">
+        <div class="panel cta-row" aria-label="Próximas acciones">
+            <div class="cta-card"><strong>Tu siguiente pitido</strong><p>La jornada está lista. Prepara el plan y juega el partido.</p><button type="button" onclick="cambiarPestana('partido',document.getElementById('pestana-partido'))">⚽ Ir al partido</button></div>
+            <div class="cta-card"><strong>Refuerza la cuadrilla</strong><p>Ojea perfiles aragoneses de fantasía y negocia con retranca.</p><button type="button" onclick="cambiarPestana('mercado',document.getElementById('pestana-mercado'))">🔥 Revisar fichajes</button></div>
+        </div>
         <div class="panel" style="margin-bottom: 20px;">
             <div class="panel-header">
                 <span class="panel-title">Clasificación General y Rendimiento Esperado (xG)</span>
@@ -789,6 +845,20 @@
             </div>
         </div>
 
+        <div class="panel swipe-market" aria-labelledby="swipe-heading">
+            <div class="panel-header"><span id="swipe-heading" class="panel-title">🔥 Ojeo exprés · desliza, negocia y ficha</span><span class="hint-box">Desliza a la derecha para ofertar o a la izquierda para pasar.</span></div>
+            <p id="swipe-feedback" class="training-feedback" role="status" aria-live="polite">El mercado trae talento ficticio y cláusulas con retranca.</p>
+            <article id="swipe-card" class="swipe-card" aria-live="polite">
+                <div class="player-illustration" id="swipe-portrait" data-portrait-id=""><div><div class="portrait-face">⚽</div><small>Hueco de caricatura · ilustración original pendiente</small></div></div>
+                <h3 id="swipe-name"></h3><p id="swipe-club" class="hint-box"></p>
+                <div id="swipe-stats" class="swipe-stats"></div>
+                <p id="swipe-clause" class="player-clause"></p>
+                <div class="swipe-actions">
+                    <button id="swipe-reject" type="button" class="btn-danger" aria-label="Descartar futbolista">✖ Pasar</button>
+                    <button id="swipe-match" type="button" class="btn-success" aria-label="Ofertar por el futbolista">💚 ¡A ofertar!</button>
+                </div>
+            </article>
+        </div>
         <div class="grid-2">
             <div class="panel">
                 <div class="panel-header">
@@ -835,6 +905,15 @@
 
     <!-- PESTAÑA 5: LABORATORIO DE JUEGO -->
     <section id="tab-entrenamiento" class="tab-content" role="tabpanel" aria-labelledby="pestana-entrenamiento" tabindex="0" aria-hidden="true">
+        <div class="panel" style="margin-bottom:18px">
+            <div class="panel-header"><span class="panel-title">💰 Caja del club</span><span class="hint-box">Salarios, plantilla y presupuesto de la partida</span></div>
+            <div class="finance-grid">
+                <div class="finance-tile"><strong>Presupuesto</strong><span id="finance-budget">—</span></div>
+                <div class="finance-tile"><strong>Salarios por jornada</strong><span id="finance-wages">—</span></div>
+                <div class="finance-tile"><strong>Valor medio</strong><span id="finance-rating">—</span></div>
+                <div class="finance-tile"><strong>Plantilla</strong><span id="finance-squad">—</span></div>
+            </div>
+        </div>
         <div class="panel" style="margin-bottom:20px">
             <div class="panel-header">
                 <span id="titulo-laboratorio" class="panel-title">Laboratorio de juego · Pase y progresión</span>
@@ -924,6 +1003,10 @@
         </div>
     </section>
 </main>
+
+<div id="microclip-backdrop" class="microclip-backdrop" role="dialog" aria-modal="true" aria-labelledby="microclip-title" aria-hidden="true">
+        <div class="microclip"><h2 id="microclip-title">Repetición animada</h2><p id="microclip-caption">Secuencia esquemática generada por el simulador.</p><div class="clip-pitch" aria-hidden="true"><span class="clip-ball">⚽</span></div><p class="hint-box">Animación original del juego; no es metraje de un partido real.</p><button type="button" id="microclip-close" class="btn-primary">Cerrar repetición</button></div>
+    </div>
 
 <script>
 // El motor y la interfaz se mantienen en este archivo para servir como juego estático, sin dependencias de servidor.
@@ -2878,6 +2961,132 @@ window.onload = () => {
     dibujarCampoBase(cShot.getContext('2d'), cShot.width, cShot.height);
     actualizarUI();
 };
+
+// --- Módulos visuales de la primera versión aragonesa ---
+window.DATOS_ARAGONESES = Object.freeze({
+    equipos: ['Real Zaragocica', 'SD Huesqueta', 'Teruel Existe CF', 'Atlético Monzón Casetas'],
+    clausulas: [
+        'Cláusula: si hay cierzo, el saque de banda cuenta como asistencia.',
+        'Pide bonus por cada ternasco que aparezca en la grada.',
+        'Incluye en el contrato una excursión al Moncayo y dos bocadillos.',
+        'No juega los martes: tiene rondalla y lo lleva muy en serio.',
+        'Prima especial si el balón no acaba en el aparcamiento de La Romareda.'
+    ],
+    despedidas: ['¡Que te vaya bonito y que el larguero te sea propicio!', 'Seguimos ojeando; no te nos vayas al cierzo.', 'Despedida con abrazo y un mapa para volver.']
+});
+const frasesSwipe = window.DATOS_ARAGONESES.clausulas;
+function renderFichaSwipe() {
+    const card=document.getElementById('swipe-card');
+    if(!card || typeof estadoJuego==='undefined' || !estadoJuego.mercado) return;
+    if(!estadoJuego.mercado.length) {
+        card.innerHTML='<div class="player-illustration"><div><div class="portrait-face">✓</div><small>Ojeo completado</small></div></div><h3>Sin candidatos por ahora</h3><p>Vuelve al mercado después del próximo partido.</p>';
+        return;
+    }
+    const jugador=estadoJuego.mercado[0];
+    const club=estadoJuego.equipos.find(e=>e.nombre==='FC Pase y Pifia');
+    const nombre=String(jugador.nombre||'Fichaje misterioso');
+    const id='caricatura-'+nombre.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+    const retrato=document.getElementById('swipe-portrait');
+    if(retrato) { retrato.dataset.portraitId=id; retrato.innerHTML='<div><div class="portrait-face" aria-hidden="true">'+nombre.split(/\s+/).map(p=>p[0]).slice(0,2).join('').toUpperCase()+'</div><small>Ilustración original · ID '+id+'</small></div>'; }
+    document.getElementById('swipe-name').textContent=nombre+' · '+jugador.posicion;
+    const clubParodia=window.DATOS_ARAGONESES.equipos[(estadoJuego.mercado.length-1)%window.DATOS_ARAGONESES.equipos.length];
+    document.getElementById('swipe-club').textContent='Ojeado en '+clubParodia+' · '+jugador.media+' de media';
+    document.getElementById('swipe-stats').innerHTML='<span class="swipe-stat">⚽ '+jugador.posicion+'</span><span class="swipe-stat">⭐ '+jugador.media+' media</span><span class="swipe-stat">💶 '+Number(jugador.precio).toLocaleString('es-ES')+' €</span><span class="swipe-stat">🪙 '+Number(jugador.salario).toLocaleString('es-ES')+' €/j</span>';
+    const frase=frasesSwipe[(estadoJuego.mercado.length-1)%frasesSwipe.length];
+    document.getElementById('swipe-clause').textContent='«'+frase+'»';
+    const match=document.getElementById('swipe-match');
+    const valido=club && club.presupuesto>=jugador.precio && club.plantilla.length<MAX_PLANTILLA;
+    match.disabled=!valido;
+    match.title=valido?'Iniciar oferta y cerrar el fichaje':(club && club.plantilla.length>=MAX_PLANTILLA?'Plantilla completa':'Presupuesto insuficiente');
+    card.dataset.index='0';
+}
+function decidirSwipe(aceptar) {
+    if(!estadoJuego.mercado.length) return;
+    const jugador=estadoJuego.mercado[0];
+    const feedback=document.getElementById('swipe-feedback');
+    if(aceptar) {
+        const antes=estadoJuego.mercado.length;
+        ficharJugador(0);
+        if(estadoJuego.mercado.length===antes) return;
+        feedback.textContent='💚 ¡Match! '+jugador.nombre+' ya comparte vestuario y cláusula pintoresca.';
+    } else {
+        const despedida=window.DATOS_ARAGONESES.despedidas[estadoJuego.mercado.length%window.DATOS_ARAGONESES.despedidas.length];
+        estadoJuego.mercado.shift();
+        guardarPartidaLocal(false);
+        actualizarUI();
+        feedback.textContent='👋 '+jugador.nombre+': '+despedida;
+    }
+}
+function actualizarFinanzas() {
+    if(typeof estadoJuego==='undefined' || !estadoJuego.equipos) return;
+    const club=estadoJuego.equipos.find(e=>e.nombre==='FC Pase y Pifia');
+    if(!club) return;
+    const poner=(id,texto)=>{const e=document.getElementById(id);if(e)e.textContent=texto;};
+    poner('finance-budget',Number(club.presupuesto).toLocaleString('es-ES')+' €');
+    poner('finance-wages',club.plantilla.reduce((a,j)=>a+(Number(j.salario)||0),0).toLocaleString('es-ES')+' €');
+    poner('finance-rating',(club.plantilla.reduce((a,j)=>a+(Number(j.media)||0),0)/club.plantilla.length).toFixed(1)+'/100');
+    poner('finance-squad',club.plantilla.length+' jugadores · '+club.plantilla.filter(j=>j.titular).length+' titulares');
+}
+const actualizarUIManager=actualizarUI;
+actualizarUI=function(){actualizarUIManager();renderFichaSwipe();actualizarFinanzas();};
+document.getElementById('swipe-reject')?.addEventListener('click',()=>decidirSwipe(false));
+document.getElementById('swipe-match')?.addEventListener('click',()=>decidirSwipe(true));
+let gestoSwipe=null;
+document.getElementById('swipe-card')?.addEventListener('pointerdown',event=>{if(event.target.closest('button'))return;gestoSwipe={x:event.clientX,y:event.clientY};});
+document.getElementById('swipe-card')?.addEventListener('pointerup',event=>{
+    if(!gestoSwipe)return;
+    const dx=event.clientX-gestoSwipe.x,dy=event.clientY-gestoSwipe.y;gestoSwipe=null;
+    if(Math.abs(dx)>85 && Math.abs(dx)>Math.abs(dy)*1.2) decidirSwipe(dx>0);
+});
+document.querySelectorAll('[data-quick-plan]').forEach(button=>button.addEventListener('click',()=>{
+    const estilo=button.dataset.quickPlan;
+    document.getElementById('sel-estilo').value=estilo;
+    cambiarTactica();
+    document.getElementById('match-decision-feedback').textContent='Plan '+estilo+' aplicado a la próxima jornada. La alineación y el motor usarán esta decisión.';
+}));
+const simularJornadaManager=simularJornada;
+async function vivirJornada() {
+    const boton=document.getElementById('btn-simular-jornada');
+    const clock=document.getElementById('match-clock');
+    const ritmo=document.getElementById('match-rhythm');
+    const fill=document.getElementById('match-meter-fill');
+    const label=document.getElementById('match-meter-label');
+    boton.disabled=true;
+    document.getElementById('match-scoreboard').textContent='FC Pase y Pifia · 0 — 0 · Partido en juego';
+    for(let minuto=0;minuto<=90;minuto+=3) {
+        clock.textContent=String(minuto).padStart(2,'0')+'′';
+        ritmo.textContent=minuto<45?'Primera parte':'Segunda parte';
+        const porcentaje=45+Math.round(25*Math.sin(minuto/8));
+        fill.style.width=porcentaje+'%';
+        label.textContent=porcentaje>58?'Ritmo alto · presión y transiciones':porcentaje<42?'Ritmo bajo · pausa y toque':'Ritmo medio · partido abierto';
+        await new Promise(resolve=>setTimeout(resolve,35));
+    }
+    simularJornadaManager();
+    const resumen=document.getElementById('match-summary').textContent;
+    const cuenta=resumen.match(/Último partido: (.+?) (\d+) - (\d+) (.+?)\./);
+    if(cuenta) document.getElementById('match-scoreboard').textContent=cuenta[1]+' · '+cuenta[2]+' — '+cuenta[3]+' · '+cuenta[4];
+    clock.textContent='90′';ritmo.textContent='Final';fill.style.width='50%';label.textContent='Pitido final · consulta las repeticiones de las ocasiones';
+    boton.disabled=false;
+}
+const mostrarRepeticionMotor=mostrarRepeticion;
+mostrarRepeticion=function(indice) {
+    const resultado=mostrarRepeticionMotor(indice);
+    if(!resultado)return resultado;
+    const evento=eventosPartidoActual[indice];
+    const modal=document.getElementById('microclip-backdrop');
+    document.getElementById('microclip-title').textContent=evento.esGol?'⚽ Microclip · ¡Gol!':'🎥 Microclip · ocasión y desenlace';
+    document.getElementById('microclip-caption').textContent=evento.esGol
+        ? 'La trayectoria simulada terminó en gol · minuto '+evento.minuto+'.'
+        : 'Remate de '+evento.rematador+' · minuto '+evento.minuto+' · xG '+evento.xg.toFixed(2)+'.';
+    modal.classList.add('open');modal.setAttribute('aria-hidden','false');
+    document.getElementById('microclip-close').focus();
+    return resultado;
+};
+const cerrarMicroclip=()=>{const m=document.getElementById('microclip-backdrop');m.classList.remove('open');m.setAttribute('aria-hidden','true');};
+document.getElementById('microclip-close')?.addEventListener('click',cerrarMicroclip);
+document.getElementById('microclip-backdrop')?.addEventListener('click',event=>{if(event.target.id==='microclip-backdrop')cerrarMicroclip();});
+document.addEventListener('keydown',event=>{if(event.key==='Escape')cerrarMicroclip();});
+
 </script>
 </body>
 </html>
