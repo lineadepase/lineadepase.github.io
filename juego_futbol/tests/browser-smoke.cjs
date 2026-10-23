@@ -176,6 +176,20 @@ const fs = require('node:fs/promises');
         return estadoPartidaValido(partida);
       });
       assert.equal(corruptArchive, false, 'un resumen histórico incompleto se rechaza al importar');
+      const legacyArchive = await page.evaluate(() => {
+        const partida = crearEstadoInicial();
+        partida.historialTemporadas = [{
+          temporada: 1,
+          clasificacion: partida.equipos.map(eq => ({ nombre: eq.nombre, puntos: 0, gf: 0, gc: 0 })),
+          pichichi: { nombre: 'Paco Manoplas', equipo: 'FC Pase y Pifia', goles: 4, xg: 2.5 }
+        }];
+        const migrada = normalizarEstadoPartida(partida);
+        return { valida: estadoPartidaValido(migrada), resumen: migrada.historialTemporadas[0] };
+      });
+      assert.equal(legacyArchive.valida, true, 'los resúmenes guardados con un único pichichi se migran');
+      assert.equal(legacyArchive.resumen.goleadores[0].nombre, 'Paco Manoplas');
+      assert.equal(Object.hasOwn(legacyArchive.resumen, 'pichichi'), false,
+        'la migración deja el resumen histórico en el formato actual');
       const legacySave = await page.evaluate(() => {
         const partida = crearEstadoInicial();
         delete partida.entrenamiento;
@@ -715,17 +729,26 @@ const fs = require('node:fs/promises');
         nombres: estadoJuego.mercado.map(j => j.nombre)
       }));
       await page.evaluate(() => {
-        const goleador = obtenerMiEquipo().plantilla.find(j => j.nombre === 'Paco Manoplas');
-        goleador.goles = 7;
-        goleador.xg = 4.25;
+        estadoJuego.equipos.forEach(eq => eq.plantilla.forEach(j => { j.goles = 0; j.xg = 0; }));
+        const goleadorLocal = obtenerMiEquipo().plantilla.find(j => j.nombre === 'Paco Manoplas');
+        const goleadorVisitante = estadoJuego.equipos[1].plantilla.find(j => j.posicion === 'DEL');
+        goleadorLocal.goles = 7;
+        goleadorLocal.xg = 4.25;
+        goleadorVisitante.goles = 7;
+        goleadorVisitante.xg = 5.1;
       });
       await page.evaluate(() => iniciarNuevaTemporada());
       assert.equal(await page.evaluate(() => estadoJuego.temporada), 2);
       const archivoPrimeraTemporada = await page.evaluate(() => estadoJuego.historialTemporadas[0]);
       assert.equal(archivoPrimeraTemporada.temporada, 1, 'el cambio de temporada archiva la campaña que termina');
-      assert.equal(archivoPrimeraTemporada.pichichi.nombre, 'Paco Manoplas',
-        'el resumen conserva el máximo goleador antes de reiniciar sus estadísticas');
-      assert.equal(archivoPrimeraTemporada.pichichi.goles, 7);
+      assert.equal(archivoPrimeraTemporada.goleadores.length, 2,
+        'el resumen conserva a todos los máximos goleadores empatados');
+      assert.ok(archivoPrimeraTemporada.goleadores.some(j => j.nombre === 'Paco Manoplas'));
+      assert.ok(archivoPrimeraTemporada.goleadores.some(j => j.equipo !== 'FC Pase y Pifia'));
+      assert.ok(archivoPrimeraTemporada.goleadores.every(j => j.goles === 7),
+        'el empate se resuelve por goles y no por xG');
+      assert.match(await page.locator('#tbody-historial-temporadas tr').first().innerText(), /Empate:.*Paco Manoplas/,
+        'el archivo anuncia el empate entre goleadores');
       assert.equal(await page.evaluate(() => estadoPartidaValido(estadoJuego)), true,
         'el nuevo historial cumple la validación de guardado');
       assert.equal(await page.locator('#tbody-historial-temporadas tr').count(), 4,
@@ -758,8 +781,8 @@ const fs = require('node:fs/promises');
         'las estadísticas del mercado empiezan limpias cada temporada');
       await page.reload();
       assert.equal(await page.evaluate(() => estadoJuego.temporada), 2);
-      assert.equal(await page.evaluate(() => estadoJuego.historialTemporadas[0].pichichi.nombre), 'Paco Manoplas',
-        'el archivo histórico se conserva al recargar la partida');
+      assert.equal(await page.evaluate(() => estadoJuego.historialTemporadas[0].goleadores.length), 2,
+        'el empate de goleadores se conserva al recargar la partida');
       const limiteMercado = await page.evaluate(() => {
         estadoJuego.jornadaActual = estadoJuego.calendario.length;
         iniciarNuevaTemporada();

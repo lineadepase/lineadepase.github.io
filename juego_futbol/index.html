@@ -592,7 +592,7 @@
                             <th class="left">Equipo</th>
                             <th>PTS</th>
                             <th>GF-GC</th>
-                            <th class="left">Pichichi</th>
+                            <th class="left">Máximo(s) goleador(es)</th>
                         </tr>
                     </thead>
                     <tbody id="tbody-historial-temporadas"></tbody>
@@ -1095,10 +1095,12 @@ function resumenTemporadaValido(resumen) {
         new Set(resumen.clasificacion.map(eq => eq?.nombre)).size === 4 &&
         resumen.clasificacion.every(eq => eq && nombreGuardadoValido(eq.nombre) &&
             ['puntos', 'gf', 'gc'].every(k => Number.isInteger(eq[k]) && eq[k] >= 0)) &&
-        (resumen.pichichi === null || (resumen.pichichi &&
-            nombreGuardadoValido(resumen.pichichi.nombre) && nombreGuardadoValido(resumen.pichichi.equipo) &&
-            Number.isInteger(resumen.pichichi.goles) && resumen.pichichi.goles > 0 &&
-            Number.isFinite(resumen.pichichi.xg) && resumen.pichichi.xg >= 0)));
+        Array.isArray(resumen.goleadores) && resumen.goleadores.length <= 200 &&
+        new Set(resumen.goleadores.map(j => `${j?.equipo}|${j?.nombre}`)).size === resumen.goleadores.length &&
+        resumen.goleadores.every(j => j && nombreGuardadoValido(j.nombre) && nombreGuardadoValido(j.equipo) &&
+            Number.isInteger(j.goles) && j.goles > 0 && Number.isFinite(j.xg) && j.xg >= 0) &&
+        (resumen.goleadores.length < 2 || resumen.goleadores.every(j =>
+            j.goles === resumen.goleadores[0].goles)));
 }
 
 /**
@@ -1106,6 +1108,14 @@ function resumenTemporadaValido(resumen) {
  */
 function normalizarEstadoPartida(estado) {
     if (estado && estado.historialTemporadas === undefined) estado.historialTemporadas = [];
+    if (estado && Array.isArray(estado.historialTemporadas)) {
+        estado.historialTemporadas.forEach(resumen => {
+            if (resumen && resumen.goleadores === undefined) {
+                resumen.goleadores = resumen.pichichi ? [resumen.pichichi] : [];
+                delete resumen.pichichi;
+            }
+        });
+    }
     if (estado && Array.isArray(estado.equipos)) {
         estado.equipos.forEach(eq => {
             if (eq && eq.remates === undefined) eq.remates = 0;
@@ -1319,12 +1329,14 @@ function actualizarUI() {
     } else {
         historial.forEach(resumen => resumen.clasificacion.forEach((eq, i) => {
             const tr = document.createElement('tr');
-            const pichichi = i === 0 && resumen.pichichi
-                ? `${escaparHTML(resumen.pichichi.nombre)} (${escaparHTML(resumen.pichichi.equipo)}, ${resumen.pichichi.goles} goles)`
-                : (i === 0 ? 'Sin goles' : '—');
+            const goleadores = (resumen.goleadores || []).map(j =>
+                `${escaparHTML(j.nombre)} (${escaparHTML(j.equipo)})`).join(' y ');
+            const detalleGoleador = i !== 0 ? '—' : (goleadores
+                ? `${resumen.goleadores.length > 1 ? 'Empate: ' : ''}${goleadores} · ${resumen.goleadores[0].goles} goles`
+                : 'Sin goles');
             tr.innerHTML = `<td>${resumen.temporada}</td><td><strong>${i + 1}</strong></td>` +
                 `<td class="left">${escaparHTML(eq.nombre)}</td><td>${eq.puntos}</td>` +
-                `<td>${eq.gf}-${eq.gc}</td><td class="left">${pichichi}</td>`;
+                `<td>${eq.gf}-${eq.gc}</td><td class="left">${detalleGoleador}</td>`;
             tbodyHistorial.appendChild(tr);
         }));
     }
@@ -2410,7 +2422,9 @@ function iniciarNuevaTemporada() {
         clasificacion: [...estadoJuego.equipos].sort(compararClasificacion).map(eq => ({
             nombre: eq.nombre, puntos: eq.puntos, gf: eq.gf, gc: eq.gc
         })),
-        pichichi: jugadoresOrdenados.length ? jugadoresOrdenados[0] : null
+        goleadores: jugadoresOrdenados.length
+            ? jugadoresOrdenados.filter(j => j.goles === jugadoresOrdenados[0].goles)
+            : []
     };
     estadoJuego.historialTemporadas = [...(estadoJuego.historialTemporadas || []), archivoTemporada].slice(-20);
     estadoJuego.temporada++;
