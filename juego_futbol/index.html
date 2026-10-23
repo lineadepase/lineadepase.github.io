@@ -578,6 +578,7 @@ body{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
 <style>
 /* El botón flotante queda por encima de la barra inferior y respeta la zona segura del móvil. */
 .floating-cta{bottom:calc(76px + env(safe-area-inset-bottom))}
+.parody-mini-stats{display:inline-block;max-width:240px;white-space:normal;text-align:left;font-size:.76rem;line-height:1.45;color:#fde68a;font-weight:800}
 @media(max-width:600px){.floating-cta{bottom:calc(70px + env(safe-area-inset-bottom))}}
 </style>
 </head>
@@ -879,7 +880,7 @@ body{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
             </div>
             <div class="controls-bar">
                 <button class="btn-primary" onclick="accionDescansar()">💤 Descansar Plantilla (-30% Cansancio, +10 Moral)</button>
-                <button class="btn-warning" onclick="accionEntrenar()">💪 Sesión Intensiva (+Opción subir Media, +15% Cansancio)</button>
+                <button class="btn-warning" onclick="accionEntrenar()">💪 Sesión Intensiva (+posible mejora de atributo, +15% Cansancio)</button>
             </div>
         </div>
 
@@ -908,7 +909,7 @@ body{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
                             <tr>
                                 <th class="left">Jugador</th>
                                 <th>Pos</th>
-                                <th>Media</th>
+                                <th>Rasgos</th>
                                 <th>Precio</th>
                                 <th>Salario/j</th>
                                 <th>Acción</th>
@@ -929,7 +930,7 @@ body{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
                             <tr>
                                 <th class="left">Jugador</th>
                                 <th>Pos</th>
-                                <th>Media</th>
+                                <th>Rasgos</th>
                                 <th>Ingreso Venta</th>
                                 <th>Acción</th>
                             </tr>
@@ -948,7 +949,7 @@ body{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
             <div class="finance-grid">
                 <div class="finance-tile"><strong>Presupuesto</strong><span id="finance-budget">—</span></div>
                 <div class="finance-tile"><strong>Salarios por jornada</strong><span id="finance-wages">—</span></div>
-                <div class="finance-tile"><strong>Valor medio</strong><span id="finance-rating">—</span></div>
+                <div class="finance-tile"><strong>Balance de plantilla</strong><span id="finance-rating">—</span></div>
                 <div class="finance-tile"><strong>Plantilla</strong><span id="finance-squad">—</span></div>
             </div>
             <div class="panel-header" style="margin-top:14px"><span class="panel-title">🤝 Patrocinadores de la comarca</span><span class="hint-box">Contrato de un partido; primas por objetivos rarunos.</span></div>
@@ -1615,7 +1616,7 @@ function actualizarUI() {
         tr.innerHTML = `
             <td class="left"><span class="player-name-cell">${avatarJugadorHTML(j.nombre, j.posicion)}<strong>${escaparHTML(j.nombre)}</strong></span></td>
             <td><span class="badge pos-${j.posicion}">${j.posicion}</span></td>
-            <td>${j.media}</td>
+            <td>${atributosMiniatura(j)}</td>
             <td>${j.precio.toLocaleString('es-ES')} €</td>
             <td>${j.salario.toLocaleString('es-ES')} €</td>
             <td><button class="btn-success" onclick="ficharJugador(${idx})" ${motivoBloqueo ? `disabled title="${motivoBloqueo}"` : ''}>${plantillaCompleta ? 'Plantilla completa' : presupuestoInsuficiente ? 'Sin presupuesto' : 'Fichar'}</button></td>
@@ -2604,19 +2605,23 @@ function accionEntrenar() {
         return;
     }
     const miEq = obtenerMiEquipo();
+    const codigos = ['RAS', 'TOZ', 'CHI', 'RET', 'ALM'];
     const suben = [];
     miEq.plantilla.forEach(j => {
         if (j.lesionado === 0) {
             j.cansancio = Math.min(100, j.cansancio + 15);
-            if (Math.random() < 0.20 && j.media < 92) {
+            const mejorables = codigos.filter(codigo => Number(j.atributos?.[codigo]) < 99);
+            if (Math.random() < 0.20 && j.media < 92 && mejorables.length) {
+                const codigo = mejorables[Math.floor(Math.random() * mejorables.length)];
                 j.media++;
-                suben.push(`${j.nombre} (${j.media})`);
+                j.atributos[codigo]++;
+                suben.push(`${j.nombre} (+1 ${codigo})`);
             }
         }
     });
     estadoJuego.preparacionUsada = true;
     guardarPartidaLocal(false);
-    alert(suben.length ? `💪 Entrenamiento completado. Suben de media: ${suben.join(', ')}` : "💪 Sesión completada.");
+    alert(suben.length ? `💪 Sesión completada. Mejoran atributos: ${suben.join(', ')}` : "💪 Sesión completada.");
     actualizarUI();
 }
 
@@ -2908,6 +2913,12 @@ function decidirSwipe(aceptar) {
         actualizarUI();
         feedback.textContent='👋 '+jugador.nombre+': '+despedida;
     }
+}
+function atributosMiniatura(j) {
+    const codigos = ['RAS', 'TOZ', 'CHI', 'RET', 'ALM'];
+    const datos = j.atributos || {};
+    const etiqueta = codigos.map(codigo => `${codigo} ${Number(datos[codigo]) || 0}`);
+    return `<span class="parody-mini-stats" title="${etiqueta.join(', ')}">${etiqueta.join(' · ')}</span>`;
 }
 function actualizarFinanzas() {
     if(typeof estadoJuego==='undefined' || !estadoJuego.equipos) return;
