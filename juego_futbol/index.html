@@ -1346,9 +1346,11 @@ function actualizarUI() {
         cartel.textContent = `Jornada ${estadoJuego.jornadaActual + 1}: ${par[0]} vs ${par[1]}`;
         const nombreRival = par.find(nombre => nombre !== miEq.nombre);
         const rival = estadoJuego.equipos.find(eq => eq.nombre === nombreRival);
+        const juegaEnCasa = par[0] === miEq.nombre;
         const fuerzasPropias = calcularFuerzas(miEq);
         const fuerzasRival = calcularFuerzas(rival);
         previaRival.textContent = `Rival: ${rival.nombre} · ${rival.formacion} · ${rival.estilo}\n` +
+            `Localía: ${juegaEnCasa ? 'juegas en casa' : 'juegas fuera'} · el motor aplica +3 al ataque local si hay jugadores aptos\n` +
             `Fuerzas: tu equipo, ataque ${fuerzasPropias.ataque.toFixed(1)} / defensa ${fuerzasPropias.defensa.toFixed(1)} · ` +
             `rival, ataque ${fuerzasRival.ataque.toFixed(1)} / defensa ${fuerzasRival.defensa.toFixed(1)}\n` +
             `Cruces: tu ataque vs defensa rival ${fuerzasPropias.ataque.toFixed(1)} vs ${fuerzasRival.defensa.toFixed(1)} · ` +

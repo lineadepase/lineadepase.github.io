@@ -80,6 +80,7 @@ const fs = require('node:fs/promises');
           nombre: rival.nombre,
           formacion: rival.formacion,
           estilo: rival.estilo,
+          juegaEnCasa: cruce[0] === miEquipo.nombre,
           ataque: fuerzas.ataque.toFixed(1),
           defensa: fuerzas.defensa.toFixed(1),
           ataquePropio: calcularFuerzas(miEquipo).ataque.toFixed(1),
@@ -89,6 +90,7 @@ const fs = require('node:fs/promises');
       const textoPreviaRival = await page.locator('#match-preview').innerText();
       assert.ok(textoPreviaRival.includes(perfilProximoRival.nombre) &&
         textoPreviaRival.includes(`${perfilProximoRival.formacion} · ${perfilProximoRival.estilo}`) &&
+        textoPreviaRival.includes(`Localía: ${perfilProximoRival.juegaEnCasa ? 'juegas en casa' : 'juegas fuera'} · el motor aplica +3 al ataque local si hay jugadores aptos`) &&
         textoPreviaRival.includes(`rival, ataque ${perfilProximoRival.ataque} / defensa ${perfilProximoRival.defensa}`) &&
         textoPreviaRival.includes(`tu ataque vs defensa rival ${perfilProximoRival.ataquePropio} vs ${perfilProximoRival.defensa}`) &&
         textoPreviaRival.includes(`tu defensa vs ataque rival ${perfilProximoRival.defensaPropia} vs ${perfilProximoRival.ataque}`) &&

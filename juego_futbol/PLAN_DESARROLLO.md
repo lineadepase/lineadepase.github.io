@@ -17,7 +17,7 @@
 - Repeticiones analíticas esquemáticas de los remates del equipo del usuario, enlazadas desde la crónica y etiquetadas como contenido ficticio del simulador.
 - Avatares vectoriales originales, estables para cada nombre ficticio, en las tablas de plantilla, goleadores y mercado.
 - Mercado, venta de jugadores, preparación, premios y continuidad de temporada.
-- Guía rápida desplegable para el primer uso, previa comparativa con las fuerzas de ataque y defensa propias y del rival, sus cruces tácticos internos (sin presentarlos como pronóstico), y botón de jornada que distingue entre jugar una fecha y pasar a la temporada siguiente.
+- Guía rápida desplegable para el primer uso, previa comparativa con fuerzas propias y del rival, cruces ataque-defensa y localía con la bonificación del simulador (sin presentarlos como pronóstico), y botón de jornada que distingue entre jugar una fecha y pasar a la temporada siguiente.
 - Archivo local de hasta 20 temporadas cerradas, con partidos, puntos, goles, remates, xG a favor/en contra, diferencia entre goles y xG a favor, y máximos goleadores (incluye empates). Los datos estadísticos que no existían en un guardado antiguo se indican como no disponibles; las copias exportadas incluyen los resúmenes.
 - Renovación anual del mercado con cuatro perfiles de jugador, cobertura de posiciones y un límite de doce opciones.
 - Plantillas con un máximo operativo de 25 futbolistas para conservar rotaciones manejables y bloquear fichajes al alcanzar el límite.
