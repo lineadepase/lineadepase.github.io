@@ -548,6 +548,7 @@
         @keyframes clipShot { to { left:82%; transform:scale(1.5) rotate(240deg); } }
         @media (max-width:600px) { .swipe-card { padding:12px; } .swipe-actions { gap:8px; } .swipe-actions button { min-width:0; flex:1; } .match-board { padding:12px; } }
 
+    .attribute-pill{min-width:58px;text-align:center;border:1px solid #facc15;color:#fff7ed;background:linear-gradient(145deg,#7c2d12,#1f2937);padding:7px 9px;border-radius:9px;font-weight:900}.attribute-pill small{display:block;color:#fed7aa;font-size:.64rem;text-transform:uppercase}.attribute-pill b{display:block;font-size:1.05rem}#swipe-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(58px,1fr))}.power-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:12px 0}.power-card{min-height:88px;border:1px solid #facc15;background:linear-gradient(145deg,#78350f,#292033);text-align:left;white-space:normal}.power-card strong{display:block;color:#fef08a;margin-bottom:4px}.power-card small{display:block;color:#e2e8f0;font-weight:500;line-height:1.35}.power-card.used,.power-card:disabled{filter:grayscale(1);opacity:.55}.event-backdrop{position:fixed;inset:0;z-index:90;display:none;place-items:center;padding:16px;background:#020617d9}.event-backdrop.open{display:grid}.event-dialog{width:min(620px,100%);max-height:90vh;overflow:auto;padding:22px;border:2px solid #fb923c;border-radius:18px;background:linear-gradient(145deg,#2b3549,#111827);box-shadow:0 24px 80px #0009}.event-dialog h2{color:#facc15;font-size:1.5rem;margin-bottom:8px}.event-dialog p{line-height:1.55}.event-choice-list{display:grid;gap:9px;margin:16px 0}.event-choice{text-align:left;white-space:normal;background:#172554;border-color:#60a5fa}.event-impact{color:#bbf7d0;font-size:.82rem;display:block;margin-top:5px}.chiri-feed{border-left:5px solid #38bdf8;background:linear-gradient(110deg,#0c4a6e,#172033);border-radius:12px;padding:14px 16px;margin:12px 0 18px}.chiri-feed strong{color:#bae6fd;display:block;font-size:1.05rem}.chiri-feed p{margin-top:6px;line-height:1.5}.sponsor-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:12px}.sponsor-card{border:1px solid #64748b;border-radius:12px;padding:12px;background:#111827}.sponsor-card h3{color:#fdba74;font-size:1rem;margin-bottom:5px}.sponsor-card p{min-height:44px;color:#cbd5e1;line-height:1.4;font-size:.88rem}.sponsor-card button{margin-top:8px;width:100%;background:#7c3aed;border-color:#c4b5fd}#sponsor-status{margin-top:10px;color:#fde68a;font-weight:700}.floating-cta{position:fixed;z-index:45;right:max(14px,env(safe-area-inset-right));bottom:max(14px,env(safe-area-inset-bottom));min-height:52px;padding:12px 18px;border:2px solid #fff;border-radius:999px;background:linear-gradient(110deg,#f97316,#eab308);color:#111827;font-weight:1000;box-shadow:0 7px 24px #0009}.floating-cta:hover{transform:translateY(-2px)}body{padding-bottom:78px}#celebration-layer{position:fixed;inset:0;z-index:110;overflow:hidden;pointer-events:none}.confetti-bit{position:absolute;top:-24px;font-size:1.25rem;animation:confettiFall 1.65s ease-in forwards}@keyframes confettiFall{to{transform:translateY(110vh) rotate(700deg);opacity:0}}.swipe-card.match-pop{animation:matchPop .48s cubic-bezier(.2,.9,.2,1.3)}@keyframes matchPop{50%{transform:scale(1.035) rotate(-1deg);box-shadow:0 0 40px #22c55eaa}}@media(max-width:600px){.floating-cta{right:10px;bottom:10px;padding:10px 14px;font-size:.88rem}.event-dialog{padding:16px}.power-cards{grid-template-columns:1fr}}
     </style>
 </head>
 <body>
@@ -667,7 +668,15 @@
                 <button type="button" class="btn-primary" data-quick-plan="Defensivo">🧱 Proteger el área</button>
             </div>
             <p id="match-decision-feedback" role="status" aria-live="polite" class="hint-box">Elige un plan: se aplicará a la siguiente jornada.</p>
+            <h3 style="margin-top:14px;color:#facc15">🃏 Poderes tácticos · 3 usos por partido</h3>
+            <div id="power-cards" class="power-cards" role="group" aria-label="Poderes tácticos durante la simulación">
+                <button class="power-card" type="button" data-power="cierzo"><strong>🌬 Invocar el Cierzo</strong><small>Descoloca la salida rival durante la simulación.</small></button>
+                <button class="power-card" type="button" data-power="patadon"><strong>🚀 Patadón y Tiesiura</strong><small>Activa el modo ofensivo a la desesperada.</small></button>
+                <button class="power-card" type="button" data-power="bronca"><strong>📣 Bronca desde la banda</strong><small>Sube el ánimo; el míster puede llevarse una multa.</small></button>
+            </div>
+            <p id="power-feedback" class="hint-box" role="status" aria-live="polite">Cada carta se puede usar una vez cuando el reloj esté en marcha.</p>
         </div>
+        <div class="chiri-feed" id="chiri-feed" aria-live="polite"><strong>📱 Chirincirco · esperando el pitido final</strong><p>La afición prepara memes. Que nadie publique el Excel del míster.</p></div>
         <div class="panel" style="margin-bottom: 20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
             <div>
                 <h2 id="lbl-cartel-partido" style="font-size:1.3rem;">Jornada 1: FC Pase y Pifia vs Atlético Siestense</h2>
@@ -913,6 +922,9 @@
                 <div class="finance-tile"><strong>Valor medio</strong><span id="finance-rating">—</span></div>
                 <div class="finance-tile"><strong>Plantilla</strong><span id="finance-squad">—</span></div>
             </div>
+            <div class="panel-header" style="margin-top:14px"><span class="panel-title">🤝 Patrocinadores de la comarca</span><span class="hint-box">Contrato de un partido; primas por objetivos rarunos.</span></div>
+            <div id="sponsor-options" class="sponsor-list"></div>
+            <p id="sponsor-status" role="status" aria-live="polite">Todavía no has firmado un acuerdo.</p>
         </div>
         <div class="panel" style="margin-bottom:20px">
             <div class="panel-header">
@@ -1004,7 +1016,8 @@
     </section>
 </main>
 
-<div id="microclip-backdrop" class="microclip-backdrop" role="dialog" aria-modal="true" aria-labelledby="microclip-title" aria-hidden="true">
+<div id="event-backdrop" class="event-backdrop" role="dialog" aria-modal="true" aria-labelledby="event-title" aria-hidden="true"><div class="event-dialog"><p class="hint-box">ENTRE JORNADAS · DECISIÓN DE VESTUARIO</p><h2 id="event-title"></h2><p id="event-description"></p><div id="event-choices" class="event-choice-list"></div><p id="event-result" role="status" aria-live="polite"></p></div></div><div id="celebration-layer" aria-hidden="true"></div><button id="floating-cta" class="floating-cta" type="button">⚽ Avanzar jornada</button>
+    <div id="microclip-backdrop" class="microclip-backdrop" role="dialog" aria-modal="true" aria-labelledby="microclip-title" aria-hidden="true">
         <div class="microclip"><h2 id="microclip-title">Repetición animada</h2><p id="microclip-caption">Secuencia esquemática generada por el simulador.</p><div class="clip-pitch" aria-hidden="true"><span class="clip-ball">⚽</span></div><p class="hint-box">Animación original del juego; no es metraje de un partido real.</p><button type="button" id="microclip-close" class="btn-primary">Cerrar repetición</button></div>
     </div>
 
@@ -2979,9 +2992,17 @@ function renderFichaSwipe() {
     const card=document.getElementById('swipe-card');
     if(!card || typeof estadoJuego==='undefined' || !estadoJuego.mercado) return;
     if(!estadoJuego.mercado.length) {
-        card.innerHTML='<div class="player-illustration"><div><div class="portrait-face">✓</div><small>Ojeo completado</small></div></div><h3>Sin candidatos por ahora</h3><p>Vuelve al mercado después del próximo partido.</p>';
+        document.getElementById('swipe-name').textContent='Sin candidatos por ahora';
+        document.getElementById('swipe-club').textContent='Vuelve al mercado después del próximo partido.';
+        document.getElementById('swipe-stats').textContent='';
+        document.getElementById('swipe-clause').textContent='El ojeador ha revisado todos los nombres disponibles.';
+        document.getElementById('swipe-match').disabled=true;
+        document.getElementById('swipe-reject').disabled=true;
+        const retratoVacio=document.getElementById('swipe-portrait');
+        if(retratoVacio) retratoVacio.innerHTML='<div><div class="portrait-face">✓</div><small>Ojeo completado</small></div>';
         return;
     }
+    document.getElementById('swipe-reject').disabled=false;
     const jugador=estadoJuego.mercado[0];
     const club=estadoJuego.equipos.find(e=>e.nombre==='FC Pase y Pifia');
     const nombre=String(jugador.nombre||'Fichaje misterioso');
@@ -2991,7 +3012,9 @@ function renderFichaSwipe() {
     document.getElementById('swipe-name').textContent=nombre+' · '+jugador.posicion;
     const clubParodia=window.DATOS_ARAGONESES.equipos[(estadoJuego.mercado.length-1)%window.DATOS_ARAGONESES.equipos.length];
     document.getElementById('swipe-club').textContent='Ojeado en '+clubParodia+' · '+jugador.media+' de media';
-    document.getElementById('swipe-stats').innerHTML='<span class="swipe-stat">⚽ '+jugador.posicion+'</span><span class="swipe-stat">⭐ '+jugador.media+' media</span><span class="swipe-stat">💶 '+Number(jugador.precio).toLocaleString('es-ES')+' €</span><span class="swipe-stat">🪙 '+Number(jugador.salario).toLocaleString('es-ES')+' €/j</span>';
+    const atributos=atributosParodicos(jugador);
+    document.getElementById('swipe-stats').innerHTML=atributos.map(a=>'<span class="attribute-pill" title="'+a[2]+'"><small>'+a[0]+'</small><b>'+a[1]+'</b></span>').join('')+
+        '<span class="swipe-stat">💶 '+Number(jugador.precio).toLocaleString('es-ES')+' €</span><span class="swipe-stat">🪙 '+Number(jugador.salario).toLocaleString('es-ES')+' €/j</span>';
     const frase=frasesSwipe[(estadoJuego.mercado.length-1)%frasesSwipe.length];
     document.getElementById('swipe-clause').textContent='«'+frase+'»';
     const match=document.getElementById('swipe-match');
@@ -3028,7 +3051,7 @@ function actualizarFinanzas() {
     poner('finance-squad',club.plantilla.length+' jugadores · '+club.plantilla.filter(j=>j.titular).length+' titulares');
 }
 const actualizarUIManager=actualizarUI;
-actualizarUI=function(){actualizarUIManager();renderFichaSwipe();actualizarFinanzas();};
+actualizarUI=function(){actualizarUIManager();renderFichaSwipe();actualizarFinanzas();renderPatrocinios();actualizarCTAFlotante();};
 document.getElementById('swipe-reject')?.addEventListener('click',()=>decidirSwipe(false));
 document.getElementById('swipe-match')?.addEventListener('click',()=>decidirSwipe(true));
 let gestoSwipe=null;
@@ -3080,6 +3103,7 @@ mostrarRepeticion=function(indice) {
         : 'Remate de '+evento.rematador+' · minuto '+evento.minuto+' · xG '+evento.xg.toFixed(2)+'.';
     modal.classList.add('open');modal.setAttribute('aria-hidden','false');
     document.getElementById('microclip-close').focus();
+    if(evento.esGol)efectosRecompensa();
     return resultado;
 };
 const cerrarMicroclip=()=>{const m=document.getElementById('microclip-backdrop');m.classList.remove('open');m.setAttribute('aria-hidden','true');};
@@ -3087,6 +3111,225 @@ document.getElementById('microclip-close')?.addEventListener('click',cerrarMicro
 document.getElementById('microclip-backdrop')?.addEventListener('click',event=>{if(event.target.id==='microclip-backdrop')cerrarMicroclip();});
 document.addEventListener('keydown',event=>{if(event.key==='Escape')cerrarMicroclip();});
 
-</script>
+
+const EVENTOS_VESTUARIO = [
+    { titulo:'La dieta duró hasta la rotonda', texto:'El vestuario ha descubierto una caja de ternasco detrás del parte médico.', opciones:[
+        { texto:'Que lo pague el fondo común', moral:-2, dinero:45000, efecto:'Multa simbólica; caja recuperada.' },
+        { texto:'Hoy se cena todos juntos', moral:6, dinero:-85000, efecto:'Moral arriba; el catering presenta factura.' },
+        { texto:'Que corran una vuelta extra', moral:-1, dinero:0, lesion:0.12, efecto:'Hay riesgo de sobrecarga muscular.' }
+    ]},
+    { titulo:'La verbena ha durado hasta el calentamiento', texto:'El extremo asegura que el cabezazo al bombo cuenta como trabajo de coordinación.', opciones:[
+        { texto:'Darles la mañana libre', moral:5, dinero:-40000, efecto:'Buen ambiente y gasto de recuperación.' },
+        { texto:'Poner música en el vestuario', moral:3, dinero:-15000, efecto:'Pequeño gasto, gran estribillo.' },
+        { texto:'Llamar al presidente', moral:-2, dinero:0, sancion:0.3, efecto:'Riesgo de bronca institucional.' }
+    ]},
+    { titulo:'Pique por quién lleva el brazalete', texto:'Dos capitanes han encargado brazaletes personalizados con purpurina y sus iniciales.', opciones:[
+        { texto:'Organizar un piedra, papel o tijera', moral:3, dinero:-5000, efecto:'La democracia cabe en una mano.' },
+        { texto:'Vender el brazalete en una rifa', moral:-1, dinero:60000, efecto:'La caja sonríe; los egos, menos.' },
+        { texto:'Que decida el míster en una carrera', moral:2, dinero:0, lesion:0.08, efecto:'Riesgo físico bajo, pique alto.' }
+    ]}
+];
+const PATROCINADORES = [
+    { id:'cero-cero', nombre:'Bar El Fuera de Juego', objetivo:'Prima si el partido acaba 0–0.', premio:150000, cumple:(gf,gc)=>gf===0&&gc===0 },
+    { id:'cierzo', nombre:'Ferretería El Cierzo', objetivo:'Extra si no pierdes por más de un gol.', premio:95000, cumple:(gf,gc)=>gf>=gc-1 },
+    { id:'victoria', nombre:'Quesos La Vuelta al Campo', objetivo:'Prima si ganas la jornada.', premio:180000, cumple:(gf,gc)=>gf>gc }
+];
+let eventoVestuarioActual=null;
+let poderesPartidoRestantes=0;
+let poderesUsados=new Set();
+let partidoEnCurso=false;
+let estiloTemporal=null;
+let rivalEstiloTemporal=null;
+let cambiosTemporalesCierzo=[];
+let contratoMensaje='';
+function atributosParodicos(jugador) {
+    const texto=String(jugador.nombre||'');
+    const semilla=[...texto].reduce((s,c)=>s+c.charCodeAt(0),0);
+    const base=Number(jugador.media)||70;
+    const valor=(n)=>Math.max(35,Math.min(99,Math.round(base+(semilla*n%25)-12)));
+    return [
+        ['CAB',valor(3),'Cabezonería / determinación'],
+        ['PAT',valor(5),'Potencia de patada / disparo'],
+        ['ALM',valor(7),'Fondo físico / tolerancia al almuerzo'],
+        ['PRO',valor(11),'Protesta arbitral / retranca'],
+        ['PIQ',valor(13),'Picardía / picaresca']
+    ];
+}
+function renderPatrocinios() {
+    const lista=document.getElementById('sponsor-options');
+    if(!lista||typeof estadoJuego==='undefined') return;
+    const activo=estadoJuego.patrocinadorActivo;
+    lista.innerHTML=PATROCINADORES.map(p=>'<article class="sponsor-card"><h3>'+p.nombre+'</h3><p>'+p.objetivo+' <strong>Prima: '+p.premio.toLocaleString('es-ES')+' €</strong></p><button type="button" data-sponsor="'+p.id+'" '+(activo?'disabled':'')+'>'+(activo===p.id?'Contrato firmado':activo?'Ya hay contrato':'Firmar para el próximo partido')+'</button></article>').join('');
+    const estado=document.getElementById('sponsor-status');
+    if(estado) estado.textContent=activo?'Contrato activo para el próximo partido; la prima solo se cobra si se cumple el objetivo.':(contratoMensaje||'Todavía no has firmado un acuerdo.');
+    lista.querySelectorAll('[data-sponsor]').forEach(btn=>btn.addEventListener('click',()=>{
+        estadoJuego.patrocinadorActivo=btn.dataset.sponsor;
+        contratoMensaje='Contrato firmado: '+PATROCINADORES.find(p=>p.id===btn.dataset.sponsor).nombre+'.';
+        guardarPartidaLocal(false);actualizarUI();
+    }));
+}
+function actualizarCTAFlotante() {
+    const boton=document.getElementById('floating-cta');
+    if(!boton||typeof estadoJuego==='undefined')return;
+    const pendientes=estadoJuego.jornadaActual>=estadoJuego.calendario.length;
+    boton.textContent=pendientes?'🏆 Cerrar temporada':'⚽ Avanzar jornada';
+    boton.disabled=Boolean(eventoVestuarioActual)||partidoEnCurso;
+    boton.title=boton.disabled?'Resuelve el evento o espera al pitido final':'Pulsa para ir directamente al siguiente partido';
+}
+function efectosRecompensa() {
+    const capa=document.getElementById('celebration-layer');
+    if(capa){
+        const iconos=['🎉','⚽','✨','🟡','🎊','💚'];
+        for(let i=0;i<24;i++){
+            const confeti=document.createElement('span');
+            confeti.className='confetti-bit';confeti.textContent=iconos[i%iconos.length];
+            confeti.style.left=(Math.random()*100)+'%';confeti.style.animationDelay=(Math.random()*.45)+'s';
+            capa.appendChild(confeti);setTimeout(()=>confeti.remove(),2300);
+        }
+    }
+    try{
+        const AudioCtor=window.AudioContext||window.webkitAudioContext;
+        if(!AudioCtor)return;
+        const audio=new AudioCtor(),oscilador=audio.createOscillator(),ganancia=audio.createGain();
+        oscilador.type='triangle';oscilador.frequency.setValueAtTime(660,audio.currentTime);
+        oscilador.frequency.setValueAtTime(880,audio.currentTime+.11);
+        ganancia.gain.setValueAtTime(.08,audio.currentTime);ganancia.gain.exponentialRampToValueAtTime(.001,audio.currentTime+.32);
+        oscilador.connect(ganancia);ganancia.connect(audio.destination);oscilador.start();oscilador.stop(audio.currentTime+.33);
+        setTimeout(()=>audio.close(),500);
+    }catch(error){/* Si el navegador bloquea el sonido, la animación visual sigue funcionando. */}
+}
+const decidirSwipeBase=decidirSwipe;
+decidirSwipe=function(aceptar){
+    const cantidad=estadoJuego.mercado.length;
+    decidirSwipeBase(aceptar);
+    if(aceptar&&estadoJuego.mercado.length<cantidad){
+        const card=document.getElementById('swipe-card');card.classList.remove('match-pop');void card.offsetWidth;card.classList.add('match-pop');efectosRecompensa();
+    }
+};
+document.getElementById('floating-cta')?.addEventListener('click',()=>{
+    cambiarPestana('partido',document.getElementById('pestana-partido'));
+    if(estadoJuego.jornadaActual>=estadoJuego.calendario.length) simularJornadaManager();
+    else vivirJornada();
+});
+document.getElementById('power-cards')?.addEventListener('click',event=>{
+    const boton=event.target.closest('[data-power]');
+    if(!boton)return;
+    if(!partidoEnCurso){document.getElementById('power-feedback').textContent='Espera al reloj en marcha para lanzar una carta.';return;}
+    const id=boton.dataset.power;
+    if(poderesUsados.has(id)||poderesPartidoRestantes<=0)return;
+    const miEquipo=obtenerMiEquipo();
+    const cruce=estadoJuego.calendario[estadoJuego.jornadaActual].find(([a,b])=>a===miEquipo.nombre||b===miEquipo.nombre);
+    const rival=estadoJuego.equipos.find(e=>e.nombre===cruce.find(n=>n!==miEquipo.nombre));
+    if(id==='cierzo'&&rival){
+        if(rivalEstiloTemporal===null)rivalEstiloTemporal={equipo:rival,estilo:rival.estilo};
+        rival.estilo='Defensivo';rival.plantilla.filter(j=>j.lesionado===0).forEach(j=>{
+            const perdidaMoral=Math.min(4,j.moral),fatigaExtra=Math.min(5,100-j.cansancio);
+            j.moral-=perdidaMoral;j.cansancio+=fatigaExtra;
+            cambiosTemporalesCierzo.push({jugador:j,perdidaMoral,fatigaExtra});
+        });
+        document.getElementById('power-feedback').textContent='🌬 El cierzo zaragozano ha desordenado al rival y le ha dejado pensando en una chaqueta.';
+    }else if(id==='patadon'){
+        if(estiloTemporal===null)estiloTemporal=miEquipo.estilo;
+        miEquipo.estilo='Ofensivo';
+        document.getElementById('power-feedback').textContent='🚀 Patadón activado: el equipo cambia al plan ofensivo para buscar el área.';
+    }else{
+        miEquipo.plantilla.forEach(j=>{j.moral=Math.min(100,j.moral+7);});
+        if(Math.random()<.3){miEquipo.presupuesto=Math.max(0,miEquipo.presupuesto-50000);document.getElementById('power-feedback').textContent='📣 La bronca sube el ánimo, pero al míster le cae una multa de 50.000 €.';}
+        else document.getElementById('power-feedback').textContent='📣 La bronca surte efecto: +7 de moral y el árbitro mira hacia otro lado.';
+    }
+    poderesUsados.add(id);poderesPartidoRestantes--;
+    boton.classList.add('used');boton.disabled=true;
+    document.getElementById('power-feedback').textContent+=' · Quedan '+poderesPartidoRestantes+' usos.';
+});
+function abrirEventoVestuario() {
+    eventoVestuarioActual=EVENTOS_VESTUARIO[Math.floor(Math.random()*EVENTOS_VESTUARIO.length)];
+    document.getElementById('event-title').textContent=eventoVestuarioActual.titulo;
+    document.getElementById('event-description').textContent=eventoVestuarioActual.texto;
+    const lista=document.getElementById('event-choices');lista.innerHTML='';
+    eventoVestuarioActual.opciones.forEach((opcion,indice)=>{
+        const boton=document.createElement('button');boton.type='button';boton.className='event-choice';
+        boton.dataset.eventChoice=String(indice);
+        boton.innerHTML='<strong>'+opcion.texto+'</strong><span class="event-impact">'+opcion.efecto+'</span>';
+        boton.addEventListener('click',()=>resolverEventoVestuario(indice));
+        lista.appendChild(boton);
+    });
+    const fondo=document.getElementById('event-backdrop');fondo.classList.add('open');fondo.setAttribute('aria-hidden','false');
+    actualizarCTAFlotante();lista.querySelector('button')?.focus();
+}
+function resolverEventoVestuario(indice) {
+    if(!eventoVestuarioActual)return;
+    const eleccion=eventoVestuarioActual.opciones[indice],equipo=obtenerMiEquipo();
+    equipo.presupuesto=Math.max(0,equipo.presupuesto+eleccion.dinero);
+    equipo.plantilla.forEach(j=>{j.moral=Math.max(0,Math.min(100,j.moral+eleccion.moral));});
+    let consecuencia='';
+    if(eleccion.lesion&&Math.random()<eleccion.lesion){
+        const aptos=equipo.plantilla.filter(j=>j.lesionado===0);
+        if(aptos.length){aptos[0].lesionado=1;consecuencia=' Un suplente se lleva una sobrecarga de una jornada.';}
+    }
+    if(eleccion.sancion&&Math.random()<eleccion.sancion){
+        equipo.presupuesto=Math.max(0,equipo.presupuesto-25000);consecuencia+=' La directiva impone una multa de 25.000 €.';
+    }
+    document.getElementById('event-result').textContent='Decisión aplicada: '+eleccion.texto+' · moral '+(eleccion.moral>=0?'+':'')+eleccion.moral+' · caja '+(eleccion.dinero>=0?'+':'')+eleccion.dinero.toLocaleString('es-ES')+' €.'+consecuencia;
+    const fondo=document.getElementById('event-backdrop');fondo.classList.remove('open');fondo.setAttribute('aria-hidden','true');
+    eventoVestuarioActual=null;guardarPartidaLocal(false);actualizarUI();actualizarCTAFlotante();
+}
+function mostrarChirincirco(gf,gc) {
+    const feed=document.getElementById('chiri-feed');
+    let titular,memazo;
+    if(gf===0&&gc===0){titular='📱 Chirincirco: “Empate a cero; el balón ha solicitado vacaciones”.';memazo='La afición celebra el punto y pregunta si el VAR también estaba merendando.';}
+    else if(gf>gc){titular='📱 Chirincirco: “¡Victoria! La táctica era buena desde el minuto 89”.';memazo='El presidente ya se atribuye el fichaje del utillero.';}
+    else if(gf===gc){titular='📱 Chirincirco: “Reparto de puntos y de excusas”.';memazo='El míster: “el xG moral lo hemos ganado por goleada”.';}
+    else{titular='📱 Chirincirco: “Día torcido en la oficina del pase atrás”.';memazo='La afición pide fichajes, una merienda y revisar el acta.';}
+    feed.querySelector('strong').textContent=titular;feed.querySelector('p').textContent=memazo;
+}
+function liquidarPatrocinio(gf,gc) {
+    const id=estadoJuego.patrocinadorActivo;if(!id)return;
+    const sponsor=PATROCINADORES.find(p=>p.id===id);
+    if(sponsor&&sponsor.cumple(gf,gc)){
+        obtenerMiEquipo().presupuesto+=sponsor.premio;
+        contratoMensaje='✅ Objetivo cumplido con '+sponsor.nombre+': prima de '+sponsor.premio.toLocaleString('es-ES')+' €.';
+        efectosRecompensa();
+    }else contratoMensaje='ℹ️ '+(sponsor?sponsor.nombre:'El patrocinador')+' no paga prima esta vez; el objetivo queda para la próxima negociación.';
+    estadoJuego.patrocinadorActivo=null;
+}
+vivirJornada=async function() {
+    if(partidoEnCurso||eventoVestuarioActual)return;
+    const boton=document.getElementById('btn-simular-jornada');
+    const clock=document.getElementById('match-clock'),ritmo=document.getElementById('match-rhythm');
+    const fill=document.getElementById('match-meter-fill'),label=document.getElementById('match-meter-label');
+    const temporadaTerminada=estadoJuego.jornadaActual>=estadoJuego.calendario.length;
+    if(temporadaTerminada){simularJornadaManager();return;}
+    partidoEnCurso=true;poderesPartidoRestantes=3;poderesUsados=new Set();estiloTemporal=null;
+    document.querySelectorAll('#power-cards [data-power]').forEach(btn=>{btn.disabled=false;btn.classList.remove('used');});
+    document.getElementById('power-feedback').textContent='¡Reloj en marcha! Lanza hasta tres poderes tácticos.';
+    boton.disabled=true;actualizarCTAFlotante();
+    document.getElementById('match-scoreboard').textContent='FC Pase y Pifia · 0 — 0 · Partido en juego';
+    for(let minuto=0;minuto<=90;minuto+=3){
+        clock.textContent=String(minuto).padStart(2,'0')+'′';ritmo.textContent=minuto<45?'Primera parte':'Segunda parte';
+        const porcentaje=45+Math.round(25*Math.sin(minuto/8));fill.style.width=porcentaje+'%';
+        label.textContent=porcentaje>58?'Ritmo alto · presión y transiciones':porcentaje<42?'Ritmo bajo · pausa y toque':'Ritmo medio · partido abierto';
+        await new Promise(resolve=>setTimeout(resolve,95));
+    }
+    partidoEnCurso=false;
+    simularJornadaManager();
+    if(estiloTemporal!==null){obtenerMiEquipo().estilo=estiloTemporal;estiloTemporal=null;}
+    if(rivalEstiloTemporal){rivalEstiloTemporal.equipo.estilo=rivalEstiloTemporal.estilo;rivalEstiloTemporal=null;}
+    cambiosTemporalesCierzo.forEach(c=>{c.jugador.moral=Math.min(100,c.jugador.moral+c.perdidaMoral);c.jugador.cansancio=Math.max(0,c.jugador.cansancio-c.fatigaExtra);});
+    cambiosTemporalesCierzo=[];
+    const resumen=document.getElementById('match-summary').textContent;
+    const cuenta=resumen.match(/Último partido: (.+?) (\d+) - (\d+) (.+?)\./);
+    let gf=0,gc=0;
+    if(cuenta){
+        const goles1=Number(cuenta[2]),goles2=Number(cuenta[3]);
+        gf=cuenta[1]==='FC Pase y Pifia'?goles1:goles2;gc=cuenta[1]==='FC Pase y Pifia'?goles2:goles1;
+        document.getElementById('match-scoreboard').textContent=cuenta[1]+' · '+goles1+' — '+goles2+' · '+cuenta[4];
+        mostrarChirincirco(gf,gc);liquidarPatrocinio(gf,gc);
+    }
+    clock.textContent='90′';ritmo.textContent='Final';fill.style.width='50%';label.textContent='Pitido final · mira las repeticiones y el Chirincirco';
+    document.querySelectorAll('#power-cards [data-power]').forEach(btn=>btn.disabled=true);
+    guardarPartidaLocal(false);actualizarUI();boton.disabled=false;actualizarCTAFlotante();
+    if(cuenta)abrirEventoVestuario();
+};
+
 </body>
 </html>

@@ -168,15 +168,26 @@ const fs = require('node:fs/promises');
       const ficha = await page.evaluate(() => ({
         caricatura: document.getElementById('swipe-portrait').dataset.portraitId,
         clausula: document.getElementById('swipe-clause').textContent,
-        etiquetas: [...document.querySelectorAll('#swipe-stats .swipe-stat')].length
+        etiquetas: [...document.querySelectorAll('#swipe-stats .swipe-stat')].length,
+        atributos: document.querySelectorAll('#swipe-stats .attribute-pill').length,
+        codigos: [...document.querySelectorAll('#swipe-stats .attribute-pill small')].map(e=>e.textContent)
       }));
       assert.match(ficha.caricatura, /^caricatura-/);
       assert.ok(ficha.clausula.length>20 && ficha.etiquetas>=4, 'ficha lista atributos, cláusula y placeholder de ilustración');
+      assert.equal(ficha.atributos, 5, 'la carta ofrece los cinco atributos humorísticos');
+      assert.deepEqual(ficha.codigos, ['CAB','PAT','ALM','PRO','PIQ']);
+      assert.ok(window.DATOS_ARAGONESES.equipos.includes('Real Zaragocica') &&
+        window.DATOS_ARAGONESES.equipos.includes('Teruel Existe CF'), 'el universo incluye clubes aragoneses ficticios');
+
       await page.locator('#pestana-clasificacion').click();
       assert.equal(await page.locator('.cta-card button').count(), 2, 'despacho ofrece dos acciones siguientes');
       await page.locator('#pestana-entrenamiento').click();
       assert.match(await page.locator('#finance-budget').innerText(), /€/);
       assert.match(await page.locator('#finance-wages').innerText(), /€/);
+      assert.equal(await page.locator('#sponsor-options .sponsor-card').count(), 3, 'hay tres contratos absurdos disponibles');
+      await page.locator('[data-sponsor="cero-cero"]').click();
+      assert.match(await page.locator('#sponsor-status').innerText(), /Contrato firmado/, 'la firma activa un objetivo y una prima');
+      assert.equal(await page.locator('#floating-cta').isVisible(), true, 'la llamada a la acción permanece fija en pantalla');
       await page.evaluate(mercado => { estadoJuego.mercado=mercado; guardarPartidaLocal(false); actualizarUI(); }, mercadoAntesSwipe);
       assert.equal(await page.locator('#finance-squad').innerText(), '14 jugadores · 11 titulares');
       await page.locator('#pestana-partido').click();
@@ -970,6 +981,29 @@ const fs = require('node:fs/promises');
       assert.equal(replayCheck.originalStatsUnchanged, true,
         'la prueba de repetición usa datos aislados y no altera la partida activa');
       await page.locator('button').filter({ hasText: 'SIMULAR JORNADA' }).click();
+      await page.locator('[data-power="cierzo"]').click();
+      assert.equal(await page.locator('[data-power="cierzo"]').getAttribute('class').then(c=>c.includes('used')), true,
+        'el poder táctico se consume al lanzarlo durante el reloj');
+      await page.waitForFunction(() => estadoJuego.jornadaActual === 1 &&
+        document.getElementById('event-backdrop').classList.contains('open'), null, { timeout: 15000 });
+      const eventoAntes = await page.evaluate(() => ({
+        presupuesto: obtenerMiEquipo().presupuesto,
+        moral: obtenerMiEquipo().plantilla[0].moral,
+        opcion: eventoVestuarioActual.opciones[0],
+        contrato: estadoJuego.patrocinadorActivo
+      }));
+      await page.locator('[data-event-choice="0"]').click();
+      const eventoDespues = await page.evaluate(() => ({
+        presupuesto: obtenerMiEquipo().presupuesto,
+        moral: obtenerMiEquipo().plantilla[0].moral,
+        pendiente: eventoVestuarioActual
+      }));
+      assert.equal(eventoAntes.contrato, null, 'el contrato se liquida tras la jornada');
+      assert.equal(eventoDespues.presupuesto, Math.max(0, eventoAntes.presupuesto + eventoAntes.opcion.dinero),
+        'el mini-evento altera y guarda las finanzas');
+      assert.equal(eventoDespues.moral, Math.max(0, Math.min(100, eventoAntes.moral + eventoAntes.opcion.moral)),
+        'el mini-evento modifica la moral del vestuario');
+      assert.equal(eventoDespues.pendiente, null, 'la decisión cierra el popup');
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 1);
       await page.reload();
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 1, 'partida persistente');
