@@ -810,6 +810,7 @@ const fs = require('node:fs/promises');
           return {
             events: eventosPartidoActual.length,
             shots: [home.remates, away.remates],
+            clearChances: [home, away].map(eq => eventosPartidoActual.filter(e => e.equipo === eq.nombre && e.esClara).length),
             summary: document.getElementById('match-summary').textContent,
             summaryIsLive: document.getElementById('match-summary').getAttribute('aria-live'),
             controls: document.querySelectorAll('#replay-controls [data-replay-index]').length,
@@ -819,7 +820,12 @@ const fs = require('node:fs/promises');
               .find(line => line.textContent.includes('FINAL:'))?.textContent || '',
             pressed: document.querySelector('#replay-controls [data-replay-index="0"]')?.getAttribute('aria-pressed'),
             xg: document.getElementById('replay-xg').textContent,
+            replayType: document.getElementById('replay-type').textContent,
             player: document.getElementById('replay-player').textContent,
+            replayTypeMatchesEvent: document.getElementById('replay-type').textContent ===
+              (eventosPartidoActual[0]?.esClara ? 'Ocasión clara' : 'Ocasión de menor peligro'),
+            categorizedEvents: [...document.querySelectorAll('#match-log .log-goal, #match-log .log-chance')]
+              .every(line => /Ocasión clara|Ocasión de menor peligro/.test(line.textContent)),
             simulatedLabel: document.getElementById('replay-status').textContent.includes('no vídeo real'),
             originalStatsUnchanged: obtenerMiEquipo().plantilla.every((j, i) =>
               j.goles === originalStats[i][0] && j.xg === originalStats[i][1])
@@ -832,16 +838,23 @@ const fs = require('node:fs/promises');
       assert.equal(replayCheck.shots.reduce((total, remates) => total + remates, 0), 18,
         'el contador de remates coincide con las ocasiones generadas');
       assert.ok(replayCheck.finalSummary.includes(`Remates: ${replayCheck.shots[0]} vs ${replayCheck.shots[1]}`) &&
-        replayCheck.finalSummary.includes('xG:'),
-        'la crónica final compara remates y xG con los contadores del motor');
+        replayCheck.finalSummary.includes('xG:') &&
+        replayCheck.finalSummary.includes(`ocasiones claras: ${replayCheck.clearChances[0]} vs ${replayCheck.clearChances[1]}`),
+        'la crónica final compara remates, ocasiones claras y xG con los contadores del motor');
       assert.ok(replayCheck.summary.includes(`Remates: ${replayCheck.shots[0]} vs ${replayCheck.shots[1]}`) &&
-        replayCheck.summary.includes('xG:') && replayCheck.summaryIsLive === 'polite',
-        'el resumen visual y accesible comunica el resultado, remates y xG');
+        replayCheck.summary.includes('xG:') && replayCheck.summaryIsLive === 'polite' &&
+        replayCheck.summary.includes(`ocasiones claras: ${replayCheck.clearChances[0]} vs ${replayCheck.clearChances[1]}`),
+        'el resumen visual y accesible comunica el resultado, remates, ocasiones claras y xG');
       assert.equal(replayCheck.controls, replayCheck.events, 'cada ocasión tiene control para repetirla');
       assert.equal(replayCheck.logButtons, replayCheck.events, 'la crónica enlaza cada remate a su repetición');
       assert.equal(replayCheck.selected, true);
       assert.equal(replayCheck.pressed, 'true', 'la repetición seleccionada se anuncia a lectores de pantalla');
-      assert.ok(Number.isFinite(Number(replayCheck.xg)) && replayCheck.player);
+      assert.ok(Number.isFinite(Number(replayCheck.xg)) && replayCheck.player &&
+        ['Ocasión clara', 'Ocasión de menor peligro'].includes(replayCheck.replayType),
+        'la repetición indica la categoría interna de la ocasión seleccionada');
+      assert.equal(replayCheck.replayTypeMatchesEvent, true,
+        'la ficha de repetición muestra la categoría del evento seleccionado');
+      assert.equal(replayCheck.categorizedEvents, true, 'la crónica clasifica cada ocasión de forma legible');
       assert.equal(replayCheck.simulatedLabel, true, 'la repetición se identifica como reconstrucción, no vídeo real');
       assert.equal(replayCheck.originalStatsUnchanged, true,
         'la prueba de repetición usa datos aislados y no altera la partida activa');
