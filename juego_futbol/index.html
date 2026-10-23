@@ -1295,6 +1295,7 @@ function actualizarUI() {
     // Resumen de disponibilidad para decidir las rotaciones antes del partido.
     const lesionados = miEq.plantilla.filter(j => j.lesionado > 0).length;
     const fatigados = miEq.plantilla.filter(j => j.lesionado === 0 && j.cansancio >= 75).length;
+    const fatigadosTitulares = miEq.plantilla.filter(j => j.titular && j.lesionado === 0 && j.cansancio >= 75).length;
     const disponibles = miEq.plantilla.length - lesionados;
     const resumen = document.getElementById('resumen-disponibilidad');
     if (resumen) {
@@ -1351,6 +1352,7 @@ function actualizarUI() {
         const fuerzasRival = calcularFuerzas(rival);
         previaRival.textContent = `Rival: ${rival.nombre} · ${rival.formacion} · ${rival.estilo}\n` +
             `Localía: ${juegaEnCasa ? 'juegas en casa' : 'juegas fuera'} · el motor aplica +3 al ataque local si hay jugadores aptos\n` +
+            `Plantilla: ${disponibles}/${miEq.plantilla.length} disponibles · ${lesionados} bajas · ${fatigados} con fatiga ≥75 % (${fatigadosTitulares} titulares)\n` +
             `Fuerzas: tu equipo, ataque ${fuerzasPropias.ataque.toFixed(1)} / defensa ${fuerzasPropias.defensa.toFixed(1)} · ` +
             `rival, ataque ${fuerzasRival.ataque.toFixed(1)} / defensa ${fuerzasRival.defensa.toFixed(1)}\n` +
             `Cruces: tu ataque vs defensa rival ${fuerzasPropias.ataque.toFixed(1)} vs ${fuerzasRival.defensa.toFixed(1)} · ` +

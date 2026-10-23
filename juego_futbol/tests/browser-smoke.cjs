@@ -81,6 +81,13 @@ const fs = require('node:fs/promises');
           formacion: rival.formacion,
           estilo: rival.estilo,
           juegaEnCasa: cruce[0] === miEquipo.nombre,
+          disponibilidad: {
+            aptos: miEquipo.plantilla.filter(j => j.lesionado === 0).length,
+            total: miEquipo.plantilla.length,
+            bajas: miEquipo.plantilla.filter(j => j.lesionado > 0).length,
+            fatigados: miEquipo.plantilla.filter(j => j.lesionado === 0 && j.cansancio >= 75).length,
+            titularesFatigados: miEquipo.plantilla.filter(j => j.titular && j.lesionado === 0 && j.cansancio >= 75).length
+          },
           ataque: fuerzas.ataque.toFixed(1),
           defensa: fuerzas.defensa.toFixed(1),
           ataquePropio: calcularFuerzas(miEquipo).ataque.toFixed(1),
@@ -91,6 +98,7 @@ const fs = require('node:fs/promises');
       assert.ok(textoPreviaRival.includes(perfilProximoRival.nombre) &&
         textoPreviaRival.includes(`${perfilProximoRival.formacion} · ${perfilProximoRival.estilo}`) &&
         textoPreviaRival.includes(`Localía: ${perfilProximoRival.juegaEnCasa ? 'juegas en casa' : 'juegas fuera'} · el motor aplica +3 al ataque local si hay jugadores aptos`) &&
+        textoPreviaRival.includes(`Plantilla: ${perfilProximoRival.disponibilidad.aptos}/${perfilProximoRival.disponibilidad.total} disponibles · ${perfilProximoRival.disponibilidad.bajas} bajas · ${perfilProximoRival.disponibilidad.fatigados} con fatiga ≥75 % (${perfilProximoRival.disponibilidad.titularesFatigados} titulares)`) &&
         textoPreviaRival.includes(`rival, ataque ${perfilProximoRival.ataque} / defensa ${perfilProximoRival.defensa}`) &&
         textoPreviaRival.includes(`tu ataque vs defensa rival ${perfilProximoRival.ataquePropio} vs ${perfilProximoRival.defensa}`) &&
         textoPreviaRival.includes(`tu defensa vs ataque rival ${perfilProximoRival.defensaPropia} vs ${perfilProximoRival.ataque}`) &&
