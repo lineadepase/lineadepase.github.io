@@ -287,10 +287,11 @@ async function recargarPartida(page) {
       await page.locator('#microclip-close').click();
       // Navegación rediseñada, módulo Tinder, CTAs y finanzas.
       assert.deepEqual(await page.locator('button.tab-btn').allInnerTexts().then(xs=>xs.map(x=>x.trim())), [
-        '🏠 Despacho Míster', '📋 Plantilla · Táctica', '🔎 Secretaría · Fichajes', '🏋️ Entrenador', '⚽ Partido', '💶 Finanzas', '🏟️ Estadio', '⚙️ Ajustes y ayuda'
+        '🏠 Despacho Míster', '📋 Plantilla · Táctica', '🔎 Secretaría · Fichajes', '🌱 Cantera', '🏋️ Entrenador', '⚽ Partido', '💶 Finanzas', '🏟️ Estadio', '📈 Big Data', '⚙️ Ajustes y ayuda'
       ], 'los ocho departamentos usan nombres y orden claros');
       await page.locator('#pestana-mercado').click();
-      assert.ok(await page.locator('#swipe-card').isVisible(), 'se presenta la tarjeta de ojeo');
+      assert.ok(await page.locator('#secretaria-hub').isVisible(), 'Secretaría abre directamente el buscador de candidatos');
+      await page.evaluate(()=>abrirPantallaJuego('swipe-card'));
       assert.deepEqual(await page.locator('#tbody-mercado').locator('xpath=ancestor::table').locator('thead th').allInnerTexts(),
         ['Jugador', 'Pos', 'Rasgos', 'Precio', 'Salario/j', 'Acción'],
         'la tabla de mercado también expone los atributos paródicos en lugar de la media');
@@ -488,7 +489,7 @@ async function recargarPartida(page) {
         paneles: [...document.querySelectorAll('[role="tabpanel"]')].every(panel =>
           panel.getAttribute('aria-labelledby') && panel.hasAttribute('aria-hidden'))
       }));
-      assert.equal(accesibilidadTabs.total, 8, 'la navegación expone ocho pestañas accesibles');
+      assert.equal(accesibilidadTabs.total, 10, 'la navegación expone ocho pestañas accesibles');
       assert.deepEqual(accesibilidadTabs.seleccionadas, ['pestana-clasificacion']);
       assert.equal(accesibilidadTabs.paneles, true, 'cada pestaña identifica su panel');
       await page.locator('#pestana-clasificacion').focus();
@@ -821,7 +822,7 @@ async function recargarPartida(page) {
         'al reabrir una partida guardada debe indicarse que se recuperó');
       // Exportar e importar debe conservar una partida válida y rechazar una copia corrupta sin sustituirla.
       const exportEvent = page.waitForEvent('download');
-      await page.locator('button').filter({ hasText: 'Exportar' }).click();
+      await page.locator('button[onclick="exportarPartida()"]').click();
       const exportFile = await exportEvent;
       assert.match(exportFile.suggestedFilename(), /^linea-de-pase-temporada-1\.json$/,
         'la copia de seguridad se descarga con nombre de temporada');

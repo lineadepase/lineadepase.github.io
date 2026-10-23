@@ -6,6 +6,15 @@
   const sections = new Map();
   let currentSection = 'clasificacion', pages = [], pageIndex = 0, scheduled = 0, ready = false;
   let observer;
+  let menuPage=0;
+  function sideMenu(){
+    const menu=$('department-menu');if(!menu)return;
+    const state=sections.get(currentSection),size=Math.max(1,Math.floor((document.querySelector('main').clientHeight-95)/37));
+    const max=Math.max(0,Math.ceil(state.views.length/size)-1);menuPage=Math.min(menuPage,max);
+    menu.replaceChildren();const label=document.createElement('strong');label.textContent='En este departamento';menu.append(label);
+    state.views.slice(menuPage*size,(menuPage+1)*size).forEach((v,i)=>{const n=menuPage*size+i,b=document.createElement('button');b.type='button';b.textContent=v.dataset.title;b.setAttribute('aria-current',String(n===state.index));b.onclick=()=>selectView(n);menu.append(b);});
+    if(max){const controls=document.createElement('div');controls.className='department-menu-pages';for(const [text,delta] of [['←',-1],['→',1]]){const b=document.createElement('button');b.type='button';b.textContent=text;b.setAttribute('aria-label',delta<0?'Opciones anteriores del departamento':'Más opciones del departamento');b.disabled=delta<0?menuPage===0:menuPage===max;b.onclick=()=>{menuPage+=delta;sideMenu();};controls.append(b);}menu.append(controls);}
+  }
   function addTab(id, label) {
     const button = document.createElement('button');
     button.id = `pestana-${id}`; button.className = 'tab-btn'; button.type = 'button';
@@ -34,15 +43,18 @@
     const state = sections.get(currentSection);
     state.index = Number(index); pageIndex = 0;
     $('screen-view').value = String(state.index);
+    const size=Math.max(1,Math.floor((document.querySelector('main').clientHeight-95)/37));menuPage=Math.floor(state.index/size);sideMenu();
     layout();
     if (focus) $('screen-heading').focus({preventScroll:true});
   }
   function showSection(id) {
     if (!sections.has(id)) return;
     currentSection = id; pageIndex = 0;
+    menuPage=0;
     const state = sections.get(id), select = $('screen-view');
     select.replaceChildren(...state.views.map((view,i) => new Option(view.dataset.title,String(i))));
     select.value = String(state.index);
+    sideMenu();
     $('screen-section').textContent = $('pestana-'+id).textContent;
     layout();
   }
@@ -66,6 +78,7 @@
     }
     for (const [id,data] of sections) data.views.forEach((view,i) => {view.hidden = id !== currentSection || i !== state.index;});
     const root = state.views[state.index];
+    document.body.classList.toggle('lineup-focus',Boolean(root.querySelector('.whole-lineup')));
     root.querySelectorAll('.page-away').forEach(n => n.classList.remove('page-away'));
     root.querySelectorAll('.flow-split').forEach(n => n.classList.remove('flow-split'));
     root.querySelectorAll('table').forEach(table => {
@@ -77,6 +90,7 @@
     const units = [], branches = [];
     function divide(node) {
       if (!(node instanceof Element) || node.hidden || getComputedStyle(node).display === 'none') return;
+      if(node.matches('.whole-lineup')){units.push(node);return;}
       if(node.getBoundingClientRect().height>limit-32&&node.children.length&&!node.matches('button,select,svg,canvas,input,label,.reading-fragment')){
         [...node.childNodes].filter(n=>n.nodeType===Node.TEXT_NODE&&n.textContent.trim()).forEach(text=>{
           const span=document.createElement('span');span.className='reading-fragment';text.replaceWith(span);span.append(text);
@@ -128,6 +142,7 @@
     $('screen-previous').disabled = pageIndex === 0; $('screen-next').disabled = pageIndex === pages.length-1;
     $('screen-heading').textContent = root.dataset.title;
     root.dataset.pageCount = String(pages.length);
+    sideMenu();
     observe();
   }
   async function initialize() {
@@ -138,7 +153,7 @@
     $('pestana-tactica').textContent='📋 Plantilla · Táctica';
     $('pestana-mercado').textContent='🔎 Secretaría · Fichajes';
     const nav=document.querySelector('nav');
-    ['clasificacion','tactica','mercado','entrenamiento','partido','finanzas','estadio','ajustes'].forEach(id=>{const b=$('pestana-'+id);if(b)nav.append(b);});
+    ['clasificacion','tactica','mercado','cantera','entrenamiento','partido','finanzas','estadio','bigdata','ajustes'].forEach(id=>{const b=$('pestana-'+id);if(b)nav.append(b);});
     const settings = document.createElement('section'); settings.id='tab-ajustes'; settings.className='tab-content';
     settings.setAttribute('role','tabpanel'); settings.setAttribute('aria-labelledby','pestana-ajustes'); settings.setAttribute('aria-hidden','true');
     const settingsPanel=document.createElement('div'); settingsPanel.className='panel';
@@ -152,6 +167,7 @@
     const tools=document.createElement('div'); tools.className='screen-tools';
     tools.innerHTML='<label>Ver <select id="screen-view" aria-label="Pantalla de esta sección"></select></label><span id="screen-section" class="screen-badge"></span>';
     document.querySelector('main').prepend(tools);
+    const menu=document.createElement('aside');menu.id='department-menu';menu.setAttribute('aria-label','Pantallas del departamento');document.querySelector('main').prepend(menu);
     const heading=document.createElement('h2'); heading.id='screen-heading'; heading.tabIndex=-1;
     heading.className='sr-only'; heading.style.cssText='position:absolute;width:1px;height:1px;clip-path:inset(50%);overflow:hidden';
     tools.append(heading);
@@ -184,7 +200,7 @@
     const titles={'club-calendar':'Calendario de temporada','reigns-panel':'Decisiones del despacho','finance-budget':'Finanzas del club','sponsor-options':'Patrocinadores','match-log':'Crónica del partido','canvas-shotmap':'Estadísticas y balance','lbl-cartel-partido':'Previa y resultado','replay-heading':'Repeticiones','chiri-feed':'Noticias de la afición'};
     Object.entries(titles).forEach(([id,title])=>{$(id).closest('.screen-view').dataset.title=title;});
     document.querySelector('.sim-disclaimer').closest('.screen-view').dataset.title='Sobre la simulación';
-    sections.get('mercado').index=sections.get('mercado').views.indexOf($('swipe-card').closest('.screen-view'));
+    sections.get('mercado').index=sections.get('mercado').views.indexOf(($('secretaria-hub')||$('swipe-card')).closest('.screen-view'));
     $('screen-view').onchange=e=>selectView(e.target.value,true);
     $('screen-previous').onclick=()=>{pageIndex--;layout();if(pageIndex===0)$('screen-next').focus({preventScroll:true});};
     $('screen-next').onclick=()=>{pageIndex++;layout();if(pageIndex===pages.length-1)$('screen-previous').focus({preventScroll:true});};

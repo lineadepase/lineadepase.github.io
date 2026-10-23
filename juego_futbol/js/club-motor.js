@@ -38,6 +38,8 @@
     eq.gestion={entrada:20,abono:150,abonados:0,abonosTemporada:0,gradas:{norte:n,sur:n,este:n,oeste:eq.aforo-3*n},servicios:Object.fromEntries(SERVICIOS.map(k=>[k,0])),staff:Object.fromEntries(STAFF.map(k=>[k,0])),obras:[],cantera:[],publicidad:{camiseta:null,vallas:null},balances:[],ultimoCierre:[]};
     for(const pos of ['POR','DEF','DEL'])eq.gestion.cantera.push(generar(s,eq,pos,17));
    }
+   if(eq.gestion.modernizacion===undefined)eq.gestion.modernizacion=0;
+   if(eq.gestion.filial===undefined)eq.gestion.filial={activo:false,jugados:0,victorias:0,empates:0,derrotas:0,ultimo:''};
    eq.plantilla.forEach(defaultPlayer);eq.gestion?.cantera?.forEach(defaultPlayer);
   });
   s.mercado?.forEach(defaultPlayer);
@@ -56,9 +58,10 @@
    if(!fin(s.carrera.mentalidad,0,100)||!s.carrera.noticias.every(t=>typeof t==='string'&&t.length<2000))return false;
    if(!s.carrera.retirados.every(r=>r&&typeof r.id==='string'&&typeof r.nombre==='string'&&fin(r.edad,16,99)&&Number.isInteger(r.temporada)&&typeof r.regen==='string')||!s.carrera.bajasBase.every(id=>typeof id==='string'&&id.length<=100)||s.carrera.liquidados.length>1000||!s.carrera.liquidados.every(k=>typeof k==='string'&&k.length<=300))return false;
    const ids=[];
+   for(const e of s.equipos){const g=e.gestion,f=g?.filial;if(!Number.isInteger(g?.modernizacion)||!fin(g.modernizacion,0,3)||!f||typeof f.activo!=='boolean'||!['jugados','victorias','empates','derrotas'].every(k=>Number.isInteger(f[k])&&fin(f[k],0,100000))||f.jugados!==f.victorias+f.empates+f.derrotas||typeof f.ultimo!=='string'||f.ultimo.length>100)return false;if(g.cantera?.some(j=>j.equipoB!==undefined&&typeof j.equipoB!=='boolean')||g.cantera?.filter(j=>j.equipoB).length>12||(!f.activo&&g.cantera?.some(j=>j.equipoB)))return false;}
    for(const eq of s.equipos){
     const g=eq.gestion;
-    if(!g||!fin(g.entrada,5,120)||!fin(g.abono,20,1500)||!Number.isInteger(g.abonados)||!fin(g.abonados,0,eq.aforo)||!fin(g.abonosTemporada,0,s.temporada)||!SECTORES.every(k=>Number.isInteger(g.gradas?.[k])&&fin(g.gradas[k],0,100000))||Object.values(g.gradas).reduce((a,b)=>a+b,0)!==eq.aforo||!SERVICIOS.every(k=>Number.isInteger(g.servicios?.[k])&&fin(g.servicios[k],0,3))||!STAFF.every(k=>Number.isInteger(g.staff?.[k])&&fin(g.staff[k],0,3))||!Array.isArray(g.cantera)||g.cantera.length>12||!Array.isArray(g.obras)||g.obras.length>8||!g.obras.every(o=>['grada','servicio'].includes(o.tipo)&&Number.isInteger(o.restante)&&fin(o.restante,1,3)&&(o.tipo==='grada'?SECTORES:SERVICIOS).includes(o.objetivo))||!Array.isArray(g.balances)||g.balances.length>30)return false;
+    if(!g||!fin(g.entrada,5,120)||!fin(g.abono,20,1500)||!Number.isInteger(g.abonados)||!fin(g.abonados,0,eq.aforo)||!fin(g.abonosTemporada,0,s.temporada)||!SECTORES.every(k=>Number.isInteger(g.gradas?.[k])&&fin(g.gradas[k],0,100000))||Object.values(g.gradas).reduce((a,b)=>a+b,0)!==eq.aforo||!SERVICIOS.every(k=>Number.isInteger(g.servicios?.[k])&&fin(g.servicios[k],0,3))||!STAFF.every(k=>Number.isInteger(g.staff?.[k])&&fin(g.staff[k],0,3))||!Array.isArray(g.cantera)||g.cantera.length>24||!Array.isArray(g.obras)||g.obras.length>8||!g.obras.every(o=>['grada','servicio','remodelacion'].includes(o.tipo)&&Number.isInteger(o.restante)&&fin(o.restante,1,3)&&(o.tipo==='remodelacion'?['estadio']:o.tipo==='grada'?SECTORES:SERVICIOS).includes(o.objetivo))||!Array.isArray(g.balances)||g.balances.length>30)return false;
     if(!Array.isArray(g.ultimoCierre)||g.ultimoCierre.length>100||!g.ultimoCierre.every(t=>typeof t==='string'&&t.length<=2000))return false;
     if(!g.balances.every(b=>b&&['asistentes','entradas','extras','publicidad','salarios','empleados','primas'].every(k=>fin(b[k],0,1e12))&&Number.isFinite(b.neto)&&Number.isInteger(b.temporada)&&Number.isInteger(b.jornada)))return false;
     if(!g.publicidad||!['camiseta','vallas'].every(k=>g.publicidad[k]===null||(['fijo','victoria','goles'].includes(g.publicidad[k].tipo)&&typeof g.publicidad[k].nombre==='string'&&g.publicidad[k].temporada===s.temporada)))return false;
@@ -72,7 +75,7 @@
  function pagar(eq,importe){if(!fin(importe,0,1e10)||eq.presupuesto<importe)throw Error('Presupuesto insuficiente.');eq.presupuesto-=importe;}
  function estimarTaquilla(eq,rival){
   const g=eq.gestion,calidad=(rival?.plantilla||eq.plantilla).reduce((v,j)=>v+j.media,0)/Math.max(1,(rival?.plantilla||eq.plantilla).length);
-  const atractivo=.62+calidad/400+g.servicios.transporte*.025;
+  const atractivo=.62+calidad/400+g.servicios.transporte*.025+g.modernizacion*.015;
   const demanda=clamp(atractivo*(1-(g.entrada-20)*.014),.08,1);
   const asistentes=Math.min(eq.aforo,Math.max(g.abonados,Math.round(eq.aforo*demanda)));
   const entradas=(asistentes-g.abonados)*g.entrada;
@@ -89,6 +92,7 @@
  }
  function obra(eq,tipo,objetivo){
   const g=eq.gestion,list=tipo==='grada'?SECTORES:SERVICIOS;
+  if(g.obras.length>=8)throw Error('Ya hay ocho obras en curso. Espera a que termine alguna.');
   if(!['grada','servicio'].includes(tipo)||!list.includes(objetivo))throw Error('Obra no disponible.');
   if(g.obras.some(o=>o.tipo===tipo&&o.objetivo===objetivo))throw Error('Ya hay una obra en ese sector.');
   if(tipo==='grada'&&eq.aforo+(g.obras.filter(o=>o.tipo==='grada').length+1)*1000>150000)throw Error('Aforo máximo de 150.000 alcanzado, incluidas las obras pendientes.');
@@ -119,16 +123,16 @@
    aptos.forEach(j=>{j.desarrollo.partidos++;j.desarrollo.minutos+=90;});
    const prima=eq.plantilla.reduce((sum,j)=>sum+j.contrato.primaGol*(j.goles-(j.desarrollo.golesLiquidados||0)),0);
    eq.plantilla.forEach(j=>{j.desarrollo.golesLiquidados=j.goles;});
-   const salarios=eq.plantilla.reduce((sum,j)=>sum+j.salario,0),empleados=sueldoStaff(eq);
+   const salarios=[...eq.plantilla,...g.cantera.filter(j=>j.equipoB)].reduce((sum,j)=>sum+j.salario,0),empleados=sueldoStaff(eq);
    const neto=Math.round(ingresos+publicidad-salarios-empleados-Math.max(0,prima));eq.presupuesto+=neto;
    g.balances.unshift({temporada:s.temporada,jornada:s.jornadaActual+1,local:home,asistentes:home?estimate.asistentes:0,entradas:home?estimate.entradas:0,extras:home?estimate.extras:0,publicidad:Math.round(publicidad),salarios,empleados,primas:Math.max(0,prima),neto});g.balances=g.balances.slice(0,30);
-   g.obras.forEach(o=>{o.restante--;if(o.restante===0){if(o.tipo==='grada'){g.gradas[o.objetivo]+=1000;eq.aforo+=1000;}else g.servicios[o.objetivo]++;noticia(s,`${eq.nombre}: terminada la obra de ${o.objetivo}.`);}});g.obras=g.obras.filter(o=>o.restante>0);
+   g.obras.forEach(o=>{o.restante--;if(o.restante===0){if(o.tipo==='grada'){g.gradas[o.objetivo]+=1000;eq.aforo+=1000;}else if(o.tipo==='remodelacion')g.modernizacion++;else g.servicios[o.objetivo]++;noticia(s,`${eq.nombre}: terminada la obra de ${o.objetivo}.`);}});g.obras=g.obras.filter(o=>o.restante>0);
    eq.plantilla.forEach(j=>{j.moral=clamp(j.moral+g.staff.psicologo,0,100);j.cansancio=clamp(j.cansancio-g.staff.medico*2,0,100);if(j.lesionado&&g.staff.medico>=2)j.lesionado=Math.max(0,j.lesionado-1);});
   }
   return {duplicado:false,taquilla:estimate.total};
  }
  function ojear(s,eq){
-  if(eq.gestion.cantera.length>=12)throw Error('La cantera tiene doce plazas. Promociona jugadores antes de ojear.');
+  if(eq.gestion.cantera.filter(j=>!j.equipoB).length>=12||eq.gestion.cantera.length>=24)throw Error('La cantera tiene doce plazas. Promociona jugadores antes de ojear.');
   pagar(eq,10000);const counts=Object.fromEntries(POS.map(p=>[p,eq.plantilla.filter(j=>j.posicion===p).length]));
   const pos=counts.POR<2?'POR':POS[(s.carrera.secuencia)%4];const j=generar(s,eq,pos,17+s.carrera.secuencia%2);eq.gestion.cantera.push(j);return j;
  }

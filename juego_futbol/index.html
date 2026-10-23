@@ -1162,7 +1162,7 @@ function rendimientoReal(j) {
  * Sumo los salarios de toda la plantilla. El motor descuenta esta cantidad en cada jornada, también para los equipos controlados por la máquina.
  */
 function masaSalarial(eq) {
-    return eq.plantilla.reduce((acc, j) => acc + j.salario, 0);
+    return [...eq.plantilla,...(eq.gestion?.cantera||[]).filter(j=>j.equipoB)].reduce((acc, j) => acc + j.salario, 0);
 }
 
 /**
@@ -3403,6 +3403,8 @@ mostrarRepeticion=function(indice){
 <script src="./js/universo-liga.js"></script>
 <link rel="stylesheet" href="./css/noche.css">
 <script src="./js/centro-control.js"></script>
+<link rel="stylesheet" href="./css/departamentos.css">
+<script src="./js/gestion-avanzada.js"></script>
 <script src="./js/pantallas.js"></script>
 </body>
 </html>

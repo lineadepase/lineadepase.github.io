@@ -9,7 +9,7 @@ const {installScreenNavigation}=require('./screen-navigation.cjs');
   await p.evaluate(()=>{const e=obtenerMiEquipo();e.plantilla.find(j=>j.titular).cansancio=90;e.presupuesto=-100;e.gestion.balances=Array.from({length:8},(_,i)=>({temporada:1,jornada:8-i,neto:(8-i)*100,asistentes:0,entradas:0,extras:0,publicidad:0,salarios:0,empleados:0,primas:0}));actualizarUI();abrirPantallaJuego('control-alerts');});
   assert.match(await p.locator('#control-alerts').textContent(),/descanso/);assert.match(await p.locator('#control-alerts').textContent(),/déficit/);
   assert.match(await p.locator('#control-finance').textContent(),/J8/);assert.doesNotMatch(await p.locator('#control-finance').textContent(),/J1/);
-  await p.locator('[data-open="btn-rotar-fatigados"]').click();assert.equal(await p.locator('#screen-view option:checked').textContent(),'Alineación y jugadores');
+  await p.locator('[data-open="btn-rotar-fatigados"]').click();assert.match(await p.locator('#screen-view option:checked').textContent(),/^Alineación y jugadores/);
   await p.locator('#open-compare').click();await p.locator('#compare-first').selectOption({index:2});await p.locator('#compare-second').selectOption({index:3});
   const expected=await p.evaluate(()=>obtenerMiEquipo().plantilla[2].nombre);assert.match(await p.locator('#compare-summary').textContent(),new RegExp(expected));
   await p.locator('#compare-contract').click();assert.equal(await p.locator('#contract-player option:checked').textContent(),'Renovar · '+expected);assert.match(await p.locator('#player-dossier').textContent(),new RegExp(expected));

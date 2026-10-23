@@ -13,7 +13,7 @@ const base=process.env.GAME_URL||'http://127.0.0.1:8765/juego_futbol/';
   page.on('pageerror',e=>errors.push(e.message));await page.goto(base);
   await page.waitForSelector('.screen-mode');await page.waitForTimeout(150);
   let count=0;
-  for(const section of ['clasificacion','tactica','mercado','partido','entrenamiento','finanzas','estadio','ajustes']){
+  for(const section of ['clasificacion','tactica','mercado','partido','entrenamiento','finanzas','estadio','cantera','bigdata','ajustes']){
    await page.locator('#pestana-'+section).click();
    const options=await page.locator('#screen-view option').count();
    for(let i=0;i<options;i++){
