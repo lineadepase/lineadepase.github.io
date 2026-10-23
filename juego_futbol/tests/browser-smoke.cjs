@@ -223,7 +223,7 @@ const fs = require('node:fs/promises');
       const swipeInicial = await page.locator('#swipe-name').innerText();
       await page.locator('#swipe-reject').click();
       assert.notEqual(await page.locator('#swipe-name').innerText(), swipeInicial, 'descartar avanza al siguiente candidato');
-      assert.match(await page.locator('#swipe-feedback').innerText(), /cierzo|abrazo|propicio/i, 'el descarte responde con retranca');
+      assert.match(await page.locator('#swipe-feedback').innerText(), /despacho|tranquilo|conversación/i, 'el descarte responde con retranca');
       assert.equal(await page.locator('#microclip-backdrop').getAttribute('aria-hidden'), 'false',
         'el descarte abre la reacción visual preparada para el clip IA');
       assert.match(await page.locator('#video-action-status').innerText(), /clips IA se incorporarán/,
