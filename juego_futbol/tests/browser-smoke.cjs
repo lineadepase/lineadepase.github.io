@@ -756,7 +756,8 @@ const fs = require('node:fs/promises');
       assert.match(await page.locator('#tbody-historial-temporadas tr').first().innerText(), /Empate:.*Paco Manoplas/,
         'el archivo anuncia el empate entre goleadores');
       const celdasArchivo = await page.locator('#tbody-historial-temporadas tr').first().locator('td').allInnerTexts();
-      assert.equal(celdasArchivo[3].trim(), '6', 'la tabla histórica muestra los partidos jugados');
+      assert.equal(celdasArchivo[3].trim(), String(archivoPrimeraTemporada.clasificacion[0].pj),
+        'la tabla histórica muestra los partidos jugados de la fila');
       assert.match(celdasArchivo[5], /^\d+-\d+$/);
       assert.match(celdasArchivo[6], /^\d+$/);
       assert.match(celdasArchivo[7], /^\d+\.\d{2}$/);
