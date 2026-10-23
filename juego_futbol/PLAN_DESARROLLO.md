@@ -20,6 +20,7 @@
 - Crónica y resumen accesibles que distinguen gol/remate sin gol, ocasiones claras según el motor, remates totales y xG por equipo; cada repetición muestra también la categoría interna de la ocasión.
 - Tabla de balance posterior al partido con una fila por equipo para goles, remates, xG, diferencia goles−xG y ocasiones claras, utilizable sin depender del mapa de tiros.
 - Descarga CSV del balance final, con cabeceras en castellano, separador de hoja de cálculo y codificación compatible con tildes; se habilita cuando termina el partido.
+- En móvil, la plantilla se presenta en fichas compactas para consultar posición, rendimiento, fatiga, goles, xG y estado sin desplazamiento horizontal.
 - Avatares vectoriales originales, estables para cada nombre ficticio, en las tablas de plantilla, goleadores y mercado.
 - Mercado, venta de jugadores, preparación, premios y continuidad de temporada.
 - Guía rápida desplegable para el primer uso, previa comparativa con fuerzas propias y del rival, cruces ataque-defensa, localía y estado físico de la plantilla para orientar rotaciones (sin presentar los valores como pronóstico), y botón de jornada que distingue entre jugar una fecha y pasar a la temporada siguiente.
@@ -36,7 +37,7 @@ Todos los clubes y futbolistas del juego usan nombres ficticios con tono humorí
 ## Pruebas y limitaciones conocidas
 
 - Python: compilación y pruebas unitarias para calendario, integridad de temporada, mercado/guardado, xG y plantillas sin jugadores aptos.
-- Navegador: Playwright en Chromium para escritorio y móvil, preferencia de movimiento reducido, rotación manual con Enter y Espacio, relevo asistido de titulares fatigados y estado accesible de jugadores seleccionados o lesionados, guía rápida, previa de rival y estado del botón al cerrar temporada, controles, persistencia, mercado, lesiones, calendario, premios, resumen accesible del partido con remates, ocasiones claras y xG, tabla comparativa completa y descarga CSV verificada, categorías legibles en la crónica y la ficha de repetición, archivo multitemporada con sus métricas y diferencia goles-xG, empates de goleadores, migración de resúmenes antiguos, importación/exportación y errores JavaScript. El workflow guarda capturas de ambos tamaños como artefacto temporal.
+- Navegador: Playwright en Chromium para escritorio y móvil, preferencia de movimiento reducido, rotación manual con Enter y Espacio, relevo asistido de titulares fatigados y estado accesible de jugadores seleccionados o lesionados, tabla compacta móvil con todos los datos de plantilla, guía rápida, previa de rival y estado del botón al cerrar temporada, controles, persistencia, mercado, lesiones, calendario, premios, resumen accesible del partido con remates, ocasiones claras y xG, tabla comparativa completa y descarga CSV verificada, categorías legibles en la crónica y la ficha de repetición, archivo multitemporada con sus métricas y diferencia goles-xG, empates de goleadores, migración de resúmenes antiguos, importación/exportación y errores JavaScript. El workflow guarda capturas de la pizarra inicial y del informe de partido en escritorio y móvil.
 - La comprobación local requiere el ejecutable Chromium de Playwright; en este entorno no está instalado. El resultado definitivo de navegador debe confirmarse en GitHub Actions.
 - La simulación web es un prototipo jugable de cuatro equipos, no una base de datos de una competición real. El cliente Python no comparte todavía un único motor con la web ni constituye una app iOS/Android.
 
@@ -46,6 +47,29 @@ Todos los clubes y futbolistas del juego usan nombres ficticios con tono humorí
 2. Revisar las licencias de cualquier activo gráfico de terceros que se añada en el futuro.
 3. Decidir si se amplía la liga y el mercado; no ampliar la competición hasta tener pruebas para continuidad multitemporada.
 4. Publicar únicamente tras autorización expresa.
+
+## Primera versión: definición y pendientes
+
+### Alcance incluido
+
+La primera versión es un juego web local de gestión para una liga inventada de cuatro equipos. Incluye el ciclo de temporada completo, gestión de plantilla y presupuesto, táctica y rotaciones, mercado, preparación, simulación de partidos, clasificación, métricas explicadas como simuladas, repetición esquemática, archivo de temporadas y guardado, reinicio e importación/exportación de partidas. No depende de clubes, jugadores ni estadísticas reales.
+
+### Estado del código
+
+- **Implementado:** el alcance anterior, con interfaz adaptable, controles de teclado, guardados validados y pruebas de motor y navegador.
+- **Verificación automatizada:** CI #191, commit `00ddb94254baafe277d77504827900739b1706b5`: pruebas de Python y recorridos Playwright en Chromium de escritorio y móvil correctos; artefacto de capturas generado.
+- **Mejora en curso:** el control visual de la plantilla en móvil y nuevas capturas del informe de partido se incorporarán en el siguiente CI.
+
+### Lo que falta para cerrar la primera versión
+
+1. Pasar el nuevo CI tras el ajuste móvil de plantilla y revisar las cuatro capturas (pizarra e informe, escritorio y móvil).
+2. Hacer una aceptación manual de una temporada completa en un ordenador y en un móvil real; el CI usa Chromium móvil emulado y no sustituye la comprobación en Safari de iPhone.
+3. Confirmar que el ritmo, los textos y el equilibrio de dificultad resultan claros y entretenidos en una partida real; solo entonces ajustar parámetros si hace falta.
+4. Mantener el PR como borrador hasta que Ángel dé por buena esa revisión. La integración con la web pública o la publicación requieren una decisión posterior y no forman parte del trabajo de este PR.
+
+### Fuera del alcance de la primera versión
+
+Aplicación nativa para iOS o Android, motor Python compartido con la web, guardado en la nube, juego multijugador, liga ampliada y datos o identidades reales. Se podrán valorar en versiones posteriores.
 
 ## Próxima ampliación de producto
 

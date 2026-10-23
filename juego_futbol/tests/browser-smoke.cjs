@@ -48,6 +48,25 @@ const fs = require('node:fs/promises');
       });
       assert.ok(indicesRotacion.titular >= 0 && indicesRotacion.suplente >= 0,
         'debe haber un titular y un suplente aptos para probar la rotación');
+      if (mode === 'mobile') {
+        const tablaPlantillaMovil = await page.evaluate(() => {
+          const tabla = document.querySelector('.squad-table');
+          const estilo = getComputedStyle(tabla.querySelector('tbody tr'));
+          const campos = ['Cans', 'Goles', 'xG', 'Estado'].map(campo => {
+            const celda = tabla.querySelector(`td[data-label="${campo}"]`);
+            return { campo, visible: getComputedStyle(celda).display !== 'none', anchura: celda.getBoundingClientRect().width };
+          });
+          return { plantilla: tabla.scrollWidth <= tabla.clientWidth + 1, columnas: estilo.display,
+            campos, anchoDocumento: document.documentElement.scrollWidth, anchoVentana: innerWidth };
+        });
+        assert.equal(tablaPlantillaMovil.plantilla, true,
+          'la plantilla muestra todas sus columnas sin desplazamiento horizontal en móvil');
+        assert.equal(tablaPlantillaMovil.columnas, 'grid', 'cada futbolista se organiza como ficha compacta en móvil');
+        assert.ok(tablaPlantillaMovil.campos.every(campo => campo.visible && campo.anchura > 0),
+          'fatiga, goles, xG y estado siguen visibles en móvil');
+        assert.ok(tablaPlantillaMovil.anchoDocumento <= tablaPlantillaMovil.anchoVentana + 2,
+          'la plantilla adaptable no ensancha la página móvil');
+      }
       const selectorJugador = indice => `#tbody-plantilla .player-select-btn[data-player-index="${indice}"]`;
       const botonTitular = page.locator(selectorJugador(indicesRotacion.titular));
       assert.equal(await botonTitular.getAttribute('aria-pressed'), 'false', 'ningún jugador está seleccionado al cargar');
@@ -865,6 +884,7 @@ const fs = require('node:fs/promises');
         row.map(value => `"${value.replace(/"/g, '""')}"`).join(';')),
       'el CSV contiene las mismas estadísticas que el balance visible');
       assert.equal(csvRows.length, 3, 'el archivo incluye cabecera y los dos equipos');
+      await page.screenshot({ path: require('node:path').join(artifactDir, `partido-${mode}.png`), fullPage: true });
       assert.ok(replayCheck.finalSummary.includes(`Remates: ${replayCheck.shots[0]} vs ${replayCheck.shots[1]}`) &&
         replayCheck.finalSummary.includes('xG:') &&
         replayCheck.finalSummary.includes(`ocasiones claras: ${replayCheck.clearChances[0]} vs ${replayCheck.clearChances[1]}`),
