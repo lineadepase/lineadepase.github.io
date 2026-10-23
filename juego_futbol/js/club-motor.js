@@ -45,6 +45,7 @@
  }
  function jugadorValido(j){
   return !!j&&typeof j.jugador_id==='string'&&/^[\p{L}\p{N}][\p{L}\p{N}_-]{0,100}$/u.test(j.jugador_id)&&typeof j.nombre==='string'&&j.nombre.length<=80&&POS.includes(j.posicion)&&fin(j.media,1,100)&&Number.isInteger(j.edad)&&fin(j.edad,16,99)&&
+   j.atributos&&ATTR.every(k=>fin(j.atributos[k],0,100))&&fin(j.moral,0,100)&&fin(j.cansancio,0,100)&&fin(j.precio,0,1e10)&&fin(j.salario,0,1e7)&&fin(j.goles,0,1e7)&&fin(j.xg,0,1e9)&&Number.isInteger(j.lesionado)&&fin(j.lesionado,0,10000)&&typeof j.titular==='boolean'&&typeof j.avatar_ia==='string'&&typeof j.cumpleanos==='string'&&/^\d{2}-\d{2}$/.test(j.cumpleanos)&&(()=>{const [m,d]=j.cumpleanos.split('-').map(Number),date=new Date(Date.UTC(2028,m-1,d));return date.getUTCMonth()===m-1&&date.getUTCDate()===d;})()&&
    j.contrato&&Number.isInteger(j.contrato.anos)&&fin(j.contrato.anos,0,5)&&fin(j.contrato.clausula,0,1e10)&&fin(j.contrato.primaGol,0,1e6)&&
    j.desarrollo&&fin(j.desarrollo.potencial,1,100)&&fin(j.desarrollo.baseMedia,1,100)&&Number.isInteger(j.desarrollo.partidos)&&fin(j.desarrollo.partidos,0,10000)&&fin(j.desarrollo.minutos,0,1e7)&&Number.isInteger(j.desarrollo.retiro)&&fin(j.desarrollo.retiro,34,42)&&ATTR.every(k=>fin(j.desarrollo.baseAtributos?.[k],0,100));
  }

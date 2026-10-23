@@ -16,4 +16,4 @@ test('2D: balón independiente, pases, colisiones, gol y final por tiempo',()=>{
 
 test('una sobrepuja sin fondos no mueve dinero ni jugadores',()=>{const s=game(),[a,b]=s.equipos,j=b.plantilla[0];s.mercado=[j];const snap=JSON.stringify(s);assert.throws(()=>M.firmar(s,a,j.jugador_id,{precio:a.presupuesto+1,salario:j.salario,anos:2,clausula:j.precio*2,primaGol:0}));assert.equal(JSON.stringify(s),snap);s.carrera.secuencia=1;assert.equal(M.validar(s),false);});
 
-test('importación rechaza identidades y datos nuevos malformados',()=>{for(const mutate of [s=>s.equipos[0].gestion.cantera[0].jugador_id='x" onclick="alert(1)',s=>s.carrera.retirados=[null],s=>s.equipos[0].gestion.ultimoCierre=null]){const s=game();mutate(s);assert.equal(M.validar(s),false);}});
+test('importación rechaza identidades y datos nuevos malformados',()=>{for(const mutate of [s=>s.equipos[0].gestion.cantera[0].jugador_id='x" onclick="alert(1)',s=>s.equipos[0].gestion.cantera[0].atributos.ALM=999,s=>s.equipos[0].gestion.cantera[0].cumpleanos='99-99',s=>s.carrera.retirados=[null],s=>s.equipos[0].gestion.ultimoCierre=null]){const s=game();mutate(s);assert.equal(M.validar(s),false);}});
