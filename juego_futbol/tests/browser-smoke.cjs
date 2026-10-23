@@ -106,6 +106,31 @@ async function recargarPartida(page) {
         'la base incluye las parodias solicitadas de los cuatro equipos');
       assert.equal(integridadPlantillas.control, 'Real Magras de Madrid');
       assert.equal(integridadPlantillas.panelActivo, 'tab-clasificacion', 'la vista inicial coincide con Despacho Míster');
+      await page.locator('#manager-profile-open').click();
+      assert.equal(await page.locator('#manager-profile').getAttribute('aria-hidden'), 'false',
+        'el perfil del míster abre un diálogo para elegir club y nombre');
+      assert.equal(await page.locator('#manager-team option').count(), 4,
+        'la elección de carrera ofrece los cuatro clubes ficticios actuales');
+      await page.locator('#manager-team').selectOption({ label: 'Balompié del Somontano' });
+      await page.locator('#manager-name').fill('Míster Prueba');
+      await page.locator('#manager-look').selectOption('bufanda');
+      await page.locator('#manager-profile-form button[type="submit"]').click();
+      assert.deepEqual(await page.evaluate(() => [obtenerMiEquipo().nombre, estadoJuego.manager.nombre, estadoJuego.manager.estilo]),
+        ['Balompié del Somontano', 'Míster Prueba', 'bufanda'], 'la nueva carrera aplica club, nombre y apariencia');
+      await page.locator('#manager-profile-open').click();
+      await page.locator('#manager-team').selectOption({ label: 'Real Magras de Madrid' });
+      await page.locator('#manager-name').fill('Míster de la cuadrilla');
+      await page.locator('#manager-look').selectOption('gorra');
+      await page.locator('#manager-profile-form button[type="submit"]').click();
+      assert.match(await page.locator('#lbl-fecha').innerText(), /2026/);
+      assert.equal(await page.locator('.season-calendar .calendar-day').count(), 6,
+        'el despacho enseña el calendario de jornadas con fechas y rivales');
+      await page.locator('#audio-toggle').click();
+      assert.equal(await page.locator('#audio-toggle').getAttribute('aria-pressed'), 'true',
+        'la música original y los sonidos tienen un control visible');
+      await page.locator('#audio-toggle').click();
+      assert.equal(await page.locator('#canvas-match-live').evaluate(c => c.width > 0 && c.height > 0), true,
+        'el partido dispone de un campo de juego animado');
       assert.match(await page.locator('#primeros-pasos').innerText(), /Tu primer partido/,
         'el despacho guía a los nuevos jugadores en tres pasos breves');
       assert.equal(await page.locator('.club-emblem').count(), 1,
@@ -128,6 +153,8 @@ async function recargarPartida(page) {
       assert.ok(impactoAtributos.mejorado > impactoAtributos.inicial,
         'los atributos paródicos influyen en el rendimiento según la posición');
       await page.locator('#pestana-tactica').click();
+      assert.equal(await page.evaluate(() => [...document.querySelectorAll('#tbody-plantilla tr')].every(row => row.cells.length === document.querySelectorAll('.squad-table thead th').length)), true,
+        'cada dato del jugador queda bajo su título y la acción de cambio tiene columna propia');
       const anclajesMenu = await page.evaluate(() => {
         const nav = document.querySelector('nav[role="tablist"]');
         const cta = document.getElementById('floating-cta');
@@ -187,6 +214,11 @@ async function recargarPartida(page) {
       }), indicesRotacion);
       assert.deepEqual(rotacionTeclado, { titular: false, suplente: true, seleccionCancelada: true },
         'Espacio completa el intercambio y limpia la selección');
+      const onceAntesDelCambioDirecto = await page.evaluate(() => obtenerMiEquipo().plantilla.map(j => j.titular));
+      await page.locator(`#tbody-plantilla .lineup-action[aria-label^="Incluir en el once"]`).first().click();
+      assert.equal(await page.locator('#resultado-rotacion').innerText().then(t => /Cambio guardado/.test(t)), true,
+        'el botón de una fila cambia al once sin exigir seleccionar dos nombres');
+      await page.evaluate(original => { obtenerMiEquipo().plantilla.forEach((j,i)=>j.titular=original[i]);guardarPartidaLocal(false);actualizarUI(); }, onceAntesDelCambioDirecto);
       const baja = await page.evaluate(indice => {
         const club = obtenerMiEquipo();
         const original = club.plantilla[indice].lesionado;
@@ -280,7 +312,7 @@ async function recargarPartida(page) {
       assert.ok(ficha.clausula.length>20 && ficha.datosEconomicos===2,
         'la ficha muestra cláusula, precio y salario junto al placeholder de ilustración');
       assert.equal(ficha.atributos, 5, 'la carta ofrece los cinco atributos humorísticos');
-      assert.deepEqual(ficha.codigos, ['RAS','TOZ','CHI','RET','ALM']);
+      assert.deepEqual(ficha.codigos, ['Determinación','Potencia','Regate','Pase','Resistencia']);
       const equiposParodicos = await page.evaluate(() => window.DATOS_ARAGONESES.equipos);
       assert.ok(equiposParodicos.includes('Real Magras de Madrid') &&
         equiposParodicos.includes('Athletic de la Tronca'), 'el universo incluye clubes aragoneses ficticios');
@@ -1106,6 +1138,7 @@ async function recargarPartida(page) {
       assert.equal(replayCheck.originalStatsUnchanged, true,
         'la prueba de repetición usa datos aislados y no altera la partida activa');
       await page.evaluate(() => { window.__disableRandomVAR = true; });
+      await page.evaluate(() => { window.__testMatchSpeed = 50; });
       await page.locator('button').filter({ hasText: 'SIMULAR JORNADA' }).click();
       await page.locator('[data-power="cierzo"]').click();
       await page.evaluate(() => { window.__powerTestRandom = Math.random; Math.random = () => .99; });

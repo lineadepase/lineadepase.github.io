@@ -396,6 +396,19 @@
         }
 
         .match-preview { white-space: pre-line; line-height: 1.5; }
+        .match-playback-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:10px 0}
+        .match-playback-controls label{font-size:.85rem;font-weight:800;color:#e2e8f0}
+        .match-playback-controls select,.match-playback-controls button,.audio-toggle{min-height:40px;padding:8px 12px;border:1px solid #64748b;border-radius:10px;background:#172033;color:#fff;font-weight:800;cursor:pointer}
+        .live-pitch-wrap{margin:12px auto 6px;max-width:760px}.live-pitch-wrap canvas{display:block;width:100%;border:2px solid #86efac;border-radius:16px;background:#166534;box-shadow:0 10px 32px #0007}.live-pitch-wrap p{text-align:center}
+        .audio-toggle{margin-left:auto;background:linear-gradient(120deg,#7c3aed,#2563eb);border:0}
+        .lineup-action{min-height:36px;padding:6px 9px;border:1px solid #38bdf8;border-radius:8px;background:#0c4a6e;color:#fff;font-weight:800;cursor:pointer}
+        .lineup-action:disabled{opacity:.45;cursor:not-allowed}
+        .squad-table tr.is-starter{background:rgba(34,197,94,.08)}
+        .squad-table .player-select-btn{display:inline-flex;align-items:center;gap:8px}
+        .player-avatar{width:54px;height:54px;flex:0 0 auto;border:2px solid #facc15;border-radius:14px;background:linear-gradient(145deg,#fbbf24,#7c2d12);box-shadow:0 4px 12px #0008;transform:rotate(-3deg)}
+        .player-avatar .avatar-frame{fill:none;stroke:#fff9;stroke-width:1.1}
+        .player-avatar .avatar-flair{fill:#facc15}
+        .attribute-label{font-size:.75rem;color:#cbd5e1}
 
         .training-layout { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(260px, .65fr); gap: 20px; }
         .pass-pitch { width: 100%; display: block; border-radius: 12px; background: #14532d; margin: 12px 0; }
@@ -428,7 +441,7 @@
             }
             .squad-table tbody tr {
                 display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
-                grid-template-areas:"jugador jugador" "pos estado" "ras toz" "chi ret" "alm cansancio" "goles xg";
+                grid-template-areas:"jugador jugador" "pos estado" "ras toz" "chi ret" "alm cansancio" "goles xg" "accion accion";
                 gap: 2px;
                 padding: 7px 3px;
                 border-bottom: 1px solid #475569;
@@ -454,11 +467,12 @@
             }
             .squad-table td[data-label="Pos"] { grid-area: pos; }
             .squad-table td[data-label="Jugador"] { grid-area: jugador; align-items: flex-start; }
-            .squad-table td[data-label="RAS"]{grid-area:ras}.squad-table td[data-label="TOZ"]{grid-area:toz}.squad-table td[data-label="CHI"]{grid-area:chi}.squad-table td[data-label="RET"]{grid-area:ret}.squad-table td[data-label="ALM"]{grid-area:alm}
+            .squad-table td[data-label="Determinación"]{grid-area:ras}.squad-table td[data-label="Físico"]{grid-area:toz}.squad-table td[data-label="Regate"]{grid-area:chi}.squad-table td[data-label="Juego"]{grid-area:ret}.squad-table td[data-label="Resistencia"]{grid-area:alm}
             .squad-table td[data-label="Cans"] { grid-area: cansancio; }
             .squad-table td[data-label="Goles"] { grid-area: goles; }
             .squad-table td[data-label="xG"] { grid-area: xg; }
             .squad-table td[data-label="Estado"] { grid-area: estado; }
+            .squad-table td[data-label="Acción"] { grid-area: accion; }
             .squad-table .player-name-cell { min-width: 0; }
             .squad-table .player-select-btn { min-width: 0; white-space: normal; }
             .squad-table .player-select-btn strong { overflow-wrap: anywhere; }
@@ -595,6 +609,7 @@ body{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
     </div>
     <div class="top-stats">
         <div class="stat-pill" id="lbl-temporada">Temp. 1 · Jornada 1/6</div>
+        <div class="stat-pill" id="lbl-fecha">📅 1 ago 2026</div>
         <div class="stat-pill">Presupuesto: <strong id="lbl-presupuesto">9.500.000 €</strong></div>
         <div class="stat-pill">Salarios: <strong id="lbl-salarios">0 €/j</strong></div>
         <button onclick="guardarPartidaLocal()" title="Guardar en navegador">💾 Guardar</button>
@@ -630,11 +645,11 @@ body{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
     <!-- PESTAÑA 1: TÁCTICA Y PLANTILLA -->
     <p id="resumen-disponibilidad" role="status" aria-live="polite" style="margin:8px 0 14px;color:#cbd5e1;font-size:.9rem;"></p>
     <section id="tab-tactica" class="tab-content" role="tabpanel" aria-labelledby="pestana-tactica" tabindex="0" aria-hidden="true">
-        <div class="grid-2">
+        <div class="grid-2 tactics-layout">
             <div class="panel">
                 <div class="panel-header">
                     <span class="panel-title">Gestión de Plantilla y Rotaciones</span>
-                    <span class="hint-box">Selecciona dos jugadores para cambiar Titular ↔ Suplente; también puedes usar Enter o Espacio.</span>
+                    <span class="hint-box">Pulsa «Al once» o toca un titular en el campo para hacer un cambio directo. También puedes seleccionar dos nombres.</span>
                 </div>
                 <div class="roster-controls" aria-label="Filtros de plantilla">
                     <strong id="roster-view-label">Once titular</strong>
@@ -668,12 +683,12 @@ body{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
                             <tr>
                                 <th>Pos</th>
                                 <th class="left">Jugador</th>
-                                <th>RAS</th><th>TOZ</th><th>CHI</th><th>RET</th><th>ALM</th>
-                                <th>Rend</th>
+                                <th>Determinación</th><th>Físico</th><th>Regate</th><th>Juego</th><th>Resistencia</th>
                                 <th>Cans</th>
                                 <th>Goles</th>
                                 <th>xG</th>
                                 <th>Estado</th>
+                                <th>Acción</th>
                             </tr>
                         </thead>
                         <tbody id="tbody-plantilla"></tbody>
@@ -699,6 +714,12 @@ body{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
             <div id="match-scoreboard" class="match-score">Real Magras de Madrid · 0 — 0 · Rival</div>
             <div class="match-meter" role="img" aria-label="Ritmo de partido"><span id="match-meter-fill"></span></div>
             <div id="match-meter-label" class="hint-box">Ritmo de la simulación</div>
+            <div class="match-playback-controls" role="group" aria-label="Controles del partido">
+                <label for="match-speed">Velocidad del reloj</label>
+                <select id="match-speed" aria-label="Velocidad del reloj"><option value="650">Lenta</option><option value="350" selected>Normal</option><option value="130">Rápida</option></select>
+                <button type="button" id="match-pause" aria-pressed="false">⏸ Pausar</button>
+            </div>
+            <div class="live-pitch-wrap"><canvas id="canvas-match-live" width="760" height="390" aria-label="Campo animado con la posición del balón y los jugadores"></canvas><p id="live-pitch-caption" class="hint-box" aria-live="polite">El balón espera el pitido inicial.</p></div>
             <div class="video-action-shortcuts" role="group" aria-label="Reproducir recreación de lance destacado"><button type="button" data-video-action="goal">⚽ Gol</button><button type="button" data-video-action="save">🧤 Paradón</button><button type="button" data-video-action="foul">💨 Tozolón</button><button type="button" data-video-action="var">📺 VAR de pueblo</button><button type="button" data-video-action="coach">📣 Míster en banda</button></div><div class="match-quick-actions" role="group" aria-label="Decisión táctica rápida">
                 <button type="button" data-quick-plan="Equilibrado">⚖️ Cerrar líneas</button>
                 <button type="button" class="btn-warning" data-quick-plan="Ofensivo">🚀 Apretar arriba</button>
@@ -1102,7 +1123,7 @@ const MAX_PLANTILLA = 25;
 
 let estadoJuego = null;
 let PLANTILLAS_DB = null;
-const EQUIPO_CONTROLADO = 'Real Magras de Madrid';
+let EQUIPO_CONTROLADO = 'Real Magras de Madrid';
 function jugadoresBaseActuales() { return PLANTILLAS_DB?.equipos?.flatMap(e => e.jugadores) || []; }
 let jugadorSeleccionadoIdx = null;
 let retoPaseActual = null;
@@ -1225,7 +1246,7 @@ function crearEstadoInicial() {
     });
     const porId=new Map(PLANTILLAS_DB.equipos.flatMap(e=>e.jugadores.map(j=>[j.id,{jugador:j,equipo:e}])));
     const mercado=PLANTILLAS_DB.mercado_ids.map(id=>{const x=porId.get(id);return x?crearJugador(x.jugador,x.equipo):null;}).filter(Boolean);
-    return {temporada:1,jornadaActual:0,historialTemporadas:[],equipos,mercado,calendario:generarCalendario(equipos.map(e=>e.nombre)),entrenamiento:{intentos:0,puntos:0,mejorPuntuacion:0,porTipo:{pase:{intentos:0,puntos:0,mejorPuntuacion:0},presion:{intentos:0,puntos:0,mejorPuntuacion:0},espacio:{intentos:0,puntos:0,mejorPuntuacion:0},finalizacion:{intentos:0,puntos:0,mejorPuntuacion:0}}}};
+    return {temporada:1,jornadaActual:0,equipoControlado:EQUIPO_CONTROLADO,manager:{nombre:'Míster de la cuadrilla',estilo:'gorra'},fechaActual:{year:2026,month:8,day:1},ventanaMercadoAbierta:true,historialTemporadas:[],equipos,mercado,calendario:generarCalendario(equipos.map(e=>e.nombre)),entrenamiento:{intentos:0,puntos:0,mejorPuntuacion:0,porTipo:{pase:{intentos:0,puntos:0,mejorPuntuacion:0},presion:{intentos:0,puntos:0,mejorPuntuacion:0},espacio:{intentos:0,puntos:0,mejorPuntuacion:0},finalizacion:{intentos:0,puntos:0,mejorPuntuacion:0}}}};
 }
 
 /**
@@ -1333,6 +1354,10 @@ function resumenTemporadaValido(resumen) {
  * Migro campos que se añadieron después: los guardados antiguos no pierden la temporada en curso ni el presupuesto.
  */
 function normalizarEstadoPartida(estado) {
+    if (estado && !estado.equipoControlado) estado.equipoControlado = 'Real Magras de Madrid';
+    if (estado && !estado.manager) estado.manager = { nombre: 'Míster de la cuadrilla', estilo: 'gorra' };
+    if (estado && !estado.fechaActual) estado.fechaActual = {year:2026,month:8,day:1};
+    if (estado && typeof estado.ventanaMercadoAbierta !== 'boolean') estado.ventanaMercadoAbierta = true;
     if (estado && estado.historialTemporadas === undefined) estado.historialTemporadas = [];
     if (estado && Array.isArray(estado.historialTemporadas)) {
         estado.historialTemporadas.forEach(resumen => {
@@ -1365,7 +1390,7 @@ function estadoPartidaValido(estado) {
     try {
         return Boolean(estado && Array.isArray(estado.equipos) && estado.equipos.length === 4 &&
             new Set(estado.equipos.map(eq => eq?.nombre)).size === 4 &&
-            estado.equipos.some(eq => eq?.nombre === EQUIPO_CONTROLADO) &&
+            typeof estado.equipoControlado === 'string' && estado.equipos.some(eq => eq?.nombre === estado.equipoControlado) &&
             estado.equipos.every(eq => eq && nombreGuardadoValido(eq.nombre) &&
                 Number.isFinite(eq.presupuesto) && Number.isFinite(eq.aforo) && eq.aforo >= 0 &&
                 Object.hasOwn(FORMACIONES, eq.formacion) && Object.hasOwn(ESTILOS, eq.estilo) &&
@@ -1395,6 +1420,8 @@ function estadoPartidaValido(estado) {
             Number.isInteger(estado.jornadaActual) && estado.jornadaActual >= 0 &&
             estado.jornadaActual <= estado.calendario.length &&
             Number.isInteger(estado.temporada) && estado.temporada >= 1 &&
+            estado.fechaActual && Number.isInteger(estado.fechaActual.year) && estado.fechaActual.year >= 2026 && Number.isInteger(estado.fechaActual.month) && estado.fechaActual.month >= 1 && estado.fechaActual.month <= 12 && Number.isInteger(estado.fechaActual.day) && estado.fechaActual.day >= 1 && estado.fechaActual.day <= 31 && typeof estado.ventanaMercadoAbierta === 'boolean' &&
+            estado.manager && typeof estado.manager.nombre === 'string' && estado.manager.nombre.length > 0 && estado.manager.nombre.length <= 28 && ['gorra','bufanda','chandal'].includes(estado.manager.estilo) &&
             Array.isArray(estado.historialTemporadas) && estado.historialTemporadas.length <= 20 &&
             estado.historialTemporadas.every(resumenTemporadaValido) &&
             estadisticasEntrenamientoValidas(estado.entrenamiento));
@@ -1409,7 +1436,7 @@ function estadoPartidaValido(estado) {
 /**
  * Localizo el club controlado por la persona que juega dentro de la lista común de equipos.
  */
-function obtenerMiEquipo() { return estadoJuego.equipos.find(e => e.nombre === EQUIPO_CONTROLADO); }
+function obtenerMiEquipo() { return estadoJuego.equipos.find(e => e.nombre === (estadoJuego.equipoControlado || EQUIPO_CONTROLADO)); }
 
 /**
  * Muestro la sección elegida y actualizo el estado accesible de sus botones de navegación.
@@ -1463,6 +1490,7 @@ function actualizarUI() {
         : `Temp. ${estadoJuego.temporada} · Finalizada`;
 
     document.getElementById('lbl-temporada').textContent = jTxt;
+    const fecha=document.getElementById('lbl-fecha');if(fecha&&estadoJuego.fechaActual){const d=new Date(Date.UTC(estadoJuego.fechaActual.year,estadoJuego.fechaActual.month-1,estadoJuego.fechaActual.day));fecha.textContent='📅 '+new Intl.DateTimeFormat('es-ES',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'}).format(d);}
     const botonJornada = document.getElementById('btn-simular-jornada');
     const temporadaFinalizada = estadoJuego.jornadaActual >= totalJ;
     botonJornada.textContent = temporadaFinalizada
@@ -1516,11 +1544,12 @@ function actualizarUI() {
                 aria-label="Seleccionar ${escaparHTML(j.nombre)} (${j.titular ? 'titular' : 'suplente'}) para la rotación"
                 aria-pressed="${idx === jugadorSeleccionadoIdx}" ${j.lesionado > 0 ? 'disabled title="Jugador lesionado"' : ''}
                 onclick="clicarJugadorPlantilla(${idx})">${avatarJugadorHTML(j.nombre, j.posicion)}<strong>${escaparHTML(j.nombre)}</strong></button></td>
-            <td data-label="RAS">${j.atributos.RAS}</td><td data-label="TOZ">${j.atributos.TOZ}</td><td data-label="CHI">${j.atributos.CHI}</td><td data-label="RET">${j.atributos.RET}</td><td data-label="ALM">${j.atributos.ALM}</td>
+            <td data-label="Determinación">${j.atributos.RAS}</td><td data-label="Físico">${j.atributos.TOZ}</td><td data-label="Regate">${j.atributos.CHI}</td><td data-label="Juego">${j.atributos.RET}</td><td data-label="Resistencia">${j.atributos.ALM}</td>
             <td data-label="Cans">${j.cansancio}%</td>
             <td data-label="Goles">${j.goles}</td>
             <td data-label="xG">${j.xg.toFixed(2)}</td>
             <td data-label="Estado">${estTxt}</td>
+            <td data-label="Acción"><button type="button" class="lineup-action" onclick="cambiarTitularDirecto(${idx})" ${j.lesionado > 0 ? 'disabled' : ''} aria-label="${j.titular ? 'Pasar a suplentes' : 'Incluir en el once'}: ${escaparHTML(j.nombre)}">${j.titular ? '↘ Suplentes' : '↑ Al once'}</button></td>
         `;
         tbodyP.appendChild(tr);
     });
@@ -2087,6 +2116,24 @@ function clicarJugadorPlantilla(idx) {
     actualizarUI();
 }
 
+/** Cambio un jugador directamente por otro apto del mismo puesto, priorizando al menos fatigado. */
+function cambiarTitularDirecto(idx) {
+    const equipo = obtenerMiEquipo(), jugador = equipo.plantilla[idx];
+    if (!jugador || jugador.lesionado > 0) return;
+    const candidato = equipo.plantilla
+        .filter(j => j.titular !== jugador.titular && j.lesionado === 0)
+        .sort((a, b) => (a.posicion === jugador.posicion ? -1 : 0) - (b.posicion === jugador.posicion ? -1 : 0) || a.cansancio - b.cansancio || rendimientoReal(b) - rendimientoReal(a))[0];
+    if (!candidato) { document.getElementById('resultado-rotacion').textContent = 'No hay otro jugador disponible para hacer el cambio.'; return; }
+    const antes = jugador.titular ? jugador.nombre : candidato.nombre, despues = jugador.titular ? candidato.nombre : jugador.nombre;
+    jugador.titular = !jugador.titular;
+    candidato.titular = !candidato.titular;
+    jugadorSeleccionadoIdx = null;
+    guardarPartidaLocal(false);
+    actualizarUI();
+    document.getElementById('resultado-rotacion').textContent = `${antes} cambia el sitio con ${despues}. Cambio guardado.`;
+    document.querySelector(`#tbody-plantilla tr:nth-child(${idx + 1})`)?.classList.add('lineup-change-flash');
+}
+
 /**
  * Leo la formación y el estilo de los controles, recalculo el once y actualizo la interfaz.
  */
@@ -2193,7 +2240,7 @@ function simularJornada() {
 
     const logBox = document.getElementById('match-log');
     logBox.innerHTML = '';
-    document.getElementById('match-summary').textContent = 'Jornada en curso; el resumen aparecerá al terminar el partido de Real Magras de Madrid.';
+    document.getElementById('match-summary').textContent = `Jornada en curso; ${obtenerMiEquipo().nombre} ya está en el campo.`;
     actualizarDesglosePartido();
     document.getElementById('btn-exportar-balance').disabled = true;
     limpiarRepeticionesPartido();
@@ -2213,7 +2260,7 @@ function simularJornada() {
     if (eventosPartidoActual.length) {
         mostrarRepeticion(0);
     } else {
-        document.getElementById('replay-status').textContent = 'Esta jornada no produjo remates para el partido de Real Magras de Madrid.';
+        document.getElementById('replay-status').textContent = `Esta jornada no produjo remates para ${obtenerMiEquipo().nombre}.`;
         document.getElementById('replay-controls').innerHTML = '<p class="hint-box">No hay ocasiones registradas en este encuentro.</p>';
     }
 
@@ -2257,16 +2304,28 @@ function avatarJugadorHTML(nombre, posicion) {
     const barba = semilla % 4 === 0
         ? '<path d="M15 27c2 7 5 10 9 10s8-3 9-10c-2 3-5 4-9 4s-7-1-9-4Z" fill="#49372f"/>'
         : '';
+    const pecas = semilla % 3 === 0
+        ? '<g fill="#9a4d35"><circle cx="17" cy="26" r=".8"/><circle cx="19" cy="27" r=".7"/><circle cx="29" cy="26" r=".8"/><circle cx="31" cy="27" r=".7"/></g>' : '';
+    const cinta = semilla % 4 === 1
+        ? '<path d="M12 15q12 5 24 0" fill="none" stroke="#facc15" stroke-width="3"/><path d="m34 15 5 5-4 4" fill="none" stroke="#facc15" stroke-width="2"/>' : '';
+    const gesto = semilla % 3 === 0 ? '<path d="M21 31q3-4 6 0" fill="none" stroke="#8b3e3e" stroke-width="1.8" stroke-linecap="round"/>'
+        : semilla % 3 === 1 ? '<path d="M21 31q3 1 6-1" fill="none" stroke="#8b3e3e" stroke-width="1.8" stroke-linecap="round"/>'
+        : '<path d="M21 31q3 4 6 0" fill="none" stroke="#8b3e3e" stroke-width="1.8" stroke-linecap="round"/>';
     return `<svg class="player-avatar" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
-        <circle cx="24" cy="24" r="23" fill="#0f172a"/>
+        <defs><linearGradient id="avatar-bg-${semilla}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#facc15"/><stop offset="1" stop-color="#7c2d12"/></linearGradient></defs>
+        <rect x="1" y="1" width="46" height="46" rx="12" fill="url(#avatar-bg-${semilla})" stroke="#fff" stroke-width="1.5"/>
+        <path d="M4 11 11 4M37 44l7-7" stroke="#fff" stroke-opacity=".4" stroke-width="2"/>
         <path d="M5 48c1-10 8-15 19-15s18 5 19 15Z" fill="${camiseta}"/>
-        <path d="m18 34 6 7 6-7" fill="#f8fafc" opacity=".82"/>
+        <path d="M12 39h24M9 44h30" stroke="#fff" stroke-opacity=".72" stroke-width="2"/>
+        <path d="m18 34 6 7 6-7" fill="#f8fafc" opacity=".82"/><circle cx="24" cy="43" r="2.3" fill="#facc15" stroke="#fff"/>
         <circle cx="11" cy="24" r="3" fill="${piel}"/><circle cx="37" cy="24" r="3" fill="${piel}"/>
-        <ellipse cx="24" cy="23" rx="12" ry="15" fill="${piel}"/>
+        <ellipse cx="24" cy="23" rx="12" ry="15" fill="${piel}" stroke="#7c4434" stroke-width=".65"/>
         <g fill="${pelo}">${cortes[semilla % cortes.length]}</g>
-        <path d="M17 27q2 1 4 0m6 0q2 1 4 0" fill="none" stroke="#243041" stroke-width="1.7" stroke-linecap="round"/>
-        <path d="M22 31q2 2 4 0" fill="none" stroke="#8b3e3e" stroke-width="1.5" stroke-linecap="round"/>
-        ${gafas}${barba}
+        <path d="M16 21q3-2 6 0m4 0q3-2 6 0" fill="none" stroke="#49372f" stroke-width="1.6" stroke-linecap="round"/>
+        <ellipse cx="19" cy="24" rx="1.1" ry="1.5" fill="#172033"/><ellipse cx="29" cy="24" rx="1.1" ry="1.5" fill="#172033"/>
+        <path d="M24 24v4l-1.5 1" fill="none" stroke="#a55b42" stroke-width="1.2" stroke-linecap="round"/>
+        ${pecas}${gesto}${gafas}${barba}${cinta}
+        <path d="m39 5 1.2 2.6L43 9l-2.8 1.2L39 13l-1.2-2.8L35 9l2.8-1.4Z" fill="#fff"/>
     </svg>`;
 }
 
@@ -2740,7 +2799,7 @@ function calcularPremiosClasificacion(equipos) {
  * Añado cuatro candidatos ficticios, uno por posición, reinicio sus estadísticas y limito el mercado a doce opciones.
  */
 function renovarMercadoTemporada() {
- const usados=new Set([...estadoJuego.equipos[0].plantilla.map(j=>j.jugador_id),...estadoJuego.mercado.map(j=>j.jugador_id)]);
+ const usados=new Set([...obtenerMiEquipo().plantilla.map(j=>j.jugador_id),...estadoJuego.mercado.map(j=>j.jugador_id)]);
  const elegibles=PLANTILLAS_DB.equipos.flatMap(eq=>eq.jugadores.map(j=>({jugador:j,equipo:eq}))).filter(x=>!usados.has(x.jugador.id));
  const giro=(estadoJuego.temporada*7)%Math.max(elegibles.length,1),rotados=[...elegibles.slice(giro),...elegibles.slice(0,giro)];
  const cantidad=Math.min(4,Math.max(0,12-estadoJuego.mercado.length)),seleccionados=[];
@@ -2770,10 +2829,10 @@ function iniciarNuevaTemporada() {
         return;
     }
     const premios = calcularPremiosClasificacion(estadoJuego.equipos);
-    const miPremio = premios.find(p => p.nombre === 'Real Magras de Madrid');
+    const miPremio = premios.find(p => p.nombre === obtenerMiEquipo().nombre);
     const resumenPremios = premios.map(p =>
         `${p.posicion}.º ${p.nombre}: ${p.premio.toLocaleString('es-ES')} €`).join('\n');
-    if (!confirm(`¡Temporada terminada! Real Magras de Madrid: ${miPremio.posicion}.º puesto.\n\nPremios por clasificación:\n${resumenPremios}\n\n¿Comenzar la siguiente temporada?`)) return;
+    if (!confirm(`¡Temporada terminada! ${obtenerMiEquipo().nombre}: ${miPremio.posicion}.º puesto.\n\nPremios por clasificación:\n${resumenPremios}\n\n¿Comenzar la siguiente temporada?`)) return;
     const jugadoresOrdenados = estadoJuego.equipos.flatMap(eq => eq.plantilla
         .filter(j => j.goles > 0)
         .map(j => ({ nombre: j.nombre, equipo: eq.nombre, goles: j.goles, xg: j.xg })))
@@ -2792,6 +2851,9 @@ function iniciarNuevaTemporada() {
     estadoJuego.historialTemporadas = [...(estadoJuego.historialTemporadas || []), archivoTemporada].slice(-20);
     estadoJuego.temporada++;
     estadoJuego.jornadaActual = 0;
+    const fechaBase=estadoJuego.fechaActual||{year:2026,month:8};
+    estadoJuego.fechaActual={year:fechaBase.year+(fechaBase.month>=8?1:0),month:8,day:1};
+    estadoJuego.ventanaMercadoAbierta=true;
     estadoJuego.preparacionUsada = false;
     estadoJuego.equipos.forEach(eq => {
         eq.presupuesto += premios.find(p => p.nombre === eq.nombre).premio;
@@ -2905,7 +2967,7 @@ window.onload = async () => {
         window.DATOS_ARAGONESES=Object.freeze({equipos:PLANTILLAS_DB.equipos.map(e=>e.nombre_parodico),despedidas:['Gracias por pasarte por el despacho; seguimos con el ojeo.','Que el viaje vaya tranquilo y el balón ruede bien.','Nos quedamos con la conversación; hasta la próxima ventana.']});
     }catch(error){console.error('Error en la base de jugadores:',error);document.querySelector('.sim-disclaimer').textContent='No se pudo cargar la base local de plantillas. Recarga para intentarlo de nuevo.';return;}
     let cargaCorrecta=false;
-    try{const g=localStorage.getItem('ldp_manager_save');cargaCorrecta=Boolean(g);estadoJuego=g?normalizarEstadoPartida(JSON.parse(g)):crearEstadoInicial();if(!estadoPartidaValido(estadoJuego))throw new Error('El guardado no coincide con las plantillas 2026/27.');}
+    try{const g=localStorage.getItem('ldp_manager_save');cargaCorrecta=Boolean(g);estadoJuego=g?normalizarEstadoPartida(JSON.parse(g)):crearEstadoInicial();EQUIPO_CONTROLADO=estadoJuego.equipoControlado||EQUIPO_CONTROLADO;if(!estadoPartidaValido(estadoJuego))throw new Error('El guardado no coincide con las plantillas 2026/27.');}
     catch(error){cargaCorrecta=false;console.warn('Nueva partida para aplicar la base actual:',error);estadoJuego=crearEstadoInicial();}
     const indicador=document.getElementById('estado-guardado');if(indicador&&!indicador.textContent)indicador.textContent=cargaCorrecta?'✓ Partida recuperada':'Nueva temporada · plantillas 2026/27';
     const finanzas=document.getElementById('tab-entrenamiento'),despacho=document.getElementById('tab-clasificacion');
@@ -2924,7 +2986,7 @@ function renderFichaSwipe() {
  const jugador=estadoJuego.mercado[0],club=obtenerMiEquipo(),nombre=String(jugador.nombre||'Jugador disponible');
  const id='caricatura-'+String(jugador.jugador_id||nombre).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
  const retrato=document.getElementById('swipe-portrait');
- if(retrato){retrato.dataset.portraitId=id;const iniciales=nombre.split(/\s+/).map(p=>p[0]).slice(0,2).join('').toUpperCase();const ruta=String(jugador.avatar_ia||'');retrato.innerHTML='<img class="swipe-portrait-img" data-src="'+escaparHTML(ruta)+'" alt="Caricatura de '+escaparHTML(nombre)+'"><div class="portrait-fallback"><span class="portrait-face" aria-hidden="true">'+escaparHTML(iniciales)+'</span><small>Caricatura IA pendiente · '+escaparHTML(id)+'</small></div>';const img=retrato.querySelector('img'),fallback=retrato.querySelector('.portrait-fallback');if(ruta)fetch(ruta,{method:'HEAD'}).then(r=>{if(r.ok){img.src=ruta;img.onload=()=>fallback.hidden=true;}}).catch(()=>{});}
+ if(retrato){retrato.dataset.portraitId=id;const ruta=String(jugador.avatar_ia||'');retrato.innerHTML='<img class="swipe-portrait-img" data-src="'+escaparHTML(ruta)+'" alt="Caricatura de '+escaparHTML(nombre)+'"><div class="portrait-fallback">'+avatarJugadorHTML(nombre,jugador.posicion)+'<small>Retrato de vestuario · '+escaparHTML(id)+'</small></div>';const img=retrato.querySelector('img'),fallback=retrato.querySelector('.portrait-fallback');if(ruta)fetch(ruta,{method:'HEAD'}).then(r=>{if(r.ok){img.src=ruta;img.onload=()=>fallback.hidden=true;}}).catch(()=>{});}
  document.getElementById('swipe-name').textContent=nombre+' · '+jugador.posicion;
  document.getElementById('swipe-club').textContent='Plantilla: '+(jugador.equipo_origen_parodia||jugador.equipo_origen||'Primera División')+' · '+(jugador.jugador_real||'futbolista 2026/27');
  const attrs=atributosParodicos(jugador);document.getElementById('swipe-stats').innerHTML=attrs.map(a=>'<span class="attribute-pill" title="'+escaparHTML(a[2])+'"><small>'+a[0]+'</small><b>'+a[1]+'</b></span>').join('')+'<span class="swipe-stat">💶 '+Number(jugador.precio).toLocaleString('es-ES')+' €</span><span class="swipe-stat">🪙 '+Number(jugador.salario).toLocaleString('es-ES')+' €/j</span>';
@@ -2949,14 +3011,14 @@ function decidirSwipe(aceptar) {
     }
 }
 function atributosMiniatura(j) {
-    const codigos = ['RAS', 'TOZ', 'CHI', 'RET', 'ALM'];
+    const nombres = {RAS:'Determinación',TOZ:'Potencia',CHI:'Regate',RET:'Pase',ALM:'Resistencia'};
     const datos = j.atributos || {};
-    const etiqueta = codigos.map(codigo => `${codigo} ${Number(datos[codigo]) || 0}`);
+    const etiqueta = Object.entries(nombres).map(([codigo,nombre]) => `${nombre} ${Number(datos[codigo]) || 0}`);
     return `<span class="parody-mini-stats" title="${etiqueta.join(', ')}">${etiqueta.join(' · ')}</span>`;
 }
 function actualizarFinanzas() {
     if(typeof estadoJuego==='undefined' || !estadoJuego.equipos) return;
-    const club=estadoJuego.equipos.find(e=>e.nombre==='Real Magras de Madrid');
+    const club=obtenerMiEquipo();
     if(!club) return;
     const poner=(id,texto)=>{const e=document.getElementById(id);if(e)e.textContent=texto;};
     poner('finance-budget',Number(club.presupuesto).toLocaleString('es-ES')+' €');
@@ -2989,7 +3051,7 @@ async function vivirJornada() {
     const fill=document.getElementById('match-meter-fill');
     const label=document.getElementById('match-meter-label');
     boton.disabled=true;
-    document.getElementById('match-scoreboard').textContent='Real Magras de Madrid · 0 — 0 · Partido en juego';
+    document.getElementById('match-scoreboard').textContent=obtenerMiEquipo().nombre+' · 0 — 0 · Partido en juego';
     for(let minuto=0;minuto<=90;minuto+=3) {
         clock.textContent=String(minuto).padStart(2,'0')+'′';
         ritmo.textContent=minuto<45?'Primera parte':'Segunda parte';
@@ -3057,8 +3119,8 @@ let rivalEstiloTemporal=null;
 let cambiosTemporalesCierzo=[];
 let contratoMensaje='';
 function atributosParodicos(jugador) {
- const defs={RAS:'Rasmia y empuje',TOZ:'Tozudez / duelo físico',CHI:'Chispa / desborde',RET:'Retranca arbitral / pillería',ALM:'Aguante físico / fondo de almuerzo'};
- return Object.entries(defs).map(([c,d])=>[c,Math.max(0,Math.min(100,Number(jugador.atributos?.[c])||0)),d]);
+ const defs={RAS:['Determinación','Energía para insistir'],TOZ:['Potencia','Fuerza en el duelo'],CHI:['Regate','Velocidad y desborde'],RET:['Pase','Lectura y precisión'],ALM:['Resistencia','Fondo físico']};
+ return Object.entries(defs).map(([c,[nombre,detalle]])=>[nombre,Math.max(0,Math.min(100,Number(jugador.atributos?.[c])||0)),detalle]);
 }
 function renderPatrocinios() {
     const lista=document.getElementById('sponsor-options');
@@ -3208,7 +3270,7 @@ vivirJornada=async function() {
     document.querySelectorAll('#power-cards [data-power]').forEach(btn=>{btn.disabled=false;btn.classList.remove('used');});
     document.getElementById('power-feedback').textContent='¡Reloj en marcha! Lanza hasta tres poderes tácticos.';
     boton.disabled=true;actualizarCTAFlotante();
-    document.getElementById('match-scoreboard').textContent='Real Magras de Madrid · 0 — 0 · Partido en juego';
+    document.getElementById('match-scoreboard').textContent=obtenerMiEquipo().nombre+' · 0 — 0 · Partido en juego';
     for(let minuto=0;minuto<=90;minuto+=3){
         clock.textContent=String(minuto).padStart(2,'0')+'′';ritmo.textContent=minuto<45?'Primera parte':'Segunda parte';
         const porcentaje=45+Math.round(25*Math.sin(minuto/8));fill.style.width=porcentaje+'%';
@@ -3226,7 +3288,7 @@ vivirJornada=async function() {
     let gf=0,gc=0;
     if(cuenta){
         const goles1=Number(cuenta[2]),goles2=Number(cuenta[3]);
-        gf=cuenta[1]==='Real Magras de Madrid'?goles1:goles2;gc=cuenta[1]==='Real Magras de Madrid'?goles2:goles1;
+        gf=cuenta[1]===obtenerMiEquipo().nombre?goles1:goles2;gc=cuenta[1]===obtenerMiEquipo().nombre?goles2:goles1;
         document.getElementById('match-scoreboard').textContent=cuenta[1]+' · '+goles1+' — '+goles2+' · '+cuenta[4];
         mostrarChirincirco(gf,gc);liquidarPatrocinio(gf,gc);
     }
