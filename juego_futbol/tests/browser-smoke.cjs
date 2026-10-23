@@ -106,6 +106,12 @@ async function recargarPartida(page) {
         'la base incluye las parodias solicitadas de los cuatro equipos');
       assert.equal(integridadPlantillas.control, 'Real Magras de Madrid');
       assert.equal(integridadPlantillas.panelActivo, 'tab-clasificacion', 'la vista inicial coincide con Despacho Míster');
+      assert.equal(await page.locator('#reigns-panel .manager-meter').count(), 4,
+        'el despacho muestra cuatro medidores de estado');
+      assert.equal(await page.locator('#retos-mister .achievement-card').count(), 4,
+        'el míster dispone de cuatro retos con monedas');
+      assert.match(await page.locator('#floating-cta').innerText(), /Mercado Tinder/,
+        'el CTA recomienda revisar el mercado al comenzar la jornada');
       const impactoAtributos = await page.evaluate(() => {
         const jugador = obtenerMiEquipo().plantilla.find(j => !j.lesionado && j.atributos.CHI < 99);
         const original = jugador.atributos.CHI;
@@ -1091,10 +1097,28 @@ async function recargarPartida(page) {
       assert.equal(replayCheck.simulatedLabel, true, 'la repetición se identifica como reconstrucción, no vídeo real');
       assert.equal(replayCheck.originalStatsUnchanged, true,
         'la prueba de repetición usa datos aislados y no altera la partida activa');
+      await page.evaluate(() => { window.__disableRandomVAR = true; });
       await page.locator('button').filter({ hasText: 'SIMULAR JORNADA' }).click();
       await page.locator('[data-power="cierzo"]').click();
+      await page.evaluate(() => { window.__powerTestRandom = Math.random; Math.random = () => .99; });
+      await page.locator('[data-power="rasmia"]').click();
+      await page.evaluate(() => { Math.random = window.__powerTestRandom; });
+      await page.locator('[data-power="arenga"]').click();
       assert.equal(await page.locator('[data-power="cierzo"]').getAttribute('class').then(c=>c.includes('used')), true,
-        'el poder táctico se consume al lanzarlo durante el reloj');
+        'el Cierzo se consume al lanzarlo durante el reloj');
+      assert.ok(await page.locator('[data-power="rasmia"].used').count() === 1 &&
+        await page.locator('[data-power="arenga"].used').count() === 1,
+        'Rasmia y Arenga también consumen una carta cada una');
+      await page.waitForFunction(() => document.getElementById('qte-backdrop').classList.contains('open'), null, { timeout: 5000 });
+      await page.locator('[data-qte="shot"]').click();
+      await page.waitForFunction(() => document.getElementById('qte-backdrop').classList.contains('open'), null, { timeout: 5000 });
+      await page.locator('[data-qte="pass"]').click();
+      await page.evaluate(() => { window.__originalRandom = Math.random; Math.random = () => 0; window.__varPromise = abrirVARPueblo(); });
+      await page.waitForSelector('#var-backdrop.open');
+      await page.locator('#var-press').click();
+      await page.evaluate(() => { Math.random = window.__originalRandom; });
+      assert.match(await page.locator('#var-result').innerText(), /favorable/,
+        'presionar al árbitro puede influir en el VAR y comunica la decisión');
       await page.waitForFunction(() => estadoJuego.jornadaActual === 1 &&
         document.getElementById('event-backdrop').classList.contains('open'), null, { timeout: 15000 });
       const eventoAntes = await page.evaluate(() => ({
@@ -1115,6 +1139,15 @@ async function recargarPartida(page) {
       assert.equal(eventoDespues.moral, Math.max(0, Math.min(100, eventoAntes.moral + eventoAntes.opcion.moral)),
         'el mini-evento modifica la moral del vestuario');
       assert.equal(eventoDespues.pendiente, null, 'la decisión cierra el popup');
+      assert.match(await page.locator('#floating-cta').innerText(), /Resolver despacho/,
+        'el CTA guía al evento pendiente de despacho');
+      await page.locator('#floating-cta').click();
+      assert.ok(await page.locator('#dispatch-card').isVisible(), 'aparece la siguiente decisión Reigns');
+      const confianzaAntes = await page.evaluate(() => estadoJuego.mister.directiva);
+      await page.locator('#dispatch-no').click();
+      await page.waitForFunction(() => estadoJuego.mister.despachoPendiente === null);
+      assert.equal(await page.evaluate(() => estadoJuego.mister.directiva), Math.max(0, confianzaAntes - 4),
+        'rechazar la propuesta reduce la confianza de la directiva');
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 1);
       await recargarPartida(page);
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 1, 'partida persistente');

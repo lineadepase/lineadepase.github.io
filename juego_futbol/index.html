@@ -681,6 +681,7 @@ body{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
                     <span id="lbl-fuerza-equipo" class="hint-box"></span>
                 </div>
                 <canvas id="canvas-pizarra" width="460" height="520"></canvas>
+                <p id="quimica-feedback" class="hint-box" aria-live="polite">La cuadrilla aún está buscando sus enlaces.</p>
             </div>
         </div>
     </section>
@@ -791,6 +792,8 @@ body{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
 
     <!-- PESTAÑA 3: CLASIFICACIÓN Y MÉTRICAS -->
     <section id="tab-clasificacion" class="tab-content active" role="tabpanel" aria-labelledby="pestana-clasificacion" tabindex="0" aria-hidden="false">
+        <div id="reigns-panel" class="panel" aria-label="Despacho del míster"></div>
+        <div id="retos-mister" class="panel" aria-label="Retos del míster"></div>
         <div class="panel cta-row" aria-label="Próximas acciones">
             <div class="cta-card"><strong>Tu siguiente pitido</strong><p>La jornada está lista. Prepara el plan y juega el partido.</p><button type="button" onclick="cambiarPestana('partido',document.getElementById('pestana-partido'))">⚽ Ir al partido</button></div>
             <div class="cta-card"><strong>Refuerza la cuadrilla</strong><p>Ojea perfiles aragoneses de fantasía y negocia con retranca.</p><button type="button" onclick="cambiarPestana('mercado',document.getElementById('pestana-mercado'))">🔥 Revisar fichajes</button></div>
@@ -3268,5 +3271,6 @@ mostrarRepeticion=function(indice){
 };
 
 </script>
+<script src="./js/experiencia-manager.js"></script>
 </body>
 </html>
