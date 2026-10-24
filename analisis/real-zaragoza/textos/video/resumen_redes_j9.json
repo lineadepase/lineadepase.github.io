@@ -1,0 +1,64 @@
+{
+  "jornada": 9,
+  "local": "CE Europa",
+  "visitante": "Real Zaragoza",
+  "marcador": "0-1",
+  "portada": {
+    "titulo": [
+      "Mucho balón,",
+      "poca distancia en remates"
+    ],
+    "texto": [
+      "67 % de posesión y el doble de pases,",
+      "pero 9 tiros frente a 8.",
+      "Un córner en el minuto 80 decidió el partido."
+    ]
+  },
+  "cuotas": [
+    {
+      "etiqueta": "Posesión",
+      "zaragoza_pct": 67.0
+    },
+    {
+      "etiqueta": "Pases intentados",
+      "zaragoza_pct": 67.23
+    },
+    {
+      "etiqueta": "Tiros",
+      "zaragoza_pct": 52.94
+    }
+  ],
+  "pases": {
+    "zaragoza": 677,
+    "rival": 330
+  },
+  "pases_completados": {
+    "zaragoza": 596,
+    "rival": 237
+  },
+  "precision": {
+    "zaragoza": 88.04,
+    "rival": 71.82
+  },
+  "tiros": {
+    "zaragoza": 9,
+    "rival": 8
+  },
+  "tiros_puerta": {
+    "zaragoza": 2,
+    "rival": 1
+  },
+  "gol": [
+    "Córner de Rubén Díez",
+    "Remate de Diego González",
+    "Desvío de Álex Cano",
+    "0-1 en propia puerta (80')"
+  ],
+  "temporada": [
+    "Quinta portería a cero en nueve jornadas.",
+    "20 puntos: seis victorias, dos empates y una derrota."
+  ],
+  "fuentes_redes": "Datos públicos: ficha oficial del Real Zaragoza y resumen en vídeo",
+  "fuente_ficha": "https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-9-ce-europa-vs-real-zaragoza-3940",
+  "fuente_video": "https://www.youtube.com/watch?v=gBB7ameQWbI"
+}

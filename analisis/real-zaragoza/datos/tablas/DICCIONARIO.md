@@ -213,7 +213,7 @@ Resultados del próximo rival esta temporada, para la previa. Archivo: `datos/en
 
 ## incidencias
 
-Diferencias entre fuentes y qué dato me quedo. Es el registro de decisiones del proyecto. Archivo: `datos/entrada/incidencias.csv` (62 filas).
+Diferencias entre fuentes y qué dato me quedo. Es el registro de decisiones del proyecto. Archivo: `datos/entrada/incidencias.csv` (64 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|
