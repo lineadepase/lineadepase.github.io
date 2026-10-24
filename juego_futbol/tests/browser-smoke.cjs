@@ -430,7 +430,7 @@ async function recargarPartida(page) {
           plantel: avatares.length,
           mercado: avatarMercado.length,
           decorativos: [...avatares, ...avatarMercado].every(svg => svg.getAttribute('aria-hidden') === 'true'),
-          estables: muestra === avatarJugadorHTML('Adrián Valcárcel Cabrera', 'POR'),
+          estables: muestra.replace(/portrait-\d+/g,'portrait') === avatarJugadorHTML('Adrián Valcárcel Cabrera', 'POR').replace(/portrait-\d+/g,'portrait'),
           distintos: muestra !== avatarJugadorHTML('Rita Remates', 'DEL'),
           sinRecursosExternos: [...avatares, ...avatarMercado].every(svg => !svg.querySelector('[href], image'))
         };
