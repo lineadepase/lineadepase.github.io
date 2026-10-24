@@ -55,6 +55,8 @@ jobs:
           node juego_futbol/tests/scouting-datos.cjs
           node juego_futbol/tests/direccion.cjs
           node juego_futbol/tests/motor-visual.cjs
+          node --test juego_futbol/tests/identidad-motor.test.cjs
+          node juego_futbol/tests/identidad.cjs
       - name: Adjuntar capturas de escritorio y móvil
         if: always()
         uses: actions/upload-artifact@v4
