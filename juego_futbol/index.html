@@ -1638,6 +1638,7 @@ function actualizarUI() {
         const dg = eq.gf - eq.gc;
         const difXg = eq.gf - eq.xgf;
         const tr = document.createElement('tr');
+        if(estadoJuego.competiciones?.activa&&((eq.division===2&&i<2)||(eq.division===1&&i>=10))){tr.style.borderLeft='4px solid '+(eq.division===2?'#73dcbb':'#f392af');tr.title=eq.division===2?'Zona de ascenso: puestos 1 y 2':'Zona de descenso: puestos 11 y 12';}
         if (eq.nombre === miEq.nombre) tr.style.background = 'rgba(37, 99, 235, 0.18)';
         tr.innerHTML = `
             <td><strong>${i + 1}</strong></td>
@@ -3414,6 +3415,9 @@ mostrarRepeticion=function(indice){
 <script src="./js/scouting-datos.js"></script>
 <script src="./js/competiciones-motor.js"></script>
 <script src="./js/competiciones.js"></script>
+<script src="./js/direccion-motor.js"></script>
+<link rel="stylesheet" href="./css/direccion.css">
+<script src="./js/direccion.js"></script>
 <script src="./js/pantallas.js"></script>
 </body>
 </html>

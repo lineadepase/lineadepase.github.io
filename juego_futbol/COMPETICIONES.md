@@ -15,4 +15,4 @@ Las partidas de cuatro o doce clubes que ya han empezado conservan su calendario
 - Guardados antiguos: migración desde cuatro clubes conservando presupuesto y goles.
 - Interfaz: navegación sin desbordamientos en escritorio, móvil, 320 px y horizontal; alineación completa de 25 jugadores.
 
-El filial mantiene su estructura, salarios y amistosos; todavía no tiene liga propia.
+El filial dispone ahora de un circuito regional de ocho equipos y 14 jornadas. Sus rivales se simulan por nivel colectivo; sus minutos se registran por jugador. Consulta DIRECCION.md.

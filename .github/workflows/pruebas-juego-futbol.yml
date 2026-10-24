@@ -43,6 +43,7 @@ jobs:
           sleep 2
           node --test juego_futbol/tests/club-motor.test.cjs
           node --test juego_futbol/tests/proyectos-motor.test.cjs
+          node --test juego_futbol/tests/direccion-motor.test.cjs
           node juego_futbol/tests/browser-smoke.cjs
           node juego_futbol/tests/screens.cjs
           node juego_futbol/tests/club-browser.cjs
@@ -51,6 +52,7 @@ jobs:
           node juego_futbol/tests/centro-control.cjs
           node juego_futbol/tests/departamentos.cjs
           node juego_futbol/tests/scouting-datos.cjs
+          node juego_futbol/tests/direccion.cjs
       - name: Adjuntar capturas de escritorio y móvil
         if: always()
         uses: actions/upload-artifact@v4

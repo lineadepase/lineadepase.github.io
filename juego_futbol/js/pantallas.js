@@ -7,6 +7,16 @@
   let currentSection = 'clasificacion', pages = [], pageIndex = 0, scheduled = 0, ready = false;
   let observer;
   let menuPage=0;
+  let previousLocation=null,restoring=false;
+  const navigationHistory=[];
+  function rememberLocation(){
+    const location={section:currentSection,view:sections.get(currentSection).index,page:pageIndex};
+    if(!restoring&&previousLocation&&JSON.stringify(location)!==JSON.stringify(previousLocation)){
+      navigationHistory.push(previousLocation);if(navigationHistory.length>60)navigationHistory.shift();
+    }
+    if(!restoring)previousLocation=location;
+    $('screen-back').disabled=navigationHistory.length===0;
+  }
   function sideMenu(){
     const menu=$('department-menu');if(!menu)return;
     const state=sections.get(currentSection),size=Math.max(1,Math.floor((document.querySelector('main').clientHeight-95)/37));
@@ -62,12 +72,14 @@
   window.abrirPantallaJuego = id => {
     const node = $(id), view = node?.closest('.screen-view');
     if (!view) return;
+    const wasRestoring=restoring;restoring=true;
     const section = view.closest('.tab-content').id.replace('tab-','');
     cambiarPestana(section,$('pestana-'+section));
     selectView(sections.get(section).views.indexOf(view));
     const target=$(id);
     const page=pages.findIndex(items=>items.some(item=>item===target||item.contains(target)||target.contains(item)));
     if(page>=0){pageIndex=page;layout();}
+    restoring=wasRestoring;rememberLocation();
   };
   function layout() {
     if (!ready) return;
@@ -134,7 +146,7 @@
     }
     if(batch.length) pages.push(batch);
     if(!pages.length) pages = [[]];
-    pageIndex = Math.min(pageIndex,pages.length-1); paint(pages[pageIndex]);
+    pageIndex = Math.min(pageIndex,pages.length-1); paint(pages[pageIndex]);rememberLocation();
     const rows=[...new Set(pages[pageIndex].map(n=>n.closest('tr')).filter(Boolean))];
     const person=rows.length===1?rows[0].querySelector('[data-label="Jugador"],[data-label="Equipo"]')?.textContent.trim():'';
     $('screen-view').selectedOptions[0].textContent=root.dataset.title+(person?' · '+person:'');
@@ -165,7 +177,7 @@
     document.querySelector('main').append(settings);
     $('guia-rapida').open=true;
     const tools=document.createElement('div'); tools.className='screen-tools';
-    tools.innerHTML='<label>Ver <select id="screen-view" aria-label="Pantalla de esta sección"></select></label><span id="screen-section" class="screen-badge"></span>';
+    tools.innerHTML='<button id="screen-back" type="button" title="Volver a la pantalla y página anterior" disabled>← Volver</button><label>Ver <select id="screen-view" aria-label="Pantalla de esta sección"></select></label><span id="screen-section" class="screen-badge"></span>';
     document.querySelector('main').prepend(tools);
     const menu=document.createElement('aside');menu.id='department-menu';menu.setAttribute('aria-label','Pantallas del departamento');document.querySelector('main').prepend(menu);
     const heading=document.createElement('h2'); heading.id='screen-heading'; heading.tabIndex=-1;
@@ -206,6 +218,12 @@
     $('screen-next').onclick=()=>{pageIndex++;layout();if(pageIndex===pages.length-1)$('screen-previous').focus({preventScroll:true});};
     const original=cambiarPestana;
     cambiarPestana=function(id,button){original(id,button);showSection(id);};
+    $('screen-back').onclick=()=>{
+      const target=navigationHistory.pop();if(!target)return;restoring=true;
+      sections.get(target.section).index=target.view;
+      cambiarPestana(target.section,$('pestana-'+target.section));pageIndex=target.page;layout();
+      restoring=false;previousLocation=target;$('screen-back').disabled=navigationHistory.length===0;
+    };
     observer=new MutationObserver(requestLayout); ready=true;
     window.addEventListener('resize',requestLayout); new ResizeObserver(requestLayout).observe(document.querySelector('main'));
     showSection('clasificacion');
