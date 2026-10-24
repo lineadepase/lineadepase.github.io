@@ -93,7 +93,7 @@ async function recargarPartida(page) {
         panelActivo: document.querySelector('[role="tabpanel"][aria-hidden="false"]')?.id
       }));
       assert.equal(integridadPlantillas.temporada, '2026/27');
-      assert.equal(integridadPlantillas.equipos.length,12);
+      assert.equal(integridadPlantillas.equipos.length,24);
       assert.ok(integridadPlantillas.tamaños.every(n => n >= 14), 'cada club tiene fondo de plantilla para rotar');
       assert.equal(integridadPlantillas.consistencia, true, 'cada jugador declara caricatura IA y cinco atributos paródicos');
       const progresionCumple = await page.evaluate(() => {
@@ -105,13 +105,13 @@ async function recargarPartida(page) {
       });
       assert.deepEqual(progresionCumple, { edad: 46, procesados: 1 },
         'la edad de carrera sube una vez al cruzar el cumpleaños aunque el calendario abarque varias temporadas');
-      assert.equal(new Set(integridadPlantillas.jugadores.flat()).size,168);
+      assert.equal(new Set(integridadPlantillas.jugadores.flat()).size,384);
       assert.equal(integridadPlantillas.control, 'Unión Valdoria');
       assert.equal(integridadPlantillas.panelActivo, 'tab-clasificacion', 'la vista inicial coincide con Despacho Míster');
       await page.locator('#manager-profile-open').click();
       assert.equal(await page.locator('#manager-profile').getAttribute('aria-hidden'), 'false',
         'el perfil del míster abre un diálogo para elegir club y nombre');
-      assert.equal(await page.locator('#manager-team option').count(), 12,
+      assert.equal(await page.locator('#manager-team option').count(), 24,
         'la elección de carrera ofrece los cuatro clubes ficticios actuales');
       await page.locator('#manager-team').selectOption({ label: 'Atlético Monteluz' });
       await page.locator('#manager-name').fill('Míster Prueba');
@@ -367,7 +367,7 @@ async function recargarPartida(page) {
       assert.match(await page.locator('#guia-rapida').innerText(), /22 jornadas/);
       await page.locator('#guia-rapida').evaluate(el => { el.open = true; });
       assert.equal(await page.locator('#btn-simular-jornada').innerText(), '▶️ SIMULAR JORNADA EN VIVO');
-      assert.equal(await page.evaluate(() => estadoJuego.equipos.length), 12);
+      assert.equal(await page.evaluate(() => estadoJuego.equipos.length), 24);
       assert.equal(await page.locator('#tbody-match-breakdown tr').innerText(),
         'El balance aparecerá al terminar el partido.', 'la tabla explica cuándo estará disponible');
       assert.equal(await page.locator('#btn-exportar-balance').isDisabled(), true,
@@ -379,7 +379,7 @@ async function recargarPartida(page) {
         perfilesRivales: estadoJuego.equipos.slice(1).map(e => [e.formacion, e.estilo]),
         cabecera: document.querySelector('.club-brand h1')?.textContent.trim()
       }));
-      assert.equal(plantillasFicticias.clubes.length,12);
+      assert.equal(plantillasFicticias.clubes.length,24);
       assert.equal(plantillasFicticias.cabecera,'UNIÓN VALDORIA');
       assert.ok(plantillasFicticias.jugadores.every(nombre => !/^(POR|DEF|CEN|DEL)_/.test(nombre)),
         'los rivales no deben mostrar identificadores internos como nombres');
@@ -801,7 +801,7 @@ async function recargarPartida(page) {
           Storage.prototype.getItem = original;
         }
       });
-      assert.equal(blockedRead, 12, 'el juego debe arrancar con almacenamiento bloqueado');
+      assert.equal(blockedRead, 24, 'el juego debe arrancar con almacenamiento bloqueado');
       const saveFailure = await page.evaluate(() => {
         const original = Storage.prototype.setItem;
         Storage.prototype.setItem = function () { throw new Error('almacenamiento bloqueado'); };
@@ -829,7 +829,7 @@ async function recargarPartida(page) {
       const exported = JSON.parse(await fs.readFile(await exportFile.path(), 'utf8'));
       assert.equal(exported.formato, 'linea-de-pase-partida');
       assert.equal(exported.version, 1);
-      assert.equal(exported.partida.equipos.length, 12);
+      assert.equal(exported.partida.equipos.length, 24);
       const importCandidate = structuredClone(exported.partida);
       importCandidate.equipos.find(e => e.nombre === 'Unión Valdoria').presupuesto = -250000;
       await page.locator('#archivo-partida').setInputFiles({
@@ -1166,12 +1166,14 @@ async function recargarPartida(page) {
         await page.locator('[data-power="arenga"].used').count() === 1,
         'Rasmia y Arenga también consumen una carta cada una');
       await page.waitForFunction(() => document.getElementById('qte-backdrop').classList.contains('open'), null, { timeout: 5000 });
+      await page.evaluate(()=>{window.__qteTestRandom=Math.random;Math.random=()=>.99;});
       await page.locator('[data-qte="shot"]').click();
       await page.waitForFunction(() => document.querySelectorAll('#match-log .log-chance, #match-log .log-goal').length > 0);
       assert.match(await page.locator('#match-summary').innerText(), /En directo:/,
         'la elección QTE crea una ocasión y actualiza el resumen durante el partido');
       await page.waitForFunction(() => document.getElementById('qte-backdrop').classList.contains('open'), null, { timeout: 15000 });
       await page.locator('[data-qte="pass"]').click();
+      await page.evaluate(()=>{Math.random=window.__qteTestRandom;});
       await page.evaluate(() => { window.__originalRandom = Math.random; Math.random = () => 0; window.__varPromise = abrirVARPueblo(); });
       await page.waitForSelector('#var-backdrop.open');
       await page.locator('#var-press').click();
@@ -1218,7 +1220,7 @@ async function recargarPartida(page) {
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 1);
       await recargarPartida(page);
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 1, 'partida persistente');
-      await page.evaluate(() => { for (let i = 1; i < 22; i++) simularJornada(); });
+      await page.evaluate(() => { while (estadoJuego.jornadaActual < 22) simularJornada(); });
       assert.equal(await page.evaluate(() => estadoJuego.jornadaActual), 22);
       assert.equal(await page.locator('#match-preview').innerText(),
         'No hay rival pendiente: la temporada está cerrada.');
@@ -1230,14 +1232,14 @@ async function recargarPartida(page) {
         clubes.forEach(e => { e.puntos = 10; e.gf = 8; e.gc = 5; });
         clubes[0].gf = 9;
         clubes[1].gc = 4;
-        return calcularPremiosClasificacion(clubes).map(e => e.nombre);
+        return calcularPremiosClasificacion(clubes).filter(e=>e.division===1).map(e => e.nombre);
       });
       assert.equal(empate[0], 'Unión Valdoria',
         'a igualdad de puntos y diferencia de goles, mandan los goles a favor');
       const empateTotal = await page.evaluate(() => {
         const clubes = crearEstadoInicial().equipos;
         clubes.forEach(e => { e.puntos = 10; e.gf = 8; e.gc = 5; });
-        return calcularPremiosClasificacion(clubes).map(e => e.nombre);
+        return calcularPremiosClasificacion(clubes).filter(e=>e.division===1).map(e => e.nombre);
       });
       assert.deepEqual(empateTotal, ["Atlético Monteluz", "CD Sierra Norte", "CF Costa Serena", "Deportivo Altorreal", "Deportivo Arboleda", "Estrella del Llano", "Ferroviario Santa Vega", "Racing Puerto Claro", "Real Villacumbre", "Sporting Bellavista", "Unión Ribera", "Unión Valdoria"]);
       const temporadaIncompleta = await page.evaluate(() => {
@@ -1255,7 +1257,7 @@ async function recargarPartida(page) {
         'no se debe cobrar premios ni iniciar temporada antes de la última jornada');
       const premios = await page.evaluate(() => {
         const ordenados = calcularPremiosClasificacion(estadoJuego.equipos);
-        return ordenados.map(p => p.premio);
+        return ordenados.filter(p=>p.division===1).map(p => p.premio);
       });
       assert.deepEqual(premios, [5000000,3500000,2500000,1500000,1400000,1300000,1200000,1100000,1000000,900000,800000,700000],
         'los premios deben descender según la clasificación');
@@ -1307,14 +1309,14 @@ async function recargarPartida(page) {
         'la tabla histórica muestra goles, remates y xG a favor, diferencia y en contra');
       assert.equal(await page.evaluate(() => estadoPartidaValido(estadoJuego)), true,
         'el nuevo historial cumple la validación de guardado');
-      assert.equal(await page.locator('#tbody-historial-temporadas tr').count(), 12,
+      assert.equal(await page.locator('#tbody-historial-temporadas tr').count(), 24,
         'el archivo muestra la clasificación completa de la campaña');
-      assert.deepEqual(await page.evaluate(() => estadoJuego.equipos.map(eq => eq.remates)), Array(12).fill(0),
+      assert.deepEqual(await page.evaluate(() => estadoJuego.equipos.map(eq => eq.remates)), Array(24).fill(0),
         'los remates se reinician al comenzar la temporada');
       const presupuestosDespues = await page.evaluate(() =>
         Object.fromEntries(estadoJuego.equipos.map(e => [e.nombre, e.presupuesto])));
       for (const nombre of Object.keys(presupuestosAntes)) {
-        assert.equal(presupuestosDespues[nombre] - presupuestosAntes[nombre], premiosPorEquipo[nombre],
+        assert.equal(presupuestosDespues[nombre] - presupuestosAntes[nombre], premiosPorEquipo[nombre] + (await page.evaluate(n=>estadoJuego.competiciones.historial[0].ascendidos.includes(n),nombre)?500000:0),
           'cada club recibe exactamente su premio de clasificación');
       }
 
@@ -1341,6 +1343,7 @@ async function recargarPartida(page) {
         'el empate de goleadores se conserva al recargar la partida');
       const limiteMercado = await page.evaluate(() => {
         estadoJuego.jornadaActual = estadoJuego.calendario.length;
+        while(ClubCompeticiones.pendiente(estadoJuego)) jugarRondaCopa();
         iniciarNuevaTemporada();
         return { temporada: estadoJuego.temporada, cantidad: estadoJuego.mercado.length,
           distintos: new Set(estadoJuego.mercado.map(j => j.nombre.toLocaleLowerCase('es'))).size };
@@ -1358,7 +1361,7 @@ async function recargarPartida(page) {
       await recargarPartida(page);
       assert.equal(await page.evaluate(() => obtenerMiEquipo().presupuesto), -250000,
         'una partida con déficit se recupera sin reiniciarse');
-      assert.deepEqual(await page.evaluate(() => estadoJuego.equipos.map(eq => eq.remates)), Array(12).fill(0),
+      assert.deepEqual(await page.evaluate(() => estadoJuego.equipos.map(eq => eq.remates)), Array(24).fill(0),
         'los guardados anteriores migran el contador de remates sin perder datos');
       assert.deepEqual(await page.evaluate(() => estadoJuego.historialTemporadas), [],
         'los guardados antiguos reciben un archivo vacío sin reiniciar la temporada');
@@ -1379,7 +1382,7 @@ async function recargarPartida(page) {
       await page.evaluate(() => localStorage.setItem('ldp_manager_save',
         JSON.stringify({ equipos: [], mercado: [], calendario: [], jornadaActual: 0, temporada: 1 })));
       await recargarPartida(page);
-      assert.equal(await page.evaluate(() => estadoJuego.equipos.length), 12,
+      assert.equal(await page.evaluate(() => estadoJuego.equipos.length), 24,
         'partida estructuralmente inválida rechazada');
       await page.evaluate(() => {
         const partida = crearEstadoInicial();

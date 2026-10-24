@@ -1277,7 +1277,7 @@ function generarCalendario(nombres) {
  */
 function calendarioValido(calendario, equipos) {
     if (!Array.isArray(calendario) || calendario.length !== (equipos?.length-1)*2 ||
-        !Array.isArray(equipos) || ![4,12].includes(equipos.length)) return false;
+        !Array.isArray(equipos) || ![4,12,24].includes(equipos.length)) return false;
     if (!equipos.every(eq => eq && typeof eq.nombre === 'string')) return false;
     const nombres = equipos.map(eq => eq.nombre);
     if (new Set(nombres).size !== equipos.length) return false;
@@ -1368,7 +1368,7 @@ function nombreGuardadoValido(nombre) {
 /** Compruebo el resumen compacto que conserva una temporada ya cerrada. */
 function resumenTemporadaValido(resumen) {
     return Boolean(resumen && Number.isInteger(resumen.temporada) && resumen.temporada >= 1 &&
-        Array.isArray(resumen.clasificacion) && [4,12].includes(resumen.clasificacion.length) &&
+        Array.isArray(resumen.clasificacion) && [4,12,24].includes(resumen.clasificacion.length) &&
         new Set(resumen.clasificacion.map(eq => eq?.nombre)).size === resumen.clasificacion.length &&
         resumen.clasificacion.every(eq => eq && nombreGuardadoValido(eq.nombre) &&
             ['puntos', 'pj', 'gf', 'gc'].every(k => Number.isInteger(eq[k]) && eq[k] >= 0) &&
@@ -1435,7 +1435,7 @@ function normalizarEstadoPartida(estado) {
  */
 function estadoPartidaValido(estado) {
     try {
-        return Boolean(estado && Array.isArray(estado.equipos) && [4,12].includes(estado.equipos.length) &&
+        return Boolean(estado && Array.isArray(estado.equipos) && [4,12,24].includes(estado.equipos.length) &&
             new Set(estado.equipos.map(eq => eq?.nombre)).size === estado.equipos.length &&
             typeof estado.equipoControlado === 'string' && estado.equipos.some(eq => eq?.nombre === estado.equipoControlado) &&
             estado.equipos.every(eq => eq && nombreGuardadoValido(eq.nombre) &&
@@ -1633,7 +1633,7 @@ function actualizarUI() {
     // Tabla Clasificación
     const tbodyC = document.getElementById('tbody-clasificacion');
     tbodyC.innerHTML = '';
-    const ordenados = [...estadoJuego.equipos].sort(compararClasificacion);
+    const ordenados = [...estadoJuego.equipos].filter(e=>!estadoJuego.competiciones?.activa||(e.division||1)===(window.divisionVista||miEq.division||1)).sort(compararClasificacion);
     ordenados.forEach((eq, i) => {
         const dg = eq.gf - eq.gc;
         const difXg = eq.gf - eq.xgf;
@@ -1673,8 +1673,8 @@ function actualizarUI() {
             const xgc = eq.xgc === null ? '—' : eq.xgc.toFixed(2);
             const diferenciaGolesXg = eq.xgf === null ? '—' :
                 `${eq.gf - eq.xgf >= 0 ? '+' : ''}${(eq.gf - eq.xgf).toFixed(2)}`;
-            tr.innerHTML = `<td>${resumen.temporada}</td><td><strong>${i + 1}</strong></td>` +
-                `<td class="left">${escaparHTML(eq.nombre)}</td><td>${eq.pj}</td><td>${eq.puntos}</td>` +
+            tr.innerHTML = `<td>${resumen.temporada}</td><td><strong>${resumen.clasificacion.slice(0,i+1).filter(c=>(c.division||1)===(eq.division||1)).length}</strong></td>` +
+                `<td class="left">${resumen.clasificacion.length===24?(eq.division||1)+'ª · ':''}${escaparHTML(eq.nombre)}</td><td>${eq.pj}</td><td>${eq.puntos}</td>` +
                 `<td>${eq.gf}-${eq.gc}</td><td>${remates}</td><td>${xgf}</td><td>${diferenciaGolesXg}</td><td>${xgc}</td>` +
                 `<td class="left">${detalleGoleador}</td>`;
             tbodyHistorial.appendChild(tr);
@@ -2266,6 +2266,7 @@ function elegirRematador(titulares) {
  * Compruebo que la jornada esté completa y válida antes de resolver sus partidos. Luego aplico preparación, resultados, tabla, guardado y mensajes de final de temporada.
  */
 function simularJornada() {
+    if(window.ClubCompeticiones?.pendiente(estadoJuego)){window.jugarRondaCopa?.();return;}
     const totalJ = estadoJuego.calendario.length;
     const miEq = obtenerMiEquipo();
 
@@ -2874,6 +2875,7 @@ function renovarMercadoTemporada() {
  * Archivo la clasificación y el máximo goleador antes de reiniciar sus datos; después inicio la siguiente campaña con sus premios.
  */
 function iniciarNuevaTemporada() {
+    if(estadoJuego.jornadaActual>=estadoJuego.calendario.length&&window.ClubCompeticiones?.pendiente(estadoJuego)){window.jugarRondaCopa?.();return;}
     if (estadoJuego.jornadaActual < estadoJuego.calendario.length) {
         alert("Debes terminar todas las jornadas antes de comenzar otra temporada.");
         return;
@@ -2882,7 +2884,7 @@ function iniciarNuevaTemporada() {
     const miPremio = premios.find(p => p.nombre === obtenerMiEquipo().nombre);
     const resumenPremios = premios.map(p =>
         `${p.posicion}.º ${p.nombre}: ${p.premio.toLocaleString('es-ES')} €`).join('\n');
-    if (!confirm(`¡Temporada terminada! ${obtenerMiEquipo().nombre}: ${miPremio.posicion}.º puesto.\n\nPremios por clasificación:\n${resumenPremios}\n\n¿Comenzar la siguiente temporada?`)) return;
+    if (!confirm(`¡Temporada terminada! ${obtenerMiEquipo().nombre}: ${miPremio.posicion}.º puesto${miPremio.division?' en '+miPremio.division+'ª Liga':''}.\n\nPremio de tu club: ${miPremio.premio.toLocaleString('es-ES')} €.\nLos premios de ambas categorías se conceden al cerrar.\n\n¿Comenzar la siguiente temporada?`)) return;
     const jugadoresOrdenados = estadoJuego.equipos.flatMap(eq => eq.plantilla
         .filter(j => j.goles > 0)
         .map(j => ({ nombre: j.nombre, equipo: eq.nombre, goles: j.goles, xg: j.xg })))
@@ -2890,8 +2892,8 @@ function iniciarNuevaTemporada() {
             a.nombre.localeCompare(b.nombre, 'es') || a.equipo.localeCompare(b.equipo, 'es'));
     const archivoTemporada = {
         temporada: estadoJuego.temporada,
-        clasificacion: [...estadoJuego.equipos].sort(compararClasificacion).map(eq => ({
-            nombre: eq.nombre, puntos: eq.puntos, pj: eq.pj, gf: eq.gf, gc: eq.gc,
+        clasificacion: [...estadoJuego.equipos].sort((a,b)=>(a.division||1)-(b.division||1)||compararClasificacion(a,b)).map(eq => ({
+            nombre: eq.nombre, division: eq.division||1, puntos: eq.puntos, pj: eq.pj, gf: eq.gf, gc: eq.gc,
             remates: eq.remates, xgf: eq.xgf, xgc: eq.xgc
         })),
         goleadores: jugadoresOrdenados.length
@@ -2900,6 +2902,7 @@ function iniciarNuevaTemporada() {
     };
     estadoJuego.historialTemporadas = [...(estadoJuego.historialTemporadas || []), archivoTemporada].slice(-20);
     window.ClubManager?.cerrarTemporada();
+    window.ClubCompeticiones?.cerrarTemporada(estadoJuego);
     estadoJuego.temporada++;
     estadoJuego.jornadaActual = 0;
     const fechaBase=estadoJuego.fechaActual||{year:2026,month:8,day:1};
@@ -2916,6 +2919,7 @@ function iniciarNuevaTemporada() {
     });
     renovarMercadoTemporada();
     window.UniversoLiga?.ampliar(estadoJuego);
+    window.ClubCompeticiones?.nuevaTemporada(estadoJuego);
     estadoJuego.calendario = generarCalendario(estadoJuego.equipos.map(eq => eq.nombre));
     guardarPartidaLocal(false);
     actualizarUI();
@@ -3017,7 +3021,7 @@ window.onload = async () => {
         const r=await fetch('./data/plantillas-parodicas.json',{cache:'no-store'});
         if(!r.ok)throw new Error('No se pudo cargar el JSON de plantillas.');
         PLANTILLAS_DB=await r.json();
-        if(PLANTILLAS_DB.schema_version!==1||PLANTILLAS_DB.equipos?.length!==12||PLANTILLAS_DB.equipos.some(e=>!Array.isArray(e.jugadores)||e.jugadores.length<11))throw new Error('Base incompleta.');
+        if(PLANTILLAS_DB.schema_version!==1||PLANTILLAS_DB.equipos?.length!==24||PLANTILLAS_DB.equipos.some(e=>!Array.isArray(e.jugadores)||e.jugadores.length<11))throw new Error('Base incompleta.');
         window.DATOS_ARAGONESES=Object.freeze({equipos:PLANTILLAS_DB.equipos.map(e=>e.nombre_parodico),despedidas:['Gracias por pasarte por el despacho; seguimos con el ojeo.','Que el viaje vaya tranquilo y el balón ruede bien.','Nos quedamos con la conversación; hasta la próxima ventana.']});
     }catch(error){console.error('Error en la base de jugadores:',error);document.querySelector('.sim-disclaimer').textContent='No se pudo cargar la base local de plantillas. Recarga para intentarlo de nuevo.';return;}
     let cargaCorrecta=false;
@@ -3408,6 +3412,8 @@ mostrarRepeticion=function(indice){
 <script src="./js/proyectos-motor.js"></script>
 <link rel="stylesheet" href="./css/scouting-datos.css">
 <script src="./js/scouting-datos.js"></script>
+<script src="./js/competiciones-motor.js"></script>
+<script src="./js/competiciones.js"></script>
 <script src="./js/pantallas.js"></script>
 </body>
 </html>

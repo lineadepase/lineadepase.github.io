@@ -399,7 +399,8 @@
       "ciudad": "Valdoria",
       "estadio": "La Alameda",
       "color": "#2055a0",
-      "filosofia": "Cantera y juego asociado"
+      "filosofia": "Cantera y juego asociado",
+      "division": 1
     },
     {
       "id": "somontano",
@@ -790,7 +791,8 @@
       "ciudad": "Monteluz",
       "estadio": "El Mirador",
       "color": "#ad273e",
-      "filosofia": "Presión y transiciones"
+      "filosofia": "Presión y transiciones",
+      "division": 1
     },
     {
       "id": "colchonico",
@@ -1181,7 +1183,8 @@
       "ciudad": "Puerto Claro",
       "estadio": "Las Dársenas",
       "color": "#227a72",
-      "filosofia": "Solidez y balón parado"
+      "filosofia": "Solidez y balón parado",
+      "division": 1
     },
     {
       "id": "tronca",
@@ -1572,7 +1575,8 @@
       "ciudad": "Altorreal",
       "estadio": "Los Olivos",
       "color": "#7150a2",
-      "filosofia": "Ataque por las bandas"
+      "filosofia": "Ataque por las bandas",
+      "division": 1
     },
     {
       "id": "club-ficticio-5",
@@ -1963,7 +1967,8 @@
       "ciudad": "Bellavista",
       "estadio": "La Colina",
       "color": "#1b6845",
-      "filosofia": "Fútbol ofensivo"
+      "filosofia": "Fútbol ofensivo",
+      "division": 1
     },
     {
       "id": "club-ficticio-6",
@@ -2354,7 +2359,8 @@
       "ciudad": "Sierra Norte",
       "estadio": "El Pinar",
       "color": "#31537a",
-      "filosofia": "Defensa organizada"
+      "filosofia": "Defensa organizada",
+      "division": 1
     },
     {
       "id": "club-ficticio-7",
@@ -2745,7 +2751,8 @@
       "ciudad": "Ribera",
       "estadio": "La Isla",
       "color": "#a34325",
-      "filosofia": "Talento joven"
+      "filosofia": "Talento joven",
+      "division": 1
     },
     {
       "id": "club-ficticio-8",
@@ -3136,7 +3143,8 @@
       "ciudad": "Santa Vega",
       "estadio": "La Estación",
       "color": "#5f4974",
-      "filosofia": "Intensidad y duelos"
+      "filosofia": "Intensidad y duelos",
+      "division": 1
     },
     {
       "id": "club-ficticio-9",
@@ -3527,7 +3535,8 @@
       "ciudad": "Costa Serena",
       "estadio": "El Faro",
       "color": "#15829e",
-      "filosofia": "Posesión paciente"
+      "filosofia": "Posesión paciente",
+      "division": 1
     },
     {
       "id": "club-ficticio-10",
@@ -3918,7 +3927,8 @@
       "ciudad": "Villacumbre",
       "estadio": "La Corona",
       "color": "#846817",
-      "filosofia": "Equilibrio y experiencia"
+      "filosofia": "Equilibrio y experiencia",
+      "division": 1
     },
     {
       "id": "club-ficticio-11",
@@ -4309,7 +4319,8 @@
       "ciudad": "El Llano",
       "estadio": "Los Trigales",
       "color": "#94405c",
-      "filosofia": "Cantera y velocidad"
+      "filosofia": "Cantera y velocidad",
+      "division": 1
     },
     {
       "id": "club-ficticio-12",
@@ -4700,7 +4711,6032 @@
       "ciudad": "Arboleda",
       "estadio": "El Robledal",
       "color": "#367239",
-      "filosofia": "Equipo compacto"
+      "filosofia": "Equipo compacto",
+      "division": 1
+    },
+    {
+      "id": "segunda-1",
+      "nombre_parodico": "CD Valle Azul",
+      "club_real": "",
+      "ciudad": "Valle Azul",
+      "estadio": "Las Encinas",
+      "color": "#477ca8",
+      "filosofia": "Desarrollo de talento",
+      "temporada": "2026/27",
+      "formacion": "4-4-2",
+      "division": 2,
+      "aforo": 10000,
+      "presupuesto": 2800000,
+      "jugadores": [
+        {
+          "id": "segunda-1-1",
+          "nombre": "Mateo Villalba Valverde",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 58,
+          "atributos": {
+            "RAS": 53,
+            "TOZ": 56,
+            "CHI": 59,
+            "RET": 62,
+            "ALM": 54
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 2900,
+          "valor": 580000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 18,
+          "cumpleanos": "01-01"
+        },
+        {
+          "id": "segunda-1-2",
+          "nombre": "Darío Villalba Sotomayor",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 63,
+          "atributos": {
+            "RAS": 59,
+            "TOZ": 62,
+            "CHI": 65,
+            "RET": 68,
+            "ALM": 60
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3150,
+          "valor": 630000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 19,
+          "cumpleanos": "02-02"
+        },
+        {
+          "id": "segunda-1-3",
+          "nombre": "Adrián Villalba Salvatierra",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 68,
+          "atributos": {
+            "RAS": 65,
+            "TOZ": 68,
+            "CHI": 71,
+            "RET": 63,
+            "ALM": 66
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3400,
+          "valor": 680000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 20,
+          "cumpleanos": "03-03"
+        },
+        {
+          "id": "segunda-1-4",
+          "nombre": "Iván Villalba Peñalver",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 73,
+          "atributos": {
+            "RAS": 71,
+            "TOZ": 74,
+            "CHI": 77,
+            "RET": 69,
+            "ALM": 72
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3650,
+          "valor": 730000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 21,
+          "cumpleanos": "04-04"
+        },
+        {
+          "id": "segunda-1-5",
+          "nombre": "Bruno Villalba Bermúdez",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 60,
+          "atributos": {
+            "RAS": 59,
+            "TOZ": 62,
+            "CHI": 65,
+            "RET": 57,
+            "ALM": 60
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3000,
+          "valor": 600000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 22,
+          "cumpleanos": "05-05"
+        },
+        {
+          "id": "segunda-1-6",
+          "nombre": "Hugo Villalba Villalba",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 65,
+          "atributos": {
+            "RAS": 65,
+            "TOZ": 68,
+            "CHI": 60,
+            "RET": 63,
+            "ALM": 66
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3250,
+          "valor": 650000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 23,
+          "cumpleanos": "06-06"
+        },
+        {
+          "id": "segunda-1-7",
+          "nombre": "Gabriel Villalba Dehesa",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 70,
+          "atributos": {
+            "RAS": 71,
+            "TOZ": 74,
+            "CHI": 66,
+            "RET": 69,
+            "ALM": 72
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3500,
+          "valor": 700000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 24,
+          "cumpleanos": "07-07"
+        },
+        {
+          "id": "segunda-1-8",
+          "nombre": "Leo Villalba Acevedo",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 75,
+          "atributos": {
+            "RAS": 77,
+            "TOZ": 80,
+            "CHI": 72,
+            "RET": 75,
+            "ALM": 78
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3750,
+          "valor": 750000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 25,
+          "cumpleanos": "08-08"
+        },
+        {
+          "id": "segunda-1-9",
+          "nombre": "Marcos Villalba Cifuentes",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 62,
+          "atributos": {
+            "RAS": 65,
+            "TOZ": 57,
+            "CHI": 60,
+            "RET": 63,
+            "ALM": 66
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3100,
+          "valor": 620000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 26,
+          "cumpleanos": "09-09"
+        },
+        {
+          "id": "segunda-1-10",
+          "nombre": "Joel Villalba Valdés",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 67,
+          "atributos": {
+            "RAS": 71,
+            "TOZ": 63,
+            "CHI": 66,
+            "RET": 69,
+            "ALM": 72
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3350,
+          "valor": 670000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 27,
+          "cumpleanos": "10-10"
+        },
+        {
+          "id": "segunda-1-11",
+          "nombre": "Nicolás Villalba Baeza",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 72,
+          "atributos": {
+            "RAS": 77,
+            "TOZ": 69,
+            "CHI": 72,
+            "RET": 75,
+            "ALM": 67
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3600,
+          "valor": 720000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 28,
+          "cumpleanos": "11-11"
+        },
+        {
+          "id": "segunda-1-12",
+          "nombre": "Samuel Villalba Mendieta",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 59,
+          "atributos": {
+            "RAS": 54,
+            "TOZ": 57,
+            "CHI": 60,
+            "RET": 63,
+            "ALM": 55
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 2950,
+          "valor": 590000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 29,
+          "cumpleanos": "12-12"
+        },
+        {
+          "id": "segunda-1-13",
+          "nombre": "Tomás Villalba Benavides",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 64,
+          "atributos": {
+            "RAS": 60,
+            "TOZ": 63,
+            "CHI": 66,
+            "RET": 69,
+            "ALM": 61
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3200,
+          "valor": 640000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 30,
+          "cumpleanos": "01-13"
+        },
+        {
+          "id": "segunda-1-14",
+          "nombre": "Rubén Villalba Zambrano",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 69,
+          "atributos": {
+            "RAS": 66,
+            "TOZ": 69,
+            "CHI": 72,
+            "RET": 64,
+            "ALM": 67
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3450,
+          "valor": 690000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 31,
+          "cumpleanos": "02-14"
+        },
+        {
+          "id": "segunda-1-15",
+          "nombre": "Pablo Villalba Ledesma",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 74,
+          "atributos": {
+            "RAS": 72,
+            "TOZ": 75,
+            "CHI": 78,
+            "RET": 70,
+            "ALM": 73
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3700,
+          "valor": 740000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 32,
+          "cumpleanos": "03-15"
+        },
+        {
+          "id": "segunda-1-16",
+          "nombre": "Lucas Villalba Figueroa",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 61,
+          "atributos": {
+            "RAS": 60,
+            "TOZ": 63,
+            "CHI": 66,
+            "RET": 58,
+            "ALM": 61
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3050,
+          "valor": 610000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 33,
+          "cumpleanos": "04-16"
+        },
+        {
+          "id": "segunda-1-17",
+          "nombre": "Andrés Villalba Madrigal",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 66,
+          "atributos": {
+            "RAS": 66,
+            "TOZ": 69,
+            "CHI": 61,
+            "RET": 64,
+            "ALM": 67
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3300,
+          "valor": 660000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 18,
+          "cumpleanos": "05-17"
+        },
+        {
+          "id": "segunda-1-18",
+          "nombre": "Sergio Villalba Albornoz",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 71,
+          "atributos": {
+            "RAS": 72,
+            "TOZ": 75,
+            "CHI": 67,
+            "RET": 70,
+            "ALM": 73
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3550,
+          "valor": 710000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 19,
+          "cumpleanos": "06-18"
+        }
+      ]
+    },
+    {
+      "id": "segunda-2",
+      "nombre_parodico": "Atlético Miraflor",
+      "club_real": "",
+      "ciudad": "Miraflor",
+      "estadio": "El Jardín",
+      "color": "#a34f75",
+      "filosofia": "Juego asociado",
+      "temporada": "2026/27",
+      "formacion": "4-3-3",
+      "division": 2,
+      "aforo": 10800,
+      "presupuesto": 3050000,
+      "jugadores": [
+        {
+          "id": "segunda-2-1",
+          "nombre": "Daniel Villalba Quiroga",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 61,
+          "atributos": {
+            "RAS": 56,
+            "TOZ": 59,
+            "CHI": 62,
+            "RET": 65,
+            "ALM": 57
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3050,
+          "valor": 610000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 19,
+          "cumpleanos": "07-19"
+        },
+        {
+          "id": "segunda-2-2",
+          "nombre": "Miguel Villalba Dávila",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 66,
+          "atributos": {
+            "RAS": 62,
+            "TOZ": 65,
+            "CHI": 68,
+            "RET": 71,
+            "ALM": 63
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3300,
+          "valor": 660000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 20,
+          "cumpleanos": "08-20"
+        },
+        {
+          "id": "segunda-2-3",
+          "nombre": "Óscar Villalba Valverde",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 71,
+          "atributos": {
+            "RAS": 68,
+            "TOZ": 71,
+            "CHI": 74,
+            "RET": 66,
+            "ALM": 69
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3550,
+          "valor": 710000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 21,
+          "cumpleanos": "09-21"
+        },
+        {
+          "id": "segunda-2-4",
+          "nombre": "Martín Villalba Sotomayor",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 58,
+          "atributos": {
+            "RAS": 56,
+            "TOZ": 59,
+            "CHI": 62,
+            "RET": 54,
+            "ALM": 57
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 2900,
+          "valor": 580000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 22,
+          "cumpleanos": "10-22"
+        },
+        {
+          "id": "segunda-2-5",
+          "nombre": "Diego Villalba Salvatierra",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 63,
+          "atributos": {
+            "RAS": 62,
+            "TOZ": 65,
+            "CHI": 68,
+            "RET": 60,
+            "ALM": 63
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3150,
+          "valor": 630000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 23,
+          "cumpleanos": "11-23"
+        },
+        {
+          "id": "segunda-2-6",
+          "nombre": "Álvaro Villalba Peñalver",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 68,
+          "atributos": {
+            "RAS": 68,
+            "TOZ": 71,
+            "CHI": 63,
+            "RET": 66,
+            "ALM": 69
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3400,
+          "valor": 680000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 24,
+          "cumpleanos": "12-24"
+        },
+        {
+          "id": "segunda-2-7",
+          "nombre": "Mateo Cifuentes Bermúdez",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 73,
+          "atributos": {
+            "RAS": 74,
+            "TOZ": 77,
+            "CHI": 69,
+            "RET": 72,
+            "ALM": 75
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3650,
+          "valor": 730000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 25,
+          "cumpleanos": "01-25"
+        },
+        {
+          "id": "segunda-2-8",
+          "nombre": "Darío Cifuentes Villalba",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 60,
+          "atributos": {
+            "RAS": 62,
+            "TOZ": 65,
+            "CHI": 57,
+            "RET": 60,
+            "ALM": 63
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3000,
+          "valor": 600000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 26,
+          "cumpleanos": "02-26"
+        },
+        {
+          "id": "segunda-2-9",
+          "nombre": "Adrián Cifuentes Dehesa",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 65,
+          "atributos": {
+            "RAS": 68,
+            "TOZ": 60,
+            "CHI": 63,
+            "RET": 66,
+            "ALM": 69
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3250,
+          "valor": 650000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 27,
+          "cumpleanos": "03-27"
+        },
+        {
+          "id": "segunda-2-10",
+          "nombre": "Iván Cifuentes Acevedo",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 70,
+          "atributos": {
+            "RAS": 74,
+            "TOZ": 66,
+            "CHI": 69,
+            "RET": 72,
+            "ALM": 75
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3500,
+          "valor": 700000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 28,
+          "cumpleanos": "04-28"
+        },
+        {
+          "id": "segunda-2-11",
+          "nombre": "Bruno Cifuentes Cifuentes",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 75,
+          "atributos": {
+            "RAS": 80,
+            "TOZ": 72,
+            "CHI": 75,
+            "RET": 78,
+            "ALM": 70
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3750,
+          "valor": 750000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 29,
+          "cumpleanos": "05-01"
+        },
+        {
+          "id": "segunda-2-12",
+          "nombre": "Hugo Cifuentes Valdés",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 62,
+          "atributos": {
+            "RAS": 57,
+            "TOZ": 60,
+            "CHI": 63,
+            "RET": 66,
+            "ALM": 58
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3100,
+          "valor": 620000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 30,
+          "cumpleanos": "06-02"
+        },
+        {
+          "id": "segunda-2-13",
+          "nombre": "Gabriel Cifuentes Baeza",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 67,
+          "atributos": {
+            "RAS": 63,
+            "TOZ": 66,
+            "CHI": 69,
+            "RET": 72,
+            "ALM": 64
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3350,
+          "valor": 670000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 31,
+          "cumpleanos": "07-03"
+        },
+        {
+          "id": "segunda-2-14",
+          "nombre": "Leo Cifuentes Mendieta",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 72,
+          "atributos": {
+            "RAS": 69,
+            "TOZ": 72,
+            "CHI": 75,
+            "RET": 67,
+            "ALM": 70
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3600,
+          "valor": 720000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 32,
+          "cumpleanos": "08-04"
+        },
+        {
+          "id": "segunda-2-15",
+          "nombre": "Marcos Cifuentes Benavides",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 59,
+          "atributos": {
+            "RAS": 57,
+            "TOZ": 60,
+            "CHI": 63,
+            "RET": 55,
+            "ALM": 58
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 2950,
+          "valor": 590000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 33,
+          "cumpleanos": "09-05"
+        },
+        {
+          "id": "segunda-2-16",
+          "nombre": "Joel Cifuentes Zambrano",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 64,
+          "atributos": {
+            "RAS": 63,
+            "TOZ": 66,
+            "CHI": 69,
+            "RET": 61,
+            "ALM": 64
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3200,
+          "valor": 640000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 18,
+          "cumpleanos": "10-06"
+        },
+        {
+          "id": "segunda-2-17",
+          "nombre": "Nicolás Cifuentes Ledesma",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 69,
+          "atributos": {
+            "RAS": 69,
+            "TOZ": 72,
+            "CHI": 64,
+            "RET": 67,
+            "ALM": 70
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3450,
+          "valor": 690000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 19,
+          "cumpleanos": "11-07"
+        },
+        {
+          "id": "segunda-2-18",
+          "nombre": "Samuel Cifuentes Figueroa",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 74,
+          "atributos": {
+            "RAS": 75,
+            "TOZ": 78,
+            "CHI": 70,
+            "RET": 73,
+            "ALM": 76
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3700,
+          "valor": 740000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 20,
+          "cumpleanos": "12-08"
+        }
+      ]
+    },
+    {
+      "id": "segunda-3",
+      "nombre_parodico": "Unión Peñablanca",
+      "club_real": "",
+      "ciudad": "Peñablanca",
+      "estadio": "El Peñón",
+      "color": "#887c49",
+      "filosofia": "Solidez y transiciones",
+      "temporada": "2026/27",
+      "formacion": "5-3-2",
+      "division": 2,
+      "aforo": 11600,
+      "presupuesto": 3300000,
+      "jugadores": [
+        {
+          "id": "segunda-3-1",
+          "nombre": "Tomás Cifuentes Madrigal",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 64,
+          "atributos": {
+            "RAS": 59,
+            "TOZ": 62,
+            "CHI": 65,
+            "RET": 68,
+            "ALM": 60
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3200,
+          "valor": 640000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 20,
+          "cumpleanos": "01-09"
+        },
+        {
+          "id": "segunda-3-2",
+          "nombre": "Rubén Cifuentes Albornoz",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 69,
+          "atributos": {
+            "RAS": 65,
+            "TOZ": 68,
+            "CHI": 71,
+            "RET": 74,
+            "ALM": 66
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3450,
+          "valor": 690000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 21,
+          "cumpleanos": "02-10"
+        },
+        {
+          "id": "segunda-3-3",
+          "nombre": "Pablo Cifuentes Quiroga",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 74,
+          "atributos": {
+            "RAS": 71,
+            "TOZ": 74,
+            "CHI": 77,
+            "RET": 69,
+            "ALM": 72
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3700,
+          "valor": 740000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 22,
+          "cumpleanos": "03-11"
+        },
+        {
+          "id": "segunda-3-4",
+          "nombre": "Lucas Cifuentes Dávila",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 61,
+          "atributos": {
+            "RAS": 59,
+            "TOZ": 62,
+            "CHI": 65,
+            "RET": 57,
+            "ALM": 60
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3050,
+          "valor": 610000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 23,
+          "cumpleanos": "04-12"
+        },
+        {
+          "id": "segunda-3-5",
+          "nombre": "Andrés Cifuentes Valverde",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 66,
+          "atributos": {
+            "RAS": 65,
+            "TOZ": 68,
+            "CHI": 71,
+            "RET": 63,
+            "ALM": 66
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3300,
+          "valor": 660000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 24,
+          "cumpleanos": "05-13"
+        },
+        {
+          "id": "segunda-3-6",
+          "nombre": "Sergio Cifuentes Sotomayor",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 71,
+          "atributos": {
+            "RAS": 71,
+            "TOZ": 74,
+            "CHI": 66,
+            "RET": 69,
+            "ALM": 72
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3550,
+          "valor": 710000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 25,
+          "cumpleanos": "06-14"
+        },
+        {
+          "id": "segunda-3-7",
+          "nombre": "Daniel Cifuentes Salvatierra",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 58,
+          "atributos": {
+            "RAS": 59,
+            "TOZ": 62,
+            "CHI": 54,
+            "RET": 57,
+            "ALM": 60
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 2900,
+          "valor": 580000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 26,
+          "cumpleanos": "07-15"
+        },
+        {
+          "id": "segunda-3-8",
+          "nombre": "Miguel Cifuentes Peñalver",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 63,
+          "atributos": {
+            "RAS": 65,
+            "TOZ": 68,
+            "CHI": 60,
+            "RET": 63,
+            "ALM": 66
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3150,
+          "valor": 630000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 27,
+          "cumpleanos": "08-16"
+        },
+        {
+          "id": "segunda-3-9",
+          "nombre": "Óscar Cifuentes Bermúdez",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 68,
+          "atributos": {
+            "RAS": 71,
+            "TOZ": 63,
+            "CHI": 66,
+            "RET": 69,
+            "ALM": 72
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3400,
+          "valor": 680000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 28,
+          "cumpleanos": "09-17"
+        },
+        {
+          "id": "segunda-3-10",
+          "nombre": "Martín Cifuentes Villalba",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 73,
+          "atributos": {
+            "RAS": 77,
+            "TOZ": 69,
+            "CHI": 72,
+            "RET": 75,
+            "ALM": 78
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3650,
+          "valor": 730000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 29,
+          "cumpleanos": "10-18"
+        },
+        {
+          "id": "segunda-3-11",
+          "nombre": "Diego Cifuentes Dehesa",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 60,
+          "atributos": {
+            "RAS": 65,
+            "TOZ": 57,
+            "CHI": 60,
+            "RET": 63,
+            "ALM": 55
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3000,
+          "valor": 600000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 30,
+          "cumpleanos": "11-19"
+        },
+        {
+          "id": "segunda-3-12",
+          "nombre": "Álvaro Cifuentes Acevedo",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 65,
+          "atributos": {
+            "RAS": 60,
+            "TOZ": 63,
+            "CHI": 66,
+            "RET": 69,
+            "ALM": 61
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3250,
+          "valor": 650000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 31,
+          "cumpleanos": "12-20"
+        },
+        {
+          "id": "segunda-3-13",
+          "nombre": "Mateo Mendieta Cifuentes",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 70,
+          "atributos": {
+            "RAS": 66,
+            "TOZ": 69,
+            "CHI": 72,
+            "RET": 75,
+            "ALM": 67
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3500,
+          "valor": 700000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 32,
+          "cumpleanos": "01-21"
+        },
+        {
+          "id": "segunda-3-14",
+          "nombre": "Darío Mendieta Valdés",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 75,
+          "atributos": {
+            "RAS": 72,
+            "TOZ": 75,
+            "CHI": 78,
+            "RET": 70,
+            "ALM": 73
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3750,
+          "valor": 750000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 33,
+          "cumpleanos": "02-22"
+        },
+        {
+          "id": "segunda-3-15",
+          "nombre": "Adrián Mendieta Baeza",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 62,
+          "atributos": {
+            "RAS": 60,
+            "TOZ": 63,
+            "CHI": 66,
+            "RET": 58,
+            "ALM": 61
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3100,
+          "valor": 620000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 18,
+          "cumpleanos": "03-23"
+        },
+        {
+          "id": "segunda-3-16",
+          "nombre": "Iván Mendieta Mendieta",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 67,
+          "atributos": {
+            "RAS": 66,
+            "TOZ": 69,
+            "CHI": 72,
+            "RET": 64,
+            "ALM": 67
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3350,
+          "valor": 670000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 19,
+          "cumpleanos": "04-24"
+        },
+        {
+          "id": "segunda-3-17",
+          "nombre": "Bruno Mendieta Benavides",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 72,
+          "atributos": {
+            "RAS": 72,
+            "TOZ": 75,
+            "CHI": 67,
+            "RET": 70,
+            "ALM": 73
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3600,
+          "valor": 720000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 20,
+          "cumpleanos": "05-25"
+        },
+        {
+          "id": "segunda-3-18",
+          "nombre": "Hugo Mendieta Zambrano",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 59,
+          "atributos": {
+            "RAS": 60,
+            "TOZ": 63,
+            "CHI": 55,
+            "RET": 58,
+            "ALM": 61
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 2950,
+          "valor": 590000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 21,
+          "cumpleanos": "06-26"
+        }
+      ]
+    },
+    {
+      "id": "segunda-4",
+      "nombre_parodico": "Racing Villamar",
+      "club_real": "",
+      "ciudad": "Villamar",
+      "estadio": "La Bahía",
+      "color": "#23858a",
+      "filosofia": "Desarrollo de talento",
+      "temporada": "2026/27",
+      "formacion": "4-4-2",
+      "division": 2,
+      "aforo": 12400,
+      "presupuesto": 3550000,
+      "jugadores": [
+        {
+          "id": "segunda-4-1",
+          "nombre": "Gabriel Mendieta Ledesma",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 67,
+          "atributos": {
+            "RAS": 62,
+            "TOZ": 65,
+            "CHI": 68,
+            "RET": 71,
+            "ALM": 63
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3350,
+          "valor": 670000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 21,
+          "cumpleanos": "07-27"
+        },
+        {
+          "id": "segunda-4-2",
+          "nombre": "Leo Mendieta Figueroa",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 72,
+          "atributos": {
+            "RAS": 68,
+            "TOZ": 71,
+            "CHI": 74,
+            "RET": 77,
+            "ALM": 69
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3600,
+          "valor": 720000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 22,
+          "cumpleanos": "08-28"
+        },
+        {
+          "id": "segunda-4-3",
+          "nombre": "Marcos Mendieta Madrigal",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 59,
+          "atributos": {
+            "RAS": 56,
+            "TOZ": 59,
+            "CHI": 62,
+            "RET": 54,
+            "ALM": 57
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 2950,
+          "valor": 590000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 23,
+          "cumpleanos": "09-01"
+        },
+        {
+          "id": "segunda-4-4",
+          "nombre": "Joel Mendieta Albornoz",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 64,
+          "atributos": {
+            "RAS": 62,
+            "TOZ": 65,
+            "CHI": 68,
+            "RET": 60,
+            "ALM": 63
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3200,
+          "valor": 640000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 24,
+          "cumpleanos": "10-02"
+        },
+        {
+          "id": "segunda-4-5",
+          "nombre": "Nicolás Mendieta Quiroga",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 69,
+          "atributos": {
+            "RAS": 68,
+            "TOZ": 71,
+            "CHI": 74,
+            "RET": 66,
+            "ALM": 69
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3450,
+          "valor": 690000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 25,
+          "cumpleanos": "11-03"
+        },
+        {
+          "id": "segunda-4-6",
+          "nombre": "Samuel Mendieta Dávila",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 74,
+          "atributos": {
+            "RAS": 74,
+            "TOZ": 77,
+            "CHI": 69,
+            "RET": 72,
+            "ALM": 75
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3700,
+          "valor": 740000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 26,
+          "cumpleanos": "12-04"
+        },
+        {
+          "id": "segunda-4-7",
+          "nombre": "Tomás Mendieta Valverde",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 61,
+          "atributos": {
+            "RAS": 62,
+            "TOZ": 65,
+            "CHI": 57,
+            "RET": 60,
+            "ALM": 63
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3050,
+          "valor": 610000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 27,
+          "cumpleanos": "01-05"
+        },
+        {
+          "id": "segunda-4-8",
+          "nombre": "Rubén Mendieta Sotomayor",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 66,
+          "atributos": {
+            "RAS": 68,
+            "TOZ": 71,
+            "CHI": 63,
+            "RET": 66,
+            "ALM": 69
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3300,
+          "valor": 660000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 28,
+          "cumpleanos": "02-06"
+        },
+        {
+          "id": "segunda-4-9",
+          "nombre": "Pablo Mendieta Salvatierra",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 71,
+          "atributos": {
+            "RAS": 74,
+            "TOZ": 66,
+            "CHI": 69,
+            "RET": 72,
+            "ALM": 75
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3550,
+          "valor": 710000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 29,
+          "cumpleanos": "03-07"
+        },
+        {
+          "id": "segunda-4-10",
+          "nombre": "Lucas Mendieta Peñalver",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 58,
+          "atributos": {
+            "RAS": 62,
+            "TOZ": 54,
+            "CHI": 57,
+            "RET": 60,
+            "ALM": 63
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 2900,
+          "valor": 580000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 30,
+          "cumpleanos": "04-08"
+        },
+        {
+          "id": "segunda-4-11",
+          "nombre": "Andrés Mendieta Bermúdez",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 63,
+          "atributos": {
+            "RAS": 68,
+            "TOZ": 60,
+            "CHI": 63,
+            "RET": 66,
+            "ALM": 58
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3150,
+          "valor": 630000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 31,
+          "cumpleanos": "05-09"
+        },
+        {
+          "id": "segunda-4-12",
+          "nombre": "Sergio Mendieta Villalba",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 68,
+          "atributos": {
+            "RAS": 63,
+            "TOZ": 66,
+            "CHI": 69,
+            "RET": 72,
+            "ALM": 64
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3400,
+          "valor": 680000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 32,
+          "cumpleanos": "06-10"
+        },
+        {
+          "id": "segunda-4-13",
+          "nombre": "Daniel Mendieta Dehesa",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 73,
+          "atributos": {
+            "RAS": 69,
+            "TOZ": 72,
+            "CHI": 75,
+            "RET": 78,
+            "ALM": 70
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3650,
+          "valor": 730000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 33,
+          "cumpleanos": "07-11"
+        },
+        {
+          "id": "segunda-4-14",
+          "nombre": "Miguel Mendieta Acevedo",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 60,
+          "atributos": {
+            "RAS": 57,
+            "TOZ": 60,
+            "CHI": 63,
+            "RET": 55,
+            "ALM": 58
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3000,
+          "valor": 600000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 18,
+          "cumpleanos": "08-12"
+        },
+        {
+          "id": "segunda-4-15",
+          "nombre": "Óscar Mendieta Cifuentes",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 65,
+          "atributos": {
+            "RAS": 63,
+            "TOZ": 66,
+            "CHI": 69,
+            "RET": 61,
+            "ALM": 64
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3250,
+          "valor": 650000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 19,
+          "cumpleanos": "09-13"
+        },
+        {
+          "id": "segunda-4-16",
+          "nombre": "Martín Mendieta Valdés",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 70,
+          "atributos": {
+            "RAS": 69,
+            "TOZ": 72,
+            "CHI": 75,
+            "RET": 67,
+            "ALM": 70
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3500,
+          "valor": 700000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 20,
+          "cumpleanos": "10-14"
+        },
+        {
+          "id": "segunda-4-17",
+          "nombre": "Diego Mendieta Baeza",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 75,
+          "atributos": {
+            "RAS": 75,
+            "TOZ": 78,
+            "CHI": 70,
+            "RET": 73,
+            "ALM": 76
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3750,
+          "valor": 750000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 21,
+          "cumpleanos": "11-15"
+        },
+        {
+          "id": "segunda-4-18",
+          "nombre": "Álvaro Mendieta Mendieta",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 62,
+          "atributos": {
+            "RAS": 63,
+            "TOZ": 66,
+            "CHI": 58,
+            "RET": 61,
+            "ALM": 64
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3100,
+          "valor": 620000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 22,
+          "cumpleanos": "12-16"
+        }
+      ]
+    },
+    {
+      "id": "segunda-5",
+      "nombre_parodico": "Sporting Fuente Clara",
+      "club_real": "",
+      "ciudad": "Fuente Clara",
+      "estadio": "Las Fuentes",
+      "color": "#376f58",
+      "filosofia": "Juego asociado",
+      "temporada": "2026/27",
+      "formacion": "4-3-3",
+      "division": 2,
+      "aforo": 13200,
+      "presupuesto": 2800000,
+      "jugadores": [
+        {
+          "id": "segunda-5-1",
+          "nombre": "Mateo Ledesma Benavides",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 70,
+          "atributos": {
+            "RAS": 65,
+            "TOZ": 68,
+            "CHI": 71,
+            "RET": 74,
+            "ALM": 66
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3500,
+          "valor": 700000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 22,
+          "cumpleanos": "01-17"
+        },
+        {
+          "id": "segunda-5-2",
+          "nombre": "Darío Ledesma Zambrano",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 75,
+          "atributos": {
+            "RAS": 71,
+            "TOZ": 74,
+            "CHI": 77,
+            "RET": 80,
+            "ALM": 72
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3750,
+          "valor": 750000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 23,
+          "cumpleanos": "02-18"
+        },
+        {
+          "id": "segunda-5-3",
+          "nombre": "Adrián Ledesma Ledesma",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 62,
+          "atributos": {
+            "RAS": 59,
+            "TOZ": 62,
+            "CHI": 65,
+            "RET": 57,
+            "ALM": 60
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3100,
+          "valor": 620000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 24,
+          "cumpleanos": "03-19"
+        },
+        {
+          "id": "segunda-5-4",
+          "nombre": "Iván Ledesma Figueroa",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 67,
+          "atributos": {
+            "RAS": 65,
+            "TOZ": 68,
+            "CHI": 71,
+            "RET": 63,
+            "ALM": 66
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3350,
+          "valor": 670000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 25,
+          "cumpleanos": "04-20"
+        },
+        {
+          "id": "segunda-5-5",
+          "nombre": "Bruno Ledesma Madrigal",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 72,
+          "atributos": {
+            "RAS": 71,
+            "TOZ": 74,
+            "CHI": 77,
+            "RET": 69,
+            "ALM": 72
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3600,
+          "valor": 720000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 26,
+          "cumpleanos": "05-21"
+        },
+        {
+          "id": "segunda-5-6",
+          "nombre": "Hugo Ledesma Albornoz",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 59,
+          "atributos": {
+            "RAS": 59,
+            "TOZ": 62,
+            "CHI": 54,
+            "RET": 57,
+            "ALM": 60
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 2950,
+          "valor": 590000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 27,
+          "cumpleanos": "06-22"
+        },
+        {
+          "id": "segunda-5-7",
+          "nombre": "Gabriel Ledesma Quiroga",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 64,
+          "atributos": {
+            "RAS": 65,
+            "TOZ": 68,
+            "CHI": 60,
+            "RET": 63,
+            "ALM": 66
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3200,
+          "valor": 640000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 28,
+          "cumpleanos": "07-23"
+        },
+        {
+          "id": "segunda-5-8",
+          "nombre": "Leo Ledesma Dávila",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 69,
+          "atributos": {
+            "RAS": 71,
+            "TOZ": 74,
+            "CHI": 66,
+            "RET": 69,
+            "ALM": 72
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3450,
+          "valor": 690000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 29,
+          "cumpleanos": "08-24"
+        },
+        {
+          "id": "segunda-5-9",
+          "nombre": "Marcos Ledesma Valverde",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 74,
+          "atributos": {
+            "RAS": 77,
+            "TOZ": 69,
+            "CHI": 72,
+            "RET": 75,
+            "ALM": 78
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3700,
+          "valor": 740000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 30,
+          "cumpleanos": "09-25"
+        },
+        {
+          "id": "segunda-5-10",
+          "nombre": "Joel Ledesma Sotomayor",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 61,
+          "atributos": {
+            "RAS": 65,
+            "TOZ": 57,
+            "CHI": 60,
+            "RET": 63,
+            "ALM": 66
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3050,
+          "valor": 610000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 31,
+          "cumpleanos": "10-26"
+        },
+        {
+          "id": "segunda-5-11",
+          "nombre": "Nicolás Ledesma Salvatierra",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 66,
+          "atributos": {
+            "RAS": 71,
+            "TOZ": 63,
+            "CHI": 66,
+            "RET": 69,
+            "ALM": 61
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3300,
+          "valor": 660000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 32,
+          "cumpleanos": "11-27"
+        },
+        {
+          "id": "segunda-5-12",
+          "nombre": "Samuel Ledesma Peñalver",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 71,
+          "atributos": {
+            "RAS": 66,
+            "TOZ": 69,
+            "CHI": 72,
+            "RET": 75,
+            "ALM": 67
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3550,
+          "valor": 710000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 33,
+          "cumpleanos": "12-28"
+        },
+        {
+          "id": "segunda-5-13",
+          "nombre": "Tomás Ledesma Bermúdez",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 58,
+          "atributos": {
+            "RAS": 54,
+            "TOZ": 57,
+            "CHI": 60,
+            "RET": 63,
+            "ALM": 55
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 2900,
+          "valor": 580000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 18,
+          "cumpleanos": "01-01"
+        },
+        {
+          "id": "segunda-5-14",
+          "nombre": "Rubén Ledesma Villalba",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 63,
+          "atributos": {
+            "RAS": 60,
+            "TOZ": 63,
+            "CHI": 66,
+            "RET": 58,
+            "ALM": 61
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3150,
+          "valor": 630000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 19,
+          "cumpleanos": "02-02"
+        },
+        {
+          "id": "segunda-5-15",
+          "nombre": "Pablo Ledesma Dehesa",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 68,
+          "atributos": {
+            "RAS": 66,
+            "TOZ": 69,
+            "CHI": 72,
+            "RET": 64,
+            "ALM": 67
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3400,
+          "valor": 680000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 20,
+          "cumpleanos": "03-03"
+        },
+        {
+          "id": "segunda-5-16",
+          "nombre": "Lucas Ledesma Acevedo",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 73,
+          "atributos": {
+            "RAS": 72,
+            "TOZ": 75,
+            "CHI": 78,
+            "RET": 70,
+            "ALM": 73
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3650,
+          "valor": 730000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 21,
+          "cumpleanos": "04-04"
+        },
+        {
+          "id": "segunda-5-17",
+          "nombre": "Andrés Ledesma Cifuentes",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 60,
+          "atributos": {
+            "RAS": 60,
+            "TOZ": 63,
+            "CHI": 55,
+            "RET": 58,
+            "ALM": 61
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3000,
+          "valor": 600000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 22,
+          "cumpleanos": "05-05"
+        },
+        {
+          "id": "segunda-5-18",
+          "nombre": "Sergio Ledesma Valdés",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 65,
+          "atributos": {
+            "RAS": 66,
+            "TOZ": 69,
+            "CHI": 61,
+            "RET": 64,
+            "ALM": 67
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3250,
+          "valor": 650000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 23,
+          "cumpleanos": "06-06"
+        }
+      ]
+    },
+    {
+      "id": "segunda-6",
+      "nombre_parodico": "CF Montebravo",
+      "club_real": "",
+      "ciudad": "Montebravo",
+      "estadio": "El Cerro",
+      "color": "#8f453c",
+      "filosofia": "Solidez y transiciones",
+      "temporada": "2026/27",
+      "formacion": "5-3-2",
+      "division": 2,
+      "aforo": 14000,
+      "presupuesto": 3050000,
+      "jugadores": [
+        {
+          "id": "segunda-6-1",
+          "nombre": "Daniel Ledesma Baeza",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 73,
+          "atributos": {
+            "RAS": 68,
+            "TOZ": 71,
+            "CHI": 74,
+            "RET": 77,
+            "ALM": 69
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3650,
+          "valor": 730000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 23,
+          "cumpleanos": "07-07"
+        },
+        {
+          "id": "segunda-6-2",
+          "nombre": "Miguel Ledesma Mendieta",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 60,
+          "atributos": {
+            "RAS": 56,
+            "TOZ": 59,
+            "CHI": 62,
+            "RET": 65,
+            "ALM": 57
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3000,
+          "valor": 600000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 24,
+          "cumpleanos": "08-08"
+        },
+        {
+          "id": "segunda-6-3",
+          "nombre": "Óscar Ledesma Benavides",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 65,
+          "atributos": {
+            "RAS": 62,
+            "TOZ": 65,
+            "CHI": 68,
+            "RET": 60,
+            "ALM": 63
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3250,
+          "valor": 650000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 25,
+          "cumpleanos": "09-09"
+        },
+        {
+          "id": "segunda-6-4",
+          "nombre": "Martín Ledesma Zambrano",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 70,
+          "atributos": {
+            "RAS": 68,
+            "TOZ": 71,
+            "CHI": 74,
+            "RET": 66,
+            "ALM": 69
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3500,
+          "valor": 700000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 26,
+          "cumpleanos": "10-10"
+        },
+        {
+          "id": "segunda-6-5",
+          "nombre": "Diego Ledesma Ledesma",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 75,
+          "atributos": {
+            "RAS": 74,
+            "TOZ": 77,
+            "CHI": 80,
+            "RET": 72,
+            "ALM": 75
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3750,
+          "valor": 750000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 27,
+          "cumpleanos": "11-11"
+        },
+        {
+          "id": "segunda-6-6",
+          "nombre": "Álvaro Ledesma Figueroa",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 62,
+          "atributos": {
+            "RAS": 62,
+            "TOZ": 65,
+            "CHI": 57,
+            "RET": 60,
+            "ALM": 63
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3100,
+          "valor": 620000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 28,
+          "cumpleanos": "12-12"
+        },
+        {
+          "id": "segunda-6-7",
+          "nombre": "Mateo Albornoz Madrigal",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 67,
+          "atributos": {
+            "RAS": 68,
+            "TOZ": 71,
+            "CHI": 63,
+            "RET": 66,
+            "ALM": 69
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3350,
+          "valor": 670000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 29,
+          "cumpleanos": "01-13"
+        },
+        {
+          "id": "segunda-6-8",
+          "nombre": "Darío Albornoz Albornoz",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 72,
+          "atributos": {
+            "RAS": 74,
+            "TOZ": 77,
+            "CHI": 69,
+            "RET": 72,
+            "ALM": 75
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3600,
+          "valor": 720000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 30,
+          "cumpleanos": "02-14"
+        },
+        {
+          "id": "segunda-6-9",
+          "nombre": "Adrián Albornoz Quiroga",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 59,
+          "atributos": {
+            "RAS": 62,
+            "TOZ": 54,
+            "CHI": 57,
+            "RET": 60,
+            "ALM": 63
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 2950,
+          "valor": 590000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 31,
+          "cumpleanos": "03-15"
+        },
+        {
+          "id": "segunda-6-10",
+          "nombre": "Iván Albornoz Dávila",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 64,
+          "atributos": {
+            "RAS": 68,
+            "TOZ": 60,
+            "CHI": 63,
+            "RET": 66,
+            "ALM": 69
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3200,
+          "valor": 640000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 32,
+          "cumpleanos": "04-16"
+        },
+        {
+          "id": "segunda-6-11",
+          "nombre": "Bruno Albornoz Valverde",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 69,
+          "atributos": {
+            "RAS": 74,
+            "TOZ": 66,
+            "CHI": 69,
+            "RET": 72,
+            "ALM": 64
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3450,
+          "valor": 690000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 33,
+          "cumpleanos": "05-17"
+        },
+        {
+          "id": "segunda-6-12",
+          "nombre": "Hugo Albornoz Sotomayor",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 74,
+          "atributos": {
+            "RAS": 69,
+            "TOZ": 72,
+            "CHI": 75,
+            "RET": 78,
+            "ALM": 70
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3700,
+          "valor": 740000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 18,
+          "cumpleanos": "06-18"
+        },
+        {
+          "id": "segunda-6-13",
+          "nombre": "Gabriel Albornoz Salvatierra",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 61,
+          "atributos": {
+            "RAS": 57,
+            "TOZ": 60,
+            "CHI": 63,
+            "RET": 66,
+            "ALM": 58
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3050,
+          "valor": 610000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 19,
+          "cumpleanos": "07-19"
+        },
+        {
+          "id": "segunda-6-14",
+          "nombre": "Leo Albornoz Peñalver",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 66,
+          "atributos": {
+            "RAS": 63,
+            "TOZ": 66,
+            "CHI": 69,
+            "RET": 61,
+            "ALM": 64
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3300,
+          "valor": 660000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 20,
+          "cumpleanos": "08-20"
+        },
+        {
+          "id": "segunda-6-15",
+          "nombre": "Marcos Albornoz Bermúdez",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 71,
+          "atributos": {
+            "RAS": 69,
+            "TOZ": 72,
+            "CHI": 75,
+            "RET": 67,
+            "ALM": 70
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3550,
+          "valor": 710000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 21,
+          "cumpleanos": "09-21"
+        },
+        {
+          "id": "segunda-6-16",
+          "nombre": "Joel Albornoz Villalba",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 58,
+          "atributos": {
+            "RAS": 57,
+            "TOZ": 60,
+            "CHI": 63,
+            "RET": 55,
+            "ALM": 58
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 2900,
+          "valor": 580000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 22,
+          "cumpleanos": "10-22"
+        },
+        {
+          "id": "segunda-6-17",
+          "nombre": "Nicolás Albornoz Dehesa",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 63,
+          "atributos": {
+            "RAS": 63,
+            "TOZ": 66,
+            "CHI": 58,
+            "RET": 61,
+            "ALM": 64
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3150,
+          "valor": 630000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 23,
+          "cumpleanos": "11-23"
+        },
+        {
+          "id": "segunda-6-18",
+          "nombre": "Samuel Albornoz Acevedo",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 68,
+          "atributos": {
+            "RAS": 69,
+            "TOZ": 72,
+            "CHI": 64,
+            "RET": 67,
+            "ALM": 70
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3400,
+          "valor": 680000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 24,
+          "cumpleanos": "12-24"
+        }
+      ]
+    },
+    {
+      "id": "segunda-7",
+      "nombre_parodico": "Deportivo Solana",
+      "club_real": "",
+      "ciudad": "Solana",
+      "estadio": "Los Girasoles",
+      "color": "#be8e37",
+      "filosofia": "Desarrollo de talento",
+      "temporada": "2026/27",
+      "formacion": "4-4-2",
+      "division": 2,
+      "aforo": 14800,
+      "presupuesto": 3300000,
+      "jugadores": [
+        {
+          "id": "segunda-7-1",
+          "nombre": "Tomás Albornoz Cifuentes",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 58,
+          "atributos": {
+            "RAS": 53,
+            "TOZ": 56,
+            "CHI": 59,
+            "RET": 62,
+            "ALM": 54
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 2900,
+          "valor": 580000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 24,
+          "cumpleanos": "01-25"
+        },
+        {
+          "id": "segunda-7-2",
+          "nombre": "Rubén Albornoz Valdés",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 63,
+          "atributos": {
+            "RAS": 59,
+            "TOZ": 62,
+            "CHI": 65,
+            "RET": 68,
+            "ALM": 60
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3150,
+          "valor": 630000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 25,
+          "cumpleanos": "02-26"
+        },
+        {
+          "id": "segunda-7-3",
+          "nombre": "Pablo Albornoz Baeza",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 68,
+          "atributos": {
+            "RAS": 65,
+            "TOZ": 68,
+            "CHI": 71,
+            "RET": 63,
+            "ALM": 66
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3400,
+          "valor": 680000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 26,
+          "cumpleanos": "03-27"
+        },
+        {
+          "id": "segunda-7-4",
+          "nombre": "Lucas Albornoz Mendieta",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 73,
+          "atributos": {
+            "RAS": 71,
+            "TOZ": 74,
+            "CHI": 77,
+            "RET": 69,
+            "ALM": 72
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3650,
+          "valor": 730000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 27,
+          "cumpleanos": "04-28"
+        },
+        {
+          "id": "segunda-7-5",
+          "nombre": "Andrés Albornoz Benavides",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 60,
+          "atributos": {
+            "RAS": 59,
+            "TOZ": 62,
+            "CHI": 65,
+            "RET": 57,
+            "ALM": 60
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3000,
+          "valor": 600000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 28,
+          "cumpleanos": "05-01"
+        },
+        {
+          "id": "segunda-7-6",
+          "nombre": "Sergio Albornoz Zambrano",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 65,
+          "atributos": {
+            "RAS": 65,
+            "TOZ": 68,
+            "CHI": 60,
+            "RET": 63,
+            "ALM": 66
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3250,
+          "valor": 650000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 29,
+          "cumpleanos": "06-02"
+        },
+        {
+          "id": "segunda-7-7",
+          "nombre": "Daniel Albornoz Ledesma",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 70,
+          "atributos": {
+            "RAS": 71,
+            "TOZ": 74,
+            "CHI": 66,
+            "RET": 69,
+            "ALM": 72
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3500,
+          "valor": 700000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 30,
+          "cumpleanos": "07-03"
+        },
+        {
+          "id": "segunda-7-8",
+          "nombre": "Miguel Albornoz Figueroa",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 75,
+          "atributos": {
+            "RAS": 77,
+            "TOZ": 80,
+            "CHI": 72,
+            "RET": 75,
+            "ALM": 78
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3750,
+          "valor": 750000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 31,
+          "cumpleanos": "08-04"
+        },
+        {
+          "id": "segunda-7-9",
+          "nombre": "Óscar Albornoz Madrigal",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 62,
+          "atributos": {
+            "RAS": 65,
+            "TOZ": 57,
+            "CHI": 60,
+            "RET": 63,
+            "ALM": 66
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3100,
+          "valor": 620000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 32,
+          "cumpleanos": "09-05"
+        },
+        {
+          "id": "segunda-7-10",
+          "nombre": "Martín Albornoz Albornoz",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 67,
+          "atributos": {
+            "RAS": 71,
+            "TOZ": 63,
+            "CHI": 66,
+            "RET": 69,
+            "ALM": 72
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3350,
+          "valor": 670000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 33,
+          "cumpleanos": "10-06"
+        },
+        {
+          "id": "segunda-7-11",
+          "nombre": "Diego Albornoz Quiroga",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 72,
+          "atributos": {
+            "RAS": 77,
+            "TOZ": 69,
+            "CHI": 72,
+            "RET": 75,
+            "ALM": 67
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3600,
+          "valor": 720000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 18,
+          "cumpleanos": "11-07"
+        },
+        {
+          "id": "segunda-7-12",
+          "nombre": "Álvaro Albornoz Dávila",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 59,
+          "atributos": {
+            "RAS": 54,
+            "TOZ": 57,
+            "CHI": 60,
+            "RET": 63,
+            "ALM": 55
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 2950,
+          "valor": 590000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 19,
+          "cumpleanos": "12-08"
+        },
+        {
+          "id": "segunda-7-13",
+          "nombre": "Mateo Valverde Valverde",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 64,
+          "atributos": {
+            "RAS": 60,
+            "TOZ": 63,
+            "CHI": 66,
+            "RET": 69,
+            "ALM": 61
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3200,
+          "valor": 640000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 20,
+          "cumpleanos": "01-09"
+        },
+        {
+          "id": "segunda-7-14",
+          "nombre": "Darío Valverde Sotomayor",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 69,
+          "atributos": {
+            "RAS": 66,
+            "TOZ": 69,
+            "CHI": 72,
+            "RET": 64,
+            "ALM": 67
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3450,
+          "valor": 690000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 21,
+          "cumpleanos": "02-10"
+        },
+        {
+          "id": "segunda-7-15",
+          "nombre": "Adrián Valverde Salvatierra",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 74,
+          "atributos": {
+            "RAS": 72,
+            "TOZ": 75,
+            "CHI": 78,
+            "RET": 70,
+            "ALM": 73
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3700,
+          "valor": 740000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 22,
+          "cumpleanos": "03-11"
+        },
+        {
+          "id": "segunda-7-16",
+          "nombre": "Iván Valverde Peñalver",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 61,
+          "atributos": {
+            "RAS": 60,
+            "TOZ": 63,
+            "CHI": 66,
+            "RET": 58,
+            "ALM": 61
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3050,
+          "valor": 610000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 23,
+          "cumpleanos": "04-12"
+        },
+        {
+          "id": "segunda-7-17",
+          "nombre": "Bruno Valverde Bermúdez",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 66,
+          "atributos": {
+            "RAS": 66,
+            "TOZ": 69,
+            "CHI": 61,
+            "RET": 64,
+            "ALM": 67
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3300,
+          "valor": 660000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 24,
+          "cumpleanos": "05-13"
+        },
+        {
+          "id": "segunda-7-18",
+          "nombre": "Hugo Valverde Villalba",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 71,
+          "atributos": {
+            "RAS": 72,
+            "TOZ": 75,
+            "CHI": 67,
+            "RET": 70,
+            "ALM": 73
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3550,
+          "valor": 710000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 25,
+          "cumpleanos": "06-14"
+        }
+      ]
+    },
+    {
+      "id": "segunda-8",
+      "nombre_parodico": "Ferroviario Valverde",
+      "club_real": "",
+      "ciudad": "Valverde",
+      "estadio": "Los Andenes",
+      "color": "#496a89",
+      "filosofia": "Juego asociado",
+      "temporada": "2026/27",
+      "formacion": "4-3-3",
+      "division": 2,
+      "aforo": 15600,
+      "presupuesto": 3550000,
+      "jugadores": [
+        {
+          "id": "segunda-8-1",
+          "nombre": "Gabriel Valverde Dehesa",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 61,
+          "atributos": {
+            "RAS": 56,
+            "TOZ": 59,
+            "CHI": 62,
+            "RET": 65,
+            "ALM": 57
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3050,
+          "valor": 610000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 25,
+          "cumpleanos": "07-15"
+        },
+        {
+          "id": "segunda-8-2",
+          "nombre": "Leo Valverde Acevedo",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 66,
+          "atributos": {
+            "RAS": 62,
+            "TOZ": 65,
+            "CHI": 68,
+            "RET": 71,
+            "ALM": 63
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3300,
+          "valor": 660000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 26,
+          "cumpleanos": "08-16"
+        },
+        {
+          "id": "segunda-8-3",
+          "nombre": "Marcos Valverde Cifuentes",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 71,
+          "atributos": {
+            "RAS": 68,
+            "TOZ": 71,
+            "CHI": 74,
+            "RET": 66,
+            "ALM": 69
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3550,
+          "valor": 710000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 27,
+          "cumpleanos": "09-17"
+        },
+        {
+          "id": "segunda-8-4",
+          "nombre": "Joel Valverde Valdés",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 58,
+          "atributos": {
+            "RAS": 56,
+            "TOZ": 59,
+            "CHI": 62,
+            "RET": 54,
+            "ALM": 57
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 2900,
+          "valor": 580000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 28,
+          "cumpleanos": "10-18"
+        },
+        {
+          "id": "segunda-8-5",
+          "nombre": "Nicolás Valverde Baeza",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 63,
+          "atributos": {
+            "RAS": 62,
+            "TOZ": 65,
+            "CHI": 68,
+            "RET": 60,
+            "ALM": 63
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3150,
+          "valor": 630000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 29,
+          "cumpleanos": "11-19"
+        },
+        {
+          "id": "segunda-8-6",
+          "nombre": "Samuel Valverde Mendieta",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 68,
+          "atributos": {
+            "RAS": 68,
+            "TOZ": 71,
+            "CHI": 63,
+            "RET": 66,
+            "ALM": 69
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3400,
+          "valor": 680000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 30,
+          "cumpleanos": "12-20"
+        },
+        {
+          "id": "segunda-8-7",
+          "nombre": "Tomás Valverde Benavides",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 73,
+          "atributos": {
+            "RAS": 74,
+            "TOZ": 77,
+            "CHI": 69,
+            "RET": 72,
+            "ALM": 75
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3650,
+          "valor": 730000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 31,
+          "cumpleanos": "01-21"
+        },
+        {
+          "id": "segunda-8-8",
+          "nombre": "Rubén Valverde Zambrano",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 60,
+          "atributos": {
+            "RAS": 62,
+            "TOZ": 65,
+            "CHI": 57,
+            "RET": 60,
+            "ALM": 63
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3000,
+          "valor": 600000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 32,
+          "cumpleanos": "02-22"
+        },
+        {
+          "id": "segunda-8-9",
+          "nombre": "Pablo Valverde Ledesma",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 65,
+          "atributos": {
+            "RAS": 68,
+            "TOZ": 60,
+            "CHI": 63,
+            "RET": 66,
+            "ALM": 69
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3250,
+          "valor": 650000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 33,
+          "cumpleanos": "03-23"
+        },
+        {
+          "id": "segunda-8-10",
+          "nombre": "Lucas Valverde Figueroa",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 70,
+          "atributos": {
+            "RAS": 74,
+            "TOZ": 66,
+            "CHI": 69,
+            "RET": 72,
+            "ALM": 75
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3500,
+          "valor": 700000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 18,
+          "cumpleanos": "04-24"
+        },
+        {
+          "id": "segunda-8-11",
+          "nombre": "Andrés Valverde Madrigal",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 75,
+          "atributos": {
+            "RAS": 80,
+            "TOZ": 72,
+            "CHI": 75,
+            "RET": 78,
+            "ALM": 70
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3750,
+          "valor": 750000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 19,
+          "cumpleanos": "05-25"
+        },
+        {
+          "id": "segunda-8-12",
+          "nombre": "Sergio Valverde Albornoz",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 62,
+          "atributos": {
+            "RAS": 57,
+            "TOZ": 60,
+            "CHI": 63,
+            "RET": 66,
+            "ALM": 58
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3100,
+          "valor": 620000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 20,
+          "cumpleanos": "06-26"
+        },
+        {
+          "id": "segunda-8-13",
+          "nombre": "Daniel Valverde Quiroga",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 67,
+          "atributos": {
+            "RAS": 63,
+            "TOZ": 66,
+            "CHI": 69,
+            "RET": 72,
+            "ALM": 64
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3350,
+          "valor": 670000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 21,
+          "cumpleanos": "07-27"
+        },
+        {
+          "id": "segunda-8-14",
+          "nombre": "Miguel Valverde Dávila",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 72,
+          "atributos": {
+            "RAS": 69,
+            "TOZ": 72,
+            "CHI": 75,
+            "RET": 67,
+            "ALM": 70
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3600,
+          "valor": 720000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 22,
+          "cumpleanos": "08-28"
+        },
+        {
+          "id": "segunda-8-15",
+          "nombre": "Óscar Valverde Valverde",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 59,
+          "atributos": {
+            "RAS": 57,
+            "TOZ": 60,
+            "CHI": 63,
+            "RET": 55,
+            "ALM": 58
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 2950,
+          "valor": 590000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 23,
+          "cumpleanos": "09-01"
+        },
+        {
+          "id": "segunda-8-16",
+          "nombre": "Martín Valverde Sotomayor",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 64,
+          "atributos": {
+            "RAS": 63,
+            "TOZ": 66,
+            "CHI": 69,
+            "RET": 61,
+            "ALM": 64
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3200,
+          "valor": 640000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 24,
+          "cumpleanos": "10-02"
+        },
+        {
+          "id": "segunda-8-17",
+          "nombre": "Diego Valverde Salvatierra",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 69,
+          "atributos": {
+            "RAS": 69,
+            "TOZ": 72,
+            "CHI": 64,
+            "RET": 67,
+            "ALM": 70
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3450,
+          "valor": 690000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 25,
+          "cumpleanos": "11-03"
+        },
+        {
+          "id": "segunda-8-18",
+          "nombre": "Álvaro Valverde Peñalver",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 74,
+          "atributos": {
+            "RAS": 75,
+            "TOZ": 78,
+            "CHI": 70,
+            "RET": 73,
+            "ALM": 76
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3700,
+          "valor": 740000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 26,
+          "cumpleanos": "12-04"
+        }
+      ]
+    },
+    {
+      "id": "segunda-9",
+      "nombre_parodico": "Estrella de Ladera",
+      "club_real": "",
+      "ciudad": "Ladera",
+      "estadio": "La Cuesta",
+      "color": "#785698",
+      "filosofia": "Solidez y transiciones",
+      "temporada": "2026/27",
+      "formacion": "5-3-2",
+      "division": 2,
+      "aforo": 16400,
+      "presupuesto": 2800000,
+      "jugadores": [
+        {
+          "id": "segunda-9-1",
+          "nombre": "Mateo Peñalver Bermúdez",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 64,
+          "atributos": {
+            "RAS": 59,
+            "TOZ": 62,
+            "CHI": 65,
+            "RET": 68,
+            "ALM": 60
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3200,
+          "valor": 640000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 26,
+          "cumpleanos": "01-05"
+        },
+        {
+          "id": "segunda-9-2",
+          "nombre": "Darío Peñalver Villalba",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 69,
+          "atributos": {
+            "RAS": 65,
+            "TOZ": 68,
+            "CHI": 71,
+            "RET": 74,
+            "ALM": 66
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3450,
+          "valor": 690000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 27,
+          "cumpleanos": "02-06"
+        },
+        {
+          "id": "segunda-9-3",
+          "nombre": "Adrián Peñalver Dehesa",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 74,
+          "atributos": {
+            "RAS": 71,
+            "TOZ": 74,
+            "CHI": 77,
+            "RET": 69,
+            "ALM": 72
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3700,
+          "valor": 740000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 28,
+          "cumpleanos": "03-07"
+        },
+        {
+          "id": "segunda-9-4",
+          "nombre": "Iván Peñalver Acevedo",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 61,
+          "atributos": {
+            "RAS": 59,
+            "TOZ": 62,
+            "CHI": 65,
+            "RET": 57,
+            "ALM": 60
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3050,
+          "valor": 610000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 29,
+          "cumpleanos": "04-08"
+        },
+        {
+          "id": "segunda-9-5",
+          "nombre": "Bruno Peñalver Cifuentes",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 66,
+          "atributos": {
+            "RAS": 65,
+            "TOZ": 68,
+            "CHI": 71,
+            "RET": 63,
+            "ALM": 66
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3300,
+          "valor": 660000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 30,
+          "cumpleanos": "05-09"
+        },
+        {
+          "id": "segunda-9-6",
+          "nombre": "Hugo Peñalver Valdés",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 71,
+          "atributos": {
+            "RAS": 71,
+            "TOZ": 74,
+            "CHI": 66,
+            "RET": 69,
+            "ALM": 72
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3550,
+          "valor": 710000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 31,
+          "cumpleanos": "06-10"
+        },
+        {
+          "id": "segunda-9-7",
+          "nombre": "Gabriel Peñalver Baeza",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 58,
+          "atributos": {
+            "RAS": 59,
+            "TOZ": 62,
+            "CHI": 54,
+            "RET": 57,
+            "ALM": 60
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 2900,
+          "valor": 580000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 32,
+          "cumpleanos": "07-11"
+        },
+        {
+          "id": "segunda-9-8",
+          "nombre": "Leo Peñalver Mendieta",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 63,
+          "atributos": {
+            "RAS": 65,
+            "TOZ": 68,
+            "CHI": 60,
+            "RET": 63,
+            "ALM": 66
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3150,
+          "valor": 630000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 33,
+          "cumpleanos": "08-12"
+        },
+        {
+          "id": "segunda-9-9",
+          "nombre": "Marcos Peñalver Benavides",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 68,
+          "atributos": {
+            "RAS": 71,
+            "TOZ": 63,
+            "CHI": 66,
+            "RET": 69,
+            "ALM": 72
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3400,
+          "valor": 680000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 18,
+          "cumpleanos": "09-13"
+        },
+        {
+          "id": "segunda-9-10",
+          "nombre": "Joel Peñalver Zambrano",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 73,
+          "atributos": {
+            "RAS": 77,
+            "TOZ": 69,
+            "CHI": 72,
+            "RET": 75,
+            "ALM": 78
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3650,
+          "valor": 730000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 19,
+          "cumpleanos": "10-14"
+        },
+        {
+          "id": "segunda-9-11",
+          "nombre": "Nicolás Peñalver Ledesma",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 60,
+          "atributos": {
+            "RAS": 65,
+            "TOZ": 57,
+            "CHI": 60,
+            "RET": 63,
+            "ALM": 55
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3000,
+          "valor": 600000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 20,
+          "cumpleanos": "11-15"
+        },
+        {
+          "id": "segunda-9-12",
+          "nombre": "Samuel Peñalver Figueroa",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 65,
+          "atributos": {
+            "RAS": 60,
+            "TOZ": 63,
+            "CHI": 66,
+            "RET": 69,
+            "ALM": 61
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3250,
+          "valor": 650000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 21,
+          "cumpleanos": "12-16"
+        },
+        {
+          "id": "segunda-9-13",
+          "nombre": "Tomás Peñalver Madrigal",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 70,
+          "atributos": {
+            "RAS": 66,
+            "TOZ": 69,
+            "CHI": 72,
+            "RET": 75,
+            "ALM": 67
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3500,
+          "valor": 700000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 22,
+          "cumpleanos": "01-17"
+        },
+        {
+          "id": "segunda-9-14",
+          "nombre": "Rubén Peñalver Albornoz",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 75,
+          "atributos": {
+            "RAS": 72,
+            "TOZ": 75,
+            "CHI": 78,
+            "RET": 70,
+            "ALM": 73
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3750,
+          "valor": 750000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 23,
+          "cumpleanos": "02-18"
+        },
+        {
+          "id": "segunda-9-15",
+          "nombre": "Pablo Peñalver Quiroga",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 62,
+          "atributos": {
+            "RAS": 60,
+            "TOZ": 63,
+            "CHI": 66,
+            "RET": 58,
+            "ALM": 61
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3100,
+          "valor": 620000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 24,
+          "cumpleanos": "03-19"
+        },
+        {
+          "id": "segunda-9-16",
+          "nombre": "Lucas Peñalver Dávila",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 67,
+          "atributos": {
+            "RAS": 66,
+            "TOZ": 69,
+            "CHI": 72,
+            "RET": 64,
+            "ALM": 67
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3350,
+          "valor": 670000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 25,
+          "cumpleanos": "04-20"
+        },
+        {
+          "id": "segunda-9-17",
+          "nombre": "Andrés Peñalver Valverde",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 72,
+          "atributos": {
+            "RAS": 72,
+            "TOZ": 75,
+            "CHI": 67,
+            "RET": 70,
+            "ALM": 73
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3600,
+          "valor": 720000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 26,
+          "cumpleanos": "05-21"
+        },
+        {
+          "id": "segunda-9-18",
+          "nombre": "Sergio Peñalver Sotomayor",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 59,
+          "atributos": {
+            "RAS": 60,
+            "TOZ": 63,
+            "CHI": 55,
+            "RET": 58,
+            "ALM": 61
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 2950,
+          "valor": 590000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 27,
+          "cumpleanos": "06-22"
+        }
+      ]
+    },
+    {
+      "id": "segunda-10",
+      "nombre_parodico": "Unión San Olmo",
+      "club_real": "",
+      "ciudad": "San Olmo",
+      "estadio": "El Olivar",
+      "color": "#6f823e",
+      "filosofia": "Desarrollo de talento",
+      "temporada": "2026/27",
+      "formacion": "4-4-2",
+      "division": 2,
+      "aforo": 17200,
+      "presupuesto": 3050000,
+      "jugadores": [
+        {
+          "id": "segunda-10-1",
+          "nombre": "Daniel Peñalver Salvatierra",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 67,
+          "atributos": {
+            "RAS": 62,
+            "TOZ": 65,
+            "CHI": 68,
+            "RET": 71,
+            "ALM": 63
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3350,
+          "valor": 670000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 27,
+          "cumpleanos": "07-23"
+        },
+        {
+          "id": "segunda-10-2",
+          "nombre": "Miguel Peñalver Peñalver",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 72,
+          "atributos": {
+            "RAS": 68,
+            "TOZ": 71,
+            "CHI": 74,
+            "RET": 77,
+            "ALM": 69
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3600,
+          "valor": 720000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 28,
+          "cumpleanos": "08-24"
+        },
+        {
+          "id": "segunda-10-3",
+          "nombre": "Óscar Peñalver Bermúdez",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 59,
+          "atributos": {
+            "RAS": 56,
+            "TOZ": 59,
+            "CHI": 62,
+            "RET": 54,
+            "ALM": 57
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 2950,
+          "valor": 590000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 29,
+          "cumpleanos": "09-25"
+        },
+        {
+          "id": "segunda-10-4",
+          "nombre": "Martín Peñalver Villalba",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 64,
+          "atributos": {
+            "RAS": 62,
+            "TOZ": 65,
+            "CHI": 68,
+            "RET": 60,
+            "ALM": 63
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3200,
+          "valor": 640000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 30,
+          "cumpleanos": "10-26"
+        },
+        {
+          "id": "segunda-10-5",
+          "nombre": "Diego Peñalver Dehesa",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 69,
+          "atributos": {
+            "RAS": 68,
+            "TOZ": 71,
+            "CHI": 74,
+            "RET": 66,
+            "ALM": 69
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3450,
+          "valor": 690000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 31,
+          "cumpleanos": "11-27"
+        },
+        {
+          "id": "segunda-10-6",
+          "nombre": "Álvaro Peñalver Acevedo",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 74,
+          "atributos": {
+            "RAS": 74,
+            "TOZ": 77,
+            "CHI": 69,
+            "RET": 72,
+            "ALM": 75
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3700,
+          "valor": 740000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 32,
+          "cumpleanos": "12-28"
+        },
+        {
+          "id": "segunda-10-7",
+          "nombre": "Mateo Dehesa Cifuentes",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 61,
+          "atributos": {
+            "RAS": 62,
+            "TOZ": 65,
+            "CHI": 57,
+            "RET": 60,
+            "ALM": 63
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3050,
+          "valor": 610000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 33,
+          "cumpleanos": "01-01"
+        },
+        {
+          "id": "segunda-10-8",
+          "nombre": "Darío Dehesa Valdés",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 66,
+          "atributos": {
+            "RAS": 68,
+            "TOZ": 71,
+            "CHI": 63,
+            "RET": 66,
+            "ALM": 69
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3300,
+          "valor": 660000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 18,
+          "cumpleanos": "02-02"
+        },
+        {
+          "id": "segunda-10-9",
+          "nombre": "Adrián Dehesa Baeza",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 71,
+          "atributos": {
+            "RAS": 74,
+            "TOZ": 66,
+            "CHI": 69,
+            "RET": 72,
+            "ALM": 75
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3550,
+          "valor": 710000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 19,
+          "cumpleanos": "03-03"
+        },
+        {
+          "id": "segunda-10-10",
+          "nombre": "Iván Dehesa Mendieta",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 58,
+          "atributos": {
+            "RAS": 62,
+            "TOZ": 54,
+            "CHI": 57,
+            "RET": 60,
+            "ALM": 63
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 2900,
+          "valor": 580000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 20,
+          "cumpleanos": "04-04"
+        },
+        {
+          "id": "segunda-10-11",
+          "nombre": "Bruno Dehesa Benavides",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 63,
+          "atributos": {
+            "RAS": 68,
+            "TOZ": 60,
+            "CHI": 63,
+            "RET": 66,
+            "ALM": 58
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3150,
+          "valor": 630000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 21,
+          "cumpleanos": "05-05"
+        },
+        {
+          "id": "segunda-10-12",
+          "nombre": "Hugo Dehesa Zambrano",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 68,
+          "atributos": {
+            "RAS": 63,
+            "TOZ": 66,
+            "CHI": 69,
+            "RET": 72,
+            "ALM": 64
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3400,
+          "valor": 680000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 22,
+          "cumpleanos": "06-06"
+        },
+        {
+          "id": "segunda-10-13",
+          "nombre": "Gabriel Dehesa Ledesma",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 73,
+          "atributos": {
+            "RAS": 69,
+            "TOZ": 72,
+            "CHI": 75,
+            "RET": 78,
+            "ALM": 70
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3650,
+          "valor": 730000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 23,
+          "cumpleanos": "07-07"
+        },
+        {
+          "id": "segunda-10-14",
+          "nombre": "Leo Dehesa Figueroa",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 60,
+          "atributos": {
+            "RAS": 57,
+            "TOZ": 60,
+            "CHI": 63,
+            "RET": 55,
+            "ALM": 58
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3000,
+          "valor": 600000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 24,
+          "cumpleanos": "08-08"
+        },
+        {
+          "id": "segunda-10-15",
+          "nombre": "Marcos Dehesa Madrigal",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 65,
+          "atributos": {
+            "RAS": 63,
+            "TOZ": 66,
+            "CHI": 69,
+            "RET": 61,
+            "ALM": 64
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3250,
+          "valor": 650000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 25,
+          "cumpleanos": "09-09"
+        },
+        {
+          "id": "segunda-10-16",
+          "nombre": "Joel Dehesa Albornoz",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 70,
+          "atributos": {
+            "RAS": 69,
+            "TOZ": 72,
+            "CHI": 75,
+            "RET": 67,
+            "ALM": 70
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3500,
+          "valor": 700000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 26,
+          "cumpleanos": "10-10"
+        },
+        {
+          "id": "segunda-10-17",
+          "nombre": "Nicolás Dehesa Quiroga",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 75,
+          "atributos": {
+            "RAS": 75,
+            "TOZ": 78,
+            "CHI": 70,
+            "RET": 73,
+            "ALM": 76
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3750,
+          "valor": 750000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 27,
+          "cumpleanos": "11-11"
+        },
+        {
+          "id": "segunda-10-18",
+          "nombre": "Samuel Dehesa Dávila",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 62,
+          "atributos": {
+            "RAS": 63,
+            "TOZ": 66,
+            "CHI": 58,
+            "RET": 61,
+            "ALM": 64
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3100,
+          "valor": 620000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 28,
+          "cumpleanos": "12-12"
+        }
+      ]
+    },
+    {
+      "id": "segunda-11",
+      "nombre_parodico": "CD Brisamar",
+      "club_real": "",
+      "ciudad": "Brisamar",
+      "estadio": "El Malecón",
+      "color": "#2586ac",
+      "filosofia": "Juego asociado",
+      "temporada": "2026/27",
+      "formacion": "4-3-3",
+      "division": 2,
+      "aforo": 18000,
+      "presupuesto": 3300000,
+      "jugadores": [
+        {
+          "id": "segunda-11-1",
+          "nombre": "Tomás Dehesa Valverde",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 70,
+          "atributos": {
+            "RAS": 65,
+            "TOZ": 68,
+            "CHI": 71,
+            "RET": 74,
+            "ALM": 66
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3500,
+          "valor": 700000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 28,
+          "cumpleanos": "01-13"
+        },
+        {
+          "id": "segunda-11-2",
+          "nombre": "Rubén Dehesa Sotomayor",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 75,
+          "atributos": {
+            "RAS": 71,
+            "TOZ": 74,
+            "CHI": 77,
+            "RET": 80,
+            "ALM": 72
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3750,
+          "valor": 750000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 29,
+          "cumpleanos": "02-14"
+        },
+        {
+          "id": "segunda-11-3",
+          "nombre": "Pablo Dehesa Salvatierra",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 62,
+          "atributos": {
+            "RAS": 59,
+            "TOZ": 62,
+            "CHI": 65,
+            "RET": 57,
+            "ALM": 60
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3100,
+          "valor": 620000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 30,
+          "cumpleanos": "03-15"
+        },
+        {
+          "id": "segunda-11-4",
+          "nombre": "Lucas Dehesa Peñalver",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 67,
+          "atributos": {
+            "RAS": 65,
+            "TOZ": 68,
+            "CHI": 71,
+            "RET": 63,
+            "ALM": 66
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3350,
+          "valor": 670000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 31,
+          "cumpleanos": "04-16"
+        },
+        {
+          "id": "segunda-11-5",
+          "nombre": "Andrés Dehesa Bermúdez",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 72,
+          "atributos": {
+            "RAS": 71,
+            "TOZ": 74,
+            "CHI": 77,
+            "RET": 69,
+            "ALM": 72
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3600,
+          "valor": 720000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 32,
+          "cumpleanos": "05-17"
+        },
+        {
+          "id": "segunda-11-6",
+          "nombre": "Sergio Dehesa Villalba",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 59,
+          "atributos": {
+            "RAS": 59,
+            "TOZ": 62,
+            "CHI": 54,
+            "RET": 57,
+            "ALM": 60
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 2950,
+          "valor": 590000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 33,
+          "cumpleanos": "06-18"
+        },
+        {
+          "id": "segunda-11-7",
+          "nombre": "Daniel Dehesa Dehesa",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 64,
+          "atributos": {
+            "RAS": 65,
+            "TOZ": 68,
+            "CHI": 60,
+            "RET": 63,
+            "ALM": 66
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3200,
+          "valor": 640000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 18,
+          "cumpleanos": "07-19"
+        },
+        {
+          "id": "segunda-11-8",
+          "nombre": "Miguel Dehesa Acevedo",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 69,
+          "atributos": {
+            "RAS": 71,
+            "TOZ": 74,
+            "CHI": 66,
+            "RET": 69,
+            "ALM": 72
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3450,
+          "valor": 690000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 19,
+          "cumpleanos": "08-20"
+        },
+        {
+          "id": "segunda-11-9",
+          "nombre": "Óscar Dehesa Cifuentes",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 74,
+          "atributos": {
+            "RAS": 77,
+            "TOZ": 69,
+            "CHI": 72,
+            "RET": 75,
+            "ALM": 78
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3700,
+          "valor": 740000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 20,
+          "cumpleanos": "09-21"
+        },
+        {
+          "id": "segunda-11-10",
+          "nombre": "Martín Dehesa Valdés",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 61,
+          "atributos": {
+            "RAS": 65,
+            "TOZ": 57,
+            "CHI": 60,
+            "RET": 63,
+            "ALM": 66
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3050,
+          "valor": 610000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 21,
+          "cumpleanos": "10-22"
+        },
+        {
+          "id": "segunda-11-11",
+          "nombre": "Diego Dehesa Baeza",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 66,
+          "atributos": {
+            "RAS": 71,
+            "TOZ": 63,
+            "CHI": 66,
+            "RET": 69,
+            "ALM": 61
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3300,
+          "valor": 660000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 22,
+          "cumpleanos": "11-23"
+        },
+        {
+          "id": "segunda-11-12",
+          "nombre": "Álvaro Dehesa Mendieta",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 71,
+          "atributos": {
+            "RAS": 66,
+            "TOZ": 69,
+            "CHI": 72,
+            "RET": 75,
+            "ALM": 67
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3550,
+          "valor": 710000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 23,
+          "cumpleanos": "12-24"
+        },
+        {
+          "id": "segunda-11-13",
+          "nombre": "Mateo Valdés Benavides",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 58,
+          "atributos": {
+            "RAS": 54,
+            "TOZ": 57,
+            "CHI": 60,
+            "RET": 63,
+            "ALM": 55
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 2900,
+          "valor": 580000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 24,
+          "cumpleanos": "01-25"
+        },
+        {
+          "id": "segunda-11-14",
+          "nombre": "Darío Valdés Zambrano",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 63,
+          "atributos": {
+            "RAS": 60,
+            "TOZ": 63,
+            "CHI": 66,
+            "RET": 58,
+            "ALM": 61
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3150,
+          "valor": 630000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 25,
+          "cumpleanos": "02-26"
+        },
+        {
+          "id": "segunda-11-15",
+          "nombre": "Adrián Valdés Ledesma",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 68,
+          "atributos": {
+            "RAS": 66,
+            "TOZ": 69,
+            "CHI": 72,
+            "RET": 64,
+            "ALM": 67
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3400,
+          "valor": 680000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 26,
+          "cumpleanos": "03-27"
+        },
+        {
+          "id": "segunda-11-16",
+          "nombre": "Iván Valdés Figueroa",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 73,
+          "atributos": {
+            "RAS": 72,
+            "TOZ": 75,
+            "CHI": 78,
+            "RET": 70,
+            "ALM": 73
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3650,
+          "valor": 730000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 27,
+          "cumpleanos": "04-28"
+        },
+        {
+          "id": "segunda-11-17",
+          "nombre": "Bruno Valdés Madrigal",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 60,
+          "atributos": {
+            "RAS": 60,
+            "TOZ": 63,
+            "CHI": 55,
+            "RET": 58,
+            "ALM": 61
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3000,
+          "valor": 600000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 28,
+          "cumpleanos": "05-01"
+        },
+        {
+          "id": "segunda-11-18",
+          "nombre": "Hugo Valdés Albornoz",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 65,
+          "atributos": {
+            "RAS": 66,
+            "TOZ": 69,
+            "CHI": 61,
+            "RET": 64,
+            "ALM": 67
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3250,
+          "valor": 650000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 29,
+          "cumpleanos": "06-02"
+        }
+      ]
+    },
+    {
+      "id": "segunda-12",
+      "nombre_parodico": "Atlético Robledal",
+      "club_real": "",
+      "ciudad": "Robledal",
+      "estadio": "La Arboleda",
+      "color": "#b65735",
+      "filosofia": "Solidez y transiciones",
+      "temporada": "2026/27",
+      "formacion": "5-3-2",
+      "division": 2,
+      "aforo": 18800,
+      "presupuesto": 3550000,
+      "jugadores": [
+        {
+          "id": "segunda-12-1",
+          "nombre": "Gabriel Valdés Quiroga",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 73,
+          "atributos": {
+            "RAS": 68,
+            "TOZ": 71,
+            "CHI": 74,
+            "RET": 77,
+            "ALM": 69
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3650,
+          "valor": 730000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 29,
+          "cumpleanos": "07-03"
+        },
+        {
+          "id": "segunda-12-2",
+          "nombre": "Leo Valdés Dávila",
+          "jugador_real": "",
+          "posicion": "POR",
+          "valoracion_juego": 60,
+          "atributos": {
+            "RAS": 56,
+            "TOZ": 59,
+            "CHI": 62,
+            "RET": 65,
+            "ALM": 57
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3000,
+          "valor": 600000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 30,
+          "cumpleanos": "08-04"
+        },
+        {
+          "id": "segunda-12-3",
+          "nombre": "Marcos Valdés Valverde",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 65,
+          "atributos": {
+            "RAS": 62,
+            "TOZ": 65,
+            "CHI": 68,
+            "RET": 60,
+            "ALM": 63
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3250,
+          "valor": 650000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 31,
+          "cumpleanos": "09-05"
+        },
+        {
+          "id": "segunda-12-4",
+          "nombre": "Joel Valdés Sotomayor",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 70,
+          "atributos": {
+            "RAS": 68,
+            "TOZ": 71,
+            "CHI": 74,
+            "RET": 66,
+            "ALM": 69
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3500,
+          "valor": 700000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 32,
+          "cumpleanos": "10-06"
+        },
+        {
+          "id": "segunda-12-5",
+          "nombre": "Nicolás Valdés Salvatierra",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 75,
+          "atributos": {
+            "RAS": 74,
+            "TOZ": 77,
+            "CHI": 80,
+            "RET": 72,
+            "ALM": 75
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3750,
+          "valor": 750000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 33,
+          "cumpleanos": "11-07"
+        },
+        {
+          "id": "segunda-12-6",
+          "nombre": "Samuel Valdés Peñalver",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 62,
+          "atributos": {
+            "RAS": 62,
+            "TOZ": 65,
+            "CHI": 57,
+            "RET": 60,
+            "ALM": 63
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3100,
+          "valor": 620000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 18,
+          "cumpleanos": "12-08"
+        },
+        {
+          "id": "segunda-12-7",
+          "nombre": "Tomás Valdés Bermúdez",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 67,
+          "atributos": {
+            "RAS": 68,
+            "TOZ": 71,
+            "CHI": 63,
+            "RET": 66,
+            "ALM": 69
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3350,
+          "valor": 670000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 19,
+          "cumpleanos": "01-09"
+        },
+        {
+          "id": "segunda-12-8",
+          "nombre": "Rubén Valdés Villalba",
+          "jugador_real": "",
+          "posicion": "DEF",
+          "valoracion_juego": 72,
+          "atributos": {
+            "RAS": 74,
+            "TOZ": 77,
+            "CHI": 69,
+            "RET": 72,
+            "ALM": 75
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3600,
+          "valor": 720000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 20,
+          "cumpleanos": "02-10"
+        },
+        {
+          "id": "segunda-12-9",
+          "nombre": "Pablo Valdés Dehesa",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 59,
+          "atributos": {
+            "RAS": 62,
+            "TOZ": 54,
+            "CHI": 57,
+            "RET": 60,
+            "ALM": 63
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 2950,
+          "valor": 590000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 21,
+          "cumpleanos": "03-11"
+        },
+        {
+          "id": "segunda-12-10",
+          "nombre": "Lucas Valdés Acevedo",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 64,
+          "atributos": {
+            "RAS": 68,
+            "TOZ": 60,
+            "CHI": 63,
+            "RET": 66,
+            "ALM": 69
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3200,
+          "valor": 640000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 22,
+          "cumpleanos": "04-12"
+        },
+        {
+          "id": "segunda-12-11",
+          "nombre": "Andrés Valdés Cifuentes",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 69,
+          "atributos": {
+            "RAS": 74,
+            "TOZ": 66,
+            "CHI": 69,
+            "RET": 72,
+            "ALM": 64
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3450,
+          "valor": 690000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 23,
+          "cumpleanos": "05-13"
+        },
+        {
+          "id": "segunda-12-12",
+          "nombre": "Sergio Valdés Valdés",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 74,
+          "atributos": {
+            "RAS": 69,
+            "TOZ": 72,
+            "CHI": 75,
+            "RET": 78,
+            "ALM": 70
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3700,
+          "valor": 740000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 24,
+          "cumpleanos": "06-14"
+        },
+        {
+          "id": "segunda-12-13",
+          "nombre": "Daniel Valdés Baeza",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 61,
+          "atributos": {
+            "RAS": 57,
+            "TOZ": 60,
+            "CHI": 63,
+            "RET": 66,
+            "ALM": 58
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3050,
+          "valor": 610000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 25,
+          "cumpleanos": "07-15"
+        },
+        {
+          "id": "segunda-12-14",
+          "nombre": "Miguel Valdés Mendieta",
+          "jugador_real": "",
+          "posicion": "CEN",
+          "valoracion_juego": 66,
+          "atributos": {
+            "RAS": 63,
+            "TOZ": 66,
+            "CHI": 69,
+            "RET": 61,
+            "ALM": 64
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3300,
+          "valor": 660000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 26,
+          "cumpleanos": "08-16"
+        },
+        {
+          "id": "segunda-12-15",
+          "nombre": "Óscar Valdés Benavides",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 71,
+          "atributos": {
+            "RAS": 69,
+            "TOZ": 72,
+            "CHI": 75,
+            "RET": 67,
+            "ALM": 70
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3550,
+          "valor": 710000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 27,
+          "cumpleanos": "09-17"
+        },
+        {
+          "id": "segunda-12-16",
+          "nombre": "Martín Valdés Zambrano",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 58,
+          "atributos": {
+            "RAS": 57,
+            "TOZ": 60,
+            "CHI": 63,
+            "RET": 55,
+            "ALM": 58
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 2900,
+          "valor": 580000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 28,
+          "cumpleanos": "10-18"
+        },
+        {
+          "id": "segunda-12-17",
+          "nombre": "Diego Valdés Ledesma",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 63,
+          "atributos": {
+            "RAS": 63,
+            "TOZ": 66,
+            "CHI": 58,
+            "RET": 61,
+            "ALM": 64
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3150,
+          "valor": 630000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 29,
+          "cumpleanos": "11-19"
+        },
+        {
+          "id": "segunda-12-18",
+          "nombre": "Álvaro Valdés Figueroa",
+          "jugador_real": "",
+          "posicion": "DEL",
+          "valoracion_juego": 68,
+          "atributos": {
+            "RAS": 69,
+            "TOZ": 72,
+            "CHI": 64,
+            "RET": 67,
+            "ALM": 70
+          },
+          "rasgo": "Jugador de formación regional",
+          "clausula": "Contrato profesional",
+          "salario": 3400,
+          "valor": 680000,
+          "avatar_ia": "",
+          "reacciones_ia": {},
+          "tags": [
+            "rasmia",
+            "centella",
+            "cierzo"
+          ],
+          "edad_carrera": 30,
+          "cumpleanos": "12-20"
+        }
+      ]
     }
   ],
   "mercado_ids": [

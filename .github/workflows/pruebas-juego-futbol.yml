@@ -47,6 +47,7 @@ jobs:
           node juego_futbol/tests/screens.cjs
           node juego_futbol/tests/club-browser.cjs
           node juego_futbol/tests/universo-liga.cjs
+          node juego_futbol/tests/competiciones.cjs
           node juego_futbol/tests/centro-control.cjs
           node juego_futbol/tests/departamentos.cjs
           node juego_futbol/tests/scouting-datos.cjs
