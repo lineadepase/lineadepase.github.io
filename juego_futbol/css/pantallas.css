@@ -1,0 +1,60 @@
+/* La altura disponible decide cuánta información aparece en cada página. */
+body.screen-mode{height:100dvh;min-height:0;padding:0;overflow:hidden;background:radial-gradient(ellipse at top left,#193854,#0b1220 65%)}
+.screen-mode header{padding:8px 18px;gap:8px;flex:none;border-bottom:1px solid #34506b}
+.screen-mode .club-brand h1{font-size:1rem}.screen-mode .club-brand span{font-size:.75rem}
+.screen-mode .club-mark{width:34px;height:38px;flex:none}.screen-mode .club-emblem{height:36px}
+.screen-mode .top-stats{gap:6px}.screen-mode .stat-pill{padding:5px 8px;font-size:.75rem}
+.screen-mode nav[role="tablist"]{position:static;inset:auto;padding:0 12px;overflow:visible;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:2px;flex:none;border-top:0;box-shadow:none}
+.screen-mode .tab-btn{padding:10px 4px;min-width:0;white-space:normal;font-size:.85rem;min-height:44px}
+.screen-mode main{display:flex;flex-direction:column;min-height:0;padding:10px 18px;gap:8px;overflow:hidden;max-width:1280px}
+.screen-tools{display:flex;align-items:center;gap:10px;flex:none}.screen-tools label{color:#bae6fd;font-size:.8rem;font-weight:700;flex:1;display:flex;align-items:center;gap:8px}
+.screen-tools select{width:100%;min-width:0;max-width:540px;background:#14283b;border-color:#4b7492;min-height:40px;font-weight:700}
+.screen-mode #resumen-disponibilidad{font-size:.75rem!important;margin:0!important;flex:none}
+.screen-mode .tab-content.active{display:block;flex:1;min-height:0;overflow:hidden;animation:none}
+.screen-mode .screen-view{height:100%;min-height:0}.screen-mode .screen-view[hidden],.screen-mode .page-away{display:none!important}
+.screen-mode .panel,.screen-mode .match-board{padding:14px;margin:0!important;border:1px solid #37516a;border-radius:14px;background:linear-gradient(145deg,#1c3045,#142033);box-shadow:0 10px 30px #0002;min-width:0}
+.screen-mode .panel-header{gap:8px;margin-bottom:10px}.screen-mode .panel-title{font-size:1.05rem}.screen-mode .hint-box{font-size:.8rem;line-height:1.4}
+.screen-mode .flow-split{display:block!important;min-height:0!important;height:auto!important;max-height:none!important;overflow:visible!important}
+.screen-mode .flow-split>*{margin-bottom:8px}
+.screen-mode .reading-fragment{display:block}
+.screen-mode .screen-view .page-away{display:none!important}
+.screen-mode table tr.flow-split{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))}
+.screen-mode .table-wrap,.screen-mode .match-log{overflow:visible;max-height:none;min-width:0}
+.screen-mode table{width:100%;min-width:0;table-layout:fixed}.screen-mode th,.screen-mode td{padding:8px 5px;white-space:normal;overflow-wrap:anywhere;font-size:.78rem}
+.screen-mode button{min-height:40px;white-space:normal}.screen-mode input,.screen-mode select{max-width:100%;min-height:40px}
+.screen-mode canvas,.screen-mode .pass-pitch,.screen-mode .replay-board{max-width:100%;max-height:var(--pitch-height,320px);width:auto!important;height:auto!important;object-fit:contain;display:block;margin-inline:auto}
+.screen-mode .pass-pitch:not(.active){display:none!important}
+.screen-mode .live-pitch-wrap{margin:6px 0}.screen-mode .match-score{font-size:1.3rem;margin:5px 0}.screen-mode .match-minute{font-size:1rem}
+.screen-mode .match-meter{margin:5px auto}.screen-mode .match-playback-controls{margin:5px 0}
+.screen-mode .swipe-card{padding:14px;max-width:600px;margin:auto;touch-action:pan-y}.screen-mode .player-illustration{height:110px;min-height:0}.screen-mode #swipe-portrait .player-avatar{width:100px;height:100px}
+.screen-mode .screen-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 18px max(8px,env(safe-area-inset-bottom));border-top:1px solid #37516a;background:#0b1525;flex:none}
+.screen-mode .page-controls{display:flex;align-items:center;gap:8px}.screen-mode #screen-page{font-size:.8rem;color:#cbd5e1;min-width:90px;text-align:center}
+.screen-mode .floating-cta{position:static;min-height:44px;padding:10px 16px;font-size:.9rem;max-width:360px;border-radius:10px;box-shadow:none}
+.screen-mode .floating-cta,.screen-mode .floating-cta:hover{transform:none;animation:none;min-width:0;left:auto;right:auto}
+.screen-mode .screen-badge{font-size:.75rem;color:#93c5fd}.screen-mode .qte-dialog,.screen-mode .event-dialog,.screen-mode .var-dialog{max-height:calc(100dvh - 24px);overflow:visible;padding:16px}
+.screen-mode .qte-dialog h2,.screen-mode .event-dialog h2{font-size:1.25rem}.screen-mode .qte-dialog label{margin:6px 0}
+.screen-mode .season-calendar-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.screen-mode :focus-visible{outline:3px solid #facc15;outline-offset:2px}
+@media(max-width:700px){
+ .screen-mode header{padding:6px 10px}.screen-mode .club-brand{gap:7px}.screen-mode .club-brand h1{font-size:.85rem}.screen-mode .club-brand span{font-size:.65rem}
+ .screen-mode .top-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;gap:4px}.screen-mode .stat-pill{font-size:.67rem;padding:3px 5px}.screen-mode #lbl-salarios{font-size:.67rem}
+ .screen-mode nav[role="tablist"]{grid-template-columns:repeat(3,minmax(0,1fr));padding:0 6px}.screen-mode nav[role="tablist"] .tab-btn{min-height:36px;padding:5px 2px;font-size:.75rem}
+ .screen-mode main{padding:8px 10px;gap:6px}.screen-mode .screen-tools{gap:4px}.screen-mode .screen-tools label{font-size:.75rem}.screen-mode .screen-badge{display:none}
+ .screen-mode .panel,.screen-mode .match-board{padding:10px}.screen-mode .panel-header{flex-wrap:wrap}.screen-mode .panel-title{font-size:.95rem}
+ .screen-mode .screen-footer{padding:7px 10px max(7px,env(safe-area-inset-bottom));flex-wrap:wrap;gap:6px}.screen-mode .page-controls{width:100%;justify-content:space-between}.screen-mode .floating-cta{width:100%;max-width:none}
+ .screen-mode table,.screen-mode tbody{display:block}.screen-mode thead{display:none}.screen-mode table tr{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;padding:10px;margin-bottom:8px;border:1px solid #476179;border-radius:10px;background:#102336}
+ .screen-mode table tr.page-away{display:none!important}.screen-mode table td{display:block!important;padding:2px!important;border:0!important;min-width:0;text-align:left!important;font-size:.76rem;background:none!important}
+ .screen-mode td::before{content:attr(data-label);display:block;color:#93c5fd;font-size:.63rem;font-weight:700;margin-bottom:2px}.screen-mode table td.left{grid-column:span 2}
+ .screen-mode table td[colspan]{grid-column:1/-1}
+ .screen-mode table tbody tr{min-height:0!important;grid-template-areas:none!important;grid-template-rows:none!important}
+ .screen-mode table tbody tr td{grid-row:auto!important;grid-column:auto!important}
+ .screen-mode table tbody tr td.left{grid-column:span 2!important}
+ .screen-mode table tbody tr td[colspan]{grid-column:1/-1!important}
+ .screen-mode table tbody tr td[data-label="Jugador"],.screen-mode table tbody tr td[data-label="Equipo"],.screen-mode table tbody tr td[data-label="Rasgos"]{grid-column:1/-1!important}
+ .screen-mode table .player-select-btn{display:flex;align-items:center;gap:8px}
+ .screen-mode .player-avatar{width:28px;height:28px}.screen-mode .player-cell{display:flex;align-items:center;gap:5px}.screen-mode .player-select-btn{display:block;width:100%}
+ .screen-mode .roster-controls,.screen-mode .controls-bar{gap:7px;flex-wrap:wrap}.screen-mode .roster-controls input{width:140px}.screen-mode .controls-bar button{font-size:.76rem;padding:6px}
+ .screen-mode .power-cards{grid-template-columns:1fr}.screen-mode .power-card{min-height:64px}.screen-mode .season-calendar-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .screen-mode .match-score{font-size:1rem}.screen-mode .match-playback-controls{flex-wrap:wrap}.screen-mode .reigns-card{padding:12px}.screen-mode .meter-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-height:500px){.screen-mode header .club-brand span{display:none}.screen-mode header{padding:3px 8px}.screen-mode nav .tab-btn{min-height:30px;padding:3px}.screen-mode .screen-footer{flex-wrap:nowrap;padding:4px 8px}.screen-mode .page-controls{width:auto}.screen-mode .floating-cta{width:auto}.screen-mode main{padding:4px 10px}.screen-mode .screen-tools select{min-height:32px}.screen-mode #resumen-disponibilidad{display:none}}

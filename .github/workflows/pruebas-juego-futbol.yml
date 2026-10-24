@@ -1,0 +1,71 @@
+name: Pruebas del juego de fútbol
+on:
+  pull_request:
+    paths:
+      - 'juego_futbol/**'
+      - 'proyectos/index.html'
+      - '.github/workflows/pruebas-juego-futbol.yml'
+  workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  test-python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compilar archivos Python
+        run: python -m compileall -q juego_futbol
+      - name: Ejecutar pruebas del motor
+        run: python -m unittest discover -s juego_futbol/tests -v
+
+  test-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Instalar Playwright y Chromium
+        run: |
+          npm install --no-save playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Iniciar servidor y probar escritorio y móvil
+        run: |
+          python -m http.server 8765 --bind 127.0.0.1 &
+          sleep 2
+          node --test juego_futbol/tests/club-motor.test.cjs
+          node --test juego_futbol/tests/proyectos-motor.test.cjs
+          node --test juego_futbol/tests/direccion-motor.test.cjs
+          node --test juego_futbol/tests/jugabilidad.test.cjs
+          node juego_futbol/tests/browser-smoke.cjs
+          node juego_futbol/tests/screens.cjs
+          node juego_futbol/tests/club-browser.cjs
+          node juego_futbol/tests/universo-liga.cjs
+          node juego_futbol/tests/competiciones.cjs
+          node juego_futbol/tests/centro-control.cjs
+          node juego_futbol/tests/departamentos.cjs
+          node juego_futbol/tests/scouting-datos.cjs
+          node juego_futbol/tests/direccion.cjs
+          node juego_futbol/tests/motor-visual.cjs
+          node --test juego_futbol/tests/identidad-motor.test.cjs
+          node juego_futbol/tests/identidad.cjs
+          node --test juego_futbol/tests/operaciones-motor.test.cjs
+          node juego_futbol/tests/operaciones.cjs
+          node --test juego_futbol/tests/perfiles-futbol.test.cjs
+          node juego_futbol/tests/realismo.cjs
+      - name: Adjuntar capturas de escritorio y móvil
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: juego-futbol-capturas
+          path: juego_futbol/tests/test-artifacts/*.png
+          if-no-files-found: ignore
+          retention-days: 7
