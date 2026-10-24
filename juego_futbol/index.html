@@ -2659,15 +2659,15 @@ function simularPartidoIndividual(local, vis, esNuestro, logBox, ctxShot, w, h) 
             // Los lesionados descansan y recuperan una jornada; no juegan
             // ni acumulan cansancio mientras siguen de baja.
             if (j.lesionado > 0) {
-                j.lesionado--;
+                if (!window.ClubOperaciones) j.lesionado--;
                 return;
             }
             if (j.titular) {
                 j.cansancio = Math.min(100, j.cansancio + Math.round((13 + Math.random() * 10) * mult));
-                if (Math.random() < (j.cansancio > 75 ? 0.12 : 0.02)) {
-                    j.lesionado = Math.floor(Math.random() * 2) + 1;
+                if (Math.random() < (window.ClubOperaciones ? ClubOperaciones.riesgo(eq,j) : (j.cansancio > 75 ? 0.12 : 0.02))) {
+                    if (window.ClubOperaciones) ClubOperaciones.lesionar(estadoJuego,eq,j); else j.lesionado = Math.floor(Math.random() * 2) + 1;
                     if (esNuestro) {
-                        logBox.innerHTML += `<p class="log-injury">🚑 ${escaparHTML(j.nombre)} (${escaparHTML(eq.nombre)}) se lesiona para ${j.lesionado} jornada(s).</p>`;
+                        logBox.innerHTML += `<p class="log-injury">🚑 ${escaparHTML(j.nombre)} (${escaparHTML(eq.nombre)}) ${j.parteMedico ? escaparHTML(ClubOperaciones.lesiones[j.parteMedico.tipo].nombre) : 'se lesiona'} para ${j.lesionado} jornada(s).</p>`;
                     }
                 }
             }
@@ -2721,11 +2721,11 @@ function accionDescansar() {
         j.cansancio = Math.max(0, j.cansancio - 30);
         j.moral = Math.min(100, j.moral + 10);
         // El descanso también permite recuperar una jornada de lesión.
-        if (j.lesionado > 0) j.lesionado--;
+        if (j.lesionado > 0) if (!window.ClubOperaciones) j.lesionado--;
     });
     estadoJuego.preparacionUsada = true;
     guardarPartidaLocal(false);
-    alert("💤 Descanso completado: menos cansancio, mejor moral y una jornada menos de lesión para los jugadores de baja.");
+    alert("💤 Descanso completado: menos cansancio y mejor moral. Las lesiones se recuperan al avanzar el calendario.");
     actualizarUI();
 }
 
@@ -2915,7 +2915,7 @@ function iniciarNuevaTemporada() {
     estadoJuego.equipos.forEach(eq => {
         eq.presupuesto += premios.find(p => p.nombre === eq.nombre).premio;
         eq.puntos = 0; eq.pj = 0; eq.gf = 0; eq.gc = 0; eq.remates = 0; eq.xgf = 0; eq.xgc = 0;
-        eq.plantilla.forEach(j => { j.goles = 0; j.xg = 0; j.cansancio = 0; j.lesionado = 0; });
+        eq.plantilla.forEach(j => { j.goles = 0; j.xg = 0; j.cansancio = 0; if (!window.ClubOperaciones) j.lesionado = 0; });
         convocarOnceAutomatico(eq);
     });
     renovarMercadoTemporada();
@@ -3423,6 +3423,12 @@ mostrarRepeticion=function(indice){
 <link rel="stylesheet" href="./css/identidad.css">
 <script src="./js/identidad-motor.js"></script>
 <script src="./js/identidad-club.js"></script>
+<link rel="stylesheet" href="./css/operaciones.css">
+<script src="./js/operaciones-motor.js"></script>
+<script src="./js/operaciones.js"></script>
+<link rel="stylesheet" href="./css/realismo.css">
+<script src="./js/perfiles-futbol.js"></script>
+<script src="./js/identidad-realista.js"></script>
 <script src="./js/pantallas.js"></script>
 </body>
 </html>

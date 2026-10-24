@@ -127,7 +127,7 @@
    const neto=Math.round(ingresos+publicidad-salarios-empleados-Math.max(0,prima));eq.presupuesto+=neto;
    g.balances.unshift({temporada:s.temporada,jornada:s.jornadaActual+1,local:home,asistentes:home?estimate.asistentes:0,entradas:home?estimate.entradas:0,extras:home?estimate.extras:0,publicidad:Math.round(publicidad),salarios,empleados,primas:Math.max(0,prima),neto});g.balances=g.balances.slice(0,30);
    g.obras.forEach(o=>{o.restante--;if(o.restante===0){if(o.tipo==='grada'){g.gradas[o.objetivo]+=1000;eq.aforo+=1000;}else if(o.tipo==='remodelacion')g.modernizacion++;else g.servicios[o.objetivo]++;noticia(s,`${eq.nombre}: terminada la obra de ${o.objetivo}.`);}});g.obras=g.obras.filter(o=>o.restante>0);
-   eq.plantilla.forEach(j=>{j.moral=clamp(j.moral+g.staff.psicologo,0,100);j.cansancio=clamp(j.cansancio-g.staff.medico*2,0,100);if(j.lesionado&&g.staff.medico>=2)j.lesionado=Math.max(0,j.lesionado-1);});
+   eq.plantilla.forEach(j=>{j.moral=clamp(j.moral+g.staff.psicologo,0,100);j.cansancio=clamp(j.cansancio-g.staff.medico*2,0,100);if(j.lesionado&&g.staff.medico>=2&&!globalThis.ClubOperaciones)j.lesionado=Math.max(0,j.lesionado-1);});
   }
   return {duplicado:false,taquilla:estimate.total};
  }

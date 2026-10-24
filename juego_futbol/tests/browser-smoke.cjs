@@ -724,8 +724,8 @@ async function recargarPartida(page) {
         estadoJuego.preparacionUsada = used;
         return result;
       });
-      assert.deepEqual(restRecovery, { lesionado: 1, cansancio: 20 },
-        'el descanso debe reducir la lesión y la fatiga');
+      assert.deepEqual(restRecovery, { lesionado: 2, cansancio: 20 },
+        'el descanso reduce fatiga; el alta necesita avanzar el calendario');
       const repeatRest = await page.evaluate(() => {
         const player = obtenerMiEquipo().plantilla[0];
         const original = { lesionado: player.lesionado, cansancio: player.cansancio };
@@ -756,8 +756,8 @@ async function recargarPartida(page) {
         convocarOnceAutomatico(home);
         return result;
       });
-      assert.deepEqual(injuredRecovery, { lesionado: 1, cansancio: 31 },
-        'el lesionado se recupera sin acumular fatiga');
+      assert.deepEqual(injuredRecovery, { lesionado: 2, cansancio: 31 },
+        'un partido no descuenta una lesión antes de avanzar la fecha');
       // Una jornada mal formada, incluso en el futuro, no debe alterar el estado de liga.
       const invalidFixture = await page.evaluate(() => {
         const original = estadoJuego.calendario[estadoJuego.jornadaActual];
