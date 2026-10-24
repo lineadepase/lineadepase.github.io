@@ -4,7 +4,7 @@ Qué es cada tabla del proyecto y qué significa cada columna. Este archivo lo g
 
 ## partidos
 
-Un partido oficial por fila (liga y copa) con el resultado final y al descanso. Archivo: `datos/entrada/partidos.csv` (8 filas).
+Un partido oficial por fila (liga y copa) con el resultado final y al descanso. Archivo: `datos/entrada/partidos.csv` (9 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|
@@ -22,7 +22,7 @@ Un partido oficial por fila (liga y copa) con el resultado final y al descanso. 
 
 ## goles
 
-Un gol por fila, a favor o en contra, con minuto, goleador y asistencia. Archivo: `datos/entrada/goles.csv` (26 filas).
+Un gol por fila, a favor o en contra, con minuto, goleador y asistencia. Archivo: `datos/entrada/goles.csv` (27 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|
@@ -39,7 +39,7 @@ Un gol por fila, a favor o en contra, con minuto, goleador y asistencia. Archivo
 
 ## alineaciones
 
-Once inicial del Zaragoza en cada partido: un titular por fila. Archivo: `datos/entrada/alineaciones.csv` (88 filas).
+Once inicial del Zaragoza en cada partido: un titular por fila. Archivo: `datos/entrada/alineaciones.csv` (99 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|
@@ -49,7 +49,7 @@ Once inicial del Zaragoza en cada partido: un titular por fila. Archivo: `datos/
 
 ## cambios
 
-Sustituciones del Zaragoza: quién entra, quién sale y en qué minuto. Archivo: `datos/entrada/cambios.csv` (40 filas).
+Sustituciones del Zaragoza: quién entra, quién sale y en qué minuto. Archivo: `datos/entrada/cambios.csv` (45 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|
@@ -61,7 +61,7 @@ Sustituciones del Zaragoza: quién entra, quién sale y en qué minuto. Archivo:
 
 ## tarjetas
 
-Tarjetas que ven los jugadores del Zaragoza. Archivo: `datos/entrada/tarjetas.csv` (28 filas).
+Tarjetas que ven los jugadores del Zaragoza. Archivo: `datos/entrada/tarjetas.csv` (30 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|
@@ -73,7 +73,7 @@ Tarjetas que ven los jugadores del Zaragoza. Archivo: `datos/entrada/tarjetas.cs
 
 ## tiros
 
-Tiros y posesión de cada partido, con una nota cuando el desglose no cuadra. Archivo: `datos/entrada/tiros.csv` (8 filas).
+Tiros y posesión de cada partido, con una nota cuando el desglose no cuadra. Archivo: `datos/entrada/tiros.csv` (9 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|
@@ -90,7 +90,7 @@ Tiros y posesión de cada partido, con una nota cuando el desglose no cuadra. Ar
 
 ## estadisticas
 
-Otras estadísticas de partido de fuentes públicas, en formato largo (una métrica por fila). Archivo: `datos/entrada/estadisticas.csv` (158 filas).
+Otras estadísticas de partido de fuentes públicas, en formato largo (una métrica por fila). Archivo: `datos/entrada/estadisticas.csv` (162 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|
@@ -185,20 +185,20 @@ Clasificación del grupo 2 después de cada jornada apuntada. Archivo: `datos/en
 
 ## proximos
 
-Próximos partidos del calendario. Archivo: `datos/entrada/proximos.csv` (3 filas).
+Próximos partidos del calendario. Archivo: `datos/entrada/proximos.csv` (2 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|
-| `jornada` | Jornada. | Número entero | 9 |
+| `jornada` | Jornada. | Número entero | 10 |
 | `competicion` | Competición. | Texto | Primera Federación |
-| `fecha` | Fecha prevista (puede cambiar). | Texto | 2026-10-23 |
-| `sede` | «Casa» o «Fuera». | Texto | Fuera |
-| `rival` | Rival. | Texto | CE Europa |
+| `fecha` | Fecha prevista (puede cambiar). | Texto | 2026-10-31 |
+| `sede` | «Casa» o «Fuera». | Texto | Casa |
+| `rival` | Rival. | Texto | Villarreal B |
 | `fuente_url` | Página de la que saqué el dato. | Texto | https://www.fotmob.com/es-419/teams/8394/overview |
 
 ## partidos_rivales
 
-Resultados del próximo rival esta temporada, para la previa. Archivo: `datos/entrada/partidos_rivales.csv` (15 filas).
+Resultados del próximo rival esta temporada, para la previa. Archivo: `datos/entrada/partidos_rivales.csv` (23 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|
@@ -213,7 +213,7 @@ Resultados del próximo rival esta temporada, para la previa. Archivo: `datos/en
 
 ## incidencias
 
-Diferencias entre fuentes y qué dato me quedo. Es el registro de decisiones del proyecto. Archivo: `datos/entrada/incidencias.csv` (54 filas).
+Diferencias entre fuentes y qué dato me quedo. Es el registro de decisiones del proyecto. Archivo: `datos/entrada/incidencias.csv` (62 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|
@@ -275,19 +275,19 @@ Tabla calculada: minutos y participación en goles de cada jugador en liga. Arch
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|
-| `jugador` | Jugador. | Texto | Jaume Jardí |
+| `jugador` | Jugador. | Texto | Westerveld |
 | `partidos` | Partidos jugados. | Número entero | 8 |
-| `titularidades` | Partidos como titular. | Número entero | 7 |
-| `minutos` | Minutos jugados, sin contar el descuento. | Número entero | 639 |
-| `goles` | Goles. | Número entero | 4 |
-| `asistencias` | Asistencias (solo las que constan). | Número entero | 4 |
-| `participaciones_con_minutos` | Goles + asistencias. | Número entero | 8 |
-| `participaciones_por_90` | Goles + asistencias por cada 90 minutos jugados. | Número decimal | 1.13 |
-| `minutos_por_participacion` | Minutos que tarda de media en participar en un gol. Vacío si no ha participado en ninguno. | Número entero | 80 |
+| `titularidades` | Partidos como titular. | Número entero | 8 |
+| `minutos` | Minutos jugados, sin contar el descuento. | Número entero | 720 |
+| `goles` | Goles. | Número entero | 0 |
+| `asistencias` | Asistencias (solo las que constan). | Número entero | 0 |
+| `participaciones_con_minutos` | Goles + asistencias. | Número entero | 0 |
+| `participaciones_por_90` | Goles + asistencias por cada 90 minutos jugados. | Número decimal | 0.0 |
+| `minutos_por_participacion` | Minutos que tarda de media en participar en un gol. Vacío si no ha participado en ninguno. | Número entero | 90 |
 
 ## minutos_partido
 
-Tabla calculada: minutos de cada jugador en cada partido de liga. Archivo: `datos/salida/minutos_partido.csv` (128 filas).
+Tabla calculada: minutos de cada jugador en cada partido de liga. Archivo: `datos/salida/minutos_partido.csv` (144 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|

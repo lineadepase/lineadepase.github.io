@@ -110,11 +110,11 @@ clasificacion;gf;Goles a favor.;Número entero;12
 clasificacion;gc;Goles en contra.;Número entero;6
 clasificacion;puntos;Puntos.;Número entero;15
 clasificacion;fuente_url;Página de la que saqué el dato.;Texto;https://www.fotmob.com/es-419/teams/8394/overview
-proximos;jornada;Jornada.;Número entero;9
+proximos;jornada;Jornada.;Número entero;10
 proximos;competicion;Competición.;Texto;Primera Federación
-proximos;fecha;Fecha prevista (puede cambiar).;Texto;2026-10-23
-proximos;sede;«Casa» o «Fuera».;Texto;Fuera
-proximos;rival;Rival.;Texto;CE Europa
+proximos;fecha;Fecha prevista (puede cambiar).;Texto;2026-10-31
+proximos;sede;«Casa» o «Fuera».;Texto;Casa
+proximos;rival;Rival.;Texto;Villarreal B
 proximos;fuente_url;Página de la que saqué el dato.;Texto;https://www.fotmob.com/es-419/teams/8394/overview
 partidos_rivales;equipo;Equipo del que son los resultados.;Texto;Real Murcia
 partidos_rivales;jornada;Jornada.;Número entero;1
@@ -161,15 +161,15 @@ resumenes_youtube;canal;Canal de YouTube que publica el resumen.;Texto;Real Fede
 resumenes_youtube;titulo;Título del vídeo.;Texto;Resumen #PrimeraFederación | Gimnàstic 2-0 Real Zaragoza …
 resumenes_youtube;duracion;Duración (minutos:segundos).;Texto;4:03
 resumenes_youtube;url;Enlace al vídeo.;Texto;https://www.youtube.com/watch?v=psvkPAyTRhk
-jugadores;jugador;Jugador.;Texto;Jaume Jardí
+jugadores;jugador;Jugador.;Texto;Westerveld
 jugadores;partidos;Partidos jugados.;Número entero;8
-jugadores;titularidades;Partidos como titular.;Número entero;7
-jugadores;minutos;Minutos jugados, sin contar el descuento.;Número entero;639
-jugadores;goles;Goles.;Número entero;4
-jugadores;asistencias;Asistencias (solo las que constan).;Número entero;4
-jugadores;participaciones_con_minutos;Goles + asistencias.;Número entero;8
-jugadores;participaciones_por_90;Goles + asistencias por cada 90 minutos jugados.;Número decimal;1.13
-jugadores;minutos_por_participacion;Minutos que tarda de media en participar en un gol. Vacío si no ha participado en ninguno.;Número entero;80
+jugadores;titularidades;Partidos como titular.;Número entero;8
+jugadores;minutos;Minutos jugados, sin contar el descuento.;Número entero;720
+jugadores;goles;Goles.;Número entero;0
+jugadores;asistencias;Asistencias (solo las que constan).;Número entero;0
+jugadores;participaciones_con_minutos;Goles + asistencias.;Número entero;0
+jugadores;participaciones_por_90;Goles + asistencias por cada 90 minutos jugados.;Número decimal;0.0
+jugadores;minutos_por_participacion;Minutos que tarda de media en participar en un gol. Vacío si no ha participado en ninguno.;Número entero;90
 minutos_partido;partido_id;Partido (ver tabla partidos).;Número entero;1
 minutos_partido;jugador;Jugador.;Texto;Westerveld
 minutos_partido;rol;«Titular» o «Suplente».;Texto;Titular

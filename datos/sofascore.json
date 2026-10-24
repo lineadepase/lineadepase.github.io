@@ -1,42 +1,8 @@
 {
  "_nota": "Calendario facilitado para el seguimiento del Real Zaragoza. Las horas de inicio están en UTC y pueden cambiar. La web muestra el último resultado revisado hasta el martes por la mañana si hay partido entre semana o hasta el miércoles en caso contrario; después, el próximo partido. El estado en directo se consulta en Sofascore y nunca se deduce de la hora. El campo tv contiene únicamente los canales indicados para cada encuentro; si está vacío, la emisión está pendiente de confirmar.",
  "equipo_sofascore": 2815,
- "actualizado": "2026-10-22",
+ "actualizado": "2026-10-24",
  "partidos": [
-  {
-   "id": 16599931,
-   "inicio": "2026-10-18T16:15:00Z",
-   "local": "Real Murcia",
-   "visitante": "Real Zaragoza",
-   "competicion": "Primera Federación",
-   "jornada": 8,
-   "tv": [
-    {
-     "canal": "Aragón TV",
-     "abierto": true
-    },
-    {
-     "canal": "La 7 Murcia",
-     "abierto": true
-    },
-    {
-     "canal": "DAZN",
-     "abierto": false
-    },
-    {
-     "canal": "Canal Primera Federación (Movistar Plus+, Orange)",
-     "abierto": false
-    },
-    {
-     "canal": "Football Club",
-     "abierto": false
-    },
-    {
-     "canal": "FanPlay TV",
-     "abierto": false
-    }
-   ]
-  },
   {
    "id": 16599975,
    "inicio": "2026-10-23T19:15:00Z",

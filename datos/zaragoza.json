@@ -1,6 +1,6 @@
 {
- "corte": "2026-10-18",
- "jornada": 8,
+ "corte": "2026-10-23",
+ "jornada": 9,
  "clasificacion_tras": 8,
  "partidos": [
   {
@@ -138,6 +138,23 @@
    "tiros_rival": 9,
    "posesion_pct": 49.0,
    "completo": true
+  },
+  {
+   "partido_id": 9,
+   "jornada": 9,
+   "fecha": "2026-10-23",
+   "sede": "Fuera",
+   "rival": "CE Europa",
+   "goles_favor": 1,
+   "goles_contra": 0,
+   "resultado": "Victoria",
+   "puntos": 3,
+   "puntos_acumulados": 20,
+   "posicion_rival": 16,
+   "tiros_zaragoza": 9,
+   "tiros_rival": 8,
+   "posesion_pct": 67.0,
+   "completo": false
   }
  ],
  "goles": [
@@ -478,54 +495,75 @@
    "rol_goleador": "Titular",
    "penalti": true,
    "propia_puerta": false
+  },
+  {
+   "partido_id": 9,
+   "rival": "CE Europa",
+   "sede": "Fuera",
+   "sentido": "Favor",
+   "minuto_texto": "80",
+   "tramo": "76–90+",
+   "jugador": "Álex Cano",
+   "asistencia": "",
+   "rol_goleador": "",
+   "penalti": false,
+   "propia_puerta": true
   }
  ],
  "jugadores": [
   {
-   "jugador": "Jaume Jardí",
-   "partidos": 8,
-   "titularidades": 7,
-   "minutos": 639.0,
-   "goles": 4,
-   "asistencias": 4
-  },
-  {
    "jugador": "Westerveld",
-   "partidos": 7,
-   "titularidades": 7,
-   "minutos": 630.0,
+   "partidos": 8,
+   "titularidades": 8,
+   "minutos": 720.0,
    "goles": 0,
    "asistencias": 0
   },
   {
+   "jugador": "Jaume Jardí",
+   "partidos": 9,
+   "titularidades": 8,
+   "minutos": 717.0,
+   "goles": 4,
+   "asistencias": 4
+  },
+  {
    "jugador": "Rubo",
-   "partidos": 7,
-   "titularidades": 7,
-   "minutos": 612.0,
+   "partidos": 8,
+   "titularidades": 8,
+   "minutos": 702.0,
    "goles": 2,
    "asistencias": 0
   },
   {
    "jugador": "Lucas Terrer",
-   "partidos": 8,
-   "titularidades": 7,
-   "minutos": 606.0,
+   "partidos": 9,
+   "titularidades": 8,
+   "minutos": 696.0,
    "goles": 0,
    "asistencias": 0
   },
   {
    "jugador": "Diego González",
-   "partidos": 7,
-   "titularidades": 7,
-   "minutos": 601.0,
+   "partidos": 8,
+   "titularidades": 8,
+   "minutos": 691.0,
    "goles": 1,
    "asistencias": 1
   },
   {
    "jugador": "Marco Sangalli",
-   "partidos": 7,
+   "partidos": 8,
+   "titularidades": 6,
+   "minutos": 618.0,
+   "goles": 0,
+   "asistencias": 0
+  },
+  {
+   "jugador": "Raúl Pereira",
+   "partidos": 8,
    "titularidades": 5,
-   "minutos": 528.0,
+   "minutos": 521.0,
    "goles": 0,
    "asistencias": 0
   },
@@ -538,43 +576,51 @@
    "asistencias": 0
   },
   {
-   "jugador": "Raúl Pereira",
-   "partidos": 7,
-   "titularidades": 4,
-   "minutos": 443.0,
-   "goles": 0,
-   "asistencias": 0
-  },
-  {
-   "jugador": "Joaquín",
-   "partidos": 6,
-   "titularidades": 3,
-   "minutos": 366.0,
-   "goles": 0,
-   "asistencias": 0
-  },
-  {
    "jugador": "Óscar Ureña",
-   "partidos": 7,
-   "titularidades": 4,
-   "minutos": 363.0,
+   "partidos": 8,
+   "titularidades": 5,
+   "minutos": 419.0,
    "goles": 3,
    "asistencias": 1
   },
   {
+   "jugador": "Joaquín",
+   "partidos": 7,
+   "titularidades": 3,
+   "minutos": 391.0,
+   "goles": 0,
+   "asistencias": 0
+  },
+  {
    "jugador": "Rubén Díez",
-   "partidos": 6,
+   "partidos": 7,
    "titularidades": 5,
-   "minutos": 354.0,
+   "minutos": 388.0,
    "goles": 0,
    "asistencias": 1
   },
   {
    "jugador": "Pau Sans",
-   "partidos": 7,
+   "partidos": 8,
    "titularidades": 3,
-   "minutos": 300.0,
+   "minutos": 334.0,
    "goles": 1,
+   "asistencias": 0
+  },
+  {
+   "jugador": "Edu Espiau",
+   "partidos": 6,
+   "titularidades": 4,
+   "minutos": 331.0,
+   "goles": 3,
+   "asistencias": 2
+  },
+  {
+   "jugador": "Ander Herrera",
+   "partidos": 5,
+   "titularidades": 4,
+   "minutos": 313.0,
+   "goles": 0,
    "asistencias": 0
   },
   {
@@ -594,27 +640,19 @@
    "asistencias": 0
   },
   {
-   "jugador": "Ander Herrera",
-   "partidos": 4,
-   "titularidades": 3,
-   "minutos": 248.0,
-   "goles": 0,
-   "asistencias": 0
-  },
-  {
-   "jugador": "Edu Espiau",
-   "partidos": 5,
-   "titularidades": 3,
-   "minutos": 241.0,
-   "goles": 3,
-   "asistencias": 2
-  },
-  {
    "jugador": "J. Gabilondo",
    "partidos": 4,
    "titularidades": 3,
    "minutos": 233.0,
    "goles": 0,
+   "asistencias": 0
+  },
+  {
+   "jugador": "Yussif Saidu",
+   "partidos": 6,
+   "titularidades": 1,
+   "minutos": 187.0,
+   "goles": 1,
    "asistencias": 0
   },
   {
@@ -626,18 +664,10 @@
    "asistencias": 0
   },
   {
-   "jugador": "Yussif Saidu",
-   "partidos": 5,
-   "titularidades": 0,
-   "minutos": 131.0,
-   "goles": 1,
-   "asistencias": 0
-  },
-  {
    "jugador": "Marcos Cuenca",
-   "partidos": 5,
+   "partidos": 6,
    "titularidades": 2,
-   "minutos": 120.0,
+   "minutos": 132.0,
    "goles": 0,
    "asistencias": 0
   },
@@ -658,15 +688,15 @@
    "asistencias": 0
   },
   {
-   "jugador": "Diego Monzón",
-   "partidos": 1,
+   "jugador": "J. Tobajas",
+   "partidos": 2,
    "titularidades": 0,
-   "minutos": 19.0,
+   "minutos": 31.0,
    "goles": 0,
    "asistencias": 0
   },
   {
-   "jugador": "J. Tobajas",
+   "jugador": "Diego Monzón",
    "partidos": 1,
    "titularidades": 0,
    "minutos": 19.0,
@@ -905,14 +935,6 @@
   }
  ],
  "proximos": [
-  {
-   "jornada": 9,
-   "competicion": "Primera Federación",
-   "fecha": "2026-10-23",
-   "sede": "Fuera",
-   "rival": "CE Europa",
-   "posicion_rival": 16
-  },
   {
    "jornada": 10,
    "competicion": "Primera Federación",
@@ -1417,6 +1439,43 @@
    "a_puerta_zaragoza": 3.0,
    "a_puerta_rival": 1.0,
    "posesion_pct": 49.0
+  },
+  {
+   "partido_id": 9,
+   "competicion": "Primera Federación",
+   "jornada": 9,
+   "fecha": "2026-10-23",
+   "sede": "Fuera",
+   "rival": "CE Europa",
+   "goles_favor": 1,
+   "goles_contra": 0,
+   "gf_descanso": 0,
+   "gc_descanso": 0,
+   "goles": [
+    {
+     "sentido": "Favor",
+     "minuto": "80",
+     "jugador": "Álex Cano",
+     "asistencia": null,
+     "penalti": false,
+     "propia_puerta": true
+    }
+   ],
+   "tarjetas": [
+    {
+     "jugador": "Lucas Terrer",
+     "tarjeta": "Amarilla"
+    },
+    {
+     "jugador": "J. Tobajas",
+     "tarjeta": "Amarilla"
+    }
+   ],
+   "tiros_zaragoza": 9.0,
+   "tiros_rival": 8.0,
+   "a_puerta_zaragoza": 2.0,
+   "a_puerta_rival": 1.0,
+   "posesion_pct": 67.0
   }
  ],
  "copa": []
