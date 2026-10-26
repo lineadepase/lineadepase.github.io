@@ -9,6 +9,7 @@ from html import escape, unescape
 import json
 import re
 import xml.etree.ElementTree as ET
+from urllib.parse import urlsplit
 from PIL import Image, ImageDraw, ImageFont
 from google_analytics import incorporar_etiqueta
 
@@ -122,7 +123,14 @@ def build():
         if head.redirect or head.noindex:
             continue
         path = file.relative_to(ROOT).as_posix()
-        url = BASE + ('/' if path == 'index.html' else '/' + path)
+        # GitHub Pages redirige /carpeta/index.html a /carpeta/. Declara y
+        # publica siempre la URL limpia para evitar enviar redirecciones a Google.
+        if path == 'index.html':
+            url = BASE + '/'
+        elif path.endswith('/index.html'):
+            url = BASE + '/' + path[:-len('index.html')]
+        else:
+            url = BASE + '/' + path
         slug = 'inicio' if path == 'index.html' else path.removesuffix('.html').replace('/', '-')
         image_path = 'assets/compartir/' + slug + '.png'
         image_url = BASE + '/' + image_path
@@ -140,6 +148,22 @@ def build():
         # Sustituir solo nuestro bloque mantiene intactos títulos y descripciones editoriales.
         raw = re.sub(re.escape(START) + r'.*?' + re.escape(END) + r'\r?\n?', '', raw, flags=re.S)
         raw = re.sub(r'<link\b[^>]*rel=["\']canonical["\'][^>]*>\s*', '', raw, flags=re.I)
+        # Las plantillas antiguas enlazan a index.html aunque la ruta limpia
+        # sea la que declaramos como canónica. Normaliza esos enlaces internos.
+        def enlace_limpio(match):
+            comilla, destino = match.group(1), match.group(2)
+            if destino.startswith(('http://', 'https://')) and not destino.startswith(BASE + '/'):
+                return match.group(0)
+            partes = urlsplit(destino)
+            ruta = partes.path
+            if ruta == 'index.html':
+                ruta = './'
+            elif ruta.endswith('/index.html'):
+                ruta = ruta[:-len('index.html')]
+            else:
+                return match.group(0)
+            return f'href={comilla}{ruta}{("?" + partes.query) if partes.query else ""}{("#" + partes.fragment) if partes.fragment else ""}{comilla}'
+        raw = re.sub(r"href=([\"'])(.*?)\1", enlace_limpio, raw, flags=re.I)
         e = lambda x: escape(x, quote=True)
         tags = [START,
                 f'<link rel="canonical" href="{e(url)}">',
@@ -164,18 +188,18 @@ def build():
             schema = {'@context': 'https://schema.org', '@graph': [
                 {'@type': 'WebSite', '@id': BASE + '/#website', 'url': BASE + '/',
                  'name': 'Línea de pase', 'inLanguage': 'es', 'description': description,
-                 'author': {'@id': BASE + '/sobre-mi/index.html#autor'}},
-                {'@type': 'Person', '@id': BASE + '/sobre-mi/index.html#autor',
-                 'name': 'Ángel Marqueta Alonso', 'url': BASE + '/sobre-mi/index.html',
+                 'author': {'@id': BASE + '/sobre-mi/#autor'}},
+                {'@type': 'Person', '@id': BASE + '/sobre-mi/#autor',
+                 'name': 'Ángel Marqueta Alonso', 'url': BASE + '/sobre-mi/',
                  'sameAs': ['https://www.linkedin.com/in/angel-marqueta-alonso-a8831164',
                             'https://www.youtube.com/@lineadepasefutbol']}]}
             tags.insert(-1, '<script type="application/ld+json">' + json.dumps(schema, ensure_ascii=False) + '</script>')
         else:
             crumbs = [('Inicio', BASE + '/')]
             if path.startswith('proyectos/') and path != 'proyectos/index.html':
-                crumbs.append(('Proyectos', BASE + '/proyectos/index.html'))
+                crumbs.append(('Proyectos', BASE + '/proyectos/'))
             if path.startswith('proyectos/real-zaragoza/') and path != 'proyectos/real-zaragoza/index.html':
-                crumbs.append(('Real Zaragoza', BASE + '/proyectos/real-zaragoza/index.html'))
+                crumbs.append(('Real Zaragoza', BASE + '/proyectos/real-zaragoza/'))
             crumbs.append((title.replace(' · Línea de pase', ''), url))
             graph = [{
                 '@type': 'BreadcrumbList',
@@ -189,7 +213,7 @@ def build():
                     'description': description, 'image': [image_url],
                     'inLanguage': 'es', 'mainEntityOfPage': url,
                     'author': {'@type': 'Person', 'name': 'Ángel Marqueta Alonso',
-                               'url': BASE + '/sobre-mi/index.html'}})
+                               'url': BASE + '/sobre-mi/'}})
             tags.insert(-1, '<script type="application/ld+json">' + json.dumps(
                 {'@context': 'https://schema.org', '@graph': graph}, ensure_ascii=False) + '</script>')
         raw = raw.replace('</head>', nl.join(tags) + nl + '</head>', 1)
