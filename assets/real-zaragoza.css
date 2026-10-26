@@ -122,3 +122,12 @@
 .desplegable summary{cursor:pointer;font-weight:700;padding:.35rem}.desplegable[open]>summary{margin-bottom:1rem}.desplegable .figura{margin:1rem 0}
 .guia-grafico h3{margin-top:1.7rem}.guia-grafico p{line-height:1.75}
 @media(max-width:700px){.previa-destacada{grid-template-columns:1fr;gap:1rem}.previa-duelo{border-top:1px solid var(--linea);padding-top:1rem}.previa-duelo strong{font-size:2rem}.mapa-secciones{grid-template-columns:1fr}.pestanas a{flex:0 1 auto;text-align:left;padding:.65rem .75rem;font-size:.86rem}.graficos{grid-template-columns:1fr}}
+
+
+/* Imagen editorial del resultado en la ficha y el acceso de portada. */
+.imagen-resultado-partido{margin:clamp(1rem,2.5vw,1.75rem) 0;overflow:hidden;border-radius:14px;background:#0c1b38;box-shadow:0 12px 32px #071d4520}
+.imagen-resultado-partido img{display:block;width:100%;height:auto}
+.imagen-resultado-partido figcaption{padding:.55rem .8rem;color:var(--muted,#64748b);font-size:.82rem;line-height:1.45}
+.analisis-principal .imagen-resultado-portada{margin:1rem 0}
+.analisis-principal .imagen-resultado-portada figcaption{display:none}
+.analisis-principal .imagen-resultado-portada a{display:block}
