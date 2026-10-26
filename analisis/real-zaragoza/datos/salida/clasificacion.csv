@@ -1,21 +1,21 @@
 ﻿tras_jornada,posicion,equipo,pj,g,e,p,gf,gc,puntos,fuente_url,dg,puntos_por_partido,puesto_ataque,puesto_defensa
-8,1,Villarreal B,8,5,2,1,17,9,17,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-8-real-murcia-cf-vs-real-zaragoza-3920,8,2.12,1,6
-8,2,Real Zaragoza,8,5,2,1,16,10,17,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-8-real-murcia-cf-vs-real-zaragoza-3920,6,2.12,2,9
-8,3,Real Murcia,8,5,1,2,11,7,16,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-8-real-murcia-cf-vs-real-zaragoza-3920,4,2.0,8,3
-8,4,Cartagena,8,4,3,1,13,5,15,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-8-real-murcia-cf-vs-real-zaragoza-3920,8,1.88,5,1
-8,5,Real Jaén,8,4,3,1,12,8,15,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-8-real-murcia-cf-vs-real-zaragoza-3920,4,1.88,7,5
-8,6,Alcorcón,8,3,4,1,14,6,13,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-8-real-murcia-cf-vs-real-zaragoza-3920,8,1.62,4,2
-8,7,UD Ibiza,8,4,1,3,11,10,13,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-8-real-murcia-cf-vs-real-zaragoza-3920,1,1.62,8,9
-8,8,Hércules,8,4,1,3,6,7,13,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-8-real-murcia-cf-vs-real-zaragoza-3920,-1,1.62,17,3
-8,9,Real Madrid Castilla,8,3,3,2,11,9,12,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-8-real-murcia-cf-vs-real-zaragoza-3920,2,1.5,8,6
-8,10,SD Huesca,8,2,5,1,10,10,11,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-8-real-murcia-cf-vs-real-zaragoza-3920,0,1.38,13,9
-8,11,Gimnàstic,8,3,2,3,11,12,11,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-8-real-murcia-cf-vs-real-zaragoza-3920,-1,1.38,8,13
-8,12,Antequera,8,2,4,2,13,12,10,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-8-real-murcia-cf-vs-real-zaragoza-3920,1,1.25,5,13
-8,13,Algeciras,8,3,1,4,11,13,10,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-8-real-murcia-cf-vs-real-zaragoza-3920,-2,1.25,8,15
-8,14,Atlético Madrileño,8,2,3,3,16,14,9,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-8-real-murcia-cf-vs-real-zaragoza-3920,2,1.12,2,16
-8,15,Sant Andreu,8,2,3,3,9,10,9,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-8-real-murcia-cf-vs-real-zaragoza-3920,-1,1.12,15,9
-8,16,CE Europa,8,2,1,5,6,14,7,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-8-real-murcia-cf-vs-real-zaragoza-3920,-8,0.88,17,16
-8,17,CDA Águilas FC,8,1,3,4,8,14,6,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-8-real-murcia-cf-vs-real-zaragoza-3920,-6,0.75,16,16
-8,18,CD Teruel,8,1,2,5,3,14,5,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-8-real-murcia-cf-vs-real-zaragoza-3920,-11,0.62,20,16
-8,19,Rayo Majadahonda,8,1,1,6,5,9,4,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-8-real-murcia-cf-vs-real-zaragoza-3920,-4,0.5,19,6
-8,20,Juventud Torremolinos CF,8,0,3,5,10,20,3,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-8-real-murcia-cf-vs-real-zaragoza-3920,-10,0.38,13,20
+9,1,Villarreal B,9,6,2,1,21,10,20,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,11,2.22,1,5
+9,2,Real Zaragoza,9,6,2,1,17,10,20,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,7,2.22,2,5
+9,3,Real Jaén,9,4,4,1,13,9,16,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,4,1.78,9,2
+9,4,Real Murcia,9,5,1,3,11,8,16,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,3,1.78,11,1
+9,5,Cartagena,9,4,3,2,14,9,15,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,5,1.67,6,2
+9,6,Alcorcón,9,3,5,1,17,9,14,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,8,1.56,2,2
+9,7,Gimnàstic,9,4,2,3,15,14,14,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,1,1.56,5,15
+9,8,UD Ibiza,9,4,2,3,14,13,14,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,1,1.56,6,12
+9,9,Algeciras,9,4,1,4,13,13,13,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,0,1.44,9,12
+9,10,Hércules,9,4,1,4,8,11,13,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,-3,1.44,17,8
+9,11,SD Huesca,9,2,6,1,11,11,12,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,0,1.33,11,8
+9,12,Real Madrid Castilla,9,3,3,3,11,11,12,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,0,1.33,11,8
+9,13,Antequera,9,2,5,2,14,13,11,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,1,1.22,6,12
+9,14,Atlético Madrileño,9,2,4,3,17,15,10,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,2,1.11,2,16
+9,15,Sant Andreu,9,2,3,4,10,12,9,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,-2,1.0,15,11
+9,16,Rayo Majadahonda,9,2,1,6,7,10,7,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,-3,0.78,18,5
+9,17,CDA Águilas FC,9,1,4,4,9,15,7,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,-6,0.78,16,16
+9,18,CE Europa,9,2,1,6,6,15,7,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,-9,0.78,19,16
+9,19,Juventud Torremolinos CF,9,1,3,5,11,20,6,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,-9,0.67,11,20
+9,20,CD Teruel,9,1,3,5,4,15,6,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,-11,0.67,20,16

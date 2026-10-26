@@ -473,6 +473,13 @@ def tabla_html(t):
       <tbody>{"".join(filas)}</tbody></table></div>"""
 
 
+def fuente_nombre(url):
+    """Nombre legible del medio a partir de su URL."""
+    nombres = {"as.com": "AS", "realzaragoza.com": "la web del Real Zaragoza", "besoccer.com": "BeSoccer",
+               "elperiodicodeceuta.es": "El Periódico de Ceuta", "rfef.es": "la RFEF"}
+    return next((v for k, v in nombres.items() if k in str(url)), "la fuente")
+
+
 def actualidad_html():
     """Resultados y clasificación revisados, independientes del corte de xG."""
     c = pd.read_csv(ENTRADA / "clasificacion.csv")
@@ -489,14 +496,14 @@ def actualidad_html():
     partidos = ''.join(f'<li>{e(f.local)} <strong>{f.goles_local}–{f.goles_visitante}</strong> {e(f.visitante)}</li>'
                        for f in resultados.itertuples())
     return j, f"""<section class="seccion" aria-labelledby="t-actualidad">
-    <p class="etiqueta">Actualizado el 20/10/2026 · Jornada {j} completa</p>
+    <p class="etiqueta">Actualizado el 26/10/2026 · Jornada {j} completa</p>
     <h2 id="t-actualidad">Resultados y clasificación tras la jornada {j}</h2>
-    <p>El Villarreal B alcanza al Zaragoza con 17 puntos y lidera por diferencia de goles (+8 frente a +6). El Murcia queda tercero con 16; Cartagena y Real Jaén suman 15. La jornada deja 25 goles: seis victorias locales, una visitante y tres empates.</p>
+    <p>El Villarreal B y el Zaragoza siguen empatados, ahora con 20 puntos; el filial lidera por diferencia de goles (+11 frente a +7). Real Jaén y Real Murcia suman 16 y el Cartagena, 15. La jornada deja 30 goles: cinco victorias locales, una visitante y cuatro empates.</p>
     <ul>{partidos}</ul>
     <div class="tarjeta tabla" tabindex="0" role="region" aria-label="Clasificación tras la jornada {j}, desplazable"><table>
     <thead><tr><th>#</th><th>Equipo</th><th>PJ</th><th>Pts</th><th>G</th><th>E</th><th>P</th><th>GF</th><th>GC</th><th>DG</th></tr></thead>
     <tbody>{''.join(filas)}</tbody></table></div>
-    <p class="nota">Fuentes: <a href="{e(resultados.iloc[0].fuente_url)}" target="_blank" rel="noopener">resultados de AS</a> y <a href="{e(c.iloc[0].fuente_url)}" target="_blank" rel="noopener">clasificación en la web del Real Zaragoza</a>. Los empates se muestran por diferencia de goles; la clasificación definitiva depende de los criterios reglamentarios.</p>
+    <p class="nota">Fuentes: <a href="{e(resultados.iloc[0].fuente_url)}" target="_blank" rel="noopener">resultados de {fuente_nombre(resultados.iloc[0].fuente_url)}</a> y <a href="{e(c.iloc[0].fuente_url)}" target="_blank" rel="noopener">clasificación de {fuente_nombre(c.iloc[0].fuente_url)}</a>. Los empates se muestran por diferencia de goles; la clasificación definitiva depende de los criterios reglamentarios.</p>
     </section>"""
 
 

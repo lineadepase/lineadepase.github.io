@@ -167,7 +167,7 @@ Todos los partidos del grupo 2 con estadísticas de Sofascore. Una fila por equi
 
 ## clasificacion
 
-Clasificación del grupo 2 después de cada jornada apuntada. Archivo: `datos/entrada/clasificacion.csv` (60 filas).
+Clasificación del grupo 2 después de cada jornada apuntada. Archivo: `datos/entrada/clasificacion.csv` (80 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|
@@ -213,7 +213,7 @@ Resultados del próximo rival esta temporada, para la previa. Archivo: `datos/en
 
 ## incidencias
 
-Diferencias entre fuentes y qué dato me quedo. Es el registro de decisiones del proyecto. Archivo: `datos/entrada/incidencias.csv` (64 filas).
+Diferencias entre fuentes y qué dato me quedo. Es el registro de decisiones del proyecto. Archivo: `datos/entrada/incidencias.csv` (68 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|

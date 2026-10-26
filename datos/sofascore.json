@@ -1,7 +1,7 @@
 {
  "_nota": "Calendario facilitado para el seguimiento del Real Zaragoza. Las horas de inicio están en UTC y pueden cambiar. La web muestra el último resultado revisado hasta el martes por la mañana si hay partido entre semana o hasta el miércoles en caso contrario; después, el próximo partido. El estado en directo se consulta en Sofascore y nunca se deduce de la hora. El campo tv contiene únicamente los canales indicados para cada encuentro; si está vacío, la emisión está pendiente de confirmar.",
  "equipo_sofascore": 2815,
- "actualizado": "2026-10-24",
+ "actualizado": "2026-10-26",
  "partidos": [
   {
    "id": 16599975,
@@ -40,7 +40,12 @@
    "visitante": "Real Zaragoza",
    "competicion": "Copa del Rey",
    "jornada": null,
-   "tv": []
+   "tv": [
+    {
+     "canal": "Aragón TV",
+     "abierto": true
+    }
+   ]
   },
   {
    "id": 16600019,
