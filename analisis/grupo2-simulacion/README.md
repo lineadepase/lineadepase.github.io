@@ -64,6 +64,6 @@ Tarda menos de un minuto.
 
 ## Imagen
 
-La portada del carrusel y la cabecera de la página usan una foto del Real Zaragoza-SD Huesca de la temporada 2024/25 en La Romareda, de WikiUsuario46 en [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Partido_Real_Zaragoza-SD_Huesca,_temporada_24-25_en_la_Romareda.jpg), en dominio público (CC0). Datos completos en `recursos/foto.json`.
+La portada del carrusel y la cabecera de la página usan una ilustración generada con IA (`recursos/portada_ia.jpg`).
 
 Análisis personal. Sin relación con el Real Zaragoza ni con ninguna competición.

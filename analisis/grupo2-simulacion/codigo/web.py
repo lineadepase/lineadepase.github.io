@@ -14,7 +14,7 @@ import pandas as pd
 
 ESTUDIO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ESTUDIO.parent / "comun"))
-from pagina import RAIZ_WEB, escribir_pagina_zaragoza, figura_foto, numero  # noqa: E402
+from pagina import RAIZ_WEB, escribir_pagina_zaragoza, numero  # noqa: E402
 
 CODIGO_GITHUB = "https://github.com/lineadepase/lineadepase.github.io/tree/main/analisis/grupo2-simulacion"
 EQUIPO = "Real Zaragoza"
@@ -33,7 +33,7 @@ def copiar_recursos():
         shutil.copy(ESTUDIO / "graficos" / f"{nombre}.png", destino / f"{nombre}.png")
     shutil.copy(ESTUDIO / "graficos" / "05_puesto_zaragoza_facebook.png", destino / "compartir.png")
     shutil.copy(ESTUDIO / "datos" / "salida" / "probabilidades.csv", destino / "probabilidades.csv")
-    shutil.copy(ESTUDIO / "recursos" / "foto.jpg", destino / "foto.jpg")
+    shutil.copy(ESTUDIO / "recursos" / "portada_ia.jpg", destino / "portada_ia.jpg")
 
 
 def tabla_html(tabla):
@@ -69,7 +69,6 @@ def main():
     else:
         lectura_penalizacion = "Con las jornadas jugadas, los resultados ya permiten separar a los equipos con cierta confianza."
     copiar_recursos()
-    foto = json.loads((ESTUDIO / "recursos" / "foto.json").read_text(encoding="utf-8"))
 
     cuerpo = f"""  <section class="cab-proyecto">
     <p class="etiqueta">Investigación · Simulación Monte Carlo</p>
@@ -82,7 +81,7 @@ def main():
     </dl>
   </section>
 
-{figura_foto("graficos/simulacion/foto.jpg", foto)}
+  <figure class="figura foto foto-cabecera"><img src="graficos/simulacion/portada_ia.jpg" width="1122" height="1402" alt="Un león con la camiseta azul y blanca sube una escalera de 20 peldaños numerados hacia la cima, rodeado de dados." loading="lazy" style="max-width:min(560px,100%);margin-inline:auto"><figcaption>Ilustración generada con IA.</figcaption></figure>
 
   <section class="seccion lectura">
     <p class="etiqueta">Resultados</p>
