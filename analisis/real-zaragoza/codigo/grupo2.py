@@ -517,6 +517,11 @@ def escribir_pagina(t, jornada):
     <p class="entradilla">Clasificación y resultados hasta la jornada {jornada_actual}. La comparación de xG, puntos esperados, tiros y posesión está actualizada hasta la jornada {jornada}, con la cobertura indicada en cada apartado.</p>
   </section>
   {actualidad}
+  <section class="seccion" aria-labelledby="t-simulacion">
+    <p class="etiqueta">Investigación</p><h2 id="t-simulacion">¿Y si el grupo 2 se jugara 10.000 veces?</h2>
+    <p>Una simulación de lo que queda de temporada con las probabilidades de ascenso, playoff y descenso de los 20 equipos.</p>
+    <div class="enlaces"><a class="boton lleno" href="simulacion.html">Leer la simulación</a></div>
+  </section>
   <section class="seccion lectura" aria-labelledby="t-lectura">
     <p class="etiqueta">Lo que dicen los datos</p><h2 id="t-lectura">Lectura avanzada · J{jornada}</h2>
     {analisis}

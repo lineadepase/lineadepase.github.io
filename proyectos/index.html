@@ -77,10 +77,27 @@
         <button type="button" data-filtro="todos" aria-pressed="true">Todos <span>4</span></button>
         <button type="button" data-filtro="temporada" aria-pressed="false">Seguimiento de temporada <span>1</span></button>
         <button type="button" data-filtro="master" aria-pressed="false">Trabajos del máster <span>1</span></button>
-        <button type="button" data-filtro="investigacion" aria-pressed="false">Investigaciones <span>1</span></button>
+        <button type="button" data-filtro="investigacion" aria-pressed="false">Investigaciones <span>2</span></button>
         <button type="button" data-filtro="divulgacion" aria-pressed="false">Divulgación <span>1</span></button>
       </div>
       <ul class="tarjetas-proyecto" id="catalogo">
+        <li data-tipo="investigacion">
+          <a class="tarjeta-proyecto" href="real-zaragoza/simulacion.html">
+            <div class="mini-marco">
+              <div class="mini mini-imagen">
+              <img src="real-zaragoza/graficos/simulacion/compartir.png" alt="" width="1600" height="900" loading="lazy">
+            </div>
+              <span class="tipo-proyecto">Investigación</span>
+            </div>
+            <div class="tarjeta-texto">
+              <p class="tipo-texto">Investigación</p>
+              <p class="etiqueta">Primera Federación · Grupo 2 · Tras la jornada 8</p>
+              <h2>¿Y si el grupo 2 se jugara 10.000 veces?</h2>
+              <p>Una simulación Monte Carlo de lo que queda de temporada, con las probabilidades de ascenso, playoff y descenso de los 20 equipos.</p>
+              <dl class="ficha-proyecto"><dt>Pregunta</dt><dd>¿Qué probabilidad tiene cada equipo de ascender, jugar el playoff o descender?</dd><dt>Método</dt><dd>Modelo de Poisson con ataque, defensa y ventaja local, validación cruzada por jornadas y 10.000 temporadas simuladas.</dd><dt>Resultado</dt><dd>Probabilidades por equipo y puesto, con su evolución jornada a jornada.</dd><dt>Aportación</dt><dd>Preparación de datos, modelo en Python, comprobaciones y comunicación del análisis.</dd></dl><span class="ver">Leer la investigación</span>
+            </div>
+          </a>
+        </li>
         <li data-tipo="investigacion">
           <a class="tarjeta-proyecto" href="liga-f-xt/index.html">
             <div class="mini-marco">

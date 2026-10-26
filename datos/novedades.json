@@ -1,5 +1,12 @@
 [
   {
+    "fecha": "2026-10-27",
+    "tipo": "Publicación",
+    "titulo": "¿Y si el grupo 2 se jugara 10.000 veces?",
+    "texto": "Simulación Monte Carlo de la temporada de Primera Federación con las probabilidades de ascenso, playoff y descenso de los 20 equipos.",
+    "url": "proyectos/real-zaragoza/simulacion.html"
+  },
+  {
     "fecha": "2026-10-24",
     "tipo": "Actualización",
     "titulo": "Jornada 9: CE Europa 0-1 Real Zaragoza",
