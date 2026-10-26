@@ -2,6 +2,12 @@
 
 **Borrador de trabajo para web y redes. No publicado en redes.**
 
+## Imagen de la previa
+
+![Noche de Copa en Tudela: CD Tudelano–Real Zaragoza, martes 27 a las 21:00](https://lineadepase.com/proyectos/real-zaragoza/graficos/previa/tudelano-real-zaragoza-20261027.webp)
+
+**Recurso visual para adjuntar en la web y en las publicaciones de LinkedIn, Facebook e Instagram:** [descargar la imagen](https://lineadepase.com/proyectos/real-zaragoza/graficos/previa/tudelano-real-zaragoza-20261027.webp).
+
 ## Información confirmada
 
 - Primera eliminatoria de Copa del Rey 2026/27, a partido único.
@@ -44,6 +50,8 @@ La diferencia de categoría sitúa al Zaragoza como favorito sobre el papel, per
 
 ## LinkedIn
 
+**Imagen para la publicación:** https://lineadepase.com/proyectos/real-zaragoza/graficos/previa/tudelano-real-zaragoza-20261027.webp
+
 **Previa de Copa | CD Tudelano–Real Zaragoza**
 
 El Real Zaragoza visita Tudela este martes (21:00) en una eliminatoria a partido único. Llega tras vencer 0–1 al Europa, en un encuentro que deja una pregunta para el análisis: ¿cómo convertir la posesión en progresión y ocasiones?
@@ -56,11 +64,15 @@ La categoría marca el contexto; el partido pondrá a prueba la ejecución. La l
 
 ## Facebook
 
+**Imagen para la publicación:** https://lineadepase.com/proyectos/real-zaragoza/graficos/previa/tudelano-real-zaragoza-20261027.webp
+
 ¡Noche de Copa en Tudela! ⚽ El Real Zaragoza visita al CD Tudelano este martes a las 21:00, en una eliminatoria a partido único. El Zaragoza llega después de ganar 0–1 al Europa; el Tudelano, tras empatar 1–1 con el Barbastro.
 
 En la previa ponemos el foco en cuatro claves: progresión, presencia en el área, balón parado y gestión del marcador. Sin pronósticos cerrados: el análisis se completará con lo que veamos en el campo.
 
 ## Instagram
+
+**Imagen para la publicación:** https://lineadepase.com/proyectos/real-zaragoza/graficos/previa/tudelano-real-zaragoza-20261027.webp
 
 **Noche de Copa en Tudela.**
 
