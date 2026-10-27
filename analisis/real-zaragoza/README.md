@@ -92,7 +92,7 @@ Para sincronizar páginas ya publicadas: `python herramientas/previas.py`. La ac
    Rscript analisis/real-zaragoza/codigo/comprobar.R
    ```
 3. Si alguna comprobación falla, el script para y no cambia nada de la web.
-   `actualizar.py` también regenera las pestañas «Jornada a jornada» (una página por partido, `paginas_partidos.py`) y «Último partido», las tablas para Excel (`preparar_tablas.py`) y la publicación visual del partido más reciente. Su paso final reconstruye portada y galería, exporta el marcador SVG a PNG y comprueba que las tres piezas usan la misma jornada y fecha. Para ese paso se necesita Chrome o Edge instalado; también se puede indicar con `CHROME_PATH`.
+   `actualizar.py` también regenera las pestañas «Jornada a jornada» (una página por partido, `paginas_partidos.py`) y «Último partido», las tablas para Excel (`preparar_tablas.py`) y la publicación visual del partido más reciente. Su paso final reconstruye portada y galería, exporta el marcador SVG a PNG y comprueba que las piezas usan la misma jornada y fecha. Solo añade posesión y tiros cuando la ficha está completa y ambas métricas son válidas; si no, omite y retira el gráfico estadístico. Para ese paso se necesita Chrome o Edge instalado; también se puede indicar con `CHROME_PATH`.
    Para los goles en vídeo y el xG, después de apuntar los goles de la jornada en `video/goles_video.csv` y sus estadísticas en `sofascore.csv`:
    ```
    python analisis/real-zaragoza/codigo/goles_video.py

@@ -7,6 +7,7 @@ from pathlib import Path
 import xml.etree.ElementTree as ET
 
 from PIL import Image
+from segunda_edicion import match_statistics, percentage_text
 
 ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / 'assets' / 'ilustraciones'
@@ -17,10 +18,13 @@ class VisualLinks(HTMLParser):
         super().__init__()
         self.home: dict[str, str] | None = None
         self.gallery: dict[str, str] | None = None
+        self.statistics: dict[str, str] | None = None
         self.home_image = ''
         self.gallery_image = ''
+        self.statistics_image = ''
         self._in_home = False
         self._in_gallery = False
+        self._in_statistics = False
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         values = {key: value or '' for key, value in attrs}
@@ -31,21 +35,29 @@ class VisualLinks(HTMLParser):
         if tag == 'article' and 'tarjeta-galeria-visual' in classes and values.get('data-coleccion-visual') == 'jornada':
             self.gallery = values
             self._in_gallery = True
+        if tag == 'article' and 'tarjeta-galeria-visual' in classes and values.get('data-coleccion-visual') == 'estadistica':
+            self.statistics = values
+            self._in_statistics = True
         if tag == 'img' and self._in_home:
             self.home_image = values.get('src', '')
         if tag == 'img' and self._in_gallery:
             self.gallery_image = values.get('src', '')
+        if tag == 'img' and self._in_statistics:
+            self.statistics_image = values.get('src', '')
 
     def handle_endtag(self, tag: str) -> None:
         if tag == 'figure' and self._in_home:
             self._in_home = False
         if tag == 'article' and self._in_gallery:
             self._in_gallery = False
+        if tag == 'article' and self._in_statistics:
+            self._in_statistics = False
 
 
 def main() -> None:
     data = json.loads((ROOT / 'datos' / 'zaragoza.json').read_text(encoding='utf-8'))
     match = max(data['partidos'], key=lambda row: int(row['jornada']))
+    stats = match_statistics(match)
     expected_round = str(match['jornada'])
     expected_date = match['fecha']
     months = ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC']
@@ -89,6 +101,25 @@ def main() -> None:
                 raise RuntimeError(f'{filename}: los metadatos PNG no coinciden con la jornada y fecha actuales.')
         if path.stat().st_size > 100_000:
             raise RuntimeError(f'{filename} supera 100 KB.')
+
+    stats_svg = ART / 'estadisticas-real-zaragoza-ultima-jornada.svg'
+    stats_png = ART / 'estadisticas-real-zaragoza-ultima-jornada.png'
+    if stats:
+        if pages.statistics is None or pages.statistics.get('data-jornada') != expected_round or pages.statistics.get('data-fecha-partido') != expected_date:
+            raise RuntimeError('La tarjeta de estadísticas de la galería no coincide con el partido actual.')
+        if pages.statistics_image != '../assets/ilustraciones/estadisticas-real-zaragoza-ultima-jornada.png':
+            raise RuntimeError('La galería no enlaza la miniatura de estadísticas actual.')
+        statistics_description = ET.parse(stats_svg).getroot().findtext('{*}desc') or ''
+        for value in (expected_display_date, percentage_text(stats['posesion_pct']), str(stats['tiros_zaragoza']), str(stats['tiros_rival'])):
+            if value not in statistics_description:
+                raise RuntimeError(f'El gráfico estadístico no coincide con la ficha completa: falta {value!r}.')
+        with Image.open(stats_png) as image:
+            if image.size != (1200, 630) or image.info.get('jornada') != expected_round or image.info.get('fecha_partido') != expected_date:
+                raise RuntimeError('La miniatura de estadísticas no coincide con la jornada/fecha o dimensiones esperadas.')
+        if stats_png.stat().st_size > 100_000:
+            raise RuntimeError('La miniatura estadística supera 100 KB.')
+    elif pages.statistics is not None or stats_svg.exists() or stats_png.exists():
+        raise RuntimeError('Se ha publicado un gráfico estadístico sin cobertura completa.')
 
     printable_score = f'{goals_home}-{goals_away}'
     print(f'Marcador sincronizado: J{int(expected_round):02d}, {expected_date}, {home} {printable_score} {away}; portada, galería, SVG y PNG correctos.')

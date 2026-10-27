@@ -16,6 +16,7 @@ import tempfile
 
 from PIL import Image
 from PIL.PngImagePlugin import PngInfo
+from segunda_edicion import match_statistics
 
 ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / 'assets' / 'ilustraciones'
@@ -62,6 +63,14 @@ def main() -> None:
         ('resultado-real-zaragoza-ultima-jornada', 1200, 630),
         ('resultado-real-zaragoza-ultima-jornada-cuadrado', 1080, 1080),
     ]
+    stats_svg = ART / 'estadisticas-real-zaragoza-ultima-jornada.svg'
+    stats_png = ART / 'estadisticas-real-zaragoza-ultima-jornada.png'
+    data = json.loads((ROOT / 'datos' / 'zaragoza.json').read_text(encoding='utf-8'))
+    latest = max(data['partidos'], key=lambda row: int(row['jornada']))
+    if match_statistics(latest) and stats_svg.is_file():
+        exports.append(('estadisticas-real-zaragoza-ultima-jornada', 1200, 630))
+    elif stats_png.exists():
+        stats_png.unlink()
     with tempfile.TemporaryDirectory(prefix='linea-pase-export-') as temp:
         folder = Path(temp)
         profile = folder / 'perfil-chrome'
@@ -73,12 +82,14 @@ def main() -> None:
                         f'--window-size={width},{height}', f'--screenshot={raw_path}',
                         svg_path.resolve().as_uri())
             metadata = None
-            if stem.startswith('resultado-real-zaragoza-ultima-jornada'):
-                data = json.loads((ROOT / 'datos' / 'zaragoza.json').read_text(encoding='utf-8'))
-                latest = max(data['partidos'], key=lambda row: int(row['jornada']))
+            if stem.startswith(('resultado-real-zaragoza-ultima-jornada', 'estadisticas-real-zaragoza-ultima-jornada')):
                 metadata = PngInfo()
                 metadata.add_text('jornada', str(latest['jornada']))
                 metadata.add_text('fecha_partido', latest['fecha'])
+                if stem.startswith('estadisticas-'):
+                    metadata.add_text('posesion_pct', str(latest['posesion_pct']))
+                    metadata.add_text('tiros_zaragoza', str(int(latest['tiros_zaragoza'])))
+                    metadata.add_text('tiros_rival', str(int(latest['tiros_rival'])))
             with Image.open(raw_path) as image:
                 if image.size != (width, height):
                     raise RuntimeError(f'{svg_path.name}: se esperaba {width}×{height}px y llegaron {image.width}×{image.height}px')

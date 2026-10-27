@@ -2,6 +2,7 @@
 from pathlib import Path
 from html import escape as e
 import json
+import math
 import re
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -123,6 +124,68 @@ def generate_matchday_visual():
     folder.mkdir(exist_ok=True)
     for name,width,height,square in [('resultado-real-zaragoza-ultima-jornada.svg',1200,630,False),('resultado-real-zaragoza-ultima-jornada-cuadrado.svg',1080,1080,True)]:
         (folder/name).write_text(svg(width,height,square),encoding='utf-8')
+    stats=match_statistics(match)
+    stats_svg=folder/'estadisticas-real-zaragoza-ultima-jornada.svg'
+    if stats:
+        stats_svg.write_text(statistics_svg(match,stats),encoding='utf-8')
+    elif stats_svg.exists():
+        stats_svg.unlink()
+
+
+def match_statistics(match):
+    """Devuelve las dos métricas de partido solo si la ficha está cerrada y completa."""
+    fields=('tiros_zaragoza','tiros_rival','posesion_pct')
+    if not match.get('completo') or any(match.get(field) is None for field in fields):
+        return None
+    try:
+        shots_z_value=float(match['tiros_zaragoza']); shots_r_value=float(match['tiros_rival'])
+        possession=float(match['posesion_pct'])
+    except (TypeError,ValueError):
+        return None
+    if not all(math.isfinite(value) for value in (shots_z_value,shots_r_value,possession)):
+        return None
+    if not shots_z_value.is_integer() or not shots_r_value.is_integer():
+        return None
+    shots_z=int(shots_z_value); shots_r=int(shots_r_value)
+    if shots_z<0 or shots_r<0 or not 0<=possession<=100:
+        return None
+    return {'tiros_zaragoza':shots_z,'tiros_rival':shots_r,'posesion_pct':possession}
+
+
+def percentage_text(value):
+    return f'{float(value):g}'.replace('.',',')
+
+
+def statistics_svg(match,stats):
+    date_parts=match['fecha'].split('-')
+    months=['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC']
+    date_label=f'{date_parts[2]} {months[int(date_parts[1])-1]} {date_parts[0]}'
+    possession=float(stats['posesion_pct'])
+    rival_possession=100-possession
+    shots_z=stats['tiros_zaragoza']; shots_r=stats['tiros_rival']
+    away=match['sede']=='Fuera'
+    left='Real Zaragoza' if not away else match['rival']
+    right=match['rival'] if not away else 'Real Zaragoza'
+    left_pos=possession if not away else rival_possession
+    right_pos=100-left_pos
+    left_pos_label=percentage_text(left_pos)
+    right_pos_label=percentage_text(right_pos)
+    left_shots=shots_z if not away else shots_r
+    right_shots=shots_r if not away else shots_z
+    left_pos_width=470*left_pos/100
+    right_pos_width=470-left_pos_width
+    shot_max=max(left_shots,right_shots,1)
+    left_width=424*left_shots/shot_max
+    right_width=424*right_shots/shot_max
+    description=f'Jornada {int(match["jornada"])} · {date_label}. Posesión: Real Zaragoza {percentage_text(possession)} por ciento y {match["rival"]} {percentage_text(rival_possession)} por ciento. Tiros: Real Zaragoza {shots_z} y {match["rival"]} {shots_r}.'
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="titulo descripcion">
+<title id="titulo">Posesión y tiros · Jornada {int(match['jornada'])}</title><desc id="descripcion">{e(description)}</desc>
+<rect width="1200" height="630" fill="#f3f5ef"/><path d="M0 0h1200v150H0z" fill="#103b24"/><text x="48" y="40" fill="#bed8c4" font-family="Arial,sans-serif" font-size="18" font-weight="700" letter-spacing="3">LÍNEA DE PASE · SEGUIMIENTO DEL ZARAGOZA</text><text x="48" y="94" fill="#f7f8f4" font-family="Arial,sans-serif" font-size="38" font-weight="800">Posesión y tiros · J{int(match['jornada']):02d}</text><text x="1150" y="92" text-anchor="end" fill="#e0e9e2" font-family="Arial,sans-serif" font-size="20">{date_label} · {e(match['rival'])}</text>
+<rect x="48" y="178" width="535" height="360" rx="20" fill="#fff" stroke="#d4ded6" stroke-width="2"/><rect x="617" y="178" width="535" height="360" rx="20" fill="#fff" stroke="#d4ded6" stroke-width="2"/>
+<text x="80" y="226" fill="#536257" font-family="Arial,sans-serif" font-size="20" font-weight="700" letter-spacing="2">POSESIÓN</text><text x="80" y="274" fill="#163e28" font-family="Arial,sans-serif" font-size="27" font-weight="700">{e(left)}</text><text x="550" y="274" text-anchor="end" fill="#536257" font-family="Arial,sans-serif" font-size="27" font-weight="700">{e(right)}</text>
+<text x="80" y="355" fill="#245b9b" font-family="Arial,sans-serif" font-size="66" font-weight="800">{left_pos_label}%</text><text x="550" y="355" text-anchor="end" fill="#a85b35" font-family="Arial,sans-serif" font-size="66" font-weight="800">{right_pos_label}%</text><rect x="80" y="390" width="470" height="22" rx="11" fill="#e8ece7"/><rect x="80" y="390" width="{left_pos_width:.1f}" height="22" rx="11" fill="#245b9b"/><rect x="{80+left_pos_width:.1f}" y="390" width="{right_pos_width:.1f}" height="22" rx="11" fill="#a85b35"/><text x="80" y="465" fill="#64766b" font-family="Arial,sans-serif" font-size="18">Reparto del balón según la ficha</text>
+<text x="649" y="226" fill="#536257" font-family="Arial,sans-serif" font-size="20" font-weight="700" letter-spacing="2">TIROS TOTALES</text><text x="649" y="274" fill="#163e28" font-family="Arial,sans-serif" font-size="27" font-weight="700">{e(left)}</text><text x="1118" y="274" text-anchor="end" fill="#536257" font-family="Arial,sans-serif" font-size="27" font-weight="700">{e(right)}</text><text x="649" y="355" fill="#245b9b" font-family="Arial,sans-serif" font-size="66" font-weight="800">{left_shots}</text><text x="1118" y="355" text-anchor="end" fill="#a85b35" font-family="Arial,sans-serif" font-size="66" font-weight="800">{right_shots}</text><rect x="649" y="390" width="424" height="18" rx="9" fill="#e8ece7"/><rect x="649" y="390" width="{left_width:.1f}" height="18" rx="9" fill="#245b9b"/><rect x="649" y="420" width="424" height="18" rx="9" fill="#e8ece7"/><rect x="649" y="420" width="{right_width:.1f}" height="18" rx="9" fill="#a85b35"/><text x="649" y="483" fill="#64766b" font-family="Arial,sans-serif" font-size="18">Remates totales registrados para ambos equipos</text>
+<text x="48" y="594" fill="#405448" font-family="Arial,sans-serif" font-size="17" font-weight="700">Fuente: datos del seguimiento del partido publicados en Línea de pase.</text><text x="1152" y="594" text-anchor="end" fill="#64766b" font-family="Arial,sans-serif" font-size="17">lineadepase.com</text></svg>'''
 
 
 def generate_map(page):
