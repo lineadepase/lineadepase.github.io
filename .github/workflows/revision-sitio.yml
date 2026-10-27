@@ -1,0 +1,16 @@
+name: Revisión del sitio
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  enlaces-y-accesibilidad:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el sitio
+        uses: actions/checkout@v4
+      - name: Revisar enlaces, anclas e imágenes
+        run: python herramientas/auditar_enlaces.py

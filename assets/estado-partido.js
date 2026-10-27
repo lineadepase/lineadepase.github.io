@@ -9,8 +9,9 @@
     return { date: `${get('year')}-${get('month')}-${get('day')}`, time: `${get('hour')}:${get('minute')}` };
   };
 
-  const labelFor = (date, time, now) => {
-    if (date < now.date) return 'Partido disputado';
+  const labelFor = (date, time, now, confirmed, score) => {
+    const passed = date < now.date || (date === now.date && time && now.time >= time);
+    if (passed) return confirmed ? `Resultado confirmado · ${score}` : 'Pendiente de confirmación editorial';
     if (date === now.date) {
       if (time && now.time >= time) return `Inicio previsto superado · sin marcador en directo`;
       return `Hoy${time ? ` · ${time}` : ''}`;
@@ -23,18 +24,19 @@
     document.querySelectorAll('.tarjeta-previa[data-fecha]').forEach(card => {
       const date = card.dataset.fecha;
       const time = card.dataset.hora || '';
+      const confirmed = card.dataset.resultadoConfirmado === 'true';
+      const score = card.dataset.marcador || '';
       const label = card.querySelector('.estado-previa');
-      if (label) {
-        label.textContent = labelFor(date, time, now);
-      }
+      if (label) label.textContent = labelFor(date, time, now, confirmed, score);
       const previewLink = card.querySelector('.enlace-editorial');
-      if (previewLink && date < now.date) previewLink.textContent = 'Consultar la previa publicada antes del partido';
+      const passed = date < now.date || (date === now.date && time && now.time >= time);
+      if (previewLink && passed) previewLink.textContent = confirmed ? 'Releer la previa' : 'Consultar la previa';
     });
 
     document.querySelectorAll('.estado-partido-detalle[data-fecha]').forEach(label => {
       const date = label.dataset.fecha;
       const time = label.dataset.hora || '';
-      label.textContent = labelFor(date, time, now);
+      label.textContent = labelFor(date, time, now, label.dataset.resultadoConfirmado === 'true', label.dataset.marcador || '');
     });
 
     document.querySelectorAll('.calendario-partido[data-fecha]').forEach(link => {
@@ -45,7 +47,7 @@
     });
 
     document.querySelectorAll('.postpartido-disponible[data-fecha]').forEach(note => {
-      note.hidden = note.dataset.fecha >= now.date;
+      note.hidden = note.dataset.resultadoConfirmado !== 'true';
     });
   }
 

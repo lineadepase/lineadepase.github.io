@@ -132,6 +132,83 @@ class PublicacionPrevias(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'tercera persona'):
             validar_noticia_previa('<p>Puedes seguir el partido en Tudela.</p>')
 
+    def test_registro_exige_confirmacion_horaria_y_fuentes_antes_de_publicar_una_cronica(self):
+        from datetime import datetime, timedelta
+        from zoneinfo import ZoneInfo
+        from previas import registro
+        fixture={'pagina':'proyectos/real-zaragoza/previa-copa.html','imagen':'assets/j10.webp','fecha_partido':'2026-10-26','hora':'21:00',
+                 'postpartido_url':'proyectos/real-zaragoza/cronica.html',
+                 'resultado_confirmado':{'marcador':'2-1','fecha_verificacion':'2026-10-26T21:30:00+01:00',
+                    'fuentes':[{'nombre':'Club','url':'https://club.example/resultado'}]}}
+        (self.root/'assets/j10.webp').write_bytes(b'image-fixture')
+        (self.root/'proyectos/real-zaragoza/cronica.html').write_text('<main>Crónica</main>',encoding='utf-8')
+        (self.root/'assets/j10.webp').write_bytes(b'image-fixture')
+        without_result=dict(fixture); without_result.pop('resultado_confirmado')
+        guardar(self.root/'datos/previas.json',json.dumps([without_result]))
+        with self.assertRaisesRegex(ValueError,'confirmación editorial conjunta'):
+            registro(self.root)
+        guardar(self.root/'datos/previas.json',json.dumps([fixture]))
+        # La confirmación debe llegar después del inicio previsto.
+        fixture['resultado_confirmado']['fecha_verificacion']='2026-10-26T20:59:00+01:00'
+        guardar(self.root/'datos/previas.json',json.dumps([fixture]))
+        with self.assertRaisesRegex(ValueError,'antes de la hora'):
+            registro(self.root)
+        fixture['resultado_confirmado']['fecha_verificacion']='2026-10-26T21:30:00+01:00'
+        guardar(self.root/'datos/previas.json',json.dumps([fixture]))
+        self.assertEqual(len(registro(self.root)),1)
+        from datetime import datetime, timedelta, timezone
+        future=(datetime.now(timezone.utc)+timedelta(days=1)).astimezone(ZoneInfo('Europe/Madrid'))
+        fixture['resultado_confirmado']['fecha_verificacion']=future.isoformat(timespec='seconds')
+        guardar(self.root/'datos/previas.json',json.dumps([fixture]))
+        with self.assertRaisesRegex(ValueError,'no puede estar en el futuro'):
+            registro(self.root)
+        fixture.pop('resultado_confirmado')
+        guardar(self.root/'datos/previas.json',json.dumps([fixture]))
+        with self.assertRaisesRegex(ValueError,'confirmación editorial conjunta'):
+            registro(self.root)
+
+    def test_portada_solo_publica_marcador_y_cronica_con_confirmacion_registrada(self):
+        from datetime import datetime, timedelta
+        from zoneinfo import ZoneInfo
+        self.publish(10)
+        entry=json.loads((self.root/'datos/previas.json').read_text(encoding='utf-8'))[0]
+        now=datetime.now(ZoneInfo('Europe/Madrid'))
+        kickoff=now.date()-timedelta(days=1)
+        entry['fecha_partido']=kickoff.isoformat()
+        entry['fecha_publicacion']=kickoff.isoformat()
+        entry['postpartido_url']='proyectos/real-zaragoza/cronica-j10.html'
+        entry['resultado_confirmado']={'marcador':'2-1','fecha_verificacion':now.isoformat(timespec='seconds'),
+            'fuentes':[{'nombre':'Real Zaragoza','url':'https://club.example/resultado'}]}
+        (self.root/'proyectos/real-zaragoza/cronica-j10.html').write_text('<main>Crónica</main>',encoding='utf-8')
+        guardar(self.root/'datos/previas.json',json.dumps([entry]))
+        html=publicar_liga(10,'<head></head><main><section class="cab-proyecto"><h1>Rival 10</h1></section></main>',self.root)
+        home=(self.root/'index.html').read_text(encoding='utf-8')
+        article=(self.root/entry['pagina']).read_text(encoding='utf-8')
+        self.assertIn('data-resultado-confirmado="true"',home)
+        self.assertIn('data-marcador="2-1"',home)
+        self.assertIn('Resultado confirmado · 2-1',home)
+        self.assertIn('class="marcador-previa"',home)
+        self.assertIn('Leer la crónica o el análisis',home)
+        self.assertIn('Releer la previa',home)
+        self.assertIn('Resultado confirmado: 2-1',article)
+        self.assertIn('href="https://club.example/resultado"',article)
+        self.assertIn('Real Zaragoza',article)
+
+    def test_portada_no_da_por_disputado_un_partido_sin_confirmacion(self):
+        from datetime import datetime, timedelta
+        from zoneinfo import ZoneInfo
+        self.publish(10)
+        entries=json.loads((self.root/'datos/previas.json').read_text(encoding='utf-8'))
+        entries[0]['fecha_partido']=(datetime.now(ZoneInfo('Europe/Madrid')).date()-timedelta(days=1)).isoformat()
+        guardar(self.root/'datos/previas.json',json.dumps(entries))
+        from previas import portada
+        portada(self.root)
+        home=(self.root/'index.html').read_text(encoding='utf-8')
+        self.assertIn('Pendiente de confirmación editorial',home)
+        self.assertNotIn('marcador-previa',home)
+        self.assertNotIn('Partido disputado',home)
+        self.assertNotIn('Leer la crónica o el análisis',home)
+
     def test_centro_partido_rechaza_mas_de_dos_fuentes_y_fechas_sin_zona(self):
         from previas import registro
         fixture={'imagen':'assets/j10.webp','pagina':'proyectos/real-zaragoza/previa-copa.html',

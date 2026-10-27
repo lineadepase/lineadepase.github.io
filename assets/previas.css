@@ -12,3 +12,5 @@
 .enlace-centro-partido{display:inline-block;margin:.75rem .75rem 0 0;font-weight:700}
 .calendario-partido[hidden],.postpartido-disponible[hidden]{display:none}
 @media(max-width:640px){.previas-rejilla{grid-template-columns:1fr;gap:2rem}.previas-portada{margin:1.5rem 0}}
+
+.marcador-previa{font-family:var(--f-display);font-size:2rem;font-weight:800;line-height:1;margin:.6rem 0;color:var(--cesped)}.resultado-confirmado{padding:.8rem 1rem;border-left:4px solid var(--senal,#ff7a2f);background:var(--superficie,#f4f7f1)}
