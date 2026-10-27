@@ -1,0 +1,34 @@
+/* Inspiración de revista deportiva: cabeceras azules, fichas claras y media visible. */
+.screen-mode .club-identity{font-size:.72rem;color:#dce8f6;border-left:4px solid var(--club-color);padding:3px 8px;flex-basis:100%;line-height:1.25}
+.screen-mode .panel-header{align-items:center;flex-wrap:wrap}
+.screen-mode button:focus-visible,.screen-mode select:focus-visible,.screen-mode input:focus-visible{outline:3px solid #e9c651;outline-offset:2px}
+.screen-mode button:disabled{opacity:.48;cursor:default}
+.screen-mode .screen-tools select{border-radius:8px;padding:7px 10px}
+.screen-mode .screen-footer{box-shadow:0 -4px 16px #0002}
+.screen-mode .screen-footer button{border-radius:8px}
+.screen-mode table tbody tr:hover{outline:1px solid #6888ab;outline-offset:-1px}
+.screen-mode table td[style*="4ade80"]{color:#14613d!important}
+.screen-mode table td[style*="f87171"]{color:#a12839!important}
+.screen-mode .calendar-day{border:1px solid #52759a;border-radius:8px;padding:10px;background:#152c45}
+.screen-mode .calendar-day.current{border-color:#e9c651;box-shadow:inset 3px 0 #e9c651}
+.screen-mode .calendar-day strong{line-height:1.35}
+@media(max-width:700px){.screen-mode .club-identity{font-size:.65rem;padding-block:1px}.screen-mode header{gap:4px;padding-block:5px}}
+.screen-mode nav[role="tablist"]{grid-template-columns:repeat(8,minmax(0,1fr));background:#092653}
+.screen-mode nav[role="tablist"] .tab-btn{border-radius:5px;background:linear-gradient(#173e80,#102b59);border-color:#567eb0;color:#edf4ff;font-size:.78rem}
+.screen-mode nav[role="tablist"] .tab-btn.active{background:linear-gradient(#f3d067,#cc9f2c);color:#102649;border-color:#fff3ad}
+.screen-mode .club-panel{background:linear-gradient(135deg,#eef2f6,#d8e1ea);color:#16324a;border-color:#8fa6ba}
+.screen-mode .club-panel>.panel-title{padding:9px 12px;background:linear-gradient(90deg,#092e87,#1b57a0);color:white;font-size:1rem;border-left:4px solid #e4bd4b;margin:-2px -2px 12px}
+.club-panel p{line-height:1.5;font-size:.88rem;margin:8px 0}.screen-mode .club-panel .hint-box{color:#35556d}
+.club-panel label,.club-match-mode label{display:flex;align-items:center;gap:10px;margin:8px 0;justify-content:space-between;font-weight:600;font-size:.84rem;flex-wrap:wrap}
+.club-panel input,.club-panel select{background:#fff;color:#142d45;border:1px solid #577d9f;border-radius:5px;padding:7px;max-width:100%;width:min(280px,100%)}
+.club-panel button{border-radius:5px;background:linear-gradient(#205a9c,#123c72);border:1px solid #a9bfd6;color:white;padding:7px 12px}
+.club-panel button:disabled{opacity:.5}.club-actions{display:flex;gap:8px;flex-wrap:wrap}.club-feedback{padding:10px;border:1px solid #64829e;border-left:5px solid #218340;background:#f5fff7;font-weight:600}.club-feedback[data-error="true"]{border-left-color:#b12c2c;background:#fff0ec}
+.club-metrics,.dossier-values{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:10px 0}.club-metrics p,.dossier-values p{padding:8px;background:#d1ddea;border:1px solid #a4b8cc;margin:0}.club-metrics strong{display:block;font-size:1.2rem;color:#123e7a}
+.dossier-heading{display:flex;gap:12px;align-items:center;border-bottom:2px solid #315478;padding:10px 0}.dossier-heading .player-avatar{width:64px;height:64px}.dossier-heading h3{font-size:1.1rem}.dossier-heading p{margin:4px 0}.overall{margin-left:auto;display:grid;text-align:center;background:#123e7a;color:#fff;font-size:2rem;border:2px solid #e3c75f;padding:5px 12px}.overall small{font-size:.6rem;color:#f9e8a4}
+.screen-mode #stadium-plan{display:block;width:min(100%,620px);max-height:var(--pitch-height,270px);margin:auto}
+.screen-mode table{background:#e7edf5;color:#183650}.screen-mode table th{background:#12396e;color:#fff}.screen-mode table td{color:#183650}.screen-mode table .player-select-btn{color:#183650}.screen-mode table tbody tr{background:#e7edf5!important}.screen-mode table tbody tr:nth-child(even){background:#d6e1ed!important}.screen-mode table tbody tr.is-starter{box-shadow:inset 3px 0 #b29024}.screen-mode td::before{color:#32516e!important}
+.screen-mode:not(.show-player-details) .squad-table [data-player-detail]{display:none!important}.screen-mode .market-overall{display:grid;place-items:center;background:#e9ca61;color:#102c4d;border:2px solid white;border-radius:8px;padding:8px;grid-column:1/-1;font-size:1.15rem}
+.screen-mode .club-match-mode{margin-bottom:10px}.screen-mode .club-match-mode p{font-size:.8rem;line-height:1.4}.club-match-mode select{max-width:100%}
+.arcade-backdrop{position:fixed;inset:0;z-index:150;background:#04101eea;display:none;place-items:center;padding:10px}.arcade-backdrop.open{display:grid}.arcade-dialog{width:min(900px,100%);max-height:calc(100dvh - 20px);padding:12px;display:flex;flex-direction:column;gap:8px;background:#142943;border:2px solid #d6bc57;border-radius:12px}.arcade-dialog h2{font-size:1.1rem;color:#ffe89c}.arcade-dialog p{font-size:.8rem;color:#c6d7e8}.arcade-dialog canvas{max-height:calc(100dvh - 215px);width:100%;height:auto;object-fit:contain;min-height:0;touch-action:none}.arcade-status{display:flex;gap:12px;font-size:.82rem}.arcade-status strong{white-space:nowrap;color:#ffe89c}.arcade-controls{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.arcade-controls button{min-height:42px;min-width:44px;padding:7px 10px;background:#1e4b7d;color:white;border:1px solid #7391b2;border-radius:6px;touch-action:none}.arcade-controls #arcade-shoot{background:#d3ac38;color:#132c49;font-weight:800}.arcade-pad{display:flex;gap:4px}.arcade-controls #arcade-exit{margin-left:auto}
+@media(max-width:700px){.screen-mode nav[role="tablist"]{grid-template-columns:repeat(4,minmax(0,1fr))}.screen-mode nav[role="tablist"] .tab-btn{font-size:.65rem;padding:5px 2px;min-height:38px}.club-panel label{display:block}.club-panel label input,.club-panel label select{display:block;width:100%;margin-top:5px}.dossier-heading .player-avatar{width:42px;height:42px}.dossier-heading{gap:7px}.overall{font-size:1.6rem;padding:4px 8px}.club-metrics,.dossier-values{grid-template-columns:repeat(2,minmax(0,1fr))}.arcade-controls button{font-size:.75rem}.arcade-pad{width:100%;justify-content:center}.arcade-controls #arcade-exit{margin-left:0}.arcade-dialog canvas{max-height:calc(100dvh - 265px)}}
+@media(max-height:500px){.arcade-dialog{gap:4px;padding:8px}.arcade-pad{width:auto}.arcade-dialog canvas{max-height:calc(100dvh - 150px)}.arcade-controls{flex-wrap:nowrap}.arcade-controls button{font-size:.72rem;padding:4px}.arcade-dialog h2{font-size:.95rem}}
