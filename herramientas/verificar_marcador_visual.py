@@ -7,7 +7,7 @@ from pathlib import Path
 import xml.etree.ElementTree as ET
 
 from PIL import Image
-from segunda_edicion import match_statistics, percentage_text
+from segunda_edicion import match_statistics, percentage_text, archive_round_name, visual_season, fixture_for
 
 ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / 'assets' / 'ilustraciones'
@@ -142,11 +142,12 @@ def main() -> None:
 
     archive_results = ART / 'archivo-jornadas'
     archive_stats = ART / 'estadisticas-jornadas'
-    expected_matches = {int(row['jornada']): row for row in data['partidos']}
+    expected_matches = {(visual_season(row), int(row['jornada'])): row for row in data['partidos']}
     if len(pages.archive_rows) != len(expected_matches):
         raise RuntimeError(f'El archivo visual muestra {len(pages.archive_rows)} jornadas; se esperaban {len(expected_matches)}.')
-    actual_rounds = {int(row.get('data-jornada', '0')) for row in pages.archive_rows}
-    if actual_rounds != set(expected_matches):
+    actual_rounds = {row.get('data-comparison-id') for row in pages.archive_rows}
+    expected_rounds = {f'{season}|{round_num}' for season, round_num in expected_matches}
+    if actual_rounds != expected_rounds:
         raise RuntimeError('Las jornadas del índice visual no coinciden con datos/zaragoza.json.')
     archive_html = (ROOT / 'archivo-visual' / 'index.html').read_text(encoding='utf-8')
     required_archive_controls = (
@@ -154,22 +155,30 @@ def main() -> None:
         'id="comparar-jornada-a"', 'id="comparar-jornada-b"',
         'data-panel-comparacion="a"', 'data-panel-comparacion="b"',
         'data-recuento-archivo', 'archivo-visual.js', 'archivo-visual.css',
-        'id="titulo-resumen"',
+        'id="titulo-resumen-0"', 'data-compartir-comparacion',
+        'data-completa="1"', 'estado-cobertura completa',
     )
     missing_controls = [marker for marker in required_archive_controls if marker not in archive_html]
     if missing_controls:
         raise RuntimeError('Faltan elementos del archivo comparador: ' + ', '.join(missing_controls))
-    if archive_html.count('data-jornada="') != len(expected_matches):
+    if archive_html.count('data-comparison-id="') != len(expected_matches):
         raise RuntimeError('El índice no conserva una fila y datos filtrables para cada jornada.')
+    complete_count = sum(bool(match_statistics(record, fixture_for(data, record))) for record in data['partidos'])
+    if archive_html.count('estado-cobertura completa') != complete_count:
+        raise RuntimeError('La insignia de cobertura no coincide con las fichas completas.')
+    for season in {season for season, _ in expected_matches}:
+        if f'Muestra disponible · {season}' not in archive_html:
+            raise RuntimeError(f'Falta un resumen independiente para la temporada {season}.')
     archive_script = (ROOT / 'assets' / 'archivo-visual.js').read_text(encoding='utf-8')
-    if 'rowA.dataset.posesion && rowB.dataset.posesion' not in archive_script or 'row.hidden = !show' not in archive_script:
+    if "rowA.dataset.completa === '1' && rowB.dataset.completa === '1'" not in archive_script or 'row.hidden = !show' not in archive_script or 'jornada_a' not in archive_script or 'navigator.clipboard.writeText' not in archive_script:
         raise RuntimeError('Los filtros o el requisito de métricas completas no están activos en el script del archivo.')
     for row in pages.archive_rows:
         round_num = int(row['data-jornada'])
-        if row.get('data-fecha-partido') != expected_matches[round_num]['fecha']:
+        season = visual_season(next(record for record in data['partidos'] if int(record['jornada']) == round_num and visual_season(record) == row.get('data-temporada')))
+        if row.get('data-fecha-partido') != expected_matches[(season, round_num)]['fecha']:
             raise RuntimeError(f'La fecha de J{round_num:02d} en el índice visual no coincide con datos/zaragoza.json.')
-    for round_num, record in expected_matches.items():
-        round_name = f'jornada-{round_num:02d}'
+    for (season, round_num), record in expected_matches.items():
+        round_name = archive_round_name(record, data['partidos'])
         for extension in ('svg', 'png'):
             path = archive_results / f'{round_name}.{extension}'
             if not path.is_file():
@@ -180,6 +189,8 @@ def main() -> None:
                         raise RuntimeError(f'{path.name}: dimensiones {image.size}; esperadas (1200, 630).')
                     if image.info.get('jornada') != str(round_num) or image.info.get('fecha_partido') != record['fecha']:
                         raise RuntimeError(f'{path.name}: metadatos de jornada/fecha incorrectos.')
+                    if image.info.get('temporada') != season:
+                        raise RuntimeError(f'{path.name}: metadato de temporada incorrecto.')
                 if path.stat().st_size > 100_000:
                     raise RuntimeError(f'{path.name} supera 100 KB.')
         fixture_row = next((row for row in data.get('fichas', []) if str(row.get('partido_id')) == str(record.get('partido_id'))), None)
@@ -192,6 +203,8 @@ def main() -> None:
             with Image.open(stats_png_path) as image:
                 if image.size != (1200, 630) or image.info.get('jornada') != str(round_num) or image.info.get('fecha_partido') != record['fecha']:
                     raise RuntimeError(f'{stats_png_path.name}: dimensiones o metadatos incorrectos.')
+                if image.info.get('temporada') != season:
+                    raise RuntimeError(f'{stats_png_path.name}: metadato de temporada incorrecto.')
                 if image.info.get('posesion_pct') != str(archived_metrics['posesion_pct']):
                     raise RuntimeError(f'{stats_png_path.name}: posesión no coincide con los datos validados.')
                 for field in ('tiros_zaragoza', 'tiros_rival'):
@@ -205,8 +218,8 @@ def main() -> None:
                 raise RuntimeError(f'{stats_png_path.name} supera 100 KB.')
         elif stats_svg_path.exists() or stats_png_path.exists():
             raise RuntimeError(f'Hay estadísticas archivadas para J{round_num:02d} sin cobertura validada.')
-    for round_num, record in expected_matches.items():
-        round_name = f'jornada-{round_num:02d}'
+    for (season, round_num), record in expected_matches.items():
+        round_name = archive_round_name(record, data['partidos'])
         expected_link = f'../assets/ilustraciones/archivo-jornadas/{round_name}.png'
         if expected_link not in pages.archive_links:
             raise RuntimeError(f'El índice no enlaza el PNG de J{round_num:02d}.')

@@ -8,8 +8,9 @@
   const rows = [...document.querySelectorAll('.tabla-comparador tbody tr[data-jornada]')];
   const selectA = document.getElementById('comparar-jornada-a');
   const selectB = document.getElementById('comparar-jornada-b');
+  const shareButton = document.querySelector('[data-compartir-comparacion]');
   const compareState = document.querySelector('[data-estado-comparacion]');
-  const rounds = new Map(rows.map(row => [row.dataset.jornada, row]));
+  const rounds = new Map(rows.map(row => [row.dataset.comparisonId, row]));
 
   function updateFilters() {
     let visible = 0;
@@ -36,13 +37,13 @@
     const card = document.querySelector(`[data-panel-comparacion="${slot}"]`);
     card.replaceChildren();
     const image = document.createElement('img');
-    image.src = `../assets/ilustraciones/archivo-jornadas/jornada-${round}.png`;
+    image.src = `../assets/ilustraciones/archivo-jornadas/${row.dataset.assetStem}.png`;
     image.width = 1200;
     image.height = 630;
     image.loading = 'lazy';
     image.alt = `Marcador de J${round} ante ${row.dataset.rival}`;
     card.append(image);
-    appendText(card, 'figcaption', '', `J${round} · ${row.dataset.rival} · ${row.dataset.fechaPartido}`);
+    appendText(card, 'figcaption', '', `J${round} · ${row.dataset.rival} · ${row.dataset.fechaPartido} · ${row.dataset.temporada}`);
     if (includeMetrics && row.dataset.posesion) {
       appendText(card, 'p', 'comparacion-estadisticas', `Posesión ${row.dataset.posesion.replace('.', ',')} % · tiros ${row.dataset.tirosZaragoza}–${row.dataset.tirosRival}`);
     } else {
@@ -60,9 +61,15 @@
     const rowA = rounds.get(selectA.value);
     const rowB = rounds.get(selectB.value);
     if (!rowA || !rowB) return;
-    const includeMetrics = Boolean(rowA.dataset.posesion && rowB.dataset.posesion);
+    const includeMetrics = rowA.dataset.completa === '1' && rowB.dataset.completa === '1';
     renderCard('a', rowA, includeMetrics);
     renderCard('b', rowB, includeMetrics);
+    if (changed) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('jornada_a', selectA.value);
+      url.searchParams.set('jornada_b', selectB.value);
+      window.history.replaceState(null, '', url);
+    }
     compareState.textContent = includeMetrics
       ? 'Las dos fichas tienen cobertura completa: se muestran posesión y tiros de cada jornada.'
       : 'Se comparan los marcadores. La cobertura no permite comparar métricas en las dos jornadas.';
@@ -83,6 +90,24 @@
   if (selectA && selectB && rounds.size) {
     selectA.addEventListener('change', () => updateComparison('a'));
     selectB.addEventListener('change', () => updateComparison('b'));
+    const params = new URLSearchParams(window.location.search);
+    const requestedA = params.get('jornada_a');
+    const requestedB = params.get('jornada_b');
+    if (rounds.has(requestedA) && rounds.has(requestedB) && requestedA !== requestedB) {
+      selectA.value = requestedA;
+      selectB.value = requestedB;
+    }
+    shareButton?.addEventListener('click', async () => {
+      const url = new URL(window.location.href);
+      url.searchParams.set('jornada_a', selectA.value);
+      url.searchParams.set('jornada_b', selectB.value);
+      try {
+        await navigator.clipboard.writeText(url.toString());
+        compareState.textContent = 'Enlace de la comparación copiado.';
+      } catch {
+        window.prompt('Copia el enlace de la comparación:', url.toString());
+      }
+    });
     updateComparison('');
   }
 })();

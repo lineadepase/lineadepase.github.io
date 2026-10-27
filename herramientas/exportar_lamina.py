@@ -16,7 +16,7 @@ import tempfile
 
 from PIL import Image
 from PIL.PngImagePlugin import PngInfo
-from segunda_edicion import match_statistics
+from segunda_edicion import match_statistics, archive_round_name, visual_season
 
 ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / 'assets' / 'ilustraciones'
@@ -70,7 +70,7 @@ def main() -> None:
     archive_exports = []
     if args.archivo_jornadas:
         for record in data['partidos']:
-            round_name = f'jornada-{int(record["jornada"]):02d}'
+            round_name = archive_round_name(record, data['partidos'])
             archive_exports.append((record, ART / 'archivo-jornadas' / f'{round_name}.svg', ART / 'archivo-jornadas' / f'{round_name}.png', None))
             archived_stats = match_statistics(record, next((row for row in data.get('fichas', []) if str(row.get('partido_id')) == str(record.get('partido_id'))), None))
             if archived_stats:
@@ -117,6 +117,7 @@ def main() -> None:
             metadata.add_text('jornada', str(record['jornada']))
             metadata.add_text('fecha_partido', record['fecha'])
             metadata.add_text('rival', record['rival'])
+            metadata.add_text('temporada', visual_season(record))
             metadata.add_text('resultado', f"{record['goles_favor']}–{record['goles_contra']}")
             if archived_stats:
                 metadata.add_text('posesion_pct', str(archived_stats['posesion_pct']))

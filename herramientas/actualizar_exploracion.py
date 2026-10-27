@@ -415,28 +415,22 @@ def generate_galeria_visual(page):
 
 
 def generate_archivo_visual(page):
-    from segunda_edicion import match_statistics, fixture_for, percentage_text
+    from segunda_edicion import match_statistics, fixture_for, percentage_text, visual_season, archive_round_name
     data=json.loads((ROOT/'datos/zaragoza.json').read_text(encoding='utf-8'))
     rows=[]
     month_names=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic']
     sorted_matches=sorted(data['partidos'],key=lambda item:int(item['jornada']),reverse=True)
-    def season_of(match):
-        if match.get('temporada') or match.get('season'):
-            return str(match.get('temporada') or match.get('season'))
-        year,month=map(int,match['fecha'][:7].split('-'))
-        start=year if month>=7 else year-1
-        return f'{start}/{str(start+1)[-2:]}'
-    season_names=sorted({season_of(match) for match in sorted_matches},reverse=True)
-    complete_stats=[]
+    season_names=sorted({visual_season(match) for match in sorted_matches},reverse=True)
+    stats_by_season={season:[] for season in season_names}
     for match in sorted_matches:
-        round_num=int(match['jornada']); round_name=f'jornada-{round_num:02d}'
+        round_num=int(match['jornada']); round_name=archive_round_name(match,sorted_matches); season=visual_season(match)
         date_parts=match['fecha'].split('-'); date_label=f'{int(date_parts[2])} {month_names[int(date_parts[1])-1]} {date_parts[0]}'
         score=f"{match['goles_favor']}–{match['goles_contra']}"; stats=match_statistics(match,fixture_for(data,match))
-        if stats: complete_stats.append(stats)
+        if stats: stats_by_season[season].append(stats)
         possession=percentage_text(stats['posesion_pct'])+' %' if stats else '—'
         shots=f"{stats['tiros_zaragoza']}–{stats['tiros_rival']}" if stats else '—'
         on_target=f"{stats['a_puerta_zaragoza']}–{stats['a_puerta_rival']}" if stats and 'a_puerta_zaragoza' in stats else '—'
-        coverage='Completa' if stats else 'Sin métricas validadas'
+        coverage=('<span class="estado-cobertura completa"><span aria-hidden="true">✓</span> Ficha completa</span>' if stats else '<span class="estado-cobertura incompleta">Sin métricas validadas</span>')
         image_links=('<a href="../assets/ilustraciones/archivo-jornadas/'+round_name+'.png" download>PNG</a> · <a href="../assets/ilustraciones/archivo-jornadas/'+round_name+'.svg" download>SVG</a>')
         if stats:
             image_links+=' · <a href="../assets/ilustraciones/estadisticas-jornadas/'+round_name+'.png" download>Datos PNG</a> · <a href="../assets/ilustraciones/estadisticas-jornadas/'+round_name+'.svg" download>Datos SVG</a>'
@@ -445,33 +439,38 @@ def generate_archivo_visual(page):
             on_target_z=str(stats.get('a_puerta_zaragoza','')); on_target_r=str(stats.get('a_puerta_rival',''))
         else:
             possession_value=zaragoza_shots=rival_shots=on_target_z=on_target_r=''
-        rows.append('<tr data-jornada="'+str(round_num)+'" data-fecha-partido="'+match['fecha']+'" data-temporada="'+escape(season_of(match),quote=True)+'" data-rival="'+escape(match['rival'],quote=True)+'" data-posesion="'+possession_value+'" data-tiros-zaragoza="'+zaragoza_shots+'" data-tiros-rival="'+rival_shots+'" data-a-puerta-zaragoza="'+on_target_z+'" data-a-puerta-rival="'+on_target_r+'"><th scope="row">J'+f'{round_num:02d}'+'</th><td>'+date_label+'</td><td>'+escape(match['rival'])+'</td><td>'+('Casa' if match['sede']=='Casa' else 'Fuera')+'</td><td>'+score+'</td><td>'+possession+'</td><td>'+shots+'</td><td>'+on_target+'</td><td>'+coverage+'</td><td>'+image_links+'</td></tr>')
+        comparison_id=f'{season}|{round_num}'
+        rows.append('<tr data-jornada="'+str(round_num)+'" data-comparison-id="'+escape(comparison_id,quote=True)+'" data-asset-stem="'+round_name+'" data-fecha-partido="'+match['fecha']+'" data-temporada="'+escape(season,quote=True)+'" data-rival="'+escape(match['rival'],quote=True)+'" data-completa="'+('1' if stats else '0')+'" data-posesion="'+possession_value+'" data-tiros-zaragoza="'+zaragoza_shots+'" data-tiros-rival="'+rival_shots+'" data-a-puerta-zaragoza="'+on_target_z+'" data-a-puerta-rival="'+on_target_r+'"><th scope="row">J'+f'{round_num:02d}'+'</th><td>'+date_label+'</td><td>'+escape(match['rival'])+'</td><td>'+('Casa' if match['sede']=='Casa' else 'Fuera')+'</td><td>'+score+'</td><td>'+possession+'</td><td>'+shots+'</td><td>'+on_target+'</td><td>'+coverage+'</td><td>'+image_links+'</td></tr>')
     season_options=''.join(f'<option value="{escape(season,quote=True)}">{escape(season)}</option>' for season in season_names)
     rival_options=''.join('<option value="'+escape(name,quote=True)+'">'+escape(name)+'</option>' for name in sorted({m['rival'] for m in sorted_matches},key=str.casefold))
-    count=len(complete_stats)
-    if count:
-        avg_pos=sum(float(stat['posesion_pct']) for stat in complete_stats)/count
-        avg_team_shots=sum(int(stat['tiros_zaragoza']) for stat in complete_stats)/count
-        avg_opponent_shots=sum(int(stat['tiros_rival']) for stat in complete_stats)/count
-        avg_on_target_team=sum(int(stat['a_puerta_zaragoza']) for stat in complete_stats)/count if all('a_puerta_zaragoza' in stat for stat in complete_stats) else None
-        average_text=lambda value:f'{float(value):.1f}'.replace('.',',')
-        summary=('<section class="archivo-resumen" aria-labelledby="titulo-resumen"><div><p class="etiqueta">Muestra disponible</p><h2 id="titulo-resumen">La temporada, en números</h2><p>Medias por partido en '+str(count)+' jornadas con ficha completa.</p></div><dl><div><dt>Posesión del Zaragoza</dt><dd>'+percentage_text(avg_pos)+' %</dd></div><div><dt>Tiros · Zaragoza–rival</dt><dd>'+average_text(avg_team_shots)+'–'+average_text(avg_opponent_shots)+'</dd></div>'+(('<div><dt>Tiros del Zaragoza a puerta</dt><dd>'+average_text(avg_on_target_team)+'</dd></div>') if avg_on_target_team is not None else '')+'</dl></section>')
-    else:
-        summary='<p class="nota">Todavía no hay fichas completas para resumir la temporada.</p>'
+    average_text=lambda value:f'{float(value):.1f}'.replace('.',',')
+    summary_cards=[]
+    for season_index,season in enumerate(season_names):
+        complete_stats=stats_by_season[season]; count=len(complete_stats); heading_id=f'titulo-resumen-{season_index}'
+        if not count:
+            detail='<p class="nota">Todavía no hay fichas completas para resumir esta temporada.</p>'
+        else:
+            avg_pos=sum(float(stat['posesion_pct']) for stat in complete_stats)/count
+            avg_team_shots=sum(int(stat['tiros_zaragoza']) for stat in complete_stats)/count
+            avg_opponent_shots=sum(int(stat['tiros_rival']) for stat in complete_stats)/count
+            avg_on_target_team=sum(int(stat['a_puerta_zaragoza']) for stat in complete_stats)/count if all('a_puerta_zaragoza' in stat for stat in complete_stats) else None
+            detail=('<dl><div><dt>Posesión del Zaragoza</dt><dd>'+percentage_text(avg_pos)+' %</dd></div><div><dt>Tiros · Zaragoza–rival</dt><dd>'+average_text(avg_team_shots)+'–'+average_text(avg_opponent_shots)+'</dd></div>'+(('<div><dt>Tiros del Zaragoza a puerta</dt><dd>'+average_text(avg_on_target_team)+'</dd></div>') if avg_on_target_team is not None else '')+'</dl>')
+        summary_cards.append('<section class="archivo-resumen" aria-labelledby="'+heading_id+'"><div><p class="etiqueta">Muestra disponible · '+escape(season)+'</p><h2 id="'+heading_id+'">La temporada, en números</h2><p>Medias por partido en '+str(count)+' jornadas con ficha completa.</p></div>'+detail+'</section>')
+    summary='<div class="archivo-resumenes">'+''.join(summary_cards)+'</div>'
     first=sorted_matches[0]; second=sorted_matches[1] if len(sorted_matches)>1 else sorted_matches[0]
     first_stats=match_statistics(first,fixture_for(data,first)); second_stats=match_statistics(second,fixture_for(data,second))
     comparable_stats=bool(first_stats and second_stats)
-    options_a=''.join(f'<option value="{int(match["jornada"])}"'+(' selected' if match is first else '')+'>'+f'J{int(match["jornada"]):02d} · '+escape(match['rival'])+'</option>' for match in sorted_matches)
-    options_b=''.join(f'<option value="{int(match["jornada"])}"'+(' selected' if match is second else '')+'>'+f'J{int(match["jornada"]):02d} · '+escape(match['rival'])+'</option>' for match in sorted_matches)
+    options_a=''.join(f'<option value="{escape(visual_season(match)+"|"+str(int(match["jornada"])),quote=True)}"'+(' selected' if match is first else '')+'>'+f'J{int(match["jornada"]):02d} · '+escape(match['rival'])+' · '+escape(visual_season(match))+'</option>' for match in sorted_matches)
+    options_b=''.join(f'<option value="{escape(visual_season(match)+"|"+str(int(match["jornada"])),quote=True)}"'+(' selected' if match is second else '')+'>'+f'J{int(match["jornada"]):02d} · '+escape(match['rival'])+' · '+escape(visual_season(match))+'</option>' for match in sorted_matches)
     def comparison_card(match,slot):
-        round_num=int(match['jornada']); round_name=f'jornada-{round_num:02d}'; stats=match_statistics(match,fixture_for(data,match))
+        round_num=int(match['jornada']); round_name=archive_round_name(match,sorted_matches); stats=match_statistics(match,fixture_for(data,match))
         stats_copy=('<p class="comparacion-estadisticas">Posesión '+percentage_text(stats['posesion_pct'])+' % · tiros '+str(stats['tiros_zaragoza'])+'–'+str(stats['tiros_rival'])+'</p>') if comparable_stats and stats else '<p class="comparacion-estadisticas">Las métricas comparadas aparecerán cuando ambas jornadas tengan ficha completa.</p>'
-        return '<figure class="comparacion-jornada" data-panel-comparacion="'+slot+'"><img src="../assets/ilustraciones/archivo-jornadas/'+round_name+'.png" width="1200" height="630" loading="lazy" alt="Marcador de J'+f'{round_num:02d} ante '+escape(match['rival'],quote=True)+'"><figcaption>J'+f'{round_num:02d} · '+escape(match['rival'])+' · '+match['fecha']+'</figcaption>'+stats_copy+'</figure>'
-    compare_controls=('<section class="archivo-comparar" aria-labelledby="titulo-comparar"><div><p class="etiqueta">Dos jornadas, frente a frente</p><h2 id="titulo-comparar">Comparar marcadores</h2><p>La comparación abre los gráficos históricos y añade métricas solo si ambas fichas están completas.</p></div><div class="archivo-comparar-controles"><label for="comparar-jornada-a">Primera jornada<select id="comparar-jornada-a">'+options_a+'</select></label><label for="comparar-jornada-b">Segunda jornada<select id="comparar-jornada-b">'+options_b+'</select></label></div><div class="archivo-comparar-paneles" data-paneles-comparacion aria-live="polite">'+comparison_card(first,'a')+comparison_card(second,'b')+'</div><p class="archivo-comparar-estado" data-estado-comparacion role="status"></p></section>')
+        return '<figure class="comparacion-jornada" data-panel-comparacion="'+slot+'"><img src="../assets/ilustraciones/archivo-jornadas/'+round_name+'.png" width="1200" height="630" loading="lazy" alt="Marcador de J'+f'{round_num:02d} ante '+escape(match['rival'],quote=True)+'"><figcaption>J'+f'{round_num:02d} · '+escape(match['rival'])+' · '+match['fecha']+' · '+escape(visual_season(match))+'</figcaption>'+stats_copy+'</figure>'
+    compare_controls=('<section class="archivo-comparar" aria-labelledby="titulo-comparar"><div><p class="etiqueta">Dos jornadas, frente a frente</p><h2 id="titulo-comparar">Comparar marcadores</h2><p>La comparación abre los gráficos históricos y añade métricas solo si ambas fichas están completas.</p></div><div class="archivo-comparar-controles"><label for="comparar-jornada-a">Primera jornada<select id="comparar-jornada-a">'+options_a+'</select></label><label for="comparar-jornada-b">Segunda jornada<select id="comparar-jornada-b">'+options_b+'</select></label><button type="button" class="boton" data-compartir-comparacion>Copiar enlace</button></div><div class="archivo-comparar-paneles" data-paneles-comparacion aria-live="polite">'+comparison_card(first,'a')+comparison_card(second,'b')+'</div><p class="archivo-comparar-estado" data-estado-comparacion role="status" aria-live="polite"></p></section>')
     controls=('<div class="archivo-filtros" data-filtros-archivo hidden><label for="archivo-temporada">Temporada<select id="archivo-temporada"><option value="">Todas las temporadas</option>'+season_options+'</select></label><label for="archivo-rival">Rival<select id="archivo-rival"><option value="">Todos los rivales</option>'+rival_options+'</select></label><button type="button" class="boton" data-limpiar-archivo>Limpiar filtros</button><p data-recuento-archivo role="status" aria-live="polite">'+str(len(rows))+' jornadas</p></div>')
     body=('<p>Consulta los resultados, filtra por temporada o rival y compara dos jornadas sin cambiar el marcador vigente de portada.</p>'+summary+compare_controls+controls+'<div class="tabla-comparador"><table><caption>Real Zaragoza · Primera Federación</caption><thead><tr><th scope="col">Jornada</th><th scope="col">Fecha</th><th scope="col">Rival</th><th scope="col">Sede</th><th scope="col">Resultado</th><th scope="col">Posesión</th><th scope="col">Tiros · Zaragoza–rival</th><th scope="col">A puerta</th><th scope="col">Cobertura</th><th scope="col">Gráficos</th></tr></thead><tbody>'+''.join(rows)+'</tbody></table></div><p class="nota">Los tiros a puerta se muestran solo cuando están disponibles para ambos equipos y cuadran con los tiros totales y los goles. Los filtros y la comparación requieren JavaScript; toda la tabla permanece visible sin él.</p><p><a class="enlace-editorial" href="../">Volver a la portada →</a></p>')
     folder=ROOT/'archivo-visual'; folder.mkdir(exist_ok=True)
-    head='<link rel="stylesheet" href="../assets/archivo-visual.css?v=20261027a"><script src="../assets/archivo-visual.js?v=20261027a" defer></script>'
+    head='<link rel="stylesheet" href="../assets/archivo-visual.css?v=20261027b"><script src="../assets/archivo-visual.js?v=20261027b" defer></script>'
     (folder/'index.html').write_text(page('Archivo visual por jornada','Marcadores y estadísticas del Real Zaragoza, con comparación de jornadas y filtros por temporada y rival.',body,head,'archivo-visual/'),encoding='utf-8')
 
 
