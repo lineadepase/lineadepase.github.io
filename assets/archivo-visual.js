@@ -9,6 +9,9 @@
   const selectA = document.getElementById('comparar-jornada-a');
   const selectB = document.getElementById('comparar-jornada-b');
   const shareButton = document.querySelector('[data-compartir-comparacion]');
+  const favoriteButton = document.querySelector('[data-guardar-comparacion]');
+  const resetOptionsButton = document.querySelector('[data-restablecer-opciones]');
+  const copyImageButton = document.querySelector('[data-copiar-imagen]');
   const compareState = document.querySelector('[data-estado-comparacion]');
   const downloadControls = document.querySelector('[data-controles-descarga]');
   const formatSelect = document.getElementById('formato-comparacion');
@@ -28,6 +31,47 @@
   const carouselDownloads = document.querySelector('[data-descargas-carrusel]');
   let carouselPreviewUrl = null;
   const rounds = new Map(rows.map(row => [row.dataset.comparisonId, row]));
+  const preferencesKey = 'lineadepase:archivo-visual:preferencias:v1';
+  const favoriteKey = 'lineadepase:archivo-visual:pareja-favorita:v1';
+
+  function readStorage(key) {
+    try { return JSON.parse(window.localStorage.getItem(key) || 'null'); }
+    catch { return null; }
+  }
+
+  function writeStorage(key, value) {
+    try { window.localStorage.setItem(key, JSON.stringify(value)); return true; }
+    catch { return false; }
+  }
+
+  function restoreVisualPreferences() {
+    const saved = readStorage(preferencesKey);
+    if (!saved || typeof saved !== 'object') return;
+    if (formatSelect && [...formatSelect.options].some(option => option.value === saved.format)) formatSelect.value = saved.format;
+    if (metricsToggle && typeof saved.metrics === 'boolean') metricsToggle.checked = saved.metrics;
+    if (captionToggle && typeof saved.caption === 'boolean') captionToggle.checked = saved.caption;
+    if (noHeaderToggle && typeof saved.noHeader === 'boolean') noHeaderToggle.checked = saved.noHeader;
+    if (brandToggle && typeof saved.brand === 'boolean') brandToggle.checked = saved.brand;
+  }
+
+  function saveVisualPreferences() {
+    return writeStorage(preferencesKey, {
+      format: formatSelect?.value || 'apaisado',
+      metrics: Boolean(metricsToggle?.checked),
+      caption: Boolean(captionToggle?.checked),
+      noHeader: Boolean(noHeaderToggle?.checked),
+      brand: brandToggle?.checked !== false
+    });
+  }
+
+  function updateFavoriteButton() {
+    if (!favoriteButton || !selectA || !selectB) return false;
+    const saved = readStorage(favoriteKey);
+    const isSaved = saved?.a === selectA.value && saved?.b === selectB.value;
+    favoriteButton.textContent = isSaved ? 'Quitar pareja guardada' : 'Guardar pareja';
+    favoriteButton.setAttribute('aria-pressed', String(Boolean(isSaved)));
+    return Boolean(isSaved);
+  }
 
   function syncFiltersToUrl() {
     const url = new URL(window.location.href);
@@ -104,6 +148,7 @@
     compareState.textContent = includeMetrics
       ? 'Las dos fichas tienen cobertura completa: se muestran posesión y tiros de cada jornada.'
       : 'Se comparan los marcadores. La cobertura no permite comparar métricas en las dos jornadas.';
+    updateFavoriteButton();
     updateCarouselPreview();
   }
 
@@ -270,6 +315,29 @@
     compareState.textContent=`Tarjeta ${size} ${format.toUpperCase()} descargada${includeCaption?' con pie':' sin pie'}${includeHeader?' con cabecera':' sin cabecera'}${showBrand?' y con marca':' sin marca'}.`;
   }
 
+  async function copyComparisonImage() {
+    if (!navigator.clipboard?.write || typeof ClipboardItem === 'undefined') {
+      compareState.textContent = 'Este navegador no permite copiar imágenes directamente. Puedes descargar la tarjeta en PNG.';
+      return;
+    }
+    const rowA = rounds.get(selectA?.value);
+    const rowB = rounds.get(selectB?.value);
+    if (!rowA || !rowB) return;
+    const size = formatSelect?.value || 'apaisado';
+    const includeMetrics = rowA.dataset.completa === '1' && rowB.dataset.completa === '1' && Boolean(metricsToggle?.checked);
+    const includeCaption = Boolean(captionToggle?.checked);
+    const includeHeader = !Boolean(noHeaderToggle?.checked);
+    const showBrand = Boolean(brandToggle?.checked);
+    const svg = size === 'carrusel'
+      ? comparisonSvg(rowA,rowB,'carrusel',includeMetrics,includeCaption,includeHeader,showBrand,rowA,carouselContextInput?.value.trim().slice(0,72) || '')
+      : comparisonSvg(rowA,rowB,size,includeMetrics,includeCaption,includeHeader,showBrand);
+    const png = await svgToRaster(svg,'image/png');
+    await navigator.clipboard.write([new ClipboardItem({'image/png':png})]);
+    compareState.textContent = size === 'carrusel'
+      ? 'Primera diapositiva del carrusel copiada como imagen PNG.'
+      : `Tarjeta ${size} copiada como imagen PNG.`;
+  }
+
   if (filterBox && seasonFilter && rivalFilter && count && rows.length) {
     const params = new URLSearchParams(window.location.search);
     const requestedSeason = params.get('temporada');
@@ -288,6 +356,12 @@
     updateFilters();
   }
   if (selectA && selectB && rounds.size) {
+    restoreVisualPreferences();
+    const favorite = readStorage(favoriteKey);
+    if (rounds.has(favorite?.a) && rounds.has(favorite?.b) && favorite.a !== favorite.b) {
+      selectA.value = favorite.a;
+      selectB.value = favorite.b;
+    }
     selectA.addEventListener('change', () => updateComparison('a'));
     selectB.addEventListener('change', () => updateComparison('b'));
     const params = new URLSearchParams(window.location.search);
@@ -297,6 +371,35 @@
       selectA.value = requestedA;
       selectB.value = requestedB;
     }
+    favoriteButton?.addEventListener('click', () => {
+      if (updateFavoriteButton()) {
+        try { window.localStorage.removeItem(favoriteKey); } catch {}
+        compareState.textContent = 'Pareja guardada eliminada.';
+      } else if (writeStorage(favoriteKey,{a:selectA.value,b:selectB.value})) {
+        compareState.textContent = 'Pareja guardada en este navegador.';
+      } else {
+        compareState.textContent = 'No se pudo guardar la pareja en este navegador.';
+      }
+      updateFavoriteButton();
+    });
+    [formatSelect,metricsToggle,captionToggle,noHeaderToggle,brandToggle].forEach(control=>control?.addEventListener('change',saveVisualPreferences));
+    resetOptionsButton?.addEventListener('click', () => {
+      if (formatSelect) formatSelect.value = 'apaisado';
+      if (metricsToggle) metricsToggle.checked = true;
+      if (captionToggle) captionToggle.checked = true;
+      if (noHeaderToggle) noHeaderToggle.checked = false;
+      if (brandToggle) brandToggle.checked = true;
+      if (carouselContextInput) carouselContextInput.value = '';
+      if (carouselExamples) carouselExamples.value = '';
+      saveVisualPreferences();
+      updateFormatGuidance();
+      updateComparison('');
+      compareState.textContent = 'Opciones visuales restablecidas.';
+    });
+    copyImageButton?.addEventListener('click', async () => {
+      try { await copyComparisonImage(); }
+      catch { compareState.textContent = 'No se pudo copiar la imagen. Puedes descargar la tarjeta en PNG.'; }
+    });
     shareButton?.addEventListener('click', async () => {
       const url = new URL(window.location.href);
       url.searchParams.set('jornada_a', selectA.value);
@@ -313,6 +416,7 @@
       if (carouselNote) carouselNote.hidden = formatSelect?.value !== 'carrusel';
       if (individualDownloads) individualDownloads.hidden = formatSelect?.value === 'carrusel';
       if (carouselDownloads) carouselDownloads.hidden = formatSelect?.value !== 'carrusel';
+      if (copyImageButton) copyImageButton.textContent = formatSelect?.value === 'carrusel' ? 'Copiar primera diapositiva' : 'Copiar imagen';
       updateCarouselPreview();
     };
     formatSelect?.addEventListener('change', updateFormatGuidance);
