@@ -385,6 +385,11 @@ ul.tarjetas-proyecto{list-style:none;margin:0;padding:0;grid-template-columns:re
 .mini-marco{position:relative}
 .tarjetas-proyecto .mini{aspect-ratio:16/9}
 .tipo-proyecto{position:absolute;top:.6rem;right:.6rem;font-size:.75rem;font-weight:600;line-height:1.3;padding:.2rem .6rem;border-radius:999px;background:var(--papel);color:var(--tinta);box-shadow:0 0 0 1px var(--linea)}
+.sello-portada{--sello-color:var(--senal-texto);position:absolute;left:.65rem;bottom:.65rem;display:grid;grid-template-columns:1.7rem 1fr;grid-template-rows:1fr auto;align-items:center;gap:.08rem .25rem;min-width:5rem;padding:.35rem .45rem;border:1px solid color-mix(in srgb,var(--sello-color) 48%,var(--linea));border-radius:7px;background:var(--papel);color:var(--tinta);box-shadow:0 2px 8px #0f24182a;line-height:1}
+.sello-portada b{grid-row:1;font-family:var(--f-display);font-size:1.65rem;color:var(--sello-color);font-weight:800}
+.sello-portada svg{width:1.8rem;height:1.35rem;fill:none;stroke:var(--sello-color);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.sello-portada small{grid-column:1/-1;font-size:.48rem;letter-spacing:.12em;font-weight:700;color:var(--tinta-suave)}
+.sello-xt{--sello-color:#597c2d}.sello-temporada{--sello-color:#245b9b}.sello-territorio{--sello-color:#8a5a82}.sello-xg{--sello-color:#ba4e26}
 .tipo-texto{display:none}
 .tarjeta-texto h2{font-family:var(--f-display);font-weight:700;font-size:1.45rem;line-height:1.1;margin:0 0 .45rem;text-wrap:balance}
 .tarjeta-texto p:not(.etiqueta):not(.tipo-texto){display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
@@ -400,6 +405,7 @@ ul.tarjetas-proyecto{list-style:none;margin:0;padding:0;grid-template-columns:re
   .tarjetas-proyecto .mini-cifras span:not(:first-child),.tarjetas-proyecto .mini-titulo small{display:none}
   .tarjetas-proyecto .mini-cifras b{font-size:2.2rem}
   .tipo-proyecto,.tarjetas-proyecto .ver{display:none}
+  .sello-portada{display:none}
   .tarjeta-texto .tipo-texto{display:block;font-size:.75rem;font-weight:600;color:var(--tinta-suave);margin:0}
   .tarjetas-proyecto .tarjeta-texto{padding:.75rem .9rem}
   .tarjetas-proyecto .etiqueta{font-size:.8rem;margin-bottom:.2rem}
