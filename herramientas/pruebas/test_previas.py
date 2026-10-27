@@ -100,6 +100,23 @@ class PublicacionPrevias(unittest.TestCase):
         self.assertIn('dateModified',second)
         self.assertEqual(first,second)
 
+    def test_centro_partido_expone_solo_datos_registrados_y_fuentes(self):
+        entry={'imagen':'assets/j10.webp','ancho':1200,'alto':675,'alt':'Previa',
+               'pagina':'proyectos/real-zaragoza/previa-copa.html','titulo':'Tudelano – Zaragoza',
+               'fecha_partido':'2026-10-27','fecha_publicacion':'2026-10-27','hora':'21:00',
+               'estadio':'Ciudad de Tudela','centro_partido':{
+                   'fecha_verificacion':'27/10/2026','fuentes':[{'nombre':'CD Tudelano oficial','url':'https://cdtudelano.com/actualidad/entradas-copa-del-rey-zaragoza/'}]}}
+        raw='<head></head><main><section class="cab-proyecto"><h1>Tudelano – Zaragoza</h1></section></main>'
+        first=con_imagen(raw,entry)
+        second=con_imagen(first,entry)
+        self.assertEqual(first,second)
+        self.assertEqual(first.count('<!-- centro-partido -->'),1)
+        self.assertIn('Esta ficha no ofrece actualización en directo',first)
+        self.assertIn('Pendiente de actualización editorial.',first)
+        self.assertIn('Pendientes de confirmación en esta ficha.',first)
+        self.assertIn('https://cdtudelano.com/actualidad/entradas-copa-del-rey-zaragoza/',first)
+        self.assertIn('27/10/2026',first)
+
     def test_generador_ics_convierte_hora_de_madrid_a_utc_y_es_estable(self):
         from previas import calendar_event, escribir_calendario
         entry={'pagina':'proyectos/real-zaragoza/previa-copa-tudelano-20261027.html',

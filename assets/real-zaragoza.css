@@ -131,3 +131,10 @@
 .analisis-principal .imagen-resultado-portada{margin:1rem 0}
 .analisis-principal .imagen-resultado-portada figcaption{display:none}
 .analisis-principal .imagen-resultado-portada a{display:block}
+.centro-partido{margin-top:2rem;padding:1.25rem;border:1px solid var(--linea);border-radius:12px;background:var(--panel)}
+.centro-partido h2{margin-top:.25rem}
+.aviso-centro{padding:.75rem 1rem;border-left:4px solid var(--senal);background:var(--papel)}
+.datos-centro{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin:1.25rem 0}
+.datos-centro>div{padding:1rem;border:1px solid var(--linea);border-radius:8px;background:var(--papel)}
+.datos-centro dt{font-weight:700}.datos-centro dd{margin:.4rem 0 0}
+@media(max-width:640px){.datos-centro{grid-template-columns:1fr}}

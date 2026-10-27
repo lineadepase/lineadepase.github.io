@@ -81,7 +81,45 @@ def registro(root=ROOT):
             post_page = (root/postmatch).resolve()
             if not post_page.is_relative_to(root.resolve()) or not post_page.is_file():
                 raise ValueError('La crónica vinculada debe existir dentro de la web: '+str(postmatch))
+        centro = entry.get('centro_partido')
+        if centro:
+            if not isinstance(centro, dict) or not centro.get('fuentes'):
+                raise ValueError('El centro del partido necesita al menos una fuente oficial')
+            for fuente in centro['fuentes']:
+                if not fuente.get('nombre') or not re.match(r'^https://', fuente.get('url', '')):
+                    raise ValueError('Cada fuente del centro debe tener nombre y URL HTTPS')
     return entries
+
+
+def centro_partido_html(entry):
+    """Genera un seguimiento editorial sin simular datos en directo."""
+    centro = entry.get('centro_partido')
+    if not centro:
+        return ''
+    def dato(value, pending):
+        if not value:
+            return pending
+        if isinstance(value, list):
+            return ', '.join(escape(str(item)) for item in value) or pending
+        return escape(str(value))
+    sources = ''.join(
+        '<li><a href="'+escape(source['url'], quote=True)+'" target="_blank" rel="noopener">'
+        +escape(source['nombre'])+'</a></li>'
+        for source in centro['fuentes']
+    )
+    incidents = centro.get('incidencias') or []
+    incident_markup = ('<ul>'+''.join('<li>'+escape(str(item))+'</li>' for item in incidents)+'</ul>'
+                       if incidents else '<p class="nota">Aún no hay incidencias añadidas a esta ficha.</p>')
+    return ('<!-- centro-partido --><section class="seccion lectura centro-partido" aria-labelledby="titulo-centro-partido">'
+            '<p class="etiqueta">Seguimiento editorial</p><h2 id="titulo-centro-partido">Centro del partido</h2>'
+            '<p class="aviso-centro">Esta ficha no ofrece actualización en directo. Los datos se incorporan cuando se confirman y se revisa la fuente.</p>'
+            '<dl class="datos-centro">'
+            '<div><dt>Marcador</dt><dd>'+dato(centro.get('marcador'), 'Pendiente de actualización editorial.')+'</dd></div>'
+            '<div><dt>Alineaciones</dt><dd>'+dato(centro.get('alineaciones'), 'Pendientes de confirmación en esta ficha.')+'</dd></div>'
+            '</dl><h3>Incidencias</h3>'+incident_markup+
+            '<p class="etiqueta">Fuentes oficiales</p><ul>'+sources+'</ul>'
+            '<p class="nota">Última comprobación editorial: '+escape(centro.get('fecha_verificacion', '27/10/2026'))+'.</p>'
+            '</section><!-- /centro-partido -->')
 
 
 def con_imagen(html, entry):
@@ -148,6 +186,14 @@ def con_imagen(html, entry):
             html = re.sub(r'<!-- ficha-previa -->.*?<!-- /ficha-previa -->', lambda _: block, html, flags=re.S)
         else:
             html = html.replace('<!-- /imagen-previa -->', '<!-- /imagen-previa -->'+block, 1)
+    center = centro_partido_html(entry)
+    if center:
+        if '<!-- centro-partido -->' in html:
+            html = re.sub(r'<!-- centro-partido -->.*?<!-- /centro-partido -->', lambda _: center, html, flags=re.S)
+        else:
+            html = html.replace('<!-- /ficha-previa -->', '<!-- /ficha-previa -->'+center, 1)
+    elif '<!-- centro-partido -->' in html:
+        html = re.sub(r'<!-- centro-partido -->.*?<!-- /centro-partido -->', '', html, flags=re.S)
     share = ('<!-- compartir-previa --><div class="compartir-previa" aria-label="Compartir esta previa">'
              '<button class="boton" type="button" data-compartir-previa>Compartir</button>'
              '<button class="boton" type="button" data-copiar-previa>Copiar enlace</button>'
@@ -161,7 +207,9 @@ def con_imagen(html, entry):
         html = html.replace('</head>', '<link rel="stylesheet" href="../../assets/compartir-previa.css?v=20261027a">\n<script src="../../assets/compartir-previa.js?v=20261027" defer></script>\n</head>', 1)
     html = re.sub(r'(assets/compartir-previa\.css\?v=)[^"\s]+', r'\g<1>20261027a', html)
     if 'assets/estado-partido.js' not in html:
-        html = html.replace('</head>', '<script src="../../assets/estado-partido.js?v=20261027a" defer></script>\n</head>', 1)
+        html = html.replace('</head>', '<script src="../../assets/estado-partido.js?v=20261027b" defer></script>\n</head>', 1)
+    html = re.sub(r'(assets/estado-partido\.js\?v=)[^"\s]+', r'\g<1>20261027b', html)
+    html = re.sub(r'(assets/real-zaragoza\.css\?v=)[^"\s]+', r'\g<1>20261027c', html)
     # La fecha de publicación no cambia al editar; la actualización sí.
     published = entry.get('fecha_publicacion', entry.get('fecha_partido',''))
     modified = entry.get('fecha_actualizacion', published)
@@ -222,12 +270,14 @@ def portada(root=ROOT, hoy=None):
         hidden = ' hidden' if fecha >= datetime.now(ZoneInfo('Europe/Madrid')).date().isoformat() else ''
         postmatch_link = (f'<a class="enlace-postpartido postpartido-disponible" data-fecha="{fecha}"{hidden} href="{escape(entry["postpartido_url"])}">Ver crónica o análisis →</a>'
                           if entry.get('postpartido_url') else '')
+        center_link = (f'<a class="enlace-centro-partido" href="{escape(entry["pagina"])}#titulo-centro-partido">Centro del partido →</a>'
+                       if entry.get('centro_partido') else '')
         cards.append(f'<article class="tarjeta-previa" data-fecha="{fecha}" data-hora="{escape(entry.get("hora", ""))}"><a href="{escape(entry["pagina"])}">'
                      f'<img src="{escape(entry["imagen"])}" alt="{escape(entry["alt"],quote=True)}" '
                      f'width="{entry["ancho"]}" height="{entry["alto"]}" loading="lazy"></a>'
                      f'<p class="estado-previa">{state}</p><p class="etiqueta">{escape(entry["etiqueta"])}</p><p class="datos-partido">{escape(fact)}</p><h3><a href="{escape(entry["pagina"])}">'
                      f'{escape(entry["titulo"])}</a></h3><p>{escape(entry["resumen"])}</p>'
-                     f'<a class="enlace-editorial" href="{escape(entry["pagina"])}">Leer la previa</a>{event_link}{postmatch_link}</article>')
+                     f'<a class="enlace-editorial" href="{escape(entry["pagina"])}">Leer la previa</a>{event_link}{postmatch_link}{center_link}</article>')
     block = START+'<section class="previas-portada" aria-labelledby="titulo-previas"><p class="etiqueta">Antes del partido</p><h2 id="titulo-previas">Las previas, con contexto</h2><div class="previas-rejilla">'+''.join(cards)+'</div></section>'+END
     path = root / 'index.html'
     html = path.read_text(encoding='utf-8')
@@ -240,11 +290,12 @@ def portada(root=ROOT, hoy=None):
         html = html.replace(marker, block+marker, 1)
     if 'assets/previas.css' not in html:
         html = html.replace('</head>', '<link rel="stylesheet" href="assets/previas.css?v=20261027">\n</head>', 1)
-    html = re.sub(r'(assets/previas\.css\?v=)[^"\s]+', r'\g<1>20261027d', html)
+    html = re.sub(r'(assets/previas\.css\?v=)[^"\s]+', r'\g<1>20261027e', html)
     if 'assets/previas.js' not in html:
         html = html.replace('</head>', '<script src="assets/previas.js?v=20261027" defer></script>\n</head>', 1)
     if 'assets/estado-partido.js' not in html:
-        html = html.replace('</head>', '<script src="assets/estado-partido.js?v=20261027a" defer></script>\n</head>', 1)
+        html = html.replace('</head>', '<script src="assets/estado-partido.js?v=20261027b" defer></script>\n</head>', 1)
+    html = re.sub(r'(assets/estado-partido\.js\?v=)[^"\s]+', r'\g<1>20261027b', html)
     news_path = root / 'datos/novedades.json'
     if news_path.is_file():
         news = json.loads(news_path.read_text(encoding='utf-8'))

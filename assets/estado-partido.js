@@ -9,6 +9,15 @@
     return { date: `${get('year')}-${get('month')}-${get('day')}`, time: `${get('hour')}:${get('minute')}` };
   };
 
+  const labelFor = (date, time, now) => {
+    if (date < now.date) return 'Partido disputado';
+    if (date === now.date) {
+      if (time && now.time >= time) return `Inicio previsto superado · sin marcador en directo`;
+      return `Hoy${time ? ` · ${time}` : ''}`;
+    }
+    return `Próxima cita · ${date.slice(8, 10)}/${date.slice(5, 7)}`;
+  };
+
   function update() {
     const now = nowInMadrid();
     document.querySelectorAll('.tarjeta-previa[data-fecha]').forEach(card => {
@@ -16,10 +25,7 @@
       const time = card.dataset.hora || '';
       const label = card.querySelector('.estado-previa');
       if (label) {
-        const short = `${date.slice(8, 10)}/${date.slice(5, 7)}`;
-        label.textContent = date < now.date ? 'Partido disputado'
-          : date === now.date ? `Hoy${time ? ` · ${time}` : ''}`
-            : `Próxima cita · ${short}`;
+        label.textContent = labelFor(date, time, now);
       }
       const previewLink = card.querySelector('.enlace-editorial');
       if (previewLink && date < now.date) previewLink.textContent = 'Consultar la previa publicada antes del partido';
@@ -28,10 +34,7 @@
     document.querySelectorAll('.estado-partido-detalle[data-fecha]').forEach(label => {
       const date = label.dataset.fecha;
       const time = label.dataset.hora || '';
-      const short = `${date.slice(8, 10)}/${date.slice(5, 7)}`;
-      label.textContent = date < now.date ? 'Partido disputado'
-        : date === now.date ? `Hoy${time ? ` · ${time}` : ''}`
-          : `Próxima cita · ${short}`;
+      label.textContent = labelFor(date, time, now);
     });
 
     document.querySelectorAll('.calendario-partido[data-fecha]').forEach(link => {
