@@ -78,7 +78,8 @@ def generate_archive():
         group=[entry for entry in entries if entry[5]==topic]
         if not group:
             continue
-        cards += '<details class="archivo-carpeta"><summary><span class="carpeta-nombre">'+escape(label)+'</span> <span class="carpeta-cantidad">'+str(len(group))+' recursos</span></summary><ul class="archivo-lista">'
+        quantity = 'recurso' if len(group)==1 else 'recursos'
+        cards += '<details class="archivo-carpeta"><summary><span class="carpeta-nombre">'+escape(label)+'</span> <span class="carpeta-cantidad">'+str(len(group))+' '+quantity+'</span></summary><ul class="archivo-lista">'
         for href, title, desc, season, rival, topic in group:
             cards += '<li data-temporada="' + escape(season, quote=True) + '" data-rival="' + escape(rival, quote=True) + '" data-tema="' + escape(topic, quote=True) + '"><article><p class="etiqueta">' + escape(topic + ' · ' + season) + '</p><h2><a href="' + href + '">' + escape(title) + '</a></h2><p>' + escape(desc) + '</p></article></li>'
         cards += '</ul></details>'
@@ -90,6 +91,7 @@ def generate_archive():
         previous = output.read_text(encoding='utf-8')
         # La reconstrucción del contenido no elimina metadatos ni estilos ya publicados.
         html = previous[:previous.index('</head>')+7] + html[html.index('</head>')+7:]
+        html = re.sub(r'<meta name="description"[^>]*>', '<meta name="description" content="Busca por rival, jornada, temporada o tema entre análisis, previas, vídeos y conceptos.">', html, count=1)
     output.write_text(html, encoding='utf-8')
 
 

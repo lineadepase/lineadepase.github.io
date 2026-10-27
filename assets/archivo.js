@@ -20,7 +20,7 @@
     folders.forEach(folder => {
       const visible = [...folder.querySelectorAll('.archivo-lista > li')].filter(card => !card.hidden).length;
       folder.hidden = visible === 0;
-      folder.querySelector('.carpeta-cantidad').textContent = `${visible} recursos`;
+      folder.querySelector('.carpeta-cantidad').textContent = `${visible} ${visible === 1 ? 'recurso' : 'recursos'}`;
       if (filtering) folder.open = visible > 0;
       else if (wasFiltering) folder.open = false;
     });
