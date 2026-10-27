@@ -348,6 +348,7 @@ def generate_esquemas_juego():
              f'<title id="titulo-{key}">{escape(title)}: {escape(heading)}</title><desc id="descripcion-{key}">{escape(description)}</desc>{field}{actions}</svg>')
         cards.append('<figure class="tarjeta-esquema">'+svg+'<figcaption><p class="etiqueta">'+escape(title)+'</p><h2>'+escape(heading)+'</h2><p>'+escape(description)+'</p></figcaption></figure>')
     body=('<p>Estos esquemas resumen tres ideas de juego en una imagen. Las flechas sirven para explicar relaciones y recorridos posibles; no son coordenadas de futbolistas ni una reconstrucción de un partido.</p>'
+          '<div class="leyenda-visual-global" aria-label="Leyenda de los esquemas"><span><i class="marca-visual"></i>Círculo: jugador o elemento del esquema</span><span><i class="marca-visual destacado"></i>Naranja: balón o punto de atención</span><span><i class="marca-visual media"></i>Flecha punteada: recorrido ilustrativo</span></div>'
           '<div class="esquemas-juego">'+''.join(cards)+'</div>'
           '<aside class="fuera-de-plano"><h2>Qué representan las marcas</h2><p>Los círculos y las trayectorias son ilustrativos. Solo se dibujarán posiciones observadas cuando una fuente aporte datos de seguimiento adecuados y la página lo indique.</p></aside>'
           '<p><a class="enlace-editorial" href="../conceptos/">Volver al glosario visual →</a></p>')

@@ -84,12 +84,12 @@ def summaries():
 def enrich(raw, file):
     relative = file.relative_to(ROOT).as_posix()
     for asset, tag in [('assets/experiencia.css', 'css'), ('assets/experiencia.js', 'js')]:
-        version = '20261021audit' if tag == 'js' else '20261021g'
+        version = '20261027visual1' if tag == 'js' else '20261027visual1'
         url = os.path.relpath(ROOT/asset, file.parent).replace('\\', '/') + '?v=' + version
         markup = '<link rel="stylesheet" href="'+url+'">' if tag == 'css' else '<script src="'+url+'" defer></script>'
         if asset not in raw:
             raw = raw.replace('</head>',markup+'\n</head>',1)
-    for extension, version in [('css', '20261021g'), ('js', '20261021audit')]:
+    for extension, version in [('css', '20261027visual1'), ('js', '20261027visual1')]:
         raw = re.sub(r'(assets/experiencia\.' + extension + r'\?v=)[^"\s]+', lambda m: m[1] + version, raw)
     raw = re.sub(r'(assets/mejoras\.js\?v=)[^"\s]+', r'\g<1>20261027claims', raw)
     raw = re.sub(r'<meta name="grafico-contexto"[^>]*>\s*', '', raw)
@@ -116,6 +116,26 @@ def enrich(raw, file):
     if context:
         raw = raw.replace('</head>','<meta name="grafico-contexto" content="'+e(context,quote=True)+'">\n</head>',1)
     raw = re.sub(r'<!-- tres-claves -->[\s\S]*?<!-- /tres-claves -->', '', raw)
+    # Compartir una URL usa la tarjeta social que ya genera el proceso SEO;
+    # la descarga abre la misma tarjeta de 1200 × 630 para guardarla.
+    raw = re.sub(r'<nav class="acciones-articulo"[\s\S]*?</nav>\s*', '', raw)
+    if relative.startswith('proyectos/') or relative in {
+        'mapa-grupo/index.html', 'esquemas-del-juego/index.html',
+        'pizarron-de-una-jugada/index.html', 'partidos-espejo/index.html',
+        'reloj-del-marcador/index.html', 'mapa-de-lo-que-cambio/index.html'
+    }:
+        slug = relative.removesuffix('.html').replace('/', '-')
+        editorial = re.search(r'<meta name="imagen-editorial" content="([^"]+)"', raw)
+        card_path = ROOT / editorial[1] if editorial else ROOT / 'assets' / 'compartir' / (slug + '.png')
+        social = os.path.relpath(card_path, file.parent).replace('\\', '/')
+        toolbar = ('<nav class="acciones-articulo" aria-label="Compartir o imprimir este análisis">'
+                   '<button class="boton" type="button" data-compartir-pagina>Compartir análisis</button>'
+                   '<a class="boton" href="'+social+'" target="_blank" rel="noopener">Abrir imagen para compartir</a>'
+                   '<button class="boton" type="button" data-imprimir-pagina>Imprimir / Guardar en PDF</button>'
+                   '<span class="estado-acciones-articulo" role="status" aria-live="polite"></span></nav>')
+        pos = raw.find('>', raw.find('<main'))
+        if pos != -1:
+            raw = raw[:pos+1] + toolbar + raw[pos+1:]
     clues = summaries().get(relative)
     match_article = re.fullmatch(r'proyectos/real-zaragoza/jornada-\d+\.html', relative)
     if clues and match_article:

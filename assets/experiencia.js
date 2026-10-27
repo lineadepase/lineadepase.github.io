@@ -1,5 +1,22 @@
 (() => {
   'use strict';
+  document.querySelectorAll('[data-compartir-pagina]').forEach(button=>button.addEventListener('click',async()=>{
+    const status=button.parentElement.querySelector('.estado-acciones-articulo');
+    const shareData={title:document.title,text:document.querySelector('meta[name="description"]')?.content||'',url:location.href};
+    try {
+      if(navigator.share) { await navigator.share(shareData); status.textContent='Enlace compartido.'; }
+      else { await navigator.clipboard.writeText(location.href); status.textContent='Enlace copiado. La vista previa usa la tarjeta de Línea de pase.'; }
+    } catch(error) {
+      if(error.name!=='AbortError') status.textContent='No se pudo compartir desde este navegador. Usa la tarjeta para redes o copia la dirección de la página.';
+    }
+  }));
+  document.querySelectorAll('[data-imprimir-pagina]').forEach(button=>button.addEventListener('click',()=>{
+    const details=[...document.querySelectorAll('main details')], closed=details.filter(item=>!item.open);
+    closed.forEach(item=>item.open=true);
+    const restore=()=>{closed.forEach(item=>item.open=false);window.removeEventListener('afterprint',restore);};
+    window.addEventListener('afterprint',restore,{once:true});
+    window.print();
+  }));
   document.querySelectorAll('.goles-portada').forEach(details=>details.addEventListener('toggle',()=>{if(details.open)window.dispatchEvent(new Event('resize'));}));
   const nav = document.querySelector('.cabecera .nav');
   if (nav) {
