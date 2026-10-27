@@ -84,12 +84,12 @@ def summaries():
 def enrich(raw, file):
     relative = file.relative_to(ROOT).as_posix()
     for asset, tag in [('assets/experiencia.css', 'css'), ('assets/experiencia.js', 'js')]:
-        version = '20261027visual2'
+        version = '20261027visual3'
         url = os.path.relpath(ROOT/asset, file.parent).replace('\\', '/') + '?v=' + version
         markup = '<link rel="stylesheet" href="'+url+'">' if tag == 'css' else '<script src="'+url+'" defer></script>'
         if asset not in raw:
             raw = raw.replace('</head>',markup+'\n</head>',1)
-    for extension, version in [('css', '20261027visual2'), ('js', '20261027visual2')]:
+    for extension, version in [('css', '20261027visual3'), ('js', '20261027visual3')]:
         raw = re.sub(r'(assets/experiencia\.' + extension + r'\?v=)[^"\s]+', lambda m: m[1] + version, raw)
     raw = re.sub(r'(assets/mejoras\.js\?v=)[^"\s]+', r'\g<1>20261027claims', raw)
     raw = re.sub(r'<meta name="grafico-contexto"[^>]*>\s*', '', raw)
@@ -98,7 +98,7 @@ def enrich(raw, file):
         atlas = ('<!-- lamina-anual-visual --><section class="lamina-anual" aria-labelledby="titulo-lamina-anual">'
                  '<div><p class="etiqueta">Línea de pase · Edición visual 2026</p><h2 id="titulo-lamina-anual">Cuatro proyectos, cuatro formas de mirar el juego</h2>'
                  '<p>Cifras de trabajos ya publicados; cada temporada y su corte permanecen visibles en el análisis correspondiente.</p>'
-                 '<nav class="enlaces enlaces-lamina" aria-label="Abrir proyectos de la lámina"><a href="real-zaragoza/">Temporada</a><a href="real-zaragoza/simulacion.html">Simulación</a><a href="liga-f-xt/">Amenaza esperada</a><a href="futbol-femenino/">Territorio</a></nav></div>'
+                 '<nav class="enlaces enlaces-lamina" aria-label="Abrir proyectos y formatos visuales"><a href="real-zaragoza/">Temporada</a><a href="real-zaragoza/simulacion.html">Simulación</a><a href="liga-f-xt/">Amenaza esperada</a><a href="futbol-femenino/">Territorio</a><a href="../assets/ilustraciones/anuario-visual-2026-cuadrado.svg" download>Formato cuadrado</a><a href="../assets/ilustraciones/anuario-visual-2026-vertical.svg" download>Formato vertical 4:5</a><a href="../galeria-visual/">Abrir galería visual</a></nav></div>'
                  '<figure><a href="../assets/ilustraciones/anuario-visual-2026.svg" target="_blank" rel="noopener"><img src="../assets/ilustraciones/anuario-visual-2026.svg" width="600" height="870" loading="lazy" alt="Lámina editorial 2026 con cuatro proyectos: seguimiento del Zaragoza, simulación de liga, amenaza esperada de Liga F y fútbol femenino territorial."></a>'
                  '<figcaption><a href="../assets/ilustraciones/anuario-visual-2026.svg" download>Descargar la lámina vectorial (SVG)</a></figcaption></figure></section><!-- /lamina-anual-visual -->')
         marker = '<div class="filtros"'

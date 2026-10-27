@@ -363,6 +363,26 @@ def generate_esquemas_juego():
     (folder/'index.html').write_text(page('El juego en esquema','Tres esquemas tácticos didácticos: amplitud, presión y transición, sin atribuir posiciones no observadas.',body,head,'esquemas-del-juego/'),encoding='utf-8')
 
 
+def generate_galeria_visual(page):
+    items=[
+        ('temporada','Temporada · Real Zaragoza','Jornada a jornada','Resultados y evolución del equipo en Primera Federación.','../assets/compartir/proyectos-real-zaragoza-index.png','../proyectos/real-zaragoza/'),
+        ('modelo','Simulación · Grupo 2','10.000 temporadas','Probabilidades de ascenso, playoff y descenso con método y corte publicados.','../assets/compartir/proyectos-real-zaragoza-simulacion.png','../proyectos/real-zaragoza/simulacion.html'),
+        ('modelo','Investigación · Liga F','El peligro empieza antes del último pase','Modelo propio de amenaza esperada con datos de 2023/24.','../assets/compartir/proyectos-liga-f-xt-index.png','../proyectos/liga-f-xt/'),
+        ('territorio','Fútbol femenino · Territorio','Una base más amplia','Mapa y tasas de licencias por comunidad autónoma.','../assets/compartir/proyectos-futbol-femenino-index.png','../proyectos/futbol-femenino/'),
+        ('concepto','Divulgación · xG','xG, sin líos','Una guía visual para interpretar la calidad de las ocasiones.','../assets/compartir/proyectos-xg-index.png','../proyectos/xg/'),
+        ('esquema','Esquemas de juego','Cambia de fase','Amplitud, presión y transición en un campo didáctico.','../assets/compartir/esquemas-del-juego-index.png','../esquemas-del-juego/'),
+        ('edicion','Edición visual 2026','Cuatro proyectos, una lámina','Resumen vectorial anual con formatos para pantalla y redes.','../assets/ilustraciones/anuario-visual-2026.svg','../proyectos/'),
+    ]
+    controls=[('todos','Todo',7),('temporada','Temporada',1),('modelo','Modelos',2),('territorio','Territorio',1),('concepto','Conceptos',1),('esquema','Esquemas',1),('edicion','Edición',1)]
+    buttons='<div class="filtros-galeria-visual" data-filtros-galeria role="group" aria-label="Filtrar ilustraciones" hidden>'+''.join('<button type="button" data-filtro-visual="'+key+'" aria-pressed="'+('true' if i==0 else 'false')+'">'+label+' <span>'+str(count)+'</span></button>' for i,(key,label,count) in enumerate(controls))+'</div>'
+    cards='<div class="rejilla-galeria-visual" data-galeria-visual>'+''.join('<article class="tarjeta-galeria-visual" data-coleccion-visual="'+key+'"><a class="imagen-galeria-visual" href="'+image+'"><img src="'+image+'" width="1200" height="'+('1740' if key=='edicion' else '630')+'" alt="Gráfico de '+escape(title.lower())+'" loading="lazy"></a><div><p class="etiqueta">'+escape(series)+'</p><h2>'+escape(title)+'</h2><p>'+escape(summary)+'</p><a class="enlace-editorial" href="'+source+'">Abrir análisis →</a></div></article>' for key,series,title,summary,image,source in items)+'</div>'
+    body=('<p>Una selección de portadas y gráficos propios. Cada pieza enlaza al análisis de origen; las miniaturas reutilizan las tarjetas ligeras del sitio.</p>'+buttons+'<p class="recuento-galeria-visual" data-recuento-galeria role="status" aria-live="polite">7 piezas</p>'+cards+'<noscript><p>Se muestran todas las piezas; los filtros requieren JavaScript.</p></noscript>')
+    head='<link rel="stylesheet" href="../assets/ideas-editoriales.css?v=20261027f"><script src="../assets/galeria-visual.js?v=20261027a" defer></script>'
+    folder=ROOT/'galeria-visual'
+    folder.mkdir(exist_ok=True)
+    (folder/'index.html').write_text(page('Galería visual de Línea de pase','Una colección ligera de gráficos, láminas y portadas de los proyectos de Línea de pase.',body,head,'galeria-visual/'),encoding='utf-8')
+
+
 def generate():
     from experiencia import generate_comparator, generate_selection, generate_news
     generate_comparator(page)
@@ -380,6 +400,7 @@ def generate():
     generate_mapa_cambios()
     generate_balance_preguntas()
     generate_esquemas_juego()
+    generate_galeria_visual(page)
     from segunda_edicion import generate_map, generate_home, generate_anual_visual
     generate_map(page)
     generate_anual_visual()
@@ -456,7 +477,7 @@ def enrich(raw, file):
 
 def build():
     generate()
-    for folder in ['proyectos', 'videos', 'sobre-mi', 'archivo', 'conceptos', 'comparador', 'seleccion', 'novedades', 'mapa-grupo', 'herramientas', 'tras-la-jornada', 'preguntas-del-partido', 'marcador-a-ciegas', 'datos-en-revision', 'partidos-espejo', 'reloj-del-marcador', 'pizarron-de-una-jugada', 'balance-de-preguntas', 'mapa-de-lo-que-cambio', 'esquemas-del-juego']:
+    for folder in ['proyectos', 'videos', 'sobre-mi', 'archivo', 'conceptos', 'comparador', 'seleccion', 'novedades', 'mapa-grupo', 'herramientas', 'tras-la-jornada', 'preguntas-del-partido', 'marcador-a-ciegas', 'datos-en-revision', 'partidos-espejo', 'reloj-del-marcador', 'pizarron-de-una-jugada', 'balance-de-preguntas', 'mapa-de-lo-que-cambio', 'esquemas-del-juego', 'galeria-visual']:
         for file in (ROOT / folder).rglob('*.html'):
             raw = file.read_text(encoding='utf-8')
             if '<main' in raw:

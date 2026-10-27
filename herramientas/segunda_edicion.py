@@ -38,6 +38,38 @@ def generate_anual_visual():
     folder=ROOT/'assets/ilustraciones'
     folder.mkdir(exist_ok=True)
     (folder/'anuario-visual-2026.svg').write_text(svg,encoding='utf-8')
+    cards=[
+        ('01 · SEGUIMIENTO DE TEMPORADA',issue,f'{len(played)} partidos · {goals_for} goles a favor · {goals_against} en contra','#245b9b',72),
+        ('02 · SIMULACIÓN DEL GRUPO',simulations[1],f'temporadas simuladas · {team_count} equipos','#597c2d',72),
+        ('03 · AMENAZA ESPERADA · LIGA F 2023/24',xt[1],'xT neto por 90 minutos','#387b79',72),
+        ('04 · FÚTBOL FEMENINO · TERRITORIO',f'{share[1]}%  /  {share[2]}%','población femenina / licencias en dos comunidades','#8a5a82',56),
+    ]
+    def tile(x,y,width,height,index,label,value,detail,color,value_size):
+        label_y=y+(43 if height<300 else 55)
+        value_y=y+(116 if height<300 else 177)
+        detail_y=y+(158 if height<300 else 229)
+        motif=(f'<path d="M{x+width-126} {y+height-60}h62m-62 16h43m-43 16h55" stroke="{color}" stroke-width="4" stroke-linecap="round" opacity=".65"/><circle cx="{x+width-37}" cy="{y+height-38}" r="10" fill="#ff7a2f"/>') if width>700 else ''
+        return (f'<rect x="{x}" y="{y}" width="{width}" height="{height}" rx="18" fill="#fff" stroke="#d4ded6" stroke-width="2"/><rect x="{x}" y="{y}" width="10" height="{height}" rx="5" fill="{color}"/>'
+                f'<text x="{x+30}" y="{label_y}" fill="#536257" font-size="18" font-weight="700" letter-spacing="2">{label}</text>'
+                f'<text x="{x+30}" y="{value_y}" fill="{color}" font-size="{value_size}" font-weight="800">{value}</text>'
+                f'<text x="{x+30}" y="{detail_y}" fill="#293c30" font-size="19">{detail}</text>'
+                +motif)
+    def make_social(name,width,height,vertical=False):
+        if vertical:
+            header_h=190; card_h=216; gap=22; margin=48; y0=218
+            placements=[(margin,y0+i*(card_h+gap),width-2*margin,card_h,i,*card) for i,card in enumerate(cards)]
+            title_y=72; year_y=130; subtitle_y=167; foot_y=1285
+            subtitle_size=22
+        else:
+            header_h=190; margin=48; gap=24; card_w=(width-2*margin-gap)//2; card_h=356
+            positions=[(margin,220),(margin+card_w+gap,220),(margin,600),(margin+card_w+gap,600)]
+            placements=[(*positions[i],card_w,card_h,i,*card) for i,card in enumerate(cards)]
+            title_y=64; year_y=119; subtitle_y=164; foot_y=1032; subtitle_size=20
+        tile_markup=''.join(tile(x,y,w,h,i+1,label,value,detail,color,value_size if w>700 else min(value_size,56)) for x,y,w,h,i,label,value,detail,color,value_size in placements)
+        source=f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" role="img" aria-labelledby="titulo descripcion"><title id="titulo">Línea de pase · Cuaderno visual 2026</title><desc id="descripcion">Resumen gráfico de cuatro proyectos publicados con sus temporadas y cifras.</desc><rect width="{width}" height="{height}" fill="#f3f5ef"/><path d="M0 0h{width}v{header_h}H0z" fill="#103b24"/><path d="M0 {header_h-4}h{width}" stroke="#ff7a2f" stroke-width="7"/><text x="{margin}" y="{title_y}" fill="#bed8c4" font-family="Arial,sans-serif" font-size="17" font-weight="700" letter-spacing="3">LÍNEA DE PASE · CUADERNO VISUAL</text><text x="{margin}" y="{year_y}" fill="#f7f8f4" font-family="Arial,sans-serif" font-size="48" font-weight="800">2026</text><text x="{margin}" y="{subtitle_y}" fill="#e0e9e2" font-family="Arial,sans-serif" font-size="{subtitle_size}">Cuatro proyectos. Cuatro formas de mirar el juego.</text><g font-family="Arial,sans-serif">{tile_markup}</g><text x="{margin}" y="{foot_y}" fill="#405448" font-family="Arial,sans-serif" font-size="17" font-weight="700">Cifras de los proyectos publicados · cortes y métodos en cada estudio.</text><text x="{margin}" y="{foot_y+30}" fill="#64766b" font-family="Arial,sans-serif" font-size="16">lineadepase.com · Edición 2026</text></svg>'''
+        (folder/name).write_text(source,encoding='utf-8')
+    make_social('anuario-visual-2026-cuadrado.svg',1080,1080)
+    make_social('anuario-visual-2026-vertical.svg',1080,1350,True)
 
 
 def generate_map(page):
