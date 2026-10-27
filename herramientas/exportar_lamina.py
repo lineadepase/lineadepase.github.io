@@ -67,7 +67,9 @@ def main() -> None:
     stats_png = ART / 'estadisticas-real-zaragoza-ultima-jornada.png'
     data = json.loads((ROOT / 'datos' / 'zaragoza.json').read_text(encoding='utf-8'))
     latest = max(data['partidos'], key=lambda row: int(row['jornada']))
-    if match_statistics(latest) and stats_svg.is_file():
+    fixture = next((row for row in data.get('fichas', []) if str(row.get('partido_id')) == str(latest.get('partido_id'))), None)
+    match_stats = match_statistics(latest, fixture)
+    if match_stats and stats_svg.is_file():
         exports.append(('estadisticas-real-zaragoza-ultima-jornada', 1200, 630))
     elif stats_png.exists():
         stats_png.unlink()
@@ -90,6 +92,9 @@ def main() -> None:
                     metadata.add_text('posesion_pct', str(latest['posesion_pct']))
                     metadata.add_text('tiros_zaragoza', str(int(latest['tiros_zaragoza'])))
                     metadata.add_text('tiros_rival', str(int(latest['tiros_rival'])))
+                    if 'a_puerta_zaragoza' in match_stats:
+                        metadata.add_text('a_puerta_zaragoza', str(match_stats['a_puerta_zaragoza']))
+                        metadata.add_text('a_puerta_rival', str(match_stats['a_puerta_rival']))
             with Image.open(raw_path) as image:
                 if image.size != (width, height):
                     raise RuntimeError(f'{svg_path.name}: se esperaba {width}×{height}px y llegaron {image.width}×{image.height}px')

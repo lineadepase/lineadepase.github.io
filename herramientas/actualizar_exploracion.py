@@ -383,9 +383,11 @@ def generate_galeria_visual(page):
         ('esquema','Esquemas de juego','Cambia de fase','Amplitud, presión y transición en un campo didáctico.','../assets/compartir/esquemas-del-juego-index.png','../esquemas-del-juego/',['png']),
         ('edicion','Edición visual 2026','Cuatro proyectos, una lámina','Resumen vectorial anual con formatos para redes y una copia lista para imprimir.','../assets/ilustraciones/anuario-visual-2026-cuadrado.png','../assets/ilustraciones/anuario-visual-2026.svg',['png','svg','pdf']),
     ]
-    stats=match_statistics(latest)
+    fixture=next((row for row in season.get('fichas',[]) if str(row.get('partido_id'))==str(latest.get('partido_id'))),None)
+    stats=match_statistics(latest,fixture)
     if stats:
-        items.append(('estadistica',f"Estadísticas · J{int(latest['jornada']):02d}",'Posesión y tiros del partido',f"El Zaragoza tuvo {percentage_text(stats['posesion_pct'])} % de posesión y registró {stats['tiros_zaragoza']} tiros; {latest['rival']}, {stats['tiros_rival']}.",'../assets/ilustraciones/estadisticas-real-zaragoza-ultima-jornada.png','../proyectos/real-zaragoza/ultimo-partido.html',['png','svg']))
+        extra=(f" A puerta: {stats['a_puerta_zaragoza']}–{stats['a_puerta_rival']}." if 'a_puerta_zaragoza' in stats else '')
+        items.append(('estadistica',f"Estadísticas · J{int(latest['jornada']):02d}",'Posesión y tiros del partido',f"El Zaragoza tuvo {percentage_text(stats['posesion_pct'])} % de posesión y registró {stats['tiros_zaragoza']} tiros; {latest['rival']}, {stats['tiros_rival']}.{extra}",'../assets/ilustraciones/estadisticas-real-zaragoza-ultima-jornada.png','../proyectos/real-zaragoza/ultimo-partido.html',['png','svg']))
     category_counts={key:sum(item[0]==key for item in items) for key,_,_,_,_,_,_ in items}
     categories=[('todos','Todo',len(items))]+[(key,label,category_counts[key]) for key,label in [('temporada','Temporada'),('jornada','Jornadas'),('estadistica','Estadísticas'),('modelo','Modelos'),('territorio','Territorio'),('concepto','Conceptos'),('esquema','Esquemas'),('edicion','Edición')] if category_counts.get(key,0)>0]
     formats=[('todos','Todos',len(items))]+[(key,key.upper(),sum(key in item[6] for item in items)) for key in ['png','svg','pdf'] if any(key in item[6] for item in items)]

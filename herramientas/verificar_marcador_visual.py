@@ -57,7 +57,8 @@ class VisualLinks(HTMLParser):
 def main() -> None:
     data = json.loads((ROOT / 'datos' / 'zaragoza.json').read_text(encoding='utf-8'))
     match = max(data['partidos'], key=lambda row: int(row['jornada']))
-    stats = match_statistics(match)
+    fixture = next((row for row in data.get('fichas', []) if str(row.get('partido_id')) == str(match.get('partido_id'))), None)
+    stats = match_statistics(match, fixture)
     expected_round = str(match['jornada'])
     expected_date = match['fecha']
     months = ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC']
@@ -113,9 +114,15 @@ def main() -> None:
         for value in (expected_display_date, percentage_text(stats['posesion_pct']), str(stats['tiros_zaragoza']), str(stats['tiros_rival'])):
             if value not in statistics_description:
                 raise RuntimeError(f'El gráfico estadístico no coincide con la ficha completa: falta {value!r}.')
+        if 'a_puerta_zaragoza' in stats:
+            for value in (str(stats['a_puerta_zaragoza']), str(stats['a_puerta_rival'])):
+                if value not in statistics_description:
+                    raise RuntimeError(f'El gráfico no refleja los tiros a puerta validados: falta {value!r}.')
         with Image.open(stats_png) as image:
             if image.size != (1200, 630) or image.info.get('jornada') != expected_round or image.info.get('fecha_partido') != expected_date:
                 raise RuntimeError('La miniatura de estadísticas no coincide con la jornada/fecha o dimensiones esperadas.')
+            if 'a_puerta_zaragoza' in stats and (image.info.get('a_puerta_zaragoza') != str(stats['a_puerta_zaragoza']) or image.info.get('a_puerta_rival') != str(stats['a_puerta_rival'])):
+                raise RuntimeError('Los tiros a puerta del PNG no coinciden con los valores validados.')
         if stats_png.stat().st_size > 100_000:
             raise RuntimeError('La miniatura estadística supera 100 KB.')
     elif pages.statistics is not None or stats_svg.exists() or stats_png.exists():
