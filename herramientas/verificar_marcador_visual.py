@@ -158,7 +158,8 @@ def main() -> None:
         'id="titulo-resumen-0"', 'data-compartir-comparacion',
         'data-descargar-comparacion="svg"', 'data-descargar-comparacion="png"',
         'id="formato-comparacion"', 'data-controles-descarga', 'data-incluir-metricas',
-        '1080 × 1080', '1080 × 1350', '1200 × 630',
+        'data-incluir-pie', 'data-aviso-stories', 'data-descargar-comparacion="webp"',
+        '1080 × 1080', '1080 × 1350', '1080 × 1920', '1200 × 630',
         'data-completa="1"', 'estado-cobertura completa',
     )
     missing_controls = [marker for marker in required_archive_controls if marker not in archive_html]
@@ -173,7 +174,7 @@ def main() -> None:
         if f'Muestra disponible · {season}' not in archive_html:
             raise RuntimeError(f'Falta un resumen independiente para la temporada {season}.')
     archive_script = (ROOT / 'assets' / 'archivo-visual.js').read_text(encoding='utf-8')
-    if "rowA.dataset.completa === '1' && rowB.dataset.completa === '1'" not in archive_script or 'row.hidden = !show' not in archive_script or 'jornada_a' not in archive_script or 'navigator.clipboard.writeText' not in archive_script or "url.searchParams.set('temporada'" not in archive_script or "url.searchParams.set('rival'" not in archive_script or 'canvas.toBlob' not in archive_script or 'comparisonSvg(' not in archive_script or 'cuadrado' not in archive_script or 'vertical' not in archive_script or 'metricsToggle?.checked' not in archive_script:
+    if "rowA.dataset.completa === '1' && rowB.dataset.completa === '1'" not in archive_script or 'row.hidden = !show' not in archive_script or 'jornada_a' not in archive_script or 'navigator.clipboard.writeText' not in archive_script or "url.searchParams.set('temporada'" not in archive_script or "url.searchParams.set('rival'" not in archive_script or 'canvas.toBlob' not in archive_script or 'comparisonSvg(' not in archive_script or 'cuadrado' not in archive_script or 'vertical' not in archive_script or 'historias' not in archive_script or 'image/webp' not in archive_script or 'captionToggle?.checked' not in archive_script or 'metricsToggle?.checked' not in archive_script:
         raise RuntimeError('Los filtros o el requisito de métricas completas no están activos en el script del archivo.')
     for row in pages.archive_rows:
         round_num = int(row['data-jornada'])
