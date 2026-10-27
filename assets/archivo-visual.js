@@ -15,6 +15,11 @@
   const metricsToggle = document.querySelector('[data-incluir-metricas]');
   const captionToggle = document.querySelector('[data-incluir-pie]');
   const storiesNote = document.querySelector('[data-aviso-stories]');
+  const carouselNote = document.querySelector('[data-aviso-carrusel]');
+  const noHeaderToggle = document.querySelector('[data-sin-cabecera]');
+  const brandToggle = document.querySelector('[data-mostrar-marca]');
+  const individualDownloads = document.querySelector('[data-descargas-individuales]');
+  const carouselDownloads = document.querySelector('[data-descargas-carrusel]');
   const rounds = new Map(rows.map(row => [row.dataset.comparisonId, row]));
 
   function syncFiltersToUrl() {
@@ -98,15 +103,19 @@
     return String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[char]));
   }
 
-  function comparisonSvg(rowA, rowB, format, includeMetrics, includeCaption) {
+  function comparisonSvg(rowA, rowB, format, includeMetrics, includeCaption, includeHeader, showBrand, singleRow = null) {
     const layouts = {
       apaisado: {width:1200,height:630,header:148,panels:[{x:54,y:190,w:528,h:365},{x:618,y:190,w:528,h:365}],titleSize:42,titleY:111,brandY:54,captionY:582,domainY:606},
       cuadrado: {width:1080,height:1080,header:180,panels:[{x:80,y:220,w:920,h:350},{x:80,y:610,w:920,h:350}],titleSize:40,titleY:128,brandY:65,captionY:1010,domainY:1056},
       vertical: {width:1080,height:1350,header:190,panels:[{x:80,y:235,w:920,h:465},{x:80,y:755,w:920,h:465}],titleSize:40,titleY:134,brandY:64,captionY:1258,domainY:1326},
-      historias: {width:1080,height:1920,header:395,panels:[{x:80,y:430,w:920,h:430},{x:80,y:900,w:920,h:430}],titleSize:40,titleY:348,brandY:274,captionY:1500,domainY:1560}
+      historias: {width:1080,height:1920,header:395,panels:[{x:80,y:430,w:920,h:430},{x:80,y:900,w:920,h:430}],titleSize:40,titleY:348,brandY:274,captionY:1500,domainY:1560},
+      carrusel: {width:1080,height:1080,header:190,panels:[{x:80,y:260,w:920,h:540}],titleSize:40,titleY:130,brandY:66,captionY:930,domainY:1056,single:true}
     };
-    const layout = layouts[format] || layouts.apaisado;
-    const cards = [rowA, rowB].map((row, index) => {
+    const baseLayout = layouts[format] || layouts.apaisado;
+    const panelShift = !includeHeader && format !== 'historias' ? Math.max(0, baseLayout.header - 105) : 0;
+    const layout = {...baseLayout, header:includeHeader ? baseLayout.header : 0, panels:baseLayout.panels.map(panel => ({...panel,y:panel.y-panelShift}))};
+    const displayRows = singleRow ? [singleRow] : [rowA, rowB];
+    const cards = displayRows.map((row, index) => {
       const panel = layout.panels[index];
       const {x,y,w,h} = panel;
       const home = row.dataset.sede === 'Casa' ? 'Real Zaragoza' : row.dataset.rival;
@@ -118,22 +127,28 @@
       const cardMetrics = includeMetrics && row.dataset.completa === '1';
       const metrics = cardMetrics
         ? `Posesión ${xml(row.dataset.posesion.replace('.', ','))}% · tiros ${xml(row.dataset.tirosZaragoza)}–${xml(row.dataset.tirosRival)}`
-        : includeMetrics ? 'Métricas no comparables por falta de cobertura completa' : 'Métricas omitidas';
+        : '';
       const center=x+w/2, pad=Math.min(32,w*.06), nameWidth=w*.38;
       const metaY=y+44, labelY=y+h*.34, namesY=y+h*.45, scoreY=y+h*.70, metricY=y+h-36;
-      return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="22" fill="#fff" stroke="#d4ded6" stroke-width="2"/><path d="M${x} ${y+h-8}h${w}" stroke="#ff7a2f" stroke-width="8"/><text x="${x+pad}" y="${metaY}" fill="#536257" font-family="Arial,sans-serif" font-size="${w<600?19:23}" font-weight="700" letter-spacing="1.2">${seasonLabel} · J${round} · ${xml(row.dataset.fechaPartido)}</text><text x="${x+pad}" y="${labelY}" fill="#536257" font-family="Arial,sans-serif" font-size="${w<600?17:19}" font-weight="700">LOCAL</text><text x="${x+w-pad}" y="${labelY}" text-anchor="end" fill="#536257" font-family="Arial,sans-serif" font-size="${w<600?17:19}" font-weight="700">VISITANTE</text><text x="${x+pad}" y="${namesY}" fill="#163e28" font-family="Arial,sans-serif" font-size="${w<600?24:30}" font-weight="700" textLength="${nameWidth}" lengthAdjust="spacingAndGlyphs">${xml(home)}</text><text x="${x+w-pad}" y="${namesY}" text-anchor="end" fill="#163e28" font-family="Arial,sans-serif" font-size="${w<600?24:30}" font-weight="700" textLength="${nameWidth}" lengthAdjust="spacingAndGlyphs">${xml(away)}</text><text x="${center}" y="${scoreY}" text-anchor="middle" fill="#163e28" font-family="Arial,sans-serif" font-size="${w<600?78:92}" font-weight="800">${xml(homeGoals)} <tspan fill="#ff7a2f" font-size="${w<600?56:64}">–</tspan> ${xml(awayGoals)}</text><text x="${center}" y="${metricY}" text-anchor="middle" fill="#536257" font-family="Arial,sans-serif" font-size="${w<600?17:19}">${metrics}</text>`;
+      return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="22" fill="#fff" stroke="#d4ded6" stroke-width="2"/><path d="M${x} ${y+h-8}h${w}" stroke="#ff7a2f" stroke-width="8"/><text x="${x+pad}" y="${metaY}" fill="#536257" font-family="Arial,sans-serif" font-size="${w<600?19:23}" font-weight="700" letter-spacing="1.2">${seasonLabel} · J${round} · ${xml(row.dataset.fechaPartido)}</text><text x="${x+pad}" y="${labelY}" fill="#536257" font-family="Arial,sans-serif" font-size="${w<600?17:19}" font-weight="700">LOCAL</text><text x="${x+w-pad}" y="${labelY}" text-anchor="end" fill="#536257" font-family="Arial,sans-serif" font-size="${w<600?17:19}" font-weight="700">VISITANTE</text><text x="${x+pad}" y="${namesY}" fill="#163e28" font-family="Arial,sans-serif" font-size="${w<600?24:30}" font-weight="700" textLength="${nameWidth}" lengthAdjust="spacingAndGlyphs">${xml(home)}</text><text x="${x+w-pad}" y="${namesY}" text-anchor="end" fill="#163e28" font-family="Arial,sans-serif" font-size="${w<600?24:30}" font-weight="700" textLength="${nameWidth}" lengthAdjust="spacingAndGlyphs">${xml(away)}</text><text x="${center}" y="${scoreY}" text-anchor="middle" fill="#163e28" font-family="Arial,sans-serif" font-size="${w<600?78:92}" font-weight="800">${xml(homeGoals)} <tspan fill="#ff7a2f" font-size="${w<600?56:64}">–</tspan> ${xml(awayGoals)}</text>${metrics?`<text x="${center}" y="${metricY}" text-anchor="middle" fill="#536257" font-family="Arial,sans-serif" font-size="${w<600?17:19}">${metrics}</text>`:''}`;
     }).join('');
-    const title = `Comparativa J${rowA.dataset.jornada}–J${rowB.dataset.jornada} · ${rowA.dataset.temporada} / ${rowB.dataset.temporada}`;
+    const title = singleRow
+      ? `Jornada ${singleRow.dataset.jornada} · ${singleRow.dataset.rival} · ${singleRow.dataset.temporada}`
+      : `Comparativa J${rowA.dataset.jornada}–J${rowB.dataset.jornada} · ${rowA.dataset.temporada} / ${rowB.dataset.temporada}`;
     const homeAway = row => row.dataset.sede === 'Casa'
       ? {home:'Real Zaragoza',away:row.dataset.rival,homeGoals:row.dataset.golesZaragoza,awayGoals:row.dataset.golesRival}
       : {home:row.dataset.rival,away:'Real Zaragoza',homeGoals:row.dataset.golesRival,awayGoals:row.dataset.golesZaragoza};
-    const scoreA=homeAway(rowA), scoreB=homeAway(rowB);
+    const scores=displayRows.map(row => ({row,score:homeAway(row)}));
     const caption=includeCaption
-      ? `<text x="${layout.width/2}" y="${layout.captionY}" text-anchor="middle" fill="#536257" font-family="Arial,sans-serif" font-size="17" font-weight="700">Primera Federación · J${rowA.dataset.jornada.padStart(2,'0')} ${scoreA.homeGoals}–${scoreA.awayGoals} · J${rowB.dataset.jornada.padStart(2,'0')} ${scoreB.homeGoals}–${scoreB.awayGoals}</text>`
+      ? `<text x="${layout.width/2}" y="${layout.captionY}" text-anchor="middle" fill="#536257" font-family="Arial,sans-serif" font-size="17" font-weight="700">Primera Federación · ${scores.map(({row,score})=>`J${row.dataset.jornada.padStart(2,'0')} ${score.homeGoals}–${score.awayGoals}`).join(' · ')}</text>`
       : '';
     const storiesDesc=format==='historias'?' La composición reserva espacio superior e inferior para no quedar debajo de los controles de las historias.':'';
-    const brandY=layout.brandY ?? 54;
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="${layout.width}" height="${layout.height}" viewBox="0 0 ${layout.width} ${layout.height}" role="img" aria-labelledby="titulo descripcion"><title id="titulo">${xml(title)}</title><desc id="descripcion">Marcadores del Real Zaragoza frente a ${xml(rowA.dataset.rival)} y ${xml(rowB.dataset.rival)}. La posesión y los tiros se incluyen solo si se seleccionan y las dos fichas están completas.${xml(storiesDesc)}</desc><rect width="${layout.width}" height="${layout.height}" fill="#f3f5ef"/><path d="M0 0h${layout.width}v${layout.header}H0z" fill="#103b24"/><path d="M0 ${layout.header-5}h${layout.width}" stroke="#ff7a2f" stroke-width="7"/><text x="54" y="${brandY}" fill="#bed8c4" font-family="Arial,sans-serif" font-size="17" font-weight="700" letter-spacing="3">LÍNEA DE PASE · ARCHIVO VISUAL</text><text x="54" y="${layout.titleY}" fill="#f7f8f4" font-family="Arial,sans-serif" font-size="${layout.titleSize}" font-weight="800">Dos jornadas, frente a frente</text>${cards}${caption}<text x="${layout.width-50}" y="${layout.domainY}" text-anchor="end" fill="#64766b" font-family="Arial,sans-serif" font-size="15">lineadepase.com</text></svg>`;
+    const brandY=baseLayout.brandY ?? 54;
+    const header=`${includeHeader?`<path d="M0 0h${layout.width}v${baseLayout.header}H0z" fill="#103b24"/><path d="M0 ${baseLayout.header-5}h${layout.width}" stroke="#ff7a2f" stroke-width="7"/>`:''}${showBrand?`<text x="54" y="${brandY}" fill="${includeHeader?'#bed8c4':'#163e28'}" font-family="Arial,sans-serif" font-size="17" font-weight="700" letter-spacing="3">LÍNEA DE PASE · ARCHIVO VISUAL</text>`:''}${includeHeader?`<text x="54" y="${baseLayout.titleY}" fill="#f7f8f4" font-family="Arial,sans-serif" font-size="${baseLayout.titleSize}" font-weight="800">${singleRow?`J${singleRow.dataset.jornada.padStart(2,'0')} · ${xml(singleRow.dataset.rival)}`:'Dos jornadas, frente a frente'}</text>`:''}`;
+    const description = singleRow
+      ? `Resultado del Real Zaragoza ante ${xml(singleRow.dataset.rival)}, temporada ${xml(singleRow.dataset.temporada)}.`
+      : `Marcadores del Real Zaragoza frente a ${displayRows.map(row=>xml(row.dataset.rival)).join(' y ')}.`;
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="${layout.width}" height="${layout.height}" viewBox="0 0 ${layout.width} ${layout.height}" role="img" aria-labelledby="titulo descripcion"><title id="titulo">${xml(title)}</title><desc id="descripcion">${description} La posesión y los tiros se incluyen solo si se seleccionan y las dos fichas están completas.${xml(storiesDesc)}</desc><rect width="${layout.width}" height="${layout.height}" fill="#f3f5ef"/>${header}${cards}${caption}${showBrand?`<text x="${layout.width-50}" y="${layout.domainY}" text-anchor="end" fill="#64766b" font-family="Arial,sans-serif" font-size="15">lineadepase.com</text>`:''}</svg>`;
   }
 
   function saveBlob(blob, filename) {
@@ -147,49 +162,79 @@
     window.setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
 
+  function zipStored(files) {
+    const encoder = new TextEncoder();
+    const crc32 = bytes => {
+      let crc=0xffffffff;
+      for(const byte of bytes){crc^=byte;for(let bit=0;bit<8;bit++)crc=(crc>>>1)^((crc&1)?0xedb88320:0);}
+      return (crc^0xffffffff)>>>0;
+    };
+    const local=[], central=[]; let offset=0;
+    for(const file of files){
+      const name=encoder.encode(file.name), data=file.bytes, crc=crc32(data);
+      const header=new Uint8Array(30+name.length), view=new DataView(header.buffer);
+      view.setUint32(0,0x04034b50,true);view.setUint16(4,20,true);view.setUint16(6,0x0800,true);view.setUint16(8,0,true);
+      view.setUint32(14,crc,true);view.setUint32(18,data.length,true);view.setUint32(22,data.length,true);view.setUint16(26,name.length,true);header.set(name,30);
+      local.push(header,data);
+      const record=new Uint8Array(46+name.length), cview=new DataView(record.buffer);
+      cview.setUint32(0,0x02014b50,true);cview.setUint16(4,20,true);cview.setUint16(6,20,true);cview.setUint16(8,0x0800,true);cview.setUint16(10,0,true);
+      cview.setUint32(16,crc,true);cview.setUint32(20,data.length,true);cview.setUint32(24,data.length,true);cview.setUint16(28,name.length,true);cview.setUint32(42,offset,true);record.set(name,46);
+      central.push(record);offset+=header.length+data.length;
+    }
+    const centralSize=central.reduce((sum,part)=>sum+part.length,0), end=new Uint8Array(22), endView=new DataView(end.buffer);
+    endView.setUint32(0,0x06054b50,true);endView.setUint16(8,files.length,true);endView.setUint16(10,files.length,true);endView.setUint32(12,centralSize,true);endView.setUint32(16,offset,true);
+    return new Blob([...local,...central,end],{type:'application/zip'});
+  }
+
+  function svgToRaster(svg, mimeType) {
+    return new Promise((resolve,reject)=>{
+      const sourceUrl=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml;charset=utf-8'}));
+      const image=new Image();
+      image.onload=()=>{
+        const canvas=document.createElement('canvas');canvas.width=image.naturalWidth;canvas.height=image.naturalHeight;
+        canvas.getContext('2d').drawImage(image,0,0);
+        canvas.toBlob(blob=>{URL.revokeObjectURL(sourceUrl);if(!blob)reject(new Error('No se pudo rasterizar la tarjeta.'));else resolve(blob);},mimeType,mimeType==='image/webp'?0.86:undefined);
+      };
+      image.onerror=()=>{URL.revokeObjectURL(sourceUrl);reject(new Error('No se pudo preparar la tarjeta.'));};
+      image.src=sourceUrl;
+    });
+  }
+
   async function downloadComparison(format) {
     const rowA = rounds.get(selectA.value);
     const rowB = rounds.get(selectB.value);
     if (!rowA || !rowB) return;
     const size = formatSelect?.value || 'apaisado';
-    const dimensions = {apaisado:[1200,630],cuadrado:[1080,1080],vertical:[1080,1350],historias:[1080,1920]}[size] || [1200,630];
     const metricsAvailable = rowA.dataset.completa === '1' && rowB.dataset.completa === '1';
     const includeMetrics = Boolean(metricsAvailable && metricsToggle?.checked);
     const includeCaption = Boolean(captionToggle?.checked);
-    const svg = comparisonSvg(rowA, rowB, size, includeMetrics, includeCaption);
+    const includeHeader = !Boolean(noHeaderToggle?.checked);
+    const showBrand = Boolean(brandToggle?.checked);
     const safeName = value => value.replace(/[^0-9a-z]+/gi, '-').replace(/^-|-$/g, '');
-    const filename = `comparativa-${size}-${safeName(rowA.dataset.comparisonId)}-${safeName(rowB.dataset.comparisonId)}`;
-    if (format === 'svg') {
-      saveBlob(new Blob([svg], {type: 'image/svg+xml;charset=utf-8'}), `${filename}.svg`);
-      compareState.textContent = `Tarjeta ${size} SVG descargada${includeMetrics?' con métricas':' sin métricas'}${includeCaption?' y con pie':' sin pie'}.`;
+    const stem = `comparativa-${size}-${safeName(rowA.dataset.comparisonId)}-${safeName(rowB.dataset.comparisonId)}`;
+    if(size==='carrusel'){
+      const mimeType={svg:'image/svg+xml',png:'image/png',webp:'image/webp'}[format];
+      const extension=format;
+      const files=[];
+      for(const [index,row] of [rowA,rowB].entries()){
+        const svg=comparisonSvg(rowA,rowB,'carrusel',includeMetrics,includeCaption,includeHeader,showBrand,row);
+        let blob=format==='svg'?new Blob([svg],{type:'image/svg+xml;charset=utf-8'}):await svgToRaster(svg,mimeType);
+        if(format==='webp'&&blob.type!=='image/webp')throw new Error('Este navegador no ofrece exportación WebP; puedes elegir PNG o SVG.');
+        files.push({name:`diapositiva-${index+1}-jornada-${row.dataset.jornada.padStart(2,'0')}.${extension}`,bytes:new Uint8Array(await blob.arrayBuffer())});
+      }
+      saveBlob(zipStored(files),`${stem}-${format}.zip`);
+      compareState.textContent=`Carrusel ZIP con dos diapositivas ${format.toUpperCase()} descargado${includeCaption?' con pie':' sin pie'}${includeHeader?' con cabecera':' sin cabecera'}${showBrand?' y con marca':' sin marca'}.`;
       return;
     }
-    const sourceUrl = URL.createObjectURL(new Blob([svg], {type: 'image/svg+xml;charset=utf-8'}));
-    const image = new Image();
-    image.onload = () => {
-      const canvas = document.createElement('canvas');
-      canvas.width = dimensions[0];
-      canvas.height = dimensions[1];
-      canvas.getContext('2d').drawImage(image, 0, 0);
-      const mimeType = format === 'webp' ? 'image/webp' : 'image/png';
-      const extension = format;
-      canvas.toBlob(blob => {
-        URL.revokeObjectURL(sourceUrl);
-        if (!blob || (format === 'webp' && blob.type !== 'image/webp')) {
-          compareState.textContent = format === 'webp'
-            ? 'Este navegador no ofrece exportación WebP; puedes descargar la tarjeta como PNG o SVG.'
-            : 'No se pudo preparar la descarga PNG.';
-          return;
-        }
-        saveBlob(blob, `${filename}.${extension}`);
-        compareState.textContent = `Tarjeta ${size} ${extension.toUpperCase()} descargada${includeMetrics?' con métricas':' sin métricas'}${includeCaption?' y con pie':' sin pie'}.`;
-      }, mimeType, format === 'webp' ? 0.86 : undefined);
-    };
-    image.onerror = () => {
-      URL.revokeObjectURL(sourceUrl);
-      compareState.textContent = 'No se pudo preparar la tarjeta comparativa.';
-    };
-    image.src = sourceUrl;
+    const svg=comparisonSvg(rowA,rowB,size,includeMetrics,includeCaption,includeHeader,showBrand);
+    if(format==='svg')saveBlob(new Blob([svg],{type:'image/svg+xml;charset=utf-8'}),`${stem}.svg`);
+    else {
+      const mimeType=format==='webp'?'image/webp':'image/png';
+      const blob=await svgToRaster(svg,mimeType);
+      if(format==='webp'&&blob.type!=='image/webp')throw new Error('Este navegador no ofrece exportación WebP; puedes elegir PNG o SVG.');
+      saveBlob(blob,`${stem}.${format}`);
+    }
+    compareState.textContent=`Tarjeta ${size} ${format.toUpperCase()} descargada${includeCaption?' con pie':' sin pie'}${includeHeader?' con cabecera':' sin cabecera'}${showBrand?' y con marca':' sin marca'}.`;
   }
 
   if (filterBox && seasonFilter && rivalFilter && count && rows.length) {
@@ -232,12 +277,21 @@
     });
     const updateFormatGuidance = () => {
       if (storiesNote) storiesNote.hidden = formatSelect?.value !== 'historias';
+      if (carouselNote) carouselNote.hidden = formatSelect?.value !== 'carrusel';
+      if (individualDownloads) individualDownloads.hidden = formatSelect?.value === 'carrusel';
+      if (carouselDownloads) carouselDownloads.hidden = formatSelect?.value !== 'carrusel';
     };
     formatSelect?.addEventListener('change', updateFormatGuidance);
     updateFormatGuidance();
     if (downloadControls) downloadControls.hidden = false;
     document.querySelectorAll('[data-descargar-comparacion]').forEach(button => {
-      button.addEventListener('click', () => downloadComparison(button.dataset.descargarComparacion));
+      button.addEventListener('click', async () => {
+        try {
+          await downloadComparison(button.dataset.descargarComparacion);
+        } catch (error) {
+          compareState.textContent = error instanceof Error ? error.message : 'No se pudo preparar la descarga.';
+        }
+      });
     });
     updateComparison('');
   }
