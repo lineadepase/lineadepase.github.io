@@ -74,6 +74,14 @@ En `datos/tablas/` están las mismas tablas listas para abrir con doble clic en 
 
 ## Cómo se actualiza
 
+### Previas con imagen y presencia en portada
+
+Cada previa se publica con una ilustración editorial propia y su noticia. Antes de generar una nueva jornada con `codigo/previa.py`, se añade su entrada a `datos/previas.json` (en la raíz de la web): jornada, fecha del partido, título, resumen, página permanente, imagen, dimensiones y texto alternativo. La imagen debe existir; el generador se detiene si falta para evitar publicar una previa sin portada o con la ilustración de otro rival.
+
+`herramientas/previas.py` incorpora la imagen y el texto editorial a la noticia, conserva una URL por jornada y actualiza el bloque de previas de la página principal. La dirección `previa.html` sigue mostrando la jornada más reciente; las noticias anteriores mantienen su propia dirección. El bloque muestra las cuatro previas más recientes. Las previas de Copa se añaden al mismo registro con una página propia, sin campo `jornada`, para mantener separadas las competiciones.
+
+La regeneración de portada y la actualización SEO también sincronizan este bloque. Para sincronizar páginas ya publicadas: `python herramientas/previas.py`. Para comprobar el ciclo de publicación: `python -m unittest discover -s herramientas/pruebas -p test_previas.py`.
+
 1. Añadir el partido nuevo a los CSV de `datos/entrada` (y la clasificación de esa jornada).
 2. Ejecutar desde la raíz del repositorio:
    ```

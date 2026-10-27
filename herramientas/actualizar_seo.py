@@ -134,6 +134,10 @@ def build():
         slug = 'inicio' if path == 'index.html' else path.removesuffix('.html').replace('/', '-')
         image_path = 'assets/compartir/' + slug + '.png'
         image_url = BASE + '/' + image_path
+        editorial = re.search(r'<meta name="imagen-editorial" content="([^"]+)">', raw)
+        if editorial:
+            image_path = editorial[1]
+            image_url = BASE + '/' + image_path
         title = head.title.strip()
         display = title.replace(' · Línea de pase', '').strip()
         if path == 'index.html':
@@ -144,7 +148,8 @@ def build():
         description = head.description.strip()
         if not description:
             raise ValueError(f'Falta descripción en {path}')
-        card(display, category, ROOT / image_path)
+        if not editorial:
+            card(display, category, ROOT / image_path)
         # Sustituir solo nuestro bloque mantiene intactos títulos y descripciones editoriales.
         raw = re.sub(re.escape(START) + r'.*?' + re.escape(END) + r'\r?\n?', '', raw, flags=re.S)
         raw = re.sub(r'<link\b[^>]*rel=["\']canonical["\'][^>]*>\s*', '', raw, flags=re.I)
@@ -229,6 +234,8 @@ def build():
     ET.indent(root)
     ET.ElementTree(root).write(ROOT / 'sitemap.xml', encoding='utf-8', xml_declaration=True)
     (ROOT / 'robots.txt').write_text('User-agent: *\nAllow: /\n\nSitemap: ' + BASE + '/sitemap.xml\n', encoding='utf-8')
+    from previas import sincronizar
+    sincronizar(ROOT)
     print(json.dumps({'pages': len(urls), 'cards': len(manifest), 'urls': urls}, ensure_ascii=False))
 
 

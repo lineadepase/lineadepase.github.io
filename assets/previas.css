@@ -1,0 +1,7 @@
+.previas-portada{margin:2.5rem 0;padding:1.5rem 0;border-top:1px solid var(--borde,#ccd3df)}
+.previas-rejilla{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.75rem}
+.tarjeta-previa{min-width:0}
+.tarjeta-previa img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:contain;border-radius:12px}
+.tarjeta-previa h3{font-size:clamp(1.65rem,3vw,2.35rem);line-height:1.12;margin:.5rem 0}
+.tarjeta-previa .etiqueta{margin-top:1rem}
+@media(max-width:640px){.previas-rejilla{grid-template-columns:1fr;gap:2rem}.previas-portada{margin:1.5rem 0}}

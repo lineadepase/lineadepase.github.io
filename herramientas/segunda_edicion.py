@@ -57,3 +57,5 @@ def generate_home():
     if b'\r\n' in original and b'\n' not in original.replace(b'\r\n',b''):
         raw=raw.replace('\r\n','\n').replace('\n','\r\n')
     file.write_bytes(raw.encode('utf-8'))
+    from previas import portada
+    portada(ROOT)

@@ -245,7 +245,12 @@ def generar(jornada):
     ruta = RAIZ_WEB / "proyectos" / "real-zaragoza" / "previa.html"
     from presentacion_web import enriquecer
     html = enriquecer(html, "previa.html", jornada=jornada)
+    # Cada previa requiere su imagen editorial y se anuncia en la portada.
+    sys.path.insert(0, str(RAIZ_WEB / "herramientas"))
+    from previas import publicar_liga, sincronizar
+    html = publicar_liga(jornada, html)
     ruta.write_text(html, encoding="utf-8")
+    sincronizar()
     print(f"Previa generada: {local} – {visitante} (jornada {jornada}).")
 
 
