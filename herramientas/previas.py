@@ -302,6 +302,19 @@ def con_imagen(html, entry):
             html = html.replace('<!-- /ficha-previa -->', '<!-- /ficha-previa -->'+block, 1)
         else:
             html = html.replace('<!-- /imagen-previa -->', '<!-- /imagen-previa -->'+block, 1)
+    states = entry.get('estados_previa') or {}
+    confirmed_text = states.get('confirmado') or 'Horario, estadio y competición de la ficha.'
+    pending_text = states.get('pendiente') or 'La convocatoria y el once, cuando el club los confirme.'
+    after_text = states.get('despues') or 'La pregunta previa se revisará con lo ocurrido en el campo.'
+    states_block = ('<!-- previa-tres-estados --><section class="seccion lectura previa-tres-estados" aria-labelledby="titulo-tres-estados">'
+                    '<p class="etiqueta">Antes y después</p><h2 id="titulo-tres-estados">Tres cosas que conviene separar</h2>'
+                    '<ol><li><span>Confirmado</span><p>'+escape(confirmed_text)+'</p></li>'
+                    '<li><span>Pendiente</span><p>'+escape(pending_text)+'</p></li>'
+                    '<li><span>Se revisará después</span><p>'+escape(after_text)+'</p></li></ol></section><!-- /previa-tres-estados -->')
+    if '<!-- previa-tres-estados -->' in html:
+        html = re.sub(r'<!-- previa-tres-estados -->[\s\S]*?<!-- /previa-tres-estados -->', lambda _: states_block, html, flags=re.S)
+    else:
+        html = html.replace('<!-- /pregunta-partido -->', '<!-- /pregunta-partido -->'+states_block, 1)
     share = ('<!-- compartir-previa --><div class="compartir-previa" aria-label="Compartir esta previa">'
              '<button class="boton" type="button" data-compartir-previa>Compartir</button>'
              '<button class="boton" type="button" data-copiar-previa>Copiar enlace</button>'
@@ -317,7 +330,8 @@ def con_imagen(html, entry):
     if 'assets/estado-partido.js' not in html:
         html = html.replace('</head>', '<script src="../../assets/estado-partido.js?v=20261027b" defer></script>\n</head>', 1)
     if 'assets/ideas-editoriales.css' not in html:
-        html = html.replace('</head>', '<link rel="stylesheet" href="../../assets/ideas-editoriales.css?v=20261027a">\n</head>', 1)
+        html = html.replace('</head>', '<link rel="stylesheet" href="../../assets/ideas-editoriales.css?v=20261027d">\n</head>', 1)
+    html = re.sub(r'(assets/ideas-editoriales\.css\?v=)[^"\s]+', r'\g<1>20261027d', html)
     html = re.sub(r'(assets/estado-partido\.js\?v=)[^"\s]+', r'\g<1>20261027b', html)
     html = re.sub(r'(assets/real-zaragoza\.css\?v=)[^"\s]+', r'\g<1>20261027c', html)
     # La fecha de publicación no cambia al editar; la actualización sí.

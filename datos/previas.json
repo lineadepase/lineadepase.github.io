@@ -22,7 +22,12 @@
     "hora": "21:00",
     "estadio": "Ibercaja Estadio",
     "competicion": "Primera Federación · Jornada 10",
-    "fuente_partido": "https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-10-real-zaragoza-vs-villarreal-b-3962"
+    "fuente_partido": "https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-10-real-zaragoza-vs-villarreal-b-3962",
+    "estados_previa": {
+      "confirmado": "El partido se juega el 31 de octubre a las 21:00 en Ibercaja Estadio.",
+      "pendiente": "Las convocatorias y los onces, hasta que los equipos los hagan públicos.",
+      "despues": "Se revisará quién logró llegar más veces al área rival, con los datos disponibles del encuentro."
+    }
   },
   {
     "pagina": "proyectos/real-zaragoza/previa-copa-tudelano-20261027.html",
@@ -51,6 +56,11 @@
           "url": "https://cdtudelano.com/actualidad/entradas-copa-del-rey-zaragoza/"
         }
       ]
+    },
+    "estados_previa": {
+      "confirmado": "La eliminatoria de Copa se disputa el 27 de octubre, a las 21:00 en el Estadio Ciudad de Tudela.",
+      "pendiente": "Los onces y el desarrollo de la eliminatoria, que se comprobarán durante el partido.",
+      "despues": "Se revisará si el Zaragoza llevó el juego cerca del área o si el Tudelano condujo el encuentro a un partido más directo."
     }
   }
 ]

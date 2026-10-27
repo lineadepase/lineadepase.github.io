@@ -253,12 +253,43 @@ def generate_reloj_marcador():
 def generate_pizarron_jugada():
     moments = json.loads((ROOT/'datos/momentos-partido.json').read_text(encoding='utf-8'))['9']
     goal = next(item for item in moments['momentos'] if str(item['minuto']) == '80')
-    svg = '<figure class="pizarron-figura"><svg class="pizarron-secuencia" viewBox="0 0 960 250" role="img" aria-labelledby="titulo-secuencia descripcion-secuencia"><title id="titulo-secuencia">Secuencia del gol del Real Zaragoza en Can Dragó</title><desc id="descripcion-secuencia">Un saque de esquina, el remate de Diego González y el desvío de Álex Cano que terminó en gol en propia puerta.</desc><rect x="8" y="8" width="944" height="234" rx="18" fill="#17452e"/><path d="M28 125H932M320 20v210M640 20v210" stroke="#d5e5d8" stroke-opacity=".28" stroke-width="2"/><path d="M44 36v178m0-89h94m-94-49a49 49 0 0 1 49 49 49 49 0 0 1-49 49" fill="none" stroke="#d5e5d8" stroke-opacity=".35" stroke-width="2"/><path d="M350 125h110m38 0h110" stroke="#f2c34b" stroke-width="5" stroke-linecap="round" stroke-dasharray="3 11"/><circle cx="180" cy="125" r="35" fill="#f2c34b"/><circle cx="500" cy="125" r="35" fill="#f2c34b"/><circle cx="820" cy="125" r="35" fill="#f2c34b"/><text x="180" y="137" text-anchor="middle" fill="#10291e" font-size="34" font-family="system-ui,sans-serif" font-weight="800">1</text><text x="500" y="137" text-anchor="middle" fill="#10291e" font-size="34" font-family="system-ui,sans-serif" font-weight="800">2</text><text x="820" y="137" text-anchor="middle" fill="#10291e" font-size="34" font-family="system-ui,sans-serif" font-weight="800">3</text><text x="180" y="194" text-anchor="middle" fill="#fff" font-size="18" font-family="system-ui,sans-serif">Córner</text><text x="500" y="194" text-anchor="middle" fill="#fff" font-size="18" font-family="system-ui,sans-serif">Remate de Diego González</text><text x="820" y="194" text-anchor="middle" fill="#fff" font-size="18" font-family="system-ui,sans-serif">Desvío y gol</text></svg><figcaption>Esquema de la secuencia; no representa posiciones ni distancias exactas.</figcaption></figure>'
-    body = '<p>El único gol de la J9 llegó en una acción a balón parado. El esquema ordena los tres pasos que describe el resumen del partido:</p>'+svg+'<ol class="pizarron-pasos"><li><strong>El saque.</strong> El Zaragoza puso el balón en juego desde un córner.</li><li><strong>El remate.</strong> Diego González cabeceó hacia la portería.</li><li><strong>El desvío.</strong> Álex Cano tocó el balón y lo introdujo en su propia portería en el minuto 80.</li></ol><aside class="fuera-de-plano"><h2>Lo que no muestra el esquema</h2><p>'+escape(moments['limite'])+' No hay coordenadas de seguimiento, así que el dibujo explica el orden de la acción, no la colocación exacta de los jugadores.</p></aside><p><a class="enlace-editorial" href="https://www.youtube.com/watch?v=gBB7ameQWbI" target="_blank" rel="noopener">Ver el resumen de la jugada →</a> · <a href="../proyectos/real-zaragoza/jornada-9.html">Análisis de la J9</a></p>'
-    head = '<link rel="stylesheet" href="../assets/ideas-editoriales.css?v=20261027c">'
+    svg = '<figure class="pizarron-figura"><svg class="pizarron-secuencia" viewBox="0 0 960 250" role="img" aria-labelledby="titulo-secuencia descripcion-secuencia"><title id="titulo-secuencia">Secuencia del gol del Real Zaragoza en Can Dragó</title><desc id="descripcion-secuencia">Un saque de esquina, el remate de Diego González y el desvío de Álex Cano que terminó en gol en propia puerta.</desc><rect x="8" y="8" width="944" height="234" rx="18" fill="#17452e"/><path d="M28 125H932M320 20v210M640 20v210" stroke="#d5e5d8" stroke-opacity=".28" stroke-width="2"/><path d="M44 36v178m0-89h94m-94-49a49 49 0 0 1 49 49 49 49 0 0 1-49 49" fill="none" stroke="#d5e5d8" stroke-opacity=".35" stroke-width="2"/><path d="M350 125h110m38 0h110" stroke="#f2c34b" stroke-width="5" stroke-linecap="round" stroke-dasharray="3 11"/><circle data-paso="0" cx="180" cy="125" r="35" fill="#f2c34b"/><circle data-paso="1" cx="500" cy="125" r="35" fill="#f2c34b"/><circle data-paso="2" cx="820" cy="125" r="35" fill="#f2c34b"/><text x="180" y="137" text-anchor="middle" fill="#10291e" font-size="34" font-family="system-ui,sans-serif" font-weight="800">1</text><text x="500" y="137" text-anchor="middle" fill="#10291e" font-size="34" font-family="system-ui,sans-serif" font-weight="800">2</text><text x="820" y="137" text-anchor="middle" fill="#10291e" font-size="34" font-family="system-ui,sans-serif" font-weight="800">3</text><text x="180" y="194" text-anchor="middle" fill="#fff" font-size="18" font-family="system-ui,sans-serif">Córner</text><text x="500" y="194" text-anchor="middle" fill="#fff" font-size="18" font-family="system-ui,sans-serif">Remate de Diego González</text><text x="820" y="194" text-anchor="middle" fill="#fff" font-size="18" font-family="system-ui,sans-serif">Desvío y gol</text></svg><figcaption>Esquema de la secuencia; no representa posiciones ni distancias exactas.</figcaption></figure>'
+    body = '<p>El único gol de la J9 llegó en una acción a balón parado. El esquema ordena los tres pasos que describe el resumen del partido:</p>'+svg+'<div class="jugada-inversa" data-jugada-inversa><div class="jugada-inversa-botones"><button class="boton" type="button" data-retroceder>Retroceder una acción</button><button class="boton" type="button" data-avanzar>Avanzar hacia el gol</button></div><p data-estado-jugada role="status" aria-live="polite">Paso 3 de 3: el desvío termina en gol.</p></div><ol class="pizarron-pasos"><li><strong>El saque.</strong> El Zaragoza puso el balón en juego desde un córner.</li><li><strong>El remate.</strong> Diego González cabeceó hacia la portería.</li><li><strong>El desvío.</strong> Álex Cano tocó el balón y lo introdujo en su propia portería en el minuto 80.</li></ol><aside class="fuera-de-plano"><h2>Lo que no muestra el esquema</h2><p>'+escape(moments['limite'])+' No hay coordenadas de seguimiento, así que el dibujo explica el orden de la acción, no la colocación exacta de los jugadores.</p></aside><p><a class="enlace-editorial" href="https://www.youtube.com/watch?v=gBB7ameQWbI" target="_blank" rel="noopener">Ver el resumen de la jugada →</a> · <a href="../proyectos/real-zaragoza/jornada-9.html">Análisis de la J9</a></p>'
+    head = '<link rel="stylesheet" href="../assets/ideas-editoriales.css?v=20261027d"><script src="../assets/jugada-hacia-atras.js?v=20261027d" defer></script>'
     folder = ROOT/'pizarron-de-una-jugada'
     folder.mkdir(exist_ok=True)
     (folder/'index.html').write_text(page('El pizarrón de una jugada','Una secuencia esquemática del gol del Real Zaragoza ante el CE Europa: córner, remate y desvío.',body,head,'pizarron-de-una-jugada/'),encoding='utf-8')
+
+
+def generate_mapa_cambios():
+    moments = json.loads((ROOT/'datos/momentos-partido.json').read_text(encoding='utf-8'))['9']['momentos']
+    changes = []
+    with (ROOT/'analisis/real-zaragoza/datos/entrada/cambios.csv').open(encoding='utf-8-sig', newline='') as stream:
+        import csv
+        changes = [row for row in csv.DictReader(stream) if row['partido_id'] == '9']
+    goal = next(item for item in moments if str(item['minuto']) == '80')
+    minute_events = {}
+    for row in changes:
+        minute_events.setdefault(int(row['minuto']), []).append(row)
+    items = []
+    for minute in sorted(set(minute_events) | {80}):
+        if minute == 80:
+            fact = goal['hecho']
+            marker = goal['marcador']
+        else:
+            actions = '; '.join(escape(row['entra'])+' por '+escape(row['sale']) for row in minute_events[minute])
+            fact = 'Cambios del Zaragoza: '+actions+'.'
+            marker = 'Sustituciones'
+        items.append('<li><span class="momento-minuto">'+str(minute)+'’</span><div><strong>'+escape(marker)+'</strong><p><strong>Hecho.</strong> '+fact+'</p></div></li>')
+    body = ('<p>La ficha del partido registra cinco sustituciones del Zaragoza entre los minutos 56 y 78. Dos minutos después llegó el gol que decidió el encuentro.</p>'
+            '<ol class="momentos-partido mapa-cambios">'+''.join(items)+'</ol>'
+            '<aside class="fuera-de-plano"><h2>Qué permite concluir</h2><p><strong>Lectura.</strong> La secuencia ordena los cambios y el gol. Que ocurrieran antes no demuestra que los cambios provocaran el gol: el registro no incluye posesiones, ocasiones ni posiciones por minuto.</p></aside>'
+            '<p class="nota">Fuente: <a href="https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-9-ce-europa-vs-real-zaragoza-3940" target="_blank" rel="noopener">ficha oficial del Real Zaragoza</a>.</p>'
+            '<p><a class="enlace-editorial" href="../proyectos/real-zaragoza/jornada-9.html">Consultar el análisis de la J9 →</a> · <a href="../pizarron-de-una-jugada/">Ver la secuencia del gol</a></p>')
+    head = '<link rel="stylesheet" href="../assets/ideas-editoriales.css?v=20261027d">'
+    folder = ROOT/'mapa-de-lo-que-cambio'
+    folder.mkdir(exist_ok=True)
+    (folder/'index.html').write_text(page('El mapa de lo que cambió','Una cronología de las sustituciones y el gol de la J9, con los hechos separados de lo que puede interpretarse.',body,head,'mapa-de-lo-que-cambio/'),encoding='utf-8')
 
 
 def generate_balance_preguntas():
@@ -309,6 +340,7 @@ def generate():
     generate_partidos_espejo()
     generate_reloj_marcador()
     generate_pizarron_jugada()
+    generate_mapa_cambios()
     generate_balance_preguntas()
     from segunda_edicion import generate_map, generate_home
     generate_map(page)
@@ -370,7 +402,8 @@ def enrich(raw, file):
             links.insert(0, ('reloj-del-marcador/index.html', 'Ver el tiempo de marcador'))
             if file.name == 'jornada-9.html':
                 links.insert(1, ('pizarron-de-una-jugada/index.html', 'Ver el pizarrón del gol de la J9'))
-                links.insert(2, ('datos-en-revision/index.html', 'Consultar la discrepancia de tiros de la J9'))
+                links.insert(2, ('mapa-de-lo-que-cambio/index.html', 'Ver los cambios y el gol de la J9'))
+                links.insert(3, ('datos-en-revision/index.html', 'Consultar la discrepancia de tiros de la J9'))
             links.insert(0, ('marcador-a-ciegas/index.html', 'Probar el marcador a ciegas'))
             links.insert(1, ('partidos-espejo/index.html', 'Explorar partidos espejo'))
             links.insert(2, ('balance-de-preguntas/index.html', 'Ver el balance de preguntas'))
@@ -383,7 +416,7 @@ def enrich(raw, file):
 
 def build():
     generate()
-    for folder in ['proyectos', 'videos', 'sobre-mi', 'archivo', 'conceptos', 'comparador', 'seleccion', 'novedades', 'mapa-grupo', 'herramientas', 'tras-la-jornada', 'preguntas-del-partido', 'marcador-a-ciegas', 'datos-en-revision', 'partidos-espejo', 'reloj-del-marcador', 'pizarron-de-una-jugada', 'balance-de-preguntas']:
+    for folder in ['proyectos', 'videos', 'sobre-mi', 'archivo', 'conceptos', 'comparador', 'seleccion', 'novedades', 'mapa-grupo', 'herramientas', 'tras-la-jornada', 'preguntas-del-partido', 'marcador-a-ciegas', 'datos-en-revision', 'partidos-espejo', 'reloj-del-marcador', 'pizarron-de-una-jugada', 'balance-de-preguntas', 'mapa-de-lo-que-cambio']:
         for file in (ROOT / folder).rglob('*.html'):
             raw = file.read_text(encoding='utf-8')
             if '<main' in raw:

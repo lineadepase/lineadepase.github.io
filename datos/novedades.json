@@ -2,6 +2,13 @@
   {
     "fecha": "2026-10-27",
     "tipo": "Actualización",
+    "titulo": "Tres nuevas formas de leer una previa y un partido",
+    "texto": "Las previas separan lo confirmado de lo pendiente; el pizarrón permite recorrer el gol hacia atrás y una nueva cronología sitúa los cambios de la J9 antes del tanto decisivo.",
+    "url": "mapa-de-lo-que-cambio/index.html"
+  },
+  {
+    "fecha": "2026-10-27",
+    "tipo": "Actualización",
     "titulo": "El reloj del marcador: cuánto duró cada resultado",
     "texto": "Una vista por partido separa el tiempo reglamentario del descuento y muestra minutos en ventaja, empate o desventaja.",
     "url": "reloj-del-marcador/index.html"
