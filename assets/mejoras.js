@@ -1,6 +1,9 @@
 (() => {
   'use strict';
   const root = document.documentElement;
+  if(document.head&&document.currentScript?.src){
+    const passportStyle=document.createElement('link');passportStyle.rel='stylesheet';passportStyle.href=new URL('pasaporte-cifra.css?v=20261027a',document.currentScript.src).href;document.head.append(passportStyle);
+  }
   const sistema = matchMedia('(prefers-color-scheme: dark)');
   const oscuro = () => root.dataset.theme ? root.dataset.theme === 'dark' : sistema.matches;
   const nav = document.querySelector('.nav');
@@ -74,6 +77,54 @@
     const title=dynamic?holder.querySelector('h3').textContent:source.alt;
     const b=document.createElement('button');b.type='button';b.className='ampliar-grafico';b.textContent='Ampliar '+tipo;b.setAttribute('aria-label','Ampliar '+tipo+': '+title);
     b.addEventListener('click',()=>ampliar(dynamic?source.querySelector('svg'):source,title,b,tipo));holder.append(b);
+  });
+  const metricDefinitions={
+    'posesión':'Porcentaje de posesión según el proveedor de la ficha. Describe el tiempo o las secuencias con balón; no mide por sí solo el peligro creado.',
+    'tiros a puerta':'Remates que el proveedor considera dirigidos a portería. El criterio puede variar entre servicios.',
+    'tiros dentro del área':'Remates clasificados dentro del área por el proveedor; no pondera ángulo, oposición ni calidad.',
+    'tiros':'Recuento de remates según el proveedor. No informa por sí solo de su calidad; algunos desgloses de partido pueden no coincidir.',
+    'goles esperados (xg)':'Suma de probabilidades estimadas de gol para los tiros. El modelo cambia entre proveedores y un dato ausente no equivale a cero.',
+    'xg':'Suma de probabilidades estimadas de gol para los tiros. El modelo cambia entre proveedores y un dato ausente no equivale a cero.',
+    'ocasiones claras':'Categoría del proveedor para ocasiones de alta probabilidad. No existe un umbral universal entre servicios.',
+    'puntos acumulados':'Suma de puntos de las jornadas incluidas hasta el corte indicado.',
+    'puntos':'Tres puntos por victoria, uno por empate y ninguno por derrota.',
+    'goles':'Goles anotados en el partido según la ficha de resultado.',
+  };
+  const contextMeta=document.querySelector('meta[name="grafico-contexto"]')?.content||document.querySelector('.corte-visible')?.textContent||'';
+  const matchContext=document.querySelector('.ficha-marcador .mp-cab span')?.textContent.trim()||'';
+  function passport(container,title,description,sample){
+    if(!container||container.querySelector(':scope > .pasaporte-cifra'))return;
+    const key=title.trim().toLocaleLowerCase('es');
+    const details=document.createElement('details');details.className='pasaporte-cifra';
+    const summary=document.createElement('summary');summary.textContent='Contexto de la cifra';details.append(summary);
+    const content=document.createElement('div');content.className='pasaporte-cifra-contenido';
+    const definition=Object.entries(metricDefinitions).find(([name])=>key.includes(name))?.[1]||description||'La ficha muestra el valor y el criterio aplicados en este análisis.';
+    const measure=document.createElement('p');measure.innerHTML='<strong>Qué mide.</strong> ';measure.append(document.createTextNode(definition));content.append(measure);
+    if(sample){const sampleLine=document.createElement('p');sampleLine.innerHTML='<strong>Muestra.</strong> ';sampleLine.append(document.createTextNode(sample));content.append(sampleLine);}
+    const owner=container.closest('.tarjeta,.kpi')||container.parentElement;
+    const sourceNote=owner?.querySelector('.mp-pie a,.fuentes a')||document.querySelector('.ficha-marcador')&&document.querySelector('.mp-pie a');
+    if(matchContext){const cutoff=document.createElement('p');cutoff.innerHTML='<strong>Partido.</strong> ';cutoff.append(document.createTextNode(matchContext));content.append(cutoff);}
+    else if(contextMeta){const cutoff=document.createElement('p');cutoff.innerHTML='<strong>Corte y fuente.</strong> ';cutoff.append(document.createTextNode(contextMeta));content.append(cutoff);}
+    if(sourceNote){const source=document.createElement('p');source.innerHTML='<strong>Ficha de origen.</strong> ';const link=sourceNote.cloneNode(true);link.textContent=sourceNote.textContent.trim();source.append(link);content.append(source);}
+    else {const method=document.querySelector('a[href*="#fuentes-metodo"],a[href*="#metodo-grupo"],a[href*="#metodo"]');if(method){const source=document.createElement('p');const link=method.cloneNode(true);link.textContent='Método y cobertura';source.append(link);content.append(source);}}
+    details.append(content);container.append(details);
+  }
+  document.querySelectorAll('.mp-stat').forEach(row=>{
+    const label=row.querySelector('dt');if(!label)return;
+    passport(row,label.textContent.trim(),'', 'Un partido.');
+  });
+  document.querySelectorAll('.kpi').forEach(kpi=>{
+    const label=kpi.querySelector('span');if(!label)return;
+    const sample=document.querySelector('.ficha-marcador')?'Un partido.':'Acumulado en el periodo que se indica en la página.';
+    passport(kpi,label.textContent.trim(),'',sample);
+  });
+  document.querySelectorAll('.grafico').forEach(graph=>{
+    const owner=graph.closest('.tarjeta')||graph.parentElement;
+    const title=owner?.querySelector('h2,h3')?.textContent.trim();if(!title)return;
+    const note=owner.querySelector('.lectura-grafico,.nota')?.textContent.trim()||'';
+    const count=owner.textContent.match(/\bn\s*[=:]\s*([\d.,]+)/i)?.[1];
+    const sample=count?'n = '+count+' en la muestra indicada.':'La muestra sigue la selección y los filtros descritos en esta página.';
+    passport(owner,title,note,sample);
   });
   const corte=document.querySelector('[data-corte]');
   if(corte)fetch('../../datos/zaragoza.json').then(r=>{if(!r.ok)throw Error();return r.json();}).then(d=>{

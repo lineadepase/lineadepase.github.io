@@ -1,0 +1,7 @@
+.pasaporte-cifra{margin:.65rem 0 0;font-size:.9rem}
+.pasaporte-cifra summary{display:inline-flex;align-items:center;gap:.3rem;cursor:pointer;color:var(--cesped,#245d39);font-weight:650;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:.18em}
+.pasaporte-cifra summary:focus-visible{outline:3px solid var(--senal,#ff7a2f);outline-offset:3px;border-radius:3px}
+.pasaporte-cifra-contenido{margin:.5rem 0;padding:.75rem;border-left:3px solid var(--cesped,#245d39);background:var(--panel,#f5f7f3);font-size:.9rem;font-weight:400}
+.pasaporte-cifra-contenido p{margin:.25rem 0}.pasaporte-cifra-contenido a{font-weight:650}
+.mp-stat .pasaporte-cifra{font-weight:400}.kpi .pasaporte-cifra{display:block;font-size:.82rem}
+.mp-stat>.pasaporte-cifra{grid-column:1/-1;justify-self:start}

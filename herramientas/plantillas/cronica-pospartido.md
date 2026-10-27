@@ -37,6 +37,8 @@ Incluir una o dos fuentes primarias como máximo. Añadir la fecha y hora de com
 - El texto está en tercera persona, sin dirigirse al lector ni hablar como si fuera una crónica automática.
 - Cada cifra aporta contexto y tiene una fuente comprobable.
 - Las imágenes conservan su crédito y texto alternativo.
+- Si la previa dejó una pregunta abierta, responderla con un hecho del partido y el dato disponible, sin forzar una conclusión.
+- Si hay tres momentos comprobables que ayuden a entender el encuentro, añadirlos a `momentos_clave` con minuto, marcador y hecho. La cronología distingue el cambio de marcador de las métricas que no se ofrecen por tramos.
 - Solo después de confirmar el marcador, añadir `postpartido_url` y `resultado_confirmado` en `datos/previas.json`. El bloque `resultado_confirmado` requiere `marcador`, `fecha_verificacion` con zona horaria peninsular y una o dos fuentes oficiales. Sin esos datos, la portada no anuncia un resultado ni enlaza la crónica.
 
 Ejemplo de registro (sustituir por datos comprobados):
@@ -45,7 +47,13 @@ Ejemplo de registro (sustituir por datos comprobados):
 "postpartido_url": "proyectos/real-zaragoza/jornada-N.html",
 "resultado_confirmado": {
   "marcador": "G–G",
+  "respuesta_pregunta": "Respuesta breve con una acción comprobada y el dato que ayuda a interpretarla.",
   "fecha_verificacion": "AAAA-MM-DDThh:mm:ss+01:00",
-  "fuentes": [{"nombre": "Fuente oficial", "url": "https://..."}]
+  "fuentes": [{"nombre": "Fuente oficial", "url": "https://..."}],
+  "momentos_clave": [
+    {"minuto": 12, "marcador": "0–0", "hecho": "Hecho comprobado."},
+    {"minuto": 54, "marcador": "1–0", "hecho": "Hecho comprobado."},
+    {"minuto": 81, "marcador": "1–1", "hecho": "Hecho comprobado."}
+  ]
 }
 ```

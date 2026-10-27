@@ -91,7 +91,7 @@ def enrich(raw, file):
             raw = raw.replace('</head>',markup+'\n</head>',1)
     for extension, version in [('css', '20261021g'), ('js', '20261021audit')]:
         raw = re.sub(r'(assets/experiencia\.' + extension + r'\?v=)[^"\s]+', lambda m: m[1] + version, raw)
-    raw = re.sub(r'(assets/mejoras\.js\?v=)[^"\s]+', r'\g<1>20261021audit', raw)
+    raw = re.sub(r'(assets/mejoras\.js\?v=)[^"\s]+', r'\g<1>20261027ideas', raw)
     raw = re.sub(r'<meta name="grafico-contexto"[^>]*>\s*', '', raw)
     context = None
     if relative == 'index.html':

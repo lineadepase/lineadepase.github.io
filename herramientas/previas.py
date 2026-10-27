@@ -106,6 +106,21 @@ def registro(root=ROOT):
                     raise ValueError('Cada fuente del resultado debe tener nombre y URL HTTPS')
         if entry.get('noticia_html'):
             validar_noticia_previa(entry['noticia_html'])
+        if entry.get('pregunta_abierta') and not isinstance(entry['pregunta_abierta'], str):
+            raise ValueError('La pregunta abierta debe ser texto editorial')
+        if entry.get('fuera_de_plano') and not isinstance(entry['fuera_de_plano'], str):
+            raise ValueError('La nota de límites debe ser texto editorial')
+        if result:
+            if entry.get('pregunta_abierta') and not result.get('respuesta_pregunta'):
+                raise ValueError('La respuesta editorial de la pregunta queda pendiente')
+            moments = result.get('momentos_clave')
+            if moments is not None:
+                if not isinstance(moments, list) or len(moments) != 3:
+                    raise ValueError('La cronología debe reunir tres momentos comprobados')
+                for moment in moments:
+                    if (not isinstance(moment, dict) or not re.fullmatch(r'\d{1,3}(?:\+\d{1,2})?', str(moment.get('minuto', '')))
+                            or not moment.get('hecho') or not re.fullmatch(r'\d+\s*[–-]\s*\d+', str(moment.get('marcador', '')))):
+                        raise ValueError('Cada momento necesita minuto, hecho y marcador comprobables')
         centro = entry.get('centro_partido')
         if centro:
             if not isinstance(centro, dict) or not centro.get('fuentes') or len(centro['fuentes']) > 2:
@@ -254,6 +269,39 @@ def con_imagen(html, entry):
             html = html.replace('<!-- /ficha-previa -->', '<!-- /ficha-previa -->'+center, 1)
     elif '<!-- centro-partido -->' in html:
         html = re.sub(r'<!-- centro-partido -->.*?<!-- /centro-partido -->', '', html, flags=re.S)
+    question = entry.get('pregunta_abierta')
+    limitation = entry.get('fuera_de_plano')
+    if question or limitation or (entry.get('resultado_confirmado') or {}).get('respuesta_pregunta') or (entry.get('resultado_confirmado') or {}).get('momentos_clave'):
+        result = entry.get('resultado_confirmado') or {}
+        has_question = bool(question or result.get('respuesta_pregunta'))
+        label = 'aria-labelledby="titulo-pregunta-partido"' if has_question else 'aria-label="Límites de los datos del partido"'
+        block = '<!-- pregunta-partido --><section class="seccion lectura pregunta-partido" '+label+'>'
+        if has_question:
+            question_heading = 'La pregunta previa' if result.get('respuesta_pregunta') else 'La pregunta que queda abierta'
+            block += '<p class="etiqueta">Una pregunta para volver</p><h2 id="titulo-pregunta-partido">'+question_heading+'</h2>'
+        if question:
+            block += '<p class="pregunta-partido-texto">'+escape(question)+'</p>'
+        if result.get('respuesta_pregunta'):
+            block += '<p class="respuesta-pregunta"><strong>Después del partido.</strong> '+escape(result['respuesta_pregunta'])+'</p>'
+        elif question:
+            block += '<p class="nota">La respuesta se añadirá tras revisar el partido y los datos disponibles.</p>'
+        moments = result.get('momentos_clave') or []
+        if moments:
+            block += '<h3>El partido en tres momentos</h3><ol class="momentos-partido">'
+            for moment in moments:
+                block += '<li><span class="momento-minuto">'+escape(str(moment['minuto']))+'’</span><div><strong>'+escape(moment['marcador'])+'</strong><p>'+escape(moment['hecho'])+'</p></div></li>'
+            block += '</ol>'
+        if limitation:
+            block += '<aside class="fuera-de-plano"><h3>Lo que los datos no muestran</h3><p>'+escape(limitation)+'</p></aside>'
+        block += '</section><!-- /pregunta-partido -->'
+        if '<!-- pregunta-partido -->' in html:
+            html = re.sub(r'<!-- pregunta-partido -->.*?<!-- /pregunta-partido -->', lambda _: block, html, flags=re.S)
+        elif '<!-- /centro-partido -->' in html:
+            html = html.replace('<!-- /centro-partido -->', '<!-- /centro-partido -->'+block, 1)
+        elif '<!-- /ficha-previa -->' in html:
+            html = html.replace('<!-- /ficha-previa -->', '<!-- /ficha-previa -->'+block, 1)
+        else:
+            html = html.replace('<!-- /imagen-previa -->', '<!-- /imagen-previa -->'+block, 1)
     share = ('<!-- compartir-previa --><div class="compartir-previa" aria-label="Compartir esta previa">'
              '<button class="boton" type="button" data-compartir-previa>Compartir</button>'
              '<button class="boton" type="button" data-copiar-previa>Copiar enlace</button>'
@@ -268,6 +316,8 @@ def con_imagen(html, entry):
     html = re.sub(r'(assets/compartir-previa\.css\?v=)[^"\s]+', r'\g<1>20261027a', html)
     if 'assets/estado-partido.js' not in html:
         html = html.replace('</head>', '<script src="../../assets/estado-partido.js?v=20261027b" defer></script>\n</head>', 1)
+    if 'assets/ideas-editoriales.css' not in html:
+        html = html.replace('</head>', '<link rel="stylesheet" href="../../assets/ideas-editoriales.css?v=20261027a">\n</head>', 1)
     html = re.sub(r'(assets/estado-partido\.js\?v=)[^"\s]+', r'\g<1>20261027b', html)
     html = re.sub(r'(assets/real-zaragoza\.css\?v=)[^"\s]+', r'\g<1>20261027c', html)
     # La fecha de publicación no cambia al editar; la actualización sí.

@@ -1,0 +1,24 @@
+.pregunta-partido,.reto-marcador,.pregunta-registro{margin:1.5rem 0;padding:clamp(1rem,3vw,1.5rem);border:1px solid var(--linea,#ccd3df);border-radius:var(--radio,12px);background:var(--panel,#f5f7f3)}
+.pregunta-partido h2,.reto-marcador h2,.pregunta-registro h2{margin:.2rem 0 1rem}
+.pregunta-partido-texto{font-size:clamp(1.2rem,2.2vw,1.55rem);font-weight:650;line-height:1.35}
+.respuesta-pregunta{padding:.8rem 1rem;border-left:4px solid var(--senal,#ff7a2f);background:var(--papel,#fff)}
+.fuera-de-plano{margin-top:1.25rem;padding:.85rem 1rem;border-left:4px solid var(--muted,#758477);background:var(--papel,#fff)}
+.fuera-de-plano h3{margin:.1rem 0 .4rem;font-size:1rem}.fuera-de-plano p{margin:0}
+.momentos-partido{list-style:none;margin:1rem 0;padding:0;display:grid;gap:.85rem}
+.momentos-partido li{display:grid;grid-template-columns:4.5rem 1fr;gap:.85rem;align-items:start;padding-top:.75rem;border-top:1px solid var(--linea,#ccd3df)}
+.momento-minuto{font-weight:800;color:var(--cesped,#245d39);font-variant-numeric:tabular-nums}
+.momentos-partido li strong{font-variant-numeric:tabular-nums}.momentos-partido li p{margin:.25rem 0 0}
+.preguntas-registro,.retos-marcador{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr));gap:1rem;margin-top:1.5rem}
+.pregunta-registro{margin:0}.pregunta-registro-pregunta{font-size:1.15rem;font-weight:650}
+.marcador-ciego-datos{display:flex;flex-wrap:wrap;gap:1rem;margin:1rem 0}
+.marcador-ciego-datos>div{padding:.65rem .8rem;border-radius:8px;background:var(--papel,#fff)}
+.marcador-ciego-datos dt{font-size:.85rem;color:var(--tinta-suave,#536257)}
+.marcador-ciego-datos dd{margin:.2rem 0 0;font-size:1.2rem;font-weight:800;font-variant-numeric:tabular-nums}
+.marcador-ciego-form fieldset{display:flex;align-items:end;gap:.75rem;flex-wrap:wrap;border:0;padding:0;margin:1rem 0}
+.marcador-ciego-form legend{width:100%;font-weight:700;margin-bottom:.5rem}
+.marcador-ciego-form label{display:grid;gap:.25rem;font-size:.9rem}
+.marcador-ciego-form input{width:5.2rem;padding:.55rem;border:1px solid var(--linea,#ccd3df);border-radius:6px;font:inherit;background:var(--papel,#fff);color:var(--tinta,#14261d)}
+.marcador-ciego-resultado{font-size:1.15rem;font-weight:700;padding:.8rem 1rem;border-left:4px solid var(--senal,#ff7a2f);background:var(--papel,#fff)}
+.pregunta-registro .enlace-editorial,.enlace-marcador-partido{display:inline-block;margin-top:.6rem}
+.reto-marcador[hidden],.marcador-ciego-resultado[hidden],.enlace-marcador-partido[hidden]{display:none}
+@media(max-width:600px){.momentos-partido li{grid-template-columns:3.5rem 1fr}.marcador-ciego-form fieldset{align-items:start}}

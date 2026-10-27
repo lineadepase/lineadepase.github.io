@@ -1,6 +1,7 @@
 """Archivo, navegación y lecturas relacionadas. Se ejecuta antes del SEO."""
 from pathlib import Path
 from html import escape, unescape
+import json
 import os
 import re
 import unicodedata
@@ -18,12 +19,54 @@ def text(value):
     return unescape(re.sub('<[^>]+>', '', value)).strip()
 
 
-def page(title, description, body):
+def cronologia_partido(relative):
+    match = re.fullmatch(r'proyectos/real-zaragoza/jornada-(\d+)\.html', relative)
+    if not match:
+        return ''
+    moments = json.loads((ROOT/'datos/momentos-partido.json').read_text(encoding='utf-8')).get(match[1])
+    if not moments:
+        return ''
+    items = ''.join('<li><span class="momento-minuto">'+escape(str(item['minuto']))+'’</span><div><strong>'+escape(item['marcador'])+'</strong><p>'+escape(item['hecho'])+'</p></div></li>' for item in moments['momentos'])
+    sources = ' · '.join('<a href="'+escape(source['url'],quote=True)+'" target="_blank" rel="noopener">'+escape(source['nombre'])+'</a>' for source in moments.get('fuentes',[])[:2])
+    source_note = '<p class="fuentes-cronologia">Fuentes: '+sources+'</p>' if sources else ''
+    return ('<!-- cronologia-partido --><section class="seccion lectura cronologia-partido" aria-labelledby="titulo-cronologia-partido">'
+            '<p class="etiqueta">La secuencia del encuentro</p><h2 id="titulo-cronologia-partido">El partido en tres momentos</h2>'
+            '<ol class="momentos-partido">'+items+'</ol><aside class="fuera-de-plano"><h3>Lo que los datos no muestran</h3><p>'+escape(moments['limite'])+'</p></aside>'
+            +source_note+
+            '</section><!-- /cronologia-partido -->')
+
+
+def incorporar_cronologia(raw, file):
+    relative = file.relative_to(ROOT).as_posix()
+    raw = re.sub(r'<!-- cronologia-partido -->[\s\S]*?<!-- /cronologia-partido -->', '', raw)
+    block = cronologia_partido(relative)
+    if block and '<!-- /tres-claves -->' in raw:
+        raw = raw.replace('<!-- /tres-claves -->','<!-- /tres-claves -->'+block,1)
+    if relative.startswith('proyectos/real-zaragoza/') and 'assets/ideas-editoriales.css' not in raw:
+        path = relative.count('/')
+        prefix = '../'*path
+        raw = raw.replace('</head>','<link rel="stylesheet" href="'+prefix+'assets/ideas-editoriales.css?v=20261027a">\n</head>',1)
+    return raw
+
+
+def page(title, description, body, extra_head='', canonical=None):
     template = (ROOT / 'proyectos/index.html').read_text(encoding='utf-8')
     head = template[:template.index('<body>')]
     head = re.sub(r'<!-- SEO:[\s\S]*?<!-- /SEO -->', '', head)
     head = re.sub(r'<title>.*?</title>', '<title>' + escape(title) + ' · Línea de pase</title>', head)
     head = re.sub(r'<meta name="description"[^>]+>', '<meta name="description" content="' + escape(description, quote=True) + '">', head)
+    if extra_head:
+        head = head.replace('</head>', extra_head+'\n</head>', 1)
+    if canonical:
+        url = 'https://lineadepase.com/'+canonical.strip('/')+'/'
+        social = ('<link rel="canonical" href="'+escape(url,quote=True)+'">'
+                  '<meta property="og:type" content="website"><meta property="og:site_name" content="Línea de pase">'
+                  '<meta property="og:title" content="'+escape(title+' · Línea de pase',quote=True)+'">'
+                  '<meta property="og:description" content="'+escape(description,quote=True)+'">'
+                  '<meta property="og:url" content="'+escape(url,quote=True)+'">'
+                  '<meta name="twitter:card" content="summary"><meta name="twitter:title" content="'+escape(title+' · Línea de pase',quote=True)+'">'
+                  '<meta name="twitter:description" content="'+escape(description,quote=True)+'">')
+        head = head.replace('</head>',social+'\n</head>',1)
     header = re.search(r'<header class="cabecera">[\s\S]*?</header>', template)[0]
     header = header.replace(' aria-current="page"', '')
     footer = re.search(r'<footer class="pie">[\s\S]*?</footer>', template)[0]
@@ -97,6 +140,60 @@ def generate_archive():
     output.write_text(html, encoding='utf-8')
 
 
+def generate_preguntas():
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+    entries = json.loads((ROOT/'datos/previas.json').read_text(encoding='utf-8'))
+    cards = []
+    for entry in entries:
+        question = entry.get('pregunta_abierta')
+        if not question:
+            continue
+        href = '../'+entry['pagina']
+        result = entry.get('resultado_confirmado') or {}
+        answer = result.get('respuesta_pregunta')
+        today = datetime.now(ZoneInfo('Europe/Madrid')).date().isoformat()
+        status = 'Respondida' if answer else ('Pendiente de revisión editorial' if entry.get('fecha_partido', '') < today else 'Abierta')
+        block = '<article class="pregunta-registro"><p class="etiqueta">'+escape(entry.get('competicion','Partido'))+' · '+escape(status)+'</p><h2><a href="'+escape(href,quote=True)+'">'+escape(entry['titulo'])+'</a></h2><p class="pregunta-registro-pregunta">'+escape(question)+'</p>'
+        if answer:
+            block += '<p><strong>Respuesta después del partido.</strong> '+escape(answer)+'</p>'
+        else:
+            block += '<p class="nota">La pregunta se mantiene abierta hasta que el partido y sus datos estén comprobados.</p>'
+        block += '<a class="enlace-editorial" href="'+escape(href,quote=True)+'">'+('Volver a la pregunta y su respuesta →' if answer else 'Leer la previa →')+'</a></article>'
+        cards.append(block)
+    body = '<p>Una pregunta por partido. La respuesta se añade después, con una acción observada y datos disponibles; las cuestiones sin respuesta siguen visibles como abiertas.</p><div class="preguntas-registro">'+''.join(cards)+'</div>'
+    folder = ROOT/'preguntas-del-partido'
+    folder.mkdir(exist_ok=True)
+    css = '<link rel="stylesheet" href="../assets/ideas-editoriales.css?v=20261027a">'
+    (folder/'index.html').write_text(page('Las preguntas del partido','Preguntas previas que se revisan después del encuentro con acciones y datos comprobados.',body,css,'preguntas-del-partido/'),encoding='utf-8')
+
+
+def generate_marcador_a_ciegas():
+    season = json.loads((ROOT/'datos/zaragoza.json').read_text(encoding='utf-8'))
+    matches = [m for m in season['partidos'] if m.get('completo') and m.get('tiros_zaragoza') is not None and m.get('tiros_rival') is not None and m.get('posesion_pct') is not None]
+    cards = []
+    for match in sorted(matches,key=lambda m:int(m['jornada']),reverse=True):
+        date = match['fecha']
+        date_label = date[8:10]+'/'+date[5:7]+'/'+date[:4]
+        zaragoza_first = match['sede'] == 'Casa'
+        teams = ('Real Zaragoza',match['rival']) if zaragoza_first else (match['rival'],'Real Zaragoza')
+        shots = (match['tiros_zaragoza'],match['tiros_rival']) if zaragoza_first else (match['tiros_rival'],match['tiros_zaragoza'])
+        score = (match['goles_favor'],match['goles_contra']) if zaragoza_first else (match['goles_contra'],match['goles_favor'])
+        local_name, away_name = escape(teams[0]), escape(teams[1])
+        local_attr, away_attr = escape(teams[0],quote=True), escape(teams[1],quote=True)
+        jornada = str(match['jornada'])
+        stats = '<dl class="marcador-ciego-datos"><div><dt>Posesión del Zaragoza</dt><dd>'+escape(str(match['posesion_pct']).replace('.0',''))+' %</dd></div><div><dt>Tiros</dt><dd>'+escape(str(shots[0]))+' · '+escape(str(shots[1]))+'</dd></div></dl>'
+        card = (f'<article class="reto-marcador" data-goles-local="{score[0]}" data-goles-visitante="{score[1]}" data-equipo-local="{local_attr}" data-equipo-visitante="{away_attr}" data-jornada="{jornada}">'
+                f'<p class="etiqueta">Jornada {jornada} · {date_label}</p><h2>{local_name} – {away_name}</h2>{stats}'
+                f'<form class="marcador-ciego-form"><fieldset><legend>¿Qué marcador crees que hubo?</legend><label>{local_name}<input type="number" name="local" min="0" max="20" inputmode="numeric" required></label><span aria-hidden="true">–</span><label>{away_name}<input type="number" name="visitante" min="0" max="20" inputmode="numeric" required></label></fieldset><button class="boton lleno" type="submit">Comprobar mi marcador</button></form><p class="marcador-ciego-feedback" role="status" aria-live="polite"></p><details class="marcador-ciego-revelar"><summary>Mostrar el marcador y consultar la ficha</summary><p class="marcador-ciego-resultado">Resultado: <strong>{score[0]}–{score[1]}</strong></p><a class="enlace-marcador-partido" href="../proyectos/real-zaragoza/jornada-{jornada}.html">Consultar ficha y fuente →</a></details><p class="nota">La posesión y los tiros describen el partido; por sí solos no permiten deducir el marcador.</p></article>')
+        cards.append(card)
+    body = '<p>El marcador queda oculto mientras se comparan posesión y tiros. La idea es comprobar cuánto cuentan esas cifras y cuánto deja fuera un resultado.</p><p class="nota">Solo entran partidos con posesión y tiros registrados de forma homogénea. La jornada 9 queda fuera mientras se aclara la discrepancia en el recuento de tiros.</p><div class="retos-marcador">'+''.join(cards)+'</div>'
+    folder = ROOT/'marcador-a-ciegas'
+    folder.mkdir(exist_ok=True)
+    head = '<link rel="stylesheet" href="../assets/ideas-editoriales.css?v=20261027a"><script src="../assets/marcador-a-ciegas.js?v=20261027a" defer></script>'
+    (folder/'index.html').write_text(page('El marcador a ciegas','Adivina el resultado a partir de la posesión y los tiros registrados en partidos del Real Zaragoza.',body,head,'marcador-a-ciegas/'),encoding='utf-8')
+
+
 def generate():
     from experiencia import generate_comparator, generate_selection, generate_news
     generate_comparator(page)
@@ -105,6 +202,8 @@ def generate():
     from entregas import generate_tools, generate_delivery
     generate_tools(page)
     generate_delivery(page)
+    generate_preguntas()
+    generate_marcador_a_ciegas()
     from segunda_edicion import generate_map, generate_home
     generate_map(page)
     generate_home()
@@ -130,6 +229,7 @@ def generate():
 def enrich(raw, file):
     from experiencia import enrich as experiencia
     raw = experiencia(raw, file)
+    raw = incorporar_cronologia(raw, file)
     if file == ROOT / 'proyectos/index.html':
         def complete_xt(match):
             card=match[0]
@@ -161,7 +261,9 @@ def enrich(raw, file):
     if ('proyectos' in file.relative_to(ROOT).parts and file.name != 'index.html') or file.parent.name in ('futbol-femenino', 'xg', 'liga-f-xt', 'real-zaragoza'):
         links = [('archivo/index.html', 'Más análisis en el archivo'), ('conceptos/index.html', 'Entender los conceptos')]
         if file.parent.name == 'real-zaragoza':
-            links.insert(0, ('proyectos/real-zaragoza/evolucion.html' if file.name != 'evolucion.html' else 'proyectos/real-zaragoza/grupo-2.html', 'Poner el partido en contexto'))
+            links.insert(0, ('marcador-a-ciegas/index.html', 'Probar el marcador a ciegas'))
+            links.insert(1, ('preguntas-del-partido/index.html', 'Revisar las preguntas del partido'))
+            links.insert(2, ('proyectos/real-zaragoza/evolucion.html' if file.name != 'evolucion.html' else 'proyectos/real-zaragoza/grupo-2.html', 'Poner el partido en contexto'))
         section = START + '<aside class="envoltorio lecturas" aria-labelledby="lecturas-relacionadas"><h2 id="lecturas-relacionadas">Sigue explorando</h2><div class="enlaces">' + ''.join('<a class="boton" href="' + relative(url, file) + '">' + label + '</a>' for url, label in links) + '</div></aside>' + END
         raw = raw.replace('</main>', section + '</main>', 1)
     return raw
@@ -169,7 +271,7 @@ def enrich(raw, file):
 
 def build():
     generate()
-    for folder in ['proyectos', 'videos', 'sobre-mi', 'archivo', 'conceptos', 'comparador', 'seleccion', 'novedades', 'mapa-grupo', 'herramientas', 'tras-la-jornada']:
+    for folder in ['proyectos', 'videos', 'sobre-mi', 'archivo', 'conceptos', 'comparador', 'seleccion', 'novedades', 'mapa-grupo', 'herramientas', 'tras-la-jornada', 'preguntas-del-partido', 'marcador-a-ciegas']:
         for file in (ROOT / folder).rglob('*.html'):
             raw = file.read_text(encoding='utf-8')
             if '<main' in raw:
