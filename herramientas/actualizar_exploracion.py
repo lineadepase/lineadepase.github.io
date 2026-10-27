@@ -229,6 +229,72 @@ def generate_partidos_espejo():
     (folder/'index.html').write_text(page('Partidos espejo','Explora encuentros del Real Zaragoza con posesión y diferencia de tiros parecidas, pero marcadores distintos.',body,head,'partidos-espejo/'),encoding='utf-8')
 
 
+def generate_reloj_marcador():
+    season = json.loads((ROOT/'datos/zaragoza.json').read_text(encoding='utf-8'))
+    matches = []
+    for match in season['partidos']:
+        ficha = next((row for row in season['fichas'] if row['jornada'] == match['jornada']), None)
+        if not ficha:
+            continue
+        matches.append({
+            'jornada': match['jornada'], 'rival': match['rival'], 'sede': match['sede'],
+            'golesFavor': match['goles_favor'], 'golesContra': match['goles_contra'],
+            'goles': [{'minuto': g['minuto'], 'sentido': g['sentido'], 'jugador': g['jugador'], 'propiaPuerta': g['propia_puerta']} for g in ficha['goles']],
+            'href': '../proyectos/real-zaragoza/jornada-'+str(match['jornada'])+'.html'
+        })
+    payload = json.dumps(matches, ensure_ascii=False).replace('<','\\u003c').replace('</script','<\\/script')
+    body = '<p>El resultado también se entiende por cuánto tiempo se sostuvo. El reloj resume cómo estuvo el marcador del Zaragoza durante los 90 minutos reglamentarios.</p><div class="espejo-aviso"><strong>Criterio.</strong> El descuento no se convierte en minutos ficticios ni se suma a la barra: sus goles se muestran aparte. Los goles del 45+ se aplican al descanso; los del 90+ aparecen fuera de los 90 minutos. Así la gráfica no confunde el reloj reglamentario con la duración real del encuentro.</div><section class="reloj-marcador" aria-labelledby="titulo-reloj"><h2 id="titulo-reloj">Elige un partido</h2><label for="selector-reloj">Partido<select id="selector-reloj"></select></label><div id="reloj-resultado" aria-live="polite"></div></section><script type="application/json" id="datos-reloj">'+payload+'</script>'
+    head = '<link rel="stylesheet" href="../assets/ideas-editoriales.css?v=20261027c"><script src="../assets/reloj-del-marcador.js?v=20261027c" defer></script>'
+    folder = ROOT/'reloj-del-marcador'
+    folder.mkdir(exist_ok=True)
+    (folder/'index.html').write_text(page('El reloj del marcador','Compara cuánto tiempo estuvo el Real Zaragoza en ventaja, empate o desventaja durante los 90 minutos reglamentarios.',body,head,'reloj-del-marcador/'),encoding='utf-8')
+
+
+def generate_pizarron_jugada():
+    moments = json.loads((ROOT/'datos/momentos-partido.json').read_text(encoding='utf-8'))['9']
+    goal = next(item for item in moments['momentos'] if str(item['minuto']) == '80')
+    svg = '<figure class="pizarron-figura"><svg class="pizarron-secuencia" viewBox="0 0 960 250" role="img" aria-labelledby="titulo-secuencia descripcion-secuencia"><title id="titulo-secuencia">Secuencia del gol del Real Zaragoza en Can Dragó</title><desc id="descripcion-secuencia">Un saque de esquina, el remate de Diego González y el desvío de Álex Cano que terminó en gol en propia puerta.</desc><rect x="8" y="8" width="944" height="234" rx="18" fill="#17452e"/><path d="M28 125H932M320 20v210M640 20v210" stroke="#d5e5d8" stroke-opacity=".28" stroke-width="2"/><path d="M44 36v178m0-89h94m-94-49a49 49 0 0 1 49 49 49 49 0 0 1-49 49" fill="none" stroke="#d5e5d8" stroke-opacity=".35" stroke-width="2"/><path d="M350 125h110m38 0h110" stroke="#f2c34b" stroke-width="5" stroke-linecap="round" stroke-dasharray="3 11"/><circle cx="180" cy="125" r="35" fill="#f2c34b"/><circle cx="500" cy="125" r="35" fill="#f2c34b"/><circle cx="820" cy="125" r="35" fill="#f2c34b"/><text x="180" y="137" text-anchor="middle" fill="#10291e" font-size="34" font-family="system-ui,sans-serif" font-weight="800">1</text><text x="500" y="137" text-anchor="middle" fill="#10291e" font-size="34" font-family="system-ui,sans-serif" font-weight="800">2</text><text x="820" y="137" text-anchor="middle" fill="#10291e" font-size="34" font-family="system-ui,sans-serif" font-weight="800">3</text><text x="180" y="194" text-anchor="middle" fill="#fff" font-size="18" font-family="system-ui,sans-serif">Córner</text><text x="500" y="194" text-anchor="middle" fill="#fff" font-size="18" font-family="system-ui,sans-serif">Remate de Diego González</text><text x="820" y="194" text-anchor="middle" fill="#fff" font-size="18" font-family="system-ui,sans-serif">Desvío y gol</text></svg><figcaption>Esquema de la secuencia; no representa posiciones ni distancias exactas.</figcaption></figure>'
+    body = '<p>El único gol de la J9 llegó en una acción a balón parado. El esquema ordena los tres pasos que describe el resumen del partido:</p>'+svg+'<ol class="pizarron-pasos"><li><strong>El saque.</strong> El Zaragoza puso el balón en juego desde un córner.</li><li><strong>El remate.</strong> Diego González cabeceó hacia la portería.</li><li><strong>El desvío.</strong> Álex Cano tocó el balón y lo introdujo en su propia portería en el minuto 80.</li></ol><aside class="fuera-de-plano"><h2>Lo que no muestra el esquema</h2><p>'+escape(moments['limite'])+' No hay coordenadas de seguimiento, así que el dibujo explica el orden de la acción, no la colocación exacta de los jugadores.</p></aside><p><a class="enlace-editorial" href="https://www.youtube.com/watch?v=gBB7ameQWbI" target="_blank" rel="noopener">Ver el resumen de la jugada →</a> · <a href="../proyectos/real-zaragoza/jornada-9.html">Análisis de la J9</a></p>'
+    head = '<link rel="stylesheet" href="../assets/ideas-editoriales.css?v=20261027c">'
+    folder = ROOT/'pizarron-de-una-jugada'
+    folder.mkdir(exist_ok=True)
+    (folder/'index.html').write_text(page('El pizarrón de una jugada','Una secuencia esquemática del gol del Real Zaragoza ante el CE Europa: córner, remate y desvío.',body,head,'pizarron-de-una-jugada/'),encoding='utf-8')
+
+
+def generate_balance_preguntas():
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+    today = datetime.now(ZoneInfo('Europe/Madrid')).date().isoformat()
+    previews = json.loads((ROOT/'datos/previas.json').read_text(encoding='utf-8'))
+    records = []
+    for item in previews:
+        question = item.get('pregunta_abierta')
+        if not question:
+            continue
+        answer = (item.get('resultado_confirmado') or {}).get('respuesta_pregunta')
+        status = 'Respondida' if answer else ('Pendiente de revisión' if item.get('fecha_partido','') < today else 'Abierta')
+        records.append((item, question, answer, status))
+    answered = sum(1 for _,_,answer,_ in records if answer)
+    open_count = sum(1 for _,_,answer,status in records if not answer and status == 'Abierta')
+    pending = sum(1 for _,_,answer,status in records if not answer and status == 'Pendiente de revisión')
+    stats = '<dl class="balance-preguntas-cifras"><div><dt>Registradas</dt><dd>'+str(len(records))+'</dd></div><div><dt>Respondidas</dt><dd>'+str(answered)+'</dd></div><div><dt>Abiertas</dt><dd>'+str(open_count)+'</dd></div><div><dt>Pendientes de revisión</dt><dd>'+str(pending)+'</dd></div></dl>'
+    cards = []
+    for item,question,answer,status in records:
+        card = '<article class="pregunta-registro"><p class="etiqueta">'+escape(item.get('competicion','Partido'))+' · '+escape(status)+'</p><h2><a href="../'+escape(item['pagina'],quote=True)+'">'+escape(item['titulo'])+'</a></h2><p class="pregunta-registro-pregunta">'+escape(question)+'</p>'
+        if answer:
+            card += '<p><strong>Revisión:</strong> '+escape(answer)+'</p>'
+        elif status == 'Pendiente de revisión':
+            card += '<p class="nota">El partido ya ha pasado. La pregunta sigue pendiente hasta comprobar una acción y los datos disponibles.</p>'
+        else:
+            card += '<p class="nota">Se revisará después del partido, cuando el resultado y la acción relevante estén comprobados.</p>'
+        cards.append(card+'</article>')
+    body = '<p>Antes de cada partido se plantea una pregunta concreta. Después, la respuesta se incorpora solo cuando el encuentro y los datos están comprobados.</p>'+stats+'<div class="espejo-aviso"><strong>Qué cuenta este balance.</strong> Registra preguntas respondidas, abiertas o pendientes de revisión. No puntúa aciertos: son preguntas de observación sobre el juego, no pronósticos del marcador.</div><div class="preguntas-registro">'+''.join(cards)+'</div><p><a class="enlace-editorial" href="../preguntas-del-partido/">Ver el registro completo →</a></p>'
+    head = '<link rel="stylesheet" href="../assets/ideas-editoriales.css?v=20261027c">'
+    folder = ROOT/'balance-de-preguntas'
+    folder.mkdir(exist_ok=True)
+    (folder/'index.html').write_text(page('Balance de preguntas','Un registro de preguntas planteadas antes de los partidos y respuestas añadidas después de comprobar los hechos.',body,head,'balance-de-preguntas/'),encoding='utf-8')
+
+
 def generate():
     from experiencia import generate_comparator, generate_selection, generate_news
     generate_comparator(page)
@@ -241,6 +307,9 @@ def generate():
     generate_marcador_a_ciegas()
     generate_datos_revision()
     generate_partidos_espejo()
+    generate_reloj_marcador()
+    generate_pizarron_jugada()
+    generate_balance_preguntas()
     from segunda_edicion import generate_map, generate_home
     generate_map(page)
     generate_home()
@@ -298,12 +367,15 @@ def enrich(raw, file):
     if ('proyectos' in file.relative_to(ROOT).parts and file.name != 'index.html') or file.parent.name in ('futbol-femenino', 'xg', 'liga-f-xt', 'real-zaragoza'):
         links = [('archivo/index.html', 'Más análisis en el archivo'), ('conceptos/index.html', 'Entender los conceptos')]
         if file.parent.name == 'real-zaragoza':
+            links.insert(0, ('reloj-del-marcador/index.html', 'Ver el tiempo de marcador'))
             if file.name == 'jornada-9.html':
-                links.insert(0, ('datos-en-revision/index.html', 'Consultar la discrepancia de tiros de la J9'))
+                links.insert(1, ('pizarron-de-una-jugada/index.html', 'Ver el pizarrón del gol de la J9'))
+                links.insert(2, ('datos-en-revision/index.html', 'Consultar la discrepancia de tiros de la J9'))
             links.insert(0, ('marcador-a-ciegas/index.html', 'Probar el marcador a ciegas'))
             links.insert(1, ('partidos-espejo/index.html', 'Explorar partidos espejo'))
-            links.insert(2, ('preguntas-del-partido/index.html', 'Revisar las preguntas del partido'))
-            links.insert(3, ('proyectos/real-zaragoza/evolucion.html' if file.name != 'evolucion.html' else 'proyectos/real-zaragoza/grupo-2.html', 'Poner el partido en contexto'))
+            links.insert(2, ('balance-de-preguntas/index.html', 'Ver el balance de preguntas'))
+            links.insert(3, ('preguntas-del-partido/index.html', 'Revisar las preguntas del partido'))
+            links.insert(4, ('proyectos/real-zaragoza/evolucion.html' if file.name != 'evolucion.html' else 'proyectos/real-zaragoza/grupo-2.html', 'Poner el partido en contexto'))
         section = START + '<aside class="envoltorio lecturas" aria-labelledby="lecturas-relacionadas"><h2 id="lecturas-relacionadas">Sigue explorando</h2><div class="enlaces">' + ''.join('<a class="boton" href="' + relative(url, file) + '">' + label + '</a>' for url, label in links) + '</div></aside>' + END
         raw = raw.replace('</main>', section + '</main>', 1)
     return raw
@@ -311,7 +383,7 @@ def enrich(raw, file):
 
 def build():
     generate()
-    for folder in ['proyectos', 'videos', 'sobre-mi', 'archivo', 'conceptos', 'comparador', 'seleccion', 'novedades', 'mapa-grupo', 'herramientas', 'tras-la-jornada', 'preguntas-del-partido', 'marcador-a-ciegas', 'datos-en-revision', 'partidos-espejo']:
+    for folder in ['proyectos', 'videos', 'sobre-mi', 'archivo', 'conceptos', 'comparador', 'seleccion', 'novedades', 'mapa-grupo', 'herramientas', 'tras-la-jornada', 'preguntas-del-partido', 'marcador-a-ciegas', 'datos-en-revision', 'partidos-espejo', 'reloj-del-marcador', 'pizarron-de-una-jugada', 'balance-de-preguntas']:
         for file in (ROOT / folder).rglob('*.html'):
             raw = file.read_text(encoding='utf-8')
             if '<main' in raw:

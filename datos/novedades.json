@@ -2,6 +2,27 @@
   {
     "fecha": "2026-10-27",
     "tipo": "Actualización",
+    "titulo": "El reloj del marcador: cuánto duró cada resultado",
+    "texto": "Una vista por partido separa el tiempo reglamentario del descuento y muestra minutos en ventaja, empate o desventaja.",
+    "url": "reloj-del-marcador/index.html"
+  },
+  {
+    "fecha": "2026-10-27",
+    "tipo": "Actualización",
+    "titulo": "El pizarrón de una jugada: el gol ante el Europa",
+    "texto": "Un esquema editorial ordena el córner, el remate y el desvío sin inventar posiciones sobre el campo.",
+    "url": "pizarron-de-una-jugada/index.html"
+  },
+  {
+    "fecha": "2026-10-27",
+    "tipo": "Actualización",
+    "titulo": "Balance de las preguntas de partido",
+    "texto": "Las preguntas previas quedan registradas como abiertas, respondidas o pendientes de comprobación.",
+    "url": "balance-de-preguntas/index.html"
+  },
+  {
+    "fecha": "2026-10-27",
+    "tipo": "Actualización",
     "titulo": "Nuevas formas de comparar y leer los partidos",
     "texto": "El archivo de cifras en revisión documenta una diferencia de tiros de la J9; la vista de partidos espejo compara perfiles y los análisis separan hechos, cifras e interpretación.",
     "url": "partidos-espejo/index.html"
