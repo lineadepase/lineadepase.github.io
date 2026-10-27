@@ -10,6 +10,9 @@
   const selectB = document.getElementById('comparar-jornada-b');
   const shareButton = document.querySelector('[data-compartir-comparacion]');
   const compareState = document.querySelector('[data-estado-comparacion]');
+  const downloadControls = document.querySelector('[data-controles-descarga]');
+  const formatSelect = document.getElementById('formato-comparacion');
+  const metricsToggle = document.querySelector('[data-incluir-metricas]');
   const rounds = new Map(rows.map(row => [row.dataset.comparisonId, row]));
 
   function syncFiltersToUrl() {
@@ -72,6 +75,10 @@
     const rowB = rounds.get(selectB.value);
     if (!rowA || !rowB) return;
     const includeMetrics = rowA.dataset.completa === '1' && rowB.dataset.completa === '1';
+    if (metricsToggle) {
+      metricsToggle.disabled = !includeMetrics;
+      if (!includeMetrics) metricsToggle.checked = false;
+    }
     renderCard('a', rowA, includeMetrics);
     renderCard('b', rowB, includeMetrics);
     if (changed) {
@@ -89,24 +96,32 @@
     return String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[char]));
   }
 
-  function comparisonSvg(rowA, rowB) {
-    const hasMetrics = rowA.dataset.completa === '1' && rowB.dataset.completa === '1';
+  function comparisonSvg(rowA, rowB, format, includeMetrics) {
+    const layouts = {
+      apaisado: {width:1200,height:630,header:148,panels:[{x:54,y:190,w:528,h:365},{x:618,y:190,w:528,h:365}],titleSize:42,titleY:111},
+      cuadrado: {width:1080,height:1080,header:180,panels:[{x:80,y:220,w:920,h:350},{x:80,y:610,w:920,h:350}],titleSize:40,titleY:128},
+      vertical: {width:1080,height:1350,header:190,panels:[{x:80,y:235,w:920,h:465},{x:80,y:755,w:920,h:465}],titleSize:40,titleY:134}
+    };
+    const layout = layouts[format] || layouts.apaisado;
     const cards = [rowA, rowB].map((row, index) => {
-      const x = index ? 618 : 54;
+      const panel = layout.panels[index];
+      const {x,y,w,h} = panel;
       const home = row.dataset.sede === 'Casa' ? 'Real Zaragoza' : row.dataset.rival;
       const away = row.dataset.sede === 'Casa' ? row.dataset.rival : 'Real Zaragoza';
       const homeGoals = row.dataset.sede === 'Casa' ? row.dataset.golesZaragoza : row.dataset.golesRival;
       const awayGoals = row.dataset.sede === 'Casa' ? row.dataset.golesRival : row.dataset.golesZaragoza;
       const round = row.dataset.jornada.padStart(2, '0');
       const seasonLabel = xml(row.dataset.temporada);
-      const metrics = hasMetrics
+      const cardMetrics = includeMetrics && row.dataset.completa === '1';
+      const metrics = cardMetrics
         ? `Posesión ${xml(row.dataset.posesion.replace('.', ','))}% · tiros ${xml(row.dataset.tirosZaragoza)}–${xml(row.dataset.tirosRival)}`
-        : 'Métricas no comparables por falta de cobertura completa';
-      const panel = `<rect x="${x}" y="190" width="528" height="365" rx="22" fill="#fff" stroke="#d4ded6" stroke-width="2"/><path d="M${x} 534h528" stroke="#ff7a2f" stroke-width="8"/><text x="${x+28}" y="234" fill="#536257" font-family="Arial,sans-serif" font-size="20" font-weight="700" letter-spacing="1.5">${seasonLabel} · J${round} · ${xml(row.dataset.fechaPartido)}</text><text x="${x+32}" y="312" fill="#536257" font-family="Arial,sans-serif" font-size="19" font-weight="700">LOCAL</text><text x="${x+496}" y="312" text-anchor="end" fill="#536257" font-family="Arial,sans-serif" font-size="19" font-weight="700">VISITANTE</text><text x="${x+32}" y="352" fill="#163e28" font-family="Arial,sans-serif" font-size="26" font-weight="700" textLength="210" lengthAdjust="spacingAndGlyphs">${xml(home)}</text><text x="${x+496}" y="352" text-anchor="end" fill="#163e28" font-family="Arial,sans-serif" font-size="26" font-weight="700" textLength="210" lengthAdjust="spacingAndGlyphs">${xml(away)}</text><text x="${x+264}" y="445" text-anchor="middle" fill="#163e28" font-family="Arial,sans-serif" font-size="86" font-weight="800">${xml(homeGoals)} <tspan fill="#ff7a2f" font-size="62">–</tspan> ${xml(awayGoals)}</text><text x="${x+264}" y="505" text-anchor="middle" fill="#536257" font-family="Arial,sans-serif" font-size="18">${metrics}</text>`;
-      return panel;
+        : includeMetrics ? 'Métricas no comparables por falta de cobertura completa' : 'Métricas omitidas';
+      const center=x+w/2, pad=Math.min(32,w*.06), nameWidth=w*.38;
+      const metaY=y+44, labelY=y+h*.34, namesY=y+h*.45, scoreY=y+h*.70, metricY=y+h-36;
+      return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="22" fill="#fff" stroke="#d4ded6" stroke-width="2"/><path d="M${x} ${y+h-8}h${w}" stroke="#ff7a2f" stroke-width="8"/><text x="${x+pad}" y="${metaY}" fill="#536257" font-family="Arial,sans-serif" font-size="${w<600?19:23}" font-weight="700" letter-spacing="1.2">${seasonLabel} · J${round} · ${xml(row.dataset.fechaPartido)}</text><text x="${x+pad}" y="${labelY}" fill="#536257" font-family="Arial,sans-serif" font-size="${w<600?17:19}" font-weight="700">LOCAL</text><text x="${x+w-pad}" y="${labelY}" text-anchor="end" fill="#536257" font-family="Arial,sans-serif" font-size="${w<600?17:19}" font-weight="700">VISITANTE</text><text x="${x+pad}" y="${namesY}" fill="#163e28" font-family="Arial,sans-serif" font-size="${w<600?24:30}" font-weight="700" textLength="${nameWidth}" lengthAdjust="spacingAndGlyphs">${xml(home)}</text><text x="${x+w-pad}" y="${namesY}" text-anchor="end" fill="#163e28" font-family="Arial,sans-serif" font-size="${w<600?24:30}" font-weight="700" textLength="${nameWidth}" lengthAdjust="spacingAndGlyphs">${xml(away)}</text><text x="${center}" y="${scoreY}" text-anchor="middle" fill="#163e28" font-family="Arial,sans-serif" font-size="${w<600?78:92}" font-weight="800">${xml(homeGoals)} <tspan fill="#ff7a2f" font-size="${w<600?56:64}">–</tspan> ${xml(awayGoals)}</text><text x="${center}" y="${metricY}" text-anchor="middle" fill="#536257" font-family="Arial,sans-serif" font-size="${w<600?17:19}">${metrics}</text>`;
     }).join('');
     const title = `Comparativa J${rowA.dataset.jornada}–J${rowB.dataset.jornada} · ${rowA.dataset.temporada} / ${rowB.dataset.temporada}`;
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="titulo descripcion"><title id="titulo">${xml(title)}</title><desc id="descripcion">Marcadores del Real Zaragoza frente a ${xml(rowA.dataset.rival)} y ${xml(rowB.dataset.rival)}. La posesión y los tiros se incluyen solo con fichas completas en ambos partidos.</desc><rect width="1200" height="630" fill="#f3f5ef"/><path d="M0 0h1200v148H0z" fill="#103b24"/><path d="M0 143h1200" stroke="#ff7a2f" stroke-width="7"/><text x="54" y="54" fill="#bed8c4" font-family="Arial,sans-serif" font-size="17" font-weight="700" letter-spacing="3">LÍNEA DE PASE · ARCHIVO VISUAL</text><text x="54" y="111" fill="#f7f8f4" font-family="Arial,sans-serif" font-size="42" font-weight="800">Dos jornadas, frente a frente</text>${cards}<text x="1150" y="603" text-anchor="end" fill="#64766b" font-family="Arial,sans-serif" font-size="15">lineadepase.com</text></svg>`;
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="${layout.width}" height="${layout.height}" viewBox="0 0 ${layout.width} ${layout.height}" role="img" aria-labelledby="titulo descripcion"><title id="titulo">${xml(title)}</title><desc id="descripcion">Marcadores del Real Zaragoza frente a ${xml(rowA.dataset.rival)} y ${xml(rowB.dataset.rival)}. La posesión y los tiros se incluyen solo si se seleccionan y las dos fichas están completas.</desc><rect width="${layout.width}" height="${layout.height}" fill="#f3f5ef"/><path d="M0 0h${layout.width}v${layout.header}H0z" fill="#103b24"/><path d="M0 ${layout.header-5}h${layout.width}" stroke="#ff7a2f" stroke-width="7"/><text x="54" y="54" fill="#bed8c4" font-family="Arial,sans-serif" font-size="17" font-weight="700" letter-spacing="3">LÍNEA DE PASE · ARCHIVO VISUAL</text><text x="54" y="${layout.titleY}" fill="#f7f8f4" font-family="Arial,sans-serif" font-size="${layout.titleSize}" font-weight="800">Dos jornadas, frente a frente</text>${cards}<text x="${layout.width-50}" y="${layout.height-24}" text-anchor="end" fill="#64766b" font-family="Arial,sans-serif" font-size="15">lineadepase.com</text></svg>`;
   }
 
   function saveBlob(blob, filename) {
@@ -124,20 +139,24 @@
     const rowA = rounds.get(selectA.value);
     const rowB = rounds.get(selectB.value);
     if (!rowA || !rowB) return;
-    const svg = comparisonSvg(rowA, rowB);
+    const size = formatSelect?.value || 'apaisado';
+    const dimensions = {apaisado:[1200,630],cuadrado:[1080,1080],vertical:[1080,1350]}[size] || [1200,630];
+    const metricsAvailable = rowA.dataset.completa === '1' && rowB.dataset.completa === '1';
+    const includeMetrics = Boolean(metricsAvailable && metricsToggle?.checked);
+    const svg = comparisonSvg(rowA, rowB, size, includeMetrics);
     const safeName = value => value.replace(/[^0-9a-z]+/gi, '-').replace(/^-|-$/g, '');
-    const filename = `comparativa-${safeName(rowA.dataset.comparisonId)}-${safeName(rowB.dataset.comparisonId)}`;
+    const filename = `comparativa-${size}-${safeName(rowA.dataset.comparisonId)}-${safeName(rowB.dataset.comparisonId)}`;
     if (format === 'svg') {
       saveBlob(new Blob([svg], {type: 'image/svg+xml;charset=utf-8'}), `${filename}.svg`);
-      compareState.textContent = 'Tarjeta comparativa SVG descargada.';
+      compareState.textContent = `Tarjeta ${size} SVG descargada${includeMetrics?' con métricas':' sin métricas'}.`;
       return;
     }
     const sourceUrl = URL.createObjectURL(new Blob([svg], {type: 'image/svg+xml;charset=utf-8'}));
     const image = new Image();
     image.onload = () => {
       const canvas = document.createElement('canvas');
-      canvas.width = 1200;
-      canvas.height = 630;
+      canvas.width = dimensions[0];
+      canvas.height = dimensions[1];
       canvas.getContext('2d').drawImage(image, 0, 0);
       canvas.toBlob(blob => {
         URL.revokeObjectURL(sourceUrl);
@@ -146,7 +165,7 @@
           return;
         }
         saveBlob(blob, `${filename}.png`);
-        compareState.textContent = 'Tarjeta comparativa PNG descargada.';
+        compareState.textContent = `Tarjeta ${size} PNG descargada${includeMetrics?' con métricas':' sin métricas'}.`;
       }, 'image/png');
     };
     image.onerror = () => {
@@ -194,6 +213,7 @@
         window.prompt('Copia el enlace de la comparación:', url.toString());
       }
     });
+    if (downloadControls) downloadControls.hidden = false;
     document.querySelectorAll('[data-descargar-comparacion]').forEach(button => {
       button.addEventListener('click', () => downloadComparison(button.dataset.descargarComparacion));
     });

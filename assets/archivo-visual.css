@@ -26,6 +26,7 @@
 .archivo-resumen dd { margin: .25rem 0 0; color: #163e28; font-size: 1.35rem; font-weight: 700; }
 
 .archivo-comparar-controles,
+.archivo-opciones-tarjeta,
 .archivo-filtros {
   display: flex;
   flex-wrap: wrap;
@@ -34,6 +35,7 @@
   margin-block: 1rem;
 }
 .archivo-comparar-controles label,
+.archivo-opciones-tarjeta label,
 .archivo-filtros label {
   display: grid;
   gap: .35rem;
@@ -42,6 +44,7 @@
   font-weight: 600;
 }
 .archivo-comparar-controles select,
+.archivo-opciones-tarjeta select,
 .archivo-filtros select {
   max-width: 100%;
   min-height: 2.8rem;
@@ -53,6 +56,8 @@
   font: inherit;
 }
 .archivo-filtros [data-recuento-archivo] { margin: 0; color: #536257; }
+.archivo-incluir-metricas { display: flex !important; grid-template-columns: auto 1fr !important; align-items: center; gap: .55rem !important; min-width: 0 !important; }
+.archivo-incluir-metricas input { width: 1.1rem; height: 1.1rem; accent-color: #245b9b; }
 .estado-cobertura { display: inline-flex; align-items: center; gap: .35rem; padding: .2rem .55rem; border-radius: 999px; font-size: .85rem; line-height: 1.35; }
 .estado-cobertura.completa { color: #174a30; background: #e5f1e8; font-weight: 700; }
 .estado-cobertura.incompleta { color: #536257; background: #eef1ed; }
@@ -83,7 +88,9 @@
   .archivo-comparar-controles,
   .archivo-filtros { align-items: stretch; flex-direction: column; }
   .archivo-comparar-controles label,
+  .archivo-opciones-tarjeta label,
   .archivo-filtros label { width: 100%; min-width: 0; }
   .archivo-comparar-controles select,
+  .archivo-opciones-tarjeta select,
   .archivo-filtros select { width: 100%; }
 }
