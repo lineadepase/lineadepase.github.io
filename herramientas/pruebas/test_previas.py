@@ -117,6 +117,19 @@ class PublicacionPrevias(unittest.TestCase):
         self.assertIn('https://cdtudelano.com/actualidad/entradas-copa-del-rey-zaragoza/',first)
         self.assertIn('Comprobado el 27/10/2026 a las 16:09 (hora peninsular)',first)
 
+    def test_validador_editorial_acepta_tercera_persona_y_hasta_dos_fuentes(self):
+        from previas import validar_noticia_previa
+        markup='<p>El Zaragoza llega a la cita tras tres victorias.</p><a href="https://club.example/">Club</a><a href="https://liga.example/">Liga</a>'
+        validar_noticia_previa(markup)
+
+    def test_validador_editorial_rechaza_exceso_de_fuentes_y_apelaciones(self):
+        from previas import validar_noticia_previa
+        sources=''.join(f'<a href="https://fuente.example/{i}">Fuente</a>' for i in range(3))
+        with self.assertRaisesRegex(ValueError,'máximo de dos fuentes'):
+            validar_noticia_previa('<p>El encuentro en Tudela</p>'+sources)
+        with self.assertRaisesRegex(ValueError,'tercera persona'):
+            validar_noticia_previa('<p>Puedes seguir el partido en Tudela.</p>')
+
     def test_centro_partido_rechaza_mas_de_dos_fuentes_y_fechas_sin_zona(self):
         from previas import registro
         fixture={'imagen':'assets/j10.webp','pagina':'proyectos/real-zaragoza/previa-copa.html',

@@ -70,8 +70,9 @@ def generate_archive():
         if identifier and heading:
             entries.append(('../conceptos/#'+identifier[1], text(heading[1]), text(summary[1]) if summary else '', '', '', 'Conceptos'))
     controls = '<p class="nota">En las fichas del Zaragoza, el marcador se expresa siempre como goles a favor–goles en contra.</p><div class="archivo-controles" id="controles-archivo" hidden><label for="buscar-archivo">Buscar en el archivo<input id="buscar-archivo" type="search" placeholder="Rival, jornada, vídeo o concepto"></label>'
-    for key, label, values in [('temporada', 'Temporada', sorted({e[3] for e in entries})), ('rival', 'Rival', sorted({e[4] for e in entries if e[4]})), ('tema', 'Tema', sorted({e[5] for e in entries}))]:
+    for key, label, values in [('temporada', 'Temporada', [v for v in sorted({e[3] for e in entries}) if v]), ('rival', 'Rival', sorted({e[4] for e in entries if e[4]})), ('tema', 'Tema', sorted({e[5] for e in entries}))]:
         controls += '<label for="filtro-' + key + '">' + label + '<select id="filtro-' + key + '"><option value="">Todos</option>' + ''.join('<option>' + escape(v) + '</option>' for v in values) + '</select></label>'
+    controls += '<label for="filtro-tipo">Tipo de pieza<select id="filtro-tipo"><option value="">Todos</option><option>Partido</option><option>Previa</option><option>Análisis</option><option>Investigación</option><option>Vídeo</option><option>Concepto</option></select></label>'
     controls += '<button type="button" class="boton" id="limpiar-archivo">Limpiar filtros</button></div>'
     cards = '<p class="nota">Cada carpeta reúne el contenido de una sección. La búsqueda y los filtros consultan análisis, vídeos y conceptos a la vez.</p><p id="recuento-archivo" role="status" aria-live="polite">' + str(len(entries)) + ' recursos</p><div class="archivo-carpetas">'
     for topic, label in [('Partidos','Real Zaragoza'),('Previas · Liga','Previas · Liga'),('Previas · Copa del Rey','Previas · Copa del Rey'),('Investigación','Investigaciones'),('Fútbol femenino','Fútbol femenino · Territorio'),('Vídeos','Vídeos explicativos'),('Conceptos','Conceptos aplicados')]:
@@ -81,17 +82,18 @@ def generate_archive():
         quantity = 'recurso' if len(group)==1 else 'recursos'
         cards += '<details class="archivo-carpeta"><summary><span class="carpeta-nombre">'+escape(label)+'</span> <span class="carpeta-cantidad">'+str(len(group))+' '+quantity+'</span></summary><ul class="archivo-lista">'
         for href, title, desc, season, rival, topic in group:
-            cards += '<li data-temporada="' + escape(season, quote=True) + '" data-rival="' + escape(rival, quote=True) + '" data-tema="' + escape(topic, quote=True) + '"><article><p class="etiqueta">' + escape(topic + ' · ' + season) + '</p><h2><a href="' + href + '">' + escape(title) + '</a></h2><p>' + escape(desc) + '</p></article></li>'
+            kind = {'Partidos': 'Partido', 'Previas · Liga': 'Previa', 'Previas · Copa del Rey': 'Previa', 'Investigación': 'Investigación', 'Fútbol femenino': 'Análisis', 'Vídeos': 'Vídeo', 'Conceptos': 'Concepto'}[topic]
+            cards += '<li data-temporada="' + escape(season, quote=True) + '" data-rival="' + escape(rival, quote=True) + '" data-tema="' + escape(topic, quote=True) + '" data-tipo="' + kind + '"><article><p class="etiqueta">' + escape(topic + ' · ' + season) + '</p><h2><a href="' + href + '">' + escape(title) + '</a></h2><p>' + escape(desc) + '</p></article></li>'
         cards += '</ul></details>'
-    cards += '</div><p id="archivo-vacio" hidden>No hay análisis con estos filtros. Prueba otro término o limpia los filtros.</p><script src="../assets/archivo.js?v=20261021e" defer></script>'
+    cards += '</div><p id="archivo-vacio" hidden>No hay análisis con estos filtros. Prueba otro término o limpia los filtros.</p><script src="../assets/archivo.js?v=20261027b" defer></script>'
     (ROOT / 'archivo').mkdir(exist_ok=True)
     output = ROOT / 'archivo/index.html'
-    html = page('Archivo de análisis', 'Busca por temporada, rival o tema y vuelve a los partidos y proyectos que te interesan.', controls + cards)
+    html = page('Archivo de análisis', 'Busca por temporada, rival, tema o tipo de pieza y vuelve a los partidos y proyectos que te interesan.', controls + cards)
     if output.is_file():
         previous = output.read_text(encoding='utf-8')
         # La reconstrucción del contenido no elimina metadatos ni estilos ya publicados.
         html = previous[:previous.index('</head>')+7] + html[html.index('</head>')+7:]
-        html = re.sub(r'<meta name="description"[^>]*>', '<meta name="description" content="Busca por rival, jornada, temporada o tema entre análisis, previas, vídeos y conceptos.">', html, count=1)
+        html = re.sub(r'<meta name="description"[^>]*>', '<meta name="description" content="Busca por rival, jornada, temporada, tema o tipo de pieza entre análisis, previas, vídeos y conceptos.">', html, count=1)
     output.write_text(html, encoding='utf-8')
 
 

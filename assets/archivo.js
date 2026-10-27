@@ -2,7 +2,7 @@
   const controls = document.getElementById('controles-archivo');
   if (!controls) return;
   const search = document.getElementById('buscar-archivo');
-  const keys = ['temporada', 'rival', 'tema'];
+  const keys = ['temporada', 'rival', 'tema', 'tipo'];
   const filters = keys.map(key => document.getElementById(`filtro-${key}`));
   const cards = [...document.querySelectorAll('.archivo-lista > li')];
   const folders = [...document.querySelectorAll('.archivo-carpeta')];

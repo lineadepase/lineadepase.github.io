@@ -81,6 +81,8 @@ def registro(root=ROOT):
             post_page = (root/postmatch).resolve()
             if not post_page.is_relative_to(root.resolve()) or not post_page.is_file():
                 raise ValueError('La crónica vinculada debe existir dentro de la web: '+str(postmatch))
+        if entry.get('noticia_html'):
+            validar_noticia_previa(entry['noticia_html'])
         centro = entry.get('centro_partido')
         if centro:
             if not isinstance(centro, dict) or not centro.get('fuentes') or len(centro['fuentes']) > 2:
@@ -92,6 +94,28 @@ def registro(root=ROOT):
                 if not fuente.get('nombre') or not re.match(r'^https://', fuente.get('url', '')):
                     raise ValueError('Cada fuente del centro debe tener nombre y URL HTTPS')
     return entries
+
+
+def validar_noticia_previa(markup):
+    """Comprueba límites editoriales básicos del texto de una previa."""
+    links = re.findall(r'<a\b[^>]*href=[\"\']https://', markup, flags=re.I)
+    if len(links) > 2:
+        raise ValueError('La noticia de la previa debe apoyarse en un máximo de dos fuentes')
+    plain = re.sub(r'<[^>]+>', ' ', markup)
+    plain = re.sub(r'&(?:#\d+|#x[0-9a-f]+|[a-z]+);', ' ', plain, flags=re.I)
+    plain = re.sub(r'\s+', ' ', plain).casefold()
+    # Señala solo marcas claras de voz personal o apelación al lector. La revisión
+    # automática no juzga el estilo: evita que estas fórmulas lleguen por descuido.
+    cues = (
+        r'\byo\b', r'\bnosotros\b', r'\bnuestro(?:s|a|as)?\b',
+        r'\bmi\b', r'\bconmigo\b', r'\bt[uú]\b', r'\bte\b',
+        r'\bhe\s+(?:visto|analizado|revisado|comprobado)\b', r'\bhemos\s+\w+\b',
+        r'\bcontigo\b', r'\bquiero\b', r'\bcreemos\b', r'\banalizamos\b',
+        r'\bcomparamos\b', r'\bmira\b', r'\belige\b', r'\bcompara\b',
+        r'\bpuedes\b', r'\bimagina(?:te)?\b',
+    )
+    if any(re.search(cue, plain) for cue in cues):
+        raise ValueError('La noticia de la previa debe redactarse en tercera persona y sin dirigirse al lector')
 
 
 def centro_partido_html(entry):
