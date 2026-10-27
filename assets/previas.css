@@ -6,4 +6,8 @@
 .tarjeta-previa .etiqueta{margin-top:1rem}
 .datos-partido{font-weight:600;color:var(--tinta,#143e2b);margin:.4rem 0}
 .estado-previa{display:inline-block;margin:1rem 0 0;padding:.3rem .65rem;border-radius:6px;background:var(--tinta,#143e2b);color:var(--cal,#fff);font-size:.85rem;font-weight:700}
+.tarjeta-previa .calendario-partido{display:inline-block;margin:.75rem .75rem 0 0}
+.enlace-postpartido{display:inline-block;margin:.75rem .75rem 0 0;font-weight:700}
+.postpartido-disponible{padding:.75rem 1rem;border-left:4px solid var(--senal,#ff7a2f);background:var(--superficie,#f4f7f1)}
+.calendario-partido[hidden],.postpartido-disponible[hidden]{display:none}
 @media(max-width:640px){.previas-rejilla{grid-template-columns:1fr;gap:2rem}.previas-portada{margin:1.5rem 0}}

@@ -25,4 +25,18 @@ class CalidadWeb(unittest.TestCase):
             self.assertEqual(source.read_bytes(),original)
             self.assertEqual(imagenes(result,root/'index.html',root),result)
 
+    def test_srcset_existente_anade_version_grande_optimizada_sin_quitar_original(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);(root/'assets').mkdir();(root/'assets/adaptadas').mkdir()
+            source=root/'assets/editorial.png'
+            Image.new('RGB',(1672,941),(255,190,20)).save(source,'PNG',compress_level=0)
+            raw='<img src="assets/editorial.png" width="1672" height="941" srcset="assets/adaptadas/editorial-480.webp 480w, assets/adaptadas/editorial-800.webp 800w, assets/adaptadas/editorial-1200.webp 1200w, assets/editorial.png 1672w">'
+            result=imagenes(raw,root/'page.html',root)
+            self.assertIn('1600w',result)
+            self.assertIn('src="assets/editorial.png"',result)
+            self.assertIn('-1672.webp 1672w',result)
+            self.assertTrue(any(p.name.endswith('-1600.webp') for p in (root/'assets/adaptadas').iterdir()))
+            self.assertTrue(any(p.name.endswith('-1672.webp') for p in (root/'assets/adaptadas').iterdir()))
+            self.assertEqual(imagenes(result,root/'page.html',root),result)
+
 if __name__=='__main__':unittest.main()

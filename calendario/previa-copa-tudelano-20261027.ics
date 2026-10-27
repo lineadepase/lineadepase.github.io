@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Linea de pase//Calendario de partidos//ES
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:previa-copa-tudelano-20261027@lineadepase.com
+DTSTAMP:20261027T110000Z
+DTSTART:20261027T200000Z
+DTEND:20261027T223000Z
+SUMMARY:CD Tudelano – Real Zaragoza
+LOCATION:Estadio Ciudad de Tudela
+DESCRIPTION:Una eliminatoria a partido único: horario\, televisión y cuatro claves para seguir la noche de Copa en Tudela.\nhttps://lineadepase.com/proyectos/real-zaragoza/previa-copa-tudelano-20261027.html
+URL:https://lineadepase.com/proyectos/real-zaragoza/previa-copa-tudelano-20261027.html
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

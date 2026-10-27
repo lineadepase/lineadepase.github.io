@@ -62,20 +62,43 @@ def imagenes(raw, page, root=ROOT):
             if not a.get('height'):
                 declared=int(a.get('width',width)) if str(a.get('width',width)).isdigit() else width
                 add+=f' height="{round(height*declared/width)}"'
-            if source.stat().st_size>300000 and width>800 and 'srcset' not in a:
+            if source.stat().st_size>300000 and width>800:
                 digest=hashlib.sha256(source.read_bytes()).hexdigest()[:10]
                 folder=root/'assets/adaptadas';folder.mkdir(exist_ok=True)
-                versions=[]
-                for size in (480,800,1200):
-                    if size>=width:continue
+                existing=a.get('srcset','')
+                existing_widths={int(item.strip().rsplit(' ',1)[1][:-1])
+                                 for item in existing.split(',') if item.strip().rsplit(' ',1)[-1].endswith('w')
+                                 and item.strip().rsplit(' ',1)[-1][:-1].isdigit()}
+                def variant(size):
                     target=folder/f'{source.stem}-{digest}-{size}.webp'
                     if not target.exists():
                         copy=im.copy();copy.thumbnail((size,round(height*size/width)))
                         copy.save(target,'WEBP',quality=82,method=6)
                     relative=os.path.relpath(target,page.parent).replace('\\','/')
-                    versions.append(f'{relative} {size}w')
-                versions.append(f'{src} {width}w')
-                add+=' srcset="'+escape(', '.join(versions),quote=True)+'" sizes="(max-width: 640px) calc(100vw - 48px), 800px"'
+                    return f'{relative} {size}w'
+                if existing:
+                    existing_parts=[item.strip() for item in existing.split(',') if item.strip()]
+                    versions=[]
+                    optimized_full=False
+                    for item in existing_parts:
+                        candidate=item.rsplit(' ',1)
+                        if len(candidate)==2 and candidate[1]==f'{width}w' and candidate[0]==src:
+                            versions.append(variant(width));optimized_full=True
+                        elif len(candidate)==2 and candidate[1]==f'{width}w':
+                            versions.append(item);optimized_full=True
+                        else:
+                            versions.append(item)
+                    for size in (480,800,1200,1600):
+                        if size<width and size not in existing_widths:
+                            versions.append(variant(size))
+                    if not optimized_full:
+                        versions.append(variant(width))
+                    new_srcset=escape(', '.join(versions),quote=True)
+                    tag=re.sub(r'\bsrcset=("[^"]*"|\'[^\']*\')',lambda _:f'srcset="{new_srcset}"',tag,count=1)
+                else:
+                    versions=[variant(size) for size in (480,800,1200,1600) if size<width]
+                    versions.append(variant(width))
+                    add+=' srcset="'+escape(', '.join(versions),quote=True)+'" sizes="(max-width: 640px) calc(100vw - 48px), 800px"'
             return tag[:-1]+add+'>'
     return re.sub(r'<img\b[^>]*>',adapt,raw)
 

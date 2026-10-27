@@ -4,13 +4,63 @@ from html import escape
 import json
 import re
 import xml.etree.ElementTree as ET
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 
 ROOT = Path(__file__).resolve().parents[1]
 START = '<!-- previas-portada -->'
 END = '<!-- /previas-portada -->'
 BASE = 'https://lineadepase.com/'
+CALENDAR = 'calendario'
+
+
+def calendar_path(entry):
+    return f'{CALENDAR}/{Path(entry["pagina"]).stem}.ics'
+
+
+def partido_iniciado(entry, ahora=None):
+    if not entry.get('fecha_partido') or not entry.get('hora'):
+        return False
+    inicio = datetime.fromisoformat(entry['fecha_partido']+'T'+entry['hora']).replace(
+        tzinfo=ZoneInfo('Europe/Madrid'))
+    return (ahora or datetime.now(ZoneInfo('Europe/Madrid'))) >= inicio
+
+
+def escape_ics(value):
+    return (str(value).replace('\\', '\\\\').replace(';', '\\;')
+            .replace(',', '\\,').replace('\r\n', '\\n').replace('\n', '\\n'))
+
+
+def calendar_event(entry):
+    """Produce un evento RFC 5545 con horas UTC para evitar desfases de zona."""
+    local = datetime.fromisoformat(entry['fecha_partido']+'T'+entry['hora']).replace(
+        tzinfo=ZoneInfo('Europe/Madrid'))
+    start = local.astimezone(timezone.utc)
+    end = (local+timedelta(hours=2, minutes=30)).astimezone(timezone.utc)
+    stamp = datetime.fromisoformat(entry.get('fecha_publicacion', entry['fecha_partido'])+'T12:00:00').replace(
+        tzinfo=ZoneInfo('Europe/Madrid')).astimezone(timezone.utc)
+    url = BASE+entry['pagina']
+    description = escape_ics(entry.get('resumen', 'Previa del partido'))+'\\n'+url
+    lines = [
+        'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Linea de pase//Calendario de partidos//ES',
+        'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', 'BEGIN:VEVENT',
+        'UID:'+Path(entry['pagina']).stem+'@lineadepase.com',
+        'DTSTAMP:'+stamp.strftime('%Y%m%dT%H%M%SZ'),
+        'DTSTART:'+start.strftime('%Y%m%dT%H%M%SZ'),
+        'DTEND:'+end.strftime('%Y%m%dT%H%M%SZ'),
+        'SUMMARY:'+escape_ics(entry['titulo']),
+        'LOCATION:'+escape_ics(entry.get('estadio', '')),
+        'DESCRIPTION:'+description, 'URL:'+url, 'STATUS:CONFIRMED',
+        'END:VEVENT', 'END:VCALENDAR', ''
+    ]
+    return '\r\n'.join(lines)
+
+
+def escribir_calendario(entry, root=ROOT):
+    path = root/calendar_path(entry)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(calendar_event(entry), encoding='utf-8', newline='')
+    return path
 
 
 def guardar(path, text):
@@ -26,6 +76,11 @@ def registro(root=ROOT):
         page = (root / entry['pagina']).resolve()
         if not page.is_relative_to(root.resolve()):
             raise ValueError('La página de la previa debe estar dentro de la web')
+        postmatch = entry.get('postpartido_url')
+        if postmatch:
+            post_page = (root/postmatch).resolve()
+            if not post_page.is_relative_to(root.resolve()) or not post_page.is_file():
+                raise ValueError('La crónica vinculada debe existir dentro de la web: '+str(postmatch))
     return entries
 
 
@@ -70,9 +125,24 @@ def con_imagen(html, entry):
     if entry.get('competicion'):
         details.append('<li><strong>Competición:</strong> '+escape(entry['competicion'])+'</li>')
     if details:
-        block = '<!-- ficha-previa --><section class="seccion lectura ficha-previa" aria-labelledby="ficha-previa"><p class="etiqueta">La cita</p><h2 id="ficha-previa">'+escape(entry['titulo'])+'</h2><ul class="claves">'+''.join(details)+'</ul>'
+        block = '<!-- ficha-previa --><section class="seccion lectura ficha-previa" aria-labelledby="ficha-previa"><p class="etiqueta">La cita</p><h2 id="ficha-previa">'+escape(entry['titulo'])+'</h2>'
+        if entry.get('fecha_partido'):
+            today = datetime.now(ZoneInfo('Europe/Madrid')).date().isoformat()
+            date = entry['fecha_partido']
+            state = 'Partido disputado' if date < today else ('Hoy'+(' · '+entry['hora'] if entry.get('hora') else '') if date == today else 'Próxima cita · '+date[8:10]+'/'+date[5:7])
+            block += '<p class="estado-previa estado-partido-detalle" data-fecha="'+escape(date)+'" data-hora="'+escape(entry.get('hora',''))+'">'+escape(state)+'</p>'
+        block += '<ul class="claves">'+''.join(details)+'</ul>'
         if entry.get('fuente_partido'):
             block += '<p class="nota">Horario y estadio: <a href="'+escape(entry['fuente_partido'],quote=True)+'" rel="noopener" target="_blank">confirmación oficial del Real Zaragoza</a>.</p>'
+        if entry.get('hora') and entry.get('fecha_partido'):
+            postmatch = entry.get('postpartido_url', '')
+            hidden = ' hidden' if entry['fecha_partido'] >= datetime.now(ZoneInfo('Europe/Madrid')).date().isoformat() else ''
+            postmatch_link = f'<p class="nota postpartido-disponible" data-fecha="{escape(entry["fecha_partido"])}"{hidden}>Ya se ha disputado: <a class="enlace-postpartido" href="../../{escape(postmatch,quote=True)}">Leer la crónica o análisis →</a></p>' if postmatch else ''
+            calendar_hidden = ' hidden' if partido_iniciado(entry) else ''
+            block += ('<p class="calendario-partido" data-fecha="'+escape(entry['fecha_partido'])+'" data-hora="'+escape(entry['hora'])+'"'+calendar_hidden+'>'
+                      '<a class="boton" href="../../'+escape(calendar_path(entry),quote=True)+'" download>Añadir al calendario (.ics)</a></p>')
+            if postmatch_link:
+                block += postmatch_link
         block += '</section><!-- /ficha-previa -->'
         if '<!-- ficha-previa -->' in html:
             html = re.sub(r'<!-- ficha-previa -->.*?<!-- /ficha-previa -->', lambda _: block, html, flags=re.S)
@@ -88,7 +158,10 @@ def con_imagen(html, entry):
     else:
         html = html.replace('<!-- /imagen-previa -->', '<!-- /imagen-previa -->'+share, 1)
     if 'assets/compartir-previa.js' not in html:
-        html = html.replace('</head>', '<link rel="stylesheet" href="../../assets/compartir-previa.css?v=20261027">\n<script src="../../assets/compartir-previa.js?v=20261027" defer></script>\n</head>', 1)
+        html = html.replace('</head>', '<link rel="stylesheet" href="../../assets/compartir-previa.css?v=20261027a">\n<script src="../../assets/compartir-previa.js?v=20261027" defer></script>\n</head>', 1)
+    html = re.sub(r'(assets/compartir-previa\.css\?v=)[^"\s]+', r'\g<1>20261027a', html)
+    if 'assets/estado-partido.js' not in html:
+        html = html.replace('</head>', '<script src="../../assets/estado-partido.js?v=20261027a" defer></script>\n</head>', 1)
     # La fecha de publicación no cambia al editar; la actualización sí.
     published = entry.get('fecha_publicacion', entry.get('fecha_partido',''))
     modified = entry.get('fecha_actualizacion', published)
@@ -141,14 +214,20 @@ def portada(root=ROOT, hoy=None):
             raise ValueError('Publica primero la noticia: '+entry['pagina'])
         fecha = entry['fecha_partido']
         dia = fecha[8:10]+'/'+fecha[5:7]
-        state = ('Hoy'+(' · '+entry['hora'] if entry.get('hora') else '')) if fecha == hoy else ('Previa del '+dia if fecha < hoy else 'Próxima cita · '+dia)
+        state = ('Hoy'+(' · '+entry['hora'] if entry.get('hora') else '')) if fecha == hoy else ('Partido disputado' if fecha < hoy else 'Próxima cita · '+dia)
         fact = dia+(' · '+entry['hora']+' h' if entry.get('hora') else '')+(' · '+entry['estadio'] if entry.get('estadio') else '')
+        event_hidden = ' hidden' if partido_iniciado(entry) else ''
+        event_link = (f'<a class="boton calendario-partido" data-fecha="{fecha}" data-hora="{escape(entry.get("hora", ""))}"{event_hidden} href="{escape(calendar_path(entry))}" download>Añadir al calendario</a>'
+                      if entry.get('hora') else '')
+        hidden = ' hidden' if fecha >= datetime.now(ZoneInfo('Europe/Madrid')).date().isoformat() else ''
+        postmatch_link = (f'<a class="enlace-postpartido postpartido-disponible" data-fecha="{fecha}"{hidden} href="{escape(entry["postpartido_url"])}">Ver crónica o análisis →</a>'
+                          if entry.get('postpartido_url') else '')
         cards.append(f'<article class="tarjeta-previa" data-fecha="{fecha}" data-hora="{escape(entry.get("hora", ""))}"><a href="{escape(entry["pagina"])}">'
                      f'<img src="{escape(entry["imagen"])}" alt="{escape(entry["alt"],quote=True)}" '
                      f'width="{entry["ancho"]}" height="{entry["alto"]}" loading="lazy"></a>'
                      f'<p class="estado-previa">{state}</p><p class="etiqueta">{escape(entry["etiqueta"])}</p><p class="datos-partido">{escape(fact)}</p><h3><a href="{escape(entry["pagina"])}">'
                      f'{escape(entry["titulo"])}</a></h3><p>{escape(entry["resumen"])}</p>'
-                     f'<a class="enlace-editorial" href="{escape(entry["pagina"])}">Leer la previa →</a></article>')
+                     f'<a class="enlace-editorial" href="{escape(entry["pagina"])}">Leer la previa</a>{event_link}{postmatch_link}</article>')
     block = START+'<section class="previas-portada" aria-labelledby="titulo-previas"><p class="etiqueta">Antes del partido</p><h2 id="titulo-previas">Las previas, con contexto</h2><div class="previas-rejilla">'+''.join(cards)+'</div></section>'+END
     path = root / 'index.html'
     html = path.read_text(encoding='utf-8')
@@ -161,9 +240,11 @@ def portada(root=ROOT, hoy=None):
         html = html.replace(marker, block+marker, 1)
     if 'assets/previas.css' not in html:
         html = html.replace('</head>', '<link rel="stylesheet" href="assets/previas.css?v=20261027">\n</head>', 1)
-    html = re.sub(r'(assets/previas\.css\?v=)[^"\s]+', r'\g<1>20261027c', html)
+    html = re.sub(r'(assets/previas\.css\?v=)[^"\s]+', r'\g<1>20261027d', html)
     if 'assets/previas.js' not in html:
         html = html.replace('</head>', '<script src="assets/previas.js?v=20261027" defer></script>\n</head>', 1)
+    if 'assets/estado-partido.js' not in html:
+        html = html.replace('</head>', '<script src="assets/estado-partido.js?v=20261027a" defer></script>\n</head>', 1)
     news_path = root / 'datos/novedades.json'
     if news_path.is_file():
         news = json.loads(news_path.read_text(encoding='utf-8'))
@@ -196,6 +277,7 @@ def publicar_liga(jornada, html, root=ROOT):
 
 def sincronizar(root=ROOT):
     for entry in registro(root):
+        escribir_calendario(entry, root)
         for page in [entry['pagina']]+entry.get('alias', []):
             path = root / page
             if path.is_file():

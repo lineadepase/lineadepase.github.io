@@ -6,7 +6,7 @@ import tempfile
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from previas import guardar, publicar_liga, sincronizar, ordenar, con_imagen
+from previas import guardar, publicar_liga, sincronizar, ordenar, con_imagen, partido_iniciado
 
 
 class PublicacionPrevias(unittest.TestCase):
@@ -28,7 +28,8 @@ class PublicacionPrevias(unittest.TestCase):
         (self.root/image).write_bytes(b'image-fixture')
         self.entries.append({'jornada':jornada,'pagina':f'proyectos/real-zaragoza/previa-jornada-{jornada}.html',
                              'fecha_partido':f'2026-11-{jornada:02}', 'imagen':image,'ancho':1200,'alto':675,
-                             'alt':f'Rival {jornada}','titulo':f'Previa {jornada}','etiqueta':'Liga','resumen':'Contexto'})
+                             'alt':f'Rival {jornada}','titulo':f'Previa {jornada}','etiqueta':'Liga','resumen':'Contexto',
+                             'hora':'21:00','estadio':'Estadio de prueba'})
         guardar(self.root/'datos/previas.json', json.dumps(self.entries))
 
     def publish(self, jornada):
@@ -92,9 +93,43 @@ class PublicacionPrevias(unittest.TestCase):
         self.assertIn('Publicado el 27/10/2026 · Revisado el 28/10/2026',second)
         self.assertIn('Ibercaja Estadio',second)
         self.assertIn('21:00 h (hora peninsular)',second)
+        self.assertIn('calendario/previa-jornada-10.ics',second)
+        self.assertIn('Añadir al calendario (.ics)',second)
+        self.assertIn('estado-partido.js',second)
         self.assertIn('datePublished',second)
         self.assertIn('dateModified',second)
         self.assertEqual(first,second)
+
+    def test_generador_ics_convierte_hora_de_madrid_a_utc_y_es_estable(self):
+        from previas import calendar_event, escribir_calendario
+        entry={'pagina':'proyectos/real-zaragoza/previa-copa-tudelano-20261027.html',
+               'fecha_partido':'2026-10-27','fecha_publicacion':'2026-10-27','hora':'21:00',
+               'titulo':'CD Tudelano – Real Zaragoza','estadio':'Estadio Ciudad de Tudela',
+               'resumen':'Noche de Copa'}
+        event=calendar_event(entry)
+        self.assertIn('DTSTART:20261027T200000Z',event)
+        self.assertIn('DTEND:20261027T223000Z',event)
+        self.assertIn('SUMMARY:CD Tudelano – Real Zaragoza',event)
+        self.assertIn('DESCRIPTION:Noche de Copa\\nhttps://lineadepase.com/',event)
+        self.assertTrue(event.endswith('\r\n'))
+        first=escribir_calendario(entry,self.root).read_bytes()
+        second=escribir_calendario(entry,self.root).read_bytes()
+        self.assertEqual(first,second)
+
+    def test_indicador_de_inicio_reconoce_el_horario_local_y_el_cambio_de_hora(self):
+        from datetime import datetime
+        from zoneinfo import ZoneInfo
+        entry={'fecha_partido':'2026-10-27','hora':'21:00'}
+        before=datetime(2026,10,27,20,59,tzinfo=ZoneInfo('Europe/Madrid'))
+        at=datetime(2026,10,27,21,0,tzinfo=ZoneInfo('Europe/Madrid'))
+        self.assertFalse(partido_iniciado(entry,before))
+        self.assertTrue(partido_iniciado(entry,at))
+
+    def test_regenerar_crea_calendario_ics(self):
+        self.publish(10)
+        event=(self.root/'calendario/previa-jornada-10.ics').read_text(encoding='utf-8')
+        self.assertIn('SUMMARY:Previa 10',event)
+        self.assertIn('LOCATION:Estadio de prueba',event)
 
 
 if __name__ == '__main__':

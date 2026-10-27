@@ -28,6 +28,10 @@ Resumen y previa dan entrada al contenido. Evolución reúne los gráficos del e
 
 Las guías de los gráficos viven en `analisis/real-zaragoza/textos/guias_graficos.json`. `presentacion_web.py` las incorpora al regenerar páginas. Las lecturas de las previas se guardan por jornada en `textos/previa_jN.json` y deben revisarse antes de publicar una nueva. La tarjeta destacada de inicio y resumen contiene la fecha del encuentro y pasa a identificar el análisis como previo cuando llega esa hora.
 
+## Ciclo de las previas
+
+`datos/previas.json` es el registro de fechas, horas y enlaces de cada previa. `python herramientas/previas.py` actualiza portada, ficha, sitemap y una invitación `.ics` por encuentro, usando `Europe/Madrid`; el estado visible pasa de próxima cita a partido disputado con la hora local. Al terminar un partido y publicar su análisis, añade `postpartido_url` a su ficha solo después de comprobar que la página existe. El generador enlaza entonces previa y análisis en la portada y en la previa; la previa se conserva como pieza anterior al partido. Ejecuta después `python herramientas/actualizar_seo.py` y revisa los enlaces antes de publicar.
+
 ## Dominio, Google y enlaces compartidos
 
 GitHub Pages publica con `CNAME` apuntando a `lineadepase.com`; los enlaces al repositorio de código siguen usando GitHub. Tras generar o editar páginas, ejecuta `python herramientas/actualizar_seo.py` (requiere Pillow). Conserva el diseño y el contenido editorial; actualiza direcciones canónicas, Open Graph, tarjetas de X/Twitter, datos estructurados de la portada, `robots.txt`, `sitemap.xml` y las imágenes de 1200 × 630 en `assets/compartir/`.
