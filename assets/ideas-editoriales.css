@@ -64,3 +64,8 @@
 .pizarron-pasos [data-paso-actual]{color:var(--cesped,#245d39);font-weight:700}
 .mapa-cambios li{padding-bottom:.55rem}.mapa-cambios li p{margin:.25rem 0 0}
 @media(prefers-reduced-motion:reduce){.pizarron-secuencia [data-paso]{transition:none}}
+.entrada-esquemas{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.5rem 1.5rem;align-items:center;margin:1.5rem 0;padding:1rem 1.2rem;border:1px solid var(--linea,#ccd3df);border-left:4px solid var(--senal,#ff7a2f);background:var(--panel,#f5f7f3)}
+.entrada-esquemas .etiqueta,.entrada-esquemas h2,.entrada-esquemas p{margin:.1rem 0}.entrada-esquemas .etiqueta{grid-column:1/-1}.entrada-esquemas h2{font-size:1.25rem}.entrada-esquemas p:not(.etiqueta){color:var(--tinta-suave,#536257);font-size:.92rem}.entrada-esquemas>a{grid-column:2;grid-row:2/4;white-space:nowrap}
+.esquemas-juego{display:grid;gap:1rem;margin:1.5rem 0}.tarjeta-esquema{overflow:hidden;margin:0;border:1px solid var(--linea,#ccd3df);border-radius:var(--radio,12px);background:var(--panel,#f5f7f3)}
+.esquema-juego-svg{display:block;width:100%;height:auto;background:#17452e}.tarjeta-esquema figcaption{padding:1rem 1.1rem}.tarjeta-esquema figcaption .etiqueta{margin:0;color:var(--senal-texto,#c2410c);font-weight:750;text-transform:uppercase;letter-spacing:.08em}.tarjeta-esquema h2{margin:.15rem 0 .4rem;font-size:1.3rem}.tarjeta-esquema figcaption p:last-child{margin:0;max-width:75ch;color:var(--tinta-suave,#536257)}
+@media(max-width:600px){.entrada-esquemas{grid-template-columns:1fr}.entrada-esquemas .etiqueta{grid-column:auto}.entrada-esquemas>a{grid-column:auto;grid-row:auto;white-space:normal}}

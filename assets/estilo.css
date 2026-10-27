@@ -384,6 +384,12 @@ ul.tarjetas-proyecto{list-style:none;margin:0;padding:0;grid-template-columns:re
 .tarjetas-proyecto .tarjeta-proyecto{width:100%}
 .mini-marco{position:relative}
 .tarjetas-proyecto .mini{aspect-ratio:16/9}
+.cabecera-coleccion{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1rem;align-items:center;margin:0 0 1.4rem;padding:1.25rem 1.4rem;border-block:1px solid var(--linea);background:linear-gradient(110deg,var(--panel),transparent)}
+.cabecera-coleccion .etiqueta{margin:0 0 .25rem;color:var(--senal-texto);font-size:.72rem;font-weight:750;letter-spacing:.11em;text-transform:uppercase}
+.cabecera-coleccion h2{margin:0;font-family:var(--f-display);font-size:clamp(1.75rem,3vw,2.25rem);line-height:1.05}
+.cabecera-coleccion p:last-child{max-width:64ch;margin:.4rem 0 0;color:var(--tinta-suave);font-size:.92rem}
+.coleccion-folio{display:grid;place-items:center;align-content:center;width:5.2rem;height:5.2rem;border:1px solid var(--linea);border-radius:50%;background:var(--papel);font-family:var(--f-display);font-size:2.1rem;font-weight:800;color:var(--cesped)}
+.coleccion-folio small{font:700 .45rem/1 var(--f-texto);letter-spacing:.12em;color:var(--tinta-suave)}
 .tipo-proyecto{position:absolute;top:.6rem;right:.6rem;font-size:.75rem;font-weight:600;line-height:1.3;padding:.2rem .6rem;border-radius:999px;background:var(--papel);color:var(--tinta);box-shadow:0 0 0 1px var(--linea)}
 .sello-portada{--sello-color:var(--senal-texto);position:absolute;left:.65rem;bottom:.65rem;display:grid;grid-template-columns:1.7rem 1fr;grid-template-rows:1fr auto;align-items:center;gap:.08rem .25rem;min-width:5rem;padding:.35rem .45rem;border:1px solid color-mix(in srgb,var(--sello-color) 48%,var(--linea));border-radius:7px;background:var(--papel);color:var(--tinta);box-shadow:0 2px 8px #0f24182a;line-height:1}
 .sello-portada b{grid-row:1;font-family:var(--f-display);font-size:1.65rem;color:var(--sello-color);font-weight:800}
@@ -398,6 +404,8 @@ ul.tarjetas-proyecto{list-style:none;margin:0;padding:0;grid-template-columns:re
   .filtros{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:calc(-1 * clamp(16px,4vw,40px));padding-inline:clamp(16px,4vw,40px)}
   .filtros button{flex:0 0 auto}
   .tarjetas-proyecto .tarjeta-proyecto{flex-direction:row}
+  .cabecera-coleccion{grid-template-columns:minmax(0,1fr) auto;padding:.9rem .75rem}
+  .coleccion-folio{width:3.6rem;height:3.6rem;font-size:1.55rem}
   .tarjetas-proyecto .mini-marco{flex:0 0 7rem}
   .tarjetas-proyecto .mini{aspect-ratio:auto;height:100%;min-height:7.5rem}
   .tarjetas-proyecto .mini-imagen{padding:.3rem;border-bottom:0;border-right:1px solid var(--linea)}

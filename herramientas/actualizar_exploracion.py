@@ -326,6 +326,37 @@ def generate_balance_preguntas():
     (folder/'index.html').write_text(page('Balance de preguntas','Un registro de preguntas planteadas antes de los partidos y respuestas añadidas después de comprobar los hechos.',body,head,'balance-de-preguntas/'),encoding='utf-8')
 
 
+def generate_esquemas_juego():
+    field = '<rect x="10" y="10" width="740" height="280" rx="14" fill="#17452e"/><path d="M380 10v280m-370-140h740" stroke="#e1ece3" stroke-opacity=".38" stroke-width="2"/><circle cx="380" cy="150" r="44" fill="none" stroke="#e1ece3" stroke-opacity=".38" stroke-width="2"/><path d="M10 87h66v126H10m740-126h-66v126h66" fill="none" stroke="#e1ece3" stroke-opacity=".45" stroke-width="2"/>'
+    def dot(x,y,color='#f4f7f1',radius=11):
+        return f'<circle cx="{x}" cy="{y}" r="{radius}" fill="{color}" stroke="#10291e" stroke-width="2"/>'
+    diagrams = [
+        ('amplitud','Amplitud','Abrir el campo','Los jugadores de banda ofrecen líneas exteriores para ensanchar la defensa. El dibujo muestra una idea de ocupación, no una estructura observada en un equipo.',
+         dot(180,150)+dot(300,150)+dot(480,75)+dot(480,225)+dot(575,150)+dot(575,65,'#ff6a2b')+dot(575,235,'#ff6a2b')+
+         '<path d="M315 146Q395 95 464 78M315 154Q395 205 464 222" fill="none" stroke="#ff6a2b" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 11"/>'),
+        ('presion','Presión','Orientar la salida','Un grupo reduce líneas de pase y guía la salida rival hacia una zona. Las flechas indican una intención colectiva, no la presión exacta de un partido.',
+         dot(150,105)+dot(180,200)+dot(300,150)+dot(450,80,'#ff6a2b')+dot(455,150,'#ff6a2b')+dot(450,220,'#ff6a2b')+dot(575,150)+
+         '<path d="M425 88Q355 95 315 137M425 150H316M425 212Q355 205 315 163" fill="none" stroke="#ff6a2b" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 11"/>'),
+        ('transicion','Transición','Avanzar tras recuperar','Después de recuperar el balón, una salida vertical y apoyos por delante pueden aprovechar el espacio. Es una secuencia didáctica, no una jugada reconstruida.',
+         dot(210,90)+dot(240,210)+dot(355,150,'#ff6a2b',8)+dot(455,95)+dot(465,205)+dot(590,150)+
+         '<path d="M365 146Q414 108 448 98M365 154Q414 192 456 202M365 150H562" fill="none" stroke="#ff6a2b" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 11"/>')]
+    cards=[]
+    for key,title,heading,description,actions in diagrams:
+        actions=actions.replace('fill="none" stroke="#ff6a2b"','fill="none" stroke="#ff6a2b" marker-end="url(#flecha-'+key+')"')
+        arrow='<defs><marker id="flecha-'+key+'" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 8 4 0 8z" fill="#ff6a2b"/></marker></defs>'
+        svg=(f'<svg class="esquema-juego-svg" viewBox="0 0 760 300" role="img" aria-labelledby="titulo-{key} descripcion-{key}">{arrow}'
+             f'<title id="titulo-{key}">{escape(title)}: {escape(heading)}</title><desc id="descripcion-{key}">{escape(description)}</desc>{field}{actions}</svg>')
+        cards.append('<figure class="tarjeta-esquema">'+svg+'<figcaption><p class="etiqueta">'+escape(title)+'</p><h2>'+escape(heading)+'</h2><p>'+escape(description)+'</p></figcaption></figure>')
+    body=('<p>Estos esquemas resumen tres ideas de juego en una imagen. Las flechas sirven para explicar relaciones y recorridos posibles; no son coordenadas de futbolistas ni una reconstrucción de un partido.</p>'
+          '<div class="esquemas-juego">'+''.join(cards)+'</div>'
+          '<aside class="fuera-de-plano"><h2>Qué representan las marcas</h2><p>Los círculos y las trayectorias son ilustrativos. Solo se dibujarán posiciones observadas cuando una fuente aporte datos de seguimiento adecuados y la página lo indique.</p></aside>'
+          '<p><a class="enlace-editorial" href="../conceptos/">Volver al glosario visual →</a></p>')
+    head='<link rel="stylesheet" href="../assets/ideas-editoriales.css?v=20261027e">'
+    folder=ROOT/'esquemas-del-juego'
+    folder.mkdir(exist_ok=True)
+    (folder/'index.html').write_text(page('El juego en esquema','Tres esquemas tácticos didácticos: amplitud, presión y transición, sin atribuir posiciones no observadas.',body,head,'esquemas-del-juego/'),encoding='utf-8')
+
+
 def generate():
     from experiencia import generate_comparator, generate_selection, generate_news
     generate_comparator(page)
@@ -342,6 +373,7 @@ def generate():
     generate_pizarron_jugada()
     generate_mapa_cambios()
     generate_balance_preguntas()
+    generate_esquemas_juego()
     from segunda_edicion import generate_map, generate_home
     generate_map(page)
     generate_home()
@@ -359,9 +391,10 @@ def generate():
     body = '<nav class="enlaces indice-conceptos" aria-label="Índice de conceptos">' + ''.join('<a class="boton" href="#' + c[0] + '">' + c[1] + '</a>' for c in concepts) + '</nav><div class="conceptos-rejilla">'
     for anchor, title, definition, limit, link, label, source, provider in concepts:
         body += '<article class="concepto" id="' + anchor + '"><h2>' + title + '</h2><p>' + definition + '</p><p><strong>Cómo leerlo:</strong> ' + limit + '</p><p><a href="' + link + '">' + label + '</a>' + (' · <a href="' + source + '">Definición de ' + provider + '</a>' if source else '') + '</p></article>'
-    body += '</div>'
+    body += '</div><aside class="entrada-esquemas"><p class="etiqueta">Glosario visual</p><h2>El juego, en tres esquemas</h2><p>Amplitud, presión y transición, explicadas con dibujos didácticos que no simulan posiciones reales.</p><a class="enlace-editorial" href="../esquemas-del-juego/">Ver los esquemas →</a></aside>'
     (ROOT / 'conceptos').mkdir(exist_ok=True)
-    (ROOT / 'conceptos/index.html').write_text(page('Conceptos para leer el fútbol con datos', 'Una guía breve para entender las cifras, sus límites y cómo se utilizan en los análisis de esta web.', body), encoding='utf-8')
+    concepts_head='<link rel="stylesheet" href="../assets/ideas-editoriales.css?v=20261027e">'
+    (ROOT / 'conceptos/index.html').write_text(page('Conceptos para leer el fútbol con datos', 'Una guía breve para entender las cifras, sus límites y cómo se utilizan en los análisis de esta web.', body, concepts_head), encoding='utf-8')
 
 
 def enrich(raw, file):
@@ -416,7 +449,7 @@ def enrich(raw, file):
 
 def build():
     generate()
-    for folder in ['proyectos', 'videos', 'sobre-mi', 'archivo', 'conceptos', 'comparador', 'seleccion', 'novedades', 'mapa-grupo', 'herramientas', 'tras-la-jornada', 'preguntas-del-partido', 'marcador-a-ciegas', 'datos-en-revision', 'partidos-espejo', 'reloj-del-marcador', 'pizarron-de-una-jugada', 'balance-de-preguntas', 'mapa-de-lo-que-cambio']:
+    for folder in ['proyectos', 'videos', 'sobre-mi', 'archivo', 'conceptos', 'comparador', 'seleccion', 'novedades', 'mapa-grupo', 'herramientas', 'tras-la-jornada', 'preguntas-del-partido', 'marcador-a-ciegas', 'datos-en-revision', 'partidos-espejo', 'reloj-del-marcador', 'pizarron-de-una-jugada', 'balance-de-preguntas', 'mapa-de-lo-que-cambio', 'esquemas-del-juego']:
         for file in (ROOT / folder).rglob('*.html'):
             raw = file.read_text(encoding='utf-8')
             if '<main' in raw:
