@@ -149,7 +149,7 @@ def generate_home():
     j=latest['jornada']; rival=latest['rival']; home=latest['sede']=='Casa'
     title=('Real Zaragoza – '+rival) if home else (rival+' – Real Zaragoza')
     score=(str(latest['goles_favor'])+'–'+str(latest['goles_contra'])) if home else (str(latest['goles_contra'])+'–'+str(latest['goles_favor']))
-    match_visual=('<figure class="resultado-portada-visual"><a href="proyectos/real-zaragoza/ultimo-partido.html" aria-label="Abrir el análisis de '+e(title)+'"><img src="assets/ilustraciones/resultado-real-zaragoza-ultima-jornada.png" width="1200" height="630" loading="lazy" alt="Marcador final de '+e(title)+' · Jornada '+e(str(j))+'"></a><figcaption>Marcador · Jornada '+e(str(j))+'</figcaption></figure>')
+    match_visual=('<figure class="resultado-portada-visual" data-jornada="'+e(str(j))+'" data-fecha-partido="'+e(str(latest['fecha']))+'"><a href="proyectos/real-zaragoza/ultimo-partido.html" aria-label="Abrir el análisis de '+e(title)+'"><img src="assets/ilustraciones/resultado-real-zaragoza-ultima-jornada.png" width="1200" height="630" loading="lazy" alt="Marcador final de '+e(title)+' · Jornada '+e(str(j))+'"></a><figcaption>Marcador · Jornada '+e(str(j))+'</figcaption></figure>')
     clues=json.loads((ROOT/'datos/claves-editoriales.json').read_text(encoding='utf-8'))
     lead=clues.get(str(j),{}).get('conclusion','Resultado, estadísticas y contexto del último encuentro de liga.')
     photo=json.loads((ROOT/'analisis/liga-f-xt/recursos/foto.json').read_text(encoding='utf-8'))

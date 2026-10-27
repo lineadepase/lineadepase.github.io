@@ -6,6 +6,8 @@ Necesita Chrome o Edge instalado y Pillow (ya usado por el generador del sitio).
 from __future__ import annotations
 
 import base64
+import argparse
+import json
 import os
 from pathlib import Path
 import shutil
@@ -13,6 +15,7 @@ import subprocess
 import tempfile
 
 from PIL import Image
+from PIL.PngImagePlugin import PngInfo
 
 ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / 'assets' / 'ilustraciones'
@@ -46,11 +49,16 @@ def run_browser(browser: Path, profile: Path, *args: str) -> None:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--solo-jornada', action='store_true', help='Regenera únicamente los dos PNG del marcador más reciente.')
+    args = parser.parse_args()
     browser = browser_path()
-    exports = [
+    exports = [] if args.solo_jornada else [
         ('anuario-visual-2026-cuadrado', 1080, 1080),
         ('anuario-visual-2026-vertical', 1080, 1350),
         ('anuario-visual-2026-apaisado', 1200, 675),
+    ]
+    exports += [
         ('resultado-real-zaragoza-ultima-jornada', 1200, 630),
         ('resultado-real-zaragoza-ultima-jornada-cuadrado', 1080, 1080),
     ]
@@ -64,26 +72,37 @@ def main() -> None:
             run_browser(browser, profile, '--force-device-scale-factor=1',
                         f'--window-size={width},{height}', f'--screenshot={raw_path}',
                         svg_path.resolve().as_uri())
+            metadata = None
+            if stem.startswith('resultado-real-zaragoza-ultima-jornada'):
+                data = json.loads((ROOT / 'datos' / 'zaragoza.json').read_text(encoding='utf-8'))
+                latest = max(data['partidos'], key=lambda row: int(row['jornada']))
+                metadata = PngInfo()
+                metadata.add_text('jornada', str(latest['jornada']))
+                metadata.add_text('fecha_partido', latest['fecha'])
             with Image.open(raw_path) as image:
                 if image.size != (width, height):
                     raise RuntimeError(f'{svg_path.name}: se esperaba {width}×{height}px y llegaron {image.width}×{image.height}px')
-                image.convert('RGB').save(png_path, format='PNG', optimize=True, compress_level=9)
+                image.convert('RGB').save(png_path, format='PNG', optimize=True, compress_level=9, pnginfo=metadata)
 
-        source = (ART / 'anuario-visual-2026-vertical.svg').read_bytes()
-        encoded = base64.b64encode(source).decode('ascii')
-        printable = folder / 'lamina-a4.html'
-        printable.write_text(
-            '<!doctype html><meta charset="utf-8"><style>'
-            '@page{size:A4;margin:0}*{box-sizing:border-box}html,body{margin:0;width:210mm;height:297mm}'
-            'body{display:grid;place-items:center;background:#fff}'
-            'img{display:block;width:200mm;height:250mm;object-fit:contain;print-color-adjust:exact}'
-            '</style><img alt="Línea de pase, cuaderno visual 2026" '
-            f'src="data:image/svg+xml;base64,{encoded}">', encoding='utf-8')
-        pdf_path = ART / 'anuario-visual-2026-impresion.pdf'
-        run_browser(browser, profile, '--no-pdf-header-footer', f'--print-to-pdf={pdf_path}',
-                    printable.resolve().as_uri())
+        if not args.solo_jornada:
+            source = (ART / 'anuario-visual-2026-vertical.svg').read_bytes()
+            encoded = base64.b64encode(source).decode('ascii')
+            printable = folder / 'lamina-a4.html'
+            printable.write_text(
+                '<!doctype html><meta charset="utf-8"><style>'
+                '@page{size:A4;margin:0}*{box-sizing:border-box}html,body{margin:0;width:210mm;height:297mm}'
+                'body{display:grid;place-items:center;background:#fff}'
+                'img{display:block;width:200mm;height:250mm;object-fit:contain;print-color-adjust:exact}'
+                '</style><img alt="Línea de pase, cuaderno visual 2026" '
+                f'src="data:image/svg+xml;base64,{encoded}">', encoding='utf-8')
+            pdf_path = ART / 'anuario-visual-2026-impresion.pdf'
+            run_browser(browser, profile, '--no-pdf-header-footer', f'--print-to-pdf={pdf_path}',
+                        printable.resolve().as_uri())
 
-    for path in [ART / f'{stem}.png' for stem, _, _ in exports] + [ART / 'anuario-visual-2026-impresion.pdf']:
+    paths=[ART / f'{stem}.png' for stem, _, _ in exports]
+    if not args.solo_jornada:
+        paths.append(ART / 'anuario-visual-2026-impresion.pdf')
+    for path in paths:
         print(f'{path.name}: {path.stat().st_size:,} bytes')
 
 
