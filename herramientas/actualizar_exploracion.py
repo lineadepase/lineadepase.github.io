@@ -194,6 +194,41 @@ def generate_marcador_a_ciegas():
     (folder/'index.html').write_text(page('El marcador a ciegas','Adivina el resultado a partir de la posesión y los tiros registrados en partidos del Real Zaragoza.',body,head,'marcador-a-ciegas/'),encoding='utf-8')
 
 
+def generate_datos_revision():
+    source = 'https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-9-ce-europa-vs-real-zaragoza-3940'
+    comparison = 'https://www.zerozero.pt/live-ao-minuto/2026-10-23-ce-europa-real-zaragoza/12323619'
+    body = '''<p>Cuando dos fichas ofrecen cifras distintas, la diferencia queda a la vista y el análisis evita escoger una sin explicar por qué.</p>
+<article class="discrepancia-registro" id="tiros-j9"><p class="etiqueta">Primera Federación · Jornada 9 · 23/10/2026</p><h2>CE Europa – Real Zaragoza</h2><p>El marcador final fue 0–1. El recuento de tiros no coincide entre las dos fichas consultadas:</p>
+<div class="tabla-desbordable"><table><caption>Tiros registrados en la J9, según cada ficha</caption><thead><tr><th scope="col">Fuente</th><th scope="col">Tiros</th><th scope="col">A puerta</th></tr></thead><tbody>
+<tr><th scope="row"><a href="''' + source + '''" target="_blank" rel="noopener">Real Zaragoza</a></th><td>9–8</td><td>2–1</td></tr>
+<tr><th scope="row"><a href="''' + comparison + '''" target="_blank" rel="noopener">ZeroZero</a></th><td>10–8</td><td>3–1</td></tr>
+</tbody></table></div>
+<p><strong>Qué hace el análisis.</strong> Conserva el registro de la ficha del club, identifica su procedencia y deja la discrepancia abierta. No usa el recuento para calcular una tasa de acierto ni para afirmar que una versión sea la correcta.</p>
+<p><strong>Qué queda por aclarar.</strong> La ficha del club muestra tiros totales, a puerta y fuera; su desglose visible no permite reconstruir por completo los totales. Eso no prueba por sí solo un error: la ficha no detalla todos los criterios de clasificación.</p>
+<p class="nota">Estado: pendiente de resolución editorial · Revisado el 27/10/2026. El análisis no incluye xG para este encuentro.</p>
+<a class="enlace-editorial" href="../proyectos/real-zaragoza/jornada-9.html">Volver al análisis de la J9 →</a></article>
+<p class="nota">Este registro recoge diferencias concretas que afectan a una lectura publicada. No reúne discrepancias menores ni sustituye la ficha de cada partido.</p>'''
+    folder = ROOT/'datos-en-revision'
+    folder.mkdir(exist_ok=True)
+    css = '<link rel="stylesheet" href="../assets/ideas-editoriales.css?v=20261027b">'
+    (folder/'index.html').write_text(page('Cuando las cifras no coinciden','Registro de diferencias entre fuentes deportivas y criterio aplicado en los análisis de Línea de pase.',body,css,'datos-en-revision/'),encoding='utf-8')
+
+
+def generate_partidos_espejo():
+    season = json.loads((ROOT/'datos/zaragoza.json').read_text(encoding='utf-8'))
+    matches = [m for m in season['partidos'] if m.get('completo') and all(m.get(key) is not None for key in ('tiros_zaragoza','tiros_rival','posesion_pct','goles_favor','goles_contra'))]
+    matches.sort(key=lambda m:int(m['jornada']))
+    options = ''.join('<option value="'+str(m['jornada'])+'">J'+str(m['jornada'])+' · '+escape(m['rival'])+'</option>' for m in matches)
+    profiles = []
+    for m in matches:
+        profiles.append('<article class="espejo-partido" data-jornada="'+str(m['jornada'])+'" data-rival="'+escape(m['rival'],quote=True)+'" data-posesion="'+str(m['posesion_pct'])+'" data-diferencia-tiros="'+str(m['tiros_zaragoza']-m['tiros_rival'])+'" data-gf="'+str(m['goles_favor'])+'" data-gc="'+str(m['goles_contra'])+'" data-tiros-z="'+str(m['tiros_zaragoza'])+'" data-tiros-r="'+str(m['tiros_rival'])+'"><p class="etiqueta">Jornada '+str(m['jornada'])+'</p><h3>Real Zaragoza – '+escape(m['rival'])+'</h3><p>Posesión: '+escape(str(m['posesion_pct']).replace('.0',''))+' % · Tiros: '+str(m['tiros_zaragoza'])+'–'+str(m['tiros_rival'])+'</p><p>Resultado: '+str(m['goles_favor'])+'–'+str(m['goles_contra'])+'</p></article>')
+    body = '<p>Algunos partidos se parecen en posesión y balance de tiros y, aun así, terminan con marcadores distintos. Esta vista permite comparar esos perfiles en la temporada del Zaragoza.</p><div class="espejo-aviso"><strong>Cómo leerlo.</strong> La comparación usa seis partidos de liga con posesión, tiros y resultado completos. Encuentra el perfil más cercano por posesión y diferencia de tiros entre los que acabaron con otro marcador. Es una exploración descriptiva: no predice resultados ni explica por qué se produjeron.</div><section class="partidos-espejo" aria-labelledby="titulo-espejo"><h2 id="titulo-espejo">Elige un partido</h2><label for="selector-espejo">Partido de referencia<select id="selector-espejo">'+options+'</select></label><button class="boton lleno" type="button" id="comparar-espejo">Buscar un perfil parecido</button><p id="estado-espejo" role="status" aria-live="polite">Elige un partido para ver la comparación.</p><div id="resultado-espejo" class="espejo-comparacion"></div></section><details class="espejo-muestra"><summary>Ver los partidos incluidos</summary><div class="espejo-registros">'+''.join(profiles)+'</div></details><p class="nota">Los partidos con registros incompletos, incluida la J9 mientras siga abierta la discrepancia de tiros, quedan fuera.</p><a class="enlace-editorial" href="../datos-en-revision/">Consultar la discrepancia de la J9 →</a>'
+    folder = ROOT/'partidos-espejo'
+    folder.mkdir(exist_ok=True)
+    head = '<link rel="stylesheet" href="../assets/ideas-editoriales.css?v=20261027b"><script src="../assets/partidos-espejo.js?v=20261027b" defer></script>'
+    (folder/'index.html').write_text(page('Partidos espejo','Explora encuentros del Real Zaragoza con posesión y diferencia de tiros parecidas, pero marcadores distintos.',body,head,'partidos-espejo/'),encoding='utf-8')
+
+
 def generate():
     from experiencia import generate_comparator, generate_selection, generate_news
     generate_comparator(page)
@@ -204,6 +239,8 @@ def generate():
     generate_delivery(page)
     generate_preguntas()
     generate_marcador_a_ciegas()
+    generate_datos_revision()
+    generate_partidos_espejo()
     from segunda_edicion import generate_map, generate_home
     generate_map(page)
     generate_home()
@@ -261,9 +298,12 @@ def enrich(raw, file):
     if ('proyectos' in file.relative_to(ROOT).parts and file.name != 'index.html') or file.parent.name in ('futbol-femenino', 'xg', 'liga-f-xt', 'real-zaragoza'):
         links = [('archivo/index.html', 'Más análisis en el archivo'), ('conceptos/index.html', 'Entender los conceptos')]
         if file.parent.name == 'real-zaragoza':
+            if file.name == 'jornada-9.html':
+                links.insert(0, ('datos-en-revision/index.html', 'Consultar la discrepancia de tiros de la J9'))
             links.insert(0, ('marcador-a-ciegas/index.html', 'Probar el marcador a ciegas'))
-            links.insert(1, ('preguntas-del-partido/index.html', 'Revisar las preguntas del partido'))
-            links.insert(2, ('proyectos/real-zaragoza/evolucion.html' if file.name != 'evolucion.html' else 'proyectos/real-zaragoza/grupo-2.html', 'Poner el partido en contexto'))
+            links.insert(1, ('partidos-espejo/index.html', 'Explorar partidos espejo'))
+            links.insert(2, ('preguntas-del-partido/index.html', 'Revisar las preguntas del partido'))
+            links.insert(3, ('proyectos/real-zaragoza/evolucion.html' if file.name != 'evolucion.html' else 'proyectos/real-zaragoza/grupo-2.html', 'Poner el partido en contexto'))
         section = START + '<aside class="envoltorio lecturas" aria-labelledby="lecturas-relacionadas"><h2 id="lecturas-relacionadas">Sigue explorando</h2><div class="enlaces">' + ''.join('<a class="boton" href="' + relative(url, file) + '">' + label + '</a>' for url, label in links) + '</div></aside>' + END
         raw = raw.replace('</main>', section + '</main>', 1)
     return raw
@@ -271,7 +311,7 @@ def enrich(raw, file):
 
 def build():
     generate()
-    for folder in ['proyectos', 'videos', 'sobre-mi', 'archivo', 'conceptos', 'comparador', 'seleccion', 'novedades', 'mapa-grupo', 'herramientas', 'tras-la-jornada', 'preguntas-del-partido', 'marcador-a-ciegas']:
+    for folder in ['proyectos', 'videos', 'sobre-mi', 'archivo', 'conceptos', 'comparador', 'seleccion', 'novedades', 'mapa-grupo', 'herramientas', 'tras-la-jornada', 'preguntas-del-partido', 'marcador-a-ciegas', 'datos-en-revision', 'partidos-espejo']:
         for file in (ROOT / folder).rglob('*.html'):
             raw = file.read_text(encoding='utf-8')
             if '<main' in raw:

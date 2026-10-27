@@ -1,6 +1,13 @@
 [
   {
     "fecha": "2026-10-27",
+    "tipo": "Actualización",
+    "titulo": "Nuevas formas de comparar y leer los partidos",
+    "texto": "El archivo de cifras en revisión documenta una diferencia de tiros de la J9; la vista de partidos espejo compara perfiles y los análisis separan hechos, cifras e interpretación.",
+    "url": "partidos-espejo/index.html"
+  },
+  {
+    "fecha": "2026-10-27",
     "tipo": "Publicación",
     "titulo": "Previa: Real Zaragoza – Villarreal B",
     "texto": "Duelo en lo más alto: primero y segundo, empatados a 20 puntos. Forma, rendimiento por sede y claves antes del partido.",

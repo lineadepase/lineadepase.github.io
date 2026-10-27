@@ -21,4 +21,21 @@
 .marcador-ciego-resultado{font-size:1.15rem;font-weight:700;padding:.8rem 1rem;border-left:4px solid var(--senal,#ff7a2f);background:var(--papel,#fff)}
 .pregunta-registro .enlace-editorial,.enlace-marcador-partido{display:inline-block;margin-top:.6rem}
 .reto-marcador[hidden],.marcador-ciego-resultado[hidden],.enlace-marcador-partido[hidden]{display:none}
+.discrepancia-registro,.partidos-espejo,.espejo-aviso{margin:1.5rem 0;padding:clamp(1rem,3vw,1.5rem);border:1px solid var(--linea,#ccd3df);border-radius:var(--radio,12px);background:var(--panel,#f5f7f3)}
+.discrepancia-registro h2,.partidos-espejo h2{margin:.2rem 0 .8rem}
+.tabla-desbordable{max-width:100%;overflow-x:auto;margin:1rem 0}
+.tabla-desbordable table{width:100%;border-collapse:collapse;background:var(--papel,#fff)}
+.tabla-desbordable caption{text-align:left;font-weight:700;padding:.6rem}
+.tabla-desbordable th,.tabla-desbordable td{padding:.65rem .75rem;border:1px solid var(--linea,#ccd3df);text-align:left}
+.tabla-desbordable thead th{background:var(--panel,#f5f7f3)}
+.espejo-aviso{border-left:4px solid var(--senal,#ff7a2f);border-radius:0}
+.partidos-espejo label{display:grid;gap:.35rem;max-width:32rem;font-weight:650}
+.partidos-espejo select{padding:.7rem;border:1px solid var(--linea,#ccd3df);border-radius:6px;background:var(--papel,#fff);color:var(--tinta,#14261d);font:inherit}
+.partidos-espejo button{margin-top:.8rem}
+.espejo-comparacion,.espejo-registros{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,18rem),1fr));gap:1rem;margin-top:1rem}
+.espejo-partido,.espejo-resultado{padding:1rem;border:1px solid var(--linea,#ccd3df);border-radius:8px;background:var(--papel,#fff)}
+.espejo-partido h3,.espejo-resultado h3{margin:.2rem 0 .55rem}
+.espejo-resultado p{margin:.35rem 0}
+.espejo-muestra{margin:1rem 0}.espejo-muestra summary{cursor:pointer;font-weight:650}
+.guia-lectura{max-width:70ch}
 @media(max-width:600px){.momentos-partido li{grid-template-columns:3.5rem 1fr}.marcador-ciego-form fieldset{align-items:start}}

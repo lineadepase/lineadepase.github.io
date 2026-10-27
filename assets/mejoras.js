@@ -107,6 +107,9 @@
     else if(contextMeta){const cutoff=document.createElement('p');cutoff.innerHTML='<strong>Corte y fuente.</strong> ';cutoff.append(document.createTextNode(contextMeta));content.append(cutoff);}
     if(sourceNote){const source=document.createElement('p');source.innerHTML='<strong>Ficha de origen.</strong> ';const link=sourceNote.cloneNode(true);link.textContent=sourceNote.textContent.trim();source.append(link);content.append(source);}
     else {const method=document.querySelector('a[href*="#fuentes-metodo"],a[href*="#metodo-grupo"],a[href*="#metodo"]');if(method){const source=document.createElement('p');const link=method.cloneNode(true);link.textContent='Método y cobertura';source.append(link);content.append(source);}}
+    if((key.includes('tiros')||key==='tiros')&&window.location.pathname.endsWith('/jornada-9.html')){
+      const review=document.createElement('p');const link=document.createElement('a');link.href='/datos-en-revision/#tiros-j9';link.textContent='Consultar la diferencia entre fuentes de la J9';review.append(link);content.append(review);
+    }
     details.append(content);container.append(details);
   }
   document.querySelectorAll('.mp-stat').forEach(row=>{

@@ -13,25 +13,40 @@
     <loc>https://lineadepase.com/conceptos/</loc>
   </url>
   <url>
+    <loc>https://lineadepase.com/datos-en-revision/</loc>
+  </url>
+  <url>
     <loc>https://lineadepase.com/herramientas/</loc>
   </url>
   <url>
     <loc>https://lineadepase.com/mapa-grupo/</loc>
   </url>
   <url>
+    <loc>https://lineadepase.com/marcador-a-ciegas/</loc>
+  </url>
+  <url>
     <loc>https://lineadepase.com/novedades/</loc>
+  </url>
+  <url>
+    <loc>https://lineadepase.com/partidos-espejo/</loc>
+  </url>
+  <url>
+    <loc>https://lineadepase.com/preguntas-del-partido/</loc>
   </url>
   <url>
     <loc>https://lineadepase.com/privacidad/</loc>
   </url>
   <url>
-    <loc>https://lineadepase.com/proyectos/futbol-femenino/</loc>
-  </url>
-  <url>
     <loc>https://lineadepase.com/proyectos/</loc>
   </url>
   <url>
+    <loc>https://lineadepase.com/proyectos/futbol-femenino/</loc>
+  </url>
+  <url>
     <loc>https://lineadepase.com/proyectos/liga-f-xt/</loc>
+  </url>
+  <url>
+    <loc>https://lineadepase.com/proyectos/real-zaragoza/</loc>
   </url>
   <url>
     <loc>https://lineadepase.com/proyectos/real-zaragoza/evolucion.html</loc>
@@ -41,9 +56,6 @@
   </url>
   <url>
     <loc>https://lineadepase.com/proyectos/real-zaragoza/grupo-2.html</loc>
-  </url>
-  <url>
-    <loc>https://lineadepase.com/proyectos/real-zaragoza/</loc>
   </url>
   <url>
     <loc>https://lineadepase.com/proyectos/real-zaragoza/informe-completo.html</loc>
@@ -82,6 +94,12 @@
     <loc>https://lineadepase.com/proyectos/real-zaragoza/plantilla.html</loc>
   </url>
   <url>
+    <loc>https://lineadepase.com/proyectos/real-zaragoza/previa-copa-tudelano-20261027.html</loc>
+  </url>
+  <url>
+    <loc>https://lineadepase.com/proyectos/real-zaragoza/previa-jornada-10.html</loc>
+  </url>
+  <url>
     <loc>https://lineadepase.com/proyectos/real-zaragoza/previa.html</loc>
   </url>
   <url>
@@ -104,18 +122,5 @@
   </url>
   <url>
     <loc>https://lineadepase.com/videos/</loc>
-  </url>
-  <url>
-    <loc>https://lineadepase.com/proyectos/real-zaragoza/previa-copa-tudelano-20261027.html</loc>
-    <lastmod>2026-10-27</lastmod>
-  </url>
-  <url>
-    <loc>https://lineadepase.com/proyectos/real-zaragoza/previa-jornada-10.html</loc>
-  </url>
-  <url>
-    <loc>https://lineadepase.com/preguntas-del-partido/</loc>
-  </url>
-  <url>
-    <loc>https://lineadepase.com/marcador-a-ciegas/</loc>
   </url>
 </urlset>

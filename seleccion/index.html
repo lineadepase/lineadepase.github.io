@@ -14,11 +14,25 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Big+Shoulders+Display:wght@700;800&display=swap">
 <script src="../assets/tema.js"></script>
 <link rel="stylesheet" href="../assets/estilo.css?v=20261021fotos">
-<script src="../assets/mejoras.js?v=20261027ideas" defer></script>
+<script src="../assets/mejoras.js?v=20261027claims" defer></script>
 <link rel="icon" href="../assets/icono.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../assets/explorar.css?v=20261021e">
 <link rel="stylesheet" href="../assets/experiencia.css?v=20261021g">
 <script src="../assets/experiencia.js?v=20261021audit" defer></script>
+
+<style>
+/* Tarjetas de proyectos: imágenes horizontales completas en pantallas pequeñas. */
+@media (max-width: 760px) {
+  #catalogo.tarjetas-proyecto { display:grid; grid-template-columns:minmax(0,1fr); gap:1.25rem; }
+  #catalogo > li, #catalogo .tarjeta-proyecto, #catalogo .mini-marco { min-width:0; width:100%; }
+  #catalogo .tarjeta-proyecto { display:flex; flex-direction:column; overflow:hidden; }
+  #catalogo .mini-marco { height:auto; min-height:0; aspect-ratio:auto; overflow:visible; }
+  #catalogo .mini-imagen { width:100%; height:auto; min-height:0; aspect-ratio:auto; overflow:visible; }
+  #catalogo .mini-imagen img { display:block; width:100%; height:auto; max-height:none; aspect-ratio:auto; object-fit:contain; object-position:center; }
+  #catalogo .mini-marcador { width:100%; height:auto; min-height:0; padding:1.25rem; }
+  #catalogo .tarjeta-texto { min-width:0; }
+}
+</style>
 
 <!-- SEO: generado por herramientas/actualizar_seo.py -->
 <link rel="canonical" href="https://lineadepase.com/seleccion/">
