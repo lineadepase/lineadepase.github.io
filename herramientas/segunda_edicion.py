@@ -54,12 +54,17 @@ def generate_anual_visual():
                 f'<text x="{x+30}" y="{value_y}" fill="{color}" font-size="{value_size}" font-weight="800">{value}</text>'
                 f'<text x="{x+30}" y="{detail_y}" fill="#293c30" font-size="19">{detail}</text>'
                 +motif)
-    def make_social(name,width,height,vertical=False):
+    def make_social(name,width,height,vertical=False,landscape=False):
         if vertical:
             header_h=190; card_h=216; gap=22; margin=48; y0=218
             placements=[(margin,y0+i*(card_h+gap),width-2*margin,card_h,i,*card) for i,card in enumerate(cards)]
             title_y=72; year_y=130; subtitle_y=167; foot_y=1285
             subtitle_size=22
+        elif landscape:
+            header_h=126; margin=36; gap=18; card_w=(width-2*margin-gap)//2; card_h=214
+            positions=[(margin,145),(margin+card_w+gap,145),(margin,378),(margin+card_w+gap,378)]
+            placements=[(*positions[i],card_w,card_h,i,*card) for i,card in enumerate(cards)]
+            title_y=34; year_y=76; subtitle_y=111; foot_y=624; subtitle_size=17
         else:
             header_h=190; margin=48; gap=24; card_w=(width-2*margin-gap)//2; card_h=356
             positions=[(margin,220),(margin+card_w+gap,220),(margin,600),(margin+card_w+gap,600)]
@@ -70,6 +75,7 @@ def generate_anual_visual():
         (folder/name).write_text(source,encoding='utf-8')
     make_social('anuario-visual-2026-cuadrado.svg',1080,1080)
     make_social('anuario-visual-2026-vertical.svg',1080,1350,True)
+    make_social('anuario-visual-2026-apaisado.svg',1200,675,landscape=True)
 
 
 def generate_map(page):
