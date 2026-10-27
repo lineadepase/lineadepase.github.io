@@ -4,6 +4,8 @@ from html import escape
 import json
 import re
 import xml.etree.ElementTree as ET
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 ROOT = Path(__file__).resolve().parents[1]
 START = '<!-- previas-portada -->'
@@ -50,6 +52,9 @@ def con_imagen(html, entry):
     # Metadatos explícitos: el generador SEO los conserva en las siguientes pasadas.
     html = re.sub(r'<meta name="imagen-editorial"[^>]*>\s*', '', html)
     html = html.replace('</head>', f'<meta name="imagen-editorial" content="{entry["imagen"]}">\n</head>', 1)
+    canonical = BASE + entry['pagina']
+    html = re.sub(r'(<link rel="canonical" href=")[^"]*', lambda m: m[1]+canonical, html)
+    html = re.sub(r'(<meta property="og:url" content=")[^"]*', lambda m: m[1]+canonical, html)
     for key in ('og:image', 'twitter:image'):
         html = re.sub(r'(<meta (?:property|name)="'+key+r'" content=")[^"]*', lambda m: m[1]+BASE+entry['imagen'], html)
     html = re.sub(r'(<meta property="og:image:type" content=")[^"]*', lambda m: m[1]+'image/webp', html)
@@ -61,20 +66,34 @@ def con_imagen(html, entry):
         for item in value.get('@graph', [value]):
             if item.get('@type') == 'Article':
                 item['image'] = [BASE+entry['imagen']]
+                item['mainEntityOfPage'] = canonical
+                item['@id'] = canonical+'#analisis'
+            if item.get('@type') == 'BreadcrumbList' and item.get('itemListElement'):
+                item['itemListElement'][-1]['item'] = canonical
         return '<script type="application/ld+json">'+json.dumps(value,ensure_ascii=False)+'</script>'
     return re.sub(r'<script type="application/ld\+json">(.*?)</script>', schema, html, flags=re.S)
 
 
-def portada(root=ROOT):
+def ordenar(entries, hoy):
+    upcoming = sorted((x for x in entries if x['fecha_partido'] >= hoy), key=lambda x: x['fecha_partido'])
+    past = sorted((x for x in entries if x['fecha_partido'] < hoy), key=lambda x: x['fecha_partido'], reverse=True)
+    return upcoming+past
+
+
+def portada(root=ROOT, hoy=None):
     entries = registro(root)
+    hoy = hoy or datetime.now(ZoneInfo('Europe/Madrid')).date().isoformat()
     cards = []
-    for entry in sorted(entries, key=lambda x: x['fecha_partido'], reverse=True)[:4]:
+    for entry in ordenar(entries, hoy)[:4]:
         if not (root / entry['pagina']).is_file():
             raise ValueError('Publica primero la noticia: '+entry['pagina'])
-        cards.append(f'<article class="tarjeta-previa"><a href="{escape(entry["pagina"])}">'
+        fecha = entry['fecha_partido']
+        dia = fecha[8:10]+'/'+fecha[5:7]
+        state = ('Hoy'+(' · '+entry['hora'] if entry.get('hora') else '')) if fecha == hoy else ('Previa del '+dia if fecha < hoy else 'Próxima cita · '+dia)
+        cards.append(f'<article class="tarjeta-previa" data-fecha="{fecha}" data-hora="{escape(entry.get("hora", ""))}"><a href="{escape(entry["pagina"])}">'
                      f'<img src="{escape(entry["imagen"])}" alt="{escape(entry["alt"],quote=True)}" '
                      f'width="{entry["ancho"]}" height="{entry["alto"]}" loading="lazy"></a>'
-                     f'<p class="etiqueta">{escape(entry["etiqueta"])}</p><h3><a href="{escape(entry["pagina"])}">'
+                     f'<p class="estado-previa">{state}</p><p class="etiqueta">{escape(entry["etiqueta"])}</p><h3><a href="{escape(entry["pagina"])}">'
                      f'{escape(entry["titulo"])}</a></h3><p>{escape(entry["resumen"])}</p>'
                      f'<a class="enlace-editorial" href="{escape(entry["pagina"])}">Leer la previa →</a></article>')
     block = START+'<section class="previas-portada" aria-labelledby="titulo-previas"><p class="etiqueta">Antes del partido</p><h2 id="titulo-previas">Las previas, con contexto</h2><div class="previas-rejilla">'+''.join(cards)+'</div></section>'+END
@@ -89,6 +108,9 @@ def portada(root=ROOT):
         html = html.replace(marker, block+marker, 1)
     if 'assets/previas.css' not in html:
         html = html.replace('</head>', '<link rel="stylesheet" href="assets/previas.css?v=20261027">\n</head>', 1)
+    html = re.sub(r'(assets/previas\.css\?v=)[^"\s]+', r'\g<1>20261027b', html)
+    if 'assets/previas.js' not in html:
+        html = html.replace('</head>', '<script src="assets/previas.js?v=20261027" defer></script>\n</head>', 1)
     news_path = root / 'datos/novedades.json'
     if news_path.is_file():
         news = json.loads(news_path.read_text(encoding='utf-8'))
@@ -113,6 +135,9 @@ def publicar_liga(jornada, html, root=ROOT):
     archived = html.replace(BASE+'proyectos/real-zaragoza/previa.html', BASE+entry['pagina'])
     guardar(root / entry['pagina'], archived)
     portada(root)
+    if root == ROOT:
+        from actualizar_exploracion import generate_archive
+        generate_archive()
     return html
 
 

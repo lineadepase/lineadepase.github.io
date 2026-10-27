@@ -30,17 +30,7 @@ def page(title, description, body):
     return head + '<body>' + header + '<main class="envoltorio"><section class="seccion primera"><p class="etiqueta">Explora Línea de pase</p><h1>' + escape(title) + '</h1><p class="entradilla">' + escape(description) + '</p>' + body + '</section></main>' + footer + '</body></html>'
 
 
-def generate():
-    from experiencia import generate_comparator, generate_selection, generate_news
-    generate_comparator(page)
-    generate_selection(page)
-    generate_news(page)
-    from entregas import generate_tools, generate_delivery
-    generate_tools(page)
-    generate_delivery(page)
-    from segunda_edicion import generate_map, generate_home
-    generate_map(page)
-    generate_home()
+def generate_archive():
     entries = []
     source = (ROOT / 'proyectos/real-zaragoza/jornadas.html').read_text(encoding='utf-8')
     for href, content in re.findall(r'<a class="tarjeta-jornada [^"]+" href="([^"]+)">([\s\S]*?)</a>', source):
@@ -56,12 +46,21 @@ def generate():
         title = text(re.search(r'<h1[^>]*>([\s\S]*?)</h1>', raw)[1])
         desc = re.search(r'<meta name="description" content="([^"]*)"', raw)
         entries.append((f'../proyectos/{folder}/index.html', title, unescape(desc[1]) if desc else '', season, '', topic))
+    import json
+    previews = json.loads((ROOT/'datos/previas.json').read_text(encoding='utf-8'))
+    for item in previews:
+        rival = item.get('rival', item['titulo'].replace('Real Zaragoza', '').strip(' –—-'))
+        topic = 'Previas · Copa del Rey' if 'copa' in item['pagina'] else 'Previas · Liga'
+        entries.append(('../'+item['pagina'], 'Previa · '+item['titulo'], item['resumen'], '2026/27', rival, topic))
+    sim = ROOT/'proyectos/real-zaragoza/simulacion.html'
+    if sim.is_file():
+        entries.append(('../proyectos/real-zaragoza/simulacion.html', 'Simulación del grupo 2 de Primera Federación', 'Probabilidades de ascenso, playoff y descenso con su fecha de corte, método y límites.', '2026/27', '', 'Investigación'))
     controls = '<p class="nota">En las fichas del Zaragoza, el marcador se expresa siempre como goles a favor–goles en contra.</p><div class="archivo-controles" id="controles-archivo" hidden><label for="buscar-archivo">Buscar análisis<input id="buscar-archivo" type="search" placeholder="Rival, jornada o concepto"></label>'
     for key, label, values in [('temporada', 'Temporada', sorted({e[3] for e in entries})), ('rival', 'Rival', sorted({e[4] for e in entries if e[4]})), ('tema', 'Tema', sorted({e[5] for e in entries}))]:
         controls += '<label for="filtro-' + key + '">' + label + '<select id="filtro-' + key + '"><option value="">Todos</option>' + ''.join('<option>' + escape(v) + '</option>' for v in values) + '</select></label>'
     controls += '<button type="button" class="boton" id="limpiar-archivo">Limpiar filtros</button></div>'
     cards = '<p class="nota">Cada carpeta reúne los análisis de una sección. La búsqueda y los filtros consultan todas las carpetas a la vez.</p><p id="recuento-archivo" role="status" aria-live="polite">' + str(len(entries)) + ' análisis</p><div class="archivo-carpetas">'
-    for topic, label in [('Partidos','Real Zaragoza'),('Investigación','Investigaciones'),('Fútbol femenino','Fútbol femenino · Territorio'),('Conceptos','Conceptos aplicados')]:
+    for topic, label in [('Partidos','Real Zaragoza'),('Previas · Liga','Previas · Liga'),('Previas · Copa del Rey','Previas · Copa del Rey'),('Investigación','Investigaciones'),('Fútbol femenino','Fútbol femenino · Territorio'),('Conceptos','Conceptos aplicados')]:
         group=[entry for entry in entries if entry[5]==topic]
         if not group:
             continue
@@ -71,7 +70,27 @@ def generate():
         cards += '</ul></details>'
     cards += '</div><p id="archivo-vacio" hidden>No hay análisis con estos filtros. Prueba otro término o limpia los filtros.</p><script src="../assets/archivo.js?v=20261021e" defer></script>'
     (ROOT / 'archivo').mkdir(exist_ok=True)
-    (ROOT / 'archivo/index.html').write_text(page('Archivo de análisis', 'Busca por temporada, rival o tema y vuelve a los partidos y proyectos que te interesan.', controls + cards), encoding='utf-8')
+    output = ROOT / 'archivo/index.html'
+    html = page('Archivo de análisis', 'Busca por temporada, rival o tema y vuelve a los partidos y proyectos que te interesan.', controls + cards)
+    if output.is_file():
+        previous = output.read_text(encoding='utf-8')
+        # La reconstrucción del contenido no elimina metadatos ni estilos ya publicados.
+        html = previous[:previous.index('</head>')+7] + html[html.index('</head>')+7:]
+    output.write_text(html, encoding='utf-8')
+
+
+def generate():
+    from experiencia import generate_comparator, generate_selection, generate_news
+    generate_comparator(page)
+    generate_selection(page)
+    generate_news(page)
+    from entregas import generate_tools, generate_delivery
+    generate_tools(page)
+    generate_delivery(page)
+    from segunda_edicion import generate_map, generate_home
+    generate_map(page)
+    generate_home()
+    generate_archive()
     concepts = [
         ('xt', 'Amenaza esperada (xT)', 'Asigna un valor a cada zona del campo y mide cómo cambia ese valor cuando un pase o una conducción mueve el balón entre zonas.', 'Si una acción completada pasa de una zona con valor 0,02 a otra con 0,08, añade 0,06 xT en ese modelo. Es un ejemplo ilustrativo, no un dato de partido. La investigación de Liga F valora acciones completadas; no mide por sí sola la calidad global de una jugadora ni ajusta el contexto de su equipo.', '../proyectos/liga-f-xt/index.html#metodo', 'Ver el modelo aplicado a la Liga F', 'https://karun.in/blog/expected-threat.html', 'Karun Singh'),
         ('xg', 'Goles esperados (xG)', 'Estiman la probabilidad de que un tiro acabe en gol a partir de sus características. La suma describe la calidad de las ocasiones rematadas.', 'Un tiro de 0,20 xG equivale a una probabilidad estimada del 20 %. No garantiza un gol ni determina quién mereció ganar. Los modelos de distintos proveedores pueden dar valores diferentes.', '../proyectos/xg/index.html', 'Ver xG, sin líos', 'https://www.hudl.com/blog/expected-goals-xg-explained', 'Hudl Statsbomb'),

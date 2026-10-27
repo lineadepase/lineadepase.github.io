@@ -6,7 +6,7 @@ import tempfile
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from previas import guardar, publicar_liga, sincronizar
+from previas import guardar, publicar_liga, sincronizar, ordenar
 
 
 class PublicacionPrevias(unittest.TestCase):
@@ -68,6 +68,16 @@ class PublicacionPrevias(unittest.TestCase):
             self.publish(10)
         self.assertEqual(before,(self.root/'index.html').read_bytes())
         self.assertFalse((self.root/self.entries[0]['pagina']).exists())
+
+    def test_proxima_cita_antes_que_una_fecha_posterior_y_archivadas(self):
+        entries=[{'fecha_partido':'2026-10-31'},{'fecha_partido':'2026-10-27'},{'fecha_partido':'2026-10-23'}]
+        self.assertEqual([x['fecha_partido'] for x in ordenar(entries,'2026-10-27')],['2026-10-27','2026-10-31','2026-10-23'])
+        self.assertEqual([x['fecha_partido'] for x in ordenar(entries,'2026-10-28')],['2026-10-31','2026-10-27','2026-10-23'])
+
+    def test_alias_comparte_canonica_con_la_noticia_permanente(self):
+        self.publish(10)
+        alias=(self.root/'proyectos/real-zaragoza/previa.html').read_text(encoding='utf-8')
+        self.assertIn('rel="canonical" href="https://lineadepase.com/proyectos/real-zaragoza/previa-jornada-10.html"',alias)
 
 
 if __name__ == '__main__':

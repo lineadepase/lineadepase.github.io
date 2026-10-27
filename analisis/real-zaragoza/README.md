@@ -80,7 +80,9 @@ Cada previa se publica con una ilustración editorial propia y su noticia. Antes
 
 `herramientas/previas.py` incorpora la imagen y el texto editorial a la noticia, conserva una URL por jornada y actualiza el bloque de previas de la página principal. La dirección `previa.html` sigue mostrando la jornada más reciente; las noticias anteriores mantienen su propia dirección. El bloque muestra las cuatro previas más recientes. Las previas de Copa se añaden al mismo registro con una página propia, sin campo `jornada`, para mantener separadas las competiciones.
 
-La regeneración de portada y la actualización SEO también sincronizan este bloque. Para sincronizar páginas ya publicadas: `python herramientas/previas.py`. Para comprobar el ciclo de publicación: `python -m unittest discover -s herramientas/pruebas -p test_previas.py`.
+La regeneración de portada y la actualización SEO también sincronizan este bloque. La portada prioriza el partido pendiente más cercano; las etiquetas se actualizan con la fecha de Madrid sin deducir si el encuentro ha comenzado o terminado. El archivo recoge las previas de liga y Copa, y la simulación. `previa.html` comparte la canónica de su noticia permanente.
+
+Para sincronizar páginas ya publicadas: `python herramientas/previas.py`. La actualización SEO termina con `herramientas/calidad_web.py`: elimina metadatos duplicados, conserva la imagen editorial, incorpora dimensiones y genera versiones ligeras de las imágenes grandes sin sustituir los originales. Para comprobar el ciclo de publicación: `python -m unittest discover -s herramientas/pruebas -p 'test_*.py'` y `node herramientas/pruebas/previas.test.cjs`.
 
 1. Añadir el partido nuevo a los CSV de `datos/entrada` (y la clasificación de esa jornada).
 2. Ejecutar desde la raíz del repositorio:

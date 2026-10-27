@@ -236,6 +236,8 @@ def build():
     (ROOT / 'robots.txt').write_text('User-agent: *\nAllow: /\n\nSitemap: ' + BASE + '/sitemap.xml\n', encoding='utf-8')
     from previas import sincronizar
     sincronizar(ROOT)
+    from calidad_web import build as mejorar_calidad
+    mejorar_calidad(ROOT)
     print(json.dumps({'pages': len(urls), 'cards': len(manifest), 'urls': urls}, ensure_ascii=False))
 
 
