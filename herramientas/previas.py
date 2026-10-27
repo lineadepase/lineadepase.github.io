@@ -301,10 +301,20 @@ def portada(root=ROOT, hoy=None):
                           if entry.get('postpartido_url') else '')
         center_link = (f'<a class="enlace-centro-partido" href="{escape(entry["pagina"])}#titulo-centro-partido">Centro del partido →</a>'
                        if entry.get('centro_partido') else '')
+        published = entry.get('fecha_publicacion')
+        modified = entry.get('fecha_actualizacion')
+        date_line = ''
+        if published:
+            published_label = datetime.fromisoformat(published).strftime('%d/%m/%Y')
+            date_line = f'<p class="fecha-datos"><time datetime="{escape(published, quote=True)}">Publicada el {published_label}</time>'
+            if modified and modified > published:
+                modified_label = datetime.fromisoformat(modified).strftime('%d/%m/%Y')
+                date_line += f' · <time datetime="{escape(modified, quote=True)}">Actualizada el {modified_label}</time>'
+            date_line += '</p>'
         cards.append(f'<article class="tarjeta-previa" data-fecha="{fecha}" data-hora="{escape(entry.get("hora", ""))}"><a href="{escape(entry["pagina"])}">'
                      f'<img src="{escape(entry["imagen"])}" alt="{escape(entry["alt"],quote=True)}" '
                      f'width="{entry["ancho"]}" height="{entry["alto"]}" loading="lazy"></a>'
-                     f'<p class="estado-previa">{state}</p><p class="etiqueta">{escape(entry["etiqueta"])}</p><p class="datos-partido">{escape(fact)}</p><h3><a href="{escape(entry["pagina"])}">'
+                     f'<p class="estado-previa">{state}</p><p class="etiqueta">{escape(entry["etiqueta"])}</p><p class="datos-partido">{escape(fact)}</p>{date_line}<h3><a href="{escape(entry["pagina"])}">'
                      f'{escape(entry["titulo"])}</a></h3><p>{escape(entry["resumen"])}</p>'
                      f'<a class="enlace-editorial" href="{escape(entry["pagina"])}">Leer la previa</a>{event_link}{postmatch_link}{center_link}</article>')
     block = START+'<section class="previas-portada" aria-labelledby="titulo-previas"><p class="etiqueta">Antes del partido</p><h2 id="titulo-previas">Las previas, con contexto</h2><div class="previas-rejilla">'+''.join(cards)+'</div></section>'+END

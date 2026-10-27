@@ -29,7 +29,7 @@ class PublicacionPrevias(unittest.TestCase):
         self.entries.append({'jornada':jornada,'pagina':f'proyectos/real-zaragoza/previa-jornada-{jornada}.html',
                              'fecha_partido':f'2026-11-{jornada:02}', 'imagen':image,'ancho':1200,'alto':675,
                              'alt':f'Rival {jornada}','titulo':f'Previa {jornada}','etiqueta':'Liga','resumen':'Contexto',
-                             'hora':'21:00','estadio':'Estadio de prueba'})
+                             'hora':'21:00','estadio':'Estadio de prueba','fecha_publicacion':'2026-10-26','fecha_actualizacion':'2026-10-28'})
         guardar(self.root/'datos/previas.json', json.dumps(self.entries))
 
     def publish(self, jornada):
@@ -51,6 +51,8 @@ class PublicacionPrevias(unittest.TestCase):
         home = (self.root/'index.html').read_text(encoding='utf-8')
         self.assertIn('previa-jornada-10.html',home)
         self.assertIn('previa-jornada-11.html',home)
+        self.assertIn('Publicada el 26/10/2026',home)
+        self.assertIn('Actualizada el 28/10/2026',home)
 
     def test_regenerar_portada_no_duplica_y_preserva_noticia(self):
         self.publish(10)
