@@ -12,6 +12,11 @@
   const favoriteButton = document.querySelector('[data-guardar-comparacion]');
   const resetOptionsButton = document.querySelector('[data-restablecer-opciones]');
   const copyImageButton = document.querySelector('[data-copiar-imagen]');
+  const presetSelect = document.querySelector('[data-preset-selector]');
+  const presetNameInput = document.getElementById('nombre-preset');
+  const savePresetButton = document.querySelector('[data-guardar-preset]');
+  const deletePresetButton = document.querySelector('[data-borrar-preset]');
+  const formatThumbnailButtons = [...document.querySelectorAll('[data-miniatura-formato]')];
   const compareState = document.querySelector('[data-estado-comparacion]');
   const downloadControls = document.querySelector('[data-controles-descarga]');
   const formatSelect = document.getElementById('formato-comparacion');
@@ -33,6 +38,12 @@
   const rounds = new Map(rows.map(row => [row.dataset.comparisonId, row]));
   const preferencesKey = 'lineadepase:archivo-visual:preferencias:v1';
   const favoriteKey = 'lineadepase:archivo-visual:pareja-favorita:v1';
+  const personalPresetsKey = 'lineadepase:archivo-visual:plantillas:v1';
+  const builtInPresets = {
+    portada: {format:'apaisado',metrics:true,caption:true,noHeader:false,brand:true},
+    'comparacion-limpia': {format:'cuadrado',metrics:true,caption:false,noHeader:true,brand:false},
+    historia: {format:'historias',metrics:true,caption:false,noHeader:false,brand:true}
+  };
 
   function readStorage(key) {
     try { return JSON.parse(window.localStorage.getItem(key) || 'null'); }
@@ -71,6 +82,69 @@
     favoriteButton.textContent = isSaved ? 'Quitar pareja guardada' : 'Guardar pareja';
     favoriteButton.setAttribute('aria-pressed', String(Boolean(isSaved)));
     return Boolean(isSaved);
+  }
+
+  function currentVisualSettings() {
+    return {
+      format: formatSelect?.value || 'apaisado',
+      metrics: Boolean(metricsToggle?.checked),
+      caption: Boolean(captionToggle?.checked),
+      noHeader: Boolean(noHeaderToggle?.checked),
+      brand: brandToggle?.checked !== false
+    };
+  }
+
+  function readPersonalPresets() {
+    const saved = readStorage(personalPresetsKey);
+    if (!Array.isArray(saved)) return [];
+    return saved.filter(item => item && typeof item.id === 'string' && typeof item.name === 'string' && item.settings && typeof item.settings === 'object').slice(0,6);
+  }
+
+  function refreshPresetSelector(selectedValue = presetSelect?.value || '') {
+    if (!presetSelect) return;
+    let group = presetSelect.querySelector('[data-personal-presets]');
+    if (!group) {
+      group = document.createElement('optgroup');
+      group.label = 'Mis plantillas';
+      group.dataset.personalPresets = '';
+      presetSelect.append(group);
+    }
+    group.replaceChildren();
+    readPersonalPresets().forEach(preset => {
+      const option = document.createElement('option');
+      option.value = `personal:${preset.id}`;
+      option.textContent = preset.name;
+      group.append(option);
+    });
+    presetSelect.value = [...presetSelect.options].some(option => option.value === selectedValue) ? selectedValue : '';
+    if (deletePresetButton) deletePresetButton.disabled = !presetSelect.value.startsWith('personal:');
+  }
+
+  function applyVisualSettings(settings) {
+    if (formatSelect && [...formatSelect.options].some(option => option.value === settings.format)) formatSelect.value = settings.format;
+    if (metricsToggle && typeof settings.metrics === 'boolean') metricsToggle.checked = settings.metrics;
+    if (captionToggle && typeof settings.caption === 'boolean') captionToggle.checked = settings.caption;
+    if (noHeaderToggle && typeof settings.noHeader === 'boolean') noHeaderToggle.checked = settings.noHeader;
+    if (brandToggle && typeof settings.brand === 'boolean') brandToggle.checked = settings.brand;
+    formatSelect?.dispatchEvent(new Event('change',{bubbles:true}));
+    saveVisualPreferences();
+    updateComparison('');
+  }
+
+  function updateFormatThumbnails() {
+    const rowA = rounds.get(selectA?.value);
+    const rowB = rounds.get(selectB?.value);
+    if (!rowA || !rowB) return;
+    const metrics = rowA.dataset.completa === '1' && rowB.dataset.completa === '1' && Boolean(metricsToggle?.checked);
+    formatThumbnailButtons.forEach(button => {
+      const format = button.dataset.miniaturaFormato;
+      if (!format) return;
+      const isCarousel = format === 'carrusel';
+      const svg = comparisonSvg(rowA,rowB,format,metrics,Boolean(captionToggle?.checked),!Boolean(noHeaderToggle?.checked),Boolean(brandToggle?.checked),isCarousel?rowA:null,isCarousel?carouselContextInput?.value.trim().slice(0,72) || '':'');
+      const image = button.querySelector('img');
+      if (image) image.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+      button.setAttribute('aria-pressed',String(formatSelect?.value === format));
+    });
   }
 
   function syncFiltersToUrl() {
@@ -212,6 +286,7 @@
     if (!active) {
       if (carouselPreviewUrl) URL.revokeObjectURL(carouselPreviewUrl);
       carouselPreviewUrl = null;
+      updateFormatThumbnails();
       return;
     }
     const rowA = rounds.get(selectA?.value);
@@ -226,6 +301,7 @@
     carouselPreviewImage.onload=()=>{if(oldUrl)URL.revokeObjectURL(oldUrl);carouselPreviewImage.onload=null;};
     carouselPreviewImage.onerror=()=>{if(oldUrl)URL.revokeObjectURL(oldUrl);carouselPreviewImage.onerror=null;};
     carouselPreviewImage.src=nextUrl;
+    updateFormatThumbnails();
   }
 
   function saveBlob(blob, filename) {
@@ -357,6 +433,7 @@
   }
   if (selectA && selectB && rounds.size) {
     restoreVisualPreferences();
+    refreshPresetSelector();
     const favorite = readStorage(favoriteKey);
     if (rounds.has(favorite?.a) && rounds.has(favorite?.b) && favorite.a !== favorite.b) {
       selectA.value = favorite.a;
@@ -391,6 +468,8 @@
       if (brandToggle) brandToggle.checked = true;
       if (carouselContextInput) carouselContextInput.value = '';
       if (carouselExamples) carouselExamples.value = '';
+      if (presetSelect) presetSelect.value = '';
+      if (deletePresetButton) deletePresetButton.disabled = true;
       saveVisualPreferences();
       updateFormatGuidance();
       updateComparison('');
@@ -419,7 +498,63 @@
       if (copyImageButton) copyImageButton.textContent = formatSelect?.value === 'carrusel' ? 'Copiar primera diapositiva' : 'Copiar imagen';
       updateCarouselPreview();
     };
+    presetSelect?.addEventListener('change', () => {
+      const value = presetSelect.value;
+      if (builtInPresets[value]) {
+        applyVisualSettings(builtInPresets[value]);
+        compareState.textContent = `Plantilla «${presetSelect.selectedOptions[0].textContent}» aplicada.`;
+        return;
+      }
+      const personalId = value.startsWith('personal:') ? value.slice('personal:'.length) : '';
+      const personal = readPersonalPresets().find(preset => preset.id === personalId);
+      if (personal) {
+        applyVisualSettings(personal.settings);
+        compareState.textContent = `Plantilla «${personal.name}» aplicada.`;
+      }
+      if (deletePresetButton) deletePresetButton.disabled = !personal;
+    });
+    savePresetButton?.addEventListener('click', () => {
+      const name = presetNameInput?.value.trim().slice(0,28) || '';
+      if (!name) {
+        compareState.textContent = 'Escribe un nombre breve para guardar la plantilla.';
+        presetNameInput?.focus();
+        return;
+      }
+      const presets = readPersonalPresets();
+      const existing = presets.find(preset => preset.name.toLocaleLowerCase() === name.toLocaleLowerCase());
+      if (!existing && presets.length >= 6) {
+        compareState.textContent = 'Ya hay 6 plantillas personales. Borra una antes de guardar otra.';
+        return;
+      }
+      const preset = {id:existing?.id || `p-${Date.now().toString(36)}`,name,settings:currentVisualSettings()};
+      const next = existing ? presets.map(item => item.id === existing.id ? preset : item) : [...presets,preset];
+      if (!writeStorage(personalPresetsKey,next)) {
+        compareState.textContent = 'No se pudo guardar la plantilla en este navegador.';
+        return;
+      }
+      presetNameInput.value = '';
+      refreshPresetSelector(`personal:${preset.id}`);
+      compareState.textContent = `Plantilla «${name}» guardada en este navegador.`;
+    });
+    deletePresetButton?.addEventListener('click', () => {
+      const personalId = presetSelect?.value.startsWith('personal:') ? presetSelect.value.slice('personal:'.length) : '';
+      if (!personalId) return;
+      const presets = readPersonalPresets();
+      const target = presets.find(preset => preset.id === personalId);
+      if (!writeStorage(personalPresetsKey,presets.filter(preset => preset.id !== personalId))) {
+        compareState.textContent = 'No se pudo borrar la plantilla.';
+        return;
+      }
+      refreshPresetSelector('');
+      compareState.textContent = target ? `Plantilla «${target.name}» borrada.` : 'Plantilla borrada.';
+    });
     formatSelect?.addEventListener('change', updateFormatGuidance);
+    formatThumbnailButtons.forEach(button => button.addEventListener('click', () => {
+      if (!formatSelect || ![...formatSelect.options].some(option => option.value === button.dataset.miniaturaFormato)) return;
+      formatSelect.value = button.dataset.miniaturaFormato;
+      formatSelect.dispatchEvent(new Event('change',{bubbles:true}));
+      saveVisualPreferences();
+    }));
     carouselContextInput?.addEventListener('input', updateCarouselPreview);
     carouselExamples?.addEventListener('change', () => {
       if (!carouselContextInput) return;
