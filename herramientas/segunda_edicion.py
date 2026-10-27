@@ -78,6 +78,53 @@ def generate_anual_visual():
     make_social('anuario-visual-2026-apaisado.svg',1200,675,landscape=True)
 
 
+def generate_matchday_visual():
+    """Crea una pieza de marcador basada en el partido más reciente del registro."""
+    data=json.loads((ROOT/'datos/zaragoza.json').read_text(encoding='utf-8'))
+    match=max(data['partidos'],key=lambda row:int(row['jornada']))
+    date_parts=match['fecha'].split('-')
+    months=['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC']
+    date_label=f'{date_parts[2]} {months[int(date_parts[1])-1]} {date_parts[0]}'
+    home=match['rival'] if match['sede']=='Fuera' else 'Real Zaragoza'
+    away='Real Zaragoza' if match['sede']=='Fuera' else match['rival']
+    home_goals=match['goles_contra'] if match['sede']=='Fuera' else match['goles_favor']
+    away_goals=match['goles_favor'] if match['sede']=='Fuera' else match['goles_contra']
+    winner=match['resultado'].upper()
+    place='FUERA' if match['sede']=='Fuera' else 'EN CASA'
+
+    def svg(width,height,square=False):
+        header_h=245 if square else 155
+        panel_y=285 if square else 184
+        panel_h=475 if square else 300
+        left_margin=55 if square else 48
+        panel_w=width-2*left_margin
+        label_y=panel_y+(140 if square else 91)
+        score_y=panel_y+(302 if square else 202)
+        team_size=38 if square else 30
+        score_size=138 if square else 112
+        note_y=panel_y+panel_h+81
+        line_y=panel_y+(390 if square else 250)
+        stamp_y=height-40
+        description=f'{home} {home_goals}–{away_goals} {away}. Jornada {int(match["jornada"])} de Primera Federación 2026/27, {date_label}. Resultado registrado en el seguimiento del Real Zaragoza.'
+        return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" role="img" aria-labelledby="titulo descripcion">
+<title id="titulo">Jornada {int(match['jornada'])} · {home_goals}–{away_goals}</title><desc id="descripcion">{e(description)}</desc>
+<rect width="{width}" height="{height}" fill="#f3f5ef"/><path d="M0 0h{width}v{header_h}H0z" fill="#103b24"/><path d="M{width-190} 0h190v{header_h}H{width-190}z" fill="#174a30"/><g fill="none" stroke="#bed8c4" stroke-opacity=".16" stroke-width="2"><path d="M{width-170} 0v{header_h}M{width-112} 0v{header_h}M{width-54} 0v{header_h}M{width-190} {header_h//3}h190M{width-190} {2*header_h//3}h190"/></g>
+<text x="{left_margin+10}" y="{46 if square else 35}" fill="#bed8c4" font-family="Arial,sans-serif" font-size="20" font-weight="700" letter-spacing="3">LÍNEA DE PASE · PRIMERA FEDERACIÓN</text>
+<text x="{left_margin+8}" y="{117 if square else 91}" fill="#f7f8f4" font-family="Arial,sans-serif" font-size="{48 if square else 40}" font-weight="800">Jornada {int(match['jornada']):02d}</text>
+<text x="{left_margin+10}" y="{166 if square else 128}" fill="#e0e9e2" font-family="Arial,sans-serif" font-size="{24 if square else 21}">Grupo 2 · Temporada 2026/27</text>
+<rect x="{left_margin}" y="{panel_y}" width="{panel_w}" height="{panel_h}" rx="24" fill="#fff" stroke="#d4ded6" stroke-width="2"/><path d="M{left_margin} {panel_y+panel_h-13}h{panel_w}" stroke="#ff7a2f" stroke-width="8"/>
+<text x="{width*.25:.1f}" y="{label_y}" text-anchor="middle" fill="#536257" font-family="Arial,sans-serif" font-size="{team_size}" font-weight="700">{e(home)}</text>
+<text x="{width*.75:.1f}" y="{label_y}" text-anchor="middle" fill="#163e28" font-family="Arial,sans-serif" font-size="{team_size}" font-weight="700">{e(away)}</text>
+<text x="{width*.42:.1f}" y="{score_y}" text-anchor="middle" fill="#536257" font-family="Arial,sans-serif" font-size="{score_size}" font-weight="800">{home_goals}</text><text x="{width*.50:.1f}" y="{score_y-8}" text-anchor="middle" fill="#ff7a2f" font-family="Arial,sans-serif" font-size="{score_size*.64:.0f}" font-weight="700">–</text><text x="{width*.58:.1f}" y="{score_y}" text-anchor="middle" fill="#163e28" font-family="Arial,sans-serif" font-size="{score_size}" font-weight="800">{away_goals}</text>
+<path d="{width*.25:.1f} {line_y}h{width*.5:.1f}" stroke="#d4ded6" stroke-width="2"/><text x="{width/2:.0f}" y="{note_y}" text-anchor="middle" fill="#245b9b" font-family="Arial,sans-serif" font-size="22" font-weight="700" letter-spacing="2">{winner} · {place}</text>
+<text x="{left_margin+8}" y="{stamp_y}" fill="#405448" font-family="Arial,sans-serif" font-size="19" font-weight="700">{date_label} · RESULTADO REGISTRADO</text><text x="{width-left_margin-8}" y="{stamp_y}" text-anchor="end" fill="#64766b" font-family="Arial,sans-serif" font-size="18">lineadepase.com</text></svg>'''
+
+    folder=ROOT/'assets/ilustraciones'
+    folder.mkdir(exist_ok=True)
+    for name,width,height,square in [('resultado-real-zaragoza-ultima-jornada.svg',1200,630,False),('resultado-real-zaragoza-ultima-jornada-cuadrado.svg',1080,1080,True)]:
+        (folder/name).write_text(svg(width,height,square),encoding='utf-8')
+
+
 def generate_map(page):
     data=json.loads((ROOT/'datos/comparador-grupo2.json').read_text(encoding='utf-8'))
     from cortes import nota_corte_grupo
@@ -102,6 +149,7 @@ def generate_home():
     j=latest['jornada']; rival=latest['rival']; home=latest['sede']=='Casa'
     title=('Real Zaragoza – '+rival) if home else (rival+' – Real Zaragoza')
     score=(str(latest['goles_favor'])+'–'+str(latest['goles_contra'])) if home else (str(latest['goles_contra'])+'–'+str(latest['goles_favor']))
+    match_visual=('<figure class="resultado-portada-visual"><a href="proyectos/real-zaragoza/ultimo-partido.html" aria-label="Abrir el análisis de '+e(title)+'"><img src="assets/ilustraciones/resultado-real-zaragoza-ultima-jornada.png" width="1200" height="630" loading="lazy" alt="Marcador final de '+e(title)+' · Jornada '+e(str(j))+'"></a><figcaption>Marcador · Jornada '+e(str(j))+'</figcaption></figure>')
     clues=json.loads((ROOT/'datos/claves-editoriales.json').read_text(encoding='utf-8'))
     lead=clues.get(str(j),{}).get('conclusion','Resultado, estadísticas y contexto del último encuentro de liga.')
     photo=json.loads((ROOT/'analisis/liga-f-xt/recursos/foto.json').read_text(encoding='utf-8'))
@@ -126,7 +174,7 @@ def generate_home():
   <figure class="foto foto-portada portada-ilustrada"><a class="entrada-fotografica" href="proyectos/real-zaragoza/plantilla.html"><img src="assets/ilustraciones/juego-en-perspectiva.svg" width="720" height="540" fetchpriority="high" alt="Ilustración original de un campo y una trayectoria gráfica, sin representar un partido concreto"><span>Leer los datos de la plantilla →</span></a><figcaption>Ilustración vectorial original · Sin posiciones de un partido real.</figcaption></figure>
 </div></section>
 <div class="envoltorio">
-<section class="actualidad-editorial actualidad-compacta"><article class="analisis-principal"><p class="etiqueta">Último partido de liga · Jornada {j}</p><div class="titulo-resultado"><h2><a href="proyectos/real-zaragoza/jornada-{j}.html">{e(title)}</a></h2><p class="marcador-editorial">{score}</p></div>{question}<p class="entradilla">{e(lead)}</p><p class="fecha-datos">{date} · Temporada 2026/27</p><div class="enlaces">{brief}<a class="enlace-editorial" href="proyectos/real-zaragoza/jornada-{j}.html#titulo-claves">El análisis completo →</a></div></article><aside class="mesa-de-datos"><p class="etiqueta">Para explorar</p><h2>Haz tu propia comparación</h2><a class="imagen-menu-comparador" href="comparador/index.html" aria-label="Abrir el comparador de equipos"><img src="assets/ilustraciones/comparador-grupo2.webp" width="1672" height="941" loading="lazy" alt="Ilustración editorial de dos equipos comparados sobre un campo de fútbol"><span class="solo-lectores">Abrir el comparador de equipos</span></a><a href="comparador/index.html"><strong>Dos equipos, frente a frente →</strong><span>Resultados, ocasiones y contexto.</span></a><a href="mapa-grupo/index.html"><strong>El mapa del Grupo 2 →</strong><span>Veinte equipos en una misma vista.</span></a><a href="archivo/index.html"><strong>Buscar un análisis →</strong><span>Por rival, temporada o tema.</span></a><a href="marcador-a-ciegas/index.html"><strong>El marcador a ciegas →</strong><span>¿Qué cuentan los tiros y la posesión?</span></a><a href="preguntas-del-partido/index.html"><strong>Preguntas del partido →</strong><span>Lo que se planteó antes y se comprobó después.</span></a></aside></section>
+<section class="actualidad-editorial actualidad-compacta"><article class="analisis-principal"><p class="etiqueta">Último partido de liga · Jornada {j}</p><div class="titulo-resultado"><h2><a href="proyectos/real-zaragoza/jornada-{j}.html">{e(title)}</a></h2><p class="marcador-editorial">{score}</p></div>{match_visual}{question}<p class="entradilla">{e(lead)}</p><p class="fecha-datos">{date} · Temporada 2026/27</p><div class="enlaces">{brief}<a class="enlace-editorial" href="proyectos/real-zaragoza/jornada-{j}.html#titulo-claves">El análisis completo →</a></div></article><aside class="mesa-de-datos"><p class="etiqueta">Para explorar</p><h2>Haz tu propia comparación</h2><a class="imagen-menu-comparador" href="comparador/index.html" aria-label="Abrir el comparador de equipos"><img src="assets/ilustraciones/comparador-grupo2.webp" width="1672" height="941" loading="lazy" alt="Ilustración editorial de dos equipos comparados sobre un campo de fútbol"><span class="solo-lectores">Abrir el comparador de equipos</span></a><a href="comparador/index.html"><strong>Dos equipos, frente a frente →</strong><span>Resultados, ocasiones y contexto.</span></a><a href="mapa-grupo/index.html"><strong>El mapa del Grupo 2 →</strong><span>Veinte equipos en una misma vista.</span></a><a href="archivo/index.html"><strong>Buscar un análisis →</strong><span>Por rival, temporada o tema.</span></a><a href="marcador-a-ciegas/index.html"><strong>El marcador a ciegas →</strong><span>¿Qué cuentan los tiros y la posesión?</span></a><a href="preguntas-del-partido/index.html"><strong>Preguntas del partido →</strong><span>Lo que se planteó antes y se comprobó después.</span></a></aside></section>
 {detail_visual}
 <section class="investigacion-editorial investigacion-con-foto"><figure class="foto foto-lectura"><a href="proyectos/liga-f-xt/index.html"><img src="proyectos/liga-f-xt/graficos/foto.jpg" width="1080" height="1000" loading="lazy" alt="Caroline Graham Hansen con el FC Barcelona en 2024"></a><figcaption>Foto: {e(photo['autor'])} · <a href="{e(photo['licencia_url'],quote=True)}">{e(photo['licencia'])}</a> · <a href="{e(photo['pagina'],quote=True)}">Wikimedia Commons</a> ({e(photo['cambios'])}).</figcaption></figure><div><p class="etiqueta">Investigación · Liga F 2023/24</p><h2><a href="proyectos/liga-f-xt/index.html">¿Quién acerca el balón a las zonas de gol?</a></h2><p>Graham Hansen encabeza el estudio de amenaza esperada. El análisis explica qué mide el xT y qué queda fuera del número.</p><a class="enlace-editorial" href="proyectos/liga-f-xt/index.html">Leer «El peligro empieza antes del último pase» →</a></div></section>
 <section class="otras-lecturas lecturas-visuales"><article class="lectura-territorio"><figure class="foto foto-lectura"><a href="proyectos/futbol-femenino/index.html"><img src="assets/fotos/seleccion-espanola-riazor-2024.jpg" width="1280" height="859" alt="Selección española femenina en Riazor en 2024" loading="lazy"></a><figcaption>Selección española · 2024. Foto: {e(territory_photo['autor'])} · <a href="{e(territory_photo['licencia_url'],quote=True)}">{e(territory_photo['licencia'])}</a> · <a href="{e(territory_photo['pagina'],quote=True)}">Wikimedia Commons</a> (recortada).</figcaption></figure><div><p class="etiqueta">Fútbol femenino · Territorio</p><h2><a href="proyectos/futbol-femenino/index.html">Más jugadoras, una base más amplia</a></h2><p>¿Dónde empezar un programa de iniciación? Un análisis de licencias y población, con mapa y criterios para elegir.</p><a class="enlace-editorial" href="proyectos/futbol-femenino/index.html">Ver la propuesta →</a></div></article><article class="lectura-video"><a class="miniatura-video" href="videos/index.html#fvs" aria-label="Ver la explicación del FVS de Primera Federación"><img src="assets/fvs-portada.jpg" width="1920" height="1080" loading="lazy" alt="Portada del vídeo sobre el FVS de Primera Federación"><span aria-hidden="true">▶</span></a><div><p class="etiqueta">En vídeo · Reglamento</p><h2><a href="videos/index.html#fvs">El FVS, explicado</a></h2><p>Cuándo se puede pedir una revisión y qué jugadas entran.</p></div></article></section>

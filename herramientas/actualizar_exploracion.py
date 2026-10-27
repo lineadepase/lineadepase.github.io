@@ -364,8 +364,17 @@ def generate_esquemas_juego():
 
 
 def generate_galeria_visual(page):
+    season=json.loads((ROOT/'datos/zaragoza.json').read_text(encoding='utf-8'))
+    latest=max(season['partidos'],key=lambda row:int(row['jornada']))
+    month_names=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic']
+    date_parts=latest['fecha'].split('-')
+    date_label=f"{int(date_parts[2])} {month_names[int(date_parts[1])-1]} {date_parts[0]}"
+    score=(f"{latest['goles_contra']}–{latest['goles_favor']}" if latest['sede']=='Fuera' else f"{latest['goles_favor']}–{latest['goles_contra']}")
+    rival_first=latest['sede']=='Fuera'
+    match_title=(latest['rival']+' – Real Zaragoza' if rival_first else 'Real Zaragoza – '+latest['rival'])
     items=[
         ('temporada','Temporada · Real Zaragoza','Jornada a jornada','Resultados y evolución del equipo en Primera Federación.','../assets/compartir/proyectos-real-zaragoza-index.png','../proyectos/real-zaragoza/',['png']),
+        ('jornada',f"Jornada {int(latest['jornada']):02d} · {date_label}",match_title+' · '+score,'Marcador final del último partido registrado. La ficha enlaza al análisis y a sus fuentes.','../assets/ilustraciones/resultado-real-zaragoza-ultima-jornada.png','../proyectos/real-zaragoza/ultimo-partido.html',['png','svg']),
         ('modelo','Simulación · Grupo 2','10.000 temporadas','Probabilidades de ascenso, playoff y descenso con método y corte publicados.','../assets/compartir/proyectos-real-zaragoza-simulacion.png','../proyectos/real-zaragoza/simulacion.html',['png']),
         ('modelo','Investigación · Liga F','El peligro empieza antes del último pase','Modelo propio de amenaza esperada con datos de 2023/24.','../assets/compartir/proyectos-liga-f-xt-index.png','../proyectos/liga-f-xt/',['png']),
         ('territorio','Fútbol femenino · Territorio','Una base más amplia','Mapa y tasas de licencias por comunidad autónoma.','../assets/compartir/proyectos-futbol-femenino-index.png','../proyectos/futbol-femenino/',['png']),
@@ -374,7 +383,7 @@ def generate_galeria_visual(page):
         ('edicion','Edición visual 2026','Cuatro proyectos, una lámina','Resumen vectorial anual con formatos para redes y una copia lista para imprimir.','../assets/ilustraciones/anuario-visual-2026-cuadrado.png','../assets/ilustraciones/anuario-visual-2026.svg',['png','svg','pdf']),
     ]
     category_counts={key:sum(item[0]==key for item in items) for key,_,_,_,_,_,_ in items}
-    categories=[('todos','Todo',len(items))]+[(key,label,category_counts[key]) for key,label in [('temporada','Temporada'),('modelo','Modelos'),('territorio','Territorio'),('concepto','Conceptos'),('esquema','Esquemas'),('edicion','Edición')]]
+    categories=[('todos','Todo',len(items))]+[(key,label,category_counts.get(key,0)) for key,label in [('temporada','Temporada'),('jornada','Jornadas'),('modelo','Modelos'),('territorio','Territorio'),('concepto','Conceptos'),('esquema','Esquemas'),('edicion','Edición')]]
     formats=[('todos','Todos',len(items))]+[(key,key.upper(),sum(key in item[6] for item in items)) for key in ['png','svg','pdf'] if any(key in item[6] for item in items)]
     category_buttons='<div class="filtros-galeria-visual" data-filtros-galeria="coleccion" role="group" aria-label="Filtrar por colección" hidden>'+''.join('<button type="button" data-filtro-coleccion="'+key+'" aria-pressed="'+('true' if i==0 else 'false')+'">'+label+' <span>'+str(count)+'</span></button>' for i,(key,label,count) in enumerate(categories))+'</div>'
     format_buttons='<div class="filtros-galeria-visual filtros-formato-galeria" data-filtros-galeria="formato" role="group" aria-label="Filtrar por formato" hidden>'+''.join('<button type="button" data-filtro-formato="'+key.lower()+'" aria-pressed="'+('true' if i==0 else 'false')+'">'+label+' <span>'+str(count)+'</span></button>' for i,(key,label,count) in enumerate(formats))+'</div>'
@@ -382,11 +391,13 @@ def generate_galeria_visual(page):
         key,_,_,_,_,_,available=item
         if key!='edicion':
             path=item[4]
+            if key=='jornada':
+                return '<a href="'+path+'" download>Descargar PNG</a><a href="../assets/ilustraciones/resultado-real-zaragoza-ultima-jornada.svg" download>Descargar SVG</a>'
             return '<a href="'+path+'" download>Descargar PNG</a>'
         links=[('PNG','../assets/ilustraciones/anuario-visual-2026-cuadrado.png'),('PNG vertical','../assets/ilustraciones/anuario-visual-2026-vertical.png'),('PNG apaisado','../assets/ilustraciones/anuario-visual-2026-apaisado.png'),('SVG','../assets/ilustraciones/anuario-visual-2026.svg'),('SVG vertical','../assets/ilustraciones/anuario-visual-2026-vertical.svg'),('SVG apaisado','../assets/ilustraciones/anuario-visual-2026-apaisado.svg'),('PDF A4','../assets/ilustraciones/anuario-visual-2026-impresion.pdf')]
         return ''.join('<a href="'+path+'" download>'+label+'</a>' for label,path in links)
     cards='<div class="rejilla-galeria-visual" data-galeria-visual>'+''.join('<article class="tarjeta-galeria-visual" data-coleccion-visual="'+item[0]+'" data-formatos-visual="'+' '.join(item[6])+'"><a class="imagen-galeria-visual" href="'+item[4]+'"><img src="'+item[4]+'" width="'+('1080' if item[0]=='edicion' else '1200')+'" height="'+('1080' if item[0]=='edicion' else '630')+'" alt="Gráfico de '+escape(item[2].lower())+'" loading="lazy"></a><div><p class="etiqueta">'+escape(item[1])+'</p><h2>'+escape(item[2])+'</h2><p>'+escape(item[3])+'</p><a class="enlace-editorial" href="'+item[5]+'">Abrir análisis →</a><details class="descargas-galeria-visual"><summary>Ver formatos y descargas</summary><div>'+downloads(item)+'</div></details></div></article>' for item in items)+'</div>'
-    body=('<p>Una selección de portadas y gráficos propios. Filtra por colección o formato, abre el análisis de origen o descarga la pieza.</p>'+category_buttons+format_buttons+'<p class="recuento-galeria-visual" data-recuento-galeria role="status" aria-live="polite">7 piezas</p>'+cards+'<noscript><p>Se muestran todas las piezas y sus enlaces de descarga; los filtros requieren JavaScript.</p></noscript>')
+    body=('<p>Una selección de portadas y gráficos propios. Filtra por colección o formato, abre el análisis de origen o descarga la pieza.</p>'+category_buttons+format_buttons+'<p class="recuento-galeria-visual" data-recuento-galeria role="status" aria-live="polite">'+str(len(items))+' piezas</p>'+cards+'<noscript><p>Se muestran todas las piezas y sus enlaces de descarga; los filtros requieren JavaScript.</p></noscript>')
     head='<link rel="stylesheet" href="../assets/ideas-editoriales.css?v=20261027f"><script src="../assets/galeria-visual.js?v=20261027b" defer></script>'
     folder=ROOT/'galeria-visual'
     folder.mkdir(exist_ok=True)
@@ -411,9 +422,10 @@ def generate():
     generate_balance_preguntas()
     generate_esquemas_juego()
     generate_galeria_visual(page)
-    from segunda_edicion import generate_map, generate_home, generate_anual_visual
+    from segunda_edicion import generate_map, generate_home, generate_anual_visual, generate_matchday_visual
     generate_map(page)
     generate_anual_visual()
+    generate_matchday_visual()
     generate_home()
     generate_archive()
     concepts = [

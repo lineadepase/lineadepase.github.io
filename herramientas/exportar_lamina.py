@@ -51,6 +51,8 @@ def main() -> None:
         ('anuario-visual-2026-cuadrado', 1080, 1080),
         ('anuario-visual-2026-vertical', 1080, 1350),
         ('anuario-visual-2026-apaisado', 1200, 675),
+        ('resultado-real-zaragoza-ultima-jornada', 1200, 630),
+        ('resultado-real-zaragoza-ultima-jornada-cuadrado', 1080, 1080),
     ]
     with tempfile.TemporaryDirectory(prefix='linea-pase-export-') as temp:
         folder = Path(temp)
