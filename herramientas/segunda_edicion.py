@@ -7,6 +7,39 @@ import re
 ROOT=Path(__file__).resolve().parents[1]
 
 
+def generate_anual_visual():
+    data=json.loads((ROOT/'datos/zaragoza.json').read_text(encoding='utf-8'))
+    played=[row for row in data['partidos'] if int(row['jornada'])<=int(data['jornada'])]
+    goals_for=sum(int(row['goles_favor']) for row in played)
+    goals_against=sum(int(row['goles_contra']) for row in played)
+    xt_page=(ROOT/'proyectos/liga-f-xt/index.html').read_text(encoding='utf-8')
+    territory=(ROOT/'proyectos/futbol-femenino/index.html').read_text(encoding='utf-8')
+    xt=re.search(r'(0,\d+) xT neto por 90 minutos',xt_page)
+    share=re.search(r'(28,6) %.{0,150}?(23,4) %',territory,re.S)
+    if not xt or not share:
+        raise ValueError('No se encuentran las cifras publicadas para la lámina anual.')
+    teams=json.loads((ROOT/'datos/comparador-grupo2.json').read_text(encoding='utf-8'))
+    team_count=len({row['equipo'] for row in teams['partidos']})
+    sim_page=(ROOT/'proyectos/real-zaragoza/simulacion.html').read_text(encoding='utf-8')
+    simulations=re.search(r'(\d[\d.]+) simulaciones',sim_page)
+    if not simulations:
+        raise ValueError('No se encuentra el número publicado de simulaciones.')
+    issue=f"J{int(data['jornada']):02d}"
+    svg=f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1740" role="img" aria-labelledby="titulo descripcion">
+<title id="titulo">Línea de pase · Cuaderno visual 2026</title><desc id="descripcion">Cuatro proyectos publicados: seguimiento del Real Zaragoza tras {int(data['jornada'])} jornadas, {simulations[1]} simulaciones de una competición de {team_count} equipos, {xt[1]} xT neto por 90 minutos en la Liga F 2023/24 y comparación territorial de población y licencias de fútbol femenino.</desc>
+<rect width="1200" height="1740" fill="#f3f5ef"/><path d="M0 0h1200v320H0z" fill="#103b24"/><path d="M900 0h300v320H900z" fill="#174a30"/><path d="M930 0v320m90-320v320m90-320v320M900 106h300m-300 106h300" stroke="#b9d4c2" stroke-opacity=".15" stroke-width="2"/>
+<text x="70" y="82" fill="#bed8c4" font-family="Arial,sans-serif" font-size="24" font-weight="700" letter-spacing="5">LÍNEA DE PASE · CUADERNO VISUAL</text><text x="66" y="188" fill="#f7f8f4" font-family="Arial,sans-serif" font-size="84" font-weight="800">2026</text><text x="70" y="252" fill="#e0e9e2" font-family="Arial,sans-serif" font-size="34">Cuatro proyectos. Cuatro formas de mirar el juego.</text>
+<path d="M70 340h1060" stroke="#ff7a2f" stroke-width="7"/><circle cx="70" cy="340" r="11" fill="#ff7a2f"/>
+<g font-family="Arial,sans-serif"><rect x="64" y="392" width="1072" height="270" rx="18" fill="#fff" stroke="#d4ded6" stroke-width="2"/><rect x="64" y="392" width="12" height="270" rx="6" fill="#245b9b"/><text x="110" y="448" fill="#536257" font-size="24" font-weight="700" letter-spacing="3">01 · SEGUIMIENTO DE TEMPORADA</text><text x="110" y="552" fill="#163e28" font-size="92" font-weight="800">{issue}</text><text x="110" y="605" fill="#293c30" font-size="30">{len(played)} partidos · {goals_for} goles a favor · {goals_against} en contra</text><path d="M870 456h180m-180 34h130m-130 34h160m-160 34h100" stroke="#245b9b" stroke-width="6" stroke-linecap="round" opacity=".65"/><circle cx="1080" cy="558" r="18" fill="#ff7a2f"/>
+<rect x="64" y="688" width="1072" height="270" rx="18" fill="#fff" stroke="#d4ded6" stroke-width="2"/><rect x="64" y="688" width="12" height="270" rx="6" fill="#597c2d"/><text x="110" y="744" fill="#536257" font-size="24" font-weight="700" letter-spacing="3">02 · SIMULACIÓN DEL GRUPO</text><text x="110" y="848" fill="#365722" font-size="84" font-weight="800">{simulations[1]}</text><text x="110" y="901" fill="#293c30" font-size="30">temporadas simuladas · {team_count} equipos</text><path d="M870 895c55-115 105-12 155-100s95 5 122-67" fill="none" stroke="#597c2d" stroke-width="8" stroke-linecap="round"/><circle cx="870" cy="895" r="10" fill="#597c2d"/><circle cx="1147" cy="728" r="12" fill="#ff7a2f"/>
+<rect x="64" y="984" width="1072" height="270" rx="18" fill="#fff" stroke="#d4ded6" stroke-width="2"/><rect x="64" y="984" width="12" height="270" rx="6" fill="#387b79"/><text x="110" y="1040" fill="#536257" font-size="24" font-weight="700" letter-spacing="3">03 · AMENAZA ESPERADA · LIGA F 2023/24</text><text x="110" y="1144" fill="#276c68" font-size="84" font-weight="800">{xt[1]}</text><text x="110" y="1197" fill="#293c30" font-size="30">xT neto por 90 minutos</text><path d="M855 1190h235m-180-72 55-50 54 30 73-100" fill="none" stroke="#387b79" stroke-width="7" stroke-linecap="round" stroke-dasharray="2 13"/><circle cx="1087" cy="998" r="14" fill="#ff7a2f"/>
+<rect x="64" y="1280" width="1072" height="270" rx="18" fill="#fff" stroke="#d4ded6" stroke-width="2"/><rect x="64" y="1280" width="12" height="270" rx="6" fill="#8a5a82"/><text x="110" y="1336" fill="#536257" font-size="24" font-weight="700" letter-spacing="3">04 · FÚTBOL FEMENINO · TERRITORIO</text><text x="110" y="1440" fill="#744c70" font-size="68" font-weight="800">{share[1]}% <tspan fill="#aeb8b0" font-size="40">/</tspan> {share[2]}%</text><text x="110" y="1493" fill="#293c30" font-size="26">población femenina / licencias en dos comunidades</text><circle cx="955" cy="1415" r="62" fill="none" stroke="#8a5a82" stroke-width="3"/><circle cx="1050" cy="1415" r="62" fill="none" stroke="#c7a6c4" stroke-width="3"/><path d="M985 1415h35" stroke="#ff7a2f" stroke-width="7" stroke-linecap="round"/>
+</g><text x="70" y="1625" fill="#405448" font-family="Arial,sans-serif" font-size="25" font-weight="700">Cifras tomadas de los proyectos publicados en Línea de pase.</text><text x="70" y="1670" fill="#64766b" font-family="Arial,sans-serif" font-size="21">Cada estudio conserva su temporada, corte, fuentes y método en la página correspondiente.</text><text x="70" y="1710" fill="#64766b" font-family="Arial,sans-serif" font-size="20">lineadepase.com · Edición 2026</text></svg>'''
+    folder=ROOT/'assets/ilustraciones'
+    folder.mkdir(exist_ok=True)
+    (folder/'anuario-visual-2026.svg').write_text(svg,encoding='utf-8')
+
+
 def generate_map(page):
     data=json.loads((ROOT/'datos/comparador-grupo2.json').read_text(encoding='utf-8'))
     from cortes import nota_corte_grupo

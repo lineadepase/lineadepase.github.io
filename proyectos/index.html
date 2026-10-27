@@ -13,12 +13,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Big+Shoulders+Display:wght@700;800&display=swap">
 <script src="../assets/tema.js"></script>
-<link rel="stylesheet" href="../assets/estilo.css?v=20261027visual02">
+<link rel="stylesheet" href="../assets/estilo.css?v=20261027visual03">
 <script src="../assets/mejoras.js?v=20261027claims" defer></script>
 <link rel="icon" href="../assets/icono.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../assets/explorar.css?v=20261021e">
-<link rel="stylesheet" href="../assets/experiencia.css?v=20261027visual1">
-<script src="../assets/experiencia.js?v=20261027visual1" defer></script>
+<link rel="stylesheet" href="../assets/experiencia.css?v=20261027visual2">
+<script src="../assets/experiencia.js?v=20261027visual2" defer></script>
 
 <style>
 /* Tarjetas de proyectos: imágenes horizontales completas en pantallas pequeñas. */
@@ -73,7 +73,7 @@
   <section class="catalogo" aria-label="Catálogo de proyectos">
     <div class="envoltorio">
       <header class="cabecera-coleccion"><div><p class="etiqueta">Línea de pase · Colección visual</p><h2>Cuadernos de fútbol y datos</h2><p>Una pregunta guía cada análisis. El sello identifica su enfoque; la competición, el método y los límites aparecen junto a cada portada.</p></div><span class="coleccion-folio" aria-hidden="true">LP<small>CUADERNOS</small></span></header>
-      <div class="filtros" role="group" aria-label="Filtrar por tipo de proyecto" hidden>
+      <!-- lamina-anual-visual --><section class="lamina-anual" aria-labelledby="titulo-lamina-anual"><div><p class="etiqueta">Línea de pase · Edición visual 2026</p><h2 id="titulo-lamina-anual">Cuatro proyectos, cuatro formas de mirar el juego</h2><p>Cifras de trabajos ya publicados; cada temporada y su corte permanecen visibles en el análisis correspondiente.</p><nav class="enlaces enlaces-lamina" aria-label="Abrir proyectos de la lámina"><a href="real-zaragoza/">Temporada</a><a href="real-zaragoza/simulacion.html">Simulación</a><a href="liga-f-xt/">Amenaza esperada</a><a href="futbol-femenino/">Territorio</a></nav></div><figure><a href="../assets/ilustraciones/anuario-visual-2026.svg" target="_blank" rel="noopener"><img src="../assets/ilustraciones/anuario-visual-2026.svg" width="600" height="870" loading="lazy" alt="Lámina editorial 2026 con cuatro proyectos: seguimiento del Zaragoza, simulación de liga, amenaza esperada de Liga F y fútbol femenino territorial."></a><figcaption><a href="../assets/ilustraciones/anuario-visual-2026.svg" download>Descargar la lámina vectorial (SVG)</a></figcaption></figure></section><!-- /lamina-anual-visual --><div class="filtros" role="group" aria-label="Filtrar por tipo de proyecto" hidden>
         <button type="button" data-filtro="todos" aria-pressed="true">Todos <span>4</span></button>
         <button type="button" data-filtro="temporada" aria-pressed="false">Seguimiento de temporada <span>1</span></button>
         <button type="button" data-filtro="master" aria-pressed="false">Trabajos del máster <span>1</span></button>
@@ -81,7 +81,7 @@
         <button type="button" data-filtro="divulgacion" aria-pressed="false">Divulgación <span>1</span></button>
       </div>
       <ul class="tarjetas-proyecto" id="catalogo">
-        <li data-tipo="investigacion">
+        <li data-tipo="investigacion" data-coleccion="modelo">
           <a class="tarjeta-proyecto" href="real-zaragoza/simulacion.html">
             <div class="mini-marco">
               <div class="mini mini-imagen">
@@ -99,7 +99,7 @@
             </div>
           </a>
         </li>
-        <li data-tipo="investigacion">
+        <li data-tipo="investigacion" data-coleccion="xt">
           <a class="tarjeta-proyecto" href="liga-f-xt/">
             <div class="mini-marco">
               <div class="mini mini-imagen">
@@ -117,7 +117,7 @@
             </div>
           </a>
         </li>
-        <li data-tipo="temporada">
+        <li data-tipo="temporada" data-coleccion="temporada">
           <a class="tarjeta-proyecto" href="real-zaragoza/">
             <div class="mini-marco">
               <div class="mini mini-real-zaragoza mini-marcador" aria-hidden="true">
@@ -141,7 +141,7 @@
             </div>
           </a>
         </li>
-        <li data-tipo="master">
+        <li data-tipo="master" data-coleccion="territorio">
           <a class="tarjeta-proyecto" href="futbol-femenino/">
             <div class="mini-marco">
               <div class="mini mini-imagen">
@@ -160,7 +160,7 @@
             </div>
           </a>
         </li>
-        <li data-tipo="divulgacion">
+        <li data-tipo="divulgacion" data-coleccion="ocasiones">
           <a class="tarjeta-proyecto" href="xg/">
             <div class="mini-marco">
               <div class="mini mini-imagen">

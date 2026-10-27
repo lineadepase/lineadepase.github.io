@@ -340,19 +340,24 @@ def generate_esquemas_juego():
         ('transicion','Transición','Avanzar tras recuperar','Después de recuperar el balón, una salida vertical y apoyos por delante pueden aprovechar el espacio. Es una secuencia didáctica, no una jugada reconstruida.',
          dot(210,90)+dot(240,210)+dot(355,150,'#ff6a2b',8)+dot(455,95)+dot(465,205)+dot(590,150)+
          '<path d="M365 146Q414 108 448 98M365 154Q414 192 456 202M365 150H562" fill="none" stroke="#ff6a2b" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 11"/>')]
+    layers=[]
     cards=[]
     for key,title,heading,description,actions in diagrams:
         actions=actions.replace('fill="none" stroke="#ff6a2b"','fill="none" stroke="#ff6a2b" marker-end="url(#flecha-'+key+')"')
-        arrow='<defs><marker id="flecha-'+key+'" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 8 4 0 8z" fill="#ff6a2b"/></marker></defs>'
-        svg=(f'<svg class="esquema-juego-svg" viewBox="0 0 760 300" role="img" aria-labelledby="titulo-{key} descripcion-{key}">{arrow}'
-             f'<title id="titulo-{key}">{escape(title)}: {escape(heading)}</title><desc id="descripcion-{key}">{escape(description)}</desc>{field}{actions}</svg>')
-        cards.append('<figure class="tarjeta-esquema">'+svg+'<figcaption><p class="etiqueta">'+escape(title)+'</p><h2>'+escape(heading)+'</h2><p>'+escape(description)+'</p></figcaption></figure>')
+        layers.append('<g data-fase-campo="'+key+'"'+('' if key=='amplitud' else ' style="display:none"')+'>'+actions+'</g>')
+        cards.append('<article class="tarjeta-lectura-campo"><p class="etiqueta">'+escape(title)+'</p><h2>'+escape(heading)+'</h2><p>'+escape(description)+'</p></article>')
+    markers=''.join('<marker id="flecha-'+key+'" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 8 4 0 8z" fill="#ff6a2b"/></marker>' for key,_,_,_,_ in diagrams)
+    field_view=('<section class="campo-lecturas" data-campo-lecturas aria-labelledby="titulo-campo-lecturas"><p class="etiqueta">Una misma cancha · tres lecturas</p><h2 id="titulo-campo-lecturas">Cambia de fase</h2>'
+        '<p>Activa cada vista para comparar cómo cambia el esquema. Es un recurso didáctico: no representa una jugada ni una disposición de un equipo.</p>'
+        '<div class="campo-lecturas-controles" data-campo-controles role="group" aria-label="Elegir una fase del juego" hidden>'+''.join('<button type="button" class="boton" data-elegir-fase="'+key+'" aria-pressed="'+('true' if i==0 else 'false')+'">'+escape(title)+'</button>' for i,(key,title,_,_,_) in enumerate(diagrams))+'</div>'
+        '<figure><svg class="campo-lecturas-svg" viewBox="0 0 760 300" role="img" aria-labelledby="titulo-vista-campo descripcion-vista-campo"><title id="titulo-vista-campo">Vista de amplitud</title><desc id="descripcion-vista-campo">'+escape(diagrams[0][3])+'</desc><defs>'+markers+'</defs>'+field+''.join(layers)+'</svg>'
+        '<figcaption><strong data-campo-nombre>Amplitud · Abrir el campo</strong><span data-campo-descripcion>'+escape(diagrams[0][3])+'</span></figcaption></figure></section>')
     body=('<p>Estos esquemas resumen tres ideas de juego en una imagen. Las flechas sirven para explicar relaciones y recorridos posibles; no son coordenadas de futbolistas ni una reconstrucción de un partido.</p>'
           '<div class="leyenda-visual-global" aria-label="Leyenda de los esquemas"><span><i class="marca-visual"></i>Círculo: jugador o elemento del esquema</span><span><i class="marca-visual destacado"></i>Naranja: balón o punto de atención</span><span><i class="marca-visual media"></i>Flecha punteada: recorrido ilustrativo</span></div>'
-          '<div class="esquemas-juego">'+''.join(cards)+'</div>'
+          +field_view+'<div class="lecturas-campo">'+''.join(cards)+'</div>'
           '<aside class="fuera-de-plano"><h2>Qué representan las marcas</h2><p>Los círculos y las trayectorias son ilustrativos. Solo se dibujarán posiciones observadas cuando una fuente aporte datos de seguimiento adecuados y la página lo indique.</p></aside>'
-          '<p><a class="enlace-editorial" href="../conceptos/">Volver al glosario visual →</a></p>')
-    head='<link rel="stylesheet" href="../assets/ideas-editoriales.css?v=20261027e">'
+          '<p><a class="enlace-editorial" href="../conceptos/">Volver al glosario visual →</a></p><script src="../assets/campo-fases.js?v=20261027a" defer></script>')
+    head='<link rel="stylesheet" href="../assets/ideas-editoriales.css?v=20261027f">'
     folder=ROOT/'esquemas-del-juego'
     folder.mkdir(exist_ok=True)
     (folder/'index.html').write_text(page('El juego en esquema','Tres esquemas tácticos didácticos: amplitud, presión y transición, sin atribuir posiciones no observadas.',body,head,'esquemas-del-juego/'),encoding='utf-8')
@@ -375,8 +380,9 @@ def generate():
     generate_mapa_cambios()
     generate_balance_preguntas()
     generate_esquemas_juego()
-    from segunda_edicion import generate_map, generate_home
+    from segunda_edicion import generate_map, generate_home, generate_anual_visual
     generate_map(page)
+    generate_anual_visual()
     generate_home()
     generate_archive()
     concepts = [
