@@ -405,7 +405,9 @@ ul.tarjetas-proyecto{list-style:none;margin:0;padding:0;grid-template-columns:re
   .tarjetas-proyecto .mini-cifras span:not(:first-child),.tarjetas-proyecto .mini-titulo small{display:none}
   .tarjetas-proyecto .mini-cifras b{font-size:2.2rem}
   .tipo-proyecto,.tarjetas-proyecto .ver{display:none}
-  .sello-portada{display:none}
+  .sello-portada{width:2.1rem;min-width:0;min-height:2.1rem;grid-template-columns:1fr;grid-template-rows:1fr;place-items:center;left:.25rem;bottom:.25rem;padding:.15rem;border-radius:50%}
+  .sello-portada b{font-size:1rem;grid-row:auto}
+  .sello-portada svg,.sello-portada small{display:none}
   .tarjeta-texto .tipo-texto{display:block;font-size:.75rem;font-weight:600;color:var(--tinta-suave);margin:0}
   .tarjetas-proyecto .tarjeta-texto{padding:.75rem .9rem}
   .tarjetas-proyecto .etiqueta{font-size:.8rem;margin-bottom:.2rem}
