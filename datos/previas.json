@@ -15,7 +15,7 @@
     "ancho": 1672,
     "alto": 941,
     "alt": "Previa Real Zaragoza–Villarreal B: un gran submarino amarillo frente al león blanquillo, duelo entre equipos con 20 puntos.",
-    "noticia_html": "<section class=\"seccion lectura\" aria-labelledby=\"noticia-previa-j10\"><p class=\"etiqueta\">El contexto del partido</p><h2 id=\"noticia-previa-j10\">El liderato se juega entre iguales en puntos</h2><p>El Real Zaragoza recibe al Villarreal B el 31 de octubre con los dos equipos empatados a 20 puntos tras nueve jornadas. El filial amarillo encabeza la tabla por diferencia de goles: 21 a favor y 10 en contra, frente a los 17–10 del Zaragoza.</p><p>El contraste por sede añade contexto. El Zaragoza ha ganado sus tres partidos de liga en casa, con seis goles a favor y uno en contra. El Villarreal B llega con diez puntos de doce en cuatro salidas y un balance de once goles a favor y cinco en contra.</p><p>La pregunta será cómo se transforma esa fortaleza en ocasiones: qué equipo logra avanzar con el balón y cómo protege los espacios cuando pierde la posesión. La muestra es pequeña y las cifras describen lo ocurrido; no garantizan el siguiente resultado.</p><p class=\"nota\">Datos de liga hasta la jornada 9. La Copa del Rey se analiza por separado. Las fuentes y la comparación completa están debajo.</p></section>",
+    "noticia_html": "<section class=\"seccion lectura\" aria-labelledby=\"noticia-previa-j10\"><p class=\"etiqueta\">El contexto del partido</p><h2 id=\"noticia-previa-j10\">El liderato se juega entre iguales en puntos</h2><p>El Real Zaragoza recibe al Villarreal B el 31 de octubre con los dos equipos empatados a 20 puntos tras nueve jornadas. El filial amarillo encabeza la tabla por diferencia de goles: 21 a favor y 10 en contra, frente a los 17–10 del Zaragoza.</p><p>El contraste por sede añade contexto. El Zaragoza ha ganado sus tres partidos de liga en casa, con seis goles a favor y uno en contra. El Villarreal B llega con diez puntos de doce en cuatro salidas y un balance de once goles a favor y cinco en contra.</p><p>El partido pondrá a prueba la capacidad de ambos equipos para avanzar con el balón y proteger los espacios tras una pérdida. La muestra es corta: describe el inicio de temporada, pero no anticipa el resultado.</p><p class=\"nota\">Datos de liga hasta la jornada 9. La Copa del Rey se analiza por separado. El corte y la comparación completa aparecen al final.</p></section>",
     "rival": "Villarreal B",
     "hora": "21:00",
     "estadio": "Ibercaja Estadio",
@@ -30,7 +30,7 @@
     "fecha_actualizacion": "2026-10-27",
     "titulo": "CD Tudelano – Real Zaragoza",
     "etiqueta": "Copa del Rey · 27 de octubre · 21:00",
-    "resumen": "Una eliminatoria a partido único: horario, televisión y cuatro claves para seguir la noche de Copa en Tudela.",
+    "resumen": "El CD Tudelano recibe al Real Zaragoza a partido único, con el pase a la siguiente ronda en juego.",
     "imagen": "proyectos/real-zaragoza/graficos/previa/noche-copa-tudela-20261027.webp",
     "ancho": 1672,
     "alto": 941,
@@ -40,15 +40,11 @@
     "competicion": "Copa del Rey · Primera eliminatoria",
     "estadio": "Estadio Ciudad de Tudela",
     "centro_partido": {
-      "fecha_verificacion": "27/10/2026",
+      "fecha_verificacion": "2026-10-27T16:29:00+01:00",
       "fuentes": [
         {
           "nombre": "CD Tudelano: horario y datos del encuentro",
           "url": "https://cdtudelano.com/actualidad/entradas-copa-del-rey-zaragoza/"
-        },
-        {
-          "nombre": "Real Zaragoza: ficha oficial del partido",
-          "url": "https://www.realzaragoza.com/partidos/temporada-2026-2027-copa-del-rey-3-tudelano-vs-real-zaragoza-5218"
         }
       ]
     }

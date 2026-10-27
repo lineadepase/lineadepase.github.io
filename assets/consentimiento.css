@@ -9,7 +9,7 @@
 .consentimiento-acciones{display:flex;flex-wrap:wrap;gap:.65rem;justify-content:flex-end;flex:0 0 20rem}
 .consentimiento-acciones button{flex:1 1 8rem;font:inherit;font-weight:600;min-height:44px;padding:.7rem 1rem;border:2px solid var(--tinta,#0f2418);border-radius:6px;background:var(--panel,#fff);color:var(--tinta,#0f2418);cursor:pointer}
 .consentimiento-acciones button:hover{background:var(--papel,#f7f9f5)}
-.consentimiento-acciones button:focus-visible,.consentimiento a:focus-visible{outline:3px solid var(--senal,#ff6a2b);outline-offset:3px}
+.consentimiento-acciones button:focus-visible,.consentimiento a:focus-visible{outline:3px solid var(--senal-texto,#c2410c);outline-offset:3px}
 .consentimiento-acciones button[hidden]{display:none}
 .pie .cookies-enlaces{display:flex;justify-content:center;gap:.7rem;flex-wrap:wrap;font-size:.85rem}
 .pie .cookies-enlaces a,.pie .cookies-enlaces button{font:inherit;color:inherit;text-decoration:underline;background:none;border:0;cursor:pointer;padding:.35rem}

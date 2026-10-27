@@ -108,7 +108,7 @@
 /* Entradas breves y navegación del seguimiento. */
 .pestanas{flex-wrap:wrap;overflow:visible;gap:.35rem;border:0;padding:.5rem 0}
 .pestanas a{flex:0 1 auto;margin:0;border:1px solid var(--linea);border-radius:8px;padding:.65rem .8rem;font-size:.9rem}
-.pestanas a:focus-visible,.mapa-secciones a:focus-visible,summary:focus-visible{outline:3px solid var(--senal);outline-offset:4px}
+.pestanas a:focus-visible,.mapa-secciones a:focus-visible,summary:focus-visible{outline:3px solid var(--cesped);outline-offset:4px}
 .mapa-secciones{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
 .mapa-secciones>a{display:flex;flex-direction:column;align-items:flex-start;border:1px solid var(--linea);background:var(--panel);border-radius:var(--radio);padding:1.3rem;text-decoration:none;color:var(--tinta)}
 .mapa-secciones h3{margin:0 0 .5rem}.mapa-secciones p{color:var(--tinta-suave);margin:0 0 1rem}.mapa-secciones span{font-weight:700;margin-top:auto}

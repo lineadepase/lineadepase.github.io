@@ -105,17 +105,32 @@ class PublicacionPrevias(unittest.TestCase):
                'pagina':'proyectos/real-zaragoza/previa-copa.html','titulo':'Tudelano – Zaragoza',
                'fecha_partido':'2026-10-27','fecha_publicacion':'2026-10-27','hora':'21:00',
                'estadio':'Ciudad de Tudela','centro_partido':{
-                   'fecha_verificacion':'27/10/2026','fuentes':[{'nombre':'CD Tudelano oficial','url':'https://cdtudelano.com/actualidad/entradas-copa-del-rey-zaragoza/'}]}}
+                   'fecha_verificacion':'2026-10-27T16:09:00+01:00','fuentes':[{'nombre':'CD Tudelano oficial','url':'https://cdtudelano.com/actualidad/entradas-copa-del-rey-zaragoza/'}]}}
         raw='<head></head><main><section class="cab-proyecto"><h1>Tudelano – Zaragoza</h1></section></main>'
         first=con_imagen(raw,entry)
         second=con_imagen(first,entry)
         self.assertEqual(first,second)
         self.assertEqual(first.count('<!-- centro-partido -->'),1)
-        self.assertIn('Esta ficha no ofrece actualización en directo',first)
+        self.assertIn('Esta ficha no ofrece marcador en directo',first)
         self.assertIn('Pendiente de actualización editorial.',first)
         self.assertIn('Pendientes de confirmación en esta ficha.',first)
         self.assertIn('https://cdtudelano.com/actualidad/entradas-copa-del-rey-zaragoza/',first)
-        self.assertIn('27/10/2026',first)
+        self.assertIn('Comprobado el 27/10/2026 a las 16:09 (hora peninsular)',first)
+
+    def test_centro_partido_rechaza_mas_de_dos_fuentes_y_fechas_sin_zona(self):
+        from previas import registro
+        fixture={'imagen':'assets/j10.webp','pagina':'proyectos/real-zaragoza/previa-copa.html',
+                 'centro_partido':{'fecha_verificacion':'2026-10-27T16:09:00+01:00',
+                                   'fuentes':[{'nombre':f'Fuente {i}','url':f'https://example.com/{i}'} for i in range(3)]}}
+        (self.root/'assets/j10.webp').write_bytes(b'image-fixture')
+        guardar(self.root/'datos/previas.json',json.dumps([fixture]))
+        with self.assertRaisesRegex(ValueError,'una o dos fuentes'):
+            registro(self.root)
+        fixture['centro_partido']['fuentes']=fixture['centro_partido']['fuentes'][:1]
+        fixture['centro_partido']['fecha_verificacion']='2026-10-27T16:09:00'
+        guardar(self.root/'datos/previas.json',json.dumps([fixture]))
+        with self.assertRaisesRegex(ValueError,'zona horaria'):
+            registro(self.root)
 
     def test_generador_ics_convierte_hora_de_madrid_a_utc_y_es_estable(self):
         from previas import calendar_event, escribir_calendario

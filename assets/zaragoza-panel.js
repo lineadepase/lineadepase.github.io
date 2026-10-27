@@ -57,7 +57,10 @@
     el.innerHTML = '';
     const ancho = Math.max(260, el.clientWidth);
     const m = {t: 10, r: 10, b: 26, l: 30};
-    const svg = d3.select(el).append('svg').attr('width', ancho).attr('height', alto);
+    const svg = d3.select(el).append('svg').attr('width', ancho).attr('height', alto)
+      .attr('role', 'group')
+      .attr('aria-label', el.getAttribute('aria-label') || 'Gráfico')
+      .attr('aria-describedby', el.getAttribute('aria-describedby'));
     const g = svg.append('g').attr('transform', `translate(${m.l},${m.t})`);
     let tip = el.parentNode.querySelector('.tip');
     if (!tip) { tip = document.createElement('div'); tip.className = 'tip'; tip.hidden = true; el.parentNode.appendChild(tip); }

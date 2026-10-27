@@ -83,8 +83,11 @@ def registro(root=ROOT):
                 raise ValueError('La crónica vinculada debe existir dentro de la web: '+str(postmatch))
         centro = entry.get('centro_partido')
         if centro:
-            if not isinstance(centro, dict) or not centro.get('fuentes'):
-                raise ValueError('El centro del partido necesita al menos una fuente oficial')
+            if not isinstance(centro, dict) or not centro.get('fuentes') or len(centro['fuentes']) > 2:
+                raise ValueError('El centro del partido necesita una o dos fuentes, como máximo')
+            comprobacion = datetime.fromisoformat(centro.get('fecha_verificacion', ''))
+            if comprobacion.tzinfo is None:
+                raise ValueError('La última comprobación necesita fecha, hora y zona horaria')
             for fuente in centro['fuentes']:
                 if not fuente.get('nombre') or not re.match(r'^https://', fuente.get('url', '')):
                     raise ValueError('Cada fuente del centro debe tener nombre y URL HTTPS')
@@ -110,15 +113,17 @@ def centro_partido_html(entry):
     incidents = centro.get('incidencias') or []
     incident_markup = ('<ul>'+''.join('<li>'+escape(str(item))+'</li>' for item in incidents)+'</ul>'
                        if incidents else '<p class="nota">Aún no hay incidencias añadidas a esta ficha.</p>')
+    verificacion = datetime.fromisoformat(centro['fecha_verificacion']).astimezone(ZoneInfo('Europe/Madrid'))
+    fecha_verificacion = verificacion.strftime('%d/%m/%Y a las %H:%M (hora peninsular)')
     return ('<!-- centro-partido --><section class="seccion lectura centro-partido" aria-labelledby="titulo-centro-partido">'
             '<p class="etiqueta">Seguimiento editorial</p><h2 id="titulo-centro-partido">Centro del partido</h2>'
-            '<p class="aviso-centro">Esta ficha no ofrece actualización en directo. Los datos se incorporan cuando se confirman y se revisa la fuente.</p>'
+            '<p class="aviso-centro">Esta ficha no ofrece marcador en directo. El equipo editorial incorporará los datos cuando los confirme.</p>'
             '<dl class="datos-centro">'
             '<div><dt>Marcador</dt><dd>'+dato(centro.get('marcador'), 'Pendiente de actualización editorial.')+'</dd></div>'
             '<div><dt>Alineaciones</dt><dd>'+dato(centro.get('alineaciones'), 'Pendientes de confirmación en esta ficha.')+'</dd></div>'
             '</dl><h3>Incidencias</h3>'+incident_markup+
-            '<p class="etiqueta">Fuentes oficiales</p><ul>'+sources+'</ul>'
-            '<p class="nota">Última comprobación editorial: '+escape(centro.get('fecha_verificacion', '27/10/2026'))+'.</p>'
+            '<p class="etiqueta">Fuente consultada</p><ul>'+sources+'</ul>'
+            '<p class="nota"><time datetime="'+escape(centro['fecha_verificacion'], quote=True)+'">Comprobado el '+escape(fecha_verificacion)+'.</time></p>'
             '</section><!-- /centro-partido -->')
 
 

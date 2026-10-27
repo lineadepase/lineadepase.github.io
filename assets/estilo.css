@@ -35,7 +35,7 @@ html{-webkit-text-size-adjust:100%;scroll-padding-top:5.5rem}
 body{margin:0;background:var(--papel);color:var(--tinta);font-family:var(--f-texto);font-size:1.0625rem;line-height:1.6;font-variant-numeric:tabular-nums;overflow-x:hidden;overflow-x:clip}
 a{color:var(--cesped);text-underline-offset:3px}
 a:hover{color:var(--senal-texto)}
-a:focus-visible,button:focus-visible{outline:3px solid var(--senal);outline-offset:3px;border-radius:4px}
+a:focus-visible,button:focus-visible{outline:3px solid var(--senal-texto);outline-offset:3px;border-radius:4px}
 img{max-width:100%;height:auto}
 .envoltorio{max-width:var(--ancho);margin-inline:auto;padding-inline:clamp(16px,4vw,40px)}
 
@@ -219,7 +219,7 @@ tr.propio td,tr.propio th{font-weight:700;color:var(--senal-texto)}
 .nav a{padding:.45rem 0;opacity:1}
 .selector-tema{display:flex;align-items:center;gap:.4rem;color:var(--cal);font-size:.85rem}
 .selector-tema select{background:#0f3d25;color:#f4f7f1;border:1px solid #90b59c;border-radius:8px;padding:.4rem;font:inherit;min-height:44px}
-:focus-visible{outline:3px solid var(--senal);outline-offset:3px}
+:focus-visible{outline:3px solid var(--senal-texto);outline-offset:3px}
 .saltar{position:absolute;left:1rem;top:-10rem;z-index:20;padding:.7rem 1rem;background:var(--panel);color:var(--tinta);border-radius:8px}
 .saltar:focus{top:1rem}
 .indice{background:var(--panel);border:1px solid var(--linea);border-left:4px solid var(--cesped);border-radius:12px;padding:1rem 1.25rem;margin:1rem 0 2rem}
@@ -340,7 +340,7 @@ body>main:has(>.portada-campo){display:flex;flex-direction:column}
 .tarjetas-proyecto{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,19rem),1fr));gap:1.4rem}
 .tarjeta-proyecto{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--linea);border-radius:var(--radio);overflow:hidden;color:var(--tinta);text-decoration:none;transition:border-color .2s,transform .2s}
 .tarjeta-proyecto:hover{color:var(--tinta);border-color:var(--cesped);transform:translateY(-2px)}
-.tarjeta-proyecto:focus-visible{outline:3px solid var(--senal);outline-offset:3px}
+.tarjeta-proyecto:focus-visible{outline:3px solid var(--senal-texto);outline-offset:3px}
 .mini{aspect-ratio:16/10;display:flex;flex-direction:column;justify-content:space-between}
 .mini-marcador{padding:1rem 1.2rem 1.2rem}
 .mini-titulo{font-size:.85rem;font-weight:600;opacity:.85}
