@@ -364,7 +364,7 @@ def generate_esquemas_juego():
 
 
 def generate_galeria_visual(page):
-    from segunda_edicion import match_statistics, percentage_text
+    from segunda_edicion import match_statistics, percentage_text, fixture_for
     season=json.loads((ROOT/'datos/zaragoza.json').read_text(encoding='utf-8'))
     latest=max(season['partidos'],key=lambda row:int(row['jornada']))
     month_names=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic']
@@ -383,7 +383,7 @@ def generate_galeria_visual(page):
         ('esquema','Esquemas de juego','Cambia de fase','Amplitud, presión y transición en un campo didáctico.','../assets/compartir/esquemas-del-juego-index.png','../esquemas-del-juego/',['png']),
         ('edicion','Edición visual 2026','Cuatro proyectos, una lámina','Resumen vectorial anual con formatos para redes y una copia lista para imprimir.','../assets/ilustraciones/anuario-visual-2026-cuadrado.png','../assets/ilustraciones/anuario-visual-2026.svg',['png','svg','pdf']),
     ]
-    fixture=next((row for row in season.get('fichas',[]) if str(row.get('partido_id'))==str(latest.get('partido_id'))),None)
+    fixture=fixture_for(season,latest)
     stats=match_statistics(latest,fixture)
     if stats:
         extra=(f" A puerta: {stats['a_puerta_zaragoza']}–{stats['a_puerta_rival']}." if 'a_puerta_zaragoza' in stats else '')
@@ -407,11 +407,33 @@ def generate_galeria_visual(page):
     def update_metadata(item):
         return ' data-jornada="'+str(latest['jornada'])+'" data-fecha-partido="'+latest['fecha']+'"' if item[0] in ('jornada','estadistica') else ''
     cards='<div class="rejilla-galeria-visual" data-galeria-visual>'+''.join('<article class="tarjeta-galeria-visual" data-coleccion-visual="'+item[0]+'"'+update_metadata(item)+' data-formatos-visual="'+' '.join(item[6])+'"><a class="imagen-galeria-visual" href="'+item[4]+'"><img src="'+item[4]+'" width="'+('1080' if item[0]=='edicion' else '1200')+'" height="'+('1080' if item[0]=='edicion' else '630')+'" alt="Gráfico de '+escape(item[2].lower())+'" loading="lazy"></a><div><p class="etiqueta">'+escape(item[1])+'</p><h2>'+escape(item[2])+'</h2><p>'+escape(item[3])+'</p><a class="enlace-editorial" href="'+item[5]+'">Abrir análisis →</a><details class="descargas-galeria-visual"><summary>Ver formatos y descargas</summary><div>'+downloads(item)+'</div></details></div></article>' for item in items)+'</div>'
-    body=('<p>Una selección de portadas y gráficos propios. Filtra por colección o formato, abre el análisis de origen o descarga la pieza.</p>'+category_buttons+format_buttons+'<p class="recuento-galeria-visual" data-recuento-galeria role="status" aria-live="polite">'+str(len(items))+' piezas</p>'+cards+'<noscript><p>Se muestran todas las piezas y sus enlaces de descarga; los filtros requieren JavaScript.</p></noscript>')
+    body=('<p>Una selección de portadas y gráficos propios. Filtra por colección o formato, abre el análisis de origen o descarga la pieza.</p><p><a class="enlace-editorial" href="../archivo-visual/">Consultar el archivo de gráficos por jornada →</a></p>'+category_buttons+format_buttons+'<p class="recuento-galeria-visual" data-recuento-galeria role="status" aria-live="polite">'+str(len(items))+' piezas</p>'+cards+'<noscript><p>Se muestran todas las piezas y sus enlaces de descarga; los filtros requieren JavaScript.</p></noscript>')
     head='<link rel="stylesheet" href="../assets/ideas-editoriales.css?v=20261027f"><script src="../assets/galeria-visual.js?v=20261027b" defer></script>'
     folder=ROOT/'galeria-visual'
     folder.mkdir(exist_ok=True)
     (folder/'index.html').write_text(page('Galería visual de Línea de pase','Una colección ligera de gráficos, láminas y portadas de los proyectos de Línea de pase.',body,head,'galeria-visual/'),encoding='utf-8')
+
+
+def generate_archivo_visual(page):
+    from segunda_edicion import match_statistics, fixture_for, percentage_text
+    data=json.loads((ROOT/'datos/zaragoza.json').read_text(encoding='utf-8'))
+    rows=[]
+    month_names=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic']
+    for match in sorted(data['partidos'],key=lambda item:int(item['jornada']),reverse=True):
+        round_num=int(match['jornada']); round_name=f'jornada-{round_num:02d}'
+        date_parts=match['fecha'].split('-'); date_label=f'{int(date_parts[2])} {month_names[int(date_parts[1])-1]} {date_parts[0]}'
+        score=f"{match['goles_favor']}–{match['goles_contra']}"; stats=match_statistics(match,fixture_for(data,match))
+        possession=percentage_text(stats['posesion_pct'])+' %' if stats else '—'
+        shots=f"{stats['tiros_zaragoza']}–{stats['tiros_rival']}" if stats else '—'
+        on_target=f"{stats['a_puerta_zaragoza']}–{stats['a_puerta_rival']}" if stats and 'a_puerta_zaragoza' in stats else '—'
+        coverage='Completa' if stats else 'Sin métricas validadas'
+        image_links=('<a href="../assets/ilustraciones/archivo-jornadas/'+round_name+'.png" download>PNG</a> · <a href="../assets/ilustraciones/archivo-jornadas/'+round_name+'.svg" download>SVG</a>')
+        if stats:
+            image_links+=' · <a href="../assets/ilustraciones/estadisticas-jornadas/'+round_name+'.png" download>Datos PNG</a> · <a href="../assets/ilustraciones/estadisticas-jornadas/'+round_name+'.svg" download>Datos SVG</a>'
+        rows.append('<tr data-jornada="'+str(round_num)+'" data-fecha-partido="'+match['fecha']+'"><th scope="row">J'+f'{round_num:02d}'+'</th><td>'+date_label+'</td><td>'+escape(match['rival'])+'</td><td>'+('Casa' if match['sede']=='Casa' else 'Fuera')+'</td><td>'+score+'</td><td>'+possession+'</td><td>'+shots+'</td><td>'+on_target+'</td><td>'+coverage+'</td><td>'+image_links+'</td></tr>')
+    body=('<p>Un registro por jornada, ordenado de la más reciente a la más antigua. Permite comparar resultados y las métricas validadas; los guiones indican que no hay cobertura suficiente.</p><div class="tabla-comparador"><table><caption>Real Zaragoza · Primera Federación 2026/27</caption><thead><tr><th scope="col">Jornada</th><th scope="col">Fecha</th><th scope="col">Rival</th><th scope="col">Sede</th><th scope="col">Resultado</th><th scope="col">Posesión</th><th scope="col">Tiros · Zaragoza–rival</th><th scope="col">A puerta</th><th scope="col">Cobertura</th><th scope="col">Gráficos</th></tr></thead><tbody>'+''.join(rows)+'</tbody></table></div><p class="nota">Los tiros a puerta se muestran solo cuando están disponibles para ambos equipos y cuadran con los tiros totales y los goles. El marcador de portada siempre apunta a la jornada más reciente.</p><p><a class="enlace-editorial" href="../">Volver a la portada →</a></p>')
+    folder=ROOT/'archivo-visual'; folder.mkdir(exist_ok=True)
+    (folder/'index.html').write_text(page('Archivo visual por jornada','Marcadores y estadísticas del Real Zaragoza, ordenados por jornada y con indicadores de cobertura.',body,'','archivo-visual/'),encoding='utf-8')
 
 
 def generate():
@@ -431,11 +453,12 @@ def generate():
     generate_mapa_cambios()
     generate_balance_preguntas()
     generate_esquemas_juego()
-    generate_galeria_visual(page)
     from segunda_edicion import generate_map, generate_home, generate_anual_visual, generate_matchday_visual
     generate_map(page)
     generate_anual_visual()
     generate_matchday_visual()
+    generate_archivo_visual(page)
+    generate_galeria_visual(page)
     generate_home()
     generate_archive()
     concepts = [
@@ -509,7 +532,7 @@ def enrich(raw, file):
 
 def build():
     generate()
-    for folder in ['proyectos', 'videos', 'sobre-mi', 'archivo', 'conceptos', 'comparador', 'seleccion', 'novedades', 'mapa-grupo', 'herramientas', 'tras-la-jornada', 'preguntas-del-partido', 'marcador-a-ciegas', 'datos-en-revision', 'partidos-espejo', 'reloj-del-marcador', 'pizarron-de-una-jugada', 'balance-de-preguntas', 'mapa-de-lo-que-cambio', 'esquemas-del-juego', 'galeria-visual']:
+    for folder in ['proyectos', 'videos', 'sobre-mi', 'archivo', 'archivo-visual', 'conceptos', 'comparador', 'seleccion', 'novedades', 'mapa-grupo', 'herramientas', 'tras-la-jornada', 'preguntas-del-partido', 'marcador-a-ciegas', 'datos-en-revision', 'partidos-espejo', 'reloj-del-marcador', 'pizarron-de-una-jugada', 'balance-de-preguntas', 'mapa-de-lo-que-cambio', 'esquemas-del-juego', 'galeria-visual']:
         for file in (ROOT / folder).rglob('*.html'):
             raw = file.read_text(encoding='utf-8')
             if '<main' in raw:

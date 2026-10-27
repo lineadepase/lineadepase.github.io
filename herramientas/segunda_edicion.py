@@ -80,9 +80,46 @@ def generate_anual_visual():
 
 
 def generate_matchday_visual():
-    """Crea una pieza de marcador basada en el partido más reciente del registro."""
+    """Genera el marcador vigente y un archivo de gráficos estable por jornada."""
     data=json.loads((ROOT/'datos/zaragoza.json').read_text(encoding='utf-8'))
-    match=max(data['partidos'],key=lambda row:int(row['jornada']))
+    folder=ROOT/'assets/ilustraciones'
+    folder.mkdir(exist_ok=True)
+    matches=data['partidos']
+    match=max(matches,key=lambda row:int(row['jornada']))
+    for name,width,height,square in [('resultado-real-zaragoza-ultima-jornada.svg',1200,630,False),('resultado-real-zaragoza-ultima-jornada-cuadrado.svg',1080,1080,True)]:
+        (folder/name).write_text(result_svg(match,width,height,square),encoding='utf-8')
+    fixture=fixture_for(data,match)
+    stats=match_statistics(match,fixture)
+    stats_svg=folder/'estadisticas-real-zaragoza-ultima-jornada.svg'
+    if stats:
+        stats_svg.write_text(statistics_svg(match,stats),encoding='utf-8')
+    elif stats_svg.exists():
+        stats_svg.unlink()
+    result_archive=folder/'archivo-jornadas'
+    stats_archive=folder/'estadisticas-jornadas'
+    result_archive.mkdir(exist_ok=True); stats_archive.mkdir(exist_ok=True)
+    expected_results=set(); expected_stats=set()
+    for record in matches:
+        round_name=f'jornada-{int(record["jornada"]):02d}'
+        result_path=result_archive/f'{round_name}.svg'
+        result_path.write_text(result_svg(record),encoding='utf-8'); expected_results.add(result_path.name)
+        archived_stats=match_statistics(record,fixture_for(data,record))
+        stats_path=stats_archive/f'{round_name}.svg'
+        if archived_stats:
+            stats_path.write_text(statistics_svg(record,archived_stats),encoding='utf-8'); expected_stats.add(stats_path.name)
+        elif stats_path.exists():
+            stats_path.unlink()
+    for path in result_archive.glob('jornada-*.svg'):
+        if path.name not in expected_results: path.unlink()
+    for path in stats_archive.glob('jornada-*.svg'):
+        if path.name not in expected_stats: path.unlink()
+
+
+def fixture_for(data,match):
+    return next((row for row in data.get('fichas',[]) if str(row.get('partido_id'))==str(match.get('partido_id'))),None)
+
+
+def result_svg(match,width=1200,height=630,square=False):
     date_parts=match['fecha'].split('-')
     months=['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC']
     date_label=f'{date_parts[2]} {months[int(date_parts[1])-1]} {date_parts[0]}'
@@ -90,47 +127,20 @@ def generate_matchday_visual():
     away='Real Zaragoza' if match['sede']=='Fuera' else match['rival']
     home_goals=match['goles_contra'] if match['sede']=='Fuera' else match['goles_favor']
     away_goals=match['goles_favor'] if match['sede']=='Fuera' else match['goles_contra']
-    winner=match['resultado'].upper()
-    place='FUERA' if match['sede']=='Fuera' else 'EN CASA'
-
-    def svg(width,height,square=False):
-        header_h=245 if square else 155
-        panel_y=285 if square else 184
-        panel_h=475 if square else 300
-        left_margin=55 if square else 48
-        panel_w=width-2*left_margin
-        label_y=panel_y+(140 if square else 91)
-        score_y=panel_y+(302 if square else 202)
-        team_size=38 if square else 30
-        score_size=138 if square else 112
-        note_y=panel_y+panel_h+81
-        line_y=panel_y+(390 if square else 250)
-        stamp_y=height-40
-        description=f'{home} {home_goals}–{away_goals} {away}. Jornada {int(match["jornada"])} de Primera Federación 2026/27, {date_label}. Resultado registrado en el seguimiento del Real Zaragoza.'
-        return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" role="img" aria-labelledby="titulo descripcion">
+    winner=match['resultado'].upper(); place='FUERA' if match['sede']=='Fuera' else 'EN CASA'
+    header_h=245 if square else 155; panel_y=285 if square else 184; panel_h=475 if square else 300
+    left_margin=55 if square else 48; panel_w=width-2*left_margin
+    label_y=panel_y+(140 if square else 91); score_y=panel_y+(302 if square else 202)
+    team_size=38 if square else 30; score_size=138 if square else 112
+    note_y=panel_y+panel_h+81; line_y=panel_y+(390 if square else 250); stamp_y=height-40
+    description=f'{home} {home_goals}–{away_goals} {away}. Jornada {int(match["jornada"])} de Primera Federación 2026/27, {date_label}. Resultado registrado en el seguimiento del Real Zaragoza.'
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" role="img" aria-labelledby="titulo descripcion">
 <title id="titulo">Jornada {int(match['jornada'])} · {home_goals}–{away_goals}</title><desc id="descripcion">{e(description)}</desc>
 <rect width="{width}" height="{height}" fill="#f3f5ef"/><path d="M0 0h{width}v{header_h}H0z" fill="#103b24"/><path d="M{width-190} 0h190v{header_h}H{width-190}z" fill="#174a30"/><g fill="none" stroke="#bed8c4" stroke-opacity=".16" stroke-width="2"><path d="M{width-170} 0v{header_h}M{width-112} 0v{header_h}M{width-54} 0v{header_h}M{width-190} {header_h//3}h190M{width-190} {2*header_h//3}h190"/></g>
-<text x="{left_margin+10}" y="{46 if square else 35}" fill="#bed8c4" font-family="Arial,sans-serif" font-size="20" font-weight="700" letter-spacing="3">LÍNEA DE PASE · PRIMERA FEDERACIÓN</text>
-<text x="{left_margin+8}" y="{117 if square else 91}" fill="#f7f8f4" font-family="Arial,sans-serif" font-size="{48 if square else 40}" font-weight="800">Jornada {int(match['jornada']):02d}</text>
-<text x="{left_margin+10}" y="{166 if square else 128}" fill="#e0e9e2" font-family="Arial,sans-serif" font-size="{24 if square else 21}">Grupo 2 · Temporada 2026/27</text>
-<rect x="{left_margin}" y="{panel_y}" width="{panel_w}" height="{panel_h}" rx="24" fill="#fff" stroke="#d4ded6" stroke-width="2"/><path d="M{left_margin} {panel_y+panel_h-13}h{panel_w}" stroke="#ff7a2f" stroke-width="8"/>
-<text x="{width*.25:.1f}" y="{label_y}" text-anchor="middle" fill="#536257" font-family="Arial,sans-serif" font-size="{team_size}" font-weight="700">{e(home)}</text>
-<text x="{width*.75:.1f}" y="{label_y}" text-anchor="middle" fill="#163e28" font-family="Arial,sans-serif" font-size="{team_size}" font-weight="700">{e(away)}</text>
-<text x="{width*.42:.1f}" y="{score_y}" text-anchor="middle" fill="#536257" font-family="Arial,sans-serif" font-size="{score_size}" font-weight="800">{home_goals}</text><text x="{width*.50:.1f}" y="{score_y-8}" text-anchor="middle" fill="#ff7a2f" font-family="Arial,sans-serif" font-size="{score_size*.64:.0f}" font-weight="700">–</text><text x="{width*.58:.1f}" y="{score_y}" text-anchor="middle" fill="#163e28" font-family="Arial,sans-serif" font-size="{score_size}" font-weight="800">{away_goals}</text>
-<path d="{width*.25:.1f} {line_y}h{width*.5:.1f}" stroke="#d4ded6" stroke-width="2"/><text x="{width/2:.0f}" y="{note_y}" text-anchor="middle" fill="#245b9b" font-family="Arial,sans-serif" font-size="22" font-weight="700" letter-spacing="2">{winner} · {place}</text>
+<text x="{left_margin+10}" y="{46 if square else 35}" fill="#bed8c4" font-family="Arial,sans-serif" font-size="20" font-weight="700" letter-spacing="3">LÍNEA DE PASE · PRIMERA FEDERACIÓN</text><text x="{left_margin+8}" y="{117 if square else 91}" fill="#f7f8f4" font-family="Arial,sans-serif" font-size="{48 if square else 40}" font-weight="800">Jornada {int(match['jornada']):02d}</text><text x="{left_margin+10}" y="{166 if square else 128}" fill="#e0e9e2" font-family="Arial,sans-serif" font-size="{24 if square else 21}">Grupo 2 · Temporada 2026/27</text>
+<rect x="{left_margin}" y="{panel_y}" width="{panel_w}" height="{panel_h}" rx="24" fill="#fff" stroke="#d4ded6" stroke-width="2"/><path d="M{left_margin} {panel_y+panel_h-13}h{panel_w}" stroke="#ff7a2f" stroke-width="8"/><text x="{width*.25:.1f}" y="{label_y}" text-anchor="middle" fill="#536257" font-family="Arial,sans-serif" font-size="{team_size}" font-weight="700">{e(home)}</text><text x="{width*.75:.1f}" y="{label_y}" text-anchor="middle" fill="#163e28" font-family="Arial,sans-serif" font-size="{team_size}" font-weight="700">{e(away)}</text>
+<text x="{width*.42:.1f}" y="{score_y}" text-anchor="middle" fill="#536257" font-family="Arial,sans-serif" font-size="{score_size}" font-weight="800">{home_goals}</text><text x="{width*.50:.1f}" y="{score_y-8}" text-anchor="middle" fill="#ff7a2f" font-family="Arial,sans-serif" font-size="{score_size*.64:.0f}" font-weight="700">–</text><text x="{width*.58:.1f}" y="{score_y}" text-anchor="middle" fill="#163e28" font-family="Arial,sans-serif" font-size="{score_size}" font-weight="800">{away_goals}</text><path d="{width*.25:.1f} {line_y}h{width*.5:.1f}" stroke="#d4ded6" stroke-width="2"/><text x="{width/2:.0f}" y="{note_y}" text-anchor="middle" fill="#245b9b" font-family="Arial,sans-serif" font-size="22" font-weight="700" letter-spacing="2">{winner} · {place}</text>
 <text x="{left_margin+8}" y="{stamp_y}" fill="#405448" font-family="Arial,sans-serif" font-size="19" font-weight="700">{date_label} · RESULTADO REGISTRADO</text><text x="{width-left_margin-8}" y="{stamp_y}" text-anchor="end" fill="#64766b" font-family="Arial,sans-serif" font-size="18">lineadepase.com</text></svg>'''
-
-    folder=ROOT/'assets/ilustraciones'
-    folder.mkdir(exist_ok=True)
-    for name,width,height,square in [('resultado-real-zaragoza-ultima-jornada.svg',1200,630,False),('resultado-real-zaragoza-ultima-jornada-cuadrado.svg',1080,1080,True)]:
-        (folder/name).write_text(svg(width,height,square),encoding='utf-8')
-    fixture=next((row for row in data.get('fichas',[]) if str(row.get('partido_id'))==str(match.get('partido_id'))),None)
-    stats=match_statistics(match,fixture)
-    stats_svg=folder/'estadisticas-real-zaragoza-ultima-jornada.svg'
-    if stats:
-        stats_svg.write_text(statistics_svg(match,stats),encoding='utf-8')
-    elif stats_svg.exists():
-        stats_svg.unlink()
 
 
 def match_statistics(match,fixture=None):

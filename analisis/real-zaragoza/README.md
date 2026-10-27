@@ -102,6 +102,8 @@ Para sincronizar páginas ya publicadas: `python herramientas/previas.py`. La ac
 
 Los partidos de copa van en los mismos archivos con su competición; no cuentan para los puntos ni para la clasificación.
 
+El índice `/archivo-visual/` conserva una tarjeta descargable por jornada y una tarjeta estadística solo cuando las métricas pasan las validaciones de cobertura. Al actualizar datos, `herramientas/actualizar_publicacion_jornada.py` regenera esas piezas sin sustituir la tarjeta vigente de portada.
+
 ## Límites
 
 - Los minutos no cuentan el descuento: un titular que juega todo el partido suma 90.

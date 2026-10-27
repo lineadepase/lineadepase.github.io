@@ -52,6 +52,7 @@ def run_browser(browser: Path, profile: Path, *args: str) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--solo-jornada', action='store_true', help='Regenera únicamente los dos PNG del marcador más reciente.')
+    parser.add_argument('--archivo-jornadas', action='store_true', help='Exporta PNG ligeros de cada jornada archivada y de las métricas validadas.')
     args = parser.parse_args()
     browser = browser_path()
     exports = [] if args.solo_jornada else [
@@ -66,6 +67,14 @@ def main() -> None:
     stats_svg = ART / 'estadisticas-real-zaragoza-ultima-jornada.svg'
     stats_png = ART / 'estadisticas-real-zaragoza-ultima-jornada.png'
     data = json.loads((ROOT / 'datos' / 'zaragoza.json').read_text(encoding='utf-8'))
+    archive_exports = []
+    if args.archivo_jornadas:
+        for record in data['partidos']:
+            round_name = f'jornada-{int(record["jornada"]):02d}'
+            archive_exports.append((record, ART / 'archivo-jornadas' / f'{round_name}.svg', ART / 'archivo-jornadas' / f'{round_name}.png', None))
+            archived_stats = match_statistics(record, next((row for row in data.get('fichas', []) if str(row.get('partido_id')) == str(record.get('partido_id'))), None))
+            if archived_stats:
+                archive_exports.append((record, ART / 'estadisticas-jornadas' / f'{round_name}.svg', ART / 'estadisticas-jornadas' / f'{round_name}.png', archived_stats))
     latest = max(data['partidos'], key=lambda row: int(row['jornada']))
     fixture = next((row for row in data.get('fichas', []) if str(row.get('partido_id')) == str(latest.get('partido_id'))), None)
     match_stats = match_statistics(latest, fixture)
@@ -100,6 +109,33 @@ def main() -> None:
                     raise RuntimeError(f'{svg_path.name}: se esperaba {width}×{height}px y llegaron {image.width}×{image.height}px')
                 image.convert('RGB').save(png_path, format='PNG', optimize=True, compress_level=9, pnginfo=metadata)
 
+        for record, svg_path, png_path, archived_stats in archive_exports:
+            raw_path = folder / f'{png_path.stem}-raw.png'
+            run_browser(browser, profile, '--force-device-scale-factor=1', '--window-size=1200,630',
+                        f'--screenshot={raw_path}', svg_path.resolve().as_uri())
+            metadata = PngInfo()
+            metadata.add_text('jornada', str(record['jornada']))
+            metadata.add_text('fecha_partido', record['fecha'])
+            metadata.add_text('rival', record['rival'])
+            metadata.add_text('resultado', f"{record['goles_favor']}–{record['goles_contra']}")
+            if archived_stats:
+                metadata.add_text('posesion_pct', str(archived_stats['posesion_pct']))
+                metadata.add_text('tiros_zaragoza', str(archived_stats['tiros_zaragoza']))
+                metadata.add_text('tiros_rival', str(archived_stats['tiros_rival']))
+                if 'a_puerta_zaragoza' in archived_stats:
+                    metadata.add_text('a_puerta_zaragoza', str(archived_stats['a_puerta_zaragoza']))
+                    metadata.add_text('a_puerta_rival', str(archived_stats['a_puerta_rival']))
+            with Image.open(raw_path) as image:
+                if image.size != (1200, 630):
+                    raise RuntimeError(f'{svg_path.name}: se esperaba 1200×630px y llegaron {image.width}×{image.height}px')
+                image.convert('RGB').save(png_path, format='PNG', optimize=True, compress_level=9, pnginfo=metadata)
+        if args.archivo_jornadas:
+            expected_archive_pngs = {path.name for _, _, path, _ in archive_exports}
+            for folder_name in ('archivo-jornadas', 'estadisticas-jornadas'):
+                for stale in (ART / folder_name).glob('jornada-*.png'):
+                    if stale.name not in expected_archive_pngs:
+                        stale.unlink()
+
         if not args.solo_jornada:
             source = (ART / 'anuario-visual-2026-vertical.svg').read_bytes()
             encoded = base64.b64encode(source).decode('ascii')
@@ -120,6 +156,8 @@ def main() -> None:
         paths.append(ART / 'anuario-visual-2026-impresion.pdf')
     for path in paths:
         print(f'{path.name}: {path.stat().st_size:,} bytes')
+    for _, _, path, _ in archive_exports:
+        print(f'{path.relative_to(ART)}: {path.stat().st_size:,} bytes')
 
 
 if __name__ == '__main__':

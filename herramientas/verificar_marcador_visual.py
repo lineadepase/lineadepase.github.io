@@ -22,6 +22,9 @@ class VisualLinks(HTMLParser):
         self.home_image = ''
         self.gallery_image = ''
         self.statistics_image = ''
+        self.archive_rows: list[dict[str, str]] = []
+        self.archive_links: list[str] = []
+        self._in_archive = False
         self._in_home = False
         self._in_gallery = False
         self._in_statistics = False
@@ -44,6 +47,12 @@ class VisualLinks(HTMLParser):
             self.gallery_image = values.get('src', '')
         if tag == 'img' and self._in_statistics:
             self.statistics_image = values.get('src', '')
+        if tag == 'tbody':
+            self._in_archive = True
+        if tag == 'tr' and self._in_archive:
+            self.archive_rows.append(values)
+        if tag == 'a' and self._in_archive:
+            self.archive_links.append(values.get('href', ''))
 
     def handle_endtag(self, tag: str) -> None:
         if tag == 'figure' and self._in_home:
@@ -52,6 +61,8 @@ class VisualLinks(HTMLParser):
             self._in_gallery = False
         if tag == 'article' and self._in_statistics:
             self._in_statistics = False
+        if tag == 'tbody':
+            self._in_archive = False
 
 
 def main() -> None:
@@ -71,6 +82,7 @@ def main() -> None:
     pages = VisualLinks()
     pages.feed((ROOT / 'index.html').read_text(encoding='utf-8'))
     pages.feed((ROOT / 'galeria-visual' / 'index.html').read_text(encoding='utf-8'))
+    pages.feed((ROOT / 'archivo-visual' / 'index.html').read_text(encoding='utf-8'))
     if pages.home is None or pages.gallery is None:
         raise RuntimeError('Falta la tarjeta del último partido en portada o galería.')
     for name, attrs in [('portada', pages.home), ('galería', pages.gallery)]:
@@ -128,8 +140,68 @@ def main() -> None:
     elif pages.statistics is not None or stats_svg.exists() or stats_png.exists():
         raise RuntimeError('Se ha publicado un gráfico estadístico sin cobertura completa.')
 
+    archive_results = ART / 'archivo-jornadas'
+    archive_stats = ART / 'estadisticas-jornadas'
+    expected_matches = {int(row['jornada']): row for row in data['partidos']}
+    if len(pages.archive_rows) != len(expected_matches):
+        raise RuntimeError(f'El archivo visual muestra {len(pages.archive_rows)} jornadas; se esperaban {len(expected_matches)}.')
+    actual_rounds = {int(row.get('data-jornada', '0')) for row in pages.archive_rows}
+    if actual_rounds != set(expected_matches):
+        raise RuntimeError('Las jornadas del índice visual no coinciden con datos/zaragoza.json.')
+    for row in pages.archive_rows:
+        round_num = int(row['data-jornada'])
+        if row.get('data-fecha-partido') != expected_matches[round_num]['fecha']:
+            raise RuntimeError(f'La fecha de J{round_num:02d} en el índice visual no coincide con datos/zaragoza.json.')
+    for round_num, record in expected_matches.items():
+        round_name = f'jornada-{round_num:02d}'
+        for extension in ('svg', 'png'):
+            path = archive_results / f'{round_name}.{extension}'
+            if not path.is_file():
+                raise RuntimeError(f'Falta el gráfico archivado: {path.name}.')
+            if extension == 'png':
+                with Image.open(path) as image:
+                    if image.size != (1200, 630):
+                        raise RuntimeError(f'{path.name}: dimensiones {image.size}; esperadas (1200, 630).')
+                    if image.info.get('jornada') != str(round_num) or image.info.get('fecha_partido') != record['fecha']:
+                        raise RuntimeError(f'{path.name}: metadatos de jornada/fecha incorrectos.')
+                if path.stat().st_size > 100_000:
+                    raise RuntimeError(f'{path.name} supera 100 KB.')
+        fixture_row = next((row for row in data.get('fichas', []) if str(row.get('partido_id')) == str(record.get('partido_id'))), None)
+        archived_metrics = match_statistics(record, fixture_row)
+        stats_svg_path = archive_stats / f'{round_name}.svg'
+        stats_png_path = archive_stats / f'{round_name}.png'
+        if archived_metrics:
+            if not stats_svg_path.is_file() or not stats_png_path.is_file():
+                raise RuntimeError(f'Falta el gráfico estadístico archivado para J{round_num:02d}.')
+            with Image.open(stats_png_path) as image:
+                if image.size != (1200, 630) or image.info.get('jornada') != str(round_num) or image.info.get('fecha_partido') != record['fecha']:
+                    raise RuntimeError(f'{stats_png_path.name}: dimensiones o metadatos incorrectos.')
+                if image.info.get('posesion_pct') != str(archived_metrics['posesion_pct']):
+                    raise RuntimeError(f'{stats_png_path.name}: posesión no coincide con los datos validados.')
+                for field in ('tiros_zaragoza', 'tiros_rival'):
+                    if image.info.get(field) != str(archived_metrics[field]):
+                        raise RuntimeError(f'{stats_png_path.name}: {field} no coincide con los datos validados.')
+                if 'a_puerta_zaragoza' in archived_metrics:
+                    for field in ('a_puerta_zaragoza', 'a_puerta_rival'):
+                        if image.info.get(field) != str(archived_metrics[field]):
+                            raise RuntimeError(f'{stats_png_path.name}: {field} no coincide con los datos validados.')
+            if stats_png_path.stat().st_size > 100_000:
+                raise RuntimeError(f'{stats_png_path.name} supera 100 KB.')
+        elif stats_svg_path.exists() or stats_png_path.exists():
+            raise RuntimeError(f'Hay estadísticas archivadas para J{round_num:02d} sin cobertura validada.')
+    for round_num, record in expected_matches.items():
+        round_name = f'jornada-{round_num:02d}'
+        expected_link = f'../assets/ilustraciones/archivo-jornadas/{round_name}.png'
+        if expected_link not in pages.archive_links:
+            raise RuntimeError(f'El índice no enlaza el PNG de J{round_num:02d}.')
+        fixture_row = next((row for row in data.get('fichas', []) if str(row.get('partido_id')) == str(record.get('partido_id'))), None)
+        if match_statistics(record, fixture_row):
+            expected_stats_link = f'../assets/ilustraciones/estadisticas-jornadas/{round_name}.png'
+            if expected_stats_link not in pages.archive_links:
+                raise RuntimeError(f'El índice no enlaza el PNG estadístico de J{round_num:02d}.')
+
     printable_score = f'{goals_home}-{goals_away}'
-    print(f'Marcador sincronizado: J{int(expected_round):02d}, {expected_date}, {home} {printable_score} {away}; portada, galería, SVG y PNG correctos.')
+    print(f'Marcador sincronizado: J{int(expected_round):02d}, {expected_date}, {home} {printable_score} {away}; portada, galería y archivo de {len(expected_matches)} jornadas verificados.')
 
 
 if __name__ == '__main__':
