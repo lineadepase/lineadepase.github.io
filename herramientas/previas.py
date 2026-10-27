@@ -49,6 +49,56 @@ def con_imagen(html, entry):
             html = re.sub(r'<!-- noticia-previa -->.*?<!-- /noticia-previa -->', lambda _: news, html, flags=re.S)
         else:
             html = html.replace('<!-- /imagen-previa -->', '<!-- /imagen-previa -->'+news, 1)
+    html = re.sub(r'<section class="seccion lectura" aria-labelledby="ficha-copa">[\s\S]*?</section>\s*', '', html)
+    # Ficha práctica homogénea: solo muestra los datos confirmados disponibles.
+    details = []
+    if entry.get('fecha_partido'):
+        try:
+            date = datetime.fromisoformat(entry['fecha_partido']).strftime('%A %d de %B de %Y')
+            months = {'October':'octubre','November':'noviembre','December':'diciembre'}
+            for en, es in months.items(): date = date.replace(en, es)
+            days = {'Monday':'lunes','Tuesday':'martes','Wednesday':'miércoles','Thursday':'jueves','Friday':'viernes','Saturday':'sábado','Sunday':'domingo'}
+            for en, es in days.items(): date = date.replace(en, es)
+        except ValueError:
+            date = entry['fecha_partido']
+        date = date[:1].upper()+date[1:]
+        if entry.get('hora'):
+            date += ', '+entry['hora']+' h (hora peninsular)'
+        details.append('<li><strong>Cuándo:</strong> '+escape(date)+'</li>')
+    if entry.get('estadio'):
+        details.append('<li><strong>Dónde:</strong> '+escape(entry['estadio'])+'</li>')
+    if entry.get('competicion'):
+        details.append('<li><strong>Competición:</strong> '+escape(entry['competicion'])+'</li>')
+    if details:
+        block = '<!-- ficha-previa --><section class="seccion lectura ficha-previa" aria-labelledby="ficha-previa"><p class="etiqueta">La cita</p><h2 id="ficha-previa">'+escape(entry['titulo'])+'</h2><ul class="claves">'+''.join(details)+'</ul>'
+        if entry.get('fuente_partido'):
+            block += '<p class="nota">Horario y estadio: <a href="'+escape(entry['fuente_partido'],quote=True)+'" rel="noopener" target="_blank">confirmación oficial del Real Zaragoza</a>.</p>'
+        block += '</section><!-- /ficha-previa -->'
+        if '<!-- ficha-previa -->' in html:
+            html = re.sub(r'<!-- ficha-previa -->.*?<!-- /ficha-previa -->', lambda _: block, html, flags=re.S)
+        else:
+            html = html.replace('<!-- /imagen-previa -->', '<!-- /imagen-previa -->'+block, 1)
+    share = ('<!-- compartir-previa --><div class="compartir-previa" aria-label="Compartir esta previa">'
+             '<button class="boton" type="button" data-compartir-previa>Compartir</button>'
+             '<button class="boton" type="button" data-copiar-previa>Copiar enlace</button>'
+             '<span class="estado-compartir" data-estado-compartir role="status" aria-live="polite"></span>'
+             '</div><!-- /compartir-previa -->')
+    if '<!-- compartir-previa -->' in html:
+        html = re.sub(r'<!-- compartir-previa -->.*?<!-- /compartir-previa -->', lambda _: share, html, flags=re.S)
+    else:
+        html = html.replace('<!-- /imagen-previa -->', '<!-- /imagen-previa -->'+share, 1)
+    if 'assets/compartir-previa.js' not in html:
+        html = html.replace('</head>', '<link rel="stylesheet" href="../../assets/compartir-previa.css?v=20261027">\n<script src="../../assets/compartir-previa.js?v=20261027" defer></script>\n</head>', 1)
+    # La fecha de publicación no cambia al editar; la actualización sí.
+    published = entry.get('fecha_publicacion', entry.get('fecha_partido',''))
+    modified = entry.get('fecha_actualizacion', published)
+    published_label = datetime.fromisoformat(published).strftime('%d/%m/%Y') if published else ''
+    modified_label = datetime.fromisoformat(modified).strftime('%d/%m/%Y') if modified else ''
+    date_block = '<p class="fecha-datos">Publicado el '+published_label+((' · Revisado el '+modified_label) if modified else '')+' · Ángel Marqueta Alonso</p>'
+    if re.search(r'<p class="fecha-datos">.*?</p>', html, flags=re.S):
+        html = re.sub(r'<p class="fecha-datos">.*?</p>', lambda _: date_block, html, count=1, flags=re.S)
+    else:
+        html = re.sub(r'(</(?:section|header)>)(<!-- imagen-previa -->)', lambda m: m[1]+date_block+m[2], html, count=1)
     # Metadatos explícitos: el generador SEO los conserva en las siguientes pasadas.
     html = re.sub(r'<meta name="imagen-editorial"[^>]*>\s*', '', html)
     html = html.replace('</head>', f'<meta name="imagen-editorial" content="{entry["imagen"]}">\n</head>', 1)
@@ -68,6 +118,8 @@ def con_imagen(html, entry):
                 item['image'] = [BASE+entry['imagen']]
                 item['mainEntityOfPage'] = canonical
                 item['@id'] = canonical+'#analisis'
+                if published: item['datePublished'] = published
+                if modified: item['dateModified'] = modified
             if item.get('@type') == 'BreadcrumbList' and item.get('itemListElement'):
                 item['itemListElement'][-1]['item'] = canonical
         return '<script type="application/ld+json">'+json.dumps(value,ensure_ascii=False)+'</script>'
@@ -90,10 +142,11 @@ def portada(root=ROOT, hoy=None):
         fecha = entry['fecha_partido']
         dia = fecha[8:10]+'/'+fecha[5:7]
         state = ('Hoy'+(' · '+entry['hora'] if entry.get('hora') else '')) if fecha == hoy else ('Previa del '+dia if fecha < hoy else 'Próxima cita · '+dia)
+        fact = dia+(' · '+entry['hora']+' h' if entry.get('hora') else '')+(' · '+entry['estadio'] if entry.get('estadio') else '')
         cards.append(f'<article class="tarjeta-previa" data-fecha="{fecha}" data-hora="{escape(entry.get("hora", ""))}"><a href="{escape(entry["pagina"])}">'
                      f'<img src="{escape(entry["imagen"])}" alt="{escape(entry["alt"],quote=True)}" '
                      f'width="{entry["ancho"]}" height="{entry["alto"]}" loading="lazy"></a>'
-                     f'<p class="estado-previa">{state}</p><p class="etiqueta">{escape(entry["etiqueta"])}</p><h3><a href="{escape(entry["pagina"])}">'
+                     f'<p class="estado-previa">{state}</p><p class="etiqueta">{escape(entry["etiqueta"])}</p><p class="datos-partido">{escape(fact)}</p><h3><a href="{escape(entry["pagina"])}">'
                      f'{escape(entry["titulo"])}</a></h3><p>{escape(entry["resumen"])}</p>'
                      f'<a class="enlace-editorial" href="{escape(entry["pagina"])}">Leer la previa →</a></article>')
     block = START+'<section class="previas-portada" aria-labelledby="titulo-previas"><p class="etiqueta">Antes del partido</p><h2 id="titulo-previas">Las previas, con contexto</h2><div class="previas-rejilla">'+''.join(cards)+'</div></section>'+END
@@ -108,7 +161,7 @@ def portada(root=ROOT, hoy=None):
         html = html.replace(marker, block+marker, 1)
     if 'assets/previas.css' not in html:
         html = html.replace('</head>', '<link rel="stylesheet" href="assets/previas.css?v=20261027">\n</head>', 1)
-    html = re.sub(r'(assets/previas\.css\?v=)[^"\s]+', r'\g<1>20261027b', html)
+    html = re.sub(r'(assets/previas\.css\?v=)[^"\s]+', r'\g<1>20261027c', html)
     if 'assets/previas.js' not in html:
         html = html.replace('</head>', '<script src="assets/previas.js?v=20261027" defer></script>\n</head>', 1)
     news_path = root / 'datos/novedades.json'

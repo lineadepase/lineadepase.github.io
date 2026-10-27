@@ -7,6 +7,7 @@
     ],
     "fecha_partido": "2026-10-31",
     "fecha_publicacion": "2026-10-27",
+    "fecha_actualizacion": "2026-10-27",
     "titulo": "Real Zaragoza – Villarreal B",
     "etiqueta": "Primera Federación · J10 · 31 de octubre",
     "resumen": "Duelo en lo más alto: primero y segundo, empatados a 20 puntos. Forma, rendimiento por sede y claves antes del partido.",
@@ -15,13 +16,18 @@
     "alto": 941,
     "alt": "Previa Real Zaragoza–Villarreal B: un gran submarino amarillo frente al león blanquillo, duelo entre equipos con 20 puntos.",
     "noticia_html": "<section class=\"seccion lectura\" aria-labelledby=\"noticia-previa-j10\"><p class=\"etiqueta\">El contexto del partido</p><h2 id=\"noticia-previa-j10\">El liderato se juega entre iguales en puntos</h2><p>El Real Zaragoza recibe al Villarreal B el 31 de octubre con los dos equipos empatados a 20 puntos tras nueve jornadas. El filial amarillo encabeza la tabla por diferencia de goles: 21 a favor y 10 en contra, frente a los 17–10 del Zaragoza.</p><p>El contraste por sede añade contexto. El Zaragoza ha ganado sus tres partidos de liga en casa, con seis goles a favor y uno en contra. El Villarreal B llega con diez puntos de doce en cuatro salidas y un balance de once goles a favor y cinco en contra.</p><p>La pregunta será cómo se transforma esa fortaleza en ocasiones: qué equipo logra avanzar con el balón y cómo protege los espacios cuando pierde la posesión. La muestra es pequeña y las cifras describen lo ocurrido; no garantizan el siguiente resultado.</p><p class=\"nota\">Datos de liga hasta la jornada 9. La Copa del Rey se analiza por separado. Las fuentes y la comparación completa están debajo.</p></section>",
-    "rival": "Villarreal B"
+    "rival": "Villarreal B",
+    "hora": "21:00",
+    "estadio": "Ibercaja Estadio",
+    "competicion": "Primera Federación · Jornada 10",
+    "fuente_partido": "https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-10-real-zaragoza-vs-villarreal-b-3962"
   },
   {
     "pagina": "proyectos/real-zaragoza/previa-copa-tudelano-20261027.html",
     "alias": [],
     "fecha_partido": "2026-10-27",
     "fecha_publicacion": "2026-10-27",
+    "fecha_actualizacion": "2026-10-27",
     "titulo": "CD Tudelano – Real Zaragoza",
     "etiqueta": "Copa del Rey · 27 de octubre · 21:00",
     "resumen": "Una eliminatoria a partido único: horario, televisión y cuatro claves para seguir la noche de Copa en Tudela.",
@@ -30,6 +36,8 @@
     "alto": 941,
     "alt": "El león blanquillo ante una noche de Copa en Tudela, 27 de octubre a las 21:00.",
     "rival": "CD Tudelano",
-    "hora": "21:00"
+    "hora": "21:00",
+    "competicion": "Copa del Rey · Primera eliminatoria",
+    "estadio": "Estadio Ciudad de Tudela"
   }
 ]

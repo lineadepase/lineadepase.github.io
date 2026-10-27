@@ -55,16 +55,30 @@ def generate_archive():
     sim = ROOT/'proyectos/real-zaragoza/simulacion.html'
     if sim.is_file():
         entries.append(('../proyectos/real-zaragoza/simulacion.html', 'Simulación del grupo 2 de Primera Federación', 'Probabilidades de ascenso, playoff y descenso con su fecha de corte, método y límites.', '2026/27', '', 'Investigación'))
-    controls = '<p class="nota">En las fichas del Zaragoza, el marcador se expresa siempre como goles a favor–goles en contra.</p><div class="archivo-controles" id="controles-archivo" hidden><label for="buscar-archivo">Buscar análisis<input id="buscar-archivo" type="search" placeholder="Rival, jornada o concepto"></label>'
+    videos = (ROOT/'videos/index.html').read_text(encoding='utf-8')
+    for block in re.findall(r'<article class="video-explicacion"[^>]*>.*?</article>', videos, flags=re.S):
+        identifier = re.search(r'\bid="([^"]+)"', block)
+        heading = re.search(r'<h2[^>]*>([\s\S]*?)</h2>', block)
+        summary = re.search(r'<p>([\s\S]*?)</p>', re.search(r'<div class="lectura">([\s\S]*?)</div>', block)[1])
+        if identifier and heading:
+            entries.append(('../videos/#'+identifier[1], text(heading[1]), text(summary[1]) if summary else '', '', '', 'Vídeos'))
+    concepts = (ROOT/'conceptos/index.html').read_text(encoding='utf-8')
+    for block in re.findall(r'<article class="concepto"[^>]*>.*?</article>', concepts, flags=re.S):
+        identifier = re.search(r'\bid="([^"]+)"', block)
+        heading = re.search(r'<h2[^>]*>([\s\S]*?)</h2>', block)
+        summary = re.search(r'<p>([\s\S]*?)</p>', block)
+        if identifier and heading:
+            entries.append(('../conceptos/#'+identifier[1], text(heading[1]), text(summary[1]) if summary else '', '', '', 'Conceptos'))
+    controls = '<p class="nota">En las fichas del Zaragoza, el marcador se expresa siempre como goles a favor–goles en contra.</p><div class="archivo-controles" id="controles-archivo" hidden><label for="buscar-archivo">Buscar en el archivo<input id="buscar-archivo" type="search" placeholder="Rival, jornada, vídeo o concepto"></label>'
     for key, label, values in [('temporada', 'Temporada', sorted({e[3] for e in entries})), ('rival', 'Rival', sorted({e[4] for e in entries if e[4]})), ('tema', 'Tema', sorted({e[5] for e in entries}))]:
         controls += '<label for="filtro-' + key + '">' + label + '<select id="filtro-' + key + '"><option value="">Todos</option>' + ''.join('<option>' + escape(v) + '</option>' for v in values) + '</select></label>'
     controls += '<button type="button" class="boton" id="limpiar-archivo">Limpiar filtros</button></div>'
-    cards = '<p class="nota">Cada carpeta reúne los análisis de una sección. La búsqueda y los filtros consultan todas las carpetas a la vez.</p><p id="recuento-archivo" role="status" aria-live="polite">' + str(len(entries)) + ' análisis</p><div class="archivo-carpetas">'
-    for topic, label in [('Partidos','Real Zaragoza'),('Previas · Liga','Previas · Liga'),('Previas · Copa del Rey','Previas · Copa del Rey'),('Investigación','Investigaciones'),('Fútbol femenino','Fútbol femenino · Territorio'),('Conceptos','Conceptos aplicados')]:
+    cards = '<p class="nota">Cada carpeta reúne el contenido de una sección. La búsqueda y los filtros consultan análisis, vídeos y conceptos a la vez.</p><p id="recuento-archivo" role="status" aria-live="polite">' + str(len(entries)) + ' recursos</p><div class="archivo-carpetas">'
+    for topic, label in [('Partidos','Real Zaragoza'),('Previas · Liga','Previas · Liga'),('Previas · Copa del Rey','Previas · Copa del Rey'),('Investigación','Investigaciones'),('Fútbol femenino','Fútbol femenino · Territorio'),('Vídeos','Vídeos explicativos'),('Conceptos','Conceptos aplicados')]:
         group=[entry for entry in entries if entry[5]==topic]
         if not group:
             continue
-        cards += '<details class="archivo-carpeta"><summary><span class="carpeta-nombre">'+escape(label)+'</span> <span class="carpeta-cantidad">'+str(len(group))+' análisis</span></summary><ul class="archivo-lista">'
+        cards += '<details class="archivo-carpeta"><summary><span class="carpeta-nombre">'+escape(label)+'</span> <span class="carpeta-cantidad">'+str(len(group))+' recursos</span></summary><ul class="archivo-lista">'
         for href, title, desc, season, rival, topic in group:
             cards += '<li data-temporada="' + escape(season, quote=True) + '" data-rival="' + escape(rival, quote=True) + '" data-tema="' + escape(topic, quote=True) + '"><article><p class="etiqueta">' + escape(topic + ' · ' + season) + '</p><h2><a href="' + href + '">' + escape(title) + '</a></h2><p>' + escape(desc) + '</p></article></li>'
         cards += '</ul></details>'

@@ -6,7 +6,7 @@ import tempfile
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from previas import guardar, publicar_liga, sincronizar, ordenar
+from previas import guardar, publicar_liga, sincronizar, ordenar, con_imagen
 
 
 class PublicacionPrevias(unittest.TestCase):
@@ -78,6 +78,23 @@ class PublicacionPrevias(unittest.TestCase):
         self.publish(10)
         alias=(self.root/'proyectos/real-zaragoza/previa.html').read_text(encoding='utf-8')
         self.assertIn('rel="canonical" href="https://lineadepase.com/proyectos/real-zaragoza/previa-jornada-10.html"',alias)
+
+    def test_ficha_compartir_y_fechas_son_homogeneos_e_idempotentes(self):
+        entry={'imagen':'assets/j10.webp','ancho':1200,'alto':675,'alt':'Previa',
+               'pagina':'proyectos/real-zaragoza/previa-jornada-10.html','titulo':'Zaragoza – Rival',
+               'fecha_partido':'2026-10-31','fecha_publicacion':'2026-10-27','fecha_actualizacion':'2026-10-28',
+               'hora':'21:00','estadio':'Ibercaja Estadio','competicion':'Primera Federación · J10'}
+        raw='<head><link rel="canonical" href="https://lineadepase.com/proyectos/real-zaragoza/previa.html"><script type="application/ld+json">{"@context":"https://schema.org","@type":"Article"}</script></head><main><section class="cab-proyecto"><h1>Zaragoza – Rival</h1></section></main>'
+        first=con_imagen(raw,entry)
+        second=con_imagen(first,entry)
+        self.assertEqual(second.count('<!-- ficha-previa -->'),1)
+        self.assertEqual(second.count('<!-- compartir-previa -->'),1)
+        self.assertIn('Publicado el 27/10/2026 · Revisado el 28/10/2026',second)
+        self.assertIn('Ibercaja Estadio',second)
+        self.assertIn('21:00 h (hora peninsular)',second)
+        self.assertIn('datePublished',second)
+        self.assertIn('dateModified',second)
+        self.assertEqual(first,second)
 
 
 if __name__ == '__main__':

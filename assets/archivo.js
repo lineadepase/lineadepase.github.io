@@ -20,12 +20,12 @@
     folders.forEach(folder => {
       const visible = [...folder.querySelectorAll('.archivo-lista > li')].filter(card => !card.hidden).length;
       folder.hidden = visible === 0;
-      folder.querySelector('.carpeta-cantidad').textContent = `${visible} análisis`;
+      folder.querySelector('.carpeta-cantidad').textContent = `${visible} recursos`;
       if (filtering) folder.open = visible > 0;
       else if (wasFiltering) folder.open = false;
     });
     wasFiltering = filtering;
-    document.getElementById('recuento-archivo').textContent = `${count} ${count === 1 ? 'análisis encontrado' : 'análisis encontrados'}`;
+    document.getElementById('recuento-archivo').textContent = `${count} ${count === 1 ? 'resultado encontrado' : 'resultados encontrados'}`;
     document.getElementById('archivo-vacio').hidden = count !== 0;
   }
   controls.hidden = false;

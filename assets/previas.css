@@ -4,5 +4,6 @@
 .tarjeta-previa img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:contain;border-radius:12px}
 .tarjeta-previa h3{font-size:clamp(1.65rem,3vw,2.35rem);line-height:1.12;margin:.5rem 0}
 .tarjeta-previa .etiqueta{margin-top:1rem}
+.datos-partido{font-weight:600;color:var(--tinta,#143e2b);margin:.4rem 0}
 .estado-previa{display:inline-block;margin:1rem 0 0;padding:.3rem .65rem;border-radius:6px;background:var(--tinta,#143e2b);color:var(--cal,#fff);font-size:.85rem;font-weight:700}
 @media(max-width:640px){.previas-rejilla{grid-template-columns:1fr;gap:2rem}.previas-portada{margin:1.5rem 0}}
