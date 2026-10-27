@@ -16,10 +16,17 @@
   const captionToggle = document.querySelector('[data-incluir-pie]');
   const storiesNote = document.querySelector('[data-aviso-stories]');
   const carouselNote = document.querySelector('[data-aviso-carrusel]');
+  const carouselContextControls = document.querySelector('[data-controles-contexto-carrusel]');
+  const carouselContextInput = document.getElementById('frase-carrusel');
+  const carouselExamples = document.getElementById('ejemplos-frase-carrusel');
+  const carouselContextCount = document.querySelector('[data-contador-frase-carrusel]');
+  const carouselPreview = document.querySelector('[data-preview-carrusel]');
+  const carouselPreviewImage = document.querySelector('[data-preview-carrusel-img]');
   const noHeaderToggle = document.querySelector('[data-sin-cabecera]');
   const brandToggle = document.querySelector('[data-mostrar-marca]');
   const individualDownloads = document.querySelector('[data-descargas-individuales]');
   const carouselDownloads = document.querySelector('[data-descargas-carrusel]');
+  let carouselPreviewUrl = null;
   const rounds = new Map(rows.map(row => [row.dataset.comparisonId, row]));
 
   function syncFiltersToUrl() {
@@ -97,13 +104,14 @@
     compareState.textContent = includeMetrics
       ? 'Las dos fichas tienen cobertura completa: se muestran posesión y tiros de cada jornada.'
       : 'Se comparan los marcadores. La cobertura no permite comparar métricas en las dos jornadas.';
+    updateCarouselPreview();
   }
 
   function xml(value) {
     return String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[char]));
   }
 
-  function comparisonSvg(rowA, rowB, format, includeMetrics, includeCaption, includeHeader, showBrand, singleRow = null) {
+  function comparisonSvg(rowA, rowB, format, includeMetrics, includeCaption, includeHeader, showBrand, singleRow = null, contextText = '') {
     const layouts = {
       apaisado: {width:1200,height:630,header:148,panels:[{x:54,y:190,w:528,h:365},{x:618,y:190,w:528,h:365}],titleSize:42,titleY:111,brandY:54,captionY:582,domainY:606},
       cuadrado: {width:1080,height:1080,header:180,panels:[{x:80,y:220,w:920,h:350},{x:80,y:610,w:920,h:350}],titleSize:40,titleY:128,brandY:65,captionY:1010,domainY:1056},
@@ -144,11 +152,35 @@
       : '';
     const storiesDesc=format==='historias'?' La composición reserva espacio superior e inferior para no quedar debajo de los controles de las historias.':'';
     const brandY=baseLayout.brandY ?? 54;
-    const header=`${includeHeader?`<path d="M0 0h${layout.width}v${baseLayout.header}H0z" fill="#103b24"/><path d="M0 ${baseLayout.header-5}h${layout.width}" stroke="#ff7a2f" stroke-width="7"/>`:''}${showBrand?`<text x="54" y="${brandY}" fill="${includeHeader?'#bed8c4':'#163e28'}" font-family="Arial,sans-serif" font-size="17" font-weight="700" letter-spacing="3">LÍNEA DE PASE · ARCHIVO VISUAL</text>`:''}${includeHeader?`<text x="54" y="${baseLayout.titleY}" fill="#f7f8f4" font-family="Arial,sans-serif" font-size="${baseLayout.titleSize}" font-weight="800">${singleRow?`J${singleRow.dataset.jornada.padStart(2,'0')} · ${xml(singleRow.dataset.rival)}`:'Dos jornadas, frente a frente'}</text>`:''}`;
+    const contextY=includeHeader?baseLayout.titleY+38:Math.max(brandY+58,baseLayout.header-62);
+    const header=`${includeHeader?`<path d="M0 0h${layout.width}v${baseLayout.header}H0z" fill="#103b24"/><path d="M0 ${baseLayout.header-5}h${layout.width}" stroke="#ff7a2f" stroke-width="7"/>`:''}${showBrand?`<text x="54" y="${brandY}" fill="${includeHeader?'#bed8c4':'#163e28'}" font-family="Arial,sans-serif" font-size="17" font-weight="700" letter-spacing="3">LÍNEA DE PASE · ARCHIVO VISUAL</text>`:''}${includeHeader?`<text x="54" y="${baseLayout.titleY}" fill="#f7f8f4" font-family="Arial,sans-serif" font-size="${baseLayout.titleSize}" font-weight="800">${singleRow?`J${singleRow.dataset.jornada.padStart(2,'0')} · ${xml(singleRow.dataset.rival)}`:'Dos jornadas, frente a frente'}</text>`:''}${singleRow&&contextText?`<text x="54" y="${contextY}" fill="${includeHeader?'#e0e9e2':'#536257'}" font-family="Arial,sans-serif" font-size="19" font-weight="600">${xml(contextText)}</text>`:''}`;
     const description = singleRow
       ? `Resultado del Real Zaragoza ante ${xml(singleRow.dataset.rival)}, temporada ${xml(singleRow.dataset.temporada)}.`
       : `Marcadores del Real Zaragoza frente a ${displayRows.map(row=>xml(row.dataset.rival)).join(' y ')}.`;
     return `<svg xmlns="http://www.w3.org/2000/svg" width="${layout.width}" height="${layout.height}" viewBox="0 0 ${layout.width} ${layout.height}" role="img" aria-labelledby="titulo descripcion"><title id="titulo">${xml(title)}</title><desc id="descripcion">${description} La posesión y los tiros se incluyen solo si se seleccionan y las dos fichas están completas.${xml(storiesDesc)}</desc><rect width="${layout.width}" height="${layout.height}" fill="#f3f5ef"/>${header}${cards}${caption}${showBrand?`<text x="${layout.width-50}" y="${layout.domainY}" text-anchor="end" fill="#64766b" font-family="Arial,sans-serif" font-size="15">lineadepase.com</text>`:''}</svg>`;
+  }
+
+  function updateCarouselPreview() {
+    const active = formatSelect?.value === 'carrusel';
+    if (carouselContextControls) carouselContextControls.hidden = !active;
+    if (carouselPreview) carouselPreview.hidden = !active;
+    if (!active) {
+      if (carouselPreviewUrl) URL.revokeObjectURL(carouselPreviewUrl);
+      carouselPreviewUrl = null;
+      return;
+    }
+    const rowA = rounds.get(selectA?.value);
+    const rowB = rounds.get(selectB?.value);
+    if (!rowA || !rowB || !carouselPreviewImage) return;
+    if (carouselContextInput && carouselContextInput.value.length > 72) carouselContextInput.value = carouselContextInput.value.slice(0,72);
+    if (carouselContextCount && carouselContextInput) carouselContextCount.textContent = `${carouselContextInput.value.length}/72 caracteres`;
+    const metrics = rowA.dataset.completa === '1' && rowB.dataset.completa === '1' && Boolean(metricsToggle?.checked);
+    const svg = comparisonSvg(rowA,rowB,'carrusel',metrics,Boolean(captionToggle?.checked),!Boolean(noHeaderToggle?.checked),Boolean(brandToggle?.checked),rowA,carouselContextInput?.value.trim().slice(0,72) || '');
+    const oldUrl=carouselPreviewUrl, nextUrl=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml;charset=utf-8'}));
+    carouselPreviewUrl=nextUrl;
+    carouselPreviewImage.onload=()=>{if(oldUrl)URL.revokeObjectURL(oldUrl);carouselPreviewImage.onload=null;};
+    carouselPreviewImage.onerror=()=>{if(oldUrl)URL.revokeObjectURL(oldUrl);carouselPreviewImage.onerror=null;};
+    carouselPreviewImage.src=nextUrl;
   }
 
   function saveBlob(blob, filename) {
@@ -210,6 +242,7 @@
     const includeCaption = Boolean(captionToggle?.checked);
     const includeHeader = !Boolean(noHeaderToggle?.checked);
     const showBrand = Boolean(brandToggle?.checked);
+    const carouselContext = carouselContextInput?.value.trim().slice(0,72) || '';
     const safeName = value => value.replace(/[^0-9a-z]+/gi, '-').replace(/^-|-$/g, '');
     const stem = `comparativa-${size}-${safeName(rowA.dataset.comparisonId)}-${safeName(rowB.dataset.comparisonId)}`;
     if(size==='carrusel'){
@@ -217,13 +250,13 @@
       const extension=format;
       const files=[];
       for(const [index,row] of [rowA,rowB].entries()){
-        const svg=comparisonSvg(rowA,rowB,'carrusel',includeMetrics,includeCaption,includeHeader,showBrand,row);
+        const svg=comparisonSvg(rowA,rowB,'carrusel',includeMetrics,includeCaption,includeHeader,showBrand,row,index===0?carouselContext:'');
         let blob=format==='svg'?new Blob([svg],{type:'image/svg+xml;charset=utf-8'}):await svgToRaster(svg,mimeType);
         if(format==='webp'&&blob.type!=='image/webp')throw new Error('Este navegador no ofrece exportación WebP; puedes elegir PNG o SVG.');
         files.push({name:`diapositiva-${index+1}-jornada-${row.dataset.jornada.padStart(2,'0')}.${extension}`,bytes:new Uint8Array(await blob.arrayBuffer())});
       }
       saveBlob(zipStored(files),`${stem}-${format}.zip`);
-      compareState.textContent=`Carrusel ZIP con dos diapositivas ${format.toUpperCase()} descargado${includeCaption?' con pie':' sin pie'}${includeHeader?' con cabecera':' sin cabecera'}${showBrand?' y con marca':' sin marca'}.`;
+      compareState.textContent=`Carrusel ZIP con dos diapositivas ${format.toUpperCase()} descargado${includeCaption?' con pie':' sin pie'}${carouselContext?' y frase de portada':' y sin frase de portada'}${includeHeader?' con cabecera':' sin cabecera'}${showBrand?' y con marca':' sin marca'}.`;
       return;
     }
     const svg=comparisonSvg(rowA,rowB,size,includeMetrics,includeCaption,includeHeader,showBrand);
@@ -280,8 +313,16 @@
       if (carouselNote) carouselNote.hidden = formatSelect?.value !== 'carrusel';
       if (individualDownloads) individualDownloads.hidden = formatSelect?.value === 'carrusel';
       if (carouselDownloads) carouselDownloads.hidden = formatSelect?.value !== 'carrusel';
+      updateCarouselPreview();
     };
     formatSelect?.addEventListener('change', updateFormatGuidance);
+    carouselContextInput?.addEventListener('input', updateCarouselPreview);
+    carouselExamples?.addEventListener('change', () => {
+      if (!carouselContextInput) return;
+      carouselContextInput.value = carouselExamples.value;
+      updateCarouselPreview();
+    });
+    [metricsToggle,captionToggle,noHeaderToggle,brandToggle].forEach(control=>control?.addEventListener('change',updateCarouselPreview));
     updateFormatGuidance();
     if (downloadControls) downloadControls.hidden = false;
     document.querySelectorAll('[data-descargar-comparacion]').forEach(button => {
