@@ -148,6 +148,22 @@ def main() -> None:
     actual_rounds = {int(row.get('data-jornada', '0')) for row in pages.archive_rows}
     if actual_rounds != set(expected_matches):
         raise RuntimeError('Las jornadas del índice visual no coinciden con datos/zaragoza.json.')
+    archive_html = (ROOT / 'archivo-visual' / 'index.html').read_text(encoding='utf-8')
+    required_archive_controls = (
+        'id="archivo-temporada"', 'id="archivo-rival"',
+        'id="comparar-jornada-a"', 'id="comparar-jornada-b"',
+        'data-panel-comparacion="a"', 'data-panel-comparacion="b"',
+        'data-recuento-archivo', 'archivo-visual.js', 'archivo-visual.css',
+        'id="titulo-resumen"',
+    )
+    missing_controls = [marker for marker in required_archive_controls if marker not in archive_html]
+    if missing_controls:
+        raise RuntimeError('Faltan elementos del archivo comparador: ' + ', '.join(missing_controls))
+    if archive_html.count('data-jornada="') != len(expected_matches):
+        raise RuntimeError('El índice no conserva una fila y datos filtrables para cada jornada.')
+    archive_script = (ROOT / 'assets' / 'archivo-visual.js').read_text(encoding='utf-8')
+    if 'rowA.dataset.posesion && rowB.dataset.posesion' not in archive_script or 'row.hidden = !show' not in archive_script:
+        raise RuntimeError('Los filtros o el requisito de métricas completas no están activos en el script del archivo.')
     for row in pages.archive_rows:
         round_num = int(row['data-jornada'])
         if row.get('data-fecha-partido') != expected_matches[round_num]['fecha']:

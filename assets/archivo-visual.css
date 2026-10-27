@@ -1,0 +1,86 @@
+.archivo-resumen,
+.archivo-comparar {
+  margin: 1.5rem 0;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border: 1px solid #d4ded6;
+  border-radius: 1rem;
+  background: #fff;
+}
+
+.archivo-resumen h2,
+.archivo-comparar h2 { margin-block: .25rem .5rem; }
+.archivo-resumen > div > p:last-child,
+.archivo-comparar > div > p:last-child { max-width: 62ch; }
+.archivo-resumen dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .75rem;
+  margin: 1.25rem 0 0;
+}
+.archivo-resumen dl > div {
+  padding: .9rem 1rem;
+  border-left: 3px solid #ff7a2f;
+  background: #f3f5ef;
+}
+.archivo-resumen dt { color: #536257; font-size: .92rem; }
+.archivo-resumen dd { margin: .25rem 0 0; color: #163e28; font-size: 1.35rem; font-weight: 700; }
+
+.archivo-comparar-controles,
+.archivo-filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: .8rem 1rem;
+  margin-block: 1rem;
+}
+.archivo-comparar-controles label,
+.archivo-filtros label {
+  display: grid;
+  gap: .35rem;
+  min-width: min(100%, 15rem);
+  color: #293c30;
+  font-weight: 600;
+}
+.archivo-comparar-controles select,
+.archivo-filtros select {
+  max-width: 100%;
+  min-height: 2.8rem;
+  padding: .55rem .7rem;
+  border: 1px solid #aeb8b0;
+  border-radius: .45rem;
+  background: #fff;
+  color: #163e28;
+  font: inherit;
+}
+.archivo-filtros [data-recuento-archivo] { margin: 0; color: #536257; }
+.archivo-comparar-paneles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.comparacion-jornada {
+  min-width: 0;
+  margin: 0;
+  padding: .65rem;
+  border: 1px solid #d4ded6;
+  border-radius: .75rem;
+  background: #f8f9f6;
+}
+.comparacion-jornada img { display: block; width: 100%; height: auto; border-radius: .45rem; }
+.comparacion-jornada figcaption { margin-top: .7rem; color: #163e28; font-weight: 700; }
+.comparacion-estadisticas { margin: .3rem 0 0; color: #536257; font-size: .95rem; }
+.archivo-comparar-estado { min-height: 1.5em; margin: .8rem 0 0; color: #536257; }
+.tabla-comparador tbody tr[hidden] { display: none; }
+.primera > h1 { max-width: 100%; font-size: clamp(2.2rem, 9vw, 4rem); line-height: 1; text-wrap: balance; }
+
+@media (max-width: 680px) {
+  .archivo-resumen dl { grid-template-columns: minmax(0, 1fr); }
+  .archivo-comparar-paneles { grid-template-columns: minmax(0, 1fr); }
+  .archivo-comparar-controles,
+  .archivo-filtros { align-items: stretch; flex-direction: column; }
+  .archivo-comparar-controles label,
+  .archivo-filtros label { width: 100%; min-width: 0; }
+  .archivo-comparar-controles select,
+  .archivo-filtros select { width: 100%; }
+}
