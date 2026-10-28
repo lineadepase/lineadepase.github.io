@@ -11,6 +11,7 @@
 - Nombres de enlaces `<a href>` en los documentos HTML: texto descendiente, `aria-label`, `aria-labelledby`, `title` y texto alternativo no vacío de imágenes o de `input type="image"`. Un `alt=""` no da nombre al enlace por sí mismo; se omite el texto dentro de elementos `hidden` o `aria-hidden="true"`, y se omiten los enlaces ocultos. La autocomprobación cubre enlaces textuales, enlaces con imagen informativa, imágenes decorativas acompañadas por texto, etiquetas ARIA, enlaces ocultos y falsos positivos de texto oculto.
 - Comprobaciones de estructura para el mapa de equipos: ayuda de teclado, relación del gráfico con sus notas, encabezados de columna y descripción de la tabla alternativa.
 - Comprobaciones de la salida imprimible SVG: imagen con título y descripción tomados de la pieza original; versión HTML con título específico para las jornadas seleccionadas.
+- Los SVG descargables de los estudios de xT y simulación incluyen `role="img"`, un `<title>` y un `<desc>` enlazados mediante `aria-labelledby`. La auditoría analiza sus XML y exige que ambos textos tengan contenido.
 
 ## Límites y revisión manual
 

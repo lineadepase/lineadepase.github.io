@@ -4,6 +4,7 @@ from __future__ import annotations
 from html.parser import HTMLParser
 from pathlib import Path
 import re
+import xml.etree.ElementTree as ET
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -260,6 +261,38 @@ def audit_link_names() -> tuple[int, int]:
     return page_count, link_count
 
 
+def audit_social_svgs() -> int:
+    """Exige nombre accesible en los SVG gráficos descargables para redes y web."""
+    folders = (
+        ROOT / "analisis" / "liga-f-xt" / "graficos",
+        ROOT / "analisis" / "liga-f-xt" / "publicaciones" / "instagram",
+        ROOT / "analisis" / "grupo2-simulacion" / "graficos",
+        ROOT / "analisis" / "grupo2-simulacion" / "publicaciones" / "instagram",
+    )
+    files = sorted(path for folder in folders for path in folder.glob("*.svg"))
+    if not files:
+        raise RuntimeError("No se encontraron SVG exportables de los estudios para auditar.")
+    problems = []
+    for path in files:
+        try:
+            root = ET.parse(path).getroot()
+        except ET.ParseError as error:
+            problems.append(f"{path.relative_to(ROOT)}: XML no válido ({error})")
+            continue
+        children = {child.tag.rsplit("}", 1)[-1]: child for child in list(root)}
+        title, description = children.get("title"), children.get("desc")
+        labelled_ids = (root.get("aria-labelledby") or "").split()
+        if root.get("role") != "img" or title is None or not (title.text or "").strip():
+            problems.append(f"{path.relative_to(ROOT)}: falta role=img o un título con texto")
+        if description is None or not (description.text or "").strip():
+            problems.append(f"{path.relative_to(ROOT)}: falta una descripción con texto")
+        if title is None or description is None or not {title.get("id"), description.get("id")} <= set(labelled_ids):
+            problems.append(f"{path.relative_to(ROOT)}: aria-labelledby no relaciona título y descripción")
+    if problems:
+        raise RuntimeError("SVG descargables sin semántica accesible:\n" + "\n".join(problems[:30]))
+    return len(files)
+
+
 def audit() -> None:
     styles = {
         path: (ROOT / path).read_text(encoding="utf-8")
@@ -296,6 +329,7 @@ def audit() -> None:
 
     pages = audit_control_names()
     link_pages, links = audit_link_names()
+    svg_count = audit_social_svgs()
     map_page = (ROOT / "mapa-grupo" / "index.html").read_text(encoding="utf-8")
     map_script = (ROOT / "assets" / "mapa-grupo.js").read_text(encoding="utf-8")
     print_script = (ROOT / "assets" / "archivo-visual.js").read_text(encoding="utf-8")
@@ -307,7 +341,7 @@ def audit() -> None:
         raise RuntimeError("El gráfico y su alternativa tabular deben exponer el contexto de filtros y métricas.")
     if 'role=\"img\" aria-labelledby=\"pagina-imprimible-titulo pagina-imprimible-descripcion\"' not in print_script or "documentTitle=`Comparación J" not in print_script:
         raise RuntimeError("Las exportaciones SVG imprimibles necesitan título y descripción accesibles y la versión HTML un título específico.")
-    print(f"Accesibilidad visual: 7 grupos de controles con mínimo 44 px; foco y contraste SVG correctos en claro y oscuro; controles con nombre accesible en {pages} páginas; {links} enlaces con nombre accesible en {link_pages} páginas.")
+    print(f"Accesibilidad visual: 7 grupos de controles con mínimo 44 px; foco y contraste SVG correctos en claro y oscuro; controles con nombre accesible en {pages} páginas; {links} enlaces con nombre accesible en {link_pages} páginas; {svg_count} SVG exportables con título y descripción.")
 
 
 if __name__ == "__main__":

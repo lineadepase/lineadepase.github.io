@@ -21,6 +21,8 @@ que ya tiene su sección en la web (assets/real-zaragoza.css).
 """
 
 from pathlib import Path
+import re
+from xml.sax.saxutils import escape as escape_xml
 
 import matplotlib
 
@@ -167,6 +169,9 @@ def lienzo(formato, titulo, subtitulo="", pie="", etiqueta="", paleta="web",
     ancho_px, alto_px = FORMATOS[formato]
     vertical = alto_px > ancho_px
     fig = plt.figure(figsize=(ancho_px / 100, alto_px / 100), dpi=100, facecolor=c["papel"])
+    fig._linea_pase_svg_title = " ".join(titulo.split())
+    fig._linea_pase_svg_description = " ".join(
+        texto.strip() for texto in (subtitulo, lectura, pie) if texto and texto.strip())
 
     margen = 60 / ancho_px
     banda = _cabecera(fig, alto_px, 86 if vertical else 70, c, etiqueta, paleta)
@@ -228,9 +233,28 @@ def guardar(fig, carpeta, nombre):
     carpeta = Path(carpeta)
     carpeta.mkdir(parents=True, exist_ok=True)
     fig.savefig(carpeta / f"{nombre}.png", dpi=100, facecolor=fig.get_facecolor())
-    fig.savefig(carpeta / f"{nombre}.svg", facecolor=fig.get_facecolor())
+    svg_path = carpeta / f"{nombre}.svg"
+    fig.savefig(svg_path, facecolor=fig.get_facecolor())
+    _etiquetar_svg(svg_path, getattr(fig, "_linea_pase_svg_title", nombre.replace("_", " ")),
+                   getattr(fig, "_linea_pase_svg_description", "Gráfico de Línea de pase."))
     plt.close(fig)
     return carpeta / f"{nombre}.png"
+
+
+def _etiquetar_svg(ruta, titulo, descripcion):
+    """Incrusta el titular y el resumen editorial en la raíz del SVG descargable."""
+    path = Path(ruta)
+    source = path.read_text(encoding="utf-8")
+    match = re.search(r"<svg\b[^>]*>", source)
+    if not match:
+        raise ValueError(f"No se encontró el elemento raíz SVG en {path}.")
+    opening = re.sub(r"\s+(?:role|aria-labelledby)=\"[^\"]*\"", "", match.group(0))
+    opening = opening[:-1] + " role=\"img\" aria-labelledby=\"titulo-linea-de-pase descripcion-linea-de-pase\">"
+    labels = ("<title id=\"titulo-linea-de-pase\">" + escape_xml(" ".join(titulo.split())) +
+              "</title><desc id=\"descripcion-linea-de-pase\">" +
+              escape_xml(" ".join(descripcion.split())) + "</desc>")
+    source = source[:match.start()] + opening + labels + source[match.end():]
+    path.write_text(source, encoding="utf-8")
 
 
 # ---------------------------------------------------------------------------
@@ -278,6 +302,9 @@ def portada(titulo, entradilla="", cifra="", cifra_texto="", etiqueta="", paleta
     """
     c = preparar(paleta)
     fig = plt.figure(figsize=(10.8, 13.5), dpi=100, facecolor=c["noche"])
+    fig._linea_pase_svg_title = " ".join(titulo.split())
+    fig._linea_pase_svg_description = " ".join(
+        texto.strip() for texto in (antetitulo, entradilla, cifra_texto, credito) if texto and texto.strip())
     ax = _fondo_cesped(fig, c)
     color_cifra = c["acento"] if paleta == "web" else c["cal"]
 
@@ -350,6 +377,9 @@ def cierre(titulo, puntos, enlace="lineadepase.com", paleta="web"):
     """Última diapositiva: límites del estudio y dónde leerlo completo."""
     c = preparar(paleta)
     fig = plt.figure(figsize=(10.8, 13.5), dpi=100, facecolor=c["papel"])
+    fig._linea_pase_svg_title = " ".join(titulo.split())
+    fig._linea_pase_svg_description = " ".join(punto.strip() for punto in puntos if punto.strip()) + \
+        " Estudio completo: " + enlace
     _cabecera(fig, 1350, 86, c, "", paleta)
     fig.text(0.06, 0.87, titulo, fontfamily=TITULAR, fontweight=800, fontsize=60,
              color=c["tinta"], va="top", linespacing=0.95)
