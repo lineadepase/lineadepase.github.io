@@ -34,6 +34,8 @@
   const socialKitStatus = document.querySelector('[data-estado-kit]');
   const socialPrintButton = document.querySelector('[data-imprimir-social]');
   const contactSheetPrintButton = document.querySelector('[data-imprimir-hoja-contacto]');
+  const contactSheetPdfButton = document.querySelector('[data-imprimir-hoja-contacto-pdf]');
+  const comparisonA5PdfButton = document.querySelector('[data-imprimir-comparacion-a5]');
   const printPaperSelect = document.querySelector('[data-papel-impresion-social]');
   const printOrientationSelect = document.querySelector('[data-orientacion-hoja-social]');
   const contactSheetPrintPreview = document.querySelector('[data-preview-hoja-contacto]');
@@ -1141,7 +1143,7 @@
   function updateContactSheetPrintPreview() {
     if(!contactSheetPrintPreview)return;
     try {
-      const svg=buildPrintableContactSheet();
+      const svg=buildPrintableContactSheet(true);
       contactSheetPrintPreview.src=`data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
       const {landscape,photo}=printPageSettings();
       contactSheetPrintPreview.alt=`Vista previa de hoja A4 ${landscape?'apaisada':'vertical'} para papel ${photo?'fotográfico':'normal'}, con tres formatos sociales y marcas de corte.`;
@@ -1182,7 +1184,7 @@
     return `<g fill="none" stroke="#171717" stroke-width=".25"><path d="M10 ${y}h10 M10 ${y-.8}v1.6 M20 ${y-.8}v1.6"/></g><text x="23" y="${y+1}" fill="#171717" font-family="Arial,sans-serif" font-size="2.5">10 mm</text>`;
   }
 
-  function buildPrintableContactSheet() {
+  function buildPrintableContactSheet(showGuides=false) {
     const rowA=rounds.get(selectA?.value),rowB=rounds.get(selectB?.value);
     if(!rowA||!rowB)throw new Error('Selecciona dos jornadas antes de preparar la hoja de contacto.');
     const settings=printPageSettings(),metrics=rowA.dataset.completa==='1'&&rowB.dataset.completa==='1'&&Boolean(metricsToggle?.checked),
@@ -1202,7 +1204,100 @@
     const center=settings.width/2,titleY=settings.landscape?15:22,subtitleY=settings.landscape?23:30,scaleY=settings.height-11,footerY=settings.height-4.5;
     const title=`<text x="${center}" y="${titleY}" text-anchor="middle" fill="#171717" font-family="Georgia,serif" font-size="5.2" font-weight="700">Una comparación, tres formatos</text><text x="${center}" y="${subtitleY}" text-anchor="middle" fill="#414141" font-family="Arial,sans-serif" font-size="3">Misma pareja · ${settings.photo?'papel fotográfico, margen 6 mm':'papel normal, margen 10 mm'}</text>`;
     const footer=`<text x="${center}" y="${footerY}" text-anchor="middle" fill="#414141" font-family="Arial,sans-serif" font-size="2.5">A4 ${settings.landscape?'apaisado':'vertical'} · escala real · recorta por las marcas</text>`;
-    return printablePage(`${title}${pieces}${printCalibrationScale(scaleY)}${footer}`,settings.width,settings.height);
+    const guide=showGuides?`<rect x="${safeStart}" y="${safeStart}" width="${usableSpan}" height="${settings.height-2*safeStart}" fill="none" stroke="#c65a2b" stroke-width=".45" stroke-dasharray="2 1.2"/><text x="${safeStart+2}" y="${safeStart+4}" fill="#9b3d1c" font-family="Arial,sans-serif" font-size="2.5" font-weight="700">LÍMITE DE SEGURIDAD</text>`:'';
+    return printablePage(`${title}${pieces}${guide}${printCalibrationScale(scaleY)}${footer}`,settings.width,settings.height);
+  }
+
+  function pdfEscape(value) {
+    const normalized=value.replace(/[–—]/g,'-').replace(/×/g,'x').replace(/·/g,' / ').replace(/→/g,'>');
+    return [...normalized].map(character=>{
+      const code=character.codePointAt(0);
+      if(code===0x5c||code===0x28||code===0x29)return `\\${character}`;
+      if(code>=0x20&&code<=0x7e)return character;
+      return code<=0xff?`\\${code.toString(8).padStart(3,'0')}`:'';
+    }).join('');
+  }
+
+  function svgToVectorPdf(svg) {
+    const documentSvg=new DOMParser().parseFromString(svg,'image/svg+xml');
+    if(documentSvg.querySelector('parsererror'))throw new Error('No se pudo leer la plantilla SVG.');
+    const root=documentSvg.documentElement,pageMmW=parseFloat(root.getAttribute('width')),pageMmH=parseFloat(root.getAttribute('height')),
+      view=(root.getAttribute('viewBox')||`0 0 ${pageMmW} ${pageMmH}`).trim().split(/\s+/).map(Number),factor=72/25.4,pageW=pageMmW*factor,pageH=pageMmH*factor,parts=[];
+    if(!(pageMmW>0&&pageMmH>0&&view.length===4&&view[2]>0&&view[3]>0))throw new Error('El documento no tiene medidas de impresión válidas.');
+    const color=value=>{let token=value||'#000000';const short=token.match(/^#([0-9a-f]{3})$/i);if(short)token='#'+[...short[1]].map(char=>char+char).join('');const match=token.match(/^#([0-9a-f]{6})$/i);if(!match)return [0,0,0];return [0,2,4].map(i=>parseInt(match[1].slice(i,i+2),16)/255);};
+    const rgb=value=>color(value).map(v=>v.toFixed(4)).join(' ');
+    const number=(node,name,fallback=0)=>{const raw=node.getAttribute(name);if(!raw)return fallback;if(raw.endsWith('%'))return Number(raw.slice(0,-1))/100*(name==='width'?node.__viewW||0:node.__viewH||0);return parseFloat(raw)||0;};
+    const point=(x,y,ctx)=>[(ctx.x+x*ctx.sx)*factor,pageH-(ctx.y+y*ctx.sy)*factor];
+    const drawPath=(d,ctx)=>{
+      const tokens=d.match(/[a-zA-Z]|[-+]?(?:\d*\.)?\d+(?:[eE][-+]?\d+)?/g)||[];let i=0,cmd='',x=0,y=0,startX=0,startY=0,out=[];
+      const take=()=>Number(tokens[i++]);
+      while(i<tokens.length){if(/[a-z]/i.test(tokens[i]))cmd=tokens[i++];if(!cmd)break;const rel=cmd===cmd.toLowerCase(),op=cmd.toUpperCase();
+        if(op==='Z'){out.push('h');x=startX;y=startY;cmd='';continue;}
+        if(op==='M'||op==='L'){if(i+1>=tokens.length)break;let nx=take(),ny=take();if(rel){nx+=x;ny+=y;}const q=point(nx,ny,ctx);out.push(`${q[0].toFixed(3)} ${q[1].toFixed(3)} ${op==='M'?'m':'l'}`);x=nx;y=ny;if(op==='M'){startX=x;startY=y;cmd=rel?'l':'L';}}
+        else if(op==='H'){const nx=take()+(rel?x:0),q=point(nx,y,ctx);out.push(`${q[0].toFixed(3)} ${q[1].toFixed(3)} l`);x=nx;}
+        else if(op==='V'){const ny=take()+(rel?y:0),q=point(x,ny,ctx);out.push(`${q[0].toFixed(3)} ${q[1].toFixed(3)} l`);y=ny;}
+        else if(op==='C'){if(i+5>=tokens.length)break;let x1=take(),y1=take(),x2=take(),y2=take(),nx=take(),ny=take();if(rel){x1+=x;y1+=y;x2+=x;y2+=y;nx+=x;ny+=y;}const a=point(x1,y1,ctx),b=point(x2,y2,ctx),c=point(nx,ny,ctx);out.push(`${a[0].toFixed(3)} ${a[1].toFixed(3)} ${b[0].toFixed(3)} ${b[1].toFixed(3)} ${c[0].toFixed(3)} ${c[1].toFixed(3)} c`);x=nx;y=ny;}
+        else {cmd='';}
+      }
+      return out.join(' ');
+    };
+    const drawText=(node,ctx)=>{
+      const raw=node.textContent||'',text=pdfEscape(raw);if(!text)return;
+      const x=number(node,'x'),y=number(node,'y'),size=number(node,'font-size',16),weight=Number(node.getAttribute('font-weight')||400),family=node.getAttribute('font-family')||'Arial',anchor=node.getAttribute('text-anchor')||'start',
+        [px,py]=point(x,y,ctx),fontSize=size*ctx.sy*factor,firstFamily=family.split(',')[0].trim().toLowerCase(),serif=/^(times|georgia|serif)(\b|$)/.test(firstFamily),font=serif?'/F3':weight>=600?'/F2':'/F1',textLength=node.hasAttribute('textLength')?number(node,'textLength')*ctx.sx*factor:null,
+        naturalWidth=text.length*size*(serif?.52:.54)*ctx.sx*factor,letterSpacing=number(node,'letter-spacing')*ctx.sx*factor,measuredWidth=naturalWidth+Math.max(0,text.length-1)*letterSpacing,width=textLength===null?measuredWidth:Math.min(textLength,naturalWidth),horizontalScale=textLength!==null&&naturalWidth>textLength?textLength/naturalWidth*100:100,startX=px-(anchor==='middle'?width/2:anchor==='end'?width:0);
+      parts.push(`${rgb(node.getAttribute('fill')||'#000000')} rg BT ${font} ${fontSize.toFixed(3)} Tf ${horizontalScale.toFixed(2)} Tz ${letterSpacing.toFixed(3)} Tc 1 0 0 1 ${startX.toFixed(3)} ${py.toFixed(3)} Tm (${text}) Tj ET`);
+    };
+    const walk=(node,ctx)=>{
+      const tag=node.localName;
+      if(tag==='title'||tag==='desc'||tag==='defs'||tag==='metadata')return;
+      if(tag==='svg'){
+        let childCtx=ctx;
+        if(node!==root){const x=number(node,'x'),y=number(node,'y'),w=number(node,'width'),h=number(node,'height'),vb=(node.getAttribute('viewBox')||`0 0 ${w} ${h}`).trim().split(/\s+/).map(Number);if(vb.length!==4||!vb[2]||!vb[3])return;const sx=w/vb[2],sy=h/vb[3];childCtx={x:ctx.x+x*ctx.sx-vb[0]*sx*ctx.sx,y:ctx.y+y*ctx.sy-vb[1]*sy*ctx.sy,sx:ctx.sx*sx,sy:ctx.sy*sy};}
+        node.childNodes.forEach(child=>{if(child.nodeType===1)walk(child,childCtx);});return;
+      }
+      if(tag==='g'){node.childNodes.forEach(child=>{if(child.nodeType===1)walk(child,ctx);});return;}
+      if(tag==='rect'){
+        const x=number(node,'x'),y=number(node,'y'),w=number(node,'width'),h=number(node,'height'),left=(ctx.x+x*ctx.sx)*factor,bottom=pageH-(ctx.y+(y+h)*ctx.sy)*factor,width=w*ctx.sx*factor,height=h*ctx.sy*factor,fill=node.getAttribute('fill'),stroke=node.getAttribute('stroke'),sw=number(node,'stroke-width',1)*Math.min(ctx.sx,ctx.sy)*factor;
+        parts.push('q');if(fill&&fill!=='none')parts.push(`${rgb(fill)} rg`);if(stroke&&stroke!=='none')parts.push(`${rgb(stroke)} RG ${sw.toFixed(3)} w`);parts.push(`${left.toFixed(3)} ${bottom.toFixed(3)} ${width.toFixed(3)} ${height.toFixed(3)} re`,fill&&fill!=='none'&&stroke&&stroke!=='none'?'B':fill&&fill!=='none'?'f':stroke&&stroke!=='none'?'S':'n','Q');return;
+      }
+      if(tag==='path'){
+        const path=drawPath(node.getAttribute('d')||'',ctx),fill=node.getAttribute('fill'),stroke=node.getAttribute('stroke'),sw=number(node,'stroke-width',1)*Math.min(ctx.sx,ctx.sy)*factor;
+        if(!path)return;parts.push('q');if(fill&&fill!=='none')parts.push(`${rgb(fill)} rg`);if(stroke&&stroke!=='none')parts.push(`${rgb(stroke)} RG ${sw.toFixed(3)} w`);const dash=node.getAttribute('stroke-dasharray');if(dash)parts.push(`[${dash.split(/[ ,]+/).map(v=>(Number(v)*Math.min(ctx.sx,ctx.sy)*factor).toFixed(3)).join(' ')}] 0 d`);parts.push(path,fill&&fill!=='none'&&stroke&&stroke!=='none'?'B':fill&&fill!=='none'?'f':stroke&&stroke!=='none'?'S':'n','Q');return;
+      }
+      if(tag==='text'){drawText(node,ctx);return;}
+    };
+    const ctx={x:0,y:0,sx:pageMmW/view[2],sy:pageMmH/view[3]};root.childNodes.forEach(child=>{if(child.nodeType===1)walk(child,ctx);});
+    const content=parts.join('\n'),objects=['<< /Type /Catalog /Pages 2 0 R >>','<< /Type /Pages /Kids [3 0 R] /Count 1 >>',`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageW.toFixed(2)} ${pageH.toFixed(2)}] /Resources << /Font << /F1 4 0 R /F2 5 0 R /F3 6 0 R >> >> /Contents 7 0 R >>`,'<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>','<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>','<< /Type /Font /Subtype /Type1 /BaseFont /Times-Bold /Encoding /WinAnsiEncoding >>',`<< /Length ${new TextEncoder().encode(content).length} >>\nstream\n${content}\nendstream`];
+    let pdf='%PDF-1.4\n',offsets=[0];objects.forEach((object,index)=>{offsets.push(new TextEncoder().encode(pdf).length);pdf+=`${index+1} 0 obj\n${object}\nendobj\n`;});
+    const xref=new TextEncoder().encode(pdf).length;pdf+=`xref\n0 ${objects.length+1}\n0000000000 65535 f \n`+offsets.slice(1).map(value=>`${String(value).padStart(10,'0')} 00000 n \n`).join('')+`trailer\n<< /Size ${objects.length+1} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`;
+    return {blob:new Blob([pdf],{type:'application/pdf'}),pageMmW,pageMmH};
+  }
+
+  function downloadPrintableContactSheetPdf() {
+    const rowA=rounds.get(selectA?.value),rowB=rounds.get(selectB?.value),settings=printPageSettings();
+    const {blob,pageMmW,pageMmH}=svgToVectorPdf(buildPrintableContactSheet(false));if(blob.size>300*1024)throw new Error('El PDF supera 300 KB; reduce la densidad del diseño y vuelve a intentarlo.');
+    const safe=value=>value.replace(/[^0-9a-z]+/gi,'-').replace(/^-|-$/g,'');
+    saveBlob(blob,`hoja-contacto-${safe(rowA.dataset.comparisonId)}-${safe(rowB.dataset.comparisonId)}-${settings.landscape?'apaisado':'vertical'}-a4.pdf`);
+    if(socialPrintStatus)socialPrintStatus.textContent=`PDF vectorial listo · ${(blob.size/1024).toFixed(1)} KB · A4 ${pageMmW} × ${pageMmH} mm · tres formatos, marcas de corte y escala de 10 mm.`;
+  }
+
+  function buildPrintableComparisonA5() {
+    const rowA=rounds.get(selectA?.value),rowB=rounds.get(selectB?.value);if(!rowA||!rowB)throw new Error('Selecciona dos jornadas antes de preparar la hoja A5.');
+    const format='vertical',metrics=rowA.dataset.completa==='1'&&rowB.dataset.completa==='1'&&Boolean(metricsToggle?.checked),
+      card=comparisonSvg(rowA,rowB,format,metrics,Boolean(captionToggle?.checked),!Boolean(noHeaderToggle?.checked),Boolean(brandToggle?.checked),null,'',densitySelect?.value,framingSelect?.value,altTextCustomized?altTextInput?.value.trim()||'':describeRows([rowA,rowB],densitySelect?.value||'completa',metrics)),match=card.match(/viewBox="([^"]+)"/),body=card.slice(card.indexOf('>')+1,card.lastIndexOf('</svg>'));
+    if(!match||!body)throw new Error('No se pudo preparar la comparación para A5.');
+    const settings=printPageSettings(),pageW=148,pageH=210,margin=settings.margin,maxW=pageW-margin*2,maxH=settings.photo?152:142,[sourceW,sourceH]=match[1].split(/\s+/).slice(2).map(Number),cardW=Math.min(maxW,maxH*sourceW/sourceH),cardH=cardW*sourceH/sourceW,x=(pageW-cardW)/2,y=100-cardH/2,scaleY=191;
+    const art=`<text x="74" y="13" text-anchor="middle" fill="#171717" font-family="Arial,sans-serif" font-size="3.5" font-weight="700">COMPARACIÓN · A5</text><text x="74" y="20" text-anchor="middle" fill="#414141" font-family="Arial,sans-serif" font-size="2.5">${settings.photo?'PAPEL FOTOGRÁFICO · MARGEN 6 mm':'PAPEL NORMAL · MARGEN 10 mm'}</text><svg x="${x}" y="${y}" width="${cardW}" height="${cardH}" viewBox="${match[1]}" preserveAspectRatio="none">${body}</svg>${printCalibrationScale(scaleY)}<text x="74" y="205" text-anchor="middle" fill="#414141" font-family="Arial,sans-serif" font-size="2.3">A5 · IMPRIMIR AL 100 % · ESCALA REAL</text>`;
+    return printablePage(art,pageW,pageH);
+  }
+
+  function downloadPrintableComparisonA5() {
+    const rowA=rounds.get(selectA?.value),rowB=rounds.get(selectB?.value),{blob,pageMmW,pageMmH}=svgToVectorPdf(buildPrintableComparisonA5());
+    if(blob.size>300*1024)throw new Error('El PDF A5 supera 300 KB; reduce la densidad del diseño y vuelve a intentarlo.');
+    const safe=value=>value.replace(/[^0-9a-z]+/gi,'-').replace(/^-|-$/g,'');
+    saveBlob(blob,`comparacion-${safe(rowA.dataset.comparisonId)}-${safe(rowB.dataset.comparisonId)}-a5.pdf`);
+    if(socialPrintStatus)socialPrintStatus.textContent=`PDF A5 listo · ${(blob.size/1024).toFixed(1)} KB · comparación ${pageMmW} × ${pageMmH} mm con escala de 10 mm.`;
   }
 
   function downloadPrintableContactSheet() {
@@ -1386,6 +1481,8 @@
     seasonQrA5Button?.addEventListener('click',downloadSeasonQrA5);
     socialPrintButton?.addEventListener('click',()=>{try{downloadPrintableSocialSvg();}catch(error){if(socialPrintStatus)socialPrintStatus.textContent=error instanceof Error?error.message:'No se pudo preparar la plantilla imprimible.';}});
     contactSheetPrintButton?.addEventListener('click',()=>{try{downloadPrintableContactSheet();}catch(error){if(socialPrintStatus)socialPrintStatus.textContent=error instanceof Error?error.message:'No se pudo preparar la hoja de contacto.';}});
+    contactSheetPdfButton?.addEventListener('click',()=>{try{downloadPrintableContactSheetPdf();}catch(error){if(socialPrintStatus)socialPrintStatus.textContent=error instanceof Error?error.message:'No se pudo preparar el PDF vectorial.';}});
+    comparisonA5PdfButton?.addEventListener('click',()=>{try{downloadPrintableComparisonA5();}catch(error){if(socialPrintStatus)socialPrintStatus.textContent=error instanceof Error?error.message:'No se pudo preparar el PDF A5.';}});
     [printPaperSelect,printOrientationSelect].forEach(control=>control?.addEventListener('change',()=>{updateContactSheetPrintPreview();}));
     resetOptionsButton?.addEventListener('click', () => {
       if (formatSelect) formatSelect.value = 'apaisado';
