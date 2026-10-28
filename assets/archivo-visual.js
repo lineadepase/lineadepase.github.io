@@ -38,6 +38,7 @@
   const contactSheetDirectPrintButton = document.querySelector('[data-imprimir-hoja-directa]');
   const comparisonA5PdfButton = document.querySelector('[data-imprimir-comparacion-a5]');
   const comparisonTextButton = document.querySelector('[data-descargar-comparacion-texto]');
+  const comparisonHtmlButton = document.querySelector('[data-abrir-comparacion-html]');
   const comparisonA5DirectPrintButton = document.querySelector('[data-imprimir-a5-directa]');
   const comparisonA5InkSelect = document.querySelector('[data-modo-impresion-a5]');
   const printPaperSelect = document.querySelector('[data-papel-impresion-social]');
@@ -375,8 +376,10 @@
     appendText(card, 'figcaption', '', `J${round} · ${row.dataset.rival} · ${row.dataset.fechaPartido} · ${row.dataset.temporada}`);
     if (includeMetrics && row.dataset.posesion) {
       appendText(card, 'p', 'comparacion-estadisticas', `Posesión ${row.dataset.posesion.replace('.', ',')} % · tiros ${row.dataset.tirosZaragoza}–${row.dataset.tirosRival}`);
+    } else if (row.dataset.completa !== '1') {
+      appendText(card, 'p', 'comparacion-estadisticas', 'Ficha estadística sin validar; se muestra solo el marcador.');
     } else {
-      appendText(card, 'p', 'comparacion-estadisticas', 'Las métricas aparecerán cuando ambas jornadas tengan ficha completa.');
+      appendText(card, 'p', 'comparacion-estadisticas', 'Ficha estadística validada; no se comparan métricas porque la otra jornada no está validada.');
     }
   }
 
@@ -1341,16 +1344,31 @@
   }
 
   function pdfEscape(value) {
-    const normalized=value.replace(/[–—]/g,'-').replace(/×/g,'x').replace(/·/g,' / ').replace(/→/g,'>');
+    const normalized=value.replace(/×/g,'x').replace(/·/g,' / ').replace(/→/g,'>');
+    const winAnsiSpecial=new Map([[0x20ac,0x80],[0x201a,0x82],[0x192,0x83],[0x201e,0x84],[0x2026,0x85],[0x2020,0x86],[0x2021,0x87],[0x2c6,0x88],[0x2030,0x89],[0x160,0x8a],[0x2039,0x8b],[0x152,0x8c],[0x17d,0x8e],[0x2018,0x91],[0x2019,0x92],[0x201c,0x93],[0x201d,0x94],[0x2022,0x95],[0x2013,0x96],[0x2014,0x97],[0x2dc,0x98],[0x2122,0x99],[0x161,0x9a],[0x203a,0x9b],[0x153,0x9c],[0x17e,0x9e],[0x178,0x9f]]);
     return [...normalized].map(character=>{
-      const code=character.codePointAt(0);
-      if(code===0x5c||code===0x28||code===0x29)return `\\${character}`;
-      if(code>=0x20&&code<=0x7e)return character;
-      return code<=0xff?`\\${code.toString(8).padStart(3,'0')}`:'';
+      const point=character.codePointAt(0),code=winAnsiSpecial.get(point)??(point<=0xff?point:null);
+      if(code===null||code<0x20)return '';
+      if(code===0x5c||code===0x28||code===0x29)return `\\${String.fromCharCode(code)}`;
+      if(code>=0x20&&code<=0x7e)return String.fromCharCode(code);
+      return `\\${code.toString(8).padStart(3,'0')}`;
     }).join('');
   }
 
-  function svgToVectorPdf(svg,title='Material visual imprimible · Línea de pase') {
+  async function loadPdfFonts() {
+    if(!loadPdfFonts.promise)loadPdfFonts.promise=Promise.all([
+      fetch('../analisis/comun/fuentes/Archivo-Regular.ttf').then(response=>{if(!response.ok)throw new Error('No se pudo cargar la fuente Archivo Regular.');return response.arrayBuffer();}),
+      fetch('../analisis/comun/fuentes/Archivo-Bold.ttf').then(response=>{if(!response.ok)throw new Error('No se pudo cargar la fuente Archivo Bold.');return response.arrayBuffer();}),
+      fetch('../assets/archivo-visual-font-metrics.json').then(response=>{if(!response.ok)throw new Error('No se pudieron cargar las métricas tipográficas del PDF.');return response.json();})
+    ]).then(async([regular,bold,metrics])=>{
+      if(typeof CompressionStream==='undefined')throw new Error('Este navegador no permite comprimir las fuentes del PDF. Descarga la versión HTML imprimible.');
+      const compress=async(buffer)=>new Uint8Array(await new Response(new Blob([buffer]).stream().pipeThrough(new CompressionStream('deflate'))).arrayBuffer());
+      return {regular:{bytes:await compress(regular),length:regular.byteLength,metrics:metrics.regular},bold:{bytes:await compress(bold),length:bold.byteLength,metrics:metrics.bold}};
+    });
+    return loadPdfFonts.promise;
+  }
+
+  async function svgToVectorPdf(svg,title='Material visual imprimible · Línea de pase') {
     const documentSvg=new DOMParser().parseFromString(svg,'image/svg+xml');
     if(documentSvg.querySelector('parsererror'))throw new Error('No se pudo leer la plantilla SVG.');
     const root=documentSvg.documentElement,pageMmW=parseFloat(root.getAttribute('width')),pageMmH=parseFloat(root.getAttribute('height')),
@@ -1401,32 +1419,39 @@
       if(tag==='text'){drawText(node,ctx);return;}
     };
     const ctx={x:0,y:0,sx:pageMmW/view[2],sy:pageMmH/view[3]};root.childNodes.forEach(child=>{if(child.nodeType===1)walk(child,ctx);});
-    const content=parts.join('\n'),documentStructId=10,tagRefs=taggedText.map((_,index)=>`${11+index} 0 R`),metadataId=11+taggedText.length,
+    const content=parts.join('\n'),fonts=await loadPdfFonts(),documentStructId=13,tagRefs=taggedText.map((_,index)=>`${14+index} 0 R`),metadataId=14+taggedText.length,infoId=metadataId+1,
       xmlEscape=value=>value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;'),
       xmp=`<?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>\n<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Línea de pase"><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"><rdf:Description rdf:about="" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xmp="http://ns.adobe.com/xap/1.0/"><dc:title><rdf:Alt><rdf:li xml:lang="x-default">${xmlEscape(title)}</rdf:li></rdf:Alt></dc:title><dc:creator><rdf:Seq><rdf:li>Ángel Marqueta Alonso</rdf:li></rdf:Seq></dc:creator><dc:language><rdf:Bag><rdf:li>es-ES</rdf:li></rdf:Bag></dc:language><dc:format>application/pdf</dc:format><xmp:CreatorTool>Línea de pase</xmp:CreatorTool></rdf:Description></rdf:RDF></x:xmpmeta>\n<?xpacket end="w"?>`,
+      fontObject=(font,name,descriptorId)=>`<< /Type /Font /Subtype /TrueType /BaseFont /${name} /FirstChar ${font.metrics.firstChar} /LastChar ${font.metrics.lastChar} /Widths [${font.metrics.widths.join(' ')}] /Encoding /WinAnsiEncoding /FontDescriptor ${descriptorId} 0 R >>`,
+      fontDescriptor=(font,name,fileId)=>`<< /Type /FontDescriptor /FontName /${name} /Flags 32 /FontBBox [${font.metrics.bbox.join(' ')}] /ItalicAngle 0 /Ascent ${font.metrics.ascent} /Descent ${font.metrics.descent} /CapHeight ${font.metrics.capHeight} /StemV ${font.metrics.stemV} /FontFile2 ${fileId} 0 R >>`,
       objects=[
-      `<< /Type /Catalog /Pages 2 0 R /Lang (es-ES) /Metadata ${metadataId} 0 R /MarkInfo << /Marked true >> /StructTreeRoot 8 0 R /ViewerPreferences << /DisplayDocTitle true >> >>`,
+      `<< /Type /Catalog /Pages 2 0 R /Lang (es-ES) /Metadata ${metadataId} 0 R /MarkInfo << /Marked true >> /StructTreeRoot 11 0 R /ViewerPreferences << /DisplayDocTitle true >> >>`,
       '<< /Type /Pages /Kids [3 0 R] /Count 1 >>',
-      `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageW.toFixed(2)} ${pageH.toFixed(2)}] /Resources << /Font << /F1 4 0 R /F2 5 0 R /F3 6 0 R >> >> /StructParents 0 /Tabs /S /Contents 7 0 R >>`,
-      '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>',
-      '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>',
-      '<< /Type /Font /Subtype /Type1 /BaseFont /Times-Bold /Encoding /WinAnsiEncoding >>',
+      `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageW.toFixed(2)} ${pageH.toFixed(2)}] /Resources << /Font << /F1 4 0 R /F2 5 0 R /F3 4 0 R >> >> /StructParents 0 /Tabs /S /Contents 10 0 R >>`,
+      fontObject(fonts.regular,'LdpArchivoRegular',6),fontObject(fonts.bold,'LdpArchivoBold',7),fontDescriptor(fonts.regular,'LdpArchivoRegular',8),fontDescriptor(fonts.bold,'LdpArchivoBold',9),
+      null,null,
       `<< /Length ${new TextEncoder().encode(content).length} >>\nstream\n${content}\nendstream`,
-      `<< /Type /StructTreeRoot /K ${documentStructId} 0 R /ParentTree 9 0 R /ParentTreeNextKey 1 >>`,
+      `<< /Type /StructTreeRoot /K ${documentStructId} 0 R /ParentTree 12 0 R /ParentTreeNextKey 1 >>`,
       `<< /Nums [0 [${tagRefs.join(' ')}]] >>`,
-      `<< /Type /StructElem /S /Document /P 8 0 R /K [${tagRefs.join(' ')}] >>`,
+      `<< /Type /StructElem /S /Document /P 11 0 R /K [${tagRefs.join(' ')}] >>`,
       ...taggedText.map((_,index)=>`<< /Type /StructElem /S /P /P ${documentStructId} 0 R /Pg 3 0 R /K ${index} >>`),
       `<< /Type /Metadata /Subtype /XML /Length ${new TextEncoder().encode(xmp).length} >>\nstream\n${xmp}\nendstream`,
       `<< /Title (${pdfEscape(title)}) /Author (Linea de pase) /Subject (Documento en espanol; lectura marcada en es-ES) >>`
     ];
-    let pdf='%PDF-1.4\n',offsets=[0];objects.forEach((object,index)=>{offsets.push(new TextEncoder().encode(pdf).length);pdf+=`${index+1} 0 obj\n${object}\nendobj\n`;});
-    const xref=new TextEncoder().encode(pdf).length;pdf+=`xref\n0 ${objects.length+1}\n0000000000 65535 f \n`+offsets.slice(1).map(value=>`${String(value).padStart(10,'0')} 00000 n \n`).join('')+`trailer\n<< /Size ${objects.length+1} /Root 1 0 R /Info ${objects.length} 0 R >>\nstartxref\n${xref}\n%%EOF`;
+    const streamObject=(bytes,length)=>[`<< /Length ${bytes.length} /Length1 ${length} /Filter /FlateDecode >>\nstream\n`,bytes,'\nendstream'];
+    objects[7]=streamObject(fonts.regular.bytes,fonts.regular.length);objects[8]=streamObject(fonts.bold.bytes,fonts.bold.length);
+    const encoder=new TextEncoder(),toBytes=value=>typeof value==='string'?encoder.encode(value):value,
+      joinBytes=chunks=>{const converted=chunks.map(toBytes),result=new Uint8Array(converted.reduce((sum,item)=>sum+item.length,0));let cursor=0;for(const item of converted){result.set(item,cursor);cursor+=item.length;}return result;};
+    const header=encoder.encode('%PDF-1.4\n'),objectBytes=objects.map((object,index)=>joinBytes([`${index+1} 0 obj\n`,...(Array.isArray(object)?object:[object]),'\nendobj\n']));
+    let byteLength=header.length,offsets=[0];objectBytes.forEach(bytes=>{offsets.push(byteLength);byteLength+=bytes.length;});
+    const xref=byteLength,trailer=encoder.encode(`xref\n0 ${objects.length+1}\n0000000000 65535 f \n`+offsets.slice(1).map(value=>`${String(value).padStart(10,'0')} 00000 n \n`).join('')+`trailer\n<< /Size ${objects.length+1} /Root 1 0 R /Info ${infoId} 0 R >>\nstartxref\n${xref}\n%%EOF`),
+      pdf=joinBytes([header,...objectBytes,trailer]);
     return {blob:new Blob([pdf],{type:'application/pdf'}),pageMmW,pageMmH};
   }
 
-  function downloadPrintableContactSheetPdf() {
+  async function downloadPrintableContactSheetPdf() {
     const rowA=rounds.get(selectA?.value),rowB=rounds.get(selectB?.value),settings=printPageSettings();
-    const {blob,pageMmW,pageMmH}=svgToVectorPdf(buildPrintableContactSheet(false),`Hoja de contacto A4 · ${rowA.dataset.rival} y ${rowB.dataset.rival}`);if(blob.size>300*1024)throw new Error('El PDF supera 300 KB; reduce la densidad del diseño y vuelve a intentarlo.');
+    const {blob,pageMmW,pageMmH}=await svgToVectorPdf(buildPrintableContactSheet(false),`Hoja de contacto A4 · ${rowA.dataset.rival} y ${rowB.dataset.rival}`);if(blob.size>300*1024)throw new Error('El PDF supera 300 KB; reduce la densidad del diseño y vuelve a intentarlo.');
     const safe=value=>value.replace(/[^0-9a-z]+/gi,'-').replace(/^-|-$/g,'');
     saveBlob(blob,`hoja-contacto-${safe(rowA.dataset.comparisonId)}-${safe(rowB.dataset.comparisonId)}-${settings.landscape?'apaisado':'vertical'}-a4.pdf`);
     if(socialPrintStatus)socialPrintStatus.textContent=`PDF vectorial listo · ${(blob.size/1024).toFixed(1)} KB · A4 ${pageMmW} × ${pageMmH} mm · tres formatos, marcas de corte y escala de 10 mm.`;
@@ -1442,8 +1467,8 @@
     return printablePage(art,pageW,pageH);
   }
 
-  function downloadPrintableComparisonA5() {
-    const rowA=rounds.get(selectA?.value),rowB=rounds.get(selectB?.value),{blob,pageMmW,pageMmH}=svgToVectorPdf(buildPrintableComparisonA5(),`Comparación A5 · ${rowA.dataset.rival} y ${rowB.dataset.rival}`);
+  async function downloadPrintableComparisonA5() {
+    const rowA=rounds.get(selectA?.value),rowB=rounds.get(selectB?.value),{blob,pageMmW,pageMmH}=await svgToVectorPdf(buildPrintableComparisonA5(),`Comparación A5 · ${rowA.dataset.rival} y ${rowB.dataset.rival}`);
     if(blob.size>300*1024)throw new Error('El PDF A5 supera 300 KB; reduce la densidad del diseño y vuelve a intentarlo.');
     const safe=value=>value.replace(/[^0-9a-z]+/gi,'-').replace(/^-|-$/g,'');
     saveBlob(blob,`comparacion-${safe(rowA.dataset.comparisonId)}-${safe(rowB.dataset.comparisonId)}-a5.pdf`);
@@ -1463,7 +1488,7 @@
       if(row.dataset.completa==='1'){
         lines.push(`Posesión: ${row.dataset.posesion} %. Tiros: ${row.dataset.tirosZaragoza}–${row.dataset.tirosRival}.`);
         if(/^\d+$/.test(row.dataset.aPuertaZaragoza)&&/^\d+$/.test(row.dataset.aPuertaRival))lines.push(`Tiros a puerta: ${row.dataset.aPuertaZaragoza}–${row.dataset.aPuertaRival}.`);
-      }else lines.push('Ficha estadística completa no disponible para este partido.');
+      }else lines.push('Ficha estadística sin validar; solo se incluye el marcador.');
       lines.push('');
     });
     lines.push('Los datos corresponden a la ficha publicada en el archivo visual.');
@@ -1471,6 +1496,24 @@
     const safe=value=>value.replace(/[^0-9a-z]+/gi,'-').replace(/^-|-$/g,'');
     saveBlob(blob,`comparacion-${safe(selected[0].dataset.comparisonId)}-${safe(selected[1].dataset.comparisonId)}.txt`);
     if(socialPrintStatus)socialPrintStatus.textContent=`Texto accesible listo · ${(blob.size/1024).toFixed(1)} KB · dos jornadas.`;
+  }
+
+  function openPrintableComparisonHtml() {
+    const selected=[rounds.get(selectA?.value),rounds.get(selectB?.value)];
+    if(selected.some(row=>!row))throw new Error('Selecciona dos jornadas antes de preparar la versión HTML.');
+    const escapeHtml=value=>String(value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'),
+      dateLabel=value=>{const [year,month,day]=value.split('-');return `${day}/${month}/${year}`;},
+      matchSection=row=>{
+        const season=escapeHtml(row.dataset.temporada),round=String(row.dataset.jornada).padStart(2,'0'),opponent=escapeHtml(row.dataset.rival),zGoals=escapeHtml(row.dataset.golesZaragoza),rGoals=escapeHtml(row.dataset.golesRival),venue=row.dataset.sede==='Fuera'?'Fuera':'En casa';
+        const stats=row.dataset.completa==='1'?`<dl><div><dt>Posesión del Zaragoza</dt><dd>${escapeHtml(row.dataset.posesion)} %</dd></div><div><dt>Tiros · Zaragoza–rival</dt><dd>${escapeHtml(row.dataset.tirosZaragoza)}–${escapeHtml(row.dataset.tirosRival)}</dd></div>${/^\d+$/.test(row.dataset.aPuertaZaragoza)&&/^\d+$/.test(row.dataset.aPuertaRival)?`<div><dt>Tiros a puerta · Zaragoza–rival</dt><dd>${escapeHtml(row.dataset.aPuertaZaragoza)}–${escapeHtml(row.dataset.aPuertaRival)}</dd></div>`:''}</dl><p class="estado validado">Ficha completa; estadísticas incluidas.</p>`:'<p class="estado pendiente">Ficha estadística sin validar. Se muestra solo el marcador.</p>';
+        return `<section aria-labelledby="jornada-${round}-${season.replace(/[^a-z0-9]+/gi,'-')}"><h2 id="jornada-${round}-${season.replace(/[^a-z0-9]+/gi,'-')}">Jornada ${round} · ${dateLabel(row.dataset.fechaPartido)} · ${season}</h2><p class="resultado"><strong>Real Zaragoza ${zGoals}–${rGoals} ${opponent}</strong> · ${venue}.</p>${stats}</section>`;
+      },
+      html=`<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Comparación de jornadas · Línea de pase</title><style>:root{font-family:Arial,Helvetica,sans-serif;color:#17251c;background:#fff}body{max-width:44rem;margin:2rem auto;padding:0 1.25rem;line-height:1.55}header{border-bottom:2px solid #174a30;padding-bottom:1rem}h1{font-size:1.7rem;line-height:1.2}h2{font-size:1.15rem;margin-bottom:.45rem}section{padding:1rem 0;border-bottom:1px solid #cfd9d1;break-inside:avoid}dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(9rem,1fr));gap:.5rem 1rem}dt{font-size:.9rem;color:#46574b}dd{margin:.15rem 0;font-weight:700}.estado{padding:.6rem .75rem;border-radius:.35rem}.validado{background:#e5f1e8;color:#174a30}.pendiente{background:#f4efe2;color:#654d17}.resultado{font-size:1.2rem}footer{font-size:.85rem;color:#536257;padding-top:1rem}.imprimir{font:inherit;padding:.6rem 1rem;margin:1rem 0;background:#174a30;color:#fff;border:0;border-radius:.35rem;cursor:pointer}@media print{@page{size:A5 portrait;margin:12mm}body{max-width:none;margin:0;padding:0}.imprimir{display:none}section{break-inside:avoid}header{border-color:#333}.estado{border:1px solid #777;background:#fff!important;color:#111!important}}</style></head><body><header><p>Línea de pase · Comparación de jornadas</p><h1>Real Zaragoza · temporada ${escapeHtml(selected[0].dataset.temporada)}</h1><p>Marcadores y estadísticas verificadas disponibles para las dos jornadas seleccionadas.</p></header><button class="imprimir" type="button" onclick="window.print()">Imprimir o guardar como PDF</button><main>${selected.map(matchSection).join('')}</main><footer>Las estadísticas solo se incluyen cuando la ficha está completa y validada.</footer></body></html>`,
+      printWindow=window.open('','_blank');
+    if(printWindow){printWindow.document.open();printWindow.document.write(html);printWindow.document.close();printWindow.focus();if(socialPrintStatus)socialPrintStatus.textContent='Versión HTML accesible abierta · puedes imprimirla o guardarla como PDF desde el navegador.';return;}
+    const blob=new Blob([html],{type:'text/html;charset=utf-8'}),safe=value=>value.replace(/[^0-9a-z]+/gi,'-').replace(/^-|-$/g,'');
+    saveBlob(blob,`comparacion-${safe(selected[0].dataset.comparisonId)}-${safe(selected[1].dataset.comparisonId)}-imprimible.html`);
+    if(socialPrintStatus)socialPrintStatus.textContent='El navegador bloqueó la pestaña nueva; se descargó la versión HTML accesible para abrirla e imprimirla.';
   }
 
   function downloadPrintableContactSheet() {
@@ -1676,10 +1719,11 @@
     seasonQrA5Button?.addEventListener('click',downloadSeasonQrA5);
     socialPrintButton?.addEventListener('click',()=>{try{downloadPrintableSocialSvg();}catch(error){if(socialPrintStatus)socialPrintStatus.textContent=error instanceof Error?error.message:'No se pudo preparar la plantilla imprimible.';}});
     contactSheetPrintButton?.addEventListener('click',()=>{try{downloadPrintableContactSheet();}catch(error){if(socialPrintStatus)socialPrintStatus.textContent=error instanceof Error?error.message:'No se pudo preparar la hoja de contacto.';}});
-    contactSheetPdfButton?.addEventListener('click',()=>{try{downloadPrintableContactSheetPdf();}catch(error){if(socialPrintStatus)socialPrintStatus.textContent=error instanceof Error?error.message:'No se pudo preparar el PDF vectorial.';}});
+    contactSheetPdfButton?.addEventListener('click',async()=>{try{await downloadPrintableContactSheetPdf();}catch(error){if(socialPrintStatus)socialPrintStatus.textContent=error instanceof Error?error.message:'No se pudo preparar el PDF vectorial.';}});
     contactSheetDirectPrintButton?.addEventListener('click',()=>{try{printContactSheetDirectly();}catch(error){if(socialPrintStatus)socialPrintStatus.textContent=error instanceof Error?error.message:'No se pudo abrir la impresión A4.';}});
-    comparisonA5PdfButton?.addEventListener('click',()=>{try{downloadPrintableComparisonA5();}catch(error){if(socialPrintStatus)socialPrintStatus.textContent=error instanceof Error?error.message:'No se pudo preparar el PDF A5.';}});
+    comparisonA5PdfButton?.addEventListener('click',async()=>{try{await downloadPrintableComparisonA5();}catch(error){if(socialPrintStatus)socialPrintStatus.textContent=error instanceof Error?error.message:'No se pudo preparar el PDF A5.';}});
     comparisonTextButton?.addEventListener('click',()=>{try{downloadComparisonText();}catch(error){if(socialPrintStatus)socialPrintStatus.textContent=error instanceof Error?error.message:'No se pudo preparar el texto de la comparación.';}});
+    comparisonHtmlButton?.addEventListener('click',()=>{try{openPrintableComparisonHtml();}catch(error){if(socialPrintStatus)socialPrintStatus.textContent=error instanceof Error?error.message:'No se pudo preparar la versión HTML accesible.';}});
     comparisonA5DirectPrintButton?.addEventListener('click',()=>{try{printComparisonA5Directly();}catch(error){if(socialPrintStatus)socialPrintStatus.textContent=error instanceof Error?error.message:'No se pudo abrir la impresión A5.';}});
     [printPaperSelect,printOrientationSelect,contactSheetVariantSelect].forEach(control=>control?.addEventListener('change',()=>{savePrintSettings();updateContactSheetPrintPreview();updateA5PrintPreview();if(printSettingsStatus)printSettingsStatus.textContent='Preferencias guardadas en este navegador.';}));
     comparisonA5InkSelect?.addEventListener('change',()=>{savePrintSettings();updateA5PrintPreview();if(printSettingsStatus)printSettingsStatus.textContent='Preferencias guardadas en este navegador.';});

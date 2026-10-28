@@ -539,3 +539,5 @@ main.envoltorio{width:100%;min-width:0}
 .zgz-mitad{background:linear-gradient(90deg,#213e96 50%,#fff 50%)!important;box-shadow:0 0 0 1px #fff}
 .boton.boton-zgz,.cesped .boton.boton-zgz{background:#213e96;border-color:#fff;color:#fff}
 .boton.boton-zgz:hover,.cesped .boton.boton-zgz:hover{background:#fff;border-color:#fff;color:#213e96}
+.aviso-ficha-estadistica{margin:.65rem 0;padding:.65rem .8rem;border-left:4px solid #785b19;background:#f6f2e8;color:#403719;font-size:.92rem;line-height:1.45}
+.aviso-ficha-estadistica.validada{border-color:#276341;background:#edf5ef;color:#173c27}
