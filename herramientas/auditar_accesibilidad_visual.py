@@ -1,6 +1,7 @@
 """Comprueba tamaño de controles, foco visible y contraste de tokens visuales."""
 from __future__ import annotations
 
+from html.parser import HTMLParser
 from pathlib import Path
 import re
 
@@ -53,6 +54,107 @@ def contrast(first: str, second: str) -> float:
     return (light + .05) / (dark + .05)
 
 
+class ControlNameParser(HTMLParser):
+    """Collects native controls and their labels without external dependencies."""
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self.controls: list[dict[str, object]] = []
+        self.labels: list[dict[str, object]] = []
+        self.active_labels: list[dict[str, object]] = []
+        self.active_buttons: list[int] = []
+        self.active_ids: list[dict[str, str]] = []
+        self.id_text: dict[str, str] = {}
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        attributes = {key: value or "" for key, value in attrs}
+        if tag == "label":
+            label: dict[str, object] = {"for": attributes.get("for", ""), "text": "", "controls": []}
+            self.labels.append(label)
+            self.active_labels.append(label)
+        if "id" in attributes:
+            self.active_ids.append({"id": attributes["id"], "tag": tag, "text": ""})
+        if tag in {"button", "input", "select", "textarea"}:
+            item: dict[str, object] = {
+                "tag": tag,
+                "attrs": attributes,
+                "text": "",
+                "wrapped_labels": [],
+            }
+            index = len(self.controls)
+            self.controls.append(item)
+            for label in self.active_labels:
+                if not label["for"]:
+                    label["controls"].append(index)
+                    item["wrapped_labels"].append(label)
+            if tag == "button":
+                self.active_buttons.append(index)
+        if tag == "img" and attributes.get("alt"):
+            for index in self.active_buttons:
+                self.controls[index]["text"] += " " + attributes["alt"]
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag == "label":
+            for index in range(len(self.active_labels) - 1, -1, -1):
+                if self.active_labels[index] in self.labels:
+                    del self.active_labels[index]
+                    break
+        if tag == "button" and self.active_buttons:
+            self.active_buttons.pop()
+        for index in range(len(self.active_ids) - 1, -1, -1):
+            if self.active_ids[index]["tag"] == tag:
+                entry = self.active_ids.pop(index)
+                self.id_text[entry["id"]] = entry["text"].strip()
+                break
+
+    def handle_data(self, data: str) -> None:
+        for label in self.active_labels:
+            label["text"] += data
+        for index in self.active_buttons:
+            self.controls[index]["text"] += data
+        for entry in self.active_ids:
+            entry["text"] += data
+
+    def unnamed_controls(self) -> list[str]:
+        issues = []
+        for item in self.controls:
+            tag = str(item["tag"])
+            attrs = item["attrs"]
+            assert isinstance(attrs, dict)
+            if tag == "input" and attrs.get("type", "text").lower() == "hidden":
+                continue
+            labels = [str(label["text"]).strip() for label in self.labels
+                      if label["for"] == attrs.get("id") and attrs.get("id")]
+            labels.extend(str(label["text"]).strip() for label in item["wrapped_labels"])
+            labelled_by = [self.id_text.get(identifier.strip(), "")
+                           for identifier in attrs.get("aria-labelledby", "").split()]
+            value_name = attrs.get("value", "") if tag == "input" and attrs.get("type", "").lower() in {
+                "button", "submit", "reset", "image"
+            } else ""
+            name = (attrs.get("aria-label", "") or " ".join(labelled_by) or attrs.get("title", "")
+                    or str(item["text"]) or value_name or " ".join(labels))
+            if not name.strip():
+                issues.append(f"<{tag}> sin nombre accesible")
+        return issues
+
+
+def audit_control_names() -> int:
+    page_count = 0
+    problems = []
+    for path in sorted(ROOT.rglob("*.html")):
+        parser = ControlNameParser()
+        parser.feed(path.read_text(encoding="utf-8"))
+        page_count += 1
+        for issue in parser.unnamed_controls():
+            problems.append(f"{path.relative_to(ROOT)}: {issue}")
+    if problems:
+        preview = "\n".join(problems[:20])
+        remaining = len(problems) - min(len(problems), 20)
+        suffix = f"\n... y {remaining} más" if remaining else ""
+        raise RuntimeError(f"Controles sin nombre accesible ({len(problems)}):\n{preview}{suffix}")
+    return page_count
+
+
 def audit() -> None:
     styles = {
         path: (ROOT / path).read_text(encoding="utf-8")
@@ -87,7 +189,8 @@ def audit() -> None:
         if svg_text_ratio < 4.5:
             raise RuntimeError(f"Contraste del texto de gráficos en tema {theme}: {svg_text_ratio:.2f}:1 (<4,5:1).")
 
-    print("Accesibilidad visual: 7 grupos de controles con mínimo 44 px; foco visible y contraste de texto SVG correctos en claro y oscuro.")
+    pages = audit_control_names()
+    print(f"Accesibilidad visual: 7 grupos de controles con mínimo 44 px; foco y contraste SVG correctos en claro y oscuro; controles con nombre accesible en {pages} páginas.")
 
 
 if __name__ == "__main__":
