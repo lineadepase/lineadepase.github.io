@@ -179,7 +179,7 @@ def main() -> None:
         'data-rival-mapa', 'data-desde-mapa', 'data-hasta-mapa', 'data-forma-reciente', 'data-racha-temporada', 'data-forma-rival', 'data-forma-rival-estado', 'data-descargar-carrusel-temporada', 'data-compartir-mapa', 'id="datos-forma-rivales"',
         'data-nombre-enlace-mapa', 'data-guardar-enlace-mapa', 'data-enlaces-guardados', 'data-estado-enlaces-guardados',
         'data-exportar-enlaces-mapa', 'data-importar-enlaces-mapa', 'data-archivo-enlaces-mapa',
-        'data-generar-qr-enlace', 'data-descargar-qr-enlace', 'data-vista-qr-enlace',
+        'data-generar-qr-enlace', 'data-descargar-qr-enlace', 'data-copiar-qr-enlace', 'data-nombre-qr-enlace', 'data-vista-qr-enlace',
         'social-cuadrada', 'social-vertical',
         'data-descargar-comparacion="webp"', 'Carrusel · 2 diapositivas cuadradas',
         '1080 × 1080', '1080 × 1350', '1080 × 1920', '1200 × 630',
@@ -227,7 +227,7 @@ def main() -> None:
     qr_library = ROOT / 'assets' / 'vendor' / 'qrcodegen.js'
     if not qr_library.is_file() or 'assets/vendor/qrcodegen.js' not in archive_html:
         raise RuntimeError('Falta la biblioteca QR local o no está incluida en la página del archivo.')
-    saved_link_features = ('exportSeasonSavedLinks', 'importSeasonSavedLinks', 'makeSeasonLinkQr', 'downloadSeasonLinkQr', 'data-fijar-enlace-mapa', 'data-subir-enlace-mapa', 'data-bajar-enlace-mapa', 'saveSeasonSavedLinks', 'window.qrcodegen.QrCode.encodeText')
+    saved_link_features = ('exportSeasonSavedLinks', 'importSeasonSavedLinks', 'makeSeasonLinkQr', 'downloadSeasonLinkQr', 'copySeasonLinkQr', 'zipStored(files)', 'LEEME.txt', 'image/png', 'data-fijar-enlace-mapa', 'data-subir-enlace-mapa', 'data-bajar-enlace-mapa', 'saveSeasonSavedLinks', 'window.qrcodegen.QrCode.encodeText')
     missing_saved_link_features = [marker for marker in saved_link_features if marker not in archive_script]
     if missing_saved_link_features:
         raise RuntimeError('Faltan funciones para transferir, ordenar o generar QR: ' + ', '.join(missing_saved_link_features))

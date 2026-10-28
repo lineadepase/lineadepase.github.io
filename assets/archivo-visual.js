@@ -58,6 +58,8 @@
   const seasonImportLinksFile = document.querySelector('[data-archivo-enlaces-mapa]');
   const seasonQrButton = document.querySelector('[data-generar-qr-enlace]');
   const seasonQrDownloadButton = document.querySelector('[data-descargar-qr-enlace]');
+  const seasonQrCopyButton = document.querySelector('[data-copiar-qr-enlace]');
+  const seasonQrName = document.querySelector('[data-nombre-qr-enlace]');
   const seasonQrPreview = document.querySelector('[data-vista-qr-enlace]');
   let seasonQrSvg = '';
   let seasonQrObjectUrl = '';
@@ -603,9 +605,11 @@
 
   function exportSeasonSavedLinks() {
     const payload={format:'lineadepase-mapa-links',version:1,links:readSeasonSavedLinks().map(({name,url,pinned})=>({name,url,pinned}))};
-    const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json;charset=utf-8'});
-    saveBlob(blob,'selecciones-mapa-linea-de-pase.json');
-    if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent=`${payload.links.length} ${payload.links.length===1?'selección exportada':'selecciones exportadas'} a un archivo JSON.`;
+    const encoder=new TextEncoder(),json=encoder.encode(JSON.stringify(payload,null,2));
+    const guide=encoder.encode('SELECCIONES GUARDADAS · LÍNEA DE PASE\n\nEste paquete contiene selecciones guardadas del mapa de temporada.\n\nPara recuperarlas:\n1. Abre el archivo visual de Línea de pase.\n2. Pulsa «Importar archivo JSON».\n3. Elige selecciones-mapa-linea-de-pase.json dentro de este ZIP.\n\nSe pueden guardar hasta seis selecciones en cada navegador. La importación combina nombres coincidentes y solo conserva los filtros admitidos por el mapa.\n');
+    const blob=zipStored([{name:'selecciones-mapa-linea-de-pase.json',bytes:json},{name:'LEEME.txt',bytes:guide}]);
+    saveBlob(blob,'selecciones-mapa-linea-de-pase.zip');
+    if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent=`Paquete exportado: ${payload.links.length} ${payload.links.length===1?'selección':'selecciones'} y archivo de instrucciones.`;
   }
 
   async function importSeasonSavedLinks(file) {
@@ -635,12 +639,14 @@
     try {
       if(!window.qrcodegen?.QrCode)throw new Error('QR no disponible');
       const qr=window.qrcodegen.QrCode.encodeText(seasonPosterLinkUrl(),window.qrcodegen.QrCode.Ecc.MEDIUM),quiet=4,module=8,size=(qr.size+quiet*2)*module;
+      const label=(seasonQrName?.value||'').trim().slice(0,28),labelHeight=label?48:0,height=size+labelHeight;
       let path='';
       for(let y=0;y<qr.size;y++)for(let x=0;x<qr.size;x++)if(qr.getModule(x,y))path+=`M${(x+quiet)*module} ${(y+quiet)*module}h${module}v${module}h-${module}z`;
-      seasonQrSvg=`<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" role="img" aria-label="Código QR para abrir la selección del mapa"><rect width="100%" height="100%" fill="#fff"/><path d="${path}" fill="#15221b"/></svg>`;
+      seasonQrSvg=`<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${height}" viewBox="0 0 ${size} ${height}" role="img" aria-label="Código QR para abrir la selección del mapa"><rect width="100%" height="100%" fill="#fff"/><path d="${path}" fill="#15221b"/>${label?`<text x="${size/2}" y="${size+32}" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#15221b">${xml(label)}</text>`:''}</svg>`;
       if(seasonQrObjectUrl)URL.revokeObjectURL(seasonQrObjectUrl);
       if(seasonQrPreview){seasonQrObjectUrl=URL.createObjectURL(new Blob([seasonQrSvg],{type:'image/svg+xml'}));seasonQrPreview.src=seasonQrObjectUrl;seasonQrPreview.hidden=false;if(seasonQrPreview.parentElement)seasonQrPreview.parentElement.hidden=false;}
       if(seasonQrDownloadButton)seasonQrDownloadButton.disabled=false;
+      if(seasonQrCopyButton)seasonQrCopyButton.disabled=false;
       if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent='QR listo: contiene solo el enlace de esta selección y se genera en este navegador.';
     } catch(_){if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent='No se pudo generar el QR en este navegador.';}
   }
@@ -651,11 +657,22 @@
     if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent='QR descargado en SVG.';
   }
 
+  async function copySeasonLinkQr() {
+    if(!seasonQrSvg)return;
+    try {
+      if(!navigator.clipboard?.write||!window.ClipboardItem)throw new Error('portapapeles no disponible');
+      const png=await svgToRaster(seasonQrSvg,'image/png');
+      await navigator.clipboard.write([new ClipboardItem({'image/png':png})]);
+      if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent='Imagen QR copiada al portapapeles.';
+    } catch(_){if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent='Este navegador no permite copiar la imagen QR; puedes descargar el SVG.';}
+  }
+
   function clearSeasonLinkQr() {
     seasonQrSvg='';
     if(seasonQrObjectUrl){URL.revokeObjectURL(seasonQrObjectUrl);seasonQrObjectUrl='';}
     if(seasonQrPreview){seasonQrPreview.removeAttribute('src');seasonQrPreview.hidden=true;if(seasonQrPreview.parentElement)seasonQrPreview.parentElement.hidden=true;}
     if(seasonQrDownloadButton)seasonQrDownloadButton.disabled=true;
+    if(seasonQrCopyButton)seasonQrCopyButton.disabled=true;
   }
 
   function restoreSeasonPosterFromUrl() {
@@ -1037,6 +1054,8 @@
     seasonImportLinksFile?.addEventListener('change',()=>importSeasonSavedLinks(seasonImportLinksFile.files?.[0]));
     seasonQrButton?.addEventListener('click',makeSeasonLinkQr);
     seasonQrDownloadButton?.addEventListener('click',downloadSeasonLinkQr);
+    seasonQrCopyButton?.addEventListener('click',copySeasonLinkQr);
+    seasonQrName?.addEventListener('input',()=>{if(seasonQrSvg)clearSeasonLinkQr();});
     seasonSaveLinkName?.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();saveNamedSeasonPosterLink();}});
     seasonSavedLinksList?.addEventListener('click',async event=>{
       const button=event.target.closest('button[data-aplicar-enlace-mapa],button[data-copiar-enlace-mapa],button[data-borrar-enlace-mapa],button[data-fijar-enlace-mapa],button[data-subir-enlace-mapa],button[data-bajar-enlace-mapa]');
