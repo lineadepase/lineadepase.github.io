@@ -18,6 +18,9 @@
   const deletePresetButton = document.querySelector('[data-borrar-preset]');
   const paletteSelect = document.querySelector('[data-paleta-visual]');
   const contrastNotice = document.querySelector('[data-aviso-contraste]');
+  const framingSelect = document.querySelector('[data-encuadre-visual]');
+  const densitySelect = document.querySelector('[data-densidad-visual]');
+  const safeZoneToggle = document.querySelector('[data-guia-zonas]');
   const formatThumbnailButtons = [...document.querySelectorAll('[data-miniatura-formato]')];
   const compareState = document.querySelector('[data-estado-comparacion]');
   const downloadControls = document.querySelector('[data-controles-descarga]');
@@ -47,11 +50,11 @@
     papel: {background:'#f4efe5',panel:'#fffcf5',header:'#203744',headerText:'#ffffff',brand:'#dce7e2',contextHeader:'#f0f4ed',foreground:'#1e2f38',muted:'#43505a',border:'#aab7b3',accent:'#ad4523',domain:'#43505a'}
   };
   const builtInPresets = {
-    portada: {format:'apaisado',metrics:true,caption:true,noHeader:false,brand:true},
-    'comparacion-limpia': {format:'cuadrado',metrics:true,caption:false,noHeader:true,brand:false},
-    historia: {format:'historias',metrics:true,caption:false,noHeader:false,brand:true},
-    'social-cuadrada': {format:'cuadrado',metrics:false,caption:false,noHeader:true,brand:true},
-    'social-vertical': {format:'vertical',metrics:false,caption:false,noHeader:true,brand:true}
+    portada: {format:'apaisado',metrics:true,caption:true,noHeader:false,brand:true,framing:'equilibrado',density:'completa'},
+    'comparacion-limpia': {format:'cuadrado',metrics:true,caption:false,noHeader:true,brand:false,framing:'equilibrado',density:'completa'},
+    historia: {format:'historias',metrics:true,caption:false,noHeader:false,brand:true,framing:'equilibrado',density:'completa'},
+    'social-cuadrada': {format:'cuadrado',metrics:false,caption:false,noHeader:true,brand:true,framing:'protagonista',density:'esencial'},
+    'social-vertical': {format:'vertical',metrics:false,caption:false,noHeader:true,brand:true,framing:'protagonista',density:'esencial'}
   };
 
   function activePalette() { return palettes[paletteSelect?.value] || palettes.clasica; }
@@ -99,6 +102,8 @@
     if (noHeaderToggle && typeof saved.noHeader === 'boolean') noHeaderToggle.checked = saved.noHeader;
     if (brandToggle && typeof saved.brand === 'boolean') brandToggle.checked = saved.brand;
     if (paletteSelect && [...paletteSelect.options].some(option => option.value === saved.palette)) paletteSelect.value = saved.palette;
+    if (framingSelect && [...framingSelect.options].some(option => option.value === saved.framing)) framingSelect.value = saved.framing;
+    if (densitySelect && [...densitySelect.options].some(option => option.value === saved.density)) densitySelect.value = saved.density;
   }
 
   function saveVisualPreferences() {
@@ -108,7 +113,9 @@
       caption: Boolean(captionToggle?.checked),
       noHeader: Boolean(noHeaderToggle?.checked),
       brand: brandToggle?.checked !== false,
-      palette: paletteSelect?.value || 'clasica'
+      palette: paletteSelect?.value || 'clasica',
+      framing: framingSelect?.value || 'equilibrado',
+      density: densitySelect?.value || 'completa'
     });
   }
 
@@ -128,7 +135,9 @@
       caption: Boolean(captionToggle?.checked),
       noHeader: Boolean(noHeaderToggle?.checked),
       brand: brandToggle?.checked !== false,
-      palette: paletteSelect?.value || 'clasica'
+      palette: paletteSelect?.value || 'clasica',
+      framing: framingSelect?.value || 'equilibrado',
+      density: densitySelect?.value || 'completa'
     };
   }
 
@@ -165,6 +174,8 @@
     if (noHeaderToggle && typeof settings.noHeader === 'boolean') noHeaderToggle.checked = settings.noHeader;
     if (brandToggle && typeof settings.brand === 'boolean') brandToggle.checked = settings.brand;
     if (paletteSelect && palettes[settings.palette]) paletteSelect.value = settings.palette;
+    if (framingSelect && ['equilibrado','protagonista'].includes(settings.framing)) framingSelect.value = settings.framing;
+    if (densitySelect && ['completa','resultado','esencial'].includes(settings.density)) densitySelect.value = settings.density;
     formatSelect?.dispatchEvent(new Event('change',{bubbles:true}));
     saveVisualPreferences();
     updateComparison('');
@@ -179,7 +190,7 @@
       const format = button.dataset.miniaturaFormato;
       if (!format) return;
       const isCarousel = format === 'carrusel';
-      const svg = comparisonSvg(rowA,rowB,format,metrics,Boolean(captionToggle?.checked),!Boolean(noHeaderToggle?.checked),Boolean(brandToggle?.checked),isCarousel?rowA:null,isCarousel?carouselContextInput?.value.trim().slice(0,72) || '':'');
+      const svg = comparisonSvg(rowA,rowB,format,metrics,Boolean(captionToggle?.checked),!Boolean(noHeaderToggle?.checked),Boolean(brandToggle?.checked),isCarousel?rowA:null,isCarousel?carouselContextInput?.value.trim().slice(0,72) || '':'',densitySelect?.value,framingSelect?.value);
       const image = button.querySelector('img');
       if (image) image.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
       button.setAttribute('aria-pressed',String(formatSelect?.value === format));
@@ -247,7 +258,7 @@
     if (!rowA || !rowB) return;
     const includeMetrics = rowA.dataset.completa === '1' && rowB.dataset.completa === '1';
     if (metricsToggle) {
-      metricsToggle.disabled = !includeMetrics;
+      metricsToggle.disabled = !includeMetrics || densitySelect?.value !== 'completa';
       if (!includeMetrics) metricsToggle.checked = false;
     }
     renderCard('a', rowA, includeMetrics);
@@ -269,12 +280,12 @@
     return String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[char]));
   }
 
-  function comparisonSvg(rowA, rowB, format, includeMetrics, includeCaption, includeHeader, showBrand, singleRow = null, contextText = '') {
+  function comparisonSvg(rowA, rowB, format, includeMetrics, includeCaption, includeHeader, showBrand, singleRow = null, contextText = '', density = densitySelect?.value || 'completa', framing = framingSelect?.value || 'equilibrado') {
     const layouts = {
       apaisado: {width:1200,height:630,header:148,panels:[{x:54,y:190,w:528,h:365},{x:618,y:190,w:528,h:365}],titleSize:42,titleY:111,brandY:54,captionY:582,domainY:606},
       cuadrado: {width:1080,height:1080,header:180,panels:[{x:80,y:220,w:920,h:350},{x:80,y:610,w:920,h:350}],titleSize:40,titleY:128,brandY:65,captionY:1010,domainY:1056},
       vertical: {width:1080,height:1350,header:190,panels:[{x:80,y:235,w:920,h:465},{x:80,y:755,w:920,h:465}],titleSize:40,titleY:134,brandY:64,captionY:1258,domainY:1326},
-      historias: {width:1080,height:1920,header:395,panels:[{x:80,y:430,w:920,h:430},{x:80,y:900,w:920,h:430}],titleSize:40,titleY:348,brandY:274,captionY:1500,domainY:1560},
+      historias: {width:1080,height:1920,header:520,panels:[{x:80,y:555,w:920,h:420},{x:80,y:1030,w:920,h:420}],titleSize:40,titleY:450,brandY:375,captionY:1520,domainY:1570},
       carrusel: {width:1080,height:1080,header:190,panels:[{x:80,y:260,w:920,h:540}],titleSize:40,titleY:130,brandY:66,captionY:930,domainY:1056,single:true}
     };
     const baseLayout = layouts[format] || layouts.apaisado;
@@ -292,12 +303,15 @@
       const round = row.dataset.jornada.padStart(2, '0');
       const seasonLabel = xml(row.dataset.temporada);
       const cardMetrics = includeMetrics && row.dataset.completa === '1';
-      const metrics = cardMetrics
+      const metrics = cardMetrics && density === 'completa'
         ? `Posesión ${xml(row.dataset.posesion.replace('.', ','))}% · tiros ${xml(row.dataset.tirosZaragoza)}–${xml(row.dataset.tirosRival)}`
         : '';
       const center=x+w/2, pad=Math.min(32,w*.06), nameWidth=w*.38;
       const metaY=y+44, labelY=y+h*.34, namesY=y+h*.45, scoreY=y+h*.70, metricY=y+h-36;
-      return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="22" fill="${palette.panel}" stroke="${palette.border}" stroke-width="2"/><path d="M${x} ${y+h-8}h${w}" stroke="${palette.accent}" stroke-width="8"/><text x="${x+pad}" y="${metaY}" fill="${palette.muted}" font-family="Arial,sans-serif" font-size="${w<600?19:23}" font-weight="700" letter-spacing="1.2">${seasonLabel} · J${round} · ${xml(row.dataset.fechaPartido)}</text><text x="${x+pad}" y="${labelY}" fill="${palette.muted}" font-family="Arial,sans-serif" font-size="${w<600?17:19}" font-weight="700">LOCAL</text><text x="${x+w-pad}" y="${labelY}" text-anchor="end" fill="${palette.muted}" font-family="Arial,sans-serif" font-size="${w<600?17:19}" font-weight="700">VISITANTE</text><text x="${x+pad}" y="${namesY}" fill="${palette.foreground}" font-family="Arial,sans-serif" font-size="${w<600?24:30}" font-weight="700" textLength="${nameWidth}" lengthAdjust="spacingAndGlyphs">${xml(home)}</text><text x="${x+w-pad}" y="${namesY}" text-anchor="end" fill="${palette.foreground}" font-family="Arial,sans-serif" font-size="${w<600?24:30}" font-weight="700" textLength="${nameWidth}" lengthAdjust="spacingAndGlyphs">${xml(away)}</text><text x="${center}" y="${scoreY}" text-anchor="middle" fill="${palette.foreground}" font-family="Arial,sans-serif" font-size="${w<600?78:92}" font-weight="800">${xml(homeGoals)} <tspan fill="${palette.accent}" font-size="${w<600?56:64}">–</tspan> ${xml(awayGoals)}</text>${metrics?`<text x="${center}" y="${metricY}" text-anchor="middle" fill="${palette.muted}" font-family="Arial,sans-serif" font-size="${w<600?17:19}">${metrics}</text>`:''}`;
+      const scoreSize = framing === 'protagonista' ? (w<600?100:122) : (w<600?78:92);
+      const separatorSize = framing === 'protagonista' ? (w<600?62:82) : (w<600?56:64);
+      const meta = density === 'esencial' ? '' : `<text x="${x+pad}" y="${metaY}" fill="${palette.muted}" font-family="Arial,sans-serif" font-size="${w<600?19:23}" font-weight="700" letter-spacing="1.2">${seasonLabel} · J${round} · ${xml(row.dataset.fechaPartido)}</text>`;
+      return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="22" fill="${palette.panel}" stroke="${palette.border}" stroke-width="2"/><path d="M${x} ${y+h-8}h${w}" stroke="${palette.accent}" stroke-width="8"/>${meta}<text x="${x+pad}" y="${labelY}" fill="${palette.muted}" font-family="Arial,sans-serif" font-size="${w<600?17:19}" font-weight="700">LOCAL</text><text x="${x+w-pad}" y="${labelY}" text-anchor="end" fill="${palette.muted}" font-family="Arial,sans-serif" font-size="${w<600?17:19}" font-weight="700">VISITANTE</text><text x="${x+pad}" y="${namesY}" fill="${palette.foreground}" font-family="Arial,sans-serif" font-size="${w<600?24:30}" font-weight="700" textLength="${nameWidth}" lengthAdjust="spacingAndGlyphs">${xml(home)}</text><text x="${x+w-pad}" y="${namesY}" text-anchor="end" fill="${palette.foreground}" font-family="Arial,sans-serif" font-size="${w<600?24:30}" font-weight="700" textLength="${nameWidth}" lengthAdjust="spacingAndGlyphs">${xml(away)}</text><text x="${center}" y="${scoreY}" text-anchor="middle" fill="${palette.foreground}" font-family="Arial,sans-serif" font-size="${scoreSize}" font-weight="800">${xml(homeGoals)} <tspan fill="${palette.accent}" font-size="${separatorSize}">–</tspan> ${xml(awayGoals)}</text>${metrics?`<text x="${center}" y="${metricY}" text-anchor="middle" fill="${palette.muted}" font-family="Arial,sans-serif" font-size="${w<600?17:19}">${metrics}</text>`:''}`;
     }).join('');
     const title = singleRow
       ? `Jornada ${singleRow.dataset.jornada} · ${singleRow.dataset.rival} · ${singleRow.dataset.temporada}`
@@ -306,7 +320,7 @@
       ? {home:'Real Zaragoza',away:row.dataset.rival,homeGoals:row.dataset.golesZaragoza,awayGoals:row.dataset.golesRival}
       : {home:row.dataset.rival,away:'Real Zaragoza',homeGoals:row.dataset.golesRival,awayGoals:row.dataset.golesZaragoza};
     const scores=displayRows.map(row => ({row,score:homeAway(row)}));
-    const caption=includeCaption
+    const caption=includeCaption && density === 'completa'
       ? `<text x="${layout.width/2}" y="${layout.captionY}" text-anchor="middle" fill="${palette.muted}" font-family="Arial,sans-serif" font-size="17" font-weight="700">Primera Federación · ${scores.map(({row,score})=>`J${row.dataset.jornada.padStart(2,'0')} ${score.homeGoals}–${score.awayGoals}`).join(' · ')}</text>`
       : '';
     const storiesDesc=format==='historias'?' La composición reserva espacio superior e inferior para no quedar debajo de los controles de las historias.':'';
@@ -342,6 +356,11 @@
     carouselPreviewImage.onerror=()=>{if(oldUrl)URL.revokeObjectURL(oldUrl);carouselPreviewImage.onerror=null;};
     carouselPreviewImage.src=nextUrl;
     updateFormatThumbnails();
+  }
+
+  function updateSafeZoneGuide() {
+    const frame = document.querySelector('[data-miniatura-zonas]');
+    frame?.classList.toggle('mostrar-zonas-seguras',formatSelect?.value === 'historias' && Boolean(safeZoneToggle?.checked));
   }
 
   function saveBlob(blob, filename) {
@@ -500,6 +519,12 @@
       updateFavoriteButton();
     });
     [formatSelect,metricsToggle,captionToggle,noHeaderToggle,brandToggle].forEach(control=>control?.addEventListener('change',saveVisualPreferences));
+    [framingSelect,densitySelect].forEach(control=>control?.addEventListener('change',() => {
+      updateFormatGuidance();
+      updateComparison('');
+      saveVisualPreferences();
+    }));
+    safeZoneToggle?.addEventListener('change',updateSafeZoneGuide);
     resetOptionsButton?.addEventListener('click', () => {
       if (formatSelect) formatSelect.value = 'apaisado';
       if (metricsToggle) metricsToggle.checked = true;
@@ -507,6 +532,9 @@
       if (noHeaderToggle) noHeaderToggle.checked = false;
       if (brandToggle) brandToggle.checked = true;
       if (paletteSelect) paletteSelect.value = 'clasica';
+      if (framingSelect) framingSelect.value = 'equilibrado';
+      if (densitySelect) densitySelect.value = 'completa';
+      if (safeZoneToggle) safeZoneToggle.checked = false;
       if (carouselContextInput) carouselContextInput.value = '';
       if (carouselExamples) carouselExamples.value = '';
       if (presetSelect) presetSelect.value = '';
@@ -537,6 +565,8 @@
       if (individualDownloads) individualDownloads.hidden = formatSelect?.value === 'carrusel';
       if (carouselDownloads) carouselDownloads.hidden = formatSelect?.value !== 'carrusel';
       if (copyImageButton) copyImageButton.textContent = formatSelect?.value === 'carrusel' ? 'Copiar primera diapositiva' : 'Copiar imagen';
+      if (captionToggle) captionToggle.disabled = densitySelect?.value !== 'completa';
+      updateSafeZoneGuide();
       updateCarouselPreview();
       updateContrastNotice();
     };
