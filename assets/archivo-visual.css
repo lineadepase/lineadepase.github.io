@@ -178,4 +178,12 @@
 .archivo-preview-mapa { margin:1rem 0; padding:.8rem; border:1px solid #d4ded6; border-radius:.7rem; background:#fff; }
 .archivo-preview-mapa img { display:block; width:min(100%,540px); max-height:520px; height:auto; margin:.6rem auto 0; object-fit:contain; background:#f3f5ef; }
 .archivo-preview-mapa figcaption { color:#163e28; font-weight:700; }
+.archivo-forma-temporada { margin:1rem 0; padding:1rem; border:1px solid #d4ded6; border-radius:.7rem; background:#fff; }
+.archivo-forma-temporada h4 { margin:0 0 .65rem; color:#163e28; }
+.archivo-forma-temporada ol { display:flex; flex-wrap:wrap; gap:.5rem; margin:.4rem 0; padding:0; list-style:none; }
+.archivo-forma-temporada li { display:grid; place-items:center; width:2.4rem; height:2.4rem; border-radius:50%; color:#fff; font-weight:800; }
+.archivo-forma-temporada .forma-v { background:#176b3a; }
+.archivo-forma-temporada .forma-e { background:#49515c; }
+.archivo-forma-temporada .forma-d { background:#a33028; }
+.archivo-forma-temporada p { margin:.5rem 0 0; }
 @media(max-width:600px) { .archivo-alt-mapa { grid-template-columns:minmax(0,1fr); } .archivo-alt-mapa button { width:100%; } .archivo-preview-mapa img { max-height:360px; } }
