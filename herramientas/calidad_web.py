@@ -20,6 +20,14 @@ PAGE_IMAGE_MIN_BYTES={
 }
 PAGE_IMAGE_SIZES={
     'proyectos/index.html':'(max-width: 600px) 112px, 480px',
+    'index.html':{
+        'proyectos/real-zaragoza/graficos/previa/real-zaragoza-villarreal-b-j10-v2.webp':'(max-width: 640px) calc(100vw - 32px), (max-width: 1200px) calc((100vw - 80px)/2), 560px',
+        'proyectos/real-zaragoza/graficos/previa/noche-copa-tudela-20261027.webp':'(max-width: 640px) calc(100vw - 32px), (max-width: 1200px) calc((100vw - 80px)/2), 560px',
+        'assets/ilustraciones/comparador-grupo2.webp':'(max-width: 760px) calc(100vw - 32px), 400px',
+        'proyectos/liga-f-xt/graficos/foto.jpg':'(max-width: 416px) calc(100vw - 32px), 384px',
+        'assets/fotos/seleccion-espanola-riazor-2024.jpg':'(max-width: 366px) calc(100vw - 32px), 334px',
+        'assets/fvs-portada.jpg':'(max-width: 380px) 192px, 384px',
+    },
 }
 
 
@@ -70,6 +78,8 @@ def imagenes(raw, page, root=ROOT):
         source=(root/unquote(url.path).lstrip('/')) if src.startswith('/') else page.parent/unquote(url.path)
         source=source.resolve()
         if not source.is_relative_to(root.resolve()) or not source.is_file() or source.suffix.lower() not in ('.png','.jpg','.jpeg','.webp'):return tag
+        page_sizes=PAGE_IMAGE_SIZES.get(relative_page)
+        sizes=page_sizes.get(source.relative_to(root).as_posix()) if isinstance(page_sizes,dict) else page_sizes
         with Image.open(source) as im:
             width,height=im.size
             add=''
@@ -113,7 +123,6 @@ def imagenes(raw, page, root=ROOT):
                         versions.append(variant(width))
                     new_srcset=escape(', '.join(versions),quote=True)
                     tag=re.sub(r'\bsrcset=("[^"]*"|\'[^\']*\')',lambda _:f'srcset="{new_srcset}"',tag,count=1)
-                    sizes=PAGE_IMAGE_SIZES.get(relative_page)
                     if sizes:
                         if re.search(r'\bsizes=("[^"]*"|\'[^\']*\')',tag):
                             tag=re.sub(r'\bsizes=("[^"]*"|\'[^\']*\')',lambda _:f'sizes="{escape(sizes,quote=True)}"',tag,count=1)
@@ -122,7 +131,7 @@ def imagenes(raw, page, root=ROOT):
                 else:
                     versions=[variant(size) for size in (480,800,1200,1600) if size<width]
                     versions.append(variant(width))
-                    sizes=PAGE_IMAGE_SIZES.get(relative_page,'(max-width: 640px) calc(100vw - 48px), 800px')
+                    sizes=sizes or '(max-width: 640px) calc(100vw - 48px), 800px'
                     add+=' srcset="'+escape(', '.join(versions),quote=True)+'" sizes="'+escape(sizes,quote=True)+'"'
             return tag[:-1]+add+'>'
     return re.sub(r'<img\b[^>]*>',adapt,raw)
