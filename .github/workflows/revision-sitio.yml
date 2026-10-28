@@ -16,3 +16,5 @@ jobs:
         run: python herramientas/auditar_enlaces.py
       - name: Revisar textos alternativos y presupuesto de imágenes
         run: python herramientas/auditar_imagenes.py
+      - name: Revisar foco, contraste y tamaño táctil
+        run: python herramientas/auditar_accesibilidad_visual.py

@@ -249,7 +249,7 @@ tr.propio td,tr.propio th{font-weight:700;color:var(--senal-texto)}
  .marca svg{width:36px;height:27px}
  .selector-tema{order:2;margin-left:auto}
  .selector-texto{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
- .selector-tema select{min-height:40px;padding:.25rem .4rem}
+ .selector-tema select{min-height:44px;padding:.25rem .4rem}
  .nav{order:3;margin-left:0;font-size:.9rem;gap:.2rem 1.1rem;width:100%}
  .portada h1{font-size:clamp(3.2rem,14vw,5.5rem)}
  .seccion{padding-block:2rem}

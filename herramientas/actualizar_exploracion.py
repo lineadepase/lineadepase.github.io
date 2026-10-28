@@ -514,7 +514,7 @@ def generate_archivo_visual(page):
     folder=ROOT/'archivo-visual'; folder.mkdir(exist_ok=True)
     head='<script src="../assets/vendor/qrcodegen.js" defer></script><link rel="stylesheet" href="../assets/archivo-visual.css?v=20261028ae"><script src="../assets/archivo-visual.js?v=20261028af" defer></script>'
     archive_page=page('Archivo visual por jornada','Marcadores y estadísticas del Real Zaragoza, con comparación de jornadas y filtros por temporada y rival.',body,head,'archivo-visual/')
-    archive_page=archive_page.replace('../assets/estilo.css?v=20261027visual03','../assets/estilo.css?v=20261028p34')
+    archive_page=archive_page.replace('../assets/estilo.css?v=20261027visual03','../assets/estilo.css?v=20261028a11y1')
     (folder/'index.html').write_text(archive_page,encoding='utf-8')
 
 

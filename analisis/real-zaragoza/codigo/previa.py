@@ -164,7 +164,7 @@ def generar(jornada):
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Big+Shoulders+Display:wght@700;800&display=swap">
 <script src="../../assets/tema.js"></script>
-<link rel="stylesheet" href="../../assets/estilo.css?v=20261021fotos">
+<link rel="stylesheet" href="../../assets/estilo.css?v=20261028a11y1">
 <link rel="stylesheet" href="../../assets/real-zaragoza.css?v=20261016b">
 <script src="../../assets/mejoras.js?v=20261021fotos" defer></script>
 <link rel="icon" href="../../assets/icono.svg" type="image/svg+xml">

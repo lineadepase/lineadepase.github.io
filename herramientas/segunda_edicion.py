@@ -307,7 +307,7 @@ def generate_home():
     html+='<section class="actualizaciones-breves"><h2>Últimas actualizaciones</h2><ul>'+''.join('<li><time datetime="'+n['fecha']+'">'+n['fecha'][8:10]+'/'+n['fecha'][5:7]+'</time><span>'+e(n['tipo'])+'</span><a href="'+e(n['url'],quote=True)+'">'+e(n['titulo'])+'</a></li>' for n in news[:3])+'</ul><a href="novedades/index.html">Ver el registro completo →</a></section>'
     html+='<details class="goles-portada"><summary>Los goles del Zaragoza, minuto a minuto</summary><figure class="minutos" id="minutos" aria-labelledby="t-minutos"><h2 id="t-minutos">Real Zaragoza 2026/27, minuto a minuto</h2><p id="minutos-texto">Goles de los partidos de liga del Zaragoza según el minuto en que llegaron.</p><svg id="minutos-svg" viewBox="0 0 1000 136" preserveAspectRatio="xMinYMid meet" role="img" aria-label="Goles a favor y en contra del Zaragoza por minuto"></svg><div class="leyenda-min"><span><i class="zgz-mitad"></i>A favor</span><span><i style="background:var(--senal)"></i>En contra</span></div></figure></details></div></main>'
     raw=re.sub(r'<main[\s\S]*?</main>',lambda _:html,raw,count=1)
-    raw=re.sub(r'(assets/estilo\.css\?v=)[^"\s]+',r'\g<1>20261028p34',raw)
+    raw=re.sub(r'(assets/estilo\.css\?v=)[^"\s]+',r'\g<1>20261028a11y1',raw)
     if 'assets/fotografia-editorial.css' not in raw:
         raw=raw.replace('</head>', '<link rel="stylesheet" href="assets/fotografia-editorial.css?v=20261027visual02">\n</head>',1)
     else:
