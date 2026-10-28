@@ -2,8 +2,11 @@
 from __future__ import annotations
 
 from html.parser import HTMLParser
+import csv
+from datetime import date as date_type
 import json
 from pathlib import Path
+import re
 import xml.etree.ElementTree as ET
 
 from PIL import Image
@@ -174,6 +177,7 @@ def main() -> None:
         'data-temporada-mapa', 'data-formato-mapa', 'data-tipo-mapa', 'data-descargar-mapa', 'data-kit-estimaciones',
         'data-lamina-mapa', 'data-texto-mapa', 'data-restablecer-texto-mapa', 'data-preview-mapa-img',
         'data-rival-mapa', 'data-desde-mapa', 'data-hasta-mapa', 'data-forma-reciente', 'data-racha-temporada', 'data-forma-rival', 'data-forma-rival-estado', 'data-descargar-carrusel-temporada', 'data-compartir-mapa', 'id="datos-forma-rivales"',
+        'data-nombre-enlace-mapa', 'data-guardar-enlace-mapa', 'data-enlaces-guardados', 'data-estado-enlaces-guardados',
         'social-cuadrada', 'social-vertical',
         'data-descargar-comparacion="webp"', 'Carrusel · 2 diapositivas cuadradas',
         '1080 × 1080', '1080 × 1350', '1080 × 1920', '1200 × 630',
@@ -187,11 +191,38 @@ def main() -> None:
     complete_count = sum(bool(match_statistics(record, fixture_for(data, record))) for record in data['partidos'])
     if archive_html.count('estado-cobertura completa') != complete_count:
         raise RuntimeError('La insignia de cobertura no coincide con las fichas completas.')
+    rival_script = re.search(r'<script type="application/json" id="datos-forma-rivales">(.*?)</script>', archive_html, re.S)
+    if not rival_script:
+        raise RuntimeError('Falta el conjunto generado de resultados recientes de los rivales.')
+    actual_rival_form = json.loads(rival_script.group(1))
+    aliases = {'Cartagena':'FC Cartagena','Antequera':'Antequera CF','Gimnàstic':'Gimnàstic de Tarragona','Gimnastic':'Gimnàstic de Tarragona','Real Jaen':'Real Jaén','Hercules':'Hércules','Alcorcon':'Alcorcón'}
+    expected_rival_form: dict[str, list[dict[str, object]]] = {}
+    results_path = ROOT / 'analisis' / 'real-zaragoza' / 'datos' / 'entrada' / 'grupo2_resultados.csv'
+    with results_path.open(encoding='utf-8-sig', newline='') as source:
+        for result in csv.DictReader(source):
+            try:
+                home_goals, away_goals, round_num = int(result['goles_local']), int(result['goles_visitante']), int(result['jornada'])
+            except (KeyError, TypeError, ValueError):
+                continue
+            date = result.get('fecha', '')
+            home = aliases.get(result.get('local', ''), result.get('local', ''))
+            away = aliases.get(result.get('visitante', ''), result.get('visitante', ''))
+            try:
+                date_type.fromisoformat(date)
+            except ValueError:
+                continue
+            if round_num < 1 or home_goals < 0 or away_goals < 0 or not re.fullmatch(r'\d{4}-\d{2}-\d{2}', date) or not home or not away or home == away:
+                continue
+            if home != 'Real Zaragoza': expected_rival_form.setdefault(home, []).append({'jornada':round_num,'fecha':date,'rival':away,'goles_favor':home_goals,'goles_contra':away_goals})
+            if away != 'Real Zaragoza': expected_rival_form.setdefault(away, []).append({'jornada':round_num,'fecha':date,'rival':home,'goles_favor':away_goals,'goles_contra':home_goals})
+    expected_rival_form = {team:sorted(matches,key=lambda item:(item['fecha'],item['jornada']),reverse=True)[:5] for team,matches in expected_rival_form.items()}
+    if actual_rival_form != expected_rival_form:
+        raise RuntimeError('La forma de los rivales no se regeneró con los resultados válidos actuales del CSV.')
     for season in {season for season, _ in expected_matches}:
         if f'Muestra disponible · {season}' not in archive_html:
             raise RuntimeError(f'Falta un resumen independiente para la temporada {season}.')
     archive_script = (ROOT / 'assets' / 'archivo-visual.js').read_text(encoding='utf-8')
-    if "rowA.dataset.completa === '1' && rowB.dataset.completa === '1'" not in archive_script or 'row.hidden = !show' not in archive_script or 'jornada_a' not in archive_script or 'navigator.clipboard.writeText' not in archive_script or "url.searchParams.set('temporada'" not in archive_script or "url.searchParams.set('rival'" not in archive_script or 'navigator.clipboard.write([new ClipboardItem' not in archive_script or 'preferencesKey' not in archive_script or 'favoriteKey' not in archive_script or 'builtInPresets' not in archive_script or 'social-cuadrada' not in archive_script or 'social-vertical' not in archive_script or 'paletteSelect' not in archive_script or 'updateContrastNotice' not in archive_script or 'minimum >= 4.5' not in archive_script or 'framingSelect' not in archive_script or 'densitySelect' not in archive_script or "density === 'esencial'" not in archive_script or "framing === 'protagonista'" not in archive_script or 'updateSafeZoneGuide' not in archive_script or 'updateStyleComparisons' not in archive_script or 'downloadSocialKit' not in archive_script or 'describeRows' not in archive_script or 'texto-alternativo.txt' not in archive_script or 'readPersonalPresets' not in archive_script or 'updateFormatThumbnails' not in archive_script or 'data-restablecer-opciones' not in archive_script or 'canvas.toBlob' not in archive_script or 'comparisonSvg(' not in archive_script or 'cuadrado' not in archive_script or 'vertical' not in archive_script or 'historias' not in archive_script or 'carrusel' not in archive_script or 'zipStored(files)' not in archive_script or 'includeHeader' not in archive_script or 'showBrand' not in archive_script or 'contextText' not in archive_script or 'index===0?carouselContext' not in archive_script or 'slice(0,72)' not in archive_script or 'image/webp' not in archive_script or 'captionToggle?.checked' not in archive_script or 'metricsToggle?.checked' not in archive_script or 'seasonPosterSvg' not in archive_script or 'updateContactSheet' not in archive_script or 'scheduleKitEstimates' not in archive_script or 'No disponible' not in archive_script or 'seasonPosterPageSize' not in archive_script or 'posterOutcome' not in archive_script or 'seasonPosterDescription' not in archive_script or 'lamina-${String(index+1).padStart(2,' not in archive_script or 'updateSeasonForm' not in archive_script or 'seasonCarouselSvg' not in archive_script or 'downloadSeasonCarousel' not in archive_script or 'seasonPosterRival' not in archive_script or 'row.dataset.fechaPartido>=seasonPosterFrom.value' not in archive_script or 'updateOpponentRecentForm' not in archive_script or 'seasonOpponentForms' not in archive_script or 'restoreSeasonPosterFromUrl' not in archive_script or 'mapa-temporada' not in archive_script or "historias:{width:1080,height:1920" not in archive_script:
+    if "rowA.dataset.completa === '1' && rowB.dataset.completa === '1'" not in archive_script or 'row.hidden = !show' not in archive_script or 'jornada_a' not in archive_script or 'navigator.clipboard.writeText' not in archive_script or "url.searchParams.set('temporada'" not in archive_script or "url.searchParams.set('rival'" not in archive_script or 'navigator.clipboard.write([new ClipboardItem' not in archive_script or 'preferencesKey' not in archive_script or 'favoriteKey' not in archive_script or 'builtInPresets' not in archive_script or 'social-cuadrada' not in archive_script or 'social-vertical' not in archive_script or 'paletteSelect' not in archive_script or 'updateContrastNotice' not in archive_script or 'minimum >= 4.5' not in archive_script or 'framingSelect' not in archive_script or 'densitySelect' not in archive_script or "density === 'esencial'" not in archive_script or "framing === 'protagonista'" not in archive_script or 'updateSafeZoneGuide' not in archive_script or 'updateStyleComparisons' not in archive_script or 'downloadSocialKit' not in archive_script or 'describeRows' not in archive_script or 'texto-alternativo.txt' not in archive_script or 'readPersonalPresets' not in archive_script or 'updateFormatThumbnails' not in archive_script or 'data-restablecer-opciones' not in archive_script or 'canvas.toBlob' not in archive_script or 'comparisonSvg(' not in archive_script or 'cuadrado' not in archive_script or 'vertical' not in archive_script or 'historias' not in archive_script or 'carrusel' not in archive_script or 'zipStored(files)' not in archive_script or 'includeHeader' not in archive_script or 'showBrand' not in archive_script or 'contextText' not in archive_script or 'index===0?carouselContext' not in archive_script or 'slice(0,72)' not in archive_script or 'image/webp' not in archive_script or 'captionToggle?.checked' not in archive_script or 'metricsToggle?.checked' not in archive_script or 'seasonPosterSvg' not in archive_script or 'updateContactSheet' not in archive_script or 'scheduleKitEstimates' not in archive_script or 'No disponible' not in archive_script or 'seasonPosterPageSize' not in archive_script or 'posterOutcome' not in archive_script or 'seasonPosterDescription' not in archive_script or 'lamina-${String(index+1).padStart(2,' not in archive_script or 'updateSeasonForm' not in archive_script or 'seasonCarouselSvg' not in archive_script or 'downloadSeasonCarousel' not in archive_script or 'seasonPosterRival' not in archive_script or 'row.dataset.fechaPartido>=seasonPosterFrom.value' not in archive_script or 'updateOpponentRecentForm' not in archive_script or 'seasonOpponentForms' not in archive_script or 'restoreSeasonPosterFromUrl' not in archive_script or 'mapa-temporada' not in archive_script or 'seasonSavedLinksKey' not in archive_script or 'saveNamedSeasonPosterLink' not in archive_script or 'applySavedSeasonPosterLink' not in archive_script or "historias:{width:1080,height:1920" not in archive_script:
         raise RuntimeError('Los filtros o el requisito de métricas completas no están activos en el script del archivo.')
     for row in pages.archive_rows:
         round_num = int(row['data-jornada'])
