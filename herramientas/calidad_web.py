@@ -12,6 +12,7 @@ RESPONSIVE_IMAGE_MIN_BYTES=300_000
 PAGE_IMAGE_MIN_BYTES={
     'index.html':40_000,
     'proyectos/real-zaragoza/goles-en-video.html':40_000,
+    'proyectos/real-zaragoza/grupo-2.html':40_000,
 }
 
 

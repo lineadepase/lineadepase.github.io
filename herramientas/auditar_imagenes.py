@@ -10,7 +10,11 @@ ROOT = Path(__file__).resolve().parents[1]
 IGNORE = {'.git', 'analisis', 'node_modules', '.codex', 'work'}
 PAGE_BUDGET_BYTES = 1_200 * 1024
 WARNING_BUDGET_BYTES = int(PAGE_BUDGET_BYTES * .8)
-FOCUS_PAGES = {'index.html', 'proyectos/real-zaragoza/goles-en-video.html'}
+FOCUS_PAGES = {
+    'index.html',
+    'proyectos/real-zaragoza/goles-en-video.html',
+    'proyectos/real-zaragoza/grupo-2.html',
+}
 VOID_ELEMENTS = {'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr'}
 
 
