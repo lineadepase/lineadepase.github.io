@@ -15,6 +15,11 @@ PAGE_IMAGE_MIN_BYTES={
     'proyectos/real-zaragoza/grupo-2.html':40_000,
     'proyectos/liga-f-xt/index.html':40_000,
     'proyectos/real-zaragoza/informe-completo.html':40_000,
+    'proyectos/index.html':40_000,
+    'proyectos/real-zaragoza/simulacion.html':40_000,
+}
+PAGE_IMAGE_SIZES={
+    'proyectos/index.html':'(max-width: 600px) 112px, 480px',
 }
 
 
@@ -108,10 +113,17 @@ def imagenes(raw, page, root=ROOT):
                         versions.append(variant(width))
                     new_srcset=escape(', '.join(versions),quote=True)
                     tag=re.sub(r'\bsrcset=("[^"]*"|\'[^\']*\')',lambda _:f'srcset="{new_srcset}"',tag,count=1)
+                    sizes=PAGE_IMAGE_SIZES.get(relative_page)
+                    if sizes:
+                        if re.search(r'\bsizes=("[^"]*"|\'[^\']*\')',tag):
+                            tag=re.sub(r'\bsizes=("[^"]*"|\'[^\']*\')',lambda _:f'sizes="{escape(sizes,quote=True)}"',tag,count=1)
+                        else:
+                            tag=tag[:-1]+' sizes="'+escape(sizes,quote=True)+'"'
                 else:
                     versions=[variant(size) for size in (480,800,1200,1600) if size<width]
                     versions.append(variant(width))
-                    add+=' srcset="'+escape(', '.join(versions),quote=True)+'" sizes="(max-width: 640px) calc(100vw - 48px), 800px"'
+                    sizes=PAGE_IMAGE_SIZES.get(relative_page,'(max-width: 640px) calc(100vw - 48px), 800px')
+                    add+=' srcset="'+escape(', '.join(versions),quote=True)+'" sizes="'+escape(sizes,quote=True)+'"'
             return tag[:-1]+add+'>'
     return re.sub(r'<img\b[^>]*>',adapt,raw)
 
