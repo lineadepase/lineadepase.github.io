@@ -34,33 +34,52 @@
     "alias": [],
     "fecha_partido": "2026-10-27",
     "fecha_publicacion": "2026-10-27",
-    "fecha_actualizacion": "2026-10-27",
-    "titulo": "CD Tudelano – Real Zaragoza",
-    "etiqueta": "Copa del Rey · 27 de octubre · 21:00",
-    "resumen": "El CD Tudelano recibe al Real Zaragoza a partido único, con el pase a la siguiente ronda en juego.",
-    "pregunta_abierta": "¿Conseguirá el Zaragoza instalar el juego cerca del área del Tudelano o llevará el equipo local la eliminatoria a un partido más directo?",
-    "fuera_de_plano": "No hay una serie homogénea de datos avanzados para comparar a ambos equipos en esta eliminatoria. La pregunta se resolverá con las acciones del partido, no con una comparación de temporada.",
+    "fecha_actualizacion": "2026-10-28",
+    "titulo": "Tudelano 0–4 Real Zaragoza: una eliminatoria resuelta antes del descanso",
+    "etiqueta": "Copa del Rey · Primera eliminatoria · Resultado final",
+    "resumen": "Cuatro goles en la primera parte encarrilaron el pase. La eficacia temprana permitió al Zaragoza gestionar la segunda mitad y repartir minutos.",
+    "pregunta_abierta": "¿En qué tramo quedó encarrilada la eliminatoria?",
+    "fuera_de_plano": "Las crónicas consultadas permiten reconstruir los goles y el desarrollo general, pero no aportan una serie homogénea de posesión, ocasiones o xG. La eficacia y la gestión del ritmo se interpretan a partir de la secuencia del partido, no de métricas avanzadas.",
     "imagen": "proyectos/real-zaragoza/graficos/previa/noche-copa-tudela-20261027.webp",
     "ancho": 1672,
     "alto": 941,
-    "alt": "El león blanquillo ante una noche de Copa en Tudela, 27 de octubre a las 21:00.",
+    "alt": "Noche de Copa del Rey entre el CD Tudelano y el Real Zaragoza en Tudela.",
     "rival": "CD Tudelano",
     "hora": "21:00",
     "competicion": "Copa del Rey · Primera eliminatoria",
     "estadio": "Estadio Ciudad de Tudela",
-    "centro_partido": {
-      "fecha_verificacion": "2026-10-27T16:29:00+01:00",
+    "postpartido_url": "proyectos/real-zaragoza/previa-copa-tudelano-20261027.html",
+    "resultado_confirmado": {
+      "marcador": "0–4",
+      "fecha_verificacion": "2026-10-28T10:58:02+01:00",
       "fuentes": [
         {
-          "nombre": "CD Tudelano: horario y datos del encuentro",
-          "url": "https://cdtudelano.com/actualidad/entradas-copa-del-rey-zaragoza/"
+          "nombre": "Real Zaragoza: El Real Zaragoza avanza en la Copa del Rey (0-4)",
+          "url": "https://www.realzaragoza.com/noticias/el-real-zaragoza-avanza-en-la-copa-del-rey-0-4"
+        },
+        {
+          "nombre": "Cadena SER: El Real Zaragoza arrolla al Tudelano (0-4)",
+          "url": "https://cadenaser.com/aragon/2026/10/27/el-real-zaragoza-arrolla-al-tudelano-0-4-y-disputara-la-segunda-ronda-de-la-copa-del-rey-radio-zaragoza/"
+        }
+      ],
+      "respuesta_pregunta": "La secuencia decisiva se concentró antes del descanso: Joaquín Delgado abrió el marcador en el minuto 11, Pau Sans amplió de penalti en el 21 y volvió a marcar en el 37, y Pinilla cerró el 0–4 en el 40. Con cuatro tantos de ventaja, el Zaragoza pudo afrontar la segunda mitad desde la gestión del resultado.",
+      "momentos_clave": [
+        {
+          "minuto": "11",
+          "marcador": "0–1",
+          "hecho": "Joaquín Delgado abrió el marcador y dio al Zaragoza una ventaja temprana."
+        },
+        {
+          "minuto": "21",
+          "marcador": "0–2",
+          "hecho": "Pau Sans transformó un penalti y amplió la distancia."
+        },
+        {
+          "minuto": "40",
+          "marcador": "0–4",
+          "hecho": "Pinilla marcó el cuarto antes del descanso; Pau Sans había firmado el tercero en el 37."
         }
       ]
-    },
-    "estados_previa": {
-      "confirmado": "La eliminatoria de Copa se disputa el 27 de octubre, a las 21:00 en el Estadio Ciudad de Tudela.",
-      "pendiente": "Los onces y el desarrollo de la eliminatoria, que se comprobarán durante el partido.",
-      "despues": "Se revisará si el Zaragoza llevó el juego cerca del área o si el Tudelano condujo el encuentro a un partido más directo."
     }
   }
 ]

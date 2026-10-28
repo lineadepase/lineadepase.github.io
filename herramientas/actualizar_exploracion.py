@@ -93,8 +93,13 @@ def generate_archive():
     previews = json.loads((ROOT/'datos/previas.json').read_text(encoding='utf-8'))
     for item in previews:
         rival = item.get('rival', item['titulo'].replace('Real Zaragoza', '').strip(' –—-'))
-        topic = 'Previas · Copa del Rey' if 'copa' in item['pagina'] else 'Previas · Liga'
-        entries.append(('../'+item['pagina'], 'Previa · '+item['titulo'], item['resumen'], '2026/27', rival, topic))
+        if item.get('resultado_confirmado'):
+            topic = 'Análisis · Copa del Rey' if 'copa' in item['pagina'] else 'Análisis · Liga'
+            title = 'Análisis · '+item['titulo']
+        else:
+            topic = 'Previas · Copa del Rey' if 'copa' in item['pagina'] else 'Previas · Liga'
+            title = 'Previa · '+item['titulo']
+        entries.append(('../'+item['pagina'], title, item['resumen'], '2026/27', rival, topic))
     sim = ROOT/'proyectos/real-zaragoza/simulacion.html'
     if sim.is_file():
         entries.append(('../proyectos/real-zaragoza/simulacion.html', 'Simulación del grupo 2 de Primera Federación', 'Probabilidades de ascenso, playoff y descenso con su fecha de corte, método y límites.', '2026/27', '', 'Investigación'))
@@ -118,14 +123,14 @@ def generate_archive():
     controls += '<label for="filtro-tipo">Tipo de pieza<select id="filtro-tipo"><option value="">Todos</option><option>Partido</option><option>Previa</option><option>Análisis</option><option>Investigación</option><option>Vídeo</option><option>Concepto</option></select></label>'
     controls += '<button type="button" class="boton" id="limpiar-archivo">Limpiar filtros</button><button type="button" class="boton" id="compartir-filtros">Copiar enlace de búsqueda</button><span id="estado-compartir-archivo" role="status" aria-live="polite"></span></div>'
     cards = '<p class="nota">Cada carpeta reúne el contenido de una sección. La búsqueda y los filtros consultan análisis, vídeos y conceptos a la vez.</p><p id="recuento-archivo" role="status" aria-live="polite">' + str(len(entries)) + ' recursos</p><div class="archivo-carpetas">'
-    for topic, label in [('Partidos','Real Zaragoza'),('Previas · Liga','Previas · Liga'),('Previas · Copa del Rey','Previas · Copa del Rey'),('Investigación','Investigaciones'),('Fútbol femenino','Fútbol femenino · Territorio'),('Vídeos','Vídeos explicativos'),('Conceptos','Conceptos aplicados')]:
+    for topic, label in [('Partidos','Real Zaragoza'),('Previas · Liga','Previas · Liga'),('Previas · Copa del Rey','Previas · Copa del Rey'),('Análisis · Liga','Análisis · Liga'),('Análisis · Copa del Rey','Análisis · Copa del Rey'),('Investigación','Investigaciones'),('Fútbol femenino','Fútbol femenino · Territorio'),('Vídeos','Vídeos explicativos'),('Conceptos','Conceptos aplicados')]:
         group=[entry for entry in entries if entry[5]==topic]
         if not group:
             continue
         quantity = 'recurso' if len(group)==1 else 'recursos'
         cards += '<details class="archivo-carpeta"><summary><span class="carpeta-nombre">'+escape(label)+'</span> <span class="carpeta-cantidad">'+str(len(group))+' '+quantity+'</span></summary><ul class="archivo-lista">'
         for href, title, desc, season, rival, topic in group:
-            kind = {'Partidos': 'Partido', 'Previas · Liga': 'Previa', 'Previas · Copa del Rey': 'Previa', 'Investigación': 'Investigación', 'Fútbol femenino': 'Análisis', 'Vídeos': 'Vídeo', 'Conceptos': 'Concepto'}[topic]
+            kind = {'Partidos': 'Partido', 'Previas · Liga': 'Previa', 'Previas · Copa del Rey': 'Previa', 'Análisis · Liga': 'Análisis', 'Análisis · Copa del Rey': 'Análisis', 'Investigación': 'Investigación', 'Fútbol femenino': 'Análisis', 'Vídeos': 'Vídeo', 'Conceptos': 'Concepto'}[topic]
             cards += '<li data-temporada="' + escape(season, quote=True) + '" data-rival="' + escape(rival, quote=True) + '" data-tema="' + escape(topic, quote=True) + '" data-tipo="' + kind + '"><article><p class="etiqueta">' + escape(topic + ' · ' + season) + '</p><h2><a href="' + href + '">' + escape(title) + '</a></h2><p>' + escape(desc) + '</p></article></li>'
         cards += '</ul></details>'
     cards += '</div><p id="archivo-vacio" role="status" aria-live="polite" hidden>No hay análisis con estos filtros. Prueba otro término o limpia los filtros.</p><script src="../assets/archivo.js?v=20261027b" defer></script>'

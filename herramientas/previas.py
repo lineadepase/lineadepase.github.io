@@ -195,7 +195,7 @@ def con_imagen(html, entry):
     figure = ('<!-- imagen-previa --><figure class="foto imagen-editorial-previa">'
               f'<img src="{escape(image)}" width="{entry["ancho"]}" height="{entry["alto"]}" '
               f'alt="{escape(entry["alt"], quote=True)}" style="width:100%;height:auto;border-radius:12px">'
-              '<figcaption>Ilustración editorial generada con IA.</figcaption></figure><!-- /imagen-previa -->')
+              '<figcaption>Imagen recreada con IA.</figcaption></figure><!-- /imagen-previa -->')
     if '<!-- imagen-previa -->' in html:
         html = re.sub(r'<!-- imagen-previa -->.*?<!-- /imagen-previa -->', lambda _: figure, html, flags=re.S)
     else:
@@ -250,7 +250,7 @@ def con_imagen(html, entry):
             block += '<p class="nota">Horario y estadio: <a href="'+escape(entry['fuente_partido'],quote=True)+'" rel="noopener" target="_blank">confirmación oficial del Real Zaragoza</a>.</p>'
         if entry.get('hora') and entry.get('fecha_partido'):
             postmatch = entry.get('postpartido_url', '')
-            postmatch_link = f'<p class="nota postpartido-disponible" data-fecha="{escape(entry["fecha_partido"])}" data-resultado-confirmado="true">Resultado confirmado: <a class="enlace-postpartido" href="../../{escape(postmatch,quote=True)}">Leer la crónica o el análisis →</a></p>' if postmatch and entry.get('resultado_confirmado') else ''
+            postmatch_link = f'<p class="nota postpartido-disponible" data-fecha="{escape(entry["fecha_partido"])}" data-resultado-confirmado="true">Resultado confirmado: <a class="enlace-postpartido" href="../../{escape(postmatch,quote=True)}">Leer el análisis →</a></p>' if postmatch and postmatch != entry['pagina'] and entry.get('resultado_confirmado') else ''
             calendar_hidden = ' hidden' if partido_iniciado(entry) else ''
             block += ('<p class="calendario-partido" data-fecha="'+escape(entry['fecha_partido'])+'" data-hora="'+escape(entry['hora'])+'"'+calendar_hidden+'>'
                       '<a class="boton" href="../../'+escape(calendar_path(entry),quote=True)+'" download>Añadir al calendario (.ics)</a></p>')
@@ -392,8 +392,8 @@ def portada(root=ROOT, hoy=None):
         event_hidden = ' hidden' if partido_iniciado(entry) else ''
         event_link = (f'<a class="boton calendario-partido" data-fecha="{fecha}" data-hora="{escape(entry.get("hora", ""))}"{event_hidden} href="{escape(calendar_path(entry))}" download>Añadir al calendario</a>'
                       if entry.get('hora') else '')
-        postmatch_link = (f'<a class="enlace-postpartido postpartido-disponible" data-fecha="{fecha}" data-resultado-confirmado="true" href="{escape(entry["postpartido_url"])}">Leer la crónica o el análisis →</a>'
-                          if result and entry.get('postpartido_url') else '')
+        postmatch_link = (f'<a class="enlace-postpartido postpartido-disponible" data-fecha="{fecha}" data-resultado-confirmado="true" href="{escape(entry["postpartido_url"])}">Leer el análisis →</a>'
+                          if result and entry.get('postpartido_url') and entry['postpartido_url'] != entry['pagina'] else '')
         center_link = (f'<a class="enlace-centro-partido" href="{escape(entry["pagina"])}#titulo-centro-partido">Centro del partido →</a>'
                        if entry.get('centro_partido') else '')
         published = entry.get('fecha_publicacion')
@@ -414,8 +414,8 @@ def portada(root=ROOT, hoy=None):
                      f'width="{entry["ancho"]}" height="{entry["alto"]}" loading="lazy"></a>'
                      f'<p class="estado-previa">{state}</p><p class="etiqueta">{escape(entry["etiqueta"])}</p><p class="datos-partido">{escape(fact)}</p>{score_block}{date_line}<h3><a href="{escape(entry["pagina"])}">'
                      f'{escape(entry["titulo"])}</a></h3><p>{escape(entry["resumen"])}</p>'
-                     f'<a class="enlace-editorial" href="{escape(entry["pagina"])}">{'Releer la previa' if result else 'Leer la previa'}</a>{event_link}{postmatch_link}{center_link}</article>')
-    block = START+'<section class="previas-portada" aria-labelledby="titulo-previas"><p class="etiqueta">Antes del partido</p><h2 id="titulo-previas">Las previas, con contexto</h2><div class="previas-rejilla">'+''.join(cards)+'</div></section>'+END
+                     f'<a class="enlace-editorial" href="{escape(entry["pagina"])}">{'Leer el análisis' if result else 'Leer la previa'}</a>{event_link}{postmatch_link}{center_link}</article>')
+    block = START+'<section class="previas-portada" aria-labelledby="titulo-previas"><p class="etiqueta">Partidos</p><h2 id="titulo-previas">Partidos y análisis</h2><div class="previas-rejilla">'+''.join(cards)+'</div></section>'+END
     path = root / 'index.html'
     html = path.read_text(encoding='utf-8')
     if START in html:
