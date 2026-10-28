@@ -14,6 +14,8 @@ FOCUS_PAGES = {
     'index.html',
     'proyectos/real-zaragoza/goles-en-video.html',
     'proyectos/real-zaragoza/grupo-2.html',
+    'proyectos/liga-f-xt/index.html',
+    'proyectos/real-zaragoza/informe-completo.html',
 }
 VOID_ELEMENTS = {'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr'}
 

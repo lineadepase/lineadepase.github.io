@@ -57,6 +57,11 @@
     if (!source) return;
     origin=button;contenido.replaceChildren();const copy=source.cloneNode(true);
     copy.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));copy.removeAttribute('id');
+    if(copy.tagName.toLowerCase()==='img') {
+      // El diálogo se abre bajo demanda: usa el original a resolución completa,
+      // no la variante pequeña elegida por srcset para la tarjeta de la página.
+      copy.removeAttribute('srcset');copy.removeAttribute('sizes');copy.loading='eager';
+    }
     if(copy.tagName.toLowerCase()==='svg') {
       // Los gráficos responsivos ya definen su sistema de coordenadas en viewBox.
       if (!copy.hasAttribute('viewBox')) {
@@ -69,13 +74,15 @@
     }
     dialog.querySelector('[data-zoom="menos"]').setAttribute('aria-label','Reducir '+tipo);
     dialog.querySelector('[data-zoom="mas"]').setAttribute('aria-label','Ampliar '+tipo);
-    copy.setAttribute('aria-label',title);contenido.append(copy);dialog.querySelector('h2').textContent=title;zoom=100;ajustar();document.body.classList.add('modal-abierto');dialog.showModal();
+    copy.setAttribute('aria-label',title);contenido.append(copy);dialog.querySelector('h2').textContent=button.dataset.tituloAmpliacion||title;zoom=100;ajustar();document.body.classList.add('modal-abierto');dialog.showModal();
   }
   document.querySelectorAll('.grafico,.figura img').forEach(source => {
     const dynamic=source.classList.contains('grafico');const holder=dynamic?source.parentElement:source.closest('figure');
     const tipo=!dynamic&&holder.matches('.foto,.foto-cabecera,.retrato')?'imagen':'gráfico';
     const title=dynamic?holder.querySelector('h3').textContent:source.alt;
+    const heading=dynamic?title:holder.querySelector('figcaption')?.textContent.trim()||title;
     const b=document.createElement('button');b.type='button';b.className='ampliar-grafico';b.textContent='Ampliar '+tipo;b.setAttribute('aria-label','Ampliar '+tipo+': '+title);
+    b.dataset.tituloAmpliacion=heading;
     b.addEventListener('click',()=>ampliar(dynamic?source.querySelector('svg'):source,title,b,tipo));holder.append(b);
   });
   const metricDefinitions={
