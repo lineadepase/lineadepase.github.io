@@ -21,6 +21,17 @@
   const framingSelect = document.querySelector('[data-encuadre-visual]');
   const densitySelect = document.querySelector('[data-densidad-visual]');
   const safeZoneToggle = document.querySelector('[data-guia-zonas]');
+  const stylePreviewControls = ['a','b'].map(side => ({
+    framing: document.querySelector(`[data-vista-encuadre="${side}"]`),
+    density: document.querySelector(`[data-vista-densidad="${side}"]`),
+    image: document.querySelector(`[data-vista-estilo="${side}"]`)
+  }));
+  const altTextInput = document.querySelector('[data-texto-alternativo]');
+  const generateAltTextButton = document.querySelector('[data-generar-texto-alternativo]');
+  const copyAltTextButton = document.querySelector('[data-copiar-texto-alternativo]');
+  const socialKitFormat = document.querySelector('[data-formato-kit]');
+  const socialKitButton = document.querySelector('[data-descargar-kit]');
+  const socialKitStatus = document.querySelector('[data-estado-kit]');
   const formatThumbnailButtons = [...document.querySelectorAll('[data-miniatura-formato]')];
   const compareState = document.querySelector('[data-estado-comparacion]');
   const downloadControls = document.querySelector('[data-controles-descarga]');
@@ -40,6 +51,7 @@
   const individualDownloads = document.querySelector('[data-descargas-individuales]');
   const carouselDownloads = document.querySelector('[data-descargas-carrusel]');
   let carouselPreviewUrl = null;
+  let altTextCustomized = false;
   const rounds = new Map(rows.map(row => [row.dataset.comparisonId, row]));
   const preferencesKey = 'lineadepase:archivo-visual:preferencias:v1';
   const favoriteKey = 'lineadepase:archivo-visual:pareja-favorita:v1';
@@ -190,10 +202,50 @@
       const format = button.dataset.miniaturaFormato;
       if (!format) return;
       const isCarousel = format === 'carrusel';
-      const svg = comparisonSvg(rowA,rowB,format,metrics,Boolean(captionToggle?.checked),!Boolean(noHeaderToggle?.checked),Boolean(brandToggle?.checked),isCarousel?rowA:null,isCarousel?carouselContextInput?.value.trim().slice(0,72) || '':'',densitySelect?.value,framingSelect?.value);
+      const svg = comparisonSvg(rowA,rowB,format,metrics,Boolean(captionToggle?.checked),!Boolean(noHeaderToggle?.checked),Boolean(brandToggle?.checked),isCarousel?rowA:null,isCarousel?carouselContextInput?.value.trim().slice(0,72) || '':'',densitySelect?.value,framingSelect?.value,altTextInput?.value.trim() || '');
       const image = button.querySelector('img');
       if (image) image.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
       button.setAttribute('aria-pressed',String(formatSelect?.value === format));
+    });
+  }
+
+  function describeRows(rowsToDescribe, density, includeMetrics) {
+    const mixedSeasons = new Set(rowsToDescribe.map(row => row.dataset.temporada)).size > 1;
+    const results = rowsToDescribe.map(row => {
+      const home = row.dataset.sede === 'Casa' ? 'Real Zaragoza' : row.dataset.rival;
+      const away = row.dataset.sede === 'Casa' ? row.dataset.rival : 'Real Zaragoza';
+      const homeGoals = row.dataset.sede === 'Casa' ? row.dataset.golesZaragoza : row.dataset.golesRival;
+      const awayGoals = row.dataset.sede === 'Casa' ? row.dataset.golesRival : row.dataset.golesZaragoza;
+      const context = density === 'esencial' ? '' : ` ${mixedSeasons ? `${row.dataset.temporada} ` : ''}${row.dataset.fechaPartido.split('-').reverse().join('/')}`;
+      return `J${row.dataset.jornada}${context}: ${home} ${homeGoals}–${awayGoals} ${away}`;
+    });
+    const statistics = includeMetrics && density === 'completa'
+      ? rowsToDescribe.filter(row => row.dataset.completa === '1').map(row => `J${row.dataset.jornada}: posesión Zaragoza ${row.dataset.posesion.replace('.', ',')} %, tiros ${row.dataset.tirosZaragoza}–${row.dataset.tirosRival}`)
+      : [];
+    return `Marcadores del Real Zaragoza: ${results.join('; ')}.${statistics.length ? ` ${statistics.join('; ')}.` : ''}`.slice(0,240);
+  }
+
+  function updateGeneratedAltText() {
+    if (!altTextInput || altTextCustomized) return;
+    const rowA = rounds.get(selectA?.value);
+    const rowB = rounds.get(selectB?.value);
+    if (!rowA || !rowB) return;
+    const rowsToDescribe = formatSelect?.value === 'carrusel' ? [rowA] : [rowA,rowB];
+    const metrics = densitySelect?.value === 'completa' && Boolean(metricsToggle?.checked) && rowA.dataset.completa === '1' && rowB.dataset.completa === '1';
+    altTextInput.value = describeRows(rowsToDescribe,densitySelect?.value || 'completa',metrics);
+  }
+
+  function updateStyleComparisons() {
+    const rowA = rounds.get(selectA?.value);
+    const rowB = rounds.get(selectB?.value);
+    if (!rowA || !rowB || stylePreviewControls.some(item => !item.image)) return;
+    const format = formatSelect?.value === 'carrusel' ? 'cuadrado' : formatSelect?.value || 'apaisado';
+    const metrics = rowA.dataset.completa === '1' && rowB.dataset.completa === '1' && Boolean(metricsToggle?.checked);
+    stylePreviewControls.forEach(({framing,density,image}) => {
+      const previewDensity = density?.value || 'completa';
+      const previewAltText = altTextCustomized ? altTextInput?.value.trim() || '' : describeRows([rowA,rowB],previewDensity,metrics);
+      const svg = comparisonSvg(rowA,rowB,format,metrics,Boolean(captionToggle?.checked),!Boolean(noHeaderToggle?.checked),Boolean(brandToggle?.checked),null,'',previewDensity,framing?.value || 'equilibrado',previewAltText);
+      image.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
     });
   }
 
@@ -273,6 +325,7 @@
       ? 'Las dos fichas tienen cobertura completa: se muestran posesión y tiros de cada jornada.'
       : 'Se comparan los marcadores. La cobertura no permite comparar métricas en las dos jornadas.';
     updateFavoriteButton();
+    updateGeneratedAltText();
     updateCarouselPreview();
   }
 
@@ -280,7 +333,7 @@
     return String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[char]));
   }
 
-  function comparisonSvg(rowA, rowB, format, includeMetrics, includeCaption, includeHeader, showBrand, singleRow = null, contextText = '', density = densitySelect?.value || 'completa', framing = framingSelect?.value || 'equilibrado') {
+  function comparisonSvg(rowA, rowB, format, includeMetrics, includeCaption, includeHeader, showBrand, singleRow = null, contextText = '', density = densitySelect?.value || 'completa', framing = framingSelect?.value || 'equilibrado', altText = altTextInput?.value.trim() || '') {
     const layouts = {
       apaisado: {width:1200,height:630,header:148,panels:[{x:54,y:190,w:528,h:365},{x:618,y:190,w:528,h:365}],titleSize:42,titleY:111,brandY:54,captionY:582,domainY:606},
       cuadrado: {width:1080,height:1080,header:180,panels:[{x:80,y:220,w:920,h:350},{x:80,y:610,w:920,h:350}],titleSize:40,titleY:128,brandY:65,captionY:1010,domainY:1056},
@@ -327,10 +380,8 @@
     const brandY=baseLayout.brandY ?? 54;
     const contextY=includeHeader?baseLayout.titleY+38:Math.max(brandY+58,baseLayout.header-62);
     const header=`${includeHeader?`<path d="M0 0h${layout.width}v${baseLayout.header}H0z" fill="${palette.header}"/><path d="M0 ${baseLayout.header-5}h${layout.width}" stroke="${palette.accent}" stroke-width="7"/>`:''}${showBrand?`<text x="54" y="${brandY}" fill="${includeHeader?palette.brand:palette.foreground}" font-family="Arial,sans-serif" font-size="17" font-weight="700" letter-spacing="3">LÍNEA DE PASE · ARCHIVO VISUAL</text>`:''}${includeHeader?`<text x="54" y="${baseLayout.titleY}" fill="${palette.headerText}" font-family="Arial,sans-serif" font-size="${baseLayout.titleSize}" font-weight="800">${singleRow?`J${singleRow.dataset.jornada.padStart(2,'0')} · ${xml(singleRow.dataset.rival)}`:'Dos jornadas, frente a frente'}</text>`:''}${singleRow&&contextText?`<text x="54" y="${contextY}" fill="${includeHeader?palette.contextHeader:palette.muted}" font-family="Arial,sans-serif" font-size="19" font-weight="600">${xml(contextText)}</text>`:''}`;
-    const description = singleRow
-      ? `Resultado del Real Zaragoza ante ${xml(singleRow.dataset.rival)}, temporada ${xml(singleRow.dataset.temporada)}.`
-      : `Marcadores del Real Zaragoza frente a ${displayRows.map(row=>xml(row.dataset.rival)).join(' y ')}.`;
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="${layout.width}" height="${layout.height}" viewBox="0 0 ${layout.width} ${layout.height}" role="img" aria-labelledby="titulo descripcion"><title id="titulo">${xml(title)}</title><desc id="descripcion">${description} La posesión y los tiros se incluyen solo si se seleccionan y las dos fichas están completas.${xml(storiesDesc)}</desc><rect width="${layout.width}" height="${layout.height}" fill="${palette.background}"/>${header}${cards}${caption}${showBrand?`<text x="${layout.width-50}" y="${layout.domainY}" text-anchor="end" fill="${palette.domain}" font-family="Arial,sans-serif" font-size="15">lineadepase.com</text>`:''}</svg>`;
+    const description = altText || describeRows(displayRows,density,includeMetrics);
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="${layout.width}" height="${layout.height}" viewBox="0 0 ${layout.width} ${layout.height}" role="img" aria-labelledby="titulo descripcion"><title id="titulo">${xml(title)}</title><desc id="descripcion">${xml(description)}${xml(storiesDesc)}</desc><rect width="${layout.width}" height="${layout.height}" fill="${palette.background}"/>${header}${cards}${caption}${showBrand?`<text x="${layout.width-50}" y="${layout.domainY}" text-anchor="end" fill="${palette.domain}" font-family="Arial,sans-serif" font-size="15">lineadepase.com</text>`:''}</svg>`;
   }
 
   function updateCarouselPreview() {
@@ -341,6 +392,7 @@
       if (carouselPreviewUrl) URL.revokeObjectURL(carouselPreviewUrl);
       carouselPreviewUrl = null;
       updateFormatThumbnails();
+      updateStyleComparisons();
       return;
     }
     const rowA = rounds.get(selectA?.value);
@@ -356,6 +408,7 @@
     carouselPreviewImage.onerror=()=>{if(oldUrl)URL.revokeObjectURL(oldUrl);carouselPreviewImage.onerror=null;};
     carouselPreviewImage.src=nextUrl;
     updateFormatThumbnails();
+    updateStyleComparisons();
   }
 
   function updateSafeZoneGuide() {
@@ -430,7 +483,8 @@
       const extension=format;
       const files=[];
       for(const [index,row] of [rowA,rowB].entries()){
-        const svg=comparisonSvg(rowA,rowB,'carrusel',includeMetrics,includeCaption,includeHeader,showBrand,row,index===0?carouselContext:'');
+        const slideAltText=altTextCustomized?altTextInput?.value.trim() || '':describeRows([row],densitySelect?.value || 'completa',includeMetrics);
+        const svg=comparisonSvg(rowA,rowB,'carrusel',includeMetrics,includeCaption,includeHeader,showBrand,row,index===0?carouselContext:'',densitySelect?.value,framingSelect?.value,slideAltText);
         let blob=format==='svg'?new Blob([svg],{type:'image/svg+xml;charset=utf-8'}):await svgToRaster(svg,mimeType);
         if(format==='webp'&&blob.type!=='image/webp')throw new Error('Este navegador no ofrece exportación WebP; puedes elegir PNG o SVG.');
         files.push({name:`diapositiva-${index+1}-jornada-${row.dataset.jornada.padStart(2,'0')}.${extension}`,bytes:new Uint8Array(await blob.arrayBuffer())});
@@ -448,6 +502,35 @@
       saveBlob(blob,`${stem}.${format}`);
     }
     compareState.textContent=`Tarjeta ${size} ${format.toUpperCase()} descargada${includeCaption?' con pie':' sin pie'}${includeHeader?' con cabecera':' sin cabecera'}${showBrand?' y con marca':' sin marca'}.`;
+  }
+
+  async function downloadSocialKit() {
+    const rowA = rounds.get(selectA?.value);
+    const rowB = rounds.get(selectB?.value);
+    if (!rowA || !rowB) return;
+    const format = socialKitFormat?.value || 'png';
+    const mimeType = {svg:'image/svg+xml',png:'image/png',webp:'image/webp'}[format];
+    if (!mimeType) return;
+    const metricsAvailable = rowA.dataset.completa === '1' && rowB.dataset.completa === '1';
+    const includeMetrics = metricsAvailable && Boolean(metricsToggle?.checked);
+    const includeCaption = Boolean(captionToggle?.checked);
+    const includeHeader = !Boolean(noHeaderToggle?.checked);
+    const showBrand = Boolean(brandToggle?.checked);
+    const density = densitySelect?.value || 'completa';
+    const framing = framingSelect?.value || 'equilibrado';
+    const alternativeText = altTextCustomized ? altTextInput?.value.trim() || '' : describeRows([rowA,rowB],density,includeMetrics);
+    const safeName = value => value.replace(/[^0-9a-z]+/gi, '-').replace(/^-|-$/g, '');
+    const stem = `kit-social-${safeName(rowA.dataset.comparisonId)}-${safeName(rowB.dataset.comparisonId)}`;
+    const files = [];
+    for (const size of ['cuadrado','vertical','historias']) {
+      const svg = comparisonSvg(rowA,rowB,size,includeMetrics,includeCaption,includeHeader,showBrand,null,'',density,framing,alternativeText);
+      const blob = format === 'svg' ? new Blob([svg],{type:'image/svg+xml;charset=utf-8'}) : await svgToRaster(svg,mimeType);
+      if (format === 'webp' && blob.type !== 'image/webp') throw new Error('Este navegador no ofrece exportación WebP; elige PNG o SVG.');
+      files.push({name:`${size}.${format}`,bytes:new Uint8Array(await blob.arrayBuffer())});
+    }
+    files.push({name:'texto-alternativo.txt',bytes:new TextEncoder().encode(alternativeText)});
+    saveBlob(zipStored(files),`${stem}-${format}.zip`);
+    if (socialKitStatus) socialKitStatus.textContent = `ZIP listo: cuadrado, vertical e historias en ${format.toUpperCase()}, más el texto alternativo.`;
   }
 
   async function copyComparisonImage() {
@@ -525,6 +608,39 @@
       saveVisualPreferences();
     }));
     safeZoneToggle?.addEventListener('change',updateSafeZoneGuide);
+    stylePreviewControls.forEach(({framing,density}) => {
+      framing?.addEventListener('change',updateStyleComparisons);
+      density?.addEventListener('change',updateStyleComparisons);
+    });
+    altTextInput?.addEventListener('input',() => {
+      altTextCustomized = true;
+      updateFormatThumbnails();
+      updateCarouselPreview();
+    });
+    generateAltTextButton?.addEventListener('click',() => {
+      altTextCustomized = false;
+      updateGeneratedAltText();
+      updateCarouselPreview();
+    });
+    copyAltTextButton?.addEventListener('click',async () => {
+      const text = altTextInput?.value.trim() || '';
+      if (!text) return;
+      try {
+        await navigator.clipboard.writeText(text);
+        compareState.textContent = 'Texto alternativo copiado.';
+      } catch {
+        altTextInput?.focus();
+        altTextInput?.select();
+        compareState.textContent = 'Selecciona el texto alternativo y cópialo.';
+      }
+    });
+    socialKitButton?.addEventListener('click',async () => {
+      if (socialKitStatus) socialKitStatus.textContent = 'Preparando tres formatos…';
+      try { await downloadSocialKit(); }
+      catch (error) {
+        if (socialKitStatus) socialKitStatus.textContent = error instanceof Error ? error.message : 'No se pudo preparar el kit social.';
+      }
+    });
     resetOptionsButton?.addEventListener('click', () => {
       if (formatSelect) formatSelect.value = 'apaisado';
       if (metricsToggle) metricsToggle.checked = true;
@@ -567,6 +683,7 @@
       if (copyImageButton) copyImageButton.textContent = formatSelect?.value === 'carrusel' ? 'Copiar primera diapositiva' : 'Copiar imagen';
       if (captionToggle) captionToggle.disabled = densitySelect?.value !== 'completa';
       updateSafeZoneGuide();
+      updateGeneratedAltText();
       updateCarouselPreview();
       updateContrastNotice();
     };
@@ -637,7 +754,10 @@
       carouselContextInput.value = carouselExamples.value;
       updateCarouselPreview();
     });
-    [metricsToggle,captionToggle,noHeaderToggle,brandToggle].forEach(control=>control?.addEventListener('change',updateCarouselPreview));
+    [metricsToggle,captionToggle,noHeaderToggle,brandToggle].forEach(control=>control?.addEventListener('change',() => {
+      updateGeneratedAltText();
+      updateCarouselPreview();
+    }));
     updateFormatGuidance();
     if (downloadControls) downloadControls.hidden = false;
     document.querySelectorAll('[data-descargar-comparacion]').forEach(button => {

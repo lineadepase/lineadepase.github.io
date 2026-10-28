@@ -87,6 +87,24 @@
 .archivo-miniatura-marco.mostrar-zonas-seguras .archivo-zonas-seguras { display: block; }
 .archivo-guia-zonas { display: flex !important; align-items: center; gap: .45rem !important; margin-top: .45rem; font-weight: 600; }
 .archivo-guia-zonas input { width: 1.1rem; height: 1.1rem; accent-color: #b42318; }
+.archivo-comparar-estilos,
+.archivo-texto-alternativo,
+.archivo-kit-social { flex-basis: 100%; min-width: 0; padding: .8rem; border: 1px solid #d4ded6; border-radius: .7rem; background: #f8f9f6; }
+.archivo-comparar-estilos > p { margin: 0 0 .35rem; }
+.archivo-vistas-estilo { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .8rem; }
+.archivo-vistas-estilo figure { display: grid; gap: .55rem; min-width: 0; margin: 0; padding: .65rem; border: 1px solid #d4ded6; border-radius: .55rem; background: #fff; }
+.archivo-vistas-estilo figcaption { color: #163e28; font-weight: 700; }
+.archivo-controles-estilo { display: flex; flex-wrap: wrap; gap: .55rem; }
+.archivo-controles-estilo label { display: grid; flex: 1 1 145px; gap: .25rem; min-width: 0; font-size: .9rem; }
+.archivo-controles-estilo select { width: 100%; min-width: 0; }
+.archivo-vistas-estilo img { display: block; width: min(100%,240px); max-height: 170px; margin: 0 auto; object-fit: contain; background: #f3f5ef; }
+.archivo-texto-alternativo > label { display: grid; gap: .35rem; font-weight: 700; }
+.archivo-texto-alternativo textarea { width: 100%; min-height: 4.5rem; padding: .55rem; border: 1px solid #aab7b3; border-radius: .45rem; font: inherit; }
+.archivo-texto-alternativo .nota,
+.archivo-kit-social .nota { margin: .45rem 0 0; }
+.archivo-kit-social { display: flex; flex-wrap: wrap; align-items: end; gap: .6rem; }
+.archivo-kit-social label { display: grid; flex: 1 1 180px; gap: .3rem; }
+.archivo-kit-social p { flex-basis: 100%; }
 .archivo-miniaturas-grid span { font-weight: 700; }
 .archivo-miniaturas-grid small { color: #536257; }
 .archivo-filtros [data-recuento-archivo] { margin: 0; color: #536257; }
@@ -128,6 +146,7 @@
   .archivo-contexto-carrusel { grid-template-columns: minmax(0,1fr); }
   .archivo-presets-personales { align-items: stretch; flex-direction: column; }
   .archivo-miniaturas-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .archivo-vistas-estilo { grid-template-columns: minmax(0,1fr); }
   .archivo-comparar-controles label,
   .archivo-opciones-tarjeta label,
   .archivo-filtros label { width: 100%; min-width: 0; }
