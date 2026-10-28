@@ -59,6 +59,8 @@
   const seasonQrButton = document.querySelector('[data-generar-qr-enlace]');
   const seasonQrDownloadButton = document.querySelector('[data-descargar-qr-enlace]');
   const seasonQrA4Button = document.querySelector('[data-descargar-qr-a4]');
+  const seasonQrA4Preview = document.querySelector('[data-vista-hoja-qr]');
+  const seasonQrScaleConfirm = document.querySelector('[data-confirmar-escala-qr]');
   const seasonQrCopyButton = document.querySelector('[data-copiar-qr-enlace]');
   const seasonQrName = document.querySelector('[data-nombre-qr-enlace]');
   const seasonQrColor = document.querySelector('[data-color-qr-enlace]');
@@ -653,9 +655,24 @@
 
   async function importSeasonSavedLinks(file) {
     if(!file)return;
+    const isZip=file.name.toLocaleLowerCase('es').endsWith('.zip');
     try {
-      const payload=JSON.parse(await seasonImportJsonText(file));
-      if(payload?.format!=='lineadepase-mapa-links'||payload?.version!==1||!Array.isArray(payload.links))throw new Error('formato no compatible');
+      let sourceText;
+      try{sourceText=await seasonImportJsonText(file);}
+      catch(error){
+        const message=error instanceof Error?error.message:'';
+        if(message==='archivo demasiado grande')throw new Error('El archivo supera el límite de 1 MB. Exporta una selección más pequeña y vuelve a intentarlo.');
+        if(message==='ZIP sin el archivo JSON de selecciones')throw new Error('El ZIP no incluye el archivo de selecciones esperado. Comprueba que sea una exportación de Línea de pase.');
+        if(message==='ZIP comprimido no compatible en este navegador')throw new Error('Este navegador no puede abrir este ZIP comprimido. Vuelve a exportar las selecciones en JSON desde la web.');
+        if(message==='ZIP no compatible')throw new Error('El ZIP está incompleto o usa una compresión que no se puede abrir. Vuelve a exportarlo desde la web.');
+        throw new Error('No se pudo leer el archivo seleccionado. Comprueba que sea un JSON o ZIP válido.');
+      }
+      let payload;
+      try{payload=JSON.parse(sourceText);}
+      catch(_){throw new Error(isZip?'El ZIP contiene un JSON incompleto o dañado. Vuelve a exportar el paquete.':'El JSON está incompleto o dañado. Guarda una nueva exportación y vuelve a intentarlo.');}
+      if(payload?.format!=='lineadepase-mapa-links')throw new Error('El archivo no tiene el formato de selecciones de Línea de pase.');
+      if(payload?.version!==1)throw new Error('Esta versión del archivo todavía no se puede importar. Exporta una copia nueva desde la web.');
+      if(!Array.isArray(payload.links))throw new Error('El archivo no contiene una lista válida de selecciones.');
       const links=readSeasonSavedLinks();let imported=0,updated=0,skipped=0;
       payload.links.forEach(item=>{
         if(!item||typeof item.name!=='string'||typeof item.url!=='string'){skipped++;return;}
@@ -670,7 +687,7 @@
       });
       saveSeasonSavedLinks(links);
       if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent=`Importación terminada: ${imported} nuevas, ${updated} actualizadas, ${skipped} omitidas; límite de seis selecciones.`;
-    } catch(_){if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent='No se pudo importar el archivo. Comprueba que sea una exportación válida.';}
+    } catch(error){if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent=error instanceof Error?error.message:'No se pudo leer el archivo. Comprueba el formato y vuelve a intentarlo.';}
     if(seasonImportLinksFile)seasonImportLinksFile.value='';
   }
 
@@ -710,6 +727,22 @@
     status.textContent=`Contraste ${ratio.toFixed(2).replace('.',',')}:1 sobre blanco · margen libre de 4 módulos. ${good?'Correcto para compartir e imprimir.':'Elige tinta oscura para mejorar la lectura.'}`;
   }
 
+  function updateSeasonQrPrintPreview() {
+    if(!seasonQrA4Preview)return;
+    try {
+      const qr=seasonQrMatrix(),color=seasonQrColorHex(),view=qr.size+8,path=[];
+      for(let y=0;y<qr.size;y++)for(let x=0;x<qr.size;x++)if(qr.getModule(x,y))path.push(`M${x+4} ${y+4}h1v1h-1z`);
+      const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${view} ${view}" role="img" aria-label="Código QR con margen de cuatro módulos"><rect width="${view}" height="${view}" fill="#fff"/><path d="${path.join('')}" fill="${color}"/></svg>`;
+      seasonQrA4Preview.querySelectorAll('[data-qr-hoja-codigo]').forEach(node=>{node.innerHTML=svg;});
+      const name=(seasonQrName?.value||'').trim();
+      const title=seasonQrA4Preview.querySelector('[data-qr-hoja-titulo]');if(title)title.textContent=name||'Selección actual del mapa';
+      seasonQrA4Preview.dataset.estado='lista';
+    } catch(_){
+      seasonQrA4Preview.dataset.estado='error';
+      seasonQrA4Preview.querySelectorAll('[data-qr-hoja-codigo]').forEach(node=>{node.textContent='Vista previa disponible al cargar el código QR.';});
+    }
+  }
+
   function seasonQrMatrix() {
     if(!window.qrcodegen?.QrCode)throw new Error('QR no disponible');
     return window.qrcodegen.QrCode.encodeText(seasonPosterLinkUrl(),window.qrcodegen.QrCode.Ecc.MEDIUM);
@@ -717,31 +750,33 @@
 
   function downloadSeasonQrA4() {
     try {
-      const qr=seasonQrMatrix(),pageW=595.28,pageH=841.89,ink=seasonQrColorHex(),rgb=ink.match(/[0-9a-f]{2}/gi).map(v=>(parseInt(v,16)/255).toFixed(4)).join(' '),parts=['1 1 1 rg 0 0 595.28 841.89 re f',`${rgb} rg`];
+      const qr=seasonQrMatrix(),pageW=595.28,pageH=841.89,ink=seasonQrColorHex(),rgb=ink.match(/[0-9a-f]{2}/gi).map(v=>(parseInt(v,16)/255).toFixed(4)).join(' '),parts=['0.97 0.98 0.96 rg 0 0 595.28 841.89 re f','0.18 0.42 0.27 rg 42 777 38 3 re f'];
       const label=(seasonQrName?.value||'').trim().slice(0,28).normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\x20-\x7e]/g,'');
       const pdfText=value=>value.replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)');
-      parts.push('BT /F1 19 Tf 42 790 Td (Linea de pase - archivo visual) Tj ET');
-      if(label)parts.push(`BT /F1 12 Tf 42 765 Td (${pdfText(label)}) Tj ET`);
+      parts.push('0.18 0.42 0.27 rg BT /F2 9 Tf 42 754 Td (LINEA DE PASE  /  ARCHIVO VISUAL) Tj ET','0.08 0.13 0.10 rg BT /F2 21 Tf 42 720 Td (Una temporada, dos formas de verla) Tj ET','0.30 0.36 0.32 rg BT /F1 10 Tf 42 699 Td (Escanea el codigo para abrir la seleccion actual del mapa.) Tj ET');
+      if(label)parts.push(`0.18 0.42 0.27 rg BT /F2 10 Tf 42 679 Td (${pdfText(label)}) Tj ET`);
+      parts.push('0.91 0.94 0.91 rg 42 403 248 264 re f','0.91 0.94 0.91 rg 305 403 248 264 re f','0.18 0.42 0.27 rg BT /F2 9 Tf 58 644 Td (GRAN FORMATO) Tj ET','0.18 0.42 0.27 rg BT /F2 9 Tf 321 644 Td (FORMATO COMPACTO) Tj ET');
       const draw=(mm,centerX,topY,caption)=>{
         const points=mm*72/25.4,total=qr.size+8,unit=points/total,x0=centerX-points/2,y0=pageH-topY-points;
-        parts.push(`0.78 0.82 0.78 RG 0.6 w ${x0.toFixed(2)} ${y0.toFixed(2)} ${points.toFixed(2)} ${points.toFixed(2)} re S`);
+        parts.push(`1 1 1 rg ${x0.toFixed(2)} ${y0.toFixed(2)} ${points.toFixed(2)} ${points.toFixed(2)} re f`,`${rgb} rg`);
         for(let y=0;y<qr.size;y++)for(let x=0;x<qr.size;x++)if(qr.getModule(x,y))parts.push(`${(x0+(x+4)*unit).toFixed(3)} ${(y0+(qr.size-y+3)*unit).toFixed(3)} ${unit.toFixed(3)} ${unit.toFixed(3)} re f`);
-        parts.push(`BT /F1 11 Tf ${(centerX-24).toFixed(2)} ${(y0-22).toFixed(2)} Td (${caption}) Tj ET`);
+        parts.push(`0.08 0.13 0.10 rg BT /F2 13 Tf ${(centerX-25).toFixed(2)} ${(y0-27).toFixed(2)} Td (${caption}) Tj ET`);
       };
-      draw(60,pageW/2,175,'QR de 60 mm');draw(40,pageW/2,475,'QR de 40 mm');
-      parts.push('0.35 0.40 0.36 rg BT /F1 9 Tf 42 42 Td (Imprime al 100 % para conservar las medidas indicadas.) Tj ET');
+      draw(60,166,206,'60 mm');draw(40,429,206,'40 mm');
+      parts.push('0.30 0.36 0.32 rg BT /F1 10 Tf 42 374 Td (Mismo enlace, dos tamanos para elegir segun el soporte.) Tj ET','0.18 0.42 0.27 rg BT /F2 11 Tf 42 342 Td (IMPORTANTE  /  IMPRIME A TAMANO REAL) Tj ET','0.30 0.36 0.32 rg BT /F1 9 Tf 42 324 Td (En el cuadro de impresion selecciona 100 % o escala real; desactiva "Ajustar a pagina".) Tj ET','0.68 0.74 0.69 RG 0.7 w 42 300 m 553 300 l S','0.30 0.36 0.32 rg BT /F1 9 Tf 42 280 Td (La zona blanca alrededor de cada codigo forma parte del margen de lectura.) Tj ET');
       const content=parts.join('\n'),objects=[
         '<< /Type /Catalog /Pages 2 0 R >>',
         '<< /Type /Pages /Kids [3 0 R] /Count 1 >>',
-        `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageW} ${pageH}] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>`,
+        `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageW} ${pageH}] /Resources << /Font << /F1 4 0 R /F2 6 0 R >> >> /Contents 5 0 R >>`,
         '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>',
-        `<< /Length ${new TextEncoder().encode(content).length} >>\nstream\n${content}\nendstream`
+        `<< /Length ${new TextEncoder().encode(content).length} >>\nstream\n${content}\nendstream`,
+        '<< /Type /Font /Subtype /Type1 /BaseFont /Times-Bold >>'
       ];
       let pdf='%PDF-1.4\n',offsets=[0];
       objects.forEach((object,index)=>{offsets.push(new TextEncoder().encode(pdf).length);pdf+=`${index+1} 0 obj\n${object}\nendobj\n`;});
       const xref=new TextEncoder().encode(pdf).length;pdf+=`xref\n0 ${objects.length+1}\n0000000000 65535 f \n`+offsets.slice(1).map(value=>`${String(value).padStart(10,'0')} 00000 n \n`).join('')+`trailer\n<< /Size ${objects.length+1} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`;
       saveBlob(new Blob([pdf],{type:'application/pdf'}),'qr-linea-de-pase-a4.pdf');
-      if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent='Hoja A4 descargada con códigos QR de 60 y 40 mm.';
+      if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent='Hoja A4 descargada. Los QR conservan sus medidas si imprimes al 100 %.';
     } catch(_){if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent='No se pudo preparar la hoja A4 en este navegador.';}
   }
 
@@ -761,6 +796,7 @@
     if(seasonQrPreview){seasonQrPreview.removeAttribute('src');seasonQrPreview.hidden=true;if(seasonQrPreview.parentElement)seasonQrPreview.parentElement.hidden=true;}
     if(seasonQrDownloadButton)seasonQrDownloadButton.disabled=true;
     if(seasonQrCopyButton)seasonQrCopyButton.disabled=true;
+    updateSeasonQrPrintPreview();
   }
 
   function restoreSeasonPosterFromUrl() {
@@ -1144,9 +1180,11 @@
     seasonQrDownloadButton?.addEventListener('click',downloadSeasonLinkQr);
     seasonQrA4Button?.addEventListener('click',downloadSeasonQrA4);
     seasonQrCopyButton?.addEventListener('click',copySeasonLinkQr);
-    seasonQrName?.addEventListener('input',()=>{if(seasonQrSvg)clearSeasonLinkQr();});
-    [seasonQrColor,seasonQrPrintSize].forEach(control=>control?.addEventListener('change',()=>{updateSeasonQrQuality();if(seasonQrSvg)clearSeasonLinkQr();}));
+    seasonQrName?.addEventListener('input',()=>{if(seasonQrSvg)clearSeasonLinkQr();else updateSeasonQrPrintPreview();});
+    [seasonQrColor,seasonQrPrintSize].forEach(control=>control?.addEventListener('change',()=>{updateSeasonQrQuality();if(seasonQrSvg)clearSeasonLinkQr();else updateSeasonQrPrintPreview();}));
+    seasonQrScaleConfirm?.addEventListener('change',()=>{if(seasonQrA4Button)seasonQrA4Button.disabled=!seasonQrScaleConfirm.checked;});
     updateSeasonQrQuality();
+    updateSeasonQrPrintPreview();
     seasonSaveLinkName?.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();saveNamedSeasonPosterLink();}});
     seasonSavedLinksList?.addEventListener('click',async event=>{
       const button=event.target.closest('button[data-aplicar-enlace-mapa],button[data-copiar-enlace-mapa],button[data-borrar-enlace-mapa],button[data-fijar-enlace-mapa],button[data-subir-enlace-mapa],button[data-bajar-enlace-mapa]');

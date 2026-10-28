@@ -66,7 +66,7 @@ La selección incorpora un perfil breve en inglés. `assets/documentos/` contien
 
 ## Archivo visual: transferencias y QR de impresión
 
-El mapa admite importar paquetes ZIP con compresión Store o Deflate, incluido el descriptor de datos habitual, mediante el directorio central del archivo. La lectura se hace en el navegador y limita el tamaño del archivo y de la entrada JSON. El QR informa del contraste sobre blanco y conserva una zona libre de cuatro módulos; la hoja A4 descargable coloca el mismo enlace en códigos vectoriales de 60 y 40 mm. Al imprimir, hay que mantener la escala al 100 % para conservar las medidas.
+El mapa admite importar paquetes ZIP con compresión Store o Deflate, incluido el descriptor de datos habitual, mediante el directorio central del archivo. La lectura se hace en el navegador y limita el tamaño del archivo y de la entrada JSON. El QR informa del contraste sobre blanco y conserva una zona libre de cuatro módulos. La vista de impresión muestra el QR del enlace activo en una maqueta A4; la hoja PDF añade una jerarquía editorial y dos códigos vectoriales de 60 y 40 mm. Para generar el PDF se confirma que se imprimirá al 100 % o a tamaño real. Los errores de ZIP o JSON se explican con mensajes breves.
 
 ## Herramientas y entregas de jornada
 
