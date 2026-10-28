@@ -265,3 +265,29 @@
   .archivo-qr-horizontal-partidos article strong { font-size:.65rem; }
   .archivo-qr-a4-horizontal .archivo-qr-a4-pie { padding-top:.25rem; font-size:.48rem; }
 }
+
+/* Keep the on-screen sheets in scale with the real A4 proportions. */
+.archivo-qr-a4-codigos { grid-template-columns:minmax(0,28.57%) minmax(0,19.05%); gap:clamp(.25rem,1.8vw,.65rem); }
+.archivo-qr-a4-codigos figure { padding:0; background:transparent; }
+.archivo-qr-a4-codigos [data-qr-hoja-codigo],.archivo-qr-a4-codigos figure:nth-child(2) [data-qr-hoja-codigo] { width:100%; }
+.archivo-qr-horizontal-cuerpo { grid-template-columns:minmax(0,20.2%) minmax(0,1fr); }
+.archivo-qr-horizontal-codigo { width:100%; }
+@media(max-width:600px) {
+  .archivo-qr-a4-preview { padding:.9rem; }
+  .archivo-qr-a4-preview header span,.archivo-qr-a4-preview footer,.archivo-qr-a4-pie { font-size:.58rem; }
+  .archivo-qr-a4-codigos { gap:.25rem; }
+  .archivo-qr-a4-codigos figcaption strong { font-size:.78rem; }
+  .archivo-qr-a4-codigos figcaption span { font-size:.58rem; }
+  .archivo-qr-a4-horizontal { gap:.45rem; padding:.7rem; }
+  .archivo-qr-a4-horizontal header span { font-size:.58rem; }
+  .archivo-qr-a4-horizontal header strong { font-size:1rem; }
+  .archivo-qr-a4-horizontal header p { font-size:.7rem; }
+  .archivo-qr-horizontal-cuerpo { gap:.5rem; }
+  .archivo-qr-horizontal-partidos { gap:.4rem; }
+  .archivo-qr-horizontal-partidos article { gap:.2rem; padding:.4rem .45rem; }
+  .archivo-qr-horizontal-partidos article span,.archivo-qr-horizontal-partidos article small { font-size:.58rem; }
+  .archivo-qr-horizontal-partidos article strong { font-size:.77rem; }
+  .archivo-qr-a4-horizontal .archivo-qr-a4-pie { font-size:.56rem; }
+}
+.archivo-kit-social [data-estado-impresion-social] { flex-basis:100%; margin:.2rem 0 0; }
+.archivo-kit-social [data-imprimir-social] { flex:0 1 auto; }

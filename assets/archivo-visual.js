@@ -32,6 +32,8 @@
   const socialKitFormat = document.querySelector('[data-formato-kit]');
   const socialKitButton = document.querySelector('[data-descargar-kit]');
   const socialKitStatus = document.querySelector('[data-estado-kit]');
+  const socialPrintButton = document.querySelector('[data-imprimir-social]');
+  const socialPrintStatus = document.querySelector('[data-estado-impresion-social]');
   const contactSheetButtons = [...document.querySelectorAll('[data-hoja-plantilla]')];
   const seasonPosterSelect = document.querySelector('[data-temporada-mapa]');
   const seasonPosterRival = document.querySelector('[data-rival-mapa]');
@@ -63,6 +65,7 @@
   const seasonQrA4HorizontalPreview = document.querySelector('[data-vista-hoja-qr-horizontal]');
   const seasonQrScaleConfirm = document.querySelector('[data-confirmar-escala-qr]');
   const seasonQrA4LandscapeButton = document.querySelector('[data-descargar-qr-a4-apaisado]');
+  const seasonQrA5Button = document.querySelector('[data-descargar-qr-a5]');
   const seasonQrPaperSelect = document.querySelector('[data-papel-impresion-qr]');
   const seasonQrPreviewDisclosure = document.querySelector('[data-detalles-vista-qr]');
   const seasonQrCopyButton = document.querySelector('[data-copiar-qr-enlace]');
@@ -797,6 +800,26 @@
     } catch(_){if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent='No se pudo preparar la hoja A4 en este navegador.';}
   }
 
+  function downloadSeasonQrA5() {
+    try {
+      const qr=seasonQrMatrix(),pageW=419.53,pageH=595.28,ink=seasonQrColorHex(),rgb=ink.match(/[0-9a-f]{2}/gi).map(v=>(parseInt(v,16)/255).toFixed(4)).join(' '),parts=seasonQrPaperIsSoft()?['0.97 0.98 0.96 rg 0 0 419.53 595.28 re f']:[];
+      const text=value=>value.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\x20-\x7e]/g,'').replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)').slice(0,72);
+      const name=(seasonQrName?.value||'').trim();
+      parts.push('0.18 0.42 0.27 rg 34 551 32 3 re f','0.18 0.42 0.27 rg BT /F2 9 Tf 34 530 Td (LINEA DE PASE  /  ARCHIVO VISUAL) Tj ET','0.08 0.13 0.10 rg BT /F2 19 Tf 34 497 Td (Una temporada, dos formas de verla) Tj ET',`0.30 0.36 0.32 rg BT /F1 10 Tf 34 475 Td (${text(name||'Mapa de temporada')}) Tj ET`);
+      if(seasonQrPaperIsSoft())parts.push('0.92 0.95 0.92 rg 34 182 351 262 re f');else parts.push('0.72 0.80 0.74 RG 0.8 w 34 182 351 262 re S');
+      parts.push('0.18 0.42 0.27 rg BT /F2 9 Tf 52 414 Td (QR PARA ABRIR EL MAPA) Tj ET');
+      const mm=60,points=mm*72/25.4,total=qr.size+8,unit=points/total,x0=(pageW-points)/2,y0=pageH-207-points;
+      parts.push(`1 1 1 rg ${x0.toFixed(2)} ${y0.toFixed(2)} ${points.toFixed(2)} ${points.toFixed(2)} re f`,`${rgb} rg`);
+      for(let y=0;y<qr.size;y++)for(let x=0;x<qr.size;x++)if(qr.getModule(x,y))parts.push(`${(x0+(x+4)*unit).toFixed(3)} ${(y0+(qr.size-y+3)*unit).toFixed(3)} ${unit.toFixed(3)} ${unit.toFixed(3)} re f`);
+      parts.push('0.08 0.13 0.10 rg BT /F2 12 Tf 182 185 Td (QR de 60 mm) Tj ET','0.30 0.36 0.32 rg BT /F1 9 Tf 34 146 Td (Imprime a tamano real o al 100 % para mantener la medida.) Tj ET','0.68 0.74 0.69 RG 0.7 w 34 126 m 385 126 l S','0.30 0.36 0.32 rg BT /F1 9 Tf 34 105 Td (El margen blanco forma parte del codigo y facilita su lectura.) Tj ET');
+      const content=parts.join('\n'),objects=['<< /Type /Catalog /Pages 2 0 R >>','<< /Type /Pages /Kids [3 0 R] /Count 1 >>',`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageW} ${pageH}] /Resources << /Font << /F1 4 0 R /F2 6 0 R >> >> /Contents 5 0 R >>`,'<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>',`<< /Length ${new TextEncoder().encode(content).length} >>\nstream\n${content}\nendstream`,'<< /Type /Font /Subtype /Type1 /BaseFont /Times-Bold >>'];
+      let pdf='%PDF-1.4\n',offsets=[0];objects.forEach((object,index)=>{offsets.push(new TextEncoder().encode(pdf).length);pdf+=`${index+1} 0 obj\n${object}\nendobj\n`;});
+      const xref=new TextEncoder().encode(pdf).length;pdf+=`xref\n0 ${objects.length+1}\n0000000000 65535 f \n`+offsets.slice(1).map(value=>`${String(value).padStart(10,'0')} 00000 n \n`).join('')+`trailer\n<< /Size ${objects.length+1} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`;
+      saveBlob(new Blob([pdf],{type:'application/pdf'}),'qr-linea-de-pase-a5.pdf');
+      if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent=`Hoja A5 descargada (${(new Blob([pdf]).size/1024).toFixed(1)} KB) en papel ${seasonQrPaperIsSoft()?'verde suave':'blanco'}; QR de 60 mm.`;
+    } catch(_){if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent='No se pudo preparar la hoja A5 en este navegador.';}
+  }
+
   function downloadSeasonQrLandscapeA4() {
     try {
       const qr=seasonQrMatrix(),pageW=841.89,pageH=595.28,ink=seasonQrColorHex(),rgb=ink.match(/[0-9a-f]{2}/gi).map(v=>(parseInt(v,16)/255).toFixed(4)).join(' '),parts=seasonQrPaperIsSoft()?['0.97 0.98 0.96 rg 0 0 841.89 595.28 re f']:[];
@@ -1099,6 +1122,27 @@
     if (socialKitStatus) socialKitStatus.textContent = `ZIP listo: cuadrado, vertical e historias en ${format.toUpperCase()}, más el texto alternativo.`;
   }
 
+  function downloadPrintableSocialSvg() {
+    const rowA=rounds.get(selectA?.value),rowB=rounds.get(selectB?.value);
+    if(!rowA||!rowB)throw new Error('Selecciona dos jornadas antes de preparar la plantilla.');
+    const requested=formatSelect?.value||'apaisado',format=requested==='carrusel'?'cuadrado':requested;
+    const dimensions={apaisado:[1200,630],cuadrado:[1080,1080],vertical:[1080,1350],historias:[1080,1920]}[format]||[1200,630];
+    const metrics=rowA.dataset.completa==='1'&&rowB.dataset.completa==='1'&&Boolean(metricsToggle?.checked),
+      svg=comparisonSvg(rowA,rowB,format,metrics,Boolean(captionToggle?.checked),!Boolean(noHeaderToggle?.checked),Boolean(brandToggle?.checked),null,'',densitySelect?.value,framingSelect?.value,altTextCustomized?altTextInput?.value.trim()||'':describeRows([rowA,rowB],densitySelect?.value||'completa',metrics));
+    const match=svg.match(/viewBox="([^"]+)"/),body=svg.slice(svg.indexOf('>')+1,svg.lastIndexOf('</svg>'));
+    if(!match||!body)throw new Error('No se pudo preparar la plantilla seleccionada.');
+    const [sourceW,sourceH]=match[1].split(/\s+/).slice(2).map(Number),maxW=190,maxH=270;
+    const cardW=Math.min(maxW,maxH*sourceW/sourceH),cardH=cardW*sourceH/sourceW,x=(210-cardW)/2,y=(297-cardH)/2,gap=1.5,mark=4;
+    const crop=`<g fill="none" stroke="#15221b" stroke-width=".22"><path d="M${x-gap-mark} ${y}h${mark} M${x} ${y-gap-mark}v${mark} M${x+cardW+gap} ${y}h${mark} M${x+cardW} ${y-gap-mark}v${mark} M${x-gap-mark} ${y+cardH}h${mark} M${x} ${y+cardH+gap}v${mark} M${x+cardW+gap} ${y+cardH}h${mark} M${x+cardW} ${y+cardH+gap}v${mark}"/></g>`;
+    const footer='<text x="105" y="292.5" text-anchor="middle" fill="#536257" font-family="Arial,sans-serif" font-size="2.5">A4 · escala real · recorta por las marcas</text>';
+    const printable=`<svg xmlns="http://www.w3.org/2000/svg" width="210mm" height="297mm" viewBox="0 0 210 297"><rect width="210" height="297" fill="#fff"/>${crop}<svg x="${x}" y="${y}" width="${cardW}" height="${cardH}" viewBox="${match[1]}" preserveAspectRatio="none">${body}</svg>${footer}</svg>`;
+    const blob=new Blob([printable],{type:'image/svg+xml;charset=utf-8'}),limit=300*1024;
+    if(blob.size>limit)throw new Error('La plantilla supera 300 KB; reduce la densidad del diseño y vuelve a intentarlo.');
+    const safe=value=>value.replace(/[^0-9a-z]+/gi,'-').replace(/^-|-$/g,'');
+    saveBlob(blob,`plantilla-social-${safe(rowA.dataset.comparisonId)}-${safe(rowB.dataset.comparisonId)}-a4.svg`);
+    if(socialPrintStatus)socialPrintStatus.textContent=`SVG A4 listo · ${(blob.size/1024).toFixed(1)} KB de 300 KB · ${Math.round(cardW)} × ${Math.round(cardH)} mm. Imprime a escala real y corta por las marcas.${requested==='carrusel'?' Se ha preparado en formato cuadrado.':''}`;
+  }
+
   async function copyComparisonImage() {
     if (!navigator.clipboard?.write || typeof ClipboardItem === 'undefined') {
       compareState.textContent = 'Este navegador no permite copiar imágenes directamente. Puedes descargar la tarjeta en PNG.';
@@ -1228,12 +1272,15 @@
     [seasonQrColor,seasonQrPrintSize].forEach(control=>control?.addEventListener('change',()=>{updateSeasonQrQuality();if(seasonQrSvg)clearSeasonLinkQr();else updateSeasonQrPrintPreview();}));
     if(seasonQrA4Button)seasonQrA4Button.disabled=!seasonQrScaleConfirm?.checked;
     if(seasonQrA4LandscapeButton)seasonQrA4LandscapeButton.disabled=!seasonQrScaleConfirm?.checked;
-    seasonQrScaleConfirm?.addEventListener('change',()=>{if(seasonQrA4Button)seasonQrA4Button.disabled=!seasonQrScaleConfirm.checked;if(seasonQrA4LandscapeButton)seasonQrA4LandscapeButton.disabled=!seasonQrScaleConfirm.checked;});
+    if(seasonQrA5Button)seasonQrA5Button.disabled=!seasonQrScaleConfirm?.checked;
+    seasonQrScaleConfirm?.addEventListener('change',()=>{if(seasonQrA4Button)seasonQrA4Button.disabled=!seasonQrScaleConfirm.checked;if(seasonQrA4LandscapeButton)seasonQrA4LandscapeButton.disabled=!seasonQrScaleConfirm.checked;if(seasonQrA5Button)seasonQrA5Button.disabled=!seasonQrScaleConfirm.checked;});
     seasonQrPaperSelect?.addEventListener('change',updateSeasonQrPrintPreview);
     [selectA,selectB].forEach(control=>control?.addEventListener('change',updateSeasonQrPrintPreview));
     const updateQrDisclosureLabel=()=>{const summary=seasonQrPreviewDisclosure?.querySelector('summary');if(summary)summary.textContent=seasonQrPreviewDisclosure.open?'Ocultar las maquetas A4':'Mostrar las maquetas A4';};
     seasonQrPreviewDisclosure?.addEventListener('toggle',updateQrDisclosureLabel);
-    if(window.matchMedia?.('(max-width: 600px)').matches&&seasonQrPreviewDisclosure)seasonQrPreviewDisclosure.open=false;
+    const qrMobileQuery=window.matchMedia?.('(max-width: 600px)');
+    if(qrMobileQuery?.matches&&seasonQrPreviewDisclosure)seasonQrPreviewDisclosure.open=false;
+    qrMobileQuery?.addEventListener?.('change',event=>{if(event.matches&&seasonQrPreviewDisclosure)seasonQrPreviewDisclosure.open=false;});
     updateQrDisclosureLabel();
     updateSeasonQrQuality();
     updateSeasonQrPrintPreview();
@@ -1265,6 +1312,8 @@
         if (socialKitStatus) socialKitStatus.textContent = error instanceof Error ? error.message : 'No se pudo preparar el kit social.';
       }
     });
+    seasonQrA5Button?.addEventListener('click',downloadSeasonQrA5);
+    socialPrintButton?.addEventListener('click',()=>{try{downloadPrintableSocialSvg();}catch(error){if(socialPrintStatus)socialPrintStatus.textContent=error instanceof Error?error.message:'No se pudo preparar la plantilla imprimible.';}});
     resetOptionsButton?.addEventListener('click', () => {
       if (formatSelect) formatSelect.value = 'apaisado';
       if (metricsToggle) metricsToggle.checked = true;
