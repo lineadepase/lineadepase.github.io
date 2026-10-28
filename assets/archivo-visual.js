@@ -44,6 +44,13 @@
   const seasonCarouselButton = document.querySelector('[data-descargar-carrusel-temporada]');
   const seasonFormList = document.querySelector('[data-forma-reciente]');
   const seasonFormStreak = document.querySelector('[data-racha-temporada]');
+  const seasonRivalFormList = document.querySelector('[data-forma-rival]');
+  const seasonRivalFormTitle = document.querySelector('[data-forma-rival-titulo]');
+  const seasonRivalFormStatus = document.querySelector('[data-forma-rival-estado]');
+  const seasonShareButton = document.querySelector('[data-compartir-mapa]');
+  const seasonShareStatus = document.querySelector('[data-estado-compartir-mapa]');
+  let seasonOpponentForms = {};
+  try { seasonOpponentForms = JSON.parse(document.getElementById('datos-forma-rivales')?.textContent || '{}'); } catch (_) { seasonOpponentForms = {}; }
   const seasonPosterSheet = document.querySelector('[data-lamina-mapa]');
   const seasonPosterAlt = document.querySelector('[data-texto-mapa]');
   const resetSeasonPosterAlt = document.querySelector('[data-restablecer-texto-mapa]');
@@ -492,6 +499,21 @@
     const outcome=row=>Number(row.dataset.golesZaragoza)>Number(row.dataset.golesRival)?'V':Number(row.dataset.golesZaragoza)<Number(row.dataset.golesRival)?'D':'E';
     if(seasonFormList)seasonFormList.innerHTML=matches.slice(0,5).map(row=>{const result=outcome(row),word=result==='V'?'victoria':result==='D'?'derrota':'empate';return `<li class="forma-${result.toLowerCase()}" aria-label="Jornada ${row.dataset.jornada}: ${word}" title="J${row.dataset.jornada} · ${word}">${result}</li>`;}).join('')||'<li>Sin resultados</li>';
     if(seasonFormStreak){if(!matches.length){seasonFormStreak.textContent='Aún no hay resultados publicados.';return;}const latest=outcome(matches[0]),count=matches.findIndex(row=>outcome(row)!==latest);const length=count<0?matches.length:count,label=latest==='V'?'victoria':latest==='D'?'derrota':'empate',plural=latest==='V'?'victorias':latest==='D'?'derrotas':'empates';seasonFormStreak.textContent=length===1?`${label[0].toUpperCase()+label.slice(1)} en el último partido.`:`${length} ${plural} consecutivas.`;}
+    updateOpponentRecentForm();
+  }
+
+  function seasonOutcome(goals,against) { return Number(goals)>Number(against)?'V':Number(goals)<Number(against)?'D':'E'; }
+
+  function updateOpponentRecentForm() {
+    if(!seasonRivalFormList||!seasonPosterRival)return;
+    const rival=seasonPosterRival.value;
+    if(seasonRivalFormTitle)seasonRivalFormTitle.textContent=rival?`${rival} · últimos resultados disponibles`:'Rival seleccionado';
+    if(!rival){seasonRivalFormList.innerHTML='';if(seasonRivalFormStatus)seasonRivalFormStatus.textContent='Selecciona un rival para comparar la muestra disponible.';return;}
+    const normalize=value=>value.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('es').replace(/[^a-z0-9]+/g,' ').trim();
+    const key=Object.keys(seasonOpponentForms).find(team=>{const a=normalize(team),b=normalize(rival);return a===b||a.startsWith(b+' ')||b.startsWith(a+' ');});
+    const matches=(key?seasonOpponentForms[key]:[]).slice().sort((a,b)=>b.fecha.localeCompare(a.fecha)||b.jornada-a.jornada).slice(0,5);
+    seasonRivalFormList.innerHTML=matches.map(match=>{const result=seasonOutcome(match.goles_favor,match.goles_contra),word=result==='V'?'victoria':result==='D'?'derrota':'empate';return `<li class="forma-${result.toLowerCase()}" aria-label="Jornada ${match.jornada}: ${word} ante ${xml(match.rival)}, ${match.goles_favor} a ${match.goles_contra}" title="J${String(match.jornada).padStart(2,'0')} · ${word} · ${match.goles_favor}–${match.goles_contra}">${result}</li>`;}).join('')||'<li>—</li>';
+    if(seasonRivalFormStatus){if(!matches.length){seasonRivalFormStatus.textContent='No hay resultados publicados de este rival en la muestra del grupo.';return;}const rounds=[...new Set(matches.map(match=>match.jornada))].sort((a,b)=>a-b);seasonRivalFormStatus.textContent=`${matches.length} ${matches.length===1?'partido publicado':'partidos publicados'} del rival; jornadas ${rounds.join(', ')}. La muestra disponible puede ser menor que cinco.`;}
   }
 
   function updateSeasonRivalOptions() {
@@ -499,6 +521,27 @@
     const previous=seasonPosterRival.value, rivals=[...new Set(seasonPosterRows(seasonPosterSelect.value,false).map(row=>row.dataset.rival))].sort((a,b)=>a.localeCompare(b,'es'));
     seasonPosterRival.innerHTML='<option value="">Todos los rivales</option>'+rivals.map(rival=>`<option value="${xml(rival)}">${xml(rival)}</option>`).join('');
     if(rivals.includes(previous))seasonPosterRival.value=previous;
+  }
+
+  async function copySeasonPosterLink() {
+    const url=new URL(window.location.href), params=url.searchParams;
+    const values={'mapa-temporada':seasonPosterSelect?.value||'','mapa-rival':seasonPosterRival?.value||'','mapa-desde':seasonPosterFrom?.value||'','mapa-hasta':seasonPosterTo?.value||'','mapa-formato':seasonPosterFormat?.value||'cuadrado','mapa-archivo':seasonPosterType?.value||'webp'};
+    Object.entries(values).forEach(([key,value])=>value?params.set(key,value):params.delete(key));
+    try { await navigator.clipboard.writeText(url.href);if(seasonShareStatus)seasonShareStatus.textContent='Enlace copiado; conserva la temporada, rival, fechas y formato.'; }
+    catch (_) { if(seasonShareStatus)seasonShareStatus.textContent='No se pudo copiar el enlace en este navegador.'; }
+  }
+
+  function restoreSeasonPosterFromUrl() {
+    if(!seasonPosterSelect)return;
+    const params=new URLSearchParams(window.location.search), seasons=[...seasonPosterSelect.options].map(option=>option.value);
+    const season=params.get('mapa-temporada');if(seasons.includes(season))seasonPosterSelect.value=season;
+    updateSeasonRivalOptions();
+    const rival=params.get('mapa-rival');if(rival&&[...seasonPosterRival.options].some(option=>option.value===rival))seasonPosterRival.value=rival;
+    const datePattern=/^\d{4}-\d{2}-\d{2}$/;
+    if(datePattern.test(params.get('mapa-desde')||''))seasonPosterFrom.value=params.get('mapa-desde');
+    if(datePattern.test(params.get('mapa-hasta')||''))seasonPosterTo.value=params.get('mapa-hasta');
+    if(['cuadrado','vertical','historias'].includes(params.get('mapa-formato')))seasonPosterFormat.value=params.get('mapa-formato');
+    if(['png','webp','svg'].includes(params.get('mapa-archivo')))seasonPosterType.value=params.get('mapa-archivo');
   }
 
   function updateSeasonPosterPreview() {
@@ -536,23 +579,30 @@
     else {const zip=zipStored(files);saveBlob(zip,`mapa-temporada-${safeSeason}-${format}-${type}.zip`);if(seasonPosterStatus)seasonPosterStatus.textContent=`ZIP con ${pages.length} láminas ${format} descargado · ${(zip.size/1024).toFixed(1)} KB.`;}
   }
 
-  function seasonCarouselSvg(season,kind) {
+  function seasonCarouselSvg(season,kind,format='cuadrado') {
     const all=seasonPosterRows(season,false), subset=kind==='global'?all:all.filter(row=>row.dataset.sede===(kind==='casa'?'Casa':'Fuera'));
     const palette=activePalette(), counts=subset.reduce((c,row)=>{c[posterOutcome(row).label]++;return c;},{VICTORIA:0,EMPATE:0,DERROTA:0});
     const totals=all.reduce((c,row)=>{const key=row.dataset.sede==='Casa'?'casa':'fuera';c[key][posterOutcome(row).label]++;return c;},{casa:{VICTORIA:0,EMPATE:0,DERROTA:0},fuera:{VICTORIA:0,EMPATE:0,DERROTA:0}});
+    const specs={
+      cuadrado:{width:1080,height:1080,safeTop:0,safeBottom:0,bandTop:0,bandHeight:390,brandY:76,titleY:158,seasonY:212,summaryY:296,noteY:350,startY:510,gap:54,footerY:1035,font:22},
+      vertical:{width:1080,height:1350,safeTop:0,safeBottom:0,bandTop:0,bandHeight:450,brandY:76,titleY:166,seasonY:222,summaryY:320,noteY:378,startY:545,gap:62,footerY:1305,font:22},
+      historias:{width:1080,height:1920,safeTop:260,safeBottom:260,bandTop:260,bandHeight:520,brandY:338,titleY:422,seasonY:480,summaryY:585,noteY:640,startY:770,gap:82,footerY:1600,font:26}
+    };
+    const spec=specs[format]||specs.cuadrado, {width,height,safeTop,safeBottom,bandTop,bandHeight,brandY,titleY,seasonY,summaryY,noteY,startY,gap,footerY,font}=spec;
     const title=kind==='global'?'Balance de temporada':kind==='casa'?'El Zaragoza en casa':'El Zaragoza fuera';
-    const rowsToShow=kind==='global'?[]:subset.slice().reverse().slice(-8).reverse();
-    const cards=rowsToShow.map((row,index)=>{const y=510+index*54, out=posterOutcome(row);return `<text x="78" y="${y}" fill="${palette.foreground}" font-family="Arial,sans-serif" font-size="22" font-weight="700">J${row.dataset.jornada.padStart(2,'0')}</text><text x="205" y="${y}" fill="${palette.foreground}" font-family="Arial,sans-serif" font-size="22">${xml(row.dataset.sede==='Casa'?row.dataset.rival:`${row.dataset.rival} · fuera`)}</text><text x="1002" y="${y}" text-anchor="end" fill="${out.color}" font-family="Arial,sans-serif" font-size="23" font-weight="800">${row.dataset.golesZaragoza}–${row.dataset.golesRival}</text>`;}).join('');
+    const maxRows=Math.max(0,Math.floor((footerY-startY-28)/gap)), rowsToShow=kind==='global'?[]:subset.slice().reverse().slice(-maxRows).reverse();
+    const cards=rowsToShow.map((row,index)=>{const y=startY+index*gap,out=posterOutcome(row),description=row.dataset.sede==='Casa'?row.dataset.rival:`${row.dataset.rival} · fuera`;return `<text x="78" y="${y}" fill="${palette.foreground}" font-family="Arial,sans-serif" font-size="${font}" font-weight="700">J${row.dataset.jornada.padStart(2,'0')}</text><text x="205" y="${y}" fill="${palette.foreground}" font-family="Arial,sans-serif" font-size="${font}">${xml(description)}</text><text x="1002" y="${y}" text-anchor="end" fill="${out.color}" font-family="Arial,sans-serif" font-size="${font+1}" font-weight="800">${row.dataset.golesZaragoza}–${row.dataset.golesRival}</text>`;}).join('');
     const summary=`${counts.VICTORIA} victorias · ${counts.EMPATE} empates · ${counts.DERROTA} derrotas`;
     const homeAwaySummary=`Casa ${totals.casa.VICTORIA}V–${totals.casa.EMPATE}E–${totals.casa.DERROTA}D · Fuera ${totals.fuera.VICTORIA}V–${totals.fuera.EMPATE}E–${totals.fuera.DERROTA}D`;
-    const note=kind==='global'?homeAwaySummary:`Balance de todos los partidos: ${summary}${subset.length>8?` · se muestran los 8 últimos de ${subset.length}`:''}`;
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080" role="img" aria-labelledby="t d"><title id="t">${xml(title)} · ${xml(season)}</title><desc id="d">${xml(title)}. ${xml(summary)}. ${xml(note)}. Resultados publicados.</desc><rect width="1080" height="1080" fill="${palette.background}"/><path d="M0 0h1080v390H0z" fill="${palette.header}"/><text x="64" y="76" fill="${palette.brand}" font-family="Arial,sans-serif" font-size="18" font-weight="700" letter-spacing="3">LÍNEA DE PASE · REAL ZARAGOZA</text><text x="64" y="158" fill="${palette.headerText}" font-family="Arial,sans-serif" font-size="44" font-weight="800">${xml(title)}</text><text x="64" y="212" fill="${palette.contextHeader}" font-family="Arial,sans-serif" font-size="28">${xml(season)} · ${subset.length} partidos</text><text x="64" y="296" fill="${palette.headerText}" font-family="Arial,sans-serif" font-size="27" font-weight="700">${xml(summary)}</text><text x="64" y="350" fill="${palette.contextHeader}" font-family="Arial,sans-serif" font-size="21">${xml(note)}</text>${cards||`<text x="64" y="520" fill="${palette.muted}" font-family="Arial,sans-serif" font-size="24">${all.length} resultados publicados en la temporada.</text>`}<text x="64" y="1035" fill="${palette.muted}" font-family="Arial,sans-serif" font-size="18">Resultados publicados · lineadepase.com</text></svg>`;
+    const note=kind==='global'?homeAwaySummary:`Balance sobre ${subset.length} partidos: ${summary}${subset.length>rowsToShow.length?` · últimos ${rowsToShow.length} de ${subset.length}`:''}`;
+    const rowAlt=rowsToShow.map(row=>`J${row.dataset.jornada} ${row.dataset.sede.toLowerCase()} ante ${row.dataset.rival} ${row.dataset.golesZaragoza}–${row.dataset.golesRival}`).join('; ');
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="t d"><title id="t">${xml(title)} · ${xml(season)}</title><desc id="d">${xml(title)}. ${xml(summary)}. ${xml(note)}. ${xml(rowAlt)}. Zona segura de historias: ${safeTop} píxeles arriba y ${safeBottom} abajo.</desc><rect width="${width}" height="${height}" fill="${palette.background}"/><path d="M0 ${bandTop}h${width}v${bandHeight}H0z" fill="${palette.header}"/><text x="64" y="${brandY}" fill="${palette.brand}" font-family="Arial,sans-serif" font-size="18" font-weight="700" letter-spacing="3">LÍNEA DE PASE · REAL ZARAGOZA</text><text x="64" y="${titleY}" fill="${palette.headerText}" font-family="Arial,sans-serif" font-size="44" font-weight="800">${xml(title)}</text><text x="64" y="${seasonY}" fill="${palette.contextHeader}" font-family="Arial,sans-serif" font-size="28">${xml(season)} · ${subset.length} partidos</text><text x="64" y="${summaryY}" fill="${palette.headerText}" font-family="Arial,sans-serif" font-size="27" font-weight="700">${xml(summary)}</text><text x="64" y="${noteY}" fill="${palette.contextHeader}" font-family="Arial,sans-serif" font-size="21">${xml(note)}</text>${cards||`<text x="64" y="${startY}" fill="${palette.muted}" font-family="Arial,sans-serif" font-size="24">${all.length} resultados publicados en la temporada.</text>`}<text x="64" y="${footerY}" fill="${palette.muted}" font-family="Arial,sans-serif" font-size="18">Resultados publicados · lineadepase.com</text></svg>`;
   }
 
   async function downloadSeasonCarousel() {
-    const season=seasonPosterSelect?.value, type=seasonPosterType?.value||'webp', safeSeason=season.replace(/[^0-9a-z]+/gi,'-').replace(/^-|-$/g,''), files=[];
-    for(const kind of ['global','casa','fuera']){const svg=seasonCarouselSvg(season,kind),blob=type==='svg'?new Blob([svg],{type:'image/svg+xml;charset=utf-8'}):await svgToRaster(svg,type==='webp'?'image/webp':'image/png');if(type==='webp'&&blob.type!=='image/webp')throw new Error('Este navegador no ofrece exportación WebP.');files.push({name:`${kind==='global'?'balance-global':kind==='casa'?'en-casa':'fuera'}.${type}`,bytes:new Uint8Array(await blob.arrayBuffer())});}
-    const zip=zipStored(files);saveBlob(zip,`carrusel-temporada-${safeSeason}-${type}.zip`);if(seasonPosterStatus)seasonPosterStatus.textContent=`Carrusel de 3 láminas descargado · ${(zip.size/1024).toFixed(1)} KB.`;
+    const season=seasonPosterSelect?.value, type=seasonPosterType?.value||'webp', format=seasonPosterFormat?.value||'cuadrado', safeSeason=season.replace(/[^0-9a-z]+/gi,'-').replace(/^-|-$/g,''), files=[];
+    for(const kind of ['global','casa','fuera']){const svg=seasonCarouselSvg(season,kind,format),blob=type==='svg'?new Blob([svg],{type:'image/svg+xml;charset=utf-8'}):await svgToRaster(svg,type==='webp'?'image/webp':'image/png');if(type==='webp'&&blob.type!=='image/webp')throw new Error('Este navegador no ofrece exportación WebP.');files.push({name:`${kind==='global'?'balance-global':kind==='casa'?'en-casa':'fuera'}-${format}.${type}`,bytes:new Uint8Array(await blob.arrayBuffer())});}
+    const zip=zipStored(files);saveBlob(zip,`carrusel-temporada-${safeSeason}-${format}-${type}.zip`);if(seasonPosterStatus)seasonPosterStatus.textContent=`Carrusel de 3 láminas ${format} descargado · ${(zip.size/1024).toFixed(1)} KB.`;
   }
 
   function scheduleKitEstimates() {
@@ -853,12 +903,13 @@
     if(seasonPosterSelect)seasonPosterSelect.value=availableSeasons[0]||'';
     seasonPosterButton?.addEventListener('click',async()=>{if(seasonPosterStatus)seasonPosterStatus.textContent='Preparando el mapa…';try{await downloadSeasonPoster();}catch(error){if(seasonPosterStatus)seasonPosterStatus.textContent=error instanceof Error?error.message:'No se pudo preparar el mapa.';}});
     seasonCarouselButton?.addEventListener('click',async()=>{if(seasonPosterStatus)seasonPosterStatus.textContent='Preparando el carrusel…';try{await downloadSeasonCarousel();}catch(error){if(seasonPosterStatus)seasonPosterStatus.textContent=error instanceof Error?error.message:'No se pudo preparar el carrusel.';}});
+    seasonShareButton?.addEventListener('click',copySeasonPosterLink);
     [seasonPosterFormat,seasonPosterType,seasonPosterRival,seasonPosterFrom,seasonPosterTo].forEach(control=>control?.addEventListener('change',()=>{updateSeasonPosterPreview();if(seasonPosterStatus)seasonPosterStatus.textContent='El mapa está listo para descargar.';}));
     seasonPosterSelect?.addEventListener('change',()=>{updateSeasonRivalOptions();if(seasonPosterSheet)seasonPosterSheet.value='0';updateSeasonPosterPreview();if(seasonPosterStatus)seasonPosterStatus.textContent='Temporada actualizada.';});
     seasonPosterSheet?.addEventListener('change',updateSeasonPosterPreview);
     seasonPosterAlt?.addEventListener('input',()=>{seasonPosterAltCustomized=true;updateSeasonPosterPreview();});
     resetSeasonPosterAlt?.addEventListener('click',()=>{seasonPosterAltCustomized=false;updateSeasonPosterPreview();if(seasonPosterStatus)seasonPosterStatus.textContent='Texto alternativo actualizado con los resultados.';});
-    updateSeasonRivalOptions();
+    restoreSeasonPosterFromUrl();
     updateSeasonPosterPreview();
     socialKitFormat?.addEventListener('change',scheduleKitEstimates);
     socialKitButton?.addEventListener('click',async () => {
