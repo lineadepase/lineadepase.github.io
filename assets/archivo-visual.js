@@ -32,6 +32,13 @@
   const socialKitFormat = document.querySelector('[data-formato-kit]');
   const socialKitButton = document.querySelector('[data-descargar-kit]');
   const socialKitStatus = document.querySelector('[data-estado-kit]');
+  const contactSheetButtons = [...document.querySelectorAll('[data-hoja-plantilla]')];
+  const seasonPosterSelect = document.querySelector('[data-temporada-mapa]');
+  const seasonPosterFormat = document.querySelector('[data-formato-mapa]');
+  const seasonPosterType = document.querySelector('[data-tipo-mapa]');
+  const seasonPosterButton = document.querySelector('[data-descargar-mapa]');
+  const seasonPosterStatus = document.querySelector('[data-estado-mapa]');
+  const kitEstimates = document.querySelector('[data-kit-estimaciones]');
   const formatThumbnailButtons = [...document.querySelectorAll('[data-miniatura-formato]')];
   const compareState = document.querySelector('[data-estado-comparacion]');
   const downloadControls = document.querySelector('[data-controles-descarga]');
@@ -52,6 +59,8 @@
   const carouselDownloads = document.querySelector('[data-descargas-carrusel]');
   let carouselPreviewUrl = null;
   let altTextCustomized = false;
+  let estimateTimer = 0;
+  let estimateRun = 0;
   const rounds = new Map(rows.map(row => [row.dataset.comparisonId, row]));
   const preferencesKey = 'lineadepase:archivo-visual:preferencias:v1';
   const favoriteKey = 'lineadepase:archivo-visual:pareja-favorita:v1';
@@ -327,6 +336,8 @@
     updateFavoriteButton();
     updateGeneratedAltText();
     updateCarouselPreview();
+    updateContactSheet();
+    scheduleKitEstimates();
   }
 
   function xml(value) {
@@ -382,6 +393,87 @@
     const header=`${includeHeader?`<path d="M0 0h${layout.width}v${baseLayout.header}H0z" fill="${palette.header}"/><path d="M0 ${baseLayout.header-5}h${layout.width}" stroke="${palette.accent}" stroke-width="7"/>`:''}${showBrand?`<text x="54" y="${brandY}" fill="${includeHeader?palette.brand:palette.foreground}" font-family="Arial,sans-serif" font-size="17" font-weight="700" letter-spacing="3">LÍNEA DE PASE · ARCHIVO VISUAL</text>`:''}${includeHeader?`<text x="54" y="${baseLayout.titleY}" fill="${palette.headerText}" font-family="Arial,sans-serif" font-size="${baseLayout.titleSize}" font-weight="800">${singleRow?`J${singleRow.dataset.jornada.padStart(2,'0')} · ${xml(singleRow.dataset.rival)}`:'Dos jornadas, frente a frente'}</text>`:''}${singleRow&&contextText?`<text x="54" y="${contextY}" fill="${includeHeader?palette.contextHeader:palette.muted}" font-family="Arial,sans-serif" font-size="19" font-weight="600">${xml(contextText)}</text>`:''}`;
     const description = altText || describeRows(displayRows,density,includeMetrics);
     return `<svg xmlns="http://www.w3.org/2000/svg" width="${layout.width}" height="${layout.height}" viewBox="0 0 ${layout.width} ${layout.height}" role="img" aria-labelledby="titulo descripcion"><title id="titulo">${xml(title)}</title><desc id="descripcion">${xml(description)}${xml(storiesDesc)}</desc><rect width="${layout.width}" height="${layout.height}" fill="${palette.background}"/>${header}${cards}${caption}${showBrand?`<text x="${layout.width-50}" y="${layout.domainY}" text-anchor="end" fill="${palette.domain}" font-family="Arial,sans-serif" font-size="15">lineadepase.com</text>`:''}</svg>`;
+  }
+
+  function updateContactSheet() {
+    const rowA=rounds.get(selectA?.value), rowB=rounds.get(selectB?.value);
+    if(!rowA||!rowB)return;
+    contactSheetButtons.forEach(button=>{
+      const name=button.dataset.hojaPlantilla, settings=builtInPresets[name], image=button.querySelector('img');
+      if(!settings||!image)return;
+      const metrics=settings.metrics&&rowA.dataset.completa==='1'&&rowB.dataset.completa==='1';
+      const svg=comparisonSvg(rowA,rowB,settings.format,metrics,settings.caption, !settings.noHeader, settings.brand,null,'',settings.density,settings.framing,describeRows([rowA,rowB],settings.density,metrics));
+      image.src=`data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+      button.setAttribute('aria-pressed',String(presetSelect?.value===name));
+    });
+  }
+
+  function seasonPosterSvg(season,format) {
+    const layouts={cuadrado:{width:1080,height:1080,top:175,bottom:82},vertical:{width:1080,height:1350,top:190,bottom:90},historias:{width:1080,height:1920,top:380,bottom:300}};
+    const layout=layouts[format]||layouts.cuadrado, palette=activePalette();
+    const seasonRows=rows.filter(row=>row.dataset.temporada===season).sort((a,b)=>Number(a.dataset.jornada)-Number(b.dataset.jornada));
+    if(!seasonRows.length)return '';
+    const usable=layout.height-layout.top-layout.bottom, gap=12, cardHeight=Math.min(112,(usable-gap*(seasonRows.length-1))/seasonRows.length);
+    const total=cardHeight*seasonRows.length+gap*(seasonRows.length-1), startY=layout.top+(usable-total)/2;
+    const cards=seasonRows.map((row,index)=>{
+      const y=startY+index*(cardHeight+gap), pad=28, home=row.dataset.sede==='Casa'?'Real Zaragoza':row.dataset.rival, away=row.dataset.sede==='Casa'?row.dataset.rival:'Real Zaragoza';
+      const homeGoals=row.dataset.sede==='Casa'?row.dataset.golesZaragoza:row.dataset.golesRival, awayGoals=row.dataset.sede==='Casa'?row.dataset.golesRival:row.dataset.golesZaragoza;
+      const date=row.dataset.fechaPartido.split('-').slice(2).reverse().join('/');
+      const metric=row.dataset.completa==='1'?`<text x="${layout.width/2}" y="${y+cardHeight*.88}" text-anchor="middle" fill="${palette.muted}" font-family="Arial,sans-serif" font-size="13">Posesión ${xml(row.dataset.posesion.replace('.',','))}% · tiros ${xml(row.dataset.tirosZaragoza)}–${xml(row.dataset.tirosRival)}</text>`:'';
+      return `<rect x="36" y="${y}" width="${layout.width-72}" height="${cardHeight}" rx="18" fill="${palette.panel}" stroke="${palette.border}" stroke-width="2"/><path d="M36 ${y+cardHeight-6}h${layout.width-72}" stroke="${palette.accent}" stroke-width="6"/><text x="${pad+36}" y="${y+cardHeight*.32}" fill="${palette.muted}" font-family="Arial,sans-serif" font-size="16" font-weight="700">J${row.dataset.jornada.padStart(2,'0')} · ${xml(date)} · ${row.dataset.sede==='Casa'?'CASA':'FUERA'}</text><text x="${layout.width/2}" y="${y+cardHeight*.62}" text-anchor="middle" fill="${palette.foreground}" font-family="Arial,sans-serif" font-size="21" font-weight="700" textLength="${layout.width-150}" lengthAdjust="spacingAndGlyphs">${xml(home)} ${xml(homeGoals)}–${xml(awayGoals)} ${xml(away)}</text>${metric}`;
+    }).join('');
+    const missing=seasonRows.filter(row=>row.dataset.completa!=='1').length;
+    const note=`${seasonRows.length} jornadas · ${seasonRows.length-missing} con ficha validada · ${missing} sin métricas`;
+    const safeTop=format==='historias'?220:0, safeBottom=format==='historias'?220:0;
+    const desc=seasonRows.map(row=>`J${row.dataset.jornada} ${row.dataset.rival}, ${row.dataset.golesZaragoza}–${row.dataset.golesRival}`).join('; ');
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="${layout.width}" height="${layout.height}" viewBox="0 0 ${layout.width} ${layout.height}" role="img" aria-labelledby="mapa-titulo mapa-desc"><title id="mapa-titulo">Real Zaragoza · ${xml(season)} · mapa de resultados</title><desc id="mapa-desc">${xml(desc)}. ${xml(note)}</desc><rect width="100%" height="100%" fill="${palette.background}"/><path d="M0 ${safeTop}h${layout.width}v${layout.height-safeTop-safeBottom}H0z" fill="${palette.header}"/><text x="54" y="${safeTop+62}" fill="${palette.brand}" font-family="Arial,sans-serif" font-size="18" font-weight="700" letter-spacing="3">LÍNEA DE PASE · REAL ZARAGOZA</text><text x="54" y="${safeTop+120}" fill="${palette.headerText}" font-family="Arial,sans-serif" font-size="42" font-weight="800">Mapa de la temporada</text><text x="54" y="${safeTop+163}" fill="${palette.contextHeader}" font-family="Arial,sans-serif" font-size="26">${xml(season)}</text>${cards}<text x="54" y="${layout.height-safeBottom+42}" fill="${palette.brand}" font-family="Arial,sans-serif" font-size="19">${xml(note)}</text><text x="${layout.width-48}" y="${layout.height-32}" text-anchor="end" fill="${palette.domain}" font-family="Arial,sans-serif" font-size="16">lineadepase.com</text></svg>`;
+  }
+
+  async function downloadSeasonPoster() {
+    const season=seasonPosterSelect?.value, format=seasonPosterFormat?.value||'cuadrado', type=seasonPosterType?.value||'png';
+    const svg=seasonPosterSvg(season,format);
+    if(!svg)throw new Error('No hay jornadas disponibles para esa temporada.');
+    let blob;
+    if(type==='svg')blob=new Blob([svg],{type:'image/svg+xml;charset=utf-8'});
+    else blob=await svgToRaster(svg,type==='webp'?'image/webp':'image/png');
+    if(type==='webp'&&blob.type!=='image/webp')throw new Error('Este navegador no ofrece exportación WebP.');
+    const safeSeason=season.replace(/[^0-9a-z]+/gi,'-').replace(/^-|-$/g,'');
+    saveBlob(blob,`mapa-temporada-${safeSeason}-${format}.${type}`);
+    if(seasonPosterStatus)seasonPosterStatus.textContent=`Mapa ${season} descargado · ${format} · ${format==='cuadrado'?'1080 × 1080':format==='vertical'?'1080 × 1350':'1080 × 1920'} · ${(blob.size/1024).toFixed(1)} KB.`;
+  }
+
+  function scheduleKitEstimates() {
+    if(!kitEstimates)return;
+    window.clearTimeout(estimateTimer);
+    const run=++estimateRun;
+    kitEstimates.textContent='Calculando tamaños para la pareja seleccionada…';
+    estimateTimer=window.setTimeout(async()=>{
+      const rowA=rounds.get(selectA?.value),rowB=rounds.get(selectB?.value);
+      if(!rowA||!rowB)return;
+      const metrics=rowA.dataset.completa==='1'&&rowB.dataset.completa==='1'&&Boolean(metricsToggle?.checked);
+      const alt=altTextCustomized?altTextInput?.value.trim()||'':describeRows([rowA,rowB],densitySelect?.value||'completa',metrics);
+      const formats=[['cuadrado',1080,1080],['vertical',1080,1350],['historias',1080,1920]];
+      const output=[], sizeMap={};
+      try {
+        for(const [size,width,height] of formats){
+          const svg=comparisonSvg(rowA,rowB,size,metrics,Boolean(captionToggle?.checked),!Boolean(noHeaderToggle?.checked),Boolean(brandToggle?.checked),null,'',densitySelect?.value,framingSelect?.value,alt);
+          const svgBytes=new TextEncoder().encode(svg).length;
+          const png=await svgToRaster(svg,'image/png');
+          const webp=await svgToRaster(svg,'image/webp');
+          if(run!==estimateRun)return;
+          sizeMap[size]={svg:svgBytes,png:png.size,webp:webp.type==='image/webp'?webp.size:null};
+          output.push(`<tr><th scope="row">${size==='cuadrado'?'Cuadrado':size==='vertical'?'Vertical':'Historias'}<br><small>${width} × ${height}</small></th><td>${(svgBytes/1024).toFixed(1)} KB</td><td>${(png.size/1024).toFixed(1)} KB</td><td>${webp.type==='image/webp'?(webp.size/1024).toFixed(1)+' KB':'No disponible'}</td></tr>`);
+        }
+        if(run!==estimateRun)return;
+        const zipType=socialKitFormat?.value||'png', extension=zipType;
+        const zipFiles=['cuadrado','vertical','historias'].map(size=>({name:`${size}.${extension}`,bytes:sizeMap[size][zipType]}));
+        zipFiles.push({name:'texto-alternativo.txt',bytes:new TextEncoder().encode(alt).length});
+        const zipSize=zipFiles.reduce((sum,file)=>sum+(file.bytes??0)+76+2*new TextEncoder().encode(file.name).length,22);
+        kitEstimates.innerHTML=`<div class="archivo-tabla-pesos"><table><thead><tr><th>Formato</th><th>SVG</th><th>PNG</th><th>WebP</th></tr></thead><tbody>${output.join('')}</tbody></table></div><p class="nota">ZIP del formato elegido (${zipType.toUpperCase()}): ${(zipSize/1024).toFixed(1)} KB, incluido el texto alternativo.</p>`;
+      } catch {
+        if(run===estimateRun)kitEstimates.textContent='No se pudieron calcular todos los tamaños en este navegador.';
+      }
+    },450);
   }
 
   function updateCarouselPreview() {
@@ -616,6 +708,8 @@
       altTextCustomized = true;
       updateFormatThumbnails();
       updateCarouselPreview();
+      updateContactSheet();
+      scheduleKitEstimates();
     });
     generateAltTextButton?.addEventListener('click',() => {
       altTextCustomized = false;
@@ -634,6 +728,19 @@
         compareState.textContent = 'Selecciona el texto alternativo y cópialo.';
       }
     });
+    contactSheetButtons.forEach(button=>button.addEventListener('click',()=>{
+      const name=button.dataset.hojaPlantilla;
+      if(!builtInPresets[name])return;
+      if(presetSelect)presetSelect.value=name;
+      applyVisualSettings(builtInPresets[name]);
+      compareState.textContent=`Plantilla «${button.querySelector('span')?.textContent||name}» aplicada.`;
+    }));
+    const availableSeasons=[...new Set(rows.map(row=>row.dataset.temporada))].sort((a,b)=>b.localeCompare(a,'es'));
+    availableSeasons.forEach(season=>{const option=document.createElement('option');option.value=season;option.textContent=season;seasonPosterSelect?.append(option);});
+    if(seasonPosterSelect)seasonPosterSelect.value=availableSeasons[0]||'';
+    seasonPosterButton?.addEventListener('click',async()=>{if(seasonPosterStatus)seasonPosterStatus.textContent='Preparando el mapa…';try{await downloadSeasonPoster();}catch(error){if(seasonPosterStatus)seasonPosterStatus.textContent=error instanceof Error?error.message:'No se pudo preparar el mapa.';}});
+    [seasonPosterSelect,seasonPosterFormat,seasonPosterType].forEach(control=>control?.addEventListener('change',()=>{if(seasonPosterStatus)seasonPosterStatus.textContent='El mapa está listo para descargar.';}));
+    socialKitFormat?.addEventListener('change',scheduleKitEstimates);
     socialKitButton?.addEventListener('click',async () => {
       if (socialKitStatus) socialKitStatus.textContent = 'Preparando tres formatos…';
       try { await downloadSocialKit(); }
@@ -741,6 +848,8 @@
     paletteSelect?.addEventListener('change', () => {
       updateFormatGuidance();
       saveVisualPreferences();
+      updateContactSheet();
+      scheduleKitEstimates();
     });
     formatThumbnailButtons.forEach(button => button.addEventListener('click', () => {
       if (!formatSelect || ![...formatSelect.options].some(option => option.value === button.dataset.miniaturaFormato)) return;
@@ -757,6 +866,7 @@
     [metricsToggle,captionToggle,noHeaderToggle,brandToggle].forEach(control=>control?.addEventListener('change',() => {
       updateGeneratedAltText();
       updateCarouselPreview();
+      scheduleKitEstimates();
     }));
     updateFormatGuidance();
     if (downloadControls) downloadControls.hidden = false;
@@ -770,5 +880,6 @@
       });
     });
     updateComparison('');
+    scheduleKitEstimates();
   }
 })();

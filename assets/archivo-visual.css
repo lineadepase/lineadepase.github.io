@@ -154,3 +154,20 @@
   .archivo-opciones-tarjeta select,
   .archivo-filtros select { width: 100%; }
 }
+
+
+.archivo-hoja-contacto,
+.archivo-mapa-temporada,
+.archivo-pesos-kit { margin: 1.25rem 0; padding: 1rem; border: 1px solid #d4ded6; border-radius: .8rem; background: #fbfcf9; }
+.archivo-hoja-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(112px,1fr)); gap: .6rem; }
+.archivo-hoja-grid button { display: grid; justify-items: center; gap: .4rem; padding: .6rem; border: 1px solid #d4ded6; border-radius: .6rem; color: #163e28; background: #fff; cursor: pointer; }
+.archivo-hoja-grid button:hover,.archivo-hoja-grid button:focus-visible,.archivo-hoja-grid button[aria-pressed="true"] { border-color: #245b9b; outline: 2px solid #245b9b; outline-offset: 1px; }
+.archivo-hoja-grid img { display:block; width:min(100%,120px); height:auto; aspect-ratio:1; object-fit:contain; background:#f3f5ef; border-radius:.3rem; }
+.archivo-kit-controles { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:.75rem; align-items:end; }
+.archivo-mapa-temporada h3,.archivo-pesos-kit h3 { margin:.1rem 0 .45rem; }
+.archivo-mapa-temporada p { margin:.35rem 0 .8rem; }
+.archivo-tabla-pesos { max-width:100%; overflow-x:auto; }
+.archivo-tabla-pesos table { width:100%; border-collapse:collapse; text-align:left; }
+.archivo-tabla-pesos th,.archivo-tabla-pesos td { padding:.5rem; border-bottom:1px solid #d4ded6; white-space:nowrap; }
+.archivo-tabla-pesos small { font-weight:400; color:#536257; }
+@media(max-width:600px) { .archivo-hoja-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .archivo-hoja-grid button:last-child { grid-column:1/-1; } }
