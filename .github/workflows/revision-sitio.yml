@@ -14,3 +14,5 @@ jobs:
         uses: actions/checkout@v4
       - name: Revisar enlaces, anclas e imágenes
         run: python herramientas/auditar_enlaces.py
+      - name: Revisar textos alternativos y presupuesto de imágenes
+        run: python herramientas/auditar_imagenes.py

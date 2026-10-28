@@ -238,7 +238,9 @@ def build():
     sincronizar(ROOT)
     from calidad_web import build as mejorar_calidad
     mejorar_calidad(ROOT)
-    print(json.dumps({'pages': len(urls), 'cards': len(manifest), 'urls': urls}, ensure_ascii=False))
+    from auditar_imagenes import audit as auditar_peso_y_alt
+    image_audit = auditar_peso_y_alt(ROOT)
+    print(json.dumps({'pages': len(urls), 'cards': len(manifest), 'urls': urls, 'image_audit': image_audit}, ensure_ascii=False))
 
 
 if __name__ == '__main__':
