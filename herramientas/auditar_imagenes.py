@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 IGNORE = {'.git', 'analisis', 'node_modules', '.codex', 'work'}
 PAGE_BUDGET_BYTES = 1_200 * 1024
 WARNING_BUDGET_BYTES = int(PAGE_BUDGET_BYTES * .8)
+FOCUS_PAGES = {'index.html', 'proyectos/real-zaragoza/goles-en-video.html'}
 VOID_ELEMENTS = {'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr'}
 
 
@@ -77,8 +78,7 @@ def audit(root: Path = ROOT) -> dict[str, object]:
     for page in pages(root):
         parser = PageImages()
         parser.feed(page.read_text(encoding='utf-8'))
-        page_bytes = 0
-        seen: set[tuple[str, str]] = set()
+        requests: dict[tuple[str, str], tuple[int, bool]] = {}
         for image in parser.images:
             alt = image.get('alt')
             if alt is None:
@@ -97,12 +97,24 @@ def audit(root: Path = ROOT) -> dict[str, object]:
                 continue
             path, query = source
             key = (str(path), query)
-            if key not in seen and path.is_file():
-                seen.add(key)
-                page_bytes += path.stat().st_size
-        estimates.append({'path': page.relative_to(root).as_posix(), 'bytes': page_bytes, 'images': len(parser.images)})
+            if path.is_file():
+                immediate = image.get('loading', '').lower() != 'lazy' or image.get('fetchpriority', '').lower() == 'high'
+                previous = requests.get(key)
+                requests[key] = (path.stat().st_size, immediate or (previous[1] if previous else False))
+        initial_bytes = sum(size for size, immediate in requests.values() if immediate)
+        deferred_bytes = sum(size for size, immediate in requests.values() if not immediate)
+        estimates.append({
+            'path': page.relative_to(root).as_posix(),
+            'bytes': initial_bytes + deferred_bytes,
+            'initial_bytes': initial_bytes,
+            'deferred_bytes': deferred_bytes,
+            'initial_images': sum(1 for _, immediate in requests.values() if immediate),
+            'deferred_images': sum(1 for _, immediate in requests.values() if not immediate),
+            'images': len(parser.images),
+        })
 
     largest = sorted(estimates, key=lambda item: int(item['bytes']), reverse=True)
+    focus = [item for item in estimates if item['path'] in FOCUS_PAGES]
     near = [item for item in largest if int(item['bytes']) >= WARNING_BUDGET_BYTES]
     over = [item for item in largest if int(item['bytes']) > PAGE_BUDGET_BYTES]
     result: dict[str, object] = {
@@ -112,8 +124,11 @@ def audit(root: Path = ROOT) -> dict[str, object]:
         'page_budget_bytes': PAGE_BUDGET_BYTES,
         'warning_budget_bytes': WARNING_BUDGET_BYTES,
         'largest_pages': largest[:5],
+        'focus_pages': focus,
         'near_budget_pages': near,
         'over_budget_pages': over,
+        'initial_image_bytes': sum(int(item['initial_bytes']) for item in estimates),
+        'deferred_image_bytes': sum(int(item['deferred_bytes']) for item in estimates),
         'issues': unresolved,
     }
     print(f"{result['pages']} páginas · {result['images']} imágenes: {counts['informative']} informativas, {counts['decorative']} decorativas, {counts['review']} por revisar, {counts['missing']} sin alt.")
@@ -121,10 +136,15 @@ def audit(root: Path = ROOT) -> dict[str, object]:
         heaviest = largest[0]
         print(f"Peso estimado a un ancho máximo de 800 px: {int(heaviest['bytes']) / 1024:.0f} KiB en {heaviest['path']}; presupuesto {PAGE_BUDGET_BYTES / 1024:.0f} KiB.")
     print(f"{len(near)} páginas en zona preventiva (80 % del presupuesto); {len(over)} por encima del límite.")
+    initial_total = int(result['initial_image_bytes'])
+    deferred_total = int(result['deferred_image_bytes'])
+    print(f"Carga inicial estimada: {initial_total / 1024:.0f} KiB; imágenes con loading=lazy: {deferred_total / 1024:.0f} KiB. Estimación por atributos, no medición de red.")
     for issue in unresolved:
         print('REVISAR ' + issue)
     for item in near[:5]:
         print(f"CERCA {int(item['bytes']) / 1024:.0f} KiB · {item['path']}")
+    for item in focus:
+        print(f"PRIORIDAD {int(item['bytes']) / 1024:.0f} KiB · inicial {int(item['initial_bytes']) / 1024:.0f} KiB · diferida {int(item['deferred_bytes']) / 1024:.0f} KiB · {item['path']}")
     if unresolved or over:
         raise RuntimeError(f"Auditoría de imágenes: {len(unresolved)} textos alternativos por resolver y {len(over)} páginas sobre presupuesto.")
     return result

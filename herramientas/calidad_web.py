@@ -8,6 +8,11 @@ from PIL import Image
 
 ROOT=Path(__file__).resolve().parents[1]
 BASE='https://lineadepase.com/'
+RESPONSIVE_IMAGE_MIN_BYTES=300_000
+PAGE_IMAGE_MIN_BYTES={
+    'index.html':40_000,
+    'proyectos/real-zaragoza/goles-en-video.html':40_000,
+}
 
 
 def attrs(tag):
@@ -49,6 +54,8 @@ def metadata(raw, root=ROOT):
 
 
 def imagenes(raw, page, root=ROOT):
+    relative_page=page.resolve().relative_to(root.resolve()).as_posix()
+    minimum_bytes=PAGE_IMAGE_MIN_BYTES.get(relative_page,RESPONSIVE_IMAGE_MIN_BYTES)
     def adapt(match):
         tag=match[0]; a=attrs(tag); src=a.get('src',''); url=urlsplit(src)
         if url.scheme or url.netloc or not url.path:return tag
@@ -62,7 +69,7 @@ def imagenes(raw, page, root=ROOT):
             if not a.get('height'):
                 declared=int(a.get('width',width)) if str(a.get('width',width)).isdigit() else width
                 add+=f' height="{round(height*declared/width)}"'
-            if source.stat().st_size>300000 and width>800:
+            if source.stat().st_size>minimum_bytes and width>800:
                 digest=hashlib.sha256(source.read_bytes()).hexdigest()[:10]
                 folder=root/'assets/adaptadas';folder.mkdir(exist_ok=True)
                 existing=a.get('srcset','')
@@ -73,7 +80,10 @@ def imagenes(raw, page, root=ROOT):
                     target=folder/f'{source.stem}-{digest}-{size}.webp'
                     if not target.exists():
                         copy=im.copy();copy.thumbnail((size,round(height*size/width)))
-                        copy.save(target,'WEBP',quality=82,method=6)
+                        if source.suffix.lower()=='.png':
+                            copy.save(target,'WEBP',lossless=True,method=6)
+                        else:
+                            copy.save(target,'WEBP',quality=82,method=6)
                     relative=os.path.relpath(target,page.parent).replace('\\','/')
                     return f'{relative} {size}w'
                 if existing:
@@ -107,11 +117,14 @@ def build(root=ROOT):
     changed=0
     for page in root.rglob('*.html'):
         if any(x in ('.git','analisis') for x in page.relative_to(root).parts):continue
-        raw=page.read_text(encoding='utf-8')
+        original=page.read_bytes()
+        newline='\r\n' if b'\r\n' in original else '\n'
+        raw=original.decode('utf-8')
+        if newline=='\r\n':raw=raw.replace('\r\n','\n')
         if '</head>' not in raw or '<main' not in raw:continue
         new=imagenes(metadata(raw,root),page,root)
         if new!=raw:
-            page.write_text(new,encoding='utf-8',newline='\n');changed+=1
+            page.write_text(new,encoding='utf-8',newline=newline);changed+=1
     return changed
 
 
