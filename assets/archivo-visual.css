@@ -291,3 +291,10 @@
 }
 .archivo-kit-social [data-estado-impresion-social] { flex-basis:100%; margin:.2rem 0 0; }
 .archivo-kit-social [data-imprimir-social] { flex:0 1 auto; }
+
+.archivo-hoja-impresion-preview { flex-basis:100%; margin:.35rem 0 0; border:1px solid #d5ded7; border-radius:12px; background:#fff; }
+.archivo-hoja-impresion-preview summary { padding:.7rem .85rem; color:#245b3b; font-weight:700; cursor:pointer; }
+.archivo-hoja-impresion-preview figure { display:grid; justify-items:center; gap:.45rem; margin:0; padding:0 .75rem .8rem; }
+.archivo-hoja-impresion-preview figcaption { color:#536257; font-size:.85rem; text-align:center; }
+.archivo-hoja-impresion-preview img { display:block; width:min(100%,420px); max-height:70vh; height:auto; object-fit:contain; border:1px solid #e0e5e1; background:#fff; }
+@media(max-width:600px) { .archivo-hoja-impresion-preview img { width:100%; max-height:58vh; } }

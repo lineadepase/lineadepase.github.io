@@ -34,6 +34,10 @@
   const socialKitStatus = document.querySelector('[data-estado-kit]');
   const socialPrintButton = document.querySelector('[data-imprimir-social]');
   const contactSheetPrintButton = document.querySelector('[data-imprimir-hoja-contacto]');
+  const printPaperSelect = document.querySelector('[data-papel-impresion-social]');
+  const printOrientationSelect = document.querySelector('[data-orientacion-hoja-social]');
+  const contactSheetPrintPreview = document.querySelector('[data-preview-hoja-contacto]');
+  const contactSheetPrintPreviewCaption = document.querySelector('[data-caption-hoja-contacto]');
   const socialPrintStatus = document.querySelector('[data-estado-impresion-social]');
   const contactSheetButtons = [...document.querySelectorAll('[data-hoja-plantilla]')];
   const seasonPosterSelect = document.querySelector('[data-temporada-mapa]');
@@ -454,6 +458,7 @@
       image.src=`data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
       button.setAttribute('aria-pressed',String(presetSelect?.value===name));
     });
+    updateContactSheetPrintPreview();
   }
 
   function seasonPosterRows(season,filtered=true) {
@@ -1124,25 +1129,48 @@
     if (socialKitStatus) socialKitStatus.textContent = `ZIP listo: cuadrado, vertical e historias en ${format.toUpperCase()}, más el texto alternativo.`;
   }
 
+  function printPageSettings() {
+    const landscape=printOrientationSelect?.value==='apaisado',photo=printPaperSelect?.value==='fotografico';
+    return {landscape,photo,width:landscape?297:210,height:landscape?210:297,margin:photo?6:10};
+  }
+
+  function printablePage(svg,width,height) {
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}mm" height="${height}mm" viewBox="0 0 ${width} ${height}"><rect width="${width}" height="${height}" fill="#fff"/>${svg}</svg>`;
+  }
+
+  function updateContactSheetPrintPreview() {
+    if(!contactSheetPrintPreview)return;
+    try {
+      const svg=buildPrintableContactSheet();
+      contactSheetPrintPreview.src=`data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+      const {landscape,photo}=printPageSettings();
+      contactSheetPrintPreview.alt=`Vista previa de hoja A4 ${landscape?'apaisada':'vertical'} para papel ${photo?'fotográfico':'normal'}, con tres formatos sociales y marcas de corte.`;
+      if(contactSheetPrintPreviewCaption)contactSheetPrintPreviewCaption.textContent=`A4 ${landscape?'apaisada':'vertical'} · ${photo?'fotográfico, margen de 6 mm':'normal, margen de 10 mm'}`;
+    } catch (_) {
+      contactSheetPrintPreview.removeAttribute('src');
+      if(contactSheetPrintPreviewCaption)contactSheetPrintPreviewCaption.textContent='Selecciona dos jornadas para ver la maqueta de impresión.';
+    }
+  }
+
   function downloadPrintableSocialSvg() {
     const rowA=rounds.get(selectA?.value),rowB=rounds.get(selectB?.value);
     if(!rowA||!rowB)throw new Error('Selecciona dos jornadas antes de preparar la plantilla.');
     const requested=formatSelect?.value||'apaisado',format=requested==='carrusel'?'cuadrado':requested;
-    const dimensions={apaisado:[1200,630],cuadrado:[1080,1080],vertical:[1080,1350],historias:[1080,1920]}[format]||[1200,630];
     const metrics=rowA.dataset.completa==='1'&&rowB.dataset.completa==='1'&&Boolean(metricsToggle?.checked),
       svg=comparisonSvg(rowA,rowB,format,metrics,Boolean(captionToggle?.checked),!Boolean(noHeaderToggle?.checked),Boolean(brandToggle?.checked),null,'',densitySelect?.value,framingSelect?.value,altTextCustomized?altTextInput?.value.trim()||'':describeRows([rowA,rowB],densitySelect?.value||'completa',metrics));
     const match=svg.match(/viewBox="([^"]+)"/),body=svg.slice(svg.indexOf('>')+1,svg.lastIndexOf('</svg>'));
     if(!match||!body)throw new Error('No se pudo preparar la plantilla seleccionada.');
-    const [sourceW,sourceH]=match[1].split(/\s+/).slice(2).map(Number),maxW=190,maxH=270;
-    const cardW=Math.min(maxW,maxH*sourceW/sourceH),cardH=cardW*sourceH/sourceW,x=(210-cardW)/2,y=(297-cardH)/2;
-    const crop=printCropMarks(x,y,cardW,cardH);
-    const footer='<text x="105" y="292.5" text-anchor="middle" fill="#536257" font-family="Arial,sans-serif" font-size="2.5">A4 · escala real · recorta por las marcas</text>';
-    const printable=`<svg xmlns="http://www.w3.org/2000/svg" width="210mm" height="297mm" viewBox="0 0 210 297"><rect width="210" height="297" fill="#fff"/>${crop}<svg x="${x}" y="${y}" width="${cardW}" height="${cardH}" viewBox="${match[1]}" preserveAspectRatio="none">${body}</svg>${printCalibrationScale()}${footer}</svg>`;
-    const blob=new Blob([printable],{type:'image/svg+xml;charset=utf-8'}),limit=300*1024;
+    const settings=printPageSettings(),safeMargin=settings.margin+5.5,widthLimit=settings.width-safeMargin*2,heightLimit=settings.height-safeMargin*2,
+      [sourceW,sourceH]=match[1].split(/\s+/).slice(2).map(Number),cardW=Math.min(widthLimit,heightLimit*sourceW/sourceH),cardH=cardW*sourceH/sourceW,
+      x=(settings.width-cardW)/2,y=(settings.height-cardH)/2,crop=printCropMarks(x,y,cardW,cardH),center=settings.width/2,
+      footerY=settings.height-4.5,scaleY=settings.height-11;
+    const footer=`<text x="${center}" y="${footerY}" text-anchor="middle" fill="#536257" font-family="Arial,sans-serif" font-size="2.5">A4 ${settings.landscape?'apaisado':'vertical'} · escala real · margen ${settings.margin} mm</text>`;
+    const art=`${crop}<svg x="${x}" y="${y}" width="${cardW}" height="${cardH}" viewBox="${match[1]}" preserveAspectRatio="none">${body}</svg>${printCalibrationScale(scaleY)}${footer}`;
+    const printable=printablePage(art,settings.width,settings.height),blob=new Blob([printable],{type:'image/svg+xml;charset=utf-8'}),limit=300*1024;
     if(blob.size>limit)throw new Error('La plantilla supera 300 KB; reduce la densidad del diseño y vuelve a intentarlo.');
     const safe=value=>value.replace(/[^0-9a-z]+/gi,'-').replace(/^-|-$/g,'');
-    saveBlob(blob,`plantilla-social-${safe(rowA.dataset.comparisonId)}-${safe(rowB.dataset.comparisonId)}-a4.svg`);
-    if(socialPrintStatus)socialPrintStatus.textContent=`SVG A4 listo · ${(blob.size/1024).toFixed(1)} KB de 300 KB · ${Math.round(cardW)} × ${Math.round(cardH)} mm. Imprime a escala real y corta por las marcas.${requested==='carrusel'?' Se ha preparado en formato cuadrado.':''}`;
+    saveBlob(blob,`plantilla-social-${safe(rowA.dataset.comparisonId)}-${safe(rowB.dataset.comparisonId)}-${settings.landscape?'apaisado':'vertical'}-a4.svg`);
+    if(socialPrintStatus)socialPrintStatus.textContent=`SVG A4 listo · ${(blob.size/1024).toFixed(1)} KB de 300 KB · ${Math.round(cardW)} × ${Math.round(cardH)} mm · papel ${settings.photo?'fotográfico (margen de 6 mm)':'normal (margen de 10 mm)'}.${requested==='carrusel'?' Se ha preparado en formato cuadrado.':''}`;
   }
 
   function printCropMarks(x,y,width,height) {
@@ -1150,31 +1178,40 @@
     return `<g fill="none" stroke="#171717" stroke-width=".22"><path d="M${x-gap-mark} ${y}h${mark} M${x} ${y-gap-mark}v${mark} M${x+width+gap} ${y}h${mark} M${x+width} ${y-gap-mark}v${mark} M${x-gap-mark} ${y+height}h${mark} M${x} ${y+height+gap}v${mark} M${x+width+gap} ${y+height}h${mark} M${x+width} ${y+height+gap}v${mark}"/></g>`;
   }
 
-  function printCalibrationScale() {
-    return '<g fill="none" stroke="#171717" stroke-width=".25"><path d="M10 286h10 M10 285.2v1.6 M20 285.2v1.6"/></g><text x="23" y="287" fill="#171717" font-family="Arial,sans-serif" font-size="2.5">10 mm</text>';
+  function printCalibrationScale(y=286) {
+    return `<g fill="none" stroke="#171717" stroke-width=".25"><path d="M10 ${y}h10 M10 ${y-.8}v1.6 M20 ${y-.8}v1.6"/></g><text x="23" y="${y+1}" fill="#171717" font-family="Arial,sans-serif" font-size="2.5">10 mm</text>`;
+  }
+
+  function buildPrintableContactSheet() {
+    const rowA=rounds.get(selectA?.value),rowB=rounds.get(selectB?.value);
+    if(!rowA||!rowB)throw new Error('Selecciona dos jornadas antes de preparar la hoja de contacto.');
+    const settings=printPageSettings(),metrics=rowA.dataset.completa==='1'&&rowB.dataset.completa==='1'&&Boolean(metricsToggle?.checked),
+      caption=Boolean(captionToggle?.checked),header=!Boolean(noHeaderToggle?.checked),brand=Boolean(brandToggle?.checked),
+      density=densitySelect?.value||'completa',framing=framingSelect?.value||'equilibrado',alt=altTextCustomized?altTextInput?.value.trim()||'':describeRows([rowA,rowB],density,metrics),
+      width=settings.photo?(settings.landscape?75:55):(settings.landscape?70:50),
+      safeStart=settings.margin+5.5,usableSpan=settings.width-2*safeStart,gap=Math.max(11,(usableSpan-width*3)/2),
+      xs=[safeStart,safeStart+width+gap,safeStart+2*(width+gap)],
+      y=settings.landscape?(settings.photo?60:62):(settings.photo?74:78),
+      variants=[['cuadrado','CUADRADA','1080 × 1080'],['vertical','VERTICAL','1080 × 1350'],['historias','HISTORIAS','1080 × 1920']];
+    const pieces=variants.map(([format,label,sizeLabel],index)=>{
+      const source=comparisonSvg(rowA,rowB,format,metrics,caption,header,brand,null,'',density,framing,alt),match=source.match(/viewBox="([^"]+)"/),body=source.slice(source.indexOf('>')+1,source.lastIndexOf('</svg>'));
+      if(!match||!body)throw new Error('No se pudo preparar una de las variantes sociales.');
+      const [sourceW,sourceH]=match[1].split(/\s+/).slice(2).map(Number),height=width*sourceH/sourceW,x=xs[index];
+      return `<text x="${x+width/2}" y="${y-28}" text-anchor="middle" fill="#171717" font-family="Arial,sans-serif" font-size="3.4" font-weight="700">${label}</text><text x="${x+width/2}" y="${y-21}" text-anchor="middle" fill="#414141" font-family="Arial,sans-serif" font-size="2.8">${sizeLabel}</text>${printCropMarks(x,y,width,height)}<svg x="${x}" y="${y}" width="${width}" height="${height}" viewBox="${match[1]}" preserveAspectRatio="none">${body}</svg>`;
+    }).join('');
+    const center=settings.width/2,titleY=settings.landscape?15:22,subtitleY=settings.landscape?23:30,scaleY=settings.height-11,footerY=settings.height-4.5;
+    const title=`<text x="${center}" y="${titleY}" text-anchor="middle" fill="#171717" font-family="Georgia,serif" font-size="5.2" font-weight="700">Una comparación, tres formatos</text><text x="${center}" y="${subtitleY}" text-anchor="middle" fill="#414141" font-family="Arial,sans-serif" font-size="3">Misma pareja · ${settings.photo?'papel fotográfico, margen 6 mm':'papel normal, margen 10 mm'}</text>`;
+    const footer=`<text x="${center}" y="${footerY}" text-anchor="middle" fill="#414141" font-family="Arial,sans-serif" font-size="2.5">A4 ${settings.landscape?'apaisado':'vertical'} · escala real · recorta por las marcas</text>`;
+    return printablePage(`${title}${pieces}${printCalibrationScale(scaleY)}${footer}`,settings.width,settings.height);
   }
 
   function downloadPrintableContactSheet() {
-    const rowA=rounds.get(selectA?.value),rowB=rounds.get(selectB?.value);
-    if(!rowA||!rowB)throw new Error('Selecciona dos jornadas antes de preparar la hoja de contacto.');
-    const metrics=rowA.dataset.completa==='1'&&rowB.dataset.completa==='1'&&Boolean(metricsToggle?.checked),
-      caption=Boolean(captionToggle?.checked),header=!Boolean(noHeaderToggle?.checked),brand=Boolean(brandToggle?.checked),
-      density=densitySelect?.value||'completa',framing=framingSelect?.value||'equilibrado',alt=altTextCustomized?altTextInput?.value.trim()||'':describeRows([rowA,rowB],density,metrics);
-    const variants=[['cuadrado','CUADRADA','1080 × 1080',10],['vertical','VERTICAL','1080 × 1350',77.5],['historias','HISTORIAS','1080 × 1920',145]];
-    const pieces=variants.map(([format,label,sizeLabel,x])=>{
-      const source=comparisonSvg(rowA,rowB,format,metrics,caption,header,brand,null,'',density,framing,alt),match=source.match(/viewBox="([^"]+)"/),body=source.slice(source.indexOf('>')+1,source.lastIndexOf('</svg>'));
-      if(!match||!body)throw new Error('No se pudo preparar una de las variantes sociales.');
-      const [sourceW,sourceH]=match[1].split(/\s+/).slice(2).map(Number),width=55,height=width*sourceH/sourceW,y=70;
-      return `<text x="${x+27.5}" y="42" text-anchor="middle" fill="#171717" font-family="Arial,sans-serif" font-size="3.4" font-weight="700">${label}</text><text x="${x+27.5}" y="49" text-anchor="middle" fill="#414141" font-family="Arial,sans-serif" font-size="2.8">${sizeLabel}</text>${printCropMarks(x,y,width,height)}<svg x="${x}" y="${y}" width="${width}" height="${height}" viewBox="${match[1]}" preserveAspectRatio="none">${body}</svg>`;
-    }).join('');
-    const title='<text x="105" y="22" text-anchor="middle" fill="#171717" font-family="Georgia,serif" font-size="5.2" font-weight="700">Una comparación, tres formatos</text><text x="105" y="30" text-anchor="middle" fill="#414141" font-family="Arial,sans-serif" font-size="3">Misma pareja de jornadas · cortes proporcionados</text>';
-    const footer='<text x="105" y="292.5" text-anchor="middle" fill="#414141" font-family="Arial,sans-serif" font-size="2.5">A4 · escala real · recorta por las marcas</text>';
-    const printable=`<svg xmlns="http://www.w3.org/2000/svg" width="210mm" height="297mm" viewBox="0 0 210 297"><rect width="210" height="297" fill="#fff"/>${title}${pieces}${printCalibrationScale()}${footer}</svg>`;
-    const blob=new Blob([printable],{type:'image/svg+xml;charset=utf-8'}),limit=300*1024;
+    const rowA=rounds.get(selectA?.value),rowB=rounds.get(selectB?.value),settings=printPageSettings();
+    const printable=buildPrintableContactSheet(),blob=new Blob([printable],{type:'image/svg+xml;charset=utf-8'}),limit=300*1024;
     if(blob.size>limit)throw new Error('La hoja supera 300 KB; reduce la densidad del diseño y vuelve a intentarlo.');
     const safe=value=>value.replace(/[^0-9a-z]+/gi,'-').replace(/^-|-$/g,'');
-    saveBlob(blob,`hoja-contacto-${safe(rowA.dataset.comparisonId)}-${safe(rowB.dataset.comparisonId)}-a4.svg`);
-    if(socialPrintStatus)socialPrintStatus.textContent=`Hoja de contacto lista · ${(blob.size/1024).toFixed(1)} KB de 300 KB · 3 formatos con marcas de corte y escala de control 10 mm.${paletteSelect?.value==='monocromo'?' Paleta monocroma aplicada.':' Elige «Blanco y negro» para imprimir sin color.'}`;
+    saveBlob(blob,`hoja-contacto-${safe(rowA.dataset.comparisonId)}-${safe(rowB.dataset.comparisonId)}-${settings.landscape?'apaisado':'vertical'}-a4.svg`);
+    if(socialPrintStatus)socialPrintStatus.textContent=`Hoja de contacto lista · ${(blob.size/1024).toFixed(1)} KB de 300 KB · 3 formatos con marcas de corte y escala de control 10 mm · A4 ${settings.landscape?'apaisada':'vertical'} · papel ${settings.photo?'fotográfico, margen de 6 mm':'normal, margen de 10 mm'}.${paletteSelect?.value==='monocromo'?' Paleta monocroma aplicada.':' Elige «Blanco y negro» para imprimir sin color.'}`;
   }
 
   async function copyComparisonImage() {
@@ -1349,6 +1386,7 @@
     seasonQrA5Button?.addEventListener('click',downloadSeasonQrA5);
     socialPrintButton?.addEventListener('click',()=>{try{downloadPrintableSocialSvg();}catch(error){if(socialPrintStatus)socialPrintStatus.textContent=error instanceof Error?error.message:'No se pudo preparar la plantilla imprimible.';}});
     contactSheetPrintButton?.addEventListener('click',()=>{try{downloadPrintableContactSheet();}catch(error){if(socialPrintStatus)socialPrintStatus.textContent=error instanceof Error?error.message:'No se pudo preparar la hoja de contacto.';}});
+    [printPaperSelect,printOrientationSelect].forEach(control=>control?.addEventListener('change',()=>{updateContactSheetPrintPreview();}));
     resetOptionsButton?.addEventListener('click', () => {
       if (formatSelect) formatSelect.value = 'apaisado';
       if (metricsToggle) metricsToggle.checked = true;
