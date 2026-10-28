@@ -12,6 +12,7 @@ START = '<!-- previas-portada -->'
 END = '<!-- /previas-portada -->'
 BASE = 'https://lineadepase.com/'
 CALENDAR = 'calendario'
+MAX_EDITORIAL_IMAGE_BYTES = 600_000
 
 
 def calendar_path(entry):
@@ -73,6 +74,8 @@ def registro(root=ROOT):
         image = (root / entry['imagen']).resolve()
         if not image.is_relative_to(root.resolve()) or not image.is_file():
             raise ValueError('Falta la imagen editorial de la previa: ' + entry['imagen'])
+        if image.stat().st_size > MAX_EDITORIAL_IMAGE_BYTES:
+            raise ValueError('La imagen editorial de la previa supera 600 KB; comprímela antes de publicarla: ' + entry['imagen'])
         page = (root / entry['pagina']).resolve()
         if not page.is_relative_to(root.resolve()):
             raise ValueError('La página de la previa debe estar dentro de la web')

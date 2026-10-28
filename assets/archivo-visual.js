@@ -367,11 +367,15 @@
     const card = document.querySelector(`[data-panel-comparacion="${slot}"]`);
     card.replaceChildren();
     const image = document.createElement('img');
-    image.src = `../assets/ilustraciones/archivo-jornadas/${row.dataset.assetStem}.png`;
+    image.src = `../assets/ilustraciones/archivo-jornadas/${row.dataset.assetStem}.svg`;
     image.width = 1200;
     image.height = 630;
     image.loading = 'lazy';
-    image.alt = `Marcador de J${round} ante ${row.dataset.rival}`;
+    const homeScore = row.dataset.sede === 'Casa' ? row.dataset.golesZaragoza : row.dataset.golesRival;
+    const awayScore = row.dataset.sede === 'Casa' ? row.dataset.golesRival : row.dataset.golesZaragoza;
+    const homeTeam = row.dataset.sede === 'Casa' ? 'Real Zaragoza' : row.dataset.rival;
+    const awayTeam = row.dataset.sede === 'Casa' ? row.dataset.rival : 'Real Zaragoza';
+    image.alt = `Marcador J${round}: ${homeTeam} ${homeScore}–${awayScore} ${awayTeam}, ${row.dataset.fechaPartido}`;
     card.append(image);
     appendText(card, 'figcaption', '', `J${round} · ${row.dataset.rival} · ${row.dataset.fechaPartido} · ${row.dataset.temporada}`);
     if (includeMetrics && row.dataset.posesion) {

@@ -193,6 +193,22 @@ def main() -> None:
     complete_count = sum(bool(match_statistics(record, fixture_for(data, record))) for record in data['partidos'])
     if archive_html.count('estado-cobertura completa') != complete_count:
         raise RuntimeError('La insignia de cobertura no coincide con las fichas completas.')
+    for season in {visual_season(record) for record in data['partidos']}:
+        season_matches=[record for record in data['partidos'] if visual_season(record)==season]
+        season_complete=sum(bool(match_statistics(record,fixture_for(data,record))) for record in season_matches)
+        coverage=f'{len(season_matches)} marcadores publicados · {season_complete} fichas estadísticas validadas · {len(season_matches)-season_complete} pendientes de validar.'
+        if coverage not in archive_html:
+            raise RuntimeError(f'El resumen visible de cobertura no coincide con los partidos de {season}.')
+    if re.search(r'<img\b(?![^>]*\balt=)[^>]*>', archive_html, re.I):
+        raise RuntimeError('Hay imágenes del archivo visual sin texto alternativo.')
+    latest=max(data['partidos'],key=lambda record:int(record['jornada']))
+    latest_svg=archive_round_name(latest,data['partidos'])+'.svg'
+    latest_preview_src=f'src="../assets/ilustraciones/archivo-jornadas/{latest_svg}"'
+    if latest_preview_src not in archive_html:
+        raise RuntimeError('La vista comparativa no usa el gráfico vectorial ligero del marcador.')
+    archive_script_source=(ROOT/'assets'/'archivo-visual.js').read_text(encoding='utf-8')
+    if '.svg`' not in archive_script_source or 'row.dataset.fechaPartido' not in archive_script_source or 'row.dataset.golesZaragoza' not in archive_script_source:
+        raise RuntimeError('La comparación interactiva no conserva la vista SVG o el texto alternativo descriptivo.')
     rival_script = re.search(r'<script type="application/json" id="datos-forma-rivales">(.*?)</script>', archive_html, re.S)
     if not rival_script:
         raise RuntimeError('Falta el conjunto generado de resultados recientes de los rivales.')
