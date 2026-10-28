@@ -58,6 +58,7 @@
   const seasonImportLinksFile = document.querySelector('[data-archivo-enlaces-mapa]');
   const seasonQrButton = document.querySelector('[data-generar-qr-enlace]');
   const seasonQrDownloadButton = document.querySelector('[data-descargar-qr-enlace]');
+  const seasonQrA4Button = document.querySelector('[data-descargar-qr-a4]');
   const seasonQrCopyButton = document.querySelector('[data-copiar-qr-enlace]');
   const seasonQrName = document.querySelector('[data-nombre-qr-enlace]');
   const seasonQrColor = document.querySelector('[data-color-qr-enlace]');
@@ -619,17 +620,31 @@
     const bytes=new Uint8Array(await file.arrayBuffer());
     const view=new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength);
     if(bytes.length>=4&&view.getUint32(0,true)===0x04034b50){
-      const decoder=new TextDecoder('utf-8');let offset=0;
-      while(offset+30<=bytes.length){
-        const signature=view.getUint32(offset,true);
-        if(signature===0x02014b50||signature===0x06054b50)break;
-        if(signature!==0x04034b50)throw new Error('ZIP no compatible');
-        const flags=view.getUint16(offset+6,true),method=view.getUint16(offset+8,true),compressedSize=view.getUint32(offset+18,true),nameLength=view.getUint16(offset+26,true),extraLength=view.getUint16(offset+28,true);
-        const nameStart=offset+30,dataStart=nameStart+nameLength+extraLength,dataEnd=dataStart+compressedSize;
-        if(flags&0x0009||method!==0||dataEnd>bytes.length)throw new Error('ZIP no compatible');
-        const name=decoder.decode(bytes.subarray(nameStart,nameStart+nameLength));
-        if(name==='selecciones-mapa-linea-de-pase.json')return decoder.decode(bytes.subarray(dataStart,dataEnd));
-        offset=dataEnd;
+      const decoder=new TextDecoder('utf-8'),minEocd=Math.max(0,bytes.length-65557);let eocd=-1;
+      for(let offset=bytes.length-22;offset>=minEocd;offset--)if(view.getUint32(offset,true)===0x06054b50){eocd=offset;break;}
+      if(eocd<0||eocd+22>bytes.length)throw new Error('ZIP no compatible');
+      const entries=view.getUint16(eocd+10,true),centralSize=view.getUint32(eocd+12,true),centralOffset=view.getUint32(eocd+16,true);
+      if(entries>32||centralOffset+centralSize>eocd)throw new Error('ZIP no compatible');
+      let offset=centralOffset;
+      for(let entry=0;entry<entries;entry++){
+        if(offset+46>bytes.length||view.getUint32(offset,true)!==0x02014b50)throw new Error('ZIP no compatible');
+        const flags=view.getUint16(offset+8,true),method=view.getUint16(offset+10,true),compressedSize=view.getUint32(offset+20,true),uncompressedSize=view.getUint32(offset+24,true),nameLength=view.getUint16(offset+28,true),extraLength=view.getUint16(offset+30,true),commentLength=view.getUint16(offset+32,true),localOffset=view.getUint32(offset+42,true);
+        const name=decoder.decode(bytes.subarray(offset+46,offset+46+nameLength));
+        offset+=46+nameLength+extraLength+commentLength;
+        if(name!=='selecciones-mapa-linea-de-pase.json')continue;
+        if((flags&0x0001)||![0,8].includes(method)||uncompressedSize>1000000||compressedSize>1000000)throw new Error('ZIP no compatible');
+        if(localOffset+30>bytes.length||view.getUint32(localOffset,true)!==0x04034b50)throw new Error('ZIP no compatible');
+        const localNameLength=view.getUint16(localOffset+26,true),localExtraLength=view.getUint16(localOffset+28,true),dataStart=localOffset+30+localNameLength+localExtraLength,dataEnd=dataStart+compressedSize;
+        if(dataEnd>bytes.length)throw new Error('ZIP no compatible');
+        const compressed=bytes.subarray(dataStart,dataEnd);let payload;
+        if(method===0)payload=compressed;
+        else {
+          if(typeof DecompressionStream!=='function')throw new Error('ZIP comprimido no compatible en este navegador');
+          try{payload=new Uint8Array(await new Response(new Blob([compressed]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).arrayBuffer());}
+          catch(_){throw new Error('ZIP comprimido no compatible en este navegador');}
+        }
+        if(payload.length!==uncompressedSize)throw new Error('ZIP no compatible');
+        return decoder.decode(payload);
       }
       throw new Error('ZIP sin el archivo JSON de selecciones');
     }
@@ -673,6 +688,7 @@
       if(seasonQrPreview){seasonQrObjectUrl=URL.createObjectURL(new Blob([seasonQrSvg],{type:'image/svg+xml'}));seasonQrPreview.src=seasonQrObjectUrl;seasonQrPreview.hidden=false;if(seasonQrPreview.parentElement)seasonQrPreview.parentElement.hidden=false;}
       if(seasonQrDownloadButton)seasonQrDownloadButton.disabled=false;
       if(seasonQrCopyButton)seasonQrCopyButton.disabled=false;
+      updateSeasonQrQuality();
       if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent='QR listo: contiene solo el enlace de esta selección y se genera en este navegador.';
     } catch(_){if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent='No se pudo generar el QR en este navegador.';}
   }
@@ -681,6 +697,52 @@
     if(!seasonQrSvg)return;
     saveBlob(new Blob([seasonQrSvg],{type:'image/svg+xml;charset=utf-8'}),'seleccion-mapa-linea-de-pase-qr.svg');
     if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent='QR descargado en SVG.';
+  }
+
+  function seasonQrColorHex() { return seasonQrColor?.value==='marca'?'#2f6b45':'#15221b'; }
+
+  function updateSeasonQrQuality() {
+    const status=document.querySelector('[data-calidad-qr]');if(!status)return;
+    const hex=seasonQrColorHex(),channels=hex.match(/[0-9a-f]{2}/gi)?.map(value=>parseInt(value,16)/255)||[0,0,0];
+    const luminance=channels.map(value=>value<=.04045?value/12.92:((value+.055)/1.055)**2.4).reduce((sum,value,index)=>sum+value*[.2126,.7152,.0722][index],0);
+    const ratio=1.05/(luminance+.05),good=ratio>=4.5;
+    status.dataset.nivel=good?'correcto':'aviso';
+    status.textContent=`Contraste ${ratio.toFixed(2).replace('.',',')}:1 sobre blanco · margen libre de 4 módulos. ${good?'Correcto para compartir e imprimir.':'Elige tinta oscura para mejorar la lectura.'}`;
+  }
+
+  function seasonQrMatrix() {
+    if(!window.qrcodegen?.QrCode)throw new Error('QR no disponible');
+    return window.qrcodegen.QrCode.encodeText(seasonPosterLinkUrl(),window.qrcodegen.QrCode.Ecc.MEDIUM);
+  }
+
+  function downloadSeasonQrA4() {
+    try {
+      const qr=seasonQrMatrix(),pageW=595.28,pageH=841.89,ink=seasonQrColorHex(),rgb=ink.match(/[0-9a-f]{2}/gi).map(v=>(parseInt(v,16)/255).toFixed(4)).join(' '),parts=['1 1 1 rg 0 0 595.28 841.89 re f',`${rgb} rg`];
+      const label=(seasonQrName?.value||'').trim().slice(0,28).normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\x20-\x7e]/g,'');
+      const pdfText=value=>value.replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)');
+      parts.push('BT /F1 19 Tf 42 790 Td (Linea de pase - archivo visual) Tj ET');
+      if(label)parts.push(`BT /F1 12 Tf 42 765 Td (${pdfText(label)}) Tj ET`);
+      const draw=(mm,centerX,topY,caption)=>{
+        const points=mm*72/25.4,total=qr.size+8,unit=points/total,x0=centerX-points/2,y0=pageH-topY-points;
+        parts.push(`0.78 0.82 0.78 RG 0.6 w ${x0.toFixed(2)} ${y0.toFixed(2)} ${points.toFixed(2)} ${points.toFixed(2)} re S`);
+        for(let y=0;y<qr.size;y++)for(let x=0;x<qr.size;x++)if(qr.getModule(x,y))parts.push(`${(x0+(x+4)*unit).toFixed(3)} ${(y0+(qr.size-y+3)*unit).toFixed(3)} ${unit.toFixed(3)} ${unit.toFixed(3)} re f`);
+        parts.push(`BT /F1 11 Tf ${(centerX-24).toFixed(2)} ${(y0-22).toFixed(2)} Td (${caption}) Tj ET`);
+      };
+      draw(60,pageW/2,175,'QR de 60 mm');draw(40,pageW/2,475,'QR de 40 mm');
+      parts.push('0.35 0.40 0.36 rg BT /F1 9 Tf 42 42 Td (Imprime al 100 % para conservar las medidas indicadas.) Tj ET');
+      const content=parts.join('\n'),objects=[
+        '<< /Type /Catalog /Pages 2 0 R >>',
+        '<< /Type /Pages /Kids [3 0 R] /Count 1 >>',
+        `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageW} ${pageH}] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>`,
+        '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>',
+        `<< /Length ${new TextEncoder().encode(content).length} >>\nstream\n${content}\nendstream`
+      ];
+      let pdf='%PDF-1.4\n',offsets=[0];
+      objects.forEach((object,index)=>{offsets.push(new TextEncoder().encode(pdf).length);pdf+=`${index+1} 0 obj\n${object}\nendobj\n`;});
+      const xref=new TextEncoder().encode(pdf).length;pdf+=`xref\n0 ${objects.length+1}\n0000000000 65535 f \n`+offsets.slice(1).map(value=>`${String(value).padStart(10,'0')} 00000 n \n`).join('')+`trailer\n<< /Size ${objects.length+1} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`;
+      saveBlob(new Blob([pdf],{type:'application/pdf'}),'qr-linea-de-pase-a4.pdf');
+      if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent='Hoja A4 descargada con códigos QR de 60 y 40 mm.';
+    } catch(_){if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent='No se pudo preparar la hoja A4 en este navegador.';}
   }
 
   async function copySeasonLinkQr() {
@@ -1080,9 +1142,11 @@
     seasonImportLinksFile?.addEventListener('change',()=>importSeasonSavedLinks(seasonImportLinksFile.files?.[0]));
     seasonQrButton?.addEventListener('click',makeSeasonLinkQr);
     seasonQrDownloadButton?.addEventListener('click',downloadSeasonLinkQr);
+    seasonQrA4Button?.addEventListener('click',downloadSeasonQrA4);
     seasonQrCopyButton?.addEventListener('click',copySeasonLinkQr);
     seasonQrName?.addEventListener('input',()=>{if(seasonQrSvg)clearSeasonLinkQr();});
-    [seasonQrColor,seasonQrPrintSize].forEach(control=>control?.addEventListener('change',()=>{if(seasonQrSvg)clearSeasonLinkQr();}));
+    [seasonQrColor,seasonQrPrintSize].forEach(control=>control?.addEventListener('change',()=>{updateSeasonQrQuality();if(seasonQrSvg)clearSeasonLinkQr();}));
+    updateSeasonQrQuality();
     seasonSaveLinkName?.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();saveNamedSeasonPosterLink();}});
     seasonSavedLinksList?.addEventListener('click',async event=>{
       const button=event.target.closest('button[data-aplicar-enlace-mapa],button[data-copiar-enlace-mapa],button[data-borrar-enlace-mapa],button[data-fijar-enlace-mapa],button[data-subir-enlace-mapa],button[data-bajar-enlace-mapa]');

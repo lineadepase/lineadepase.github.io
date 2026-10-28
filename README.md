@@ -64,6 +64,10 @@ La comprobación de visitantes se gestiona en Cloudflare, no en el código. Mant
 
 La selección incorpora un perfil breve en inglés. `assets/documentos/` contiene el dossier de cuatro páginas y el CV público de una página, revisados el 21 de octubre de 2026. Son documentos editoriales: requieren revisión al cambiar proyectos, formación o trayectoria. El CV público utiliza la web y LinkedIn como contacto y resume experiencia documentada, sin incluir dirección particular ni teléfono.
 
+## Archivo visual: transferencias y QR de impresión
+
+El mapa admite importar paquetes ZIP con compresión Store o Deflate, incluido el descriptor de datos habitual, mediante el directorio central del archivo. La lectura se hace en el navegador y limita el tamaño del archivo y de la entrada JSON. El QR informa del contraste sobre blanco y conserva una zona libre de cuatro módulos; la hoja A4 descargable coloca el mismo enlace en códigos vectoriales de 60 y 40 mm. Al imprimir, hay que mantener la escala al 100 % para conservar las medidas.
+
 ## Herramientas y entregas de jornada
 
 `herramientas/index.html` reúne comparador y mapa con ejemplos de preguntas que abren los filtros adecuados. La entrada Herramientas aparece en el menú principal; Novedades conserva sus enlaces desde la portada y el pie. El glosario incorpora xT con un ejemplo numérico ilustrativo y referencia al método original.
