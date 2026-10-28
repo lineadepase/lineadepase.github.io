@@ -60,7 +60,11 @@
   const seasonQrDownloadButton = document.querySelector('[data-descargar-qr-enlace]');
   const seasonQrA4Button = document.querySelector('[data-descargar-qr-a4]');
   const seasonQrA4Preview = document.querySelector('[data-vista-hoja-qr]');
+  const seasonQrA4HorizontalPreview = document.querySelector('[data-vista-hoja-qr-horizontal]');
   const seasonQrScaleConfirm = document.querySelector('[data-confirmar-escala-qr]');
+  const seasonQrA4LandscapeButton = document.querySelector('[data-descargar-qr-a4-apaisado]');
+  const seasonQrPaperSelect = document.querySelector('[data-papel-impresion-qr]');
+  const seasonQrPreviewDisclosure = document.querySelector('[data-detalles-vista-qr]');
   const seasonQrCopyButton = document.querySelector('[data-copiar-qr-enlace]');
   const seasonQrName = document.querySelector('[data-nombre-qr-enlace]');
   const seasonQrColor = document.querySelector('[data-color-qr-enlace]');
@@ -717,6 +721,7 @@
   }
 
   function seasonQrColorHex() { return seasonQrColor?.value==='marca'?'#2f6b45':'#15221b'; }
+  function seasonQrPaperIsSoft() { return seasonQrPaperSelect?.value==='suave'; }
 
   function updateSeasonQrQuality() {
     const status=document.querySelector('[data-calidad-qr]');if(!status)return;
@@ -730,13 +735,22 @@
   function updateSeasonQrPrintPreview() {
     if(!seasonQrA4Preview)return;
     try {
-      const qr=seasonQrMatrix(),color=seasonQrColorHex(),view=qr.size+8,path=[];
+      const qr=seasonQrMatrix(),color=seasonQrColorHex(),view=qr.size+8,path=[],paper=seasonQrPaperIsSoft()?'suave':'blanco';
       for(let y=0;y<qr.size;y++)for(let x=0;x<qr.size;x++)if(qr.getModule(x,y))path.push(`M${x+4} ${y+4}h1v1h-1z`);
       const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${view} ${view}" role="img" aria-label="Código QR con margen de cuatro módulos"><rect width="${view}" height="${view}" fill="#fff"/><path d="${path.join('')}" fill="${color}"/></svg>`;
-      seasonQrA4Preview.querySelectorAll('[data-qr-hoja-codigo]').forEach(node=>{node.innerHTML=svg;});
+      seasonQrPreviewDisclosure?.querySelectorAll('[data-qr-hoja-codigo]').forEach(node=>{node.innerHTML=svg;});
       const name=(seasonQrName?.value||'').trim();
       const title=seasonQrA4Preview.querySelector('[data-qr-hoja-titulo]');if(title)title.textContent=name||'Selección actual del mapa';
-      seasonQrA4Preview.dataset.estado='lista';
+      if(seasonQrA4HorizontalPreview){seasonQrA4HorizontalPreview.dataset.papel=paper;const horizontalTitle=seasonQrA4HorizontalPreview.querySelector('[data-qr-hoja-horizontal-titulo]');if(horizontalTitle)horizontalTitle.textContent=name||'Mapa de temporada';}
+      seasonQrA4Preview.dataset.estado='lista';seasonQrA4Preview.dataset.papel=paper;
+      ['a','b'].forEach(side=>{
+        const row=rounds.get(side==='a'?selectA?.value:selectB?.value),heading=seasonQrA4HorizontalPreview?.querySelector(`[data-qr-hoja-partido-titulo="${side}"]`),score=seasonQrA4HorizontalPreview?.querySelector(`[data-qr-hoja-partido-marcador="${side}"]`),venue=seasonQrA4HorizontalPreview?.querySelector(`[data-qr-hoja-partido-sede="${side}"]`);
+        if(!row){if(heading)heading.textContent=side==='a'?'Primera jornada':'Segunda jornada';if(score)score.textContent='Selecciona una jornada disponible';if(venue)venue.textContent='';return;}
+        const home=row.dataset.sede==='Casa'?'Real Zaragoza':row.dataset.rival,away=row.dataset.sede==='Casa'?row.dataset.rival:'Real Zaragoza',homeGoals=row.dataset.sede==='Casa'?row.dataset.golesZaragoza:row.dataset.golesRival,awayGoals=row.dataset.sede==='Casa'?row.dataset.golesRival:row.dataset.golesZaragoza;
+        if(heading)heading.textContent=`J${row.dataset.jornada.padStart(2,'0')} · ${row.dataset.fechaPartido.split('-').reverse().join('/')}`;
+        if(score)score.textContent=`${home} ${homeGoals} – ${awayGoals} ${away}`;
+        if(venue)venue.textContent=`${row.dataset.sede==='Casa'?'En casa':'Fuera'} · ${row.dataset.rival}`;
+      });
     } catch(_){
       seasonQrA4Preview.dataset.estado='error';
       seasonQrA4Preview.querySelectorAll('[data-qr-hoja-codigo]').forEach(node=>{node.textContent='Vista previa disponible al cargar el código QR.';});
@@ -750,12 +764,15 @@
 
   function downloadSeasonQrA4() {
     try {
-      const qr=seasonQrMatrix(),pageW=595.28,pageH=841.89,ink=seasonQrColorHex(),rgb=ink.match(/[0-9a-f]{2}/gi).map(v=>(parseInt(v,16)/255).toFixed(4)).join(' '),parts=['0.97 0.98 0.96 rg 0 0 595.28 841.89 re f','0.18 0.42 0.27 rg 42 777 38 3 re f'];
+      const qr=seasonQrMatrix(),pageW=595.28,pageH=841.89,ink=seasonQrColorHex(),rgb=ink.match(/[0-9a-f]{2}/gi).map(v=>(parseInt(v,16)/255).toFixed(4)).join(' '),parts=seasonQrPaperIsSoft()?['0.97 0.98 0.96 rg 0 0 595.28 841.89 re f']:[];
+      parts.push('0.18 0.42 0.27 rg 42 777 38 3 re f');
       const label=(seasonQrName?.value||'').trim().slice(0,28).normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\x20-\x7e]/g,'');
       const pdfText=value=>value.replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)');
       parts.push('0.18 0.42 0.27 rg BT /F2 9 Tf 42 754 Td (LINEA DE PASE  /  ARCHIVO VISUAL) Tj ET','0.08 0.13 0.10 rg BT /F2 21 Tf 42 720 Td (Una temporada, dos formas de verla) Tj ET','0.30 0.36 0.32 rg BT /F1 10 Tf 42 699 Td (Escanea el codigo para abrir la seleccion actual del mapa.) Tj ET');
       if(label)parts.push(`0.18 0.42 0.27 rg BT /F2 10 Tf 42 679 Td (${pdfText(label)}) Tj ET`);
-      parts.push('0.91 0.94 0.91 rg 42 403 248 264 re f','0.91 0.94 0.91 rg 305 403 248 264 re f','0.18 0.42 0.27 rg BT /F2 9 Tf 58 644 Td (GRAN FORMATO) Tj ET','0.18 0.42 0.27 rg BT /F2 9 Tf 321 644 Td (FORMATO COMPACTO) Tj ET');
+      if(seasonQrPaperIsSoft())parts.push('0.92 0.95 0.92 rg 42 403 248 264 re f','0.92 0.95 0.92 rg 305 403 248 264 re f');
+      else parts.push('0.72 0.80 0.74 RG 0.8 w 42 403 248 264 re S','0.72 0.80 0.74 RG 0.8 w 305 403 248 264 re S');
+      parts.push('0.18 0.42 0.27 rg BT /F2 9 Tf 58 644 Td (GRAN FORMATO) Tj ET','0.18 0.42 0.27 rg BT /F2 9 Tf 321 644 Td (FORMATO COMPACTO) Tj ET');
       const draw=(mm,centerX,topY,caption)=>{
         const points=mm*72/25.4,total=qr.size+8,unit=points/total,x0=centerX-points/2,y0=pageH-topY-points;
         parts.push(`1 1 1 rg ${x0.toFixed(2)} ${y0.toFixed(2)} ${points.toFixed(2)} ${points.toFixed(2)} re f`,`${rgb} rg`);
@@ -776,8 +793,34 @@
       objects.forEach((object,index)=>{offsets.push(new TextEncoder().encode(pdf).length);pdf+=`${index+1} 0 obj\n${object}\nendobj\n`;});
       const xref=new TextEncoder().encode(pdf).length;pdf+=`xref\n0 ${objects.length+1}\n0000000000 65535 f \n`+offsets.slice(1).map(value=>`${String(value).padStart(10,'0')} 00000 n \n`).join('')+`trailer\n<< /Size ${objects.length+1} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`;
       saveBlob(new Blob([pdf],{type:'application/pdf'}),'qr-linea-de-pase-a4.pdf');
-      if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent='Hoja A4 descargada. Los QR conservan sus medidas si imprimes al 100 %.';
+      if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent=`Hoja A4 descargada en papel ${seasonQrPaperIsSoft()?'verde suave':'blanco'}; imprime al 100 % para conservar las medidas.`;
     } catch(_){if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent='No se pudo preparar la hoja A4 en este navegador.';}
+  }
+
+  function downloadSeasonQrLandscapeA4() {
+    try {
+      const qr=seasonQrMatrix(),pageW=841.89,pageH=595.28,ink=seasonQrColorHex(),rgb=ink.match(/[0-9a-f]{2}/gi).map(v=>(parseInt(v,16)/255).toFixed(4)).join(' '),parts=seasonQrPaperIsSoft()?['0.97 0.98 0.96 rg 0 0 841.89 595.28 re f']:[];
+      const ascii=value=>value.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\x20-\x7e]/g,'').replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)').slice(0,72);
+      const label=(seasonQrName?.value||'').trim().slice(0,28),name=label?ascii(label):'MAPA DE TEMPORADA';
+      parts.push('0.18 0.42 0.27 rg 42 555 38 3 re f','BT /F2 9 Tf 42 536 Td (LINEA DE PASE  /  ARCHIVO VISUAL) Tj ET','0.08 0.13 0.10 rg BT /F2 21 Tf 42 504 Td (Dos jornadas, una lectura) Tj ET',`0.30 0.36 0.32 rg BT /F1 10 Tf 42 484 Td (${ascii(name)}) Tj ET`);
+      const qrPoints=60*72/25.4,total=qr.size+8,unit=qrPoints/total,x0=157-qrPoints/2,y0=pageH-156-qrPoints;
+      parts.push(`0.18 0.42 0.27 rg BT /F2 9 Tf 57 451 Td (CODIGO DEL MAPA) Tj ET`,`1 1 1 rg ${x0.toFixed(2)} ${y0.toFixed(2)} ${qrPoints.toFixed(2)} ${qrPoints.toFixed(2)} re f`,`${rgb} rg`);
+      for(let y=0;y<qr.size;y++)for(let x=0;x<qr.size;x++)if(qr.getModule(x,y))parts.push(`${(x0+(x+4)*unit).toFixed(3)} ${(y0+(qr.size-y+3)*unit).toFixed(3)} ${unit.toFixed(3)} ${unit.toFixed(3)} re f`);
+      parts.push('0.30 0.36 0.32 rg BT /F1 9 Tf 85 223 Td (Escanea para abrir el mapa actual.) Tj ET','0.18 0.42 0.27 rg BT /F2 9 Tf 302 451 Td (MARCADORES DE LA COMPARACION) Tj ET');
+      ['a','b'].forEach((side,index)=>{
+        const row=rounds.get(side==='a'?selectA?.value:selectB?.value),cardY=index===0?276:112,headingY=cardY+91,scoreY=cardY+53,venueY=cardY+28;
+        if(seasonQrPaperIsSoft())parts.push(`0.92 0.95 0.92 rg 298 ${cardY} 502 142 re f`);else parts.push(`0.72 0.80 0.74 RG 0.8 w 298 ${cardY} 502 142 re S`);
+        if(!row){parts.push(`0.08 0.13 0.10 rg BT /F2 12 Tf 316 ${scoreY} Td (Selecciona dos jornadas para ver los marcadores.) Tj ET`);return;}
+        const date=row.dataset.fechaPartido.split('-').reverse().join('/'),home=row.dataset.sede==='Casa'?'Real Zaragoza':row.dataset.rival,away=row.dataset.sede==='Casa'?row.dataset.rival:'Real Zaragoza',homeGoals=row.dataset.sede==='Casa'?row.dataset.golesZaragoza:row.dataset.golesRival,awayGoals=row.dataset.sede==='Casa'?row.dataset.golesRival:row.dataset.golesZaragoza;
+        parts.push(`0.18 0.42 0.27 rg BT /F2 9 Tf 316 ${headingY} Td (${ascii(`J${row.dataset.jornada.padStart(2,'0')}  /  ${row.dataset.rival}  /  ${date}`)}) Tj ET`,`0.08 0.13 0.10 rg BT /F2 16 Tf 316 ${scoreY} Td (${ascii(`${home}   ${homeGoals} - ${awayGoals}   ${away}`)}) Tj ET`,`0.30 0.36 0.32 rg BT /F1 9 Tf 316 ${venueY} Td (${row.dataset.sede==='Casa'?'En casa':'Fuera'}  /  ${ascii(row.dataset.rival)}) Tj ET`);
+      });
+      parts.push('0.30 0.36 0.32 rg BT /F1 9 Tf 42 62 Td (QR de 60 mm con margen de lectura. Imprime a tamano real o al 100 %.) Tj ET','0.18 0.42 0.27 rg BT /F2 9 Tf 614 62 Td (PAPEL A4  /  297 x 210 mm) Tj ET');
+      const content=parts.join('\n'),objects=['<< /Type /Catalog /Pages 2 0 R >>','<< /Type /Pages /Kids [3 0 R] /Count 1 >>',`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageW} ${pageH}] /Resources << /Font << /F1 4 0 R /F2 6 0 R >> >> /Contents 5 0 R >>`,'<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>',`<< /Length ${new TextEncoder().encode(content).length} >>\nstream\n${content}\nendstream`,'<< /Type /Font /Subtype /Type1 /BaseFont /Times-Bold >>'];
+      let pdf='%PDF-1.4\n',offsets=[0];objects.forEach((object,index)=>{offsets.push(new TextEncoder().encode(pdf).length);pdf+=`${index+1} 0 obj\n${object}\nendobj\n`;});
+      const xref=new TextEncoder().encode(pdf).length;pdf+=`xref\n0 ${objects.length+1}\n0000000000 65535 f \n`+offsets.slice(1).map(value=>`${String(value).padStart(10,'0')} 00000 n \n`).join('')+`trailer\n<< /Size ${objects.length+1} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`;
+      saveBlob(new Blob([pdf],{type:'application/pdf'}),'qr-y-comparacion-linea-de-pase-a4-apaisado.pdf');
+      if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent=`Hoja A4 apaisada descargada en papel ${seasonQrPaperIsSoft()?'verde suave':'blanco'}; los resultados corresponden a las dos jornadas elegidas.`;
+    } catch(_){if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent='No se pudo preparar la hoja apaisada en este navegador.';}
   }
 
   async function copySeasonLinkQr() {
@@ -1179,10 +1222,19 @@
     seasonQrButton?.addEventListener('click',makeSeasonLinkQr);
     seasonQrDownloadButton?.addEventListener('click',downloadSeasonLinkQr);
     seasonQrA4Button?.addEventListener('click',downloadSeasonQrA4);
+    seasonQrA4LandscapeButton?.addEventListener('click',downloadSeasonQrLandscapeA4);
     seasonQrCopyButton?.addEventListener('click',copySeasonLinkQr);
     seasonQrName?.addEventListener('input',()=>{if(seasonQrSvg)clearSeasonLinkQr();else updateSeasonQrPrintPreview();});
     [seasonQrColor,seasonQrPrintSize].forEach(control=>control?.addEventListener('change',()=>{updateSeasonQrQuality();if(seasonQrSvg)clearSeasonLinkQr();else updateSeasonQrPrintPreview();}));
-    seasonQrScaleConfirm?.addEventListener('change',()=>{if(seasonQrA4Button)seasonQrA4Button.disabled=!seasonQrScaleConfirm.checked;});
+    if(seasonQrA4Button)seasonQrA4Button.disabled=!seasonQrScaleConfirm?.checked;
+    if(seasonQrA4LandscapeButton)seasonQrA4LandscapeButton.disabled=!seasonQrScaleConfirm?.checked;
+    seasonQrScaleConfirm?.addEventListener('change',()=>{if(seasonQrA4Button)seasonQrA4Button.disabled=!seasonQrScaleConfirm.checked;if(seasonQrA4LandscapeButton)seasonQrA4LandscapeButton.disabled=!seasonQrScaleConfirm.checked;});
+    seasonQrPaperSelect?.addEventListener('change',updateSeasonQrPrintPreview);
+    [selectA,selectB].forEach(control=>control?.addEventListener('change',updateSeasonQrPrintPreview));
+    const updateQrDisclosureLabel=()=>{const summary=seasonQrPreviewDisclosure?.querySelector('summary');if(summary)summary.textContent=seasonQrPreviewDisclosure.open?'Ocultar las maquetas A4':'Mostrar las maquetas A4';};
+    seasonQrPreviewDisclosure?.addEventListener('toggle',updateQrDisclosureLabel);
+    if(window.matchMedia?.('(max-width: 600px)').matches&&seasonQrPreviewDisclosure)seasonQrPreviewDisclosure.open=false;
+    updateQrDisclosureLabel();
     updateSeasonQrQuality();
     updateSeasonQrPrintPreview();
     seasonSaveLinkName?.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();saveNamedSeasonPosterLink();}});
