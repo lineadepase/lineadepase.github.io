@@ -171,3 +171,11 @@
 .archivo-tabla-pesos th,.archivo-tabla-pesos td { padding:.5rem; border-bottom:1px solid #d4ded6; white-space:nowrap; }
 .archivo-tabla-pesos small { font-weight:400; color:#536257; }
 @media(max-width:600px) { .archivo-hoja-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .archivo-hoja-grid button:last-child { grid-column:1/-1; } }
+
+.archivo-alt-mapa { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:end; gap:.75rem; margin:1rem 0; }
+.archivo-alt-mapa label { display:grid; gap:.4rem; }
+.archivo-alt-mapa textarea { width:100%; min-height:5.5rem; padding:.65rem; border:1px solid #9aa99d; border-radius:.45rem; font:inherit; }
+.archivo-preview-mapa { margin:1rem 0; padding:.8rem; border:1px solid #d4ded6; border-radius:.7rem; background:#fff; }
+.archivo-preview-mapa img { display:block; width:min(100%,540px); max-height:520px; height:auto; margin:.6rem auto 0; object-fit:contain; background:#f3f5ef; }
+.archivo-preview-mapa figcaption { color:#163e28; font-weight:700; }
+@media(max-width:600px) { .archivo-alt-mapa { grid-template-columns:minmax(0,1fr); } .archivo-alt-mapa button { width:100%; } .archivo-preview-mapa img { max-height:360px; } }

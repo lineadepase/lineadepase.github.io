@@ -38,6 +38,11 @@
   const seasonPosterType = document.querySelector('[data-tipo-mapa]');
   const seasonPosterButton = document.querySelector('[data-descargar-mapa]');
   const seasonPosterStatus = document.querySelector('[data-estado-mapa]');
+  const seasonPosterSheet = document.querySelector('[data-lamina-mapa]');
+  const seasonPosterAlt = document.querySelector('[data-texto-mapa]');
+  const resetSeasonPosterAlt = document.querySelector('[data-restablecer-texto-mapa]');
+  const seasonPosterPreview = document.querySelector('[data-preview-mapa-img]');
+  const seasonPosterPreviewCaption = document.querySelector('[data-preview-mapa-caption]');
   const kitEstimates = document.querySelector('[data-kit-estimaciones]');
   const formatThumbnailButtons = [...document.querySelectorAll('[data-miniatura-formato]')];
   const compareState = document.querySelector('[data-estado-comparacion]');
@@ -59,6 +64,7 @@
   const carouselDownloads = document.querySelector('[data-descargas-carrusel]');
   let carouselPreviewUrl = null;
   let altTextCustomized = false;
+  let seasonPosterAltCustomized = false;
   let estimateTimer = 0;
   let estimateRun = 0;
   const rounds = new Map(rows.map(row => [row.dataset.comparisonId, row]));
@@ -408,38 +414,99 @@
     });
   }
 
-  function seasonPosterSvg(season,format) {
+  function seasonPosterRows(season) {
+    return rows.filter(row=>row.dataset.temporada===season).sort((a,b)=>Number(a.dataset.jornada)-Number(b.dataset.jornada));
+  }
+
+  function seasonPosterLayout(format) {
     const layouts={cuadrado:{width:1080,height:1080,top:175,bottom:82},vertical:{width:1080,height:1350,top:190,bottom:90},historias:{width:1080,height:1920,top:380,bottom:300}};
-    const layout=layouts[format]||layouts.cuadrado, palette=activePalette();
-    const seasonRows=rows.filter(row=>row.dataset.temporada===season).sort((a,b)=>Number(a.dataset.jornada)-Number(b.dataset.jornada));
-    if(!seasonRows.length)return '';
-    const usable=layout.height-layout.top-layout.bottom, gap=12, cardHeight=Math.min(112,(usable-gap*(seasonRows.length-1))/seasonRows.length);
-    const total=cardHeight*seasonRows.length+gap*(seasonRows.length-1), startY=layout.top+(usable-total)/2;
-    const cards=seasonRows.map((row,index)=>{
-      const y=startY+index*(cardHeight+gap), pad=28, home=row.dataset.sede==='Casa'?'Real Zaragoza':row.dataset.rival, away=row.dataset.sede==='Casa'?row.dataset.rival:'Real Zaragoza';
+    return layouts[format]||layouts.cuadrado;
+  }
+
+  function seasonPosterPageSize(format) {
+    const layout=seasonPosterLayout(format), usable=layout.height-layout.top-layout.bottom, minCard=74, gap=12;
+    return Math.max(1,Math.floor((usable+gap)/(minCard+gap)));
+  }
+
+  function seasonPosterPages(season,format) {
+    const seasonRows=seasonPosterRows(season), perPage=seasonPosterPageSize(format);
+    return Array.from({length:Math.ceil(seasonRows.length/perPage)},(_,index)=>seasonRows.slice(index*perPage,(index+1)*perPage));
+  }
+
+  function posterOutcome(row) {
+    const goals=Number(row.dataset.golesZaragoza), against=Number(row.dataset.golesRival);
+    if(goals>against)return {label:'VICTORIA',color:'#176b3a'};
+    if(goals<against)return {label:'DERROTA',color:'#a33028'};
+    return {label:'EMPATE',color:'#49515c'};
+  }
+
+  function seasonPosterDescription(season,format,pageIndex=0) {
+    const pages=seasonPosterPages(season,format), pageRows=pages[pageIndex]||[], records=pageRows.map(row=>{
+      const result=posterOutcome(row).label.toLocaleLowerCase('es');
+      return `J${row.dataset.jornada} ${row.dataset.sede.toLocaleLowerCase('es')} ante ${row.dataset.rival}: ${row.dataset.golesZaragoza}–${row.dataset.golesRival}, ${result}`;
+    });
+    return `Real Zaragoza, temporada ${season}, lámina ${pageIndex+1} de ${Math.max(1,pages.length)}. ${records.join('; ')}`.slice(0,1000);
+  }
+
+  function seasonPosterSvg(season,format,pageIndex=0,customAlt='') {
+    const layout=seasonPosterLayout(format), palette=activePalette(), pages=seasonPosterPages(season,format), seasonRows=seasonPosterRows(season), pageRows=pages[pageIndex]||[];
+    if(!seasonRows.length||!pageRows.length)return '';
+    const usable=layout.height-layout.top-layout.bottom, gap=12, cardHeight=Math.min(112,(usable-gap*(pageRows.length-1))/pageRows.length);
+    const total=cardHeight*pageRows.length+gap*(pageRows.length-1), startY=layout.top+(usable-total)/2;
+    const cards=pageRows.map((row,index)=>{
+      const y=startY+index*(cardHeight+gap), home=row.dataset.sede==='Casa'?'Real Zaragoza':row.dataset.rival, away=row.dataset.sede==='Casa'?row.dataset.rival:'Real Zaragoza';
       const homeGoals=row.dataset.sede==='Casa'?row.dataset.golesZaragoza:row.dataset.golesRival, awayGoals=row.dataset.sede==='Casa'?row.dataset.golesRival:row.dataset.golesZaragoza;
-      const date=row.dataset.fechaPartido.split('-').slice(2).reverse().join('/');
+      const date=row.dataset.fechaPartido.split('-').slice(1).reverse().join('/'), outcome=posterOutcome(row);
       const metric=row.dataset.completa==='1'?`<text x="${layout.width/2}" y="${y+cardHeight*.88}" text-anchor="middle" fill="${palette.muted}" font-family="Arial,sans-serif" font-size="13">Posesión ${xml(row.dataset.posesion.replace('.',','))}% · tiros ${xml(row.dataset.tirosZaragoza)}–${xml(row.dataset.tirosRival)}</text>`:'';
-      return `<rect x="36" y="${y}" width="${layout.width-72}" height="${cardHeight}" rx="18" fill="${palette.panel}" stroke="${palette.border}" stroke-width="2"/><path d="M36 ${y+cardHeight-6}h${layout.width-72}" stroke="${palette.accent}" stroke-width="6"/><text x="${pad+36}" y="${y+cardHeight*.32}" fill="${palette.muted}" font-family="Arial,sans-serif" font-size="16" font-weight="700">J${row.dataset.jornada.padStart(2,'0')} · ${xml(date)} · ${row.dataset.sede==='Casa'?'CASA':'FUERA'}</text><text x="${layout.width/2}" y="${y+cardHeight*.62}" text-anchor="middle" fill="${palette.foreground}" font-family="Arial,sans-serif" font-size="21" font-weight="700" textLength="${layout.width-150}" lengthAdjust="spacingAndGlyphs">${xml(home)} ${xml(homeGoals)}–${xml(awayGoals)} ${xml(away)}</text>${metric}`;
+      const badgeWidth=130, badgeX=layout.width-36-badgeWidth;
+      return `<rect x="36" y="${y}" width="${layout.width-72}" height="${cardHeight}" rx="18" fill="${palette.panel}" stroke="${palette.border}" stroke-width="2"/><path d="M36 ${y+cardHeight-6}h${layout.width-72}" stroke="${outcome.color}" stroke-width="7"/><text x="64" y="${y+cardHeight*.32}" fill="${palette.muted}" font-family="Arial,sans-serif" font-size="16" font-weight="700">J${row.dataset.jornada.padStart(2,'0')} · ${xml(date)} · ${row.dataset.sede==='Casa'?'CASA':'FUERA'}</text><rect x="${badgeX}" y="${y+8}" width="${badgeWidth}" height="26" rx="13" fill="${outcome.color}"/><text x="${badgeX+badgeWidth/2}" y="${y+26}" text-anchor="middle" fill="#ffffff" font-family="Arial,sans-serif" font-size="13" font-weight="700">${outcome.label}</text><text x="${layout.width/2}" y="${y+cardHeight*.62}" text-anchor="middle" fill="${palette.foreground}" font-family="Arial,sans-serif" font-size="21" font-weight="700" textLength="${layout.width-150}" lengthAdjust="spacingAndGlyphs">${xml(home)} ${xml(homeGoals)}–${xml(awayGoals)} ${xml(away)}</text>${metric}`;
     }).join('');
-    const missing=seasonRows.filter(row=>row.dataset.completa!=='1').length;
-    const note=`${seasonRows.length} jornadas · ${seasonRows.length-missing} con ficha validada · ${missing} sin métricas`;
+    const seasonCounts=seasonRows.reduce((counts,row)=>{
+      const key=row.dataset.sede==='Casa'?'casa':'fuera', outcome=posterOutcome(row).label;
+      counts[key][outcome]++; return counts;
+    },{casa:{VICTORIA:0,EMPATE:0,DERROTA:0},fuera:{VICTORIA:0,EMPATE:0,DERROTA:0}});
+    const metricless=seasonRows.filter(row=>row.dataset.completa!=='1').length;
+    const totals=`Casa ${seasonCounts.casa.VICTORIA}V–${seasonCounts.casa.EMPATE}E–${seasonCounts.casa.DERROTA}D · Fuera ${seasonCounts.fuera.VICTORIA}V–${seasonCounts.fuera.EMPATE}E–${seasonCounts.fuera.DERROTA}D`;
+    const pageText=`Lámina ${pageIndex+1} de ${pages.length} · Jornadas ${pageRows[0].dataset.jornada.padStart(2,'0')}–${pageRows.at(-1).dataset.jornada.padStart(2,'0')}`;
+    const note=`${seasonRows.length} jornadas · ${seasonRows.length-metricless} con ficha validada · ${metricless} sin métricas`;
     const safeTop=format==='historias'?220:0, safeBottom=format==='historias'?220:0;
-    const desc=seasonRows.map(row=>`J${row.dataset.jornada} ${row.dataset.rival}, ${row.dataset.golesZaragoza}–${row.dataset.golesRival}`).join('; ');
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="${layout.width}" height="${layout.height}" viewBox="0 0 ${layout.width} ${layout.height}" role="img" aria-labelledby="mapa-titulo mapa-desc"><title id="mapa-titulo">Real Zaragoza · ${xml(season)} · mapa de resultados</title><desc id="mapa-desc">${xml(desc)}. ${xml(note)}</desc><rect width="100%" height="100%" fill="${palette.background}"/><path d="M0 ${safeTop}h${layout.width}v${layout.height-safeTop-safeBottom}H0z" fill="${palette.header}"/><text x="54" y="${safeTop+62}" fill="${palette.brand}" font-family="Arial,sans-serif" font-size="18" font-weight="700" letter-spacing="3">LÍNEA DE PASE · REAL ZARAGOZA</text><text x="54" y="${safeTop+120}" fill="${palette.headerText}" font-family="Arial,sans-serif" font-size="42" font-weight="800">Mapa de la temporada</text><text x="54" y="${safeTop+163}" fill="${palette.contextHeader}" font-family="Arial,sans-serif" font-size="26">${xml(season)}</text>${cards}<text x="54" y="${layout.height-safeBottom+42}" fill="${palette.brand}" font-family="Arial,sans-serif" font-size="19">${xml(note)}</text><text x="${layout.width-48}" y="${layout.height-32}" text-anchor="end" fill="${palette.domain}" font-family="Arial,sans-serif" font-size="16">lineadepase.com</text></svg>`;
+    const alt=customAlt||seasonPosterDescription(season,format,pageIndex);
+    const footerY=layout.height-safeBottom-54;
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="${layout.width}" height="${layout.height}" viewBox="0 0 ${layout.width} ${layout.height}" role="img" aria-labelledby="mapa-titulo mapa-desc"><title id="mapa-titulo">Real Zaragoza · ${xml(season)} · mapa de resultados</title><desc id="mapa-desc">${xml(alt)}. ${xml(totals)}. ${xml(note)}.</desc><rect width="100%" height="100%" fill="${palette.background}"/><path d="M0 ${safeTop}h${layout.width}v${layout.height-safeTop-safeBottom}H0z" fill="${palette.header}"/><text x="54" y="${safeTop+62}" fill="${palette.brand}" font-family="Arial,sans-serif" font-size="18" font-weight="700" letter-spacing="3">LÍNEA DE PASE · REAL ZARAGOZA</text><text x="54" y="${safeTop+120}" fill="${palette.headerText}" font-family="Arial,sans-serif" font-size="42" font-weight="800">Mapa de la temporada</text><text x="54" y="${safeTop+163}" fill="${palette.contextHeader}" font-family="Arial,sans-serif" font-size="26">${xml(season)} · ${xml(pageText)}</text>${cards}<text x="54" y="${footerY}" fill="${palette.brand}" font-family="Arial,sans-serif" font-size="16">${xml(totals)}</text><text x="54" y="${footerY+24}" fill="${palette.brand}" font-family="Arial,sans-serif" font-size="15">${xml(note)}</text></svg>`;
+  }
+
+  function updateSeasonPosterPreview() {
+    if(!seasonPosterPreview||!seasonPosterSelect)return;
+    const season=seasonPosterSelect.value, format=seasonPosterFormat?.value||'cuadrado', pages=seasonPosterPages(season,format), pageIndex=Math.min(Number(seasonPosterSheet?.value||0),Math.max(0,pages.length-1));
+    const sheetControl=seasonPosterSheet?.parentElement;
+    if(sheetControl){sheetControl.hidden=pages.length<2;}
+    if(seasonPosterSheet){
+      const current=String(pageIndex), options=pages.map((page,index)=>`<option value="${index}">Lámina ${index+1} · J${page[0].dataset.jornada.padStart(2,'0')}–J${page.at(-1).dataset.jornada.padStart(2,'0')}</option>`).join('');
+      seasonPosterSheet.innerHTML=options;
+      seasonPosterSheet.value=current;
+    }
+    if(seasonPosterAlt&&!seasonPosterAltCustomized)seasonPosterAlt.value=seasonPosterDescription(season,format,pageIndex);
+    const alt=seasonPosterAlt?.value.trim()||seasonPosterDescription(season,format,pageIndex), svg=seasonPosterSvg(season,format,pageIndex,alt);
+    seasonPosterPreview.src=`data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+    seasonPosterPreview.alt=alt;
+    if(seasonPosterPreviewCaption)seasonPosterPreviewCaption.textContent=`Vista previa · lámina ${pageIndex+1} de ${Math.max(1,pages.length)} · ${format==='cuadrado'?'1080 × 1080':format==='vertical'?'1080 × 1350':'1080 × 1920'}`;
   }
 
   async function downloadSeasonPoster() {
     const season=seasonPosterSelect?.value, format=seasonPosterFormat?.value||'cuadrado', type=seasonPosterType?.value||'png';
-    const svg=seasonPosterSvg(season,format);
-    if(!svg)throw new Error('No hay jornadas disponibles para esa temporada.');
-    let blob;
-    if(type==='svg')blob=new Blob([svg],{type:'image/svg+xml;charset=utf-8'});
-    else blob=await svgToRaster(svg,type==='webp'?'image/webp':'image/png');
-    if(type==='webp'&&blob.type!=='image/webp')throw new Error('Este navegador no ofrece exportación WebP.');
+    const pages=seasonPosterPages(season,format), alt=seasonPosterAlt?.value.trim()||'';
+    if(!pages.length)throw new Error('No hay jornadas disponibles para esa temporada.');
+    const files=[]; let singleBlob=null;
+    for(let index=0;index<pages.length;index++){
+      const svg=seasonPosterSvg(season,format,index,alt);
+      const blob=type==='svg'?new Blob([svg],{type:'image/svg+xml;charset=utf-8'}):await svgToRaster(svg,type==='webp'?'image/webp':'image/png');
+      if(type==='webp'&&blob.type!=='image/webp')throw new Error('Este navegador no ofrece exportación WebP.');
+      if(pages.length===1)singleBlob=blob;
+      else files.push({name:`lamina-${String(index+1).padStart(2,'0')}.${type}`,bytes:new Uint8Array(await blob.arrayBuffer())});
+    }
     const safeSeason=season.replace(/[^0-9a-z]+/gi,'-').replace(/^-|-$/g,'');
-    saveBlob(blob,`mapa-temporada-${safeSeason}-${format}.${type}`);
-    if(seasonPosterStatus)seasonPosterStatus.textContent=`Mapa ${season} descargado · ${format} · ${format==='cuadrado'?'1080 × 1080':format==='vertical'?'1080 × 1350':'1080 × 1920'} · ${(blob.size/1024).toFixed(1)} KB.`;
+    if(singleBlob){saveBlob(singleBlob,`mapa-temporada-${safeSeason}-${format}.${type}`);if(seasonPosterStatus)seasonPosterStatus.textContent=`Mapa ${season} descargado · ${format} · ${(singleBlob.size/1024).toFixed(1)} KB.`;}
+    else {const zip=zipStored(files);saveBlob(zip,`mapa-temporada-${safeSeason}-${format}-${type}.zip`);if(seasonPosterStatus)seasonPosterStatus.textContent=`ZIP con ${pages.length} láminas ${format} descargado · ${(zip.size/1024).toFixed(1)} KB.`;}
   }
 
   function scheduleKitEstimates() {
@@ -739,7 +806,11 @@
     availableSeasons.forEach(season=>{const option=document.createElement('option');option.value=season;option.textContent=season;seasonPosterSelect?.append(option);});
     if(seasonPosterSelect)seasonPosterSelect.value=availableSeasons[0]||'';
     seasonPosterButton?.addEventListener('click',async()=>{if(seasonPosterStatus)seasonPosterStatus.textContent='Preparando el mapa…';try{await downloadSeasonPoster();}catch(error){if(seasonPosterStatus)seasonPosterStatus.textContent=error instanceof Error?error.message:'No se pudo preparar el mapa.';}});
-    [seasonPosterSelect,seasonPosterFormat,seasonPosterType].forEach(control=>control?.addEventListener('change',()=>{if(seasonPosterStatus)seasonPosterStatus.textContent='El mapa está listo para descargar.';}));
+    [seasonPosterSelect,seasonPosterFormat,seasonPosterType].forEach(control=>control?.addEventListener('change',()=>{updateSeasonPosterPreview();if(seasonPosterStatus)seasonPosterStatus.textContent='El mapa está listo para descargar.';}));
+    seasonPosterSheet?.addEventListener('change',updateSeasonPosterPreview);
+    seasonPosterAlt?.addEventListener('input',()=>{seasonPosterAltCustomized=true;updateSeasonPosterPreview();});
+    resetSeasonPosterAlt?.addEventListener('click',()=>{seasonPosterAltCustomized=false;updateSeasonPosterPreview();if(seasonPosterStatus)seasonPosterStatus.textContent='Texto alternativo actualizado con los resultados.';});
+    updateSeasonPosterPreview();
     socialKitFormat?.addEventListener('change',scheduleKitEstimates);
     socialKitButton?.addEventListener('click',async () => {
       if (socialKitStatus) socialKitStatus.textContent = 'Preparando tres formatos…';
@@ -850,6 +921,7 @@
       saveVisualPreferences();
       updateContactSheet();
       scheduleKitEstimates();
+      updateSeasonPosterPreview();
     });
     formatThumbnailButtons.forEach(button => button.addEventListener('click', () => {
       if (!formatSelect || ![...formatSelect.options].some(option => option.value === button.dataset.miniaturaFormato)) return;
