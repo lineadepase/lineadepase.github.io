@@ -44,6 +44,10 @@
   const contactSheetVariantSelect = document.querySelector('[data-variante-hoja-contacto]');
   const contactSheetPrintPreview = document.querySelector('[data-preview-hoja-contacto]');
   const contactSheetPrintPreviewCaption = document.querySelector('[data-caption-hoja-contacto]');
+  const comparisonA5PrintPreview = document.querySelector('[data-preview-a5]');
+  const comparisonA5PrintPreviewCaption = document.querySelector('[data-caption-a5]');
+  const resetPrintSettingsButton = document.querySelector('[data-restablecer-impresion]');
+  const printSettingsStatus = document.querySelector('[data-estado-preferencias-impresion]');
   const socialPrintStatus = document.querySelector('[data-estado-impresion-social]');
   const contactSheetButtons = [...document.querySelectorAll('[data-hoja-plantilla]')];
   const seasonPosterSelect = document.querySelector('[data-temporada-mapa]');
@@ -129,6 +133,8 @@
     monocromo: {background:'#ffffff',panel:'#ffffff',header:'#1a1a1a',headerText:'#ffffff',brand:'#ffffff',contextHeader:'#f0f0f0',foreground:'#171717',muted:'#414141',border:'#696969',accent:'#1a1a1a',domain:'#414141'}
   };
   const lowInkPrintPalette={background:'#ffffff',panel:'#ffffff',header:'#ffffff',headerText:'#171717',brand:'#414141',contextHeader:'#414141',foreground:'#171717',muted:'#414141',border:'#a3a3a3',accent:'#666666',domain:'#555555'};
+  const photocopyPrintPalette={background:'#ffffff',panel:'#ffffff',header:'#ffffff',headerText:'#000000',brand:'#000000',contextHeader:'#000000',foreground:'#000000',muted:'#202020',border:'#000000',accent:'#000000',domain:'#000000'};
+  const printSettingsKey='lineadepase-print-settings-v1';
   const builtInPresets = {
     portada: {format:'apaisado',metrics:true,caption:true,noHeader:false,brand:true,framing:'equilibrado',density:'completa'},
     'comparacion-limpia': {format:'cuadrado',metrics:true,caption:false,noHeader:true,brand:false,framing:'equilibrado',density:'completa'},
@@ -396,6 +402,7 @@
     updateGeneratedAltText();
     updateCarouselPreview();
     updateContactSheet();
+    updateA5PrintPreview();
     scheduleKitEstimates();
   }
 
@@ -1141,6 +1148,39 @@
     return {landscape,photo,width:landscape?297:210,height:landscape?210:297,margin:photo?6:10};
   }
 
+  function savePrintSettings() {
+    try {
+      localStorage.setItem(printSettingsKey,JSON.stringify({
+        orientation:printOrientationSelect?.value==='apaisado'?'apaisado':'vertical',
+        paper:printPaperSelect?.value==='fotografico'?'fotografico':'normal',
+        variant:['cuadrado','vertical','historias'].includes(contactSheetVariantSelect?.value)?contactSheetVariantSelect.value:'todos',
+        a5Mode:['monocromo','fotocopia'].includes(comparisonA5InkSelect?.value)?comparisonA5InkSelect.value:'color'
+      }));
+    } catch (_) {}
+  }
+
+  function restorePrintSettings() {
+    try {
+      const saved=JSON.parse(localStorage.getItem(printSettingsKey)||'null');
+      if(!saved)return;
+      if(printOrientationSelect&&['vertical','apaisado'].includes(saved.orientation))printOrientationSelect.value=saved.orientation;
+      if(printPaperSelect&&['normal','fotografico'].includes(saved.paper))printPaperSelect.value=saved.paper;
+      if(contactSheetVariantSelect&&['todos','cuadrado','vertical','historias'].includes(saved.variant))contactSheetVariantSelect.value=saved.variant;
+      if(comparisonA5InkSelect&&['color','monocromo','fotocopia'].includes(saved.a5Mode))comparisonA5InkSelect.value=saved.a5Mode;
+    } catch (_) {}
+  }
+
+  function clearPrintSettings() {
+    if(printOrientationSelect)printOrientationSelect.value='vertical';
+    if(printPaperSelect)printPaperSelect.value='normal';
+    if(contactSheetVariantSelect)contactSheetVariantSelect.value='todos';
+    if(comparisonA5InkSelect)comparisonA5InkSelect.value='color';
+    try { localStorage.removeItem(printSettingsKey); } catch (_) {}
+    updateContactSheetPrintPreview();
+    updateA5PrintPreview();
+    if(printSettingsStatus)printSettingsStatus.textContent='Preferencias de impresión restauradas.';
+  }
+
   function printablePage(svg,width,height) {
     return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}mm" height="${height}mm" viewBox="0 0 ${width} ${height}"><rect width="${width}" height="${height}" fill="#fff"/>${svg}</svg>`;
   }
@@ -1156,6 +1196,20 @@
     } catch (_) {
       contactSheetPrintPreview.removeAttribute('src');
       if(contactSheetPrintPreviewCaption)contactSheetPrintPreviewCaption.textContent='Selecciona dos jornadas para ver la maqueta de impresión.';
+    }
+  }
+
+  function updateA5PrintPreview() {
+    if(!comparisonA5PrintPreview)return;
+    try {
+      const svg=buildPrintableComparisonA5(),mode=comparisonA5InkSelect?.value||'color';
+      comparisonA5PrintPreview.src=`data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+      const label=mode==='monocromo'?'monocromo de bajo consumo':mode==='fotocopia'?'alto contraste para fotocopias':'color';
+      comparisonA5PrintPreview.alt=`Vista previa de comparación A5 en ${label}, con escala de 10 mm.`;
+      if(comparisonA5PrintPreviewCaption)comparisonA5PrintPreviewCaption.textContent=`A5 · ${label} · escala real`;
+    } catch (_) {
+      comparisonA5PrintPreview.removeAttribute('src');
+      if(comparisonA5PrintPreviewCaption)comparisonA5PrintPreviewCaption.textContent='Selecciona dos jornadas para ver la ficha A5.';
     }
   }
 
@@ -1299,11 +1353,11 @@
 
   function buildPrintableComparisonA5() {
     const rowA=rounds.get(selectA?.value),rowB=rounds.get(selectB?.value);if(!rowA||!rowB)throw new Error('Selecciona dos jornadas antes de preparar la hoja A5.');
-    const format='vertical',lowInk=comparisonA5InkSelect?.value==='monocromo',metrics=rowA.dataset.completa==='1'&&rowB.dataset.completa==='1'&&Boolean(metricsToggle?.checked),
-      card=comparisonSvg(rowA,rowB,format,metrics,Boolean(captionToggle?.checked),!Boolean(noHeaderToggle?.checked),Boolean(brandToggle?.checked),null,'',densitySelect?.value,framingSelect?.value,altTextCustomized?altTextInput?.value.trim()||'':describeRows([rowA,rowB],densitySelect?.value||'completa',metrics),lowInk?lowInkPrintPalette:null),match=card.match(/viewBox="([^"]+)"/),body=card.slice(card.indexOf('>')+1,card.lastIndexOf('</svg>'));
+    const format='vertical',mode=comparisonA5InkSelect?.value||'color',lowInk=mode==='monocromo',photocopy=mode==='fotocopia',metrics=rowA.dataset.completa==='1'&&rowB.dataset.completa==='1'&&Boolean(metricsToggle?.checked),
+      card=comparisonSvg(rowA,rowB,format,metrics,Boolean(captionToggle?.checked),!Boolean(noHeaderToggle?.checked),Boolean(brandToggle?.checked),null,'',densitySelect?.value,framingSelect?.value,altTextCustomized?altTextInput?.value.trim()||'':describeRows([rowA,rowB],densitySelect?.value||'completa',metrics),photocopy?photocopyPrintPalette:lowInk?lowInkPrintPalette:null),match=card.match(/viewBox="([^"]+)"/),body=card.slice(card.indexOf('>')+1,card.lastIndexOf('</svg>'));
     if(!match||!body)throw new Error('No se pudo preparar la comparación para A5.');
     const settings=printPageSettings(),pageW=148,pageH=210,margin=settings.margin,maxW=pageW-margin*2,maxH=settings.photo?152:142,[sourceW,sourceH]=match[1].split(/\s+/).slice(2).map(Number),cardW=Math.min(maxW,maxH*sourceW/sourceH),cardH=cardW*sourceH/sourceW,x=(pageW-cardW)/2,y=100-cardH/2,scaleY=191;
-    const art=`<text x="74" y="13" text-anchor="middle" fill="#171717" font-family="Arial,sans-serif" font-size="3.5" font-weight="700">COMPARACIÓN · A5${lowInk?' · BAJA TINTA':''}</text><text x="74" y="20" text-anchor="middle" fill="#414141" font-family="Arial,sans-serif" font-size="2.5">${settings.photo?'PAPEL FOTOGRÁFICO · MARGEN 6 mm':'PAPEL NORMAL · MARGEN 10 mm'}</text><svg x="${x}" y="${y}" width="${cardW}" height="${cardH}" viewBox="${match[1]}" preserveAspectRatio="none">${body}</svg>${printCalibrationScale(scaleY)}<text x="74" y="205" text-anchor="middle" fill="#414141" font-family="Arial,sans-serif" font-size="2.3">A5 · IMPRIMIR AL 100 % · ESCALA REAL</text>`;
+    const art=`<text x="74" y="13" text-anchor="middle" fill="#171717" font-family="Arial,sans-serif" font-size="3.5" font-weight="700">COMPARACIÓN · A5${lowInk?' · BAJA TINTA':photocopy?' · ALTO CONTRASTE':''}</text><text x="74" y="20" text-anchor="middle" fill="#414141" font-family="Arial,sans-serif" font-size="2.5">${settings.photo?'PAPEL FOTOGRÁFICO · MARGEN 6 mm':'PAPEL NORMAL · MARGEN 10 mm'}</text><svg x="${x}" y="${y}" width="${cardW}" height="${cardH}" viewBox="${match[1]}" preserveAspectRatio="none">${body}</svg>${printCalibrationScale(scaleY)}<text x="74" y="205" text-anchor="middle" fill="#414141" font-family="Arial,sans-serif" font-size="2.3">A5 · IMPRIMIR AL 100 % · ESCALA REAL</text>`;
     return printablePage(art,pageW,pageH);
   }
 
@@ -1312,7 +1366,8 @@
     if(blob.size>300*1024)throw new Error('El PDF A5 supera 300 KB; reduce la densidad del diseño y vuelve a intentarlo.');
     const safe=value=>value.replace(/[^0-9a-z]+/gi,'-').replace(/^-|-$/g,'');
     saveBlob(blob,`comparacion-${safe(rowA.dataset.comparisonId)}-${safe(rowB.dataset.comparisonId)}-a5.pdf`);
-    if(socialPrintStatus)socialPrintStatus.textContent=`PDF A5 listo · ${(blob.size/1024).toFixed(1)} KB · comparación ${pageMmW} × ${pageMmH} mm con escala de 10 mm${comparisonA5InkSelect?.value==='monocromo'?' · monocromo de bajo consumo':''}.`;
+    const mode=comparisonA5InkSelect?.value||'color',modeLabel=mode==='monocromo'?' · monocromo de bajo consumo':mode==='fotocopia'?' · alto contraste para fotocopias':'';
+    if(socialPrintStatus)socialPrintStatus.textContent=`PDF A5 listo · ${(blob.size/1024).toFixed(1)} KB · comparación ${pageMmW} × ${pageMmH} mm con escala de 10 mm${modeLabel}.`;
   }
 
   function downloadPrintableContactSheet() {
@@ -1387,6 +1442,7 @@
   }
   if (selectA && selectB && rounds.size) {
     restoreVisualPreferences();
+    restorePrintSettings();
     refreshPresetSelector();
     const favorite = readStorage(favoriteKey);
     if (rounds.has(favorite?.a) && rounds.has(favorite?.b) && favorite.a !== favorite.b) {
@@ -1521,7 +1577,9 @@
     contactSheetDirectPrintButton?.addEventListener('click',()=>{try{printContactSheetDirectly();}catch(error){if(socialPrintStatus)socialPrintStatus.textContent=error instanceof Error?error.message:'No se pudo abrir la impresión A4.';}});
     comparisonA5PdfButton?.addEventListener('click',()=>{try{downloadPrintableComparisonA5();}catch(error){if(socialPrintStatus)socialPrintStatus.textContent=error instanceof Error?error.message:'No se pudo preparar el PDF A5.';}});
     comparisonA5DirectPrintButton?.addEventListener('click',()=>{try{printComparisonA5Directly();}catch(error){if(socialPrintStatus)socialPrintStatus.textContent=error instanceof Error?error.message:'No se pudo abrir la impresión A5.';}});
-    [printPaperSelect,printOrientationSelect,contactSheetVariantSelect].forEach(control=>control?.addEventListener('change',()=>{updateContactSheetPrintPreview();}));
+    [printPaperSelect,printOrientationSelect,contactSheetVariantSelect].forEach(control=>control?.addEventListener('change',()=>{savePrintSettings();updateContactSheetPrintPreview();updateA5PrintPreview();if(printSettingsStatus)printSettingsStatus.textContent='Preferencias guardadas en este navegador.';}));
+    comparisonA5InkSelect?.addEventListener('change',()=>{savePrintSettings();updateA5PrintPreview();if(printSettingsStatus)printSettingsStatus.textContent='Preferencias guardadas en este navegador.';});
+    resetPrintSettingsButton?.addEventListener('click',clearPrintSettings);
     resetOptionsButton?.addEventListener('click', () => {
       if (formatSelect) formatSelect.value = 'apaisado';
       if (metricsToggle) metricsToggle.checked = true;
