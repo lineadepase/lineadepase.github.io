@@ -60,6 +60,8 @@
   const seasonQrDownloadButton = document.querySelector('[data-descargar-qr-enlace]');
   const seasonQrCopyButton = document.querySelector('[data-copiar-qr-enlace]');
   const seasonQrName = document.querySelector('[data-nombre-qr-enlace]');
+  const seasonQrColor = document.querySelector('[data-color-qr-enlace]');
+  const seasonQrPrintSize = document.querySelector('[data-tamano-qr-enlace]');
   const seasonQrPreview = document.querySelector('[data-vista-qr-enlace]');
   let seasonQrSvg = '';
   let seasonQrObjectUrl = '';
@@ -612,10 +614,32 @@
     if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent=`Paquete exportado: ${payload.links.length} ${payload.links.length===1?'selección':'selecciones'} y archivo de instrucciones.`;
   }
 
+  async function seasonImportJsonText(file) {
+    if(file.size>1000000)throw new Error('archivo demasiado grande');
+    const bytes=new Uint8Array(await file.arrayBuffer());
+    const view=new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength);
+    if(bytes.length>=4&&view.getUint32(0,true)===0x04034b50){
+      const decoder=new TextDecoder('utf-8');let offset=0;
+      while(offset+30<=bytes.length){
+        const signature=view.getUint32(offset,true);
+        if(signature===0x02014b50||signature===0x06054b50)break;
+        if(signature!==0x04034b50)throw new Error('ZIP no compatible');
+        const flags=view.getUint16(offset+6,true),method=view.getUint16(offset+8,true),compressedSize=view.getUint32(offset+18,true),nameLength=view.getUint16(offset+26,true),extraLength=view.getUint16(offset+28,true);
+        const nameStart=offset+30,dataStart=nameStart+nameLength+extraLength,dataEnd=dataStart+compressedSize;
+        if(flags&0x0009||method!==0||dataEnd>bytes.length)throw new Error('ZIP no compatible');
+        const name=decoder.decode(bytes.subarray(nameStart,nameStart+nameLength));
+        if(name==='selecciones-mapa-linea-de-pase.json')return decoder.decode(bytes.subarray(dataStart,dataEnd));
+        offset=dataEnd;
+      }
+      throw new Error('ZIP sin el archivo JSON de selecciones');
+    }
+    return new TextDecoder('utf-8').decode(bytes);
+  }
+
   async function importSeasonSavedLinks(file) {
     if(!file)return;
     try {
-      const payload=JSON.parse(await file.text());
+      const payload=JSON.parse(await seasonImportJsonText(file));
       if(payload?.format!=='lineadepase-mapa-links'||payload?.version!==1||!Array.isArray(payload.links))throw new Error('formato no compatible');
       const links=readSeasonSavedLinks();let imported=0,updated=0,skipped=0;
       payload.links.forEach(item=>{
@@ -640,9 +664,11 @@
       if(!window.qrcodegen?.QrCode)throw new Error('QR no disponible');
       const qr=window.qrcodegen.QrCode.encodeText(seasonPosterLinkUrl(),window.qrcodegen.QrCode.Ecc.MEDIUM),quiet=4,module=8,size=(qr.size+quiet*2)*module;
       const label=(seasonQrName?.value||'').trim().slice(0,28),labelHeight=label?48:0,height=size+labelHeight;
+      const color=seasonQrColor?.value==='marca'?'#2f6b45':'#15221b';
+      const printSize=seasonQrPrintSize?.value||'px',svgWidth=printSize==='40mm'?'40mm':printSize==='60mm'?'60mm':`${size}px`,svgHeight=printSize==='40mm'?`${40*height/size}mm`:printSize==='60mm'?`${60*height/size}mm`:`${height}px`;
       let path='';
       for(let y=0;y<qr.size;y++)for(let x=0;x<qr.size;x++)if(qr.getModule(x,y))path+=`M${(x+quiet)*module} ${(y+quiet)*module}h${module}v${module}h-${module}z`;
-      seasonQrSvg=`<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${height}" viewBox="0 0 ${size} ${height}" role="img" aria-label="Código QR para abrir la selección del mapa"><rect width="100%" height="100%" fill="#fff"/><path d="${path}" fill="#15221b"/>${label?`<text x="${size/2}" y="${size+32}" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#15221b">${xml(label)}</text>`:''}</svg>`;
+      seasonQrSvg=`<svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}" height="${svgHeight}" viewBox="0 0 ${size} ${height}" role="img" aria-label="Código QR para abrir la selección del mapa"><rect width="100%" height="100%" fill="#fff"/><path d="${path}" fill="${color}"/>${label?`<text x="${size/2}" y="${size+32}" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#15221b">${xml(label)}</text>`:''}</svg>`;
       if(seasonQrObjectUrl)URL.revokeObjectURL(seasonQrObjectUrl);
       if(seasonQrPreview){seasonQrObjectUrl=URL.createObjectURL(new Blob([seasonQrSvg],{type:'image/svg+xml'}));seasonQrPreview.src=seasonQrObjectUrl;seasonQrPreview.hidden=false;if(seasonQrPreview.parentElement)seasonQrPreview.parentElement.hidden=false;}
       if(seasonQrDownloadButton)seasonQrDownloadButton.disabled=false;
@@ -1056,6 +1082,7 @@
     seasonQrDownloadButton?.addEventListener('click',downloadSeasonLinkQr);
     seasonQrCopyButton?.addEventListener('click',copySeasonLinkQr);
     seasonQrName?.addEventListener('input',()=>{if(seasonQrSvg)clearSeasonLinkQr();});
+    [seasonQrColor,seasonQrPrintSize].forEach(control=>control?.addEventListener('change',()=>{if(seasonQrSvg)clearSeasonLinkQr();}));
     seasonSaveLinkName?.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();saveNamedSeasonPosterLink();}});
     seasonSavedLinksList?.addEventListener('click',async event=>{
       const button=event.target.closest('button[data-aplicar-enlace-mapa],button[data-copiar-enlace-mapa],button[data-borrar-enlace-mapa],button[data-fijar-enlace-mapa],button[data-subir-enlace-mapa],button[data-bajar-enlace-mapa]');
