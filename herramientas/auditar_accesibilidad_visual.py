@@ -55,90 +55,90 @@ def contrast(first: str, second: str) -> float:
 
 
 class ControlNameParser(HTMLParser):
-    """Collects native controls and their labels without external dependencies."""
+    """Subset statico de nombres HTML nativos; limites en ACCESIBILIDAD.md."""
 
     def __init__(self) -> None:
         super().__init__(convert_charrefs=True)
-        self.controls: list[dict[str, object]] = []
-        self.labels: list[dict[str, object]] = []
-        self.active_labels: list[dict[str, object]] = []
-        self.active_buttons: list[int] = []
-        self.active_ids: list[dict[str, str]] = []
-        self.id_text: dict[str, str] = {}
+        self.controls, self.labels, self.label_stack = [], [], []
+        self.buttons, self.id_stack, self.id_text = [], [], {}
 
-    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
-        attributes = {key: value or "" for key, value in attrs}
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
         if tag == "label":
-            label: dict[str, object] = {"for": attributes.get("for", ""), "text": "", "controls": []}
+            label = {"for": attrs.get("for", ""), "text": ""}
             self.labels.append(label)
-            self.active_labels.append(label)
-        if "id" in attributes:
-            self.active_ids.append({"id": attributes["id"], "tag": tag, "text": ""})
+            self.label_stack.append(label)
+        if attrs.get("id"):
+            self.id_stack.append({"id": attrs["id"], "tag": tag, "text": ""})
         if tag in {"button", "input", "select", "textarea"}:
-            item: dict[str, object] = {
-                "tag": tag,
-                "attrs": attributes,
-                "text": "",
-                "wrapped_labels": [],
-            }
-            index = len(self.controls)
-            self.controls.append(item)
-            for label in self.active_labels:
-                if not label["for"]:
-                    label["controls"].append(index)
-                    item["wrapped_labels"].append(label)
+            control = {"tag": tag, "attrs": attrs, "text": "",
+                       "wrapped": [label for label in self.label_stack if not label["for"]]}
+            self.controls.append(control)
             if tag == "button":
-                self.active_buttons.append(index)
-        if tag == "img" and attributes.get("alt"):
-            for index in self.active_buttons:
-                self.controls[index]["text"] += " " + attributes["alt"]
+                self.buttons.append(control)
+        if tag == "img" and attrs.get("alt") and self.buttons:
+            self.buttons[-1]["text"] += " " + attrs["alt"]
 
-    def handle_endtag(self, tag: str) -> None:
-        if tag == "label":
-            for index in range(len(self.active_labels) - 1, -1, -1):
-                if self.active_labels[index] in self.labels:
-                    del self.active_labels[index]
-                    break
-        if tag == "button" and self.active_buttons:
-            self.active_buttons.pop()
-        for index in range(len(self.active_ids) - 1, -1, -1):
-            if self.active_ids[index]["tag"] == tag:
-                entry = self.active_ids.pop(index)
-                self.id_text[entry["id"]] = entry["text"].strip()
+    def handle_endtag(self, tag):
+        if tag == "label" and self.label_stack:
+            self.label_stack.pop()
+        if tag == "button" and self.buttons:
+            self.buttons.pop()
+        for index in range(len(self.id_stack) - 1, -1, -1):
+            if self.id_stack[index]["tag"] == tag:
+                item = self.id_stack.pop(index)
+                self.id_text[item["id"]] = item["text"].strip()
                 break
 
-    def handle_data(self, data: str) -> None:
-        for label in self.active_labels:
+    def handle_data(self, data):
+        for label in self.label_stack:
             label["text"] += data
-        for index in self.active_buttons:
-            self.controls[index]["text"] += data
-        for entry in self.active_ids:
-            entry["text"] += data
+        for button in self.buttons:
+            button["text"] += data
+        for item in self.id_stack:
+            item["text"] += data
 
-    def unnamed_controls(self) -> list[str]:
+    def unnamed_controls(self):
         issues = []
-        for item in self.controls:
-            tag = str(item["tag"])
-            attrs = item["attrs"]
-            assert isinstance(attrs, dict)
+        for control in self.controls:
+            tag, attrs = control["tag"], control["attrs"]
             if tag == "input" and attrs.get("type", "text").lower() == "hidden":
                 continue
-            labels = [str(label["text"]).strip() for label in self.labels
-                      if label["for"] == attrs.get("id") and attrs.get("id")]
-            labels.extend(str(label["text"]).strip() for label in item["wrapped_labels"])
-            labelled_by = [self.id_text.get(identifier.strip(), "")
-                           for identifier in attrs.get("aria-labelledby", "").split()]
-            value_name = attrs.get("value", "") if tag == "input" and attrs.get("type", "").lower() in {
+            labels = [label["text"].strip() for label in self.labels
+                      if attrs.get("id") and label["for"] == attrs["id"]]
+            labels.extend(label["text"].strip() for label in control["wrapped"])
+            labelled_by = " ".join(self.id_text.get(identifier, "")
+                                    for identifier in attrs.get("aria-labelledby", "").split())
+            value = attrs.get("value", "") if tag == "input" and attrs.get("type", "").lower() in {
                 "button", "submit", "reset", "image"
             } else ""
-            name = (attrs.get("aria-label", "") or " ".join(labelled_by) or attrs.get("title", "")
-                    or str(item["text"]) or value_name or " ".join(labels))
+            name = (attrs.get("aria-label") or labelled_by or attrs.get("title")
+                    or control["text"] or value or " ".join(labels))
             if not name.strip():
                 issues.append(f"<{tag}> sin nombre accesible")
         return issues
 
 
 def audit_control_names() -> int:
+    valid_examples = (
+        '<button aria-label="Cerrar"></button>',
+        '<label for="q">Buscar</label><input id="q">',
+        '<label>Equipo<select><option>Zaragoza</option></select></label>',
+        '<span id="action">Descargar</span><button aria-labelledby="action"></button>',
+        '<button><img src="icon.svg" alt="Compartir"></button>',
+    )
+    for markup in valid_examples:
+        parser = ControlNameParser()
+        parser.feed(markup)
+        if parser.unnamed_controls():
+            raise RuntimeError(f"Falla la autocomprobación de control válido: {markup}")
+
+    parser = ControlNameParser()
+    parser.feed('<button></button><input type="text" id="sin-etiqueta">')
+    expected = ["<button> sin nombre accesible", "<input> sin nombre accesible"]
+    if parser.unnamed_controls() != expected:
+        raise RuntimeError("La autocomprobación no detecta un botón sin nombre y un campo sin etiqueta.")
+
     page_count = 0
     problems = []
     for path in sorted(ROOT.rglob("*.html")):
