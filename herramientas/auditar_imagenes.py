@@ -18,6 +18,11 @@ FOCUS_PAGES = {
     'proyectos/real-zaragoza/informe-completo.html',
     'proyectos/index.html',
     'proyectos/real-zaragoza/simulacion.html',
+    'proyectos/futbol-femenino/index.html',
+    'proyectos/real-zaragoza/previa-jornada-10.html',
+    'proyectos/real-zaragoza/previa.html',
+    'comparador/index.html',
+    'galeria-visual/index.html',
 }
 VOID_ELEMENTS = {'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr'}
 

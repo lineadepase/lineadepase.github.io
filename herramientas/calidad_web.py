@@ -17,9 +17,15 @@ PAGE_IMAGE_MIN_BYTES={
     'proyectos/real-zaragoza/informe-completo.html':40_000,
     'proyectos/index.html':40_000,
     'proyectos/real-zaragoza/simulacion.html':40_000,
+    'proyectos/futbol-femenino/index.html':40_000,
+    'proyectos/real-zaragoza/previa-jornada-10.html':40_000,
+    'proyectos/real-zaragoza/previa.html':40_000,
+    'comparador/index.html':40_000,
+    'galeria-visual/index.html':20_000,
 }
 PAGE_IMAGE_SIZES={
     'proyectos/index.html':'(max-width: 600px) 112px, 480px',
+    'galeria-visual/index.html':'(max-width: 640px) calc(100vw - 32px), 360px',
     'index.html':{
         'proyectos/real-zaragoza/graficos/previa/real-zaragoza-villarreal-b-j10-v2.webp':'(max-width: 640px) calc(100vw - 32px), (max-width: 1200px) calc((100vw - 80px)/2), 560px',
         'proyectos/real-zaragoza/graficos/previa/noche-copa-tudela-20261027.webp':'(max-width: 640px) calc(100vw - 32px), (max-width: 1200px) calc((100vw - 80px)/2), 560px',
@@ -27,6 +33,9 @@ PAGE_IMAGE_SIZES={
         'proyectos/liga-f-xt/graficos/foto.jpg':'(max-width: 416px) calc(100vw - 32px), 384px',
         'assets/fotos/seleccion-espanola-riazor-2024.jpg':'(max-width: 366px) calc(100vw - 32px), 334px',
         'assets/fvs-portada.jpg':'(max-width: 380px) 192px, 384px',
+    },
+    'proyectos/futbol-femenino/index.html':{
+        'proyectos/futbol-femenino/mapa.png':'(max-width: 640px) calc(100vw - 32px), 1120px',
     },
 }
 
