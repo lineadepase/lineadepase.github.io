@@ -37,6 +37,7 @@
   const contactSheetPdfButton = document.querySelector('[data-imprimir-hoja-contacto-pdf]');
   const contactSheetDirectPrintButton = document.querySelector('[data-imprimir-hoja-directa]');
   const comparisonA5PdfButton = document.querySelector('[data-imprimir-comparacion-a5]');
+  const comparisonTextButton = document.querySelector('[data-descargar-comparacion-texto]');
   const comparisonA5DirectPrintButton = document.querySelector('[data-imprimir-a5-directa]');
   const comparisonA5InkSelect = document.querySelector('[data-modo-impresion-a5]');
   const printPaperSelect = document.querySelector('[data-papel-impresion-social]');
@@ -1391,26 +1392,31 @@
       if(tag==='g'){node.childNodes.forEach(child=>{if(child.nodeType===1)walk(child,ctx);});return;}
       if(tag==='rect'){
         const x=number(node,'x'),y=number(node,'y'),w=number(node,'width'),h=number(node,'height'),left=(ctx.x+x*ctx.sx)*factor,bottom=pageH-(ctx.y+(y+h)*ctx.sy)*factor,width=w*ctx.sx*factor,height=h*ctx.sy*factor,fill=node.getAttribute('fill'),stroke=node.getAttribute('stroke'),sw=number(node,'stroke-width',1)*Math.min(ctx.sx,ctx.sy)*factor;
-        parts.push('q');if(fill&&fill!=='none')parts.push(`${rgb(fill)} rg`);if(stroke&&stroke!=='none')parts.push(`${rgb(stroke)} RG ${sw.toFixed(3)} w`);parts.push(`${left.toFixed(3)} ${bottom.toFixed(3)} ${width.toFixed(3)} ${height.toFixed(3)} re`,fill&&fill!=='none'&&stroke&&stroke!=='none'?'B':fill&&fill!=='none'?'f':stroke&&stroke!=='none'?'S':'n','Q');return;
+        parts.push('/Artifact BMC','q');if(fill&&fill!=='none')parts.push(`${rgb(fill)} rg`);if(stroke&&stroke!=='none')parts.push(`${rgb(stroke)} RG ${sw.toFixed(3)} w`);parts.push(`${left.toFixed(3)} ${bottom.toFixed(3)} ${width.toFixed(3)} ${height.toFixed(3)} re`,fill&&fill!=='none'&&stroke&&stroke!=='none'?'B':fill&&fill!=='none'?'f':stroke&&stroke!=='none'?'S':'n','Q','EMC');return;
       }
       if(tag==='path'){
         const path=drawPath(node.getAttribute('d')||'',ctx),fill=node.getAttribute('fill'),stroke=node.getAttribute('stroke'),sw=number(node,'stroke-width',1)*Math.min(ctx.sx,ctx.sy)*factor;
-        if(!path)return;parts.push('q');if(fill&&fill!=='none')parts.push(`${rgb(fill)} rg`);if(stroke&&stroke!=='none')parts.push(`${rgb(stroke)} RG ${sw.toFixed(3)} w`);const dash=node.getAttribute('stroke-dasharray');if(dash)parts.push(`[${dash.split(/[ ,]+/).map(v=>(Number(v)*Math.min(ctx.sx,ctx.sy)*factor).toFixed(3)).join(' ')}] 0 d`);parts.push(path,fill&&fill!=='none'&&stroke&&stroke!=='none'?'B':fill&&fill!=='none'?'f':stroke&&stroke!=='none'?'S':'n','Q');return;
+        if(!path)return;parts.push('/Artifact BMC','q');if(fill&&fill!=='none')parts.push(`${rgb(fill)} rg`);if(stroke&&stroke!=='none')parts.push(`${rgb(stroke)} RG ${sw.toFixed(3)} w`);const dash=node.getAttribute('stroke-dasharray');if(dash)parts.push(`[${dash.split(/[ ,]+/).map(v=>(Number(v)*Math.min(ctx.sx,ctx.sy)*factor).toFixed(3)).join(' ')}] 0 d`);parts.push(path,fill&&fill!=='none'&&stroke&&stroke!=='none'?'B':fill&&fill!=='none'?'f':stroke&&stroke!=='none'?'S':'n','Q','EMC');return;
       }
       if(tag==='text'){drawText(node,ctx);return;}
     };
     const ctx={x:0,y:0,sx:pageMmW/view[2],sy:pageMmH/view[3]};root.childNodes.forEach(child=>{if(child.nodeType===1)walk(child,ctx);});
-    const content=parts.join('\n'),tagRefs=taggedText.map((_,index)=>`${10+index} 0 R`),objects=[
-      '<< /Type /Catalog /Pages 2 0 R /Lang (es-ES) /MarkInfo << /Marked true >> /StructTreeRoot 8 0 R /ViewerPreferences << /DisplayDocTitle true >> >>',
+    const content=parts.join('\n'),documentStructId=10,tagRefs=taggedText.map((_,index)=>`${11+index} 0 R`),metadataId=11+taggedText.length,
+      xmlEscape=value=>value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;'),
+      xmp=`<?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>\n<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Línea de pase"><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"><rdf:Description rdf:about="" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xmp="http://ns.adobe.com/xap/1.0/"><dc:title><rdf:Alt><rdf:li xml:lang="x-default">${xmlEscape(title)}</rdf:li></rdf:Alt></dc:title><dc:creator><rdf:Seq><rdf:li>Ángel Marqueta Alonso</rdf:li></rdf:Seq></dc:creator><dc:language><rdf:Bag><rdf:li>es-ES</rdf:li></rdf:Bag></dc:language><dc:format>application/pdf</dc:format><xmp:CreatorTool>Línea de pase</xmp:CreatorTool></rdf:Description></rdf:RDF></x:xmpmeta>\n<?xpacket end="w"?>`,
+      objects=[
+      `<< /Type /Catalog /Pages 2 0 R /Lang (es-ES) /Metadata ${metadataId} 0 R /MarkInfo << /Marked true >> /StructTreeRoot 8 0 R /ViewerPreferences << /DisplayDocTitle true >> >>`,
       '<< /Type /Pages /Kids [3 0 R] /Count 1 >>',
       `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageW.toFixed(2)} ${pageH.toFixed(2)}] /Resources << /Font << /F1 4 0 R /F2 5 0 R /F3 6 0 R >> >> /StructParents 0 /Tabs /S /Contents 7 0 R >>`,
       '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>',
       '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>',
       '<< /Type /Font /Subtype /Type1 /BaseFont /Times-Bold /Encoding /WinAnsiEncoding >>',
       `<< /Length ${new TextEncoder().encode(content).length} >>\nstream\n${content}\nendstream`,
-      `<< /Type /StructTreeRoot /K [${tagRefs.join(' ')}] /ParentTree 9 0 R /ParentTreeNextKey 1 >>`,
+      `<< /Type /StructTreeRoot /K ${documentStructId} 0 R /ParentTree 9 0 R /ParentTreeNextKey 1 >>`,
       `<< /Nums [0 [${tagRefs.join(' ')}]] >>`,
-      ...taggedText.map((_,index)=>`<< /Type /StructElem /S /P /P 8 0 R /Pg 3 0 R /K ${index} >>`),
+      `<< /Type /StructElem /S /Document /P 8 0 R /K [${tagRefs.join(' ')}] >>`,
+      ...taggedText.map((_,index)=>`<< /Type /StructElem /S /P /P ${documentStructId} 0 R /Pg 3 0 R /K ${index} >>`),
+      `<< /Type /Metadata /Subtype /XML /Length ${new TextEncoder().encode(xmp).length} >>\nstream\n${xmp}\nendstream`,
       `<< /Title (${pdfEscape(title)}) /Author (Linea de pase) /Subject (Documento en espanol; lectura marcada en es-ES) >>`
     ];
     let pdf='%PDF-1.4\n',offsets=[0];objects.forEach((object,index)=>{offsets.push(new TextEncoder().encode(pdf).length);pdf+=`${index+1} 0 obj\n${object}\nendobj\n`;});
@@ -1443,6 +1449,28 @@
     saveBlob(blob,`comparacion-${safe(rowA.dataset.comparisonId)}-${safe(rowB.dataset.comparisonId)}-a5.pdf`);
     const mode=comparisonA5InkSelect?.value||'color',modeLabel=mode==='monocromo'?' · monocromo de bajo consumo':mode==='fotocopia'?' · alto contraste para fotocopias':'';
     if(socialPrintStatus)socialPrintStatus.textContent=`PDF A5 listo · ${(blob.size/1024).toFixed(1)} KB · comparación ${pageMmW} × ${pageMmH} mm con escala de 10 mm${modeLabel}.`;
+  }
+
+  function downloadComparisonText() {
+    const selected=[rounds.get(selectA?.value),rounds.get(selectB?.value)];
+    if(selected.some(row=>!row))throw new Error('Selecciona dos jornadas antes de preparar el texto.');
+    const dateLabel=value=>{const [year,month,day]=value.split('-');return `${day}/${month}/${year}`;};
+    const lines=['Línea de pase · Comparación de jornadas',`Temporada: ${selected[0].dataset.temporada}`, ''];
+    selected.forEach(row=>{
+      const round=String(row.dataset.jornada).padStart(2,'0');
+      lines.push(`J${round} · ${dateLabel(row.dataset.fechaPartido)}`);
+      lines.push(`Real Zaragoza ${row.dataset.golesZaragoza}–${row.dataset.golesRival} ${row.dataset.rival} · ${row.dataset.sede==='Fuera'?'fuera':'en casa'}.`);
+      if(row.dataset.completa==='1'){
+        lines.push(`Posesión: ${row.dataset.posesion} %. Tiros: ${row.dataset.tirosZaragoza}–${row.dataset.tirosRival}.`);
+        if(/^\d+$/.test(row.dataset.aPuertaZaragoza)&&/^\d+$/.test(row.dataset.aPuertaRival))lines.push(`Tiros a puerta: ${row.dataset.aPuertaZaragoza}–${row.dataset.aPuertaRival}.`);
+      }else lines.push('Ficha estadística completa no disponible para este partido.');
+      lines.push('');
+    });
+    lines.push('Los datos corresponden a la ficha publicada en el archivo visual.');
+    const blob=new Blob([lines.join('\n')+'\n'],{type:'text/plain;charset=utf-8'});
+    const safe=value=>value.replace(/[^0-9a-z]+/gi,'-').replace(/^-|-$/g,'');
+    saveBlob(blob,`comparacion-${safe(selected[0].dataset.comparisonId)}-${safe(selected[1].dataset.comparisonId)}.txt`);
+    if(socialPrintStatus)socialPrintStatus.textContent=`Texto accesible listo · ${(blob.size/1024).toFixed(1)} KB · dos jornadas.`;
   }
 
   function downloadPrintableContactSheet() {
@@ -1651,6 +1679,7 @@
     contactSheetPdfButton?.addEventListener('click',()=>{try{downloadPrintableContactSheetPdf();}catch(error){if(socialPrintStatus)socialPrintStatus.textContent=error instanceof Error?error.message:'No se pudo preparar el PDF vectorial.';}});
     contactSheetDirectPrintButton?.addEventListener('click',()=>{try{printContactSheetDirectly();}catch(error){if(socialPrintStatus)socialPrintStatus.textContent=error instanceof Error?error.message:'No se pudo abrir la impresión A4.';}});
     comparisonA5PdfButton?.addEventListener('click',()=>{try{downloadPrintableComparisonA5();}catch(error){if(socialPrintStatus)socialPrintStatus.textContent=error instanceof Error?error.message:'No se pudo preparar el PDF A5.';}});
+    comparisonTextButton?.addEventListener('click',()=>{try{downloadComparisonText();}catch(error){if(socialPrintStatus)socialPrintStatus.textContent=error instanceof Error?error.message:'No se pudo preparar el texto de la comparación.';}});
     comparisonA5DirectPrintButton?.addEventListener('click',()=>{try{printComparisonA5Directly();}catch(error){if(socialPrintStatus)socialPrintStatus.textContent=error instanceof Error?error.message:'No se pudo abrir la impresión A5.';}});
     [printPaperSelect,printOrientationSelect,contactSheetVariantSelect].forEach(control=>control?.addEventListener('change',()=>{savePrintSettings();updateContactSheetPrintPreview();updateA5PrintPreview();if(printSettingsStatus)printSettingsStatus.textContent='Preferencias guardadas en este navegador.';}));
     comparisonA5InkSelect?.addEventListener('change',()=>{savePrintSettings();updateA5PrintPreview();if(printSettingsStatus)printSettingsStatus.textContent='Preferencias guardadas en este navegador.';});

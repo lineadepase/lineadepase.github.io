@@ -207,16 +207,16 @@ def main() -> None:
             except (KeyError, TypeError, ValueError):
                 continue
             date = result.get('fecha', '')
-            home = aliases.get(result.get('local', ''), result.get('local', ''))
-            away = aliases.get(result.get('visitante', ''), result.get('visitante', ''))
+            result_home = aliases.get(result.get('local', ''), result.get('local', ''))
+            result_away = aliases.get(result.get('visitante', ''), result.get('visitante', ''))
             try:
                 date_type.fromisoformat(date)
             except ValueError:
                 continue
-            if round_num < 1 or home_goals < 0 or away_goals < 0 or not re.fullmatch(r'\d{4}-\d{2}-\d{2}', date) or not home or not away or home == away:
+            if round_num < 1 or home_goals < 0 or away_goals < 0 or not re.fullmatch(r'\d{4}-\d{2}-\d{2}', date) or not result_home or not result_away or result_home == result_away:
                 continue
-            if home != 'Real Zaragoza': expected_rival_form.setdefault(home, []).append({'jornada':round_num,'fecha':date,'rival':away,'goles_favor':home_goals,'goles_contra':away_goals})
-            if away != 'Real Zaragoza': expected_rival_form.setdefault(away, []).append({'jornada':round_num,'fecha':date,'rival':home,'goles_favor':away_goals,'goles_contra':home_goals})
+            if result_home != 'Real Zaragoza': expected_rival_form.setdefault(result_home, []).append({'jornada':round_num,'fecha':date,'rival':result_away,'goles_favor':home_goals,'goles_contra':away_goals})
+            if result_away != 'Real Zaragoza': expected_rival_form.setdefault(result_away, []).append({'jornada':round_num,'fecha':date,'rival':result_home,'goles_favor':away_goals,'goles_contra':home_goals})
     expected_rival_form = {team:sorted(matches,key=lambda item:(item['fecha'],item['jornada']),reverse=True)[:5] for team,matches in expected_rival_form.items()}
     if actual_rival_form != expected_rival_form:
         raise RuntimeError('La forma de los rivales no se regeneró con los resultados válidos actuales del CSV.')
@@ -231,6 +231,8 @@ def main() -> None:
     missing_saved_link_features = [marker for marker in saved_link_features if marker not in archive_script]
     if missing_saved_link_features:
         raise RuntimeError('Faltan funciones para transferir, ordenar o generar QR: ' + ', '.join(missing_saved_link_features))
+    if 'data-descargar-comparacion-texto' not in archive_html or 'downloadComparisonText' not in archive_script:
+        raise RuntimeError('Falta la descarga de texto accesible de la comparación.')
     if "rowA.dataset.completa === '1' && rowB.dataset.completa === '1'" not in archive_script or 'row.hidden = !show' not in archive_script or 'jornada_a' not in archive_script or 'navigator.clipboard.writeText' not in archive_script or "url.searchParams.set('temporada'" not in archive_script or "url.searchParams.set('rival'" not in archive_script or 'navigator.clipboard.write([new ClipboardItem' not in archive_script or 'preferencesKey' not in archive_script or 'favoriteKey' not in archive_script or 'builtInPresets' not in archive_script or 'social-cuadrada' not in archive_script or 'social-vertical' not in archive_script or 'paletteSelect' not in archive_script or 'updateContrastNotice' not in archive_script or 'minimum >= 4.5' not in archive_script or 'framingSelect' not in archive_script or 'densitySelect' not in archive_script or "density === 'esencial'" not in archive_script or "framing === 'protagonista'" not in archive_script or 'updateSafeZoneGuide' not in archive_script or 'updateStyleComparisons' not in archive_script or 'downloadSocialKit' not in archive_script or 'describeRows' not in archive_script or 'texto-alternativo.txt' not in archive_script or 'readPersonalPresets' not in archive_script or 'updateFormatThumbnails' not in archive_script or 'data-restablecer-opciones' not in archive_script or 'canvas.toBlob' not in archive_script or 'comparisonSvg(' not in archive_script or 'cuadrado' not in archive_script or 'vertical' not in archive_script or 'historias' not in archive_script or 'carrusel' not in archive_script or 'zipStored(files)' not in archive_script or 'includeHeader' not in archive_script or 'showBrand' not in archive_script or 'contextText' not in archive_script or 'index===0?carouselContext' not in archive_script or 'slice(0,72)' not in archive_script or 'image/webp' not in archive_script or 'captionToggle?.checked' not in archive_script or 'metricsToggle?.checked' not in archive_script or 'seasonPosterSvg' not in archive_script or 'updateContactSheet' not in archive_script or 'scheduleKitEstimates' not in archive_script or 'No disponible' not in archive_script or 'seasonPosterPageSize' not in archive_script or 'posterOutcome' not in archive_script or 'seasonPosterDescription' not in archive_script or 'lamina-${String(index+1).padStart(2,' not in archive_script or 'updateSeasonForm' not in archive_script or 'seasonCarouselSvg' not in archive_script or 'downloadSeasonCarousel' not in archive_script or 'seasonPosterRival' not in archive_script or 'row.dataset.fechaPartido>=seasonPosterFrom.value' not in archive_script or 'updateOpponentRecentForm' not in archive_script or 'seasonOpponentForms' not in archive_script or 'restoreSeasonPosterFromUrl' not in archive_script or 'mapa-temporada' not in archive_script or 'seasonSavedLinksKey' not in archive_script or 'saveNamedSeasonPosterLink' not in archive_script or 'applySavedSeasonPosterLink' not in archive_script or "historias:{width:1080,height:1920" not in archive_script:
         raise RuntimeError('Los filtros o el requisito de métricas completas no están activos en el script del archivo.')
     for row in pages.archive_rows:
@@ -244,7 +246,17 @@ def main() -> None:
             path = archive_results / f'{round_name}.{extension}'
             if not path.is_file():
                 raise RuntimeError(f'Falta el gráfico archivado: {path.name}.')
-            if extension == 'png':
+            if extension == 'svg':
+                archived_svg = ET.parse(path).getroot()
+                archived_description = (archived_svg.findtext('{*}title') or '') + ' ' + (archived_svg.findtext('{*}desc') or '')
+                archive_home = record['rival'] if record['sede'] == 'Fuera' else 'Real Zaragoza'
+                archive_away = 'Real Zaragoza' if record['sede'] == 'Fuera' else record['rival']
+                archive_home_goals = record['goles_contra'] if record['sede'] == 'Fuera' else record['goles_favor']
+                archive_away_goals = record['goles_favor'] if record['sede'] == 'Fuera' else record['goles_contra']
+                for value in (archive_home, archive_away, f'{archive_home_goals}–{archive_away_goals}'):
+                    if value not in archived_description:
+                        raise RuntimeError(f'{path.name}: descripción o marcador no coincide con datos/zaragoza.json; falta {value!r}.')
+            elif extension == 'png':
                 with Image.open(path) as image:
                     if image.size != (1200, 630):
                         raise RuntimeError(f'{path.name}: dimensiones {image.size}; esperadas (1200, 630).')
