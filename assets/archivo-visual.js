@@ -33,6 +33,7 @@
   const socialKitButton = document.querySelector('[data-descargar-kit]');
   const socialKitStatus = document.querySelector('[data-estado-kit]');
   const socialPrintButton = document.querySelector('[data-imprimir-social]');
+  const contactSheetPrintButton = document.querySelector('[data-imprimir-hoja-contacto]');
   const socialPrintStatus = document.querySelector('[data-estado-impresion-social]');
   const contactSheetButtons = [...document.querySelectorAll('[data-hoja-plantilla]')];
   const seasonPosterSelect = document.querySelector('[data-temporada-mapa]');
@@ -114,7 +115,8 @@
   const palettes = {
     clasica: {background:'#f3f5ef',panel:'#ffffff',header:'#103b24',headerText:'#ffffff',brand:'#bed8c4',contextHeader:'#e0e9e2',foreground:'#163e28',muted:'#536257',border:'#d4ded6',accent:'#ff7a2f',domain:'#64766b'},
     contraste: {background:'#ffffff',panel:'#ffffff',header:'#111827',headerText:'#ffffff',brand:'#ffffff',contextHeader:'#ffffff',foreground:'#111827',muted:'#334155',border:'#111827',accent:'#b45309',domain:'#334155'},
-    papel: {background:'#f4efe5',panel:'#fffcf5',header:'#203744',headerText:'#ffffff',brand:'#dce7e2',contextHeader:'#f0f4ed',foreground:'#1e2f38',muted:'#43505a',border:'#aab7b3',accent:'#ad4523',domain:'#43505a'}
+    papel: {background:'#f4efe5',panel:'#fffcf5',header:'#203744',headerText:'#ffffff',brand:'#dce7e2',contextHeader:'#f0f4ed',foreground:'#1e2f38',muted:'#43505a',border:'#aab7b3',accent:'#ad4523',domain:'#43505a'},
+    monocromo: {background:'#ffffff',panel:'#ffffff',header:'#1a1a1a',headerText:'#ffffff',brand:'#ffffff',contextHeader:'#f0f0f0',foreground:'#171717',muted:'#414141',border:'#696969',accent:'#1a1a1a',domain:'#414141'}
   };
   const builtInPresets = {
     portada: {format:'apaisado',metrics:true,caption:true,noHeader:false,brand:true,framing:'equilibrado',density:'completa'},
@@ -1132,15 +1134,47 @@
     const match=svg.match(/viewBox="([^"]+)"/),body=svg.slice(svg.indexOf('>')+1,svg.lastIndexOf('</svg>'));
     if(!match||!body)throw new Error('No se pudo preparar la plantilla seleccionada.');
     const [sourceW,sourceH]=match[1].split(/\s+/).slice(2).map(Number),maxW=190,maxH=270;
-    const cardW=Math.min(maxW,maxH*sourceW/sourceH),cardH=cardW*sourceH/sourceW,x=(210-cardW)/2,y=(297-cardH)/2,gap=1.5,mark=4;
-    const crop=`<g fill="none" stroke="#15221b" stroke-width=".22"><path d="M${x-gap-mark} ${y}h${mark} M${x} ${y-gap-mark}v${mark} M${x+cardW+gap} ${y}h${mark} M${x+cardW} ${y-gap-mark}v${mark} M${x-gap-mark} ${y+cardH}h${mark} M${x} ${y+cardH+gap}v${mark} M${x+cardW+gap} ${y+cardH}h${mark} M${x+cardW} ${y+cardH+gap}v${mark}"/></g>`;
+    const cardW=Math.min(maxW,maxH*sourceW/sourceH),cardH=cardW*sourceH/sourceW,x=(210-cardW)/2,y=(297-cardH)/2;
+    const crop=printCropMarks(x,y,cardW,cardH);
     const footer='<text x="105" y="292.5" text-anchor="middle" fill="#536257" font-family="Arial,sans-serif" font-size="2.5">A4 · escala real · recorta por las marcas</text>';
-    const printable=`<svg xmlns="http://www.w3.org/2000/svg" width="210mm" height="297mm" viewBox="0 0 210 297"><rect width="210" height="297" fill="#fff"/>${crop}<svg x="${x}" y="${y}" width="${cardW}" height="${cardH}" viewBox="${match[1]}" preserveAspectRatio="none">${body}</svg>${footer}</svg>`;
+    const printable=`<svg xmlns="http://www.w3.org/2000/svg" width="210mm" height="297mm" viewBox="0 0 210 297"><rect width="210" height="297" fill="#fff"/>${crop}<svg x="${x}" y="${y}" width="${cardW}" height="${cardH}" viewBox="${match[1]}" preserveAspectRatio="none">${body}</svg>${printCalibrationScale()}${footer}</svg>`;
     const blob=new Blob([printable],{type:'image/svg+xml;charset=utf-8'}),limit=300*1024;
     if(blob.size>limit)throw new Error('La plantilla supera 300 KB; reduce la densidad del diseño y vuelve a intentarlo.');
     const safe=value=>value.replace(/[^0-9a-z]+/gi,'-').replace(/^-|-$/g,'');
     saveBlob(blob,`plantilla-social-${safe(rowA.dataset.comparisonId)}-${safe(rowB.dataset.comparisonId)}-a4.svg`);
     if(socialPrintStatus)socialPrintStatus.textContent=`SVG A4 listo · ${(blob.size/1024).toFixed(1)} KB de 300 KB · ${Math.round(cardW)} × ${Math.round(cardH)} mm. Imprime a escala real y corta por las marcas.${requested==='carrusel'?' Se ha preparado en formato cuadrado.':''}`;
+  }
+
+  function printCropMarks(x,y,width,height) {
+    const gap=1.5,mark=4;
+    return `<g fill="none" stroke="#171717" stroke-width=".22"><path d="M${x-gap-mark} ${y}h${mark} M${x} ${y-gap-mark}v${mark} M${x+width+gap} ${y}h${mark} M${x+width} ${y-gap-mark}v${mark} M${x-gap-mark} ${y+height}h${mark} M${x} ${y+height+gap}v${mark} M${x+width+gap} ${y+height}h${mark} M${x+width} ${y+height+gap}v${mark}"/></g>`;
+  }
+
+  function printCalibrationScale() {
+    return '<g fill="none" stroke="#171717" stroke-width=".25"><path d="M10 286h10 M10 285.2v1.6 M20 285.2v1.6"/></g><text x="23" y="287" fill="#171717" font-family="Arial,sans-serif" font-size="2.5">10 mm</text>';
+  }
+
+  function downloadPrintableContactSheet() {
+    const rowA=rounds.get(selectA?.value),rowB=rounds.get(selectB?.value);
+    if(!rowA||!rowB)throw new Error('Selecciona dos jornadas antes de preparar la hoja de contacto.');
+    const metrics=rowA.dataset.completa==='1'&&rowB.dataset.completa==='1'&&Boolean(metricsToggle?.checked),
+      caption=Boolean(captionToggle?.checked),header=!Boolean(noHeaderToggle?.checked),brand=Boolean(brandToggle?.checked),
+      density=densitySelect?.value||'completa',framing=framingSelect?.value||'equilibrado',alt=altTextCustomized?altTextInput?.value.trim()||'':describeRows([rowA,rowB],density,metrics);
+    const variants=[['cuadrado','CUADRADA','1080 × 1080',10],['vertical','VERTICAL','1080 × 1350',77.5],['historias','HISTORIAS','1080 × 1920',145]];
+    const pieces=variants.map(([format,label,sizeLabel,x])=>{
+      const source=comparisonSvg(rowA,rowB,format,metrics,caption,header,brand,null,'',density,framing,alt),match=source.match(/viewBox="([^"]+)"/),body=source.slice(source.indexOf('>')+1,source.lastIndexOf('</svg>'));
+      if(!match||!body)throw new Error('No se pudo preparar una de las variantes sociales.');
+      const [sourceW,sourceH]=match[1].split(/\s+/).slice(2).map(Number),width=55,height=width*sourceH/sourceW,y=70;
+      return `<text x="${x+27.5}" y="42" text-anchor="middle" fill="#171717" font-family="Arial,sans-serif" font-size="3.4" font-weight="700">${label}</text><text x="${x+27.5}" y="49" text-anchor="middle" fill="#414141" font-family="Arial,sans-serif" font-size="2.8">${sizeLabel}</text>${printCropMarks(x,y,width,height)}<svg x="${x}" y="${y}" width="${width}" height="${height}" viewBox="${match[1]}" preserveAspectRatio="none">${body}</svg>`;
+    }).join('');
+    const title='<text x="105" y="22" text-anchor="middle" fill="#171717" font-family="Georgia,serif" font-size="5.2" font-weight="700">Una comparación, tres formatos</text><text x="105" y="30" text-anchor="middle" fill="#414141" font-family="Arial,sans-serif" font-size="3">Misma pareja de jornadas · cortes proporcionados</text>';
+    const footer='<text x="105" y="292.5" text-anchor="middle" fill="#414141" font-family="Arial,sans-serif" font-size="2.5">A4 · escala real · recorta por las marcas</text>';
+    const printable=`<svg xmlns="http://www.w3.org/2000/svg" width="210mm" height="297mm" viewBox="0 0 210 297"><rect width="210" height="297" fill="#fff"/>${title}${pieces}${printCalibrationScale()}${footer}</svg>`;
+    const blob=new Blob([printable],{type:'image/svg+xml;charset=utf-8'}),limit=300*1024;
+    if(blob.size>limit)throw new Error('La hoja supera 300 KB; reduce la densidad del diseño y vuelve a intentarlo.');
+    const safe=value=>value.replace(/[^0-9a-z]+/gi,'-').replace(/^-|-$/g,'');
+    saveBlob(blob,`hoja-contacto-${safe(rowA.dataset.comparisonId)}-${safe(rowB.dataset.comparisonId)}-a4.svg`);
+    if(socialPrintStatus)socialPrintStatus.textContent=`Hoja de contacto lista · ${(blob.size/1024).toFixed(1)} KB de 300 KB · 3 formatos con marcas de corte y escala de control 10 mm.${paletteSelect?.value==='monocromo'?' Paleta monocroma aplicada.':' Elige «Blanco y negro» para imprimir sin color.'}`;
   }
 
   async function copyComparisonImage() {
@@ -1314,6 +1348,7 @@
     });
     seasonQrA5Button?.addEventListener('click',downloadSeasonQrA5);
     socialPrintButton?.addEventListener('click',()=>{try{downloadPrintableSocialSvg();}catch(error){if(socialPrintStatus)socialPrintStatus.textContent=error instanceof Error?error.message:'No se pudo preparar la plantilla imprimible.';}});
+    contactSheetPrintButton?.addEventListener('click',()=>{try{downloadPrintableContactSheet();}catch(error){if(socialPrintStatus)socialPrintStatus.textContent=error instanceof Error?error.message:'No se pudo preparar la hoja de contacto.';}});
     resetOptionsButton?.addEventListener('click', () => {
       if (formatSelect) formatSelect.value = 'apaisado';
       if (metricsToggle) metricsToggle.checked = true;
