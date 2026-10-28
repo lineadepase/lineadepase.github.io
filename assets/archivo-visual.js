@@ -16,6 +16,8 @@
   const presetNameInput = document.getElementById('nombre-preset');
   const savePresetButton = document.querySelector('[data-guardar-preset]');
   const deletePresetButton = document.querySelector('[data-borrar-preset]');
+  const paletteSelect = document.querySelector('[data-paleta-visual]');
+  const contrastNotice = document.querySelector('[data-aviso-contraste]');
   const formatThumbnailButtons = [...document.querySelectorAll('[data-miniatura-formato]')];
   const compareState = document.querySelector('[data-estado-comparacion]');
   const downloadControls = document.querySelector('[data-controles-descarga]');
@@ -39,11 +41,44 @@
   const preferencesKey = 'lineadepase:archivo-visual:preferencias:v1';
   const favoriteKey = 'lineadepase:archivo-visual:pareja-favorita:v1';
   const personalPresetsKey = 'lineadepase:archivo-visual:plantillas:v1';
+  const palettes = {
+    clasica: {background:'#f3f5ef',panel:'#ffffff',header:'#103b24',headerText:'#ffffff',brand:'#bed8c4',contextHeader:'#e0e9e2',foreground:'#163e28',muted:'#536257',border:'#d4ded6',accent:'#ff7a2f',domain:'#64766b'},
+    contraste: {background:'#ffffff',panel:'#ffffff',header:'#111827',headerText:'#ffffff',brand:'#ffffff',contextHeader:'#ffffff',foreground:'#111827',muted:'#334155',border:'#111827',accent:'#b45309',domain:'#334155'},
+    papel: {background:'#f4efe5',panel:'#fffcf5',header:'#203744',headerText:'#ffffff',brand:'#dce7e2',contextHeader:'#f0f4ed',foreground:'#1e2f38',muted:'#43505a',border:'#aab7b3',accent:'#ad4523',domain:'#43505a'}
+  };
   const builtInPresets = {
     portada: {format:'apaisado',metrics:true,caption:true,noHeader:false,brand:true},
     'comparacion-limpia': {format:'cuadrado',metrics:true,caption:false,noHeader:true,brand:false},
-    historia: {format:'historias',metrics:true,caption:false,noHeader:false,brand:true}
+    historia: {format:'historias',metrics:true,caption:false,noHeader:false,brand:true},
+    'social-cuadrada': {format:'cuadrado',metrics:false,caption:false,noHeader:true,brand:true},
+    'social-vertical': {format:'vertical',metrics:false,caption:false,noHeader:true,brand:true}
   };
+
+  function activePalette() { return palettes[paletteSelect?.value] || palettes.clasica; }
+
+  function luminance(hex) {
+    const channels = hex.slice(1).match(/.{2}/g).map(value => parseInt(value,16)/255).map(value => value <= .04045 ? value/12.92 : ((value+.055)/1.055)**2.4);
+    return .2126*channels[0]+.7152*channels[1]+.0722*channels[2];
+  }
+
+  function updateContrastNotice() {
+    if (!contrastNotice) return;
+    const palette = activePalette();
+    const pairs = [
+      [palette.foreground,palette.background],[palette.muted,palette.background],
+      [palette.foreground,palette.panel],[palette.muted,palette.panel],
+      [palette.headerText,palette.header],[palette.brand,palette.header],
+      [palette.contextHeader,palette.header]
+    ];
+    const minimum = Math.min(...pairs.map(([textColor,backgroundColor]) => {
+      const a=luminance(textColor), b=luminance(backgroundColor);
+      return (Math.max(a,b)+.05)/(Math.min(a,b)+.05);
+    }));
+    const passes = minimum >= 4.5;
+    contrastNotice.textContent = passes ? `Contraste correcto · mínimo ${minimum.toFixed(1)}:1` : `Contraste bajo · mínimo ${minimum.toFixed(1)}:1; elige otra paleta`;
+    contrastNotice.classList.toggle('contraste-bajo',!passes);
+    contrastNotice.classList.toggle('contraste-correcto',passes);
+  }
 
   function readStorage(key) {
     try { return JSON.parse(window.localStorage.getItem(key) || 'null'); }
@@ -63,6 +98,7 @@
     if (captionToggle && typeof saved.caption === 'boolean') captionToggle.checked = saved.caption;
     if (noHeaderToggle && typeof saved.noHeader === 'boolean') noHeaderToggle.checked = saved.noHeader;
     if (brandToggle && typeof saved.brand === 'boolean') brandToggle.checked = saved.brand;
+    if (paletteSelect && [...paletteSelect.options].some(option => option.value === saved.palette)) paletteSelect.value = saved.palette;
   }
 
   function saveVisualPreferences() {
@@ -71,7 +107,8 @@
       metrics: Boolean(metricsToggle?.checked),
       caption: Boolean(captionToggle?.checked),
       noHeader: Boolean(noHeaderToggle?.checked),
-      brand: brandToggle?.checked !== false
+      brand: brandToggle?.checked !== false,
+      palette: paletteSelect?.value || 'clasica'
     });
   }
 
@@ -90,7 +127,8 @@
       metrics: Boolean(metricsToggle?.checked),
       caption: Boolean(captionToggle?.checked),
       noHeader: Boolean(noHeaderToggle?.checked),
-      brand: brandToggle?.checked !== false
+      brand: brandToggle?.checked !== false,
+      palette: paletteSelect?.value || 'clasica'
     };
   }
 
@@ -126,6 +164,7 @@
     if (captionToggle && typeof settings.caption === 'boolean') captionToggle.checked = settings.caption;
     if (noHeaderToggle && typeof settings.noHeader === 'boolean') noHeaderToggle.checked = settings.noHeader;
     if (brandToggle && typeof settings.brand === 'boolean') brandToggle.checked = settings.brand;
+    if (paletteSelect && palettes[settings.palette]) paletteSelect.value = settings.palette;
     formatSelect?.dispatchEvent(new Event('change',{bubbles:true}));
     saveVisualPreferences();
     updateComparison('');
@@ -239,6 +278,7 @@
       carrusel: {width:1080,height:1080,header:190,panels:[{x:80,y:260,w:920,h:540}],titleSize:40,titleY:130,brandY:66,captionY:930,domainY:1056,single:true}
     };
     const baseLayout = layouts[format] || layouts.apaisado;
+    const palette = activePalette();
     const panelShift = !includeHeader && format !== 'historias' ? Math.max(0, baseLayout.header - 105) : 0;
     const layout = {...baseLayout, header:includeHeader ? baseLayout.header : 0, panels:baseLayout.panels.map(panel => ({...panel,y:panel.y-panelShift}))};
     const displayRows = singleRow ? [singleRow] : [rowA, rowB];
@@ -257,7 +297,7 @@
         : '';
       const center=x+w/2, pad=Math.min(32,w*.06), nameWidth=w*.38;
       const metaY=y+44, labelY=y+h*.34, namesY=y+h*.45, scoreY=y+h*.70, metricY=y+h-36;
-      return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="22" fill="#fff" stroke="#d4ded6" stroke-width="2"/><path d="M${x} ${y+h-8}h${w}" stroke="#ff7a2f" stroke-width="8"/><text x="${x+pad}" y="${metaY}" fill="#536257" font-family="Arial,sans-serif" font-size="${w<600?19:23}" font-weight="700" letter-spacing="1.2">${seasonLabel} · J${round} · ${xml(row.dataset.fechaPartido)}</text><text x="${x+pad}" y="${labelY}" fill="#536257" font-family="Arial,sans-serif" font-size="${w<600?17:19}" font-weight="700">LOCAL</text><text x="${x+w-pad}" y="${labelY}" text-anchor="end" fill="#536257" font-family="Arial,sans-serif" font-size="${w<600?17:19}" font-weight="700">VISITANTE</text><text x="${x+pad}" y="${namesY}" fill="#163e28" font-family="Arial,sans-serif" font-size="${w<600?24:30}" font-weight="700" textLength="${nameWidth}" lengthAdjust="spacingAndGlyphs">${xml(home)}</text><text x="${x+w-pad}" y="${namesY}" text-anchor="end" fill="#163e28" font-family="Arial,sans-serif" font-size="${w<600?24:30}" font-weight="700" textLength="${nameWidth}" lengthAdjust="spacingAndGlyphs">${xml(away)}</text><text x="${center}" y="${scoreY}" text-anchor="middle" fill="#163e28" font-family="Arial,sans-serif" font-size="${w<600?78:92}" font-weight="800">${xml(homeGoals)} <tspan fill="#ff7a2f" font-size="${w<600?56:64}">–</tspan> ${xml(awayGoals)}</text>${metrics?`<text x="${center}" y="${metricY}" text-anchor="middle" fill="#536257" font-family="Arial,sans-serif" font-size="${w<600?17:19}">${metrics}</text>`:''}`;
+      return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="22" fill="${palette.panel}" stroke="${palette.border}" stroke-width="2"/><path d="M${x} ${y+h-8}h${w}" stroke="${palette.accent}" stroke-width="8"/><text x="${x+pad}" y="${metaY}" fill="${palette.muted}" font-family="Arial,sans-serif" font-size="${w<600?19:23}" font-weight="700" letter-spacing="1.2">${seasonLabel} · J${round} · ${xml(row.dataset.fechaPartido)}</text><text x="${x+pad}" y="${labelY}" fill="${palette.muted}" font-family="Arial,sans-serif" font-size="${w<600?17:19}" font-weight="700">LOCAL</text><text x="${x+w-pad}" y="${labelY}" text-anchor="end" fill="${palette.muted}" font-family="Arial,sans-serif" font-size="${w<600?17:19}" font-weight="700">VISITANTE</text><text x="${x+pad}" y="${namesY}" fill="${palette.foreground}" font-family="Arial,sans-serif" font-size="${w<600?24:30}" font-weight="700" textLength="${nameWidth}" lengthAdjust="spacingAndGlyphs">${xml(home)}</text><text x="${x+w-pad}" y="${namesY}" text-anchor="end" fill="${palette.foreground}" font-family="Arial,sans-serif" font-size="${w<600?24:30}" font-weight="700" textLength="${nameWidth}" lengthAdjust="spacingAndGlyphs">${xml(away)}</text><text x="${center}" y="${scoreY}" text-anchor="middle" fill="${palette.foreground}" font-family="Arial,sans-serif" font-size="${w<600?78:92}" font-weight="800">${xml(homeGoals)} <tspan fill="${palette.accent}" font-size="${w<600?56:64}">–</tspan> ${xml(awayGoals)}</text>${metrics?`<text x="${center}" y="${metricY}" text-anchor="middle" fill="${palette.muted}" font-family="Arial,sans-serif" font-size="${w<600?17:19}">${metrics}</text>`:''}`;
     }).join('');
     const title = singleRow
       ? `Jornada ${singleRow.dataset.jornada} · ${singleRow.dataset.rival} · ${singleRow.dataset.temporada}`
@@ -267,16 +307,16 @@
       : {home:row.dataset.rival,away:'Real Zaragoza',homeGoals:row.dataset.golesRival,awayGoals:row.dataset.golesZaragoza};
     const scores=displayRows.map(row => ({row,score:homeAway(row)}));
     const caption=includeCaption
-      ? `<text x="${layout.width/2}" y="${layout.captionY}" text-anchor="middle" fill="#536257" font-family="Arial,sans-serif" font-size="17" font-weight="700">Primera Federación · ${scores.map(({row,score})=>`J${row.dataset.jornada.padStart(2,'0')} ${score.homeGoals}–${score.awayGoals}`).join(' · ')}</text>`
+      ? `<text x="${layout.width/2}" y="${layout.captionY}" text-anchor="middle" fill="${palette.muted}" font-family="Arial,sans-serif" font-size="17" font-weight="700">Primera Federación · ${scores.map(({row,score})=>`J${row.dataset.jornada.padStart(2,'0')} ${score.homeGoals}–${score.awayGoals}`).join(' · ')}</text>`
       : '';
     const storiesDesc=format==='historias'?' La composición reserva espacio superior e inferior para no quedar debajo de los controles de las historias.':'';
     const brandY=baseLayout.brandY ?? 54;
     const contextY=includeHeader?baseLayout.titleY+38:Math.max(brandY+58,baseLayout.header-62);
-    const header=`${includeHeader?`<path d="M0 0h${layout.width}v${baseLayout.header}H0z" fill="#103b24"/><path d="M0 ${baseLayout.header-5}h${layout.width}" stroke="#ff7a2f" stroke-width="7"/>`:''}${showBrand?`<text x="54" y="${brandY}" fill="${includeHeader?'#bed8c4':'#163e28'}" font-family="Arial,sans-serif" font-size="17" font-weight="700" letter-spacing="3">LÍNEA DE PASE · ARCHIVO VISUAL</text>`:''}${includeHeader?`<text x="54" y="${baseLayout.titleY}" fill="#f7f8f4" font-family="Arial,sans-serif" font-size="${baseLayout.titleSize}" font-weight="800">${singleRow?`J${singleRow.dataset.jornada.padStart(2,'0')} · ${xml(singleRow.dataset.rival)}`:'Dos jornadas, frente a frente'}</text>`:''}${singleRow&&contextText?`<text x="54" y="${contextY}" fill="${includeHeader?'#e0e9e2':'#536257'}" font-family="Arial,sans-serif" font-size="19" font-weight="600">${xml(contextText)}</text>`:''}`;
+    const header=`${includeHeader?`<path d="M0 0h${layout.width}v${baseLayout.header}H0z" fill="${palette.header}"/><path d="M0 ${baseLayout.header-5}h${layout.width}" stroke="${palette.accent}" stroke-width="7"/>`:''}${showBrand?`<text x="54" y="${brandY}" fill="${includeHeader?palette.brand:palette.foreground}" font-family="Arial,sans-serif" font-size="17" font-weight="700" letter-spacing="3">LÍNEA DE PASE · ARCHIVO VISUAL</text>`:''}${includeHeader?`<text x="54" y="${baseLayout.titleY}" fill="${palette.headerText}" font-family="Arial,sans-serif" font-size="${baseLayout.titleSize}" font-weight="800">${singleRow?`J${singleRow.dataset.jornada.padStart(2,'0')} · ${xml(singleRow.dataset.rival)}`:'Dos jornadas, frente a frente'}</text>`:''}${singleRow&&contextText?`<text x="54" y="${contextY}" fill="${includeHeader?palette.contextHeader:palette.muted}" font-family="Arial,sans-serif" font-size="19" font-weight="600">${xml(contextText)}</text>`:''}`;
     const description = singleRow
       ? `Resultado del Real Zaragoza ante ${xml(singleRow.dataset.rival)}, temporada ${xml(singleRow.dataset.temporada)}.`
       : `Marcadores del Real Zaragoza frente a ${displayRows.map(row=>xml(row.dataset.rival)).join(' y ')}.`;
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="${layout.width}" height="${layout.height}" viewBox="0 0 ${layout.width} ${layout.height}" role="img" aria-labelledby="titulo descripcion"><title id="titulo">${xml(title)}</title><desc id="descripcion">${description} La posesión y los tiros se incluyen solo si se seleccionan y las dos fichas están completas.${xml(storiesDesc)}</desc><rect width="${layout.width}" height="${layout.height}" fill="#f3f5ef"/>${header}${cards}${caption}${showBrand?`<text x="${layout.width-50}" y="${layout.domainY}" text-anchor="end" fill="#64766b" font-family="Arial,sans-serif" font-size="15">lineadepase.com</text>`:''}</svg>`;
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="${layout.width}" height="${layout.height}" viewBox="0 0 ${layout.width} ${layout.height}" role="img" aria-labelledby="titulo descripcion"><title id="titulo">${xml(title)}</title><desc id="descripcion">${description} La posesión y los tiros se incluyen solo si se seleccionan y las dos fichas están completas.${xml(storiesDesc)}</desc><rect width="${layout.width}" height="${layout.height}" fill="${palette.background}"/>${header}${cards}${caption}${showBrand?`<text x="${layout.width-50}" y="${layout.domainY}" text-anchor="end" fill="${palette.domain}" font-family="Arial,sans-serif" font-size="15">lineadepase.com</text>`:''}</svg>`;
   }
 
   function updateCarouselPreview() {
@@ -466,6 +506,7 @@
       if (captionToggle) captionToggle.checked = true;
       if (noHeaderToggle) noHeaderToggle.checked = false;
       if (brandToggle) brandToggle.checked = true;
+      if (paletteSelect) paletteSelect.value = 'clasica';
       if (carouselContextInput) carouselContextInput.value = '';
       if (carouselExamples) carouselExamples.value = '';
       if (presetSelect) presetSelect.value = '';
@@ -497,6 +538,7 @@
       if (carouselDownloads) carouselDownloads.hidden = formatSelect?.value !== 'carrusel';
       if (copyImageButton) copyImageButton.textContent = formatSelect?.value === 'carrusel' ? 'Copiar primera diapositiva' : 'Copiar imagen';
       updateCarouselPreview();
+      updateContrastNotice();
     };
     presetSelect?.addEventListener('change', () => {
       const value = presetSelect.value;
@@ -549,6 +591,10 @@
       compareState.textContent = target ? `Plantilla «${target.name}» borrada.` : 'Plantilla borrada.';
     });
     formatSelect?.addEventListener('change', updateFormatGuidance);
+    paletteSelect?.addEventListener('change', () => {
+      updateFormatGuidance();
+      saveVisualPreferences();
+    });
     formatThumbnailButtons.forEach(button => button.addEventListener('click', () => {
       if (!formatSelect || ![...formatSelect.options].some(option => option.value === button.dataset.miniaturaFormato)) return;
       formatSelect.value = button.dataset.miniaturaFormato;
