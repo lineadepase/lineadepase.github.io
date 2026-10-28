@@ -53,6 +53,14 @@
   const seasonSaveLinkButton = document.querySelector('[data-guardar-enlace-mapa]');
   const seasonSavedLinksList = document.querySelector('[data-enlaces-guardados]');
   const seasonSavedLinksStatus = document.querySelector('[data-estado-enlaces-guardados]');
+  const seasonExportLinksButton = document.querySelector('[data-exportar-enlaces-mapa]');
+  const seasonImportLinksButton = document.querySelector('[data-importar-enlaces-mapa]');
+  const seasonImportLinksFile = document.querySelector('[data-archivo-enlaces-mapa]');
+  const seasonQrButton = document.querySelector('[data-generar-qr-enlace]');
+  const seasonQrDownloadButton = document.querySelector('[data-descargar-qr-enlace]');
+  const seasonQrPreview = document.querySelector('[data-vista-qr-enlace]');
+  let seasonQrSvg = '';
+  let seasonQrObjectUrl = '';
   const seasonSavedLinksKey = 'lineadepase-mapa-enlaces-v1';
   let seasonOpponentForms = {};
   try { seasonOpponentForms = JSON.parse(document.getElementById('datos-forma-rivales')?.textContent || '{}'); } catch (_) { seasonOpponentForms = {}; }
@@ -529,7 +537,7 @@
   }
 
   function seasonPosterLinkUrl() {
-    const url=new URL(window.location.href), params=url.searchParams;
+    const url=new URL(window.location.pathname,window.location.origin), params=url.searchParams;
     const values={'mapa-temporada':seasonPosterSelect?.value||'','mapa-rival':seasonPosterRival?.value||'','mapa-desde':seasonPosterFrom?.value||'','mapa-hasta':seasonPosterTo?.value||'','mapa-formato':seasonPosterFormat?.value||'cuadrado','mapa-archivo':seasonPosterType?.value||'webp'};
     Object.entries(values).forEach(([key,value])=>value?params.set(key,value):params.delete(key));
     return url.href;
@@ -543,14 +551,14 @@
   function readSeasonSavedLinks() {
     try {
       const links=JSON.parse(window.localStorage.getItem(seasonSavedLinksKey)||'[]');
-      return Array.isArray(links)?links.filter(item=>item&&typeof item.name==='string'&&typeof item.url==='string').slice(0,6):[];
+      return Array.isArray(links)?links.filter(item=>item&&typeof item.name==='string'&&typeof item.url==='string').slice(0,6).map(item=>({...item,pinned:item.pinned===true})).sort((a,b)=>Number(b.pinned)-Number(a.pinned)):[];
     } catch (_) { return []; }
   }
 
   function renderSeasonSavedLinks() {
     if(!seasonSavedLinksList)return;
     const links=readSeasonSavedLinks();
-    seasonSavedLinksList.innerHTML=links.map((item,index)=>`<li><span>${xml(item.name)}</span><div><button type="button" class="boton" data-aplicar-enlace-mapa="${index}">Aplicar</button><button type="button" class="boton" data-copiar-enlace-mapa="${index}">Copiar</button><button type="button" class="boton" data-borrar-enlace-mapa="${index}" aria-label="Borrar ${xml(item.name)}">Borrar</button></div></li>`).join('');
+    seasonSavedLinksList.innerHTML=links.map((item,index)=>`<li><span>${item.pinned?'★ ':''}${xml(item.name)}</span><div><button type="button" class="boton" data-aplicar-enlace-mapa="${index}">Aplicar</button><button type="button" class="boton" data-copiar-enlace-mapa="${index}">Copiar</button><button type="button" class="boton" data-fijar-enlace-mapa="${index}" aria-pressed="${item.pinned}">${item.pinned?'Desfijar':'Fijar'}</button><button type="button" class="boton" data-subir-enlace-mapa="${index}" aria-label="Subir ${xml(item.name)}">↑</button><button type="button" class="boton" data-bajar-enlace-mapa="${index}" aria-label="Bajar ${xml(item.name)}">↓</button><button type="button" class="boton" data-borrar-enlace-mapa="${index}" aria-label="Borrar ${xml(item.name)}">Borrar</button></div></li>`).join('');
     seasonSavedLinksList.hidden=!links.length;
   }
 
@@ -558,17 +566,19 @@
     const name=(seasonSaveLinkName?.value||'').trim().slice(0,28);
     if(!name){if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent='Escribe un nombre breve para guardar el enlace.';seasonSaveLinkName?.focus();return;}
     const links=readSeasonSavedLinks(),url=seasonPosterLinkUrl(),existing=links.findIndex(item=>item.name.toLocaleLowerCase('es')===name.toLocaleLowerCase('es'));
+    const pinned=existing>=0&&links[existing].pinned===true;
     if(existing>=0)links.splice(existing,1);
     if(links.length>=6)links.pop();
-    links.unshift({name,url});
-    try { window.localStorage.setItem(seasonSavedLinksKey,JSON.stringify(links));if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent=`Enlace «${name}» guardado en este navegador.`;if(seasonSaveLinkName)seasonSaveLinkName.value='';renderSeasonSavedLinks(); }
+    links.unshift({name,url,pinned});
+    try { saveSeasonSavedLinks(links);if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent=`Enlace «${name}» guardado en este navegador.`;if(seasonSaveLinkName)seasonSaveLinkName.value=''; }
     catch (_) { if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent='No se pudo guardar el enlace en este navegador.'; }
   }
 
   function applySavedSeasonPosterLink(url) {
     try {
       const parsed=new URL(url,window.location.href);
-      if(parsed.origin!==window.location.origin||parsed.pathname!==window.location.pathname)throw new Error('enlace no válido');
+      if(parsed.pathname!==window.location.pathname)throw new Error('enlace no válido');
+      clearSeasonLinkQr();
       const params=parsed.searchParams,seasons=[...seasonPosterSelect.options].map(option=>option.value),season=params.get('mapa-temporada');
       if(seasons.includes(season))seasonPosterSelect.value=season;
       updateSeasonRivalOptions();
@@ -580,9 +590,72 @@
       if(['png','webp','svg'].includes(params.get('mapa-archivo')))seasonPosterType.value=params.get('mapa-archivo');
       if(seasonPosterSheet)seasonPosterSheet.value='0';
       updateSeasonPosterPreview();
-      window.history.replaceState({},'',parsed.href);
+      window.history.replaceState({},'',seasonPosterLinkUrl());
       if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent='Selección aplicada al mapa.';
     } catch (_) { if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent='No se pudo aplicar este enlace guardado.'; }
+  }
+
+  function saveSeasonSavedLinks(links) {
+    const ordered=links.slice().sort((a,b)=>Number(b.pinned===true)-Number(a.pinned===true)).slice(0,6);
+    window.localStorage.setItem(seasonSavedLinksKey,JSON.stringify(ordered));
+    renderSeasonSavedLinks();
+  }
+
+  function exportSeasonSavedLinks() {
+    const payload={format:'lineadepase-mapa-links',version:1,links:readSeasonSavedLinks().map(({name,url,pinned})=>({name,url,pinned}))};
+    const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json;charset=utf-8'});
+    saveBlob(blob,'selecciones-mapa-linea-de-pase.json');
+    if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent=`${payload.links.length} ${payload.links.length===1?'selección exportada':'selecciones exportadas'} a un archivo JSON.`;
+  }
+
+  async function importSeasonSavedLinks(file) {
+    if(!file)return;
+    try {
+      const payload=JSON.parse(await file.text());
+      if(payload?.format!=='lineadepase-mapa-links'||payload?.version!==1||!Array.isArray(payload.links))throw new Error('formato no compatible');
+      const links=readSeasonSavedLinks();let imported=0,updated=0,skipped=0;
+      payload.links.forEach(item=>{
+        if(!item||typeof item.name!=='string'||typeof item.url!=='string'){skipped++;return;}
+        let parsed;try{parsed=new URL(item.url,window.location.href);}catch(_){skipped++;return;}
+        if(parsed.pathname!==window.location.pathname){skipped++;return;}
+        const name=item.name.trim().slice(0,28);if(!name){skipped++;return;}
+        const localUrl=new URL(window.location.pathname,window.location.origin);
+        for(const key of ['mapa-temporada','mapa-rival','mapa-desde','mapa-hasta','mapa-formato','mapa-archivo']){const value=parsed.searchParams.get(key);if(value)localUrl.searchParams.set(key,value);}
+        const existing=links.findIndex(link=>link.name.toLocaleLowerCase('es')===name.toLocaleLowerCase('es'));
+        const entry={name,url:localUrl.href,pinned:item.pinned===true};
+        if(existing>=0){links.splice(existing,1,entry);updated++;}else if(links.length<6){links.push(entry);imported++;}else{skipped++;}
+      });
+      saveSeasonSavedLinks(links);
+      if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent=`Importación terminada: ${imported} nuevas, ${updated} actualizadas, ${skipped} omitidas; límite de seis selecciones.`;
+    } catch(_){if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent='No se pudo importar el archivo. Comprueba que sea una exportación válida.';}
+    if(seasonImportLinksFile)seasonImportLinksFile.value='';
+  }
+
+  function makeSeasonLinkQr() {
+    try {
+      if(!window.qrcodegen?.QrCode)throw new Error('QR no disponible');
+      const qr=window.qrcodegen.QrCode.encodeText(seasonPosterLinkUrl(),window.qrcodegen.QrCode.Ecc.MEDIUM),quiet=4,module=8,size=(qr.size+quiet*2)*module;
+      let path='';
+      for(let y=0;y<qr.size;y++)for(let x=0;x<qr.size;x++)if(qr.getModule(x,y))path+=`M${(x+quiet)*module} ${(y+quiet)*module}h${module}v${module}h-${module}z`;
+      seasonQrSvg=`<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" role="img" aria-label="Código QR para abrir la selección del mapa"><rect width="100%" height="100%" fill="#fff"/><path d="${path}" fill="#15221b"/></svg>`;
+      if(seasonQrObjectUrl)URL.revokeObjectURL(seasonQrObjectUrl);
+      if(seasonQrPreview){seasonQrObjectUrl=URL.createObjectURL(new Blob([seasonQrSvg],{type:'image/svg+xml'}));seasonQrPreview.src=seasonQrObjectUrl;seasonQrPreview.hidden=false;if(seasonQrPreview.parentElement)seasonQrPreview.parentElement.hidden=false;}
+      if(seasonQrDownloadButton)seasonQrDownloadButton.disabled=false;
+      if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent='QR listo: contiene solo el enlace de esta selección y se genera en este navegador.';
+    } catch(_){if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent='No se pudo generar el QR en este navegador.';}
+  }
+
+  function downloadSeasonLinkQr() {
+    if(!seasonQrSvg)return;
+    saveBlob(new Blob([seasonQrSvg],{type:'image/svg+xml;charset=utf-8'}),'seleccion-mapa-linea-de-pase-qr.svg');
+    if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent='QR descargado en SVG.';
+  }
+
+  function clearSeasonLinkQr() {
+    seasonQrSvg='';
+    if(seasonQrObjectUrl){URL.revokeObjectURL(seasonQrObjectUrl);seasonQrObjectUrl='';}
+    if(seasonQrPreview){seasonQrPreview.removeAttribute('src');seasonQrPreview.hidden=true;if(seasonQrPreview.parentElement)seasonQrPreview.parentElement.hidden=true;}
+    if(seasonQrDownloadButton)seasonQrDownloadButton.disabled=true;
   }
 
   function restoreSeasonPosterFromUrl() {
@@ -959,18 +1032,25 @@
     seasonCarouselButton?.addEventListener('click',async()=>{if(seasonPosterStatus)seasonPosterStatus.textContent='Preparando el carrusel…';try{await downloadSeasonCarousel();}catch(error){if(seasonPosterStatus)seasonPosterStatus.textContent=error instanceof Error?error.message:'No se pudo preparar el carrusel.';}});
     seasonShareButton?.addEventListener('click',copySeasonPosterLink);
     seasonSaveLinkButton?.addEventListener('click',saveNamedSeasonPosterLink);
+    seasonExportLinksButton?.addEventListener('click',exportSeasonSavedLinks);
+    seasonImportLinksButton?.addEventListener('click',()=>seasonImportLinksFile?.click());
+    seasonImportLinksFile?.addEventListener('change',()=>importSeasonSavedLinks(seasonImportLinksFile.files?.[0]));
+    seasonQrButton?.addEventListener('click',makeSeasonLinkQr);
+    seasonQrDownloadButton?.addEventListener('click',downloadSeasonLinkQr);
     seasonSaveLinkName?.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();saveNamedSeasonPosterLink();}});
     seasonSavedLinksList?.addEventListener('click',async event=>{
-      const button=event.target.closest('button[data-aplicar-enlace-mapa],button[data-copiar-enlace-mapa],button[data-borrar-enlace-mapa]');
+      const button=event.target.closest('button[data-aplicar-enlace-mapa],button[data-copiar-enlace-mapa],button[data-borrar-enlace-mapa],button[data-fijar-enlace-mapa],button[data-subir-enlace-mapa],button[data-bajar-enlace-mapa]');
       if(!button)return;
-      const index=Number(button.dataset.aplicarEnlaceMapa??button.dataset.copiarEnlaceMapa??button.dataset.borrarEnlaceMapa),links=readSeasonSavedLinks(),item=links[index];
+      const index=Number(button.dataset.aplicarEnlaceMapa??button.dataset.copiarEnlaceMapa??button.dataset.borrarEnlaceMapa??button.dataset.fijarEnlaceMapa??button.dataset.subirEnlaceMapa??button.dataset.bajarEnlaceMapa),links=readSeasonSavedLinks(),item=links[index];
       if(!item)return;
       if(button.hasAttribute('data-aplicar-enlace-mapa'))applySavedSeasonPosterLink(item.url);
       else if(button.hasAttribute('data-copiar-enlace-mapa')){try{await navigator.clipboard.writeText(item.url);if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent=`Enlace «${item.name}» copiado.`;}catch(_){if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent='No se pudo copiar este enlace en el navegador.';}}
-      else{links.splice(index,1);try{window.localStorage.setItem(seasonSavedLinksKey,JSON.stringify(links));renderSeasonSavedLinks();if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent=`Enlace «${item.name}» borrado.`;}catch(_){if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent='No se pudo borrar este enlace guardado.';}}
+      else if(button.hasAttribute('data-borrar-enlace-mapa')){links.splice(index,1);try{saveSeasonSavedLinks(links);if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent=`Enlace «${item.name}» borrado.`;}catch(_){if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent='No se pudo borrar este enlace guardado.';}}
+      else if(button.hasAttribute('data-fijar-enlace-mapa')){item.pinned=!item.pinned;try{saveSeasonSavedLinks(links);if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent=`Enlace «${item.name}» ${item.pinned?'fijado arriba':'desfijado'}.`;}catch(_){if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent='No se pudo actualizar el enlace.';}}
+      else {const delta=button.hasAttribute('data-subir-enlace-mapa')?-1:1,target=index+delta;if(target>=0&&target<links.length&&links[target].pinned===item.pinned){[links[index],links[target]]=[links[target],links[index]];try{saveSeasonSavedLinks(links);if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent='Orden de enlaces actualizado.';}catch(_){if(seasonSavedLinksStatus)seasonSavedLinksStatus.textContent='No se pudo ordenar los enlaces.';}}}
     });
-    [seasonPosterFormat,seasonPosterType,seasonPosterRival,seasonPosterFrom,seasonPosterTo].forEach(control=>control?.addEventListener('change',()=>{updateSeasonPosterPreview();if(seasonPosterStatus)seasonPosterStatus.textContent='El mapa está listo para descargar.';}));
-    seasonPosterSelect?.addEventListener('change',()=>{updateSeasonRivalOptions();if(seasonPosterSheet)seasonPosterSheet.value='0';updateSeasonPosterPreview();if(seasonPosterStatus)seasonPosterStatus.textContent='Temporada actualizada.';});
+    [seasonPosterFormat,seasonPosterType,seasonPosterRival,seasonPosterFrom,seasonPosterTo].forEach(control=>control?.addEventListener('change',()=>{clearSeasonLinkQr();updateSeasonPosterPreview();if(seasonPosterStatus)seasonPosterStatus.textContent='El mapa está listo para descargar.';}));
+    seasonPosterSelect?.addEventListener('change',()=>{clearSeasonLinkQr();updateSeasonRivalOptions();if(seasonPosterSheet)seasonPosterSheet.value='0';updateSeasonPosterPreview();if(seasonPosterStatus)seasonPosterStatus.textContent='Temporada actualizada.';});
     seasonPosterSheet?.addEventListener('change',updateSeasonPosterPreview);
     seasonPosterAlt?.addEventListener('input',()=>{seasonPosterAltCustomized=true;updateSeasonPosterPreview();});
     resetSeasonPosterAlt?.addEventListener('click',()=>{seasonPosterAltCustomized=false;updateSeasonPosterPreview();if(seasonPosterStatus)seasonPosterStatus.textContent='Texto alternativo actualizado con los resultados.';});

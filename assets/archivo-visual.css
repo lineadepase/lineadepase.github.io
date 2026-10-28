@@ -199,4 +199,9 @@
 .archivo-enlaces-guardados li { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:.6rem; padding:.6rem 0; border-top:1px solid #d4ded6; }
 .archivo-enlaces-guardados li>div { display:flex; flex-wrap:wrap; gap:.4rem; }
 .archivo-enlaces-guardados li .boton { padding:.45rem .7rem; }
+.archivo-enlaces-herramientas,.archivo-qr-enlace { display:flex; flex-wrap:wrap; align-items:center; gap:.55rem; }
+.archivo-qr-enlace figure { display:flex; align-items:center; gap:.7rem; margin:0; padding:.5rem; border:1px solid #d4ded6; border-radius:.6rem; background:#fff; }
+.archivo-qr-enlace figcaption { max-width:12rem; font-size:.9rem; font-weight:700; }
+.archivo-qr-enlace img { display:block; width:clamp(112px,24vw,176px); height:auto; aspect-ratio:1; }
+.archivo-qr-enlace p { flex-basis:100%; margin:0; }
 @media(max-width:600px) { .archivo-alt-mapa { grid-template-columns:minmax(0,1fr); } .archivo-alt-mapa button { width:100%; } .archivo-preview-mapa img { max-height:360px; } .archivo-forma-comparada { grid-template-columns:minmax(0,1fr); } .archivo-compartir-mapa { align-items:stretch; flex-direction:column; } }
