@@ -11,7 +11,7 @@
       const sample=LPGrupo.filter(data.partidos,options),names=[...new Set(sample.map(r=>r.equipo))].sort();
       const points=names.map(name=>{const rows=sample.filter(r=>r.equipo===name);return {name,x:LPGrupo.calc(rows,xMetric.value,options),y:LPGrupo.calc(rows,yMetric.value,options)};}).filter(p=>p.x.value!==null&&p.y.value!==null);
       chart.replaceChildren();
-      const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 850 540');svg.setAttribute('role','group');svg.setAttribute('aria-label','Mapa de los equipos: '+LPGrupo.label(xMetric.value)+' y '+LPGrupo.label(yMetric.value));
+      const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 850 540');svg.setAttribute('role','group');svg.setAttribute('aria-label','Mapa de los equipos: '+LPGrupo.label(xMetric.value)+' y '+LPGrupo.label(yMetric.value));svg.setAttribute('aria-describedby','mapa-nota mapa-ayuda');
       const el=(tag,attributes,text)=>{const n=document.createElementNS(svg.namespaceURI,tag);Object.entries(attributes).forEach(([k,v])=>n.setAttribute(k,v));if(text!==undefined)n.textContent=text;svg.append(n);return n;};
       const maxX=Math.max(1,...points.map(p=>p.x.value))*1.12,maxY=Math.max(1,...points.map(p=>p.y.value))*1.12;
       const x=v=>85+v/maxX*700,y=v=>435-v/maxY*365;
@@ -27,6 +27,7 @@
       document.getElementById('mapa-nota').textContent='Corte J'+data.jornada+' · '+(period.value==='ultimas5'?'Últimas cinco jornadas':'Toda la temporada')+' · '+(venue.value||'Casa y fuera')+' · xG: '+(source.value==='sofascore'?'Sofascore':'Sofascore y fuentes complementarias')+'. Las líneas discontinuas representan la media del grupo.';
       const tbody=document.getElementById('mapa-tabla');tbody.replaceChildren();[...points].sort((a,b)=>b.x.value-a.x.value).forEach(p=>{const tr=node('tr');[p.name,fmt(p.x.value)+' (n='+p.x.count+')',fmt(p.y.value)+' (n='+p.y.count+')'].forEach(t=>tr.append(node('td',t)));tbody.append(tr);});
       document.getElementById('mapa-th-x').textContent=LPGrupo.label(xMetric.value);document.getElementById('mapa-th-y').textContent=LPGrupo.label(yMetric.value);
+      document.getElementById('mapa-tabla-titulo').textContent='Equipos ordenados de mayor a menor por '+LPGrupo.label(xMetric.value)+'; valores de ambos ejes con los filtros actuales.';
       const rival=team.value==='Real Zaragoza'?'Villarreal B':team.value;
       const query=new URLSearchParams({a:'Real Zaragoza',b:rival,sede:venue.value,fuente:source.value,periodo:period.value,modo:'promedio'});const compareLink=document.getElementById('mapa-comparar');compareLink.href='../comparador/index.html?'+query;compareLink.textContent=team.value==='Real Zaragoza'?'Comparar Zaragoza y Villarreal B':'Comparar el equipo con el Zaragoza';
       const url=new URL(location.href);Object.entries({equipo:team.value,x:xMetric.value,y:yMetric.value,sede:venue.value,fuente:source.value,periodo:period.value}).forEach(([k,v])=>url.searchParams.set(k,v));history.replaceState(null,'',url);

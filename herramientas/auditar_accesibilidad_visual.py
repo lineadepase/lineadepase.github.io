@@ -119,6 +119,70 @@ class ControlNameParser(HTMLParser):
         return issues
 
 
+class LinkNameParser(HTMLParser):
+    """Chequeo estatico de nombres de enlaces HTML con contenido textual o grafico."""
+
+    VOID_TAGS = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link",
+                 "meta", "param", "source", "track", "wbr"}
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self.links, self.active_links, self.id_stack, self.id_text = [], [], [], {}
+        self.element_stack = []
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        if attrs.get("id"):
+            self.id_stack.append({"id": attrs["id"], "tag": tag, "text": ""})
+        is_hidden = ("hidden" in attrs or (attrs.get("aria-hidden") or "").lower() == "true"
+                     or any(hidden for _, hidden in self.element_stack))
+        if tag == "a" and "href" in attrs:
+            link = {"attrs": attrs, "text": "", "hidden": is_hidden}
+            self.links.append(link)
+            self.active_links.append(link)
+        alt_text = attrs.get("alt") if tag == "img" or (tag == "input" and (attrs.get("type") or "").lower() == "image") else ""
+        if alt_text:
+            for link in self.active_links:
+                if not any(hidden for _, hidden in self.element_stack) and not is_hidden:
+                    link["text"] += " " + alt_text
+        if tag not in self.VOID_TAGS:
+            own_hidden = "hidden" in attrs or (attrs.get("aria-hidden") or "").lower() == "true"
+            self.element_stack.append((tag, own_hidden))
+
+    def handle_endtag(self, tag):
+        if tag == "a" and self.active_links:
+            self.active_links.pop()
+        for index in range(len(self.id_stack) - 1, -1, -1):
+            if self.id_stack[index]["tag"] == tag:
+                item = self.id_stack.pop(index)
+                self.id_text[item["id"]] = item["text"].strip()
+                break
+        for index in range(len(self.element_stack) - 1, -1, -1):
+            if self.element_stack[index][0] == tag:
+                del self.element_stack[index:]
+                break
+
+    def handle_data(self, data):
+        for item in self.id_stack:
+            item["text"] += data
+        if not any(hidden for _, hidden in self.element_stack):
+            for link in self.active_links:
+                link["text"] += data
+
+    def unnamed_links(self):
+        issues = []
+        for link in self.links:
+            attrs = link["attrs"]
+            if link["hidden"]:
+                continue
+            labelled_by = " ".join(self.id_text.get(identifier, "")
+                                    for identifier in (attrs.get("aria-labelledby") or "").split())
+            name = (attrs.get("aria-label") or labelled_by or attrs.get("title") or link["text"])
+            if not name or not name.strip():
+                issues.append(attrs.get("href") or "<a href>")
+        return issues
+
+
 def audit_control_names() -> int:
     valid_examples = (
         '<button aria-label="Cerrar"></button>',
@@ -153,6 +217,47 @@ def audit_control_names() -> int:
         suffix = f"\n... y {remaining} más" if remaining else ""
         raise RuntimeError(f"Controles sin nombre accesible ({len(problems)}):\n{preview}{suffix}")
     return page_count
+
+
+def audit_link_names() -> tuple[int, int]:
+    valid_examples = (
+        '<a href="/partido">Análisis del partido</a>',
+        '<a href="/grafico"><img src="grafico.png" alt="Marcadores del Zaragoza"></a>',
+        '<a href="/imagen"><img src="decorativa.svg" alt=""><span>Ver la imagen</span></a>',
+        '<a href="/imagen"><span hidden>Texto oculto</span><span>Ver la imagen</span></a>',
+        '<a href="/archivo" aria-label="Abrir el archivo"><img src="icon.svg" alt=""></a>',
+        '<span id="download">Descargar el gráfico</span><a href="/grafico" aria-labelledby="download"></a>',
+        '<a href="/home" aria-hidden="true"><img src="hidden.svg" alt=""></a>',
+    )
+    for markup in valid_examples:
+        parser = LinkNameParser()
+        parser.feed(markup)
+        if parser.unnamed_links():
+            raise RuntimeError(f"Falla la autocomprobación de enlace válido: {markup}")
+
+    parser = LinkNameParser()
+    parser.feed('<a href="/sin-nombre"><img src="decorativa.svg" alt=""></a>')
+    if parser.unnamed_links() != ["/sin-nombre"]:
+        raise RuntimeError("La autocomprobación no detecta un enlace sin texto ni alternativa gráfica.")
+    parser = LinkNameParser()
+    parser.feed('<a href="/texto-oculto"><span aria-hidden="true">No accesible</span></a>')
+    if parser.unnamed_links() != ["/texto-oculto"]:
+        raise RuntimeError("La autocomprobación cuenta texto oculto a tecnologías de asistencia.")
+
+    page_count, link_count, problems = 0, 0, []
+    for path in sorted(ROOT.rglob("*.html")):
+        parser = LinkNameParser()
+        parser.feed(path.read_text(encoding="utf-8"))
+        page_count += 1
+        link_count += len(parser.links)
+        for href in parser.unnamed_links():
+            problems.append(f"{path.relative_to(ROOT)}: enlace sin nombre ({href})")
+    if problems:
+        preview = "\n".join(problems[:20])
+        remaining = len(problems) - min(len(problems), 20)
+        suffix = f"\n... y {remaining} más" if remaining else ""
+        raise RuntimeError(f"Enlaces sin nombre accesible ({len(problems)}):\n{preview}{suffix}")
+    return page_count, link_count
 
 
 def audit() -> None:
@@ -190,7 +295,19 @@ def audit() -> None:
             raise RuntimeError(f"Contraste del texto de gráficos en tema {theme}: {svg_text_ratio:.2f}:1 (<4,5:1).")
 
     pages = audit_control_names()
-    print(f"Accesibilidad visual: 7 grupos de controles con mínimo 44 px; foco y contraste SVG correctos en claro y oscuro; controles con nombre accesible en {pages} páginas.")
+    link_pages, links = audit_link_names()
+    map_page = (ROOT / "mapa-grupo" / "index.html").read_text(encoding="utf-8")
+    map_script = (ROOT / "assets" / "mapa-grupo.js").read_text(encoding="utf-8")
+    print_script = (ROOT / "assets" / "archivo-visual.js").read_text(encoding="utf-8")
+    map_requirements = ("id=\"mapa-ayuda\"", "id=\"mapa-tabla-ayuda\"", "scope=\"col\"",
+                        "id=\"mapa-tabla-titulo\"")
+    if any(requirement not in map_page for requirement in map_requirements):
+        raise RuntimeError("El mapa debe ofrecer ayuda de teclado, tabla descrita y encabezados de columna explícitos.")
+    if "setAttribute('aria-describedby','mapa-nota mapa-ayuda')" not in map_script or "mapa-tabla-titulo" not in map_script:
+        raise RuntimeError("El gráfico y su alternativa tabular deben exponer el contexto de filtros y métricas.")
+    if 'role=\"img\" aria-labelledby=\"pagina-imprimible-titulo pagina-imprimible-descripcion\"' not in print_script or "documentTitle=`Comparación J" not in print_script:
+        raise RuntimeError("Las exportaciones SVG imprimibles necesitan título y descripción accesibles y la versión HTML un título específico.")
+    print(f"Accesibilidad visual: 7 grupos de controles con mínimo 44 px; foco y contraste SVG correctos en claro y oscuro; controles con nombre accesible en {pages} páginas; {links} enlaces con nombre accesible en {link_pages} páginas.")
 
 
 if __name__ == "__main__":
