@@ -304,3 +304,19 @@
 .archivo-a5-preview figcaption { color:#536257; font-size:.85rem; text-align:center; }
 .archivo-a5-preview img { display:block; width:min(100%,296px); max-height:70vh; height:auto; object-fit:contain; border:1px solid #e0e5e1; background:#fff; }
 @media(max-width:600px) { .archivo-a5-preview img { width:min(100%,260px); max-height:62vh; } }
+.archivo-impresion-rapida { display:flex; flex:1 1 100%; align-items:center; flex-wrap:wrap; gap:.5rem; padding:.7rem; border-radius:.65rem; background:#eef2ed; }
+.archivo-impresion-rapida span { margin-right:.2rem; color:#33453a; font-weight:700; }
+.archivo-a5-preview-ampliar { display:block; max-width:min(100%,296px); margin:0 auto; padding:.2rem; border:1px solid #d5ded7; border-radius:.4rem; background:#fff; cursor:zoom-in; }
+.archivo-a5-preview-ampliar:focus-visible { outline:3px solid #245b9b; outline-offset:2px; }
+.archivo-a5-preview-ampliar img { border:0; }
+.archivo-tinta-estimada { flex-basis:100%; max-width:100%; padding:.7rem .8rem; border-radius:.6rem; background:#f4f6f3; }
+.archivo-tinta-estimada h3 { margin:0 0 .4rem; font-size:1rem; }
+.archivo-tinta-estimada ul { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:.45rem .8rem; margin:0; padding-left:1.1rem; }
+.archivo-tinta-estimada li { padding-left:.1rem; }
+.archivo-tinta-estimada strong { display:block; color:#35463a; font-size:.9rem; }
+.archivo-a5-dialog { width:min(92vw,760px); max-width:92vw; max-height:92vh; padding:1rem; border:1px solid #bdc9bf; border-radius:14px; color:#1d2b21; background:#fff; }
+.archivo-a5-dialog::backdrop { background:rgb(13 24 16 / 72%); }
+.archivo-a5-dialog-cabecera { display:flex; align-items:center; justify-content:space-between; gap:.75rem; }
+.archivo-a5-dialog-cabecera h3 { margin:.2rem 0 .8rem; font-size:1.1rem; }
+.archivo-a5-dialog img { display:block; width:auto; max-width:100%; max-height:78vh; height:auto; margin:0 auto; object-fit:contain; }
+@media(max-width:600px) { .archivo-impresion-rapida { align-items:stretch; } .archivo-impresion-rapida span { flex-basis:100%; } .archivo-impresion-rapida .boton { flex:1 1 100%; } .archivo-tinta-estimada ul { grid-template-columns:1fr; } .archivo-a5-dialog { width:94vw; max-width:94vw; padding:.65rem; } .archivo-a5-dialog img { max-height:78vh; } }

@@ -46,6 +46,12 @@
   const contactSheetPrintPreviewCaption = document.querySelector('[data-caption-hoja-contacto]');
   const comparisonA5PrintPreview = document.querySelector('[data-preview-a5]');
   const comparisonA5PrintPreviewCaption = document.querySelector('[data-caption-a5]');
+  const comparisonA5PreviewButton = document.querySelector('[data-ampliar-a5]');
+  const comparisonA5Dialog = document.querySelector('[data-dialog-a5]');
+  const comparisonA5DialogImage = document.querySelector('[data-preview-a5-ampliada]');
+  const comparisonA5DialogClose = document.querySelector('[data-cerrar-vista-a5]');
+  const printQuickButtons = [...document.querySelectorAll('[data-salto-impresion]')];
+  const inkCoverageOutputs = Object.fromEntries(['color','monocromo','fotocopia'].map(mode=>[mode,document.querySelector(`[data-tinta-estimada="${mode}"]`)]));
   const resetPrintSettingsButton = document.querySelector('[data-restablecer-impresion]');
   const printSettingsStatus = document.querySelector('[data-estado-preferencias-impresion]');
   const socialPrintStatus = document.querySelector('[data-estado-impresion-social]');
@@ -135,6 +141,7 @@
   const lowInkPrintPalette={background:'#ffffff',panel:'#ffffff',header:'#ffffff',headerText:'#171717',brand:'#414141',contextHeader:'#414141',foreground:'#171717',muted:'#414141',border:'#a3a3a3',accent:'#666666',domain:'#555555'};
   const photocopyPrintPalette={background:'#ffffff',panel:'#ffffff',header:'#ffffff',headerText:'#000000',brand:'#000000',contextHeader:'#000000',foreground:'#000000',muted:'#202020',border:'#000000',accent:'#000000',domain:'#000000'};
   const printSettingsKey='lineadepase-print-settings-v1';
+  let inkEstimateSequence=0;
   const builtInPresets = {
     portada: {format:'apaisado',metrics:true,caption:true,noHeader:false,brand:true,framing:'equilibrado',density:'completa'},
     'comparacion-limpia': {format:'cuadrado',metrics:true,caption:false,noHeader:true,brand:false,framing:'equilibrado',density:'completa'},
@@ -1211,6 +1218,56 @@
       comparisonA5PrintPreview.removeAttribute('src');
       if(comparisonA5PrintPreviewCaption)comparisonA5PrintPreviewCaption.textContent='Selecciona dos jornadas para ver la ficha A5.';
     }
+    updateInkCoverageEstimate();
+  }
+
+  function estimateInkCoverage(svg) {
+    return new Promise(resolve=>{
+      const image=new Image();
+      image.onload=()=>{
+        try {
+          const canvas=document.createElement('canvas'),width=148,height=210;canvas.width=width;canvas.height=height;
+          const context=canvas.getContext('2d',{willReadFrequently:true});if(!context){resolve(null);return;}
+          context.fillStyle='#fff';context.fillRect(0,0,width,height);context.drawImage(image,0,0,width,height);
+          const pixels=context.getImageData(0,0,width,height).data;let ink=0,total=0;
+          for(let y=0;y<height;y+=2){for(let x=0;x<width;x+=2){const offset=(y*width+x)*4,luminance=.2126*pixels[offset]+.7152*pixels[offset+1]+.0722*pixels[offset+2];if(luminance<230)ink++;total++;}}
+          resolve(ink/total*100);
+        } catch (_) { resolve(null); }
+      };
+      image.onerror=()=>resolve(null);
+      image.src=`data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+    });
+  }
+
+  async function updateInkCoverageEstimate() {
+    const sequence=++inkEstimateSequence;
+    if(!Object.values(inkCoverageOutputs).some(Boolean))return;
+    const currentMode=comparisonA5InkSelect?.value||'color',measurements=[];
+    try {
+      for(const mode of ['color','monocromo','fotocopia']){
+        if(comparisonA5InkSelect)comparisonA5InkSelect.value=mode;
+        measurements.push([mode,buildPrintableComparisonA5()]);
+      }
+    } catch (_) {
+      Object.values(inkCoverageOutputs).forEach(output=>{if(output)output.textContent='Disponible al elegir dos jornadas.';});
+      if(comparisonA5InkSelect)comparisonA5InkSelect.value=currentMode;
+      return;
+    }
+    if(comparisonA5InkSelect)comparisonA5InkSelect.value=currentMode;
+    const values=await Promise.all(measurements.map(([,svg])=>estimateInkCoverage(svg)));
+    if(sequence!==inkEstimateSequence)return;
+    measurements.forEach(([mode],index)=>{
+      const output=inkCoverageOutputs[mode],percentage=values[index];if(!output)return;
+      output.textContent=percentage===null?'No disponible':`${percentage.toFixed(1).replace('.',',')} % de superficie oscura`;
+    });
+  }
+
+  function openA5PrintPreview() {
+    if(!comparisonA5PrintPreview?.src||!comparisonA5Dialog||!comparisonA5DialogImage)return;
+    comparisonA5DialogImage.src=comparisonA5PrintPreview.src;
+    comparisonA5DialogImage.alt=comparisonA5PrintPreview.alt;
+    if(typeof comparisonA5Dialog.showModal==='function')comparisonA5Dialog.showModal();
+    else comparisonA5Dialog.setAttribute('open','');
   }
 
   function downloadPrintableSocialSvg() {
@@ -1580,6 +1637,15 @@
     [printPaperSelect,printOrientationSelect,contactSheetVariantSelect].forEach(control=>control?.addEventListener('change',()=>{savePrintSettings();updateContactSheetPrintPreview();updateA5PrintPreview();if(printSettingsStatus)printSettingsStatus.textContent='Preferencias guardadas en este navegador.';}));
     comparisonA5InkSelect?.addEventListener('change',()=>{savePrintSettings();updateA5PrintPreview();if(printSettingsStatus)printSettingsStatus.textContent='Preferencias guardadas en este navegador.';});
     resetPrintSettingsButton?.addEventListener('click',clearPrintSettings);
+    comparisonA5PreviewButton?.addEventListener('click',openA5PrintPreview);
+    comparisonA5DialogClose?.addEventListener('click',()=>{if(typeof comparisonA5Dialog?.close==='function')comparisonA5Dialog.close();else comparisonA5Dialog?.removeAttribute('open');});
+    comparisonA5Dialog?.addEventListener('click',event=>{if(event.target===comparisonA5Dialog&&typeof comparisonA5Dialog.close==='function')comparisonA5Dialog.close();});
+    printQuickButtons.forEach(button=>button.addEventListener('click',()=>{
+      const target=document.querySelector(button.dataset.saltoImpresion==='a4'?'[data-imprimir-hoja-directa]':'[data-imprimir-a5-directa]');
+      if(!target)return;
+      target.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'});
+      target.focus({preventScroll:true});
+    }));
     resetOptionsButton?.addEventListener('click', () => {
       if (formatSelect) formatSelect.value = 'apaisado';
       if (metricsToggle) metricsToggle.checked = true;
