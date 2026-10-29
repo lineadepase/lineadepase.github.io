@@ -1348,8 +1348,12 @@
     return printablePage(`${title}${pieces}${guide}${printCalibrationScale(scaleY)}${footer}`,settings.width,settings.height);
   }
 
+  function pdfNormalizeText(value) {
+    return value.replace(/×/g,'x').replace(/·/g,' / ').replace(/→/g,'>');
+  }
+
   function pdfEscape(value) {
-    const normalized=value.replace(/×/g,'x').replace(/·/g,' / ').replace(/→/g,'>');
+    const normalized=pdfNormalizeText(value);
     const winAnsiSpecial=new Map([[0x20ac,0x80],[0x201a,0x82],[0x192,0x83],[0x201e,0x84],[0x2026,0x85],[0x2020,0x86],[0x2021,0x87],[0x2c6,0x88],[0x2030,0x89],[0x160,0x8a],[0x2039,0x8b],[0x152,0x8c],[0x17d,0x8e],[0x2018,0x91],[0x2019,0x92],[0x201c,0x93],[0x201d,0x94],[0x2022,0x95],[0x2013,0x96],[0x2014,0x97],[0x2dc,0x98],[0x2122,0x99],[0x161,0x9a],[0x203a,0x9b],[0x153,0x9c],[0x17e,0x9e],[0x178,0x9f]]);
     return [...normalized].map(character=>{
       const point=character.codePointAt(0),code=winAnsiSpecial.get(point)??(point<=0xff?point:null);
@@ -1358,6 +1362,16 @@
       if(code>=0x20&&code<=0x7e)return String.fromCharCode(code);
       return `\\${code.toString(8).padStart(3,'0')}`;
     }).join('');
+  }
+
+  function pdfToUnicodeCMap() {
+    const special=new Map([[0x80,0x20ac],[0x82,0x201a],[0x83,0x192],[0x84,0x201e],[0x85,0x2026],[0x86,0x2020],[0x87,0x2021],[0x88,0x2c6],[0x89,0x2030],[0x8a,0x160],[0x8b,0x2039],[0x8c,0x152],[0x8e,0x17d],[0x91,0x2018],[0x92,0x2019],[0x93,0x201c],[0x94,0x201d],[0x95,0x2022],[0x96,0x2013],[0x97,0x2014],[0x98,0x2dc],[0x99,0x2122],[0x9a,0x161],[0x9b,0x203a],[0x9c,0x153],[0x9e,0x17e],[0x9f,0x178]]),mappings=[];
+    for(let code=0x20;code<=0xff;code++){
+      const unicode=special.get(code)??(code>=0xa0?code:code<=0x7e?code:null);
+      if(unicode!==null)mappings.push(`<${code.toString(16).padStart(2,'0').toUpperCase()}> <${unicode.toString(16).padStart(4,'0').toUpperCase()}>`);
+    }
+    const groups=Array.from({length:Math.ceil(mappings.length/100)},(_,index)=>mappings.slice(index*100,(index+1)*100));
+    return `/CIDInit /ProcSet findresource begin\n12 dict begin\nbegincmap\n/CIDSystemInfo << /Registry (Adobe) /Ordering (UCS) /Supplement 0 >> def\n/CMapName /LdpWinAnsi-UCS def\n/CMapType 2 def\n1 begincodespacerange\n<00> <FF>\nendcodespacerange\n${groups.map(group=>`${group.length} beginbfchar\n${group.join('\n')}\nendbfchar`).join('\n')}\nendcmap\nCMapName currentdict /CMap defineresource pop\nend\nend`;
   }
 
   async function loadPdfFonts() {
@@ -1397,10 +1411,10 @@
       return out.join(' ');
     };
     const drawText=(node,ctx)=>{
-      const raw=node.textContent||'',text=pdfEscape(raw);if(!text)return;
+      const raw=node.textContent||'',text=pdfEscape(raw),measuredText=pdfNormalizeText(raw);if(!text)return;
       const x=number(node,'x'),y=number(node,'y'),size=number(node,'font-size',16),weight=Number(node.getAttribute('font-weight')||400),family=node.getAttribute('font-family')||'Arial',anchor=node.getAttribute('text-anchor')||'start',
         [px,py]=point(x,y,ctx),fontSize=size*ctx.sy*factor,firstFamily=family.split(',')[0].trim().toLowerCase(),serif=/^(times|georgia|serif)(\b|$)/.test(firstFamily),font=serif?'/F3':weight>=600?'/F2':'/F1',textLength=node.hasAttribute('textLength')?number(node,'textLength')*ctx.sx*factor:null,
-        naturalWidth=text.length*size*(serif?.52:.54)*ctx.sx*factor,letterSpacing=number(node,'letter-spacing')*ctx.sx*factor,measuredWidth=naturalWidth+Math.max(0,text.length-1)*letterSpacing,width=textLength===null?measuredWidth:Math.min(textLength,naturalWidth),horizontalScale=textLength!==null&&naturalWidth>textLength?textLength/naturalWidth*100:100,startX=px-(anchor==='middle'?width/2:anchor==='end'?width:0);
+        naturalWidth=measuredText.length*size*(serif?.52:.54)*ctx.sx*factor,letterSpacing=number(node,'letter-spacing')*ctx.sx*factor,measuredWidth=naturalWidth+Math.max(0,measuredText.length-1)*letterSpacing,width=textLength===null?measuredWidth:Math.min(textLength,naturalWidth),horizontalScale=textLength!==null&&naturalWidth>textLength?textLength/naturalWidth*100:100,startX=px-(anchor==='middle'?width/2:anchor==='end'?width:0);
       const mcid=taggedText.length;taggedText.push(raw);
       parts.push(`/P <</MCID ${mcid}>> BDC`,`${rgb(node.getAttribute('fill')||'#000000')} rg BT ${font} ${fontSize.toFixed(3)} Tf ${horizontalScale.toFixed(2)} Tz ${letterSpacing.toFixed(3)} Tc 1 0 0 1 ${startX.toFixed(3)} ${py.toFixed(3)} Tm (${text}) Tj ET`,'EMC');
     };
@@ -1427,13 +1441,14 @@
     const content=parts.join('\n'),fonts=await loadPdfFonts(),documentStructId=13,tagRefs=taggedText.map((_,index)=>`${14+index} 0 R`),metadataId=14+taggedText.length,infoId=metadataId+1,
       xmlEscape=value=>value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;'),
       xmp=`<?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>\n<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Línea de pase"><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"><rdf:Description rdf:about="" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xmp="http://ns.adobe.com/xap/1.0/"><dc:title><rdf:Alt><rdf:li xml:lang="x-default">${xmlEscape(title)}</rdf:li></rdf:Alt></dc:title><dc:creator><rdf:Seq><rdf:li>Ángel Marqueta Alonso</rdf:li></rdf:Seq></dc:creator><dc:language><rdf:Bag><rdf:li>es-ES</rdf:li></rdf:Bag></dc:language><dc:format>application/pdf</dc:format><xmp:CreatorTool>Línea de pase</xmp:CreatorTool></rdf:Description></rdf:RDF></x:xmpmeta>\n<?xpacket end="w"?>`,
-      fontObject=(font,name,descriptorId)=>`<< /Type /Font /Subtype /TrueType /BaseFont /${name} /FirstChar ${font.metrics.firstChar} /LastChar ${font.metrics.lastChar} /Widths [${font.metrics.widths.join(' ')}] /Encoding /WinAnsiEncoding /FontDescriptor ${descriptorId} 0 R >>`,
+      unicodeRegularId=infoId+1,unicodeBoldId=infoId+2,
+      fontObject=(font,name,descriptorId,unicodeId)=>`<< /Type /Font /Subtype /TrueType /BaseFont /${name} /FirstChar ${font.metrics.firstChar} /LastChar ${font.metrics.lastChar} /Widths [${font.metrics.widths.join(' ')}] /Encoding /WinAnsiEncoding /ToUnicode ${unicodeId} 0 R /FontDescriptor ${descriptorId} 0 R >>`,
       fontDescriptor=(font,name,fileId)=>`<< /Type /FontDescriptor /FontName /${name} /Flags 32 /FontBBox [${font.metrics.bbox.join(' ')}] /ItalicAngle 0 /Ascent ${font.metrics.ascent} /Descent ${font.metrics.descent} /CapHeight ${font.metrics.capHeight} /StemV ${font.metrics.stemV} /FontFile2 ${fileId} 0 R >>`,
       objects=[
       `<< /Type /Catalog /Pages 2 0 R /Lang (es-ES) /Metadata ${metadataId} 0 R /MarkInfo << /Marked true >> /StructTreeRoot 11 0 R /ViewerPreferences << /DisplayDocTitle true >> >>`,
       '<< /Type /Pages /Kids [3 0 R] /Count 1 >>',
       `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageW.toFixed(2)} ${pageH.toFixed(2)}] /Resources << /Font << /F1 4 0 R /F2 5 0 R /F3 4 0 R >> >> /StructParents 0 /Tabs /S /Contents 10 0 R >>`,
-      fontObject(fonts.regular,'LdpArchivoRegular',6),fontObject(fonts.bold,'LdpArchivoBold',7),fontDescriptor(fonts.regular,'LdpArchivoRegular',8),fontDescriptor(fonts.bold,'LdpArchivoBold',9),
+      fontObject(fonts.regular,'LdpArchivoRegular',6,unicodeRegularId),fontObject(fonts.bold,'LdpArchivoBold',7,unicodeBoldId),fontDescriptor(fonts.regular,'LdpArchivoRegular',8),fontDescriptor(fonts.bold,'LdpArchivoBold',9),
       null,null,
       `<< /Length ${new TextEncoder().encode(content).length} >>\nstream\n${content}\nendstream`,
       `<< /Type /StructTreeRoot /K ${documentStructId} 0 R /ParentTree 12 0 R /ParentTreeNextKey 1 >>`,
@@ -1441,7 +1456,9 @@
       `<< /Type /StructElem /S /Document /P 11 0 R /K [${tagRefs.join(' ')}] >>`,
       ...taggedText.map((_,index)=>`<< /Type /StructElem /S /P /P ${documentStructId} 0 R /Pg 3 0 R /K ${index} >>`),
       `<< /Type /Metadata /Subtype /XML /Length ${new TextEncoder().encode(xmp).length} >>\nstream\n${xmp}\nendstream`,
-      `<< /Title (${pdfEscape(title)}) /Author (Linea de pase) /Subject (Documento en espanol; lectura marcada en es-ES) >>`
+      `<< /Title (${pdfEscape(title)}) /Author (Linea de pase) /Subject (Documento en espanol; lectura marcada en es-ES) >>`,
+      `<< /Length ${new TextEncoder().encode(pdfToUnicodeCMap()).length} >>\nstream\n${pdfToUnicodeCMap()}\nendstream`,
+      `<< /Length ${new TextEncoder().encode(pdfToUnicodeCMap()).length} >>\nstream\n${pdfToUnicodeCMap()}\nendstream`
     ];
     const streamObject=(bytes,length)=>[`<< /Length ${bytes.length} /Length1 ${length} /Filter /FlateDecode >>\nstream\n`,bytes,'\nendstream'];
     objects[7]=streamObject(fonts.regular.bytes,fonts.regular.length);objects[8]=streamObject(fonts.bold.bytes,fonts.bold.length);
