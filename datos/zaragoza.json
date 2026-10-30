@@ -1476,7 +1476,65 @@
    "a_puerta_zaragoza": 2.0,
    "a_puerta_rival": 1.0,
    "posesion_pct": 67.0
+  },
+  {
+   "partido_id": 101,
+   "competicion": "Copa del Rey",
+   "jornada": null,
+   "fecha": "2026-10-27",
+   "sede": "Fuera",
+   "rival": "CD Tudelano",
+   "goles_favor": 4,
+   "goles_contra": 0,
+   "gf_descanso": 4,
+   "gc_descanso": 0,
+   "goles": [
+    {
+     "sentido": "Favor",
+     "minuto": "12",
+     "jugador": "Joaquín",
+     "asistencia": "Marcos Cuenca",
+     "penalti": false,
+     "propia_puerta": false
+    },
+    {
+     "sentido": "Favor",
+     "minuto": "20",
+     "jugador": "Pau Sans",
+     "asistencia": null,
+     "penalti": true,
+     "propia_puerta": false
+    },
+    {
+     "sentido": "Favor",
+     "minuto": "37",
+     "jugador": "Pau Sans",
+     "asistencia": null,
+     "penalti": false,
+     "propia_puerta": false
+    },
+    {
+     "sentido": "Favor",
+     "minuto": "41",
+     "jugador": "Hugo Pinilla",
+     "asistencia": null,
+     "penalti": false,
+     "propia_puerta": false
+    }
+   ],
+   "tarjetas": []
   }
  ],
- "copa": []
+ "copa": [
+  {
+   "partido_id": 101,
+   "competicion": "Copa del Rey",
+   "fecha": "2026-10-27",
+   "sede": "Fuera",
+   "rival": "CD Tudelano",
+   "goles_favor": 4,
+   "goles_contra": 0,
+   "resultado": "Victoria"
+  }
+ ]
 }

@@ -41,6 +41,8 @@ def cargar_todo():
 
     partidos = _leer("partidos.csv")
     partidos["fecha"] = pd.to_datetime(partidos["fecha"])
+    # La Copa no tiene jornada: entero con huecos para que la liga no pase a 1.0, 2.0…
+    partidos["jornada"] = partidos["jornada"].astype("Int64")
     datos["partidos"] = partidos.sort_values("fecha").reset_index(drop=True)
 
     goles = _leer("goles.csv")

@@ -4,7 +4,7 @@ Qué es cada tabla del proyecto y qué significa cada columna. Este archivo lo g
 
 ## partidos
 
-Un partido oficial por fila (liga y copa) con el resultado final y al descanso. Archivo: `datos/entrada/partidos.csv` (9 filas).
+Un partido oficial por fila (liga y copa) con el resultado final y al descanso. Archivo: `datos/entrada/partidos.csv` (10 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|
@@ -22,7 +22,7 @@ Un partido oficial por fila (liga y copa) con el resultado final y al descanso. 
 
 ## goles
 
-Un gol por fila, a favor o en contra, con minuto, goleador y asistencia. Archivo: `datos/entrada/goles.csv` (27 filas).
+Un gol por fila, a favor o en contra, con minuto, goleador y asistencia. Archivo: `datos/entrada/goles.csv` (31 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|
@@ -39,7 +39,7 @@ Un gol por fila, a favor o en contra, con minuto, goleador y asistencia. Archivo
 
 ## alineaciones
 
-Once inicial del Zaragoza en cada partido: un titular por fila. Archivo: `datos/entrada/alineaciones.csv` (99 filas).
+Once inicial del Zaragoza en cada partido: un titular por fila. Archivo: `datos/entrada/alineaciones.csv` (110 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|
@@ -49,7 +49,7 @@ Once inicial del Zaragoza en cada partido: un titular por fila. Archivo: `datos/
 
 ## cambios
 
-Sustituciones del Zaragoza: quién entra, quién sale y en qué minuto. Archivo: `datos/entrada/cambios.csv` (45 filas).
+Sustituciones del Zaragoza: quién entra, quién sale y en qué minuto. Archivo: `datos/entrada/cambios.csv` (50 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|
@@ -198,7 +198,7 @@ Próximos partidos del calendario. Archivo: `datos/entrada/proximos.csv` (2 fila
 
 ## partidos_rivales
 
-Resultados del próximo rival esta temporada, para la previa. Archivo: `datos/entrada/partidos_rivales.csv` (23 filas).
+Resultados del próximo rival esta temporada, para la previa. Archivo: `datos/entrada/partidos_rivales.csv` (24 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|
@@ -213,7 +213,7 @@ Resultados del próximo rival esta temporada, para la previa. Archivo: `datos/en
 
 ## incidencias
 
-Diferencias entre fuentes y qué dato me quedo. Es el registro de decisiones del proyecto. Archivo: `datos/entrada/incidencias.csv` (68 filas).
+Diferencias entre fuentes y qué dato me quedo. Es el registro de decisiones del proyecto. Archivo: `datos/entrada/incidencias.csv` (75 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|
