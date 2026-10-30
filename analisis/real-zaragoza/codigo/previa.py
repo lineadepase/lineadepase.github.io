@@ -135,17 +135,6 @@ def generar(jornada):
 
     local, visitante = ((ZARAGOZA, nombre_rival) if proximo["sede"] == "Casa"
                         else (nombre_rival, ZARAGOZA))
-    # Un enlace por proveedor (el primero que aparece), con su nombre real
-    proveedores = {"besoccer": "BeSoccer", "futbolme": "futbolme", "fotmob": "FotMob",
-                   "sofascore": "Sofascore", "goal.com": "Goal"}
-    por_proveedor = {}
-    for u in rival["fuente_url"]:
-        nombre = next((n for clave, n in proveedores.items() if clave in u), "otra fuente")
-        por_proveedor.setdefault(nombre, u)
-    enlaces = ['<a href="{url}" rel="noopener" target="_blank">{nombre}</a>'.format(url=escape(u), nombre=n)
-               for n, u in por_proveedor.items()]
-    fuentes_html = enlaces[0] if len(enlaces) == 1 else ", ".join(enlaces[:-1]) + " y " + enlaces[-1]
-
     extra_ruta = CARPETA_ENTRADA.parent.parent / "textos" / f"previa_j{jornada}_extra.html"
     extra = extra_ruta.read_text(encoding="utf-8") if extra_ruta.exists() else ""
 
@@ -218,7 +207,7 @@ def generar(jornada):
     </div>
   </section>
 
-  {extra}
+{extra}
   <section class="seccion">
     <p class="etiqueta">Rivales comunes</p>
     <h2>Contra los mismos equipos</h2>
@@ -227,8 +216,6 @@ def generar(jornada):
   </section>
 
   <section class="seccion lectura">
-    <p class="etiqueta">Fuentes</p>
-    <p>Resultados del {escape(nombre_rival)}: {fuentes_html}; las comprobaciones y discrepancias están en el <a href="../../analisis/real-zaragoza/datos/entrada/incidencias.csv">registro de incidencias</a>. Datos del Real Zaragoza: los mismos del <a href="informe-completo.html">informe completo</a>.</p>
     <div class="enlaces"><a class="boton" href="index.html">Volver al panel</a></div>
   </section>
 </main>
