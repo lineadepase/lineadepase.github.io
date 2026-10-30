@@ -13,21 +13,35 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Big+Shoulders+Display:wght@700;800&display=swap">
 <script src="../assets/tema.js"></script>
-<link rel="stylesheet" href="../assets/estilo.css?v=20261021fotos">
-<script src="../assets/mejoras.js?v=20261021audit" defer></script>
+<link rel="stylesheet" href="../assets/estilo.css?v=20261028a11y1">
+<script src="../assets/mejoras.js?v=20261027claims" defer></script>
 <link rel="icon" href="../assets/icono.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../assets/explorar.css?v=20261021e">
-<link rel="stylesheet" href="../assets/experiencia.css?v=20261021g">
-<script src="../assets/experiencia.js?v=20261021audit" defer></script>
+<link rel="stylesheet" href="../assets/experiencia.css?v=20261028a11y2">
+<script src="../assets/experiencia.js?v=20261027visual4" defer></script>
+
+<style>
+/* Tarjetas de proyectos: imágenes horizontales completas en pantallas pequeñas. */
+@media (max-width: 760px) {
+  #catalogo.tarjetas-proyecto { display:grid; grid-template-columns:minmax(0,1fr); gap:1.25rem; }
+  #catalogo > li, #catalogo .tarjeta-proyecto, #catalogo .mini-marco { min-width:0; width:100%; }
+  #catalogo .tarjeta-proyecto { display:flex; flex-direction:column; overflow:hidden; }
+  #catalogo .mini-marco { height:auto; min-height:0; aspect-ratio:auto; overflow:visible; }
+  #catalogo .mini-imagen { width:100%; height:auto; min-height:0; aspect-ratio:auto; overflow:visible; }
+  #catalogo .mini-imagen img { display:block; width:100%; height:auto; max-height:none; aspect-ratio:auto; object-fit:contain; object-position:center; }
+  #catalogo .mini-marcador { width:100%; height:auto; min-height:0; padding:1.25rem; }
+  #catalogo .tarjeta-texto { min-width:0; }
+}
+</style>
 
 <!-- SEO: generado por herramientas/actualizar_seo.py -->
-<link rel="canonical" href="https://lineadepase.com/tras-la-jornada/index.html">
+<link rel="canonical" href="https://lineadepase.com/tras-la-jornada/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="es_ES">
 <meta property="og:site_name" content="Línea de pase">
 <meta property="og:title" content="Tras la jornada · Línea de pase">
 <meta property="og:description" content="El último partido del Zaragoza, en una pregunta, un gráfico y una lectura breve.">
-<meta property="og:url" content="https://lineadepase.com/tras-la-jornada/index.html">
+<meta property="og:url" content="https://lineadepase.com/tras-la-jornada/">
 <meta property="og:image" content="https://lineadepase.com/assets/compartir/tras-la-jornada-index.png">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
@@ -38,32 +52,23 @@
 <meta name="twitter:description" content="El último partido del Zaragoza, en una pregunta, un gráfico y una lectura breve.">
 <meta name="twitter:image" content="https://lineadepase.com/assets/compartir/tras-la-jornada-index.png">
 <meta name="twitter:image:alt" content="Tras la jornada · Línea de pase">
-<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://lineadepase.com/"}, {"@type": "ListItem", "position": 2, "name": "Tras la jornada", "item": "https://lineadepase.com/tras-la-jornada/index.html"}]}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://lineadepase.com/"}, {"@type": "ListItem", "position": 2, "name": "Tras la jornada", "item": "https://lineadepase.com/tras-la-jornada/"}]}]}</script>
 <!-- /SEO -->
 </head>
 <body><header class="cabecera">
   <div class="envoltorio">
-    <a class="marca" href="../index.html" aria-label="Línea de pase, inicio">
+    <a class="marca" href="../" aria-label="Línea de pase, inicio">
       <svg viewBox="0 0 64 48" aria-hidden="true"><defs><linearGradient id="lp-cesped" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2f6b45"/><stop offset="1" stop-color="#3f8f5c"/></linearGradient><clipPath id="lp-campo"><rect x="2" y="2" width="60" height="44" rx="8"/></clipPath></defs><rect x="2" y="2" width="60" height="44" rx="8" fill="url(#lp-cesped)" stroke="#f4f7f1" stroke-opacity=".55" stroke-width="2"/><g clip-path="url(#lp-campo)" fill="#fff" fill-opacity=".08"><rect x="2" y="0" width="7.5" height="48"/><rect x="17" y="0" width="7.5" height="48"/><rect x="32" y="0" width="7.5" height="48"/><rect x="47" y="0" width="7.5" height="48"/></g><g fill="none" stroke="#fff" stroke-opacity=".75" stroke-width="1.8"><rect x="6" y="6" width="52" height="36" rx="2"/><path d="M32 6v36"/><circle cx="32" cy="24" r="6"/><path d="M58 15h-8v18h8"/></g><path d="M13 34C23 20 35 18 47 23" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-dasharray="0.1 5.6"/><circle cx="12" cy="35" r="3.8" fill="#14261d" stroke="#fff" stroke-width="1.4"/><circle cx="50" cy="24" r="4.6" fill="#ff7a2f" stroke="#fff" stroke-width="1.4"/></svg>
       Línea de pase
     </a>
-    <nav class="nav" aria-label="Principal"><a href="../index.html">Inicio</a><a href="../proyectos/index.html">Proyectos</a><a data-explorar="herramientas" href="../herramientas/index.html">Herramientas</a><a href="../videos/index.html">Vídeos</a><a data-explorar="archivo" href="../archivo/index.html">Archivo</a><a data-explorar="conceptos" href="../conceptos/index.html">Conceptos</a><a href="../sobre-mi/index.html">Sobre mí</a></nav>
+    <nav class="nav" aria-label="Principal"><a href="../">Inicio</a><a href="../proyectos/">Proyectos</a><a data-explorar="herramientas" href="../herramientas/">Herramientas</a><a href="../videos/">Vídeos</a><a data-explorar="archivo" href="../archivo/">Archivo</a><a data-explorar="conceptos" href="../conceptos/">Conceptos</a><a href="../sobre-mi/">Sobre mí</a></nav>
   </div>
-</header><main class="envoltorio"><section class="seccion primera"><p class="etiqueta">Explora Línea de pase</p><h1>Tras la jornada</h1><p class="entradilla">El último partido del Zaragoza, en una pregunta, un gráfico y una lectura breve.</p><p class="etiqueta">Real Zaragoza · 2026/27 · Jornada 8</p><h2 class="pregunta-entrega">¿Qué explica el empate sin goles en Murcia?</h2><p class="entradilla">El Zaragoza conservó el empate en Murcia, pero le faltó continuidad para crear peligro.</p><p class="nota">Real Murcia – Real Zaragoza · 0–0 · Partido del <time datetime="2026-10-18">18/10/2026</time>.</p><figure class="grafico-entrega"><a href="../assets/entregas/zaragoza-j8.png" aria-label="Ampliar el gráfico de la jornada 8"><img src="../assets/entregas/zaragoza-j8.png" width="1200" height="900" alt="Real Murcia – Real Zaragoza: 0–0. Nueve tiros por equipo; xG de 0,47 para el Zaragoza y 0,79 para el Murcia."></a><figcaption>Nueve tiros por equipo; xG de 0,47 para el Zaragoza y 0,79 para el Murcia. Fuente del gráfico: Sofascore; xG del encuentro, sin mezclar proveedores.</figcaption></figure><div class="lectura-entrega"><h2>La lectura</h2><p>La expulsión de Ademo cambió el final. La resistencia permitió sumar, aunque el larguero de Moyita en el descuento mostró lo estrecho que fue el margen.</p></div><div class="enlaces"><a class="boton lleno" href="../proyectos/real-zaragoza/jornada-8.html#titulo-claves">Leer el análisis completo</a><a class="boton" href="../assets/entregas/zaragoza-j8.png" download="linea-de-pase-zaragoza-j8.png">Descargar imagen (PNG)</a><a class="boton" href="../proyectos/real-zaragoza/evolucion.html">Situar el partido en la temporada</a></div><details class="compartir-entrega"><summary>Preparar esta entrega para redes</summary><p>El texto y la imagen se pueden copiar y descargar. El selector identifica el origen del enlace; la publicación se realiza desde la red elegida.</p><label for="canal-entrega">Canal<select id="canal-entrega"><option value="redes">Enlace general para redes</option><option value="linkedin">LinkedIn</option><option value="instagram">Instagram</option><option value="facebook">Facebook</option></select></label><label for="texto-entrega">Texto de la entrega<textarea id="texto-entrega" rows="10" readonly data-enlace="https://lineadepase.com/proyectos/real-zaragoza/jornada-8.html">Tras la jornada · J8
-Real Murcia – Real Zaragoza 0–0
-
-¿Qué explica el empate sin goles en Murcia?
-El Zaragoza conservó el empate en Murcia, pero le faltó continuidad para crear peligro.
-
-Nueve tiros por equipo; xG de 0,47 para el Zaragoza y 0,79 para el Murcia.
-
-Análisis, fuentes y contexto:
-https://lineadepase.com/proyectos/real-zaragoza/jornada-8.html?utm_source=redes&amp;utm_medium=social&amp;utm_campaign=zaragoza-2026-27-j8</textarea></label><button class="boton" id="copiar-entrega" type="button">Copiar texto y enlace</button><p id="estado-entrega" role="status"></p></details><script src="../assets/entrega.js?v=20261021f" defer></script><p class="nota">La serie parte de una pregunta, un gráfico propio y una lectura breve de cada partido. Las entregas se actualizan después de revisar los datos y el análisis.</p><a class="boton" href="../proyectos/real-zaragoza/jornadas.html">Volver a las jornadas</a></section></main><footer class="pie">
+</header><main class="envoltorio"><section class="seccion primera"><p class="etiqueta">Explora Línea de pase</p><h1>Tras la jornada</h1><p class="entradilla">El último partido del Zaragoza, en una pregunta, un gráfico y una lectura breve.</p><p>La próxima entrega breve está pendiente de revisión editorial.</p><a class="boton" href="../proyectos/real-zaragoza/jornadas.html">Consultar los partidos publicados</a><p class="nota">La serie parte de una pregunta, un gráfico propio y una lectura breve de cada partido. Las entregas se actualizan después de revisar los datos y el análisis.</p><a class="boton" href="../proyectos/real-zaragoza/jornadas.html">Volver a las jornadas</a></section></main><footer class="pie">
   <div class="envoltorio">
     <p>Análisis personales hechos con datos públicos. Línea de pase no tiene relación con ningún club ni competición.</p>
-    <p><a href="../sobre-mi/index.html#contacto">Contacto</a> · <a href="https://www.linkedin.com/in/angel-marqueta-alonso-a8831164" rel="noopener" target="_blank">LinkedIn</a> · <a href="https://www.youtube.com/@lineadepasefutbol" rel="noopener" target="_blank">YouTube</a> · <a href="https://www.instagram.com/lineadepasefutbol/" rel="noopener" target="_blank">Instagram</a> · <a href="https://www.facebook.com/profile.php?id=61594945036383" rel="noopener" target="_blank">Facebook</a> · <a data-novedades-pie href="../novedades/index.html">Novedades</a> · © 2026 Ángel Marqueta Alonso</p>
+    <p><a href="../sobre-mi/#contacto">Contacto</a> · <a href="https://www.linkedin.com/in/angel-marqueta-alonso-a8831164" rel="noopener" target="_blank">LinkedIn</a> · <a href="https://www.youtube.com/@lineadepasefutbol" rel="noopener" target="_blank">YouTube</a> · <a href="https://www.instagram.com/lineadepasefutbol/" rel="noopener" target="_blank">Instagram</a> · <a href="https://www.facebook.com/profile.php?id=61594945036383" rel="noopener" target="_blank">Facebook</a> · <a data-novedades-pie href="../novedades/">Novedades</a> · © 2026 Ángel Marqueta Alonso</p>
   </div>
 <!-- Preferencias de cookies -->
-<div class="cookies-enlaces"><a href="/privacidad/index.html">Privacidad y cookies</a><button type="button" data-preferencias-cookies hidden>Preferencias de cookies</button></div>
+<div class="cookies-enlaces"><a href="/privacidad/">Privacidad y cookies</a><button type="button" data-preferencias-cookies hidden>Preferencias de cookies</button></div>
 <!-- /Preferencias de cookies -->
 </footer></body></html>

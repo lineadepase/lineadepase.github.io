@@ -9,6 +9,7 @@ from html import escape, unescape
 import json
 import re
 import xml.etree.ElementTree as ET
+from urllib.parse import urlsplit
 from PIL import Image, ImageDraw, ImageFont
 from google_analytics import incorporar_etiqueta
 
@@ -109,7 +110,7 @@ def build():
     output = ROOT / 'assets' / 'compartir'
     output.mkdir(parents=True, exist_ok=True)
     files = [ROOT / 'index.html']
-    for folder in ['proyectos', 'sobre-mi', 'videos', 'contacto', 'archivo', 'conceptos', 'comparador', 'seleccion', 'novedades', 'mapa-grupo', 'herramientas', 'tras-la-jornada', 'privacidad']:
+    for folder in ['proyectos', 'sobre-mi', 'videos', 'contacto', 'archivo', 'archivo-visual', 'conceptos', 'comparador', 'seleccion', 'novedades', 'mapa-grupo', 'herramientas', 'tras-la-jornada', 'privacidad', 'preguntas-del-partido', 'marcador-a-ciegas', 'datos-en-revision', 'partidos-espejo', 'reloj-del-marcador', 'pizarron-de-una-jugada', 'balance-de-preguntas', 'mapa-de-lo-que-cambio', 'esquemas-del-juego', 'galeria-visual']:
         files.extend(sorted((ROOT / folder).rglob('*.html')))
     urls = []
     manifest = []
@@ -122,10 +123,21 @@ def build():
         if head.redirect or head.noindex:
             continue
         path = file.relative_to(ROOT).as_posix()
-        url = BASE + ('/' if path == 'index.html' else '/' + path)
+        # GitHub Pages redirige /carpeta/index.html a /carpeta/. Declara y
+        # publica siempre la URL limpia para evitar enviar redirecciones a Google.
+        if path == 'index.html':
+            url = BASE + '/'
+        elif path.endswith('/index.html'):
+            url = BASE + '/' + path[:-len('index.html')]
+        else:
+            url = BASE + '/' + path
         slug = 'inicio' if path == 'index.html' else path.removesuffix('.html').replace('/', '-')
         image_path = 'assets/compartir/' + slug + '.png'
         image_url = BASE + '/' + image_path
+        editorial = re.search(r'<meta name="imagen-editorial" content="([^"]+)">', raw)
+        if editorial:
+            image_path = editorial[1]
+            image_url = BASE + '/' + image_path
         title = head.title.strip()
         display = title.replace(' · Línea de pase', '').strip()
         if path == 'index.html':
@@ -136,10 +148,27 @@ def build():
         description = head.description.strip()
         if not description:
             raise ValueError(f'Falta descripción en {path}')
-        card(display, category, ROOT / image_path)
+        if not editorial:
+            card(display, category, ROOT / image_path)
         # Sustituir solo nuestro bloque mantiene intactos títulos y descripciones editoriales.
         raw = re.sub(re.escape(START) + r'.*?' + re.escape(END) + r'\r?\n?', '', raw, flags=re.S)
         raw = re.sub(r'<link\b[^>]*rel=["\']canonical["\'][^>]*>\s*', '', raw, flags=re.I)
+        # Las plantillas antiguas enlazan a index.html aunque la ruta limpia
+        # sea la que declaramos como canónica. Normaliza esos enlaces internos.
+        def enlace_limpio(match):
+            comilla, destino = match.group(1), match.group(2)
+            if destino.startswith(('http://', 'https://')) and not destino.startswith(BASE + '/'):
+                return match.group(0)
+            partes = urlsplit(destino)
+            ruta = partes.path
+            if ruta == 'index.html':
+                ruta = './'
+            elif ruta.endswith('/index.html'):
+                ruta = ruta[:-len('index.html')]
+            else:
+                return match.group(0)
+            return f'href={comilla}{ruta}{("?" + partes.query) if partes.query else ""}{("#" + partes.fragment) if partes.fragment else ""}{comilla}'
+        raw = re.sub(r"href=([\"'])(.*?)\1", enlace_limpio, raw, flags=re.I)
         e = lambda x: escape(x, quote=True)
         tags = [START,
                 f'<link rel="canonical" href="{e(url)}">',
@@ -164,18 +193,18 @@ def build():
             schema = {'@context': 'https://schema.org', '@graph': [
                 {'@type': 'WebSite', '@id': BASE + '/#website', 'url': BASE + '/',
                  'name': 'Línea de pase', 'inLanguage': 'es', 'description': description,
-                 'author': {'@id': BASE + '/sobre-mi/index.html#autor'}},
-                {'@type': 'Person', '@id': BASE + '/sobre-mi/index.html#autor',
-                 'name': 'Ángel Marqueta Alonso', 'url': BASE + '/sobre-mi/index.html',
+                 'author': {'@id': BASE + '/sobre-mi/#autor'}},
+                {'@type': 'Person', '@id': BASE + '/sobre-mi/#autor',
+                 'name': 'Ángel Marqueta Alonso', 'url': BASE + '/sobre-mi/',
                  'sameAs': ['https://www.linkedin.com/in/angel-marqueta-alonso-a8831164',
                             'https://www.youtube.com/@lineadepasefutbol']}]}
             tags.insert(-1, '<script type="application/ld+json">' + json.dumps(schema, ensure_ascii=False) + '</script>')
         else:
             crumbs = [('Inicio', BASE + '/')]
             if path.startswith('proyectos/') and path != 'proyectos/index.html':
-                crumbs.append(('Proyectos', BASE + '/proyectos/index.html'))
+                crumbs.append(('Proyectos', BASE + '/proyectos/'))
             if path.startswith('proyectos/real-zaragoza/') and path != 'proyectos/real-zaragoza/index.html':
-                crumbs.append(('Real Zaragoza', BASE + '/proyectos/real-zaragoza/index.html'))
+                crumbs.append(('Real Zaragoza', BASE + '/proyectos/real-zaragoza/'))
             crumbs.append((title.replace(' · Línea de pase', ''), url))
             graph = [{
                 '@type': 'BreadcrumbList',
@@ -189,7 +218,7 @@ def build():
                     'description': description, 'image': [image_url],
                     'inLanguage': 'es', 'mainEntityOfPage': url,
                     'author': {'@type': 'Person', 'name': 'Ángel Marqueta Alonso',
-                               'url': BASE + '/sobre-mi/index.html'}})
+                               'url': BASE + '/sobre-mi/'}})
             tags.insert(-1, '<script type="application/ld+json">' + json.dumps(
                 {'@context': 'https://schema.org', '@graph': graph}, ensure_ascii=False) + '</script>')
         raw = raw.replace('</head>', nl.join(tags) + nl + '</head>', 1)
@@ -205,7 +234,13 @@ def build():
     ET.indent(root)
     ET.ElementTree(root).write(ROOT / 'sitemap.xml', encoding='utf-8', xml_declaration=True)
     (ROOT / 'robots.txt').write_text('User-agent: *\nAllow: /\n\nSitemap: ' + BASE + '/sitemap.xml\n', encoding='utf-8')
-    print(json.dumps({'pages': len(urls), 'cards': len(manifest), 'urls': urls}, ensure_ascii=False))
+    from previas import sincronizar
+    sincronizar(ROOT)
+    from calidad_web import build as mejorar_calidad
+    mejorar_calidad(ROOT)
+    from auditar_imagenes import audit as auditar_peso_y_alt
+    image_audit = auditar_peso_y_alt(ROOT)
+    print(json.dumps({'pages': len(urls), 'cards': len(manifest), 'urls': urls, 'image_audit': image_audit}, ensure_ascii=False))
 
 
 if __name__ == '__main__':

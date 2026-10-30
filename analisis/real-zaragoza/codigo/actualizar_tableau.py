@@ -109,11 +109,15 @@ def actualizar(plantilla, destino):
             for p in sorted(carpeta.rglob('*')):
                 if p.is_file():
                     z.write(p, p.relative_to(carpeta))
-        assert datos['partidos_liga'].jornada.max() == 8
-        assert datos['partidos_liga'].iloc[-1].puntos_acumulados == 17
-        assert set(datos['clasificacion'].tras_jornada) == {8}
+        # El libro debe reflejar exactamente los CSV de datos/salida
+        liga = pd.read_csv(PROYECTO / 'datos/salida/partidos_liga.csv')
+        clasif = pd.read_csv(PROYECTO / 'datos/salida/clasificacion.csv')
+        jornada, puntos = int(liga.jornada.max()), int(liga.iloc[-1].puntos_acumulados)
+        assert datos['partidos_liga'].jornada.max() == jornada
+        assert datos['partidos_liga'].iloc[-1].puntos_acumulados == puntos
+        assert set(datos['clasificacion'].tras_jornada) == set(clasif.tras_jornada)
         print(resumen)
-        print('J8, 17 puntos y contenido íntegro de las cuatro extracciones verificados.')
+        print(f'J{jornada}, {puntos} puntos y contenido íntegro de las cuatro extracciones verificados.')
 
 
 if __name__ == '__main__':

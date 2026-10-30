@@ -73,8 +73,10 @@ def generar(ruta, partidos, goles, jugadores, clasificacion, sede, incidencias, 
     conclusiones = (CARPETA_TEXTOS / "conclusiones.html").read_text(encoding="utf-8")
 
     kpis = [
-        ("Posición", f"{zgz.posicion}.º"),
-        ("Puntos", f"{zgz.puntos} de {3 * len(partidos)}"),
+        # La clasificación puede ir una jornada por detrás de los partidos (jornada aún en juego)
+        ("Posición" if int(clasificacion["tras_jornada"].iloc[0]) >= jornada
+         else f"Posición tras la J{int(clasificacion['tras_jornada'].iloc[0])}", f"{zgz.posicion}.º"),
+        ("Puntos", f"{int(partidos['puntos'].sum())} de {3 * len(partidos)}"),
         ("Goles", f"{partidos['goles_favor'].sum()}–{partidos['goles_contra'].sum()}"),
         ("Porterías a cero", int(partidos["porteria_cero"].sum())),
         ("Goles desde el banquillo", f"{desde_banquillo} de {de_jugadores}"),
@@ -136,7 +138,7 @@ def generar(ruta, partidos, goles, jugadores, clasificacion, sede, incidencias, 
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Big+Shoulders+Display:wght@700;800&display=swap">
 <script src="../../assets/tema.js"></script>
-<link rel="stylesheet" href="../../assets/estilo.css?v=20261021fotos">
+<link rel="stylesheet" href="../../assets/estilo.css?v=20261028a11y1">
 <link rel="stylesheet" href="../../assets/real-zaragoza.css?v=20261016b">
 <script src="../../assets/mejoras.js?v=20261021fotos" defer></script>
 <link rel="icon" href="../../assets/icono.svg" type="image/svg+xml">

@@ -32,7 +32,7 @@
     const pts = d3.sum(ps, p => p.puntos), gf = d3.sum(ps, p => p.goles_favor), gc = d3.sum(ps, p => p.goles_contra);
     const pos = datos.clasificacion.find(c => c.equipo === 'Real Zaragoza');
     const kpis = [
-      ['Posición', sede === 'Todos' ? `${pos.posicion}.º` : '—'],
+      [datos.clasificacion_tras < datos.jornada ? `Posición tras la J${datos.clasificacion_tras}` : 'Posición', sede === 'Todos' ? `${pos.posicion}.º` : '—'],
       ['Puntos', `${pts}<small style="font-size:.9rem;font-weight:600"> en ${ps.length} PJ</small>`],
       ['Puntos por partido', ps.length ? fmt(pts / ps.length) : '—'],
       ['Goles a favor', gf],
@@ -57,7 +57,10 @@
     el.innerHTML = '';
     const ancho = Math.max(260, el.clientWidth);
     const m = {t: 10, r: 10, b: 26, l: 30};
-    const svg = d3.select(el).append('svg').attr('width', ancho).attr('height', alto);
+    const svg = d3.select(el).append('svg').attr('width', ancho).attr('height', alto)
+      .attr('role', 'group')
+      .attr('aria-label', el.getAttribute('aria-label') || 'Gráfico')
+      .attr('aria-describedby', el.getAttribute('aria-describedby'));
     const g = svg.append('g').attr('transform', `translate(${m.l},${m.t})`);
     let tip = el.parentNode.querySelector('.tip');
     if (!tip) { tip = document.createElement('div'); tip.className = 'tip'; tip.hidden = true; el.parentNode.appendChild(tip); }

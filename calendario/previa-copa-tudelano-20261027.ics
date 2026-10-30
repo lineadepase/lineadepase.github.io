@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Linea de pase//Calendario de partidos//ES
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:previa-copa-tudelano-20261027@lineadepase.com
+DTSTAMP:20261027T110000Z
+DTSTART:20261027T200000Z
+DTEND:20261027T223000Z
+SUMMARY:Tudelano 0–4 Real Zaragoza: una eliminatoria resuelta antes del descanso
+LOCATION:Estadio Ciudad de Tudela
+DESCRIPTION:Cuatro goles en la primera parte encarrilaron el pase. La eficacia temprana permitió al Zaragoza gestionar la segunda mitad y repartir minutos.\nhttps://lineadepase.com/proyectos/real-zaragoza/previa-copa-tudelano-20261027.html
+URL:https://lineadepase.com/proyectos/real-zaragoza/previa-copa-tudelano-20261027.html
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

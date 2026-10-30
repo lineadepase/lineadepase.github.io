@@ -1,0 +1,20 @@
+name: Revisión del sitio
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  enlaces-y-accesibilidad:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el sitio
+        uses: actions/checkout@v4
+      - name: Revisar enlaces, anclas e imágenes
+        run: python herramientas/auditar_enlaces.py
+      - name: Revisar textos alternativos y presupuesto de imágenes
+        run: python herramientas/auditar_imagenes.py
+      - name: Revisar foco, contraste y tamaño táctil
+        run: python herramientas/auditar_accesibilidad_visual.py

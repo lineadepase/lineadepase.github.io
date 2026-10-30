@@ -1,0 +1,96 @@
+{
+  "partido_id": 9,
+  "jornada": 9,
+  "rival": "CE Europa",
+  "fecha": "2026-10-23",
+  "estado": "completado",
+  "fuente_url": "https://www.youtube.com/watch?v=gBB7ameQWbI",
+  "alcance": "Análisis general del partido a partir de la ficha oficial, crónicas contrastadas y la revisión por secuencias del resumen en vídeo.",
+  "fecha_revision": "2026-10-24",
+  "archivo_analisis": "analisis/real-zaragoza/textos/video/jornada-9.html",
+  "motivo": null,
+  "duracion_segundos": 371,
+  "publicacion_autorizada": true,
+  "metodo": "Revisión del resumen por fotogramas en 14 secuencias orientativas (sin minuto asignado), aportada por Ángel; cifras de la ficha oficial del club; ocasiones contrastadas con Aragón Digital, Sport Aragón y Aragón Play.",
+  "secuencias": [
+    {
+      "desde": 25,
+      "hasta": 46,
+      "tema": "Primera llegada del Europa y repetición"
+    },
+    {
+      "desde": 48,
+      "hasta": 66,
+      "tema": "Secuencia del Zaragoza en el área"
+    },
+    {
+      "desde": 68,
+      "hasta": 88,
+      "tema": "Remate del Europa tras envío lateral"
+    },
+    {
+      "desde": 89,
+      "hasta": 103,
+      "tema": "Transición del Europa"
+    },
+    {
+      "desde": 104,
+      "hasta": 122,
+      "tema": "Balón profundo y salida del portero"
+    },
+    {
+      "desde": 123,
+      "hasta": 150,
+      "tema": "Acción del Zaragoza en el área local"
+    },
+    {
+      "desde": 151,
+      "hasta": 173,
+      "tema": "Ataque del Zaragoza"
+    },
+    {
+      "desde": 174,
+      "hasta": 204,
+      "tema": "Ataque y envío al área del Europa"
+    },
+    {
+      "desde": 205,
+      "hasta": 219,
+      "tema": "Transición del Zaragoza y salida del portero"
+    },
+    {
+      "desde": 220,
+      "hasta": 240,
+      "tema": "Incidente arbitral"
+    },
+    {
+      "desde": 241,
+      "hasta": 256,
+      "tema": "Ataque del Europa en la frontal"
+    },
+    {
+      "desde": 257,
+      "hasta": 300,
+      "tema": "Córner y gol (80'), con repeticiones"
+    },
+    {
+      "desde": 301,
+      "hasta": 329,
+      "tema": "Duelo cerca de la banda"
+    },
+    {
+      "desde": 330,
+      "hasta": 356,
+      "tema": "Última llegada del Europa"
+    }
+  ],
+  "fuentes_analisis": [
+    "https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-9-ce-europa-vs-real-zaragoza-3940",
+    "https://www.realzaragoza.com/noticias/victoria-zaragocista-en-can-drago-0-1",
+    "https://www.aragondigital.es/articulo/real-zaragoza/directo-c-europa-real-zaragoza/202610231930061017615.html",
+    "https://www.sportaragon.com/futbol-aragon/real-zaragoza/directo-ce-europa-real-zaragoza-primera-rfef/20261023192941161656.html",
+    "https://www.aragonplay.es/aragondeporte/futbol/triunfo-muchas-luces-0-1.html",
+    "https://futboltotal.futbol/partido/europa-fc-vs-zaragoza-primera-division-rfef-grupo-2-2026-10-23"
+  ],
+  "enfoque": "Tercera persona. Posesión y circulación frente a remates, ocasiones contrastadas, el gol, los cambios sin atribuir causalidad y balance de temporada."
+}

@@ -1,0 +1,85 @@
+[
+  {
+    "jornada": 10,
+    "pagina": "proyectos/real-zaragoza/previa-jornada-10.html",
+    "alias": [
+      "proyectos/real-zaragoza/previa.html"
+    ],
+    "fecha_partido": "2026-10-31",
+    "fecha_publicacion": "2026-10-27",
+    "fecha_actualizacion": "2026-10-27",
+    "titulo": "Real Zaragoza – Villarreal B",
+    "etiqueta": "Primera Federación · J10 · 31 de octubre",
+    "resumen": "Duelo en lo más alto: primero y segundo, empatados a 20 puntos. Forma, rendimiento por sede y claves antes del partido.",
+    "pregunta_abierta": "¿Quién llegará más veces al área rival: el Zaragoza en casa o el Villarreal B fuera?",
+    "fuera_de_plano": "El balance por sede reúne tres partidos del Zaragoza en casa y cuatro salidas del Villarreal B. Es una muestra corta y no permite anticipar cómo se desarrollará este encuentro.",
+    "imagen": "proyectos/real-zaragoza/graficos/previa/real-zaragoza-villarreal-b-j10-v2.webp",
+    "ancho": 1672,
+    "alto": 941,
+    "alt": "Previa Real Zaragoza–Villarreal B: un gran submarino amarillo frente al león blanquillo, duelo entre equipos con 20 puntos.",
+    "noticia_html": "<section class=\"seccion lectura\" aria-labelledby=\"noticia-previa-j10\"><p class=\"etiqueta\">El contexto del partido</p><h2 id=\"noticia-previa-j10\">El liderato se juega entre iguales en puntos</h2><p>El Real Zaragoza recibe al Villarreal B el 31 de octubre con los dos equipos empatados a 20 puntos tras nueve jornadas. El filial amarillo encabeza la tabla por diferencia de goles: 21 a favor y 10 en contra, frente a los 17–10 del Zaragoza.</p><p>El contraste por sede añade contexto. El Zaragoza ha ganado sus tres partidos de liga en casa, con seis goles a favor y uno en contra. El Villarreal B llega con diez puntos de doce en cuatro salidas y un balance de once goles a favor y cinco en contra.</p><p>El partido pondrá a prueba la capacidad de ambos equipos para avanzar con el balón y proteger los espacios tras una pérdida. La muestra es corta: describe el inicio de temporada, pero no anticipa el resultado.</p><p class=\"nota\">Datos de liga hasta la jornada 9. La Copa del Rey se analiza por separado. El corte y la comparación completa aparecen al final.</p></section>",
+    "rival": "Villarreal B",
+    "hora": "21:00",
+    "estadio": "Ibercaja Estadio",
+    "competicion": "Primera Federación · Jornada 10",
+    "fuente_partido": "https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-10-real-zaragoza-vs-villarreal-b-3962",
+    "estados_previa": {
+      "confirmado": "El partido se juega el 31 de octubre a las 21:00 en Ibercaja Estadio.",
+      "pendiente": "Las convocatorias y los onces, hasta que los equipos los hagan públicos.",
+      "despues": "Se revisará quién logró llegar más veces al área rival, con los datos disponibles del encuentro."
+    }
+  },
+  {
+    "pagina": "proyectos/real-zaragoza/previa-copa-tudelano-20261027.html",
+    "alias": [],
+    "fecha_partido": "2026-10-27",
+    "fecha_publicacion": "2026-10-27",
+    "fecha_actualizacion": "2026-10-28",
+    "titulo": "Tudelano 0–4 Real Zaragoza: una eliminatoria resuelta antes del descanso",
+    "etiqueta": "Copa del Rey · Primera eliminatoria · Resultado final",
+    "resumen": "Cuatro goles en la primera parte encarrilaron el pase. La eficacia temprana permitió al Zaragoza gestionar la segunda mitad y repartir minutos.",
+    "pregunta_abierta": "¿En qué tramo quedó encarrilada la eliminatoria?",
+    "fuera_de_plano": "Las crónicas consultadas permiten reconstruir los goles y el desarrollo general, pero no aportan una serie homogénea de posesión, ocasiones o xG. La eficacia y la gestión del ritmo se interpretan a partir de la secuencia del partido, no de métricas avanzadas.",
+    "imagen": "proyectos/real-zaragoza/graficos/previa/noche-copa-tudela-20261027.webp",
+    "ancho": 1672,
+    "alto": 941,
+    "alt": "Noche de Copa del Rey entre el CD Tudelano y el Real Zaragoza en Tudela.",
+    "rival": "CD Tudelano",
+    "hora": "21:00",
+    "competicion": "Copa del Rey · Primera eliminatoria",
+    "estadio": "Estadio Ciudad de Tudela",
+    "postpartido_url": "proyectos/real-zaragoza/previa-copa-tudelano-20261027.html",
+    "resultado_confirmado": {
+      "marcador": "0–4",
+      "fecha_verificacion": "2026-10-28T10:58:02+01:00",
+      "fuentes": [
+        {
+          "nombre": "Real Zaragoza: El Real Zaragoza avanza en la Copa del Rey (0-4)",
+          "url": "https://www.realzaragoza.com/noticias/el-real-zaragoza-avanza-en-la-copa-del-rey-0-4"
+        },
+        {
+          "nombre": "Cadena SER: El Real Zaragoza arrolla al Tudelano (0-4)",
+          "url": "https://cadenaser.com/aragon/2026/10/27/el-real-zaragoza-arrolla-al-tudelano-0-4-y-disputara-la-segunda-ronda-de-la-copa-del-rey-radio-zaragoza/"
+        }
+      ],
+      "respuesta_pregunta": "La secuencia decisiva se concentró antes del descanso: Joaquín Delgado abrió el marcador en el minuto 11, Pau Sans amplió de penalti en el 21 y volvió a marcar en el 37, y Pinilla cerró el 0–4 en el 40. Con cuatro tantos de ventaja, el Zaragoza pudo afrontar la segunda mitad desde la gestión del resultado.",
+      "momentos_clave": [
+        {
+          "minuto": "11",
+          "marcador": "0–1",
+          "hecho": "Joaquín Delgado abrió el marcador y dio al Zaragoza una ventaja temprana."
+        },
+        {
+          "minuto": "21",
+          "marcador": "0–2",
+          "hecho": "Pau Sans transformó un penalti y amplió la distancia."
+        },
+        {
+          "minuto": "40",
+          "marcador": "0–4",
+          "hecho": "Pinilla marcó el cuarto antes del descanso; Pau Sans había firmado el tercero en el 37."
+        }
+      ]
+    }
+  }
+]

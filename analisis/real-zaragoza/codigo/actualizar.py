@@ -13,12 +13,14 @@ Pasos:
     6. Escribe las pestañas «Jornada a jornada» y «Último partido».
     7. Escribe la pestaña «Grupo 2» (grupo2.py).
     8. Prepara las tablas para Excel y el diccionario de datos.
+    9. Regenera portada, galería y exportaciones del último resultado, y comprueba que comparten jornada y fecha.
 
 Después de cada partido solo hay que añadir filas a los CSV de entrada,
 revisar textos/conclusiones.html y textos/grupo2.html y volver a ejecutar este archivo.
 """
 
 import json
+import subprocess
 import sys
 
 import pandas as pd
@@ -182,6 +184,10 @@ def main():
 
     # 8. Copias de las tablas para Excel (UTF-8 con BOM y «;») y el diccionario de datos
     preparar_tablas.main()
+
+    # 9. Sincroniza el gráfico, las imágenes y las páginas públicas desde el JSON recién escrito.
+    publicador = RAIZ_WEB / "herramientas" / "actualizar_publicacion_jornada.py"
+    subprocess.run([sys.executable, str(publicador)], cwd=RAIZ_WEB, check=True)
 
     # Resumen por pantalla
     zgz = clasificacion[clasificacion["equipo"] == "Real Zaragoza"].iloc[0]

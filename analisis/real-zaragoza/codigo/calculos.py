@@ -42,7 +42,7 @@ def preparar_partidos(partidos):
 
     # Los puntos acumulados solo tienen sentido en liga; en copa quedan vacíos
     es_liga = p["competicion"] == LIGA
-    p["puntos_acumulados"] = p["puntos"].where(es_liga).cumsum().where(es_liga)
+    p["puntos_acumulados"] = p["puntos"].where(es_liga).cumsum().where(es_liga).astype("Int64")
 
     return p
 

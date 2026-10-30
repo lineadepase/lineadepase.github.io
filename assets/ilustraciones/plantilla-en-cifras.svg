@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 540" role="img" aria-labelledby="titulo descripcion">
+  <title id="titulo">Lectura visual de una plantilla</title>
+  <desc id="descripcion">Ilustración original de fichas y barras de participación sobre un campo esquemático. No representa posiciones reales ni datos de jugadores.</desc>
+  <defs><linearGradient id="fondo" x2="0" y2="1"><stop stop-color="#174b2e"/><stop offset="1" stop-color="#0c2d1d"/></linearGradient></defs>
+  <rect width="720" height="540" rx="24" fill="url(#fondo)"/>
+  <g fill="none" stroke="#f4f7f1" stroke-opacity=".4" stroke-width="3"><rect x="28" y="28" width="664" height="484" rx="8"/><path d="M360 28v484"/><circle cx="360" cy="270" r="62"/><rect x="28" y="167" width="76" height="206"/><rect x="616" y="167" width="76" height="206"/></g>
+  <g fill="#f4f7f1" opacity=".92"><circle cx="196" cy="183" r="16"/><circle cx="266" cy="264" r="16"/><circle cx="191" cy="354" r="16"/><circle cx="476" cy="184" r="16"/><circle cx="522" cy="355" r="16"/></g>
+  <g fill="#ff6a2b"><circle cx="196" cy="183" r="5"/><circle cx="266" cy="264" r="5"/><circle cx="191" cy="354" r="5"/><circle cx="476" cy="184" r="5"/><circle cx="522" cy="355" r="5"/></g>
+  <rect x="428" y="214" width="210" height="132" rx="14" fill="#f4f7f1"/><text x="450" y="247" fill="#4d6356" font-size="14" font-family="Arial,sans-serif" letter-spacing="2">PARTICIPACIÓN</text>
+  <g fill="#dbe3dc"><rect x="450" y="270" width="150" height="10" rx="5"/><rect x="450" y="296" width="150" height="10" rx="5"/><rect x="450" y="322" width="150" height="10" rx="5"/></g>
+  <g fill="#1f6b3e"><rect x="450" y="270" width="119" height="10" rx="5"/><rect x="450" y="296" width="86" height="10" rx="5"/><rect x="450" y="322" width="102" height="10" rx="5"/></g>
+  <path d="M84 92h72" stroke="#ff6a2b" stroke-width="4"/><text x="84" y="74" fill="#f4f7f1" font-size="16" font-family="Arial,sans-serif" letter-spacing="4">LÍNEA DE PASE</text>
+  <text x="84" y="462" fill="#f4f7f1" font-size="18" font-family="Arial,sans-serif" opacity=".85">Minutos · roles · temporada</text>
+</svg>

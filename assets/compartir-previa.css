@@ -1,0 +1,8 @@
+.compartir-previa{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;margin:1rem 0 1.5rem}
+.compartir-previa button{cursor:pointer}
+.estado-compartir{min-height:1.5em;color:var(--tinta-secundaria,#475569);font-size:.95rem}
+.estado-partido-detalle{display:inline-block;padding:.3rem .65rem;border-radius:6px;background:var(--tinta,#143e2b);color:var(--cal,#fff);font-size:.85rem;font-weight:700}
+.calendario-partido{margin:1rem 0}
+.calendario-partido[hidden],.postpartido-disponible[hidden]{display:none}
+.postpartido-disponible{padding:.75rem 1rem;border-left:4px solid var(--senal,#ff7a2f);background:var(--superficie,#f4f7f1)}
+.enlace-postpartido{font-weight:700}

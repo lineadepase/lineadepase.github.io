@@ -84,15 +84,26 @@ def summaries():
 def enrich(raw, file):
     relative = file.relative_to(ROOT).as_posix()
     for asset, tag in [('assets/experiencia.css', 'css'), ('assets/experiencia.js', 'js')]:
-        version = '20261021audit' if tag == 'js' else '20261021g'
+        version = '20261028a11y2' if tag == 'css' else '20261027visual4'
         url = os.path.relpath(ROOT/asset, file.parent).replace('\\', '/') + '?v=' + version
         markup = '<link rel="stylesheet" href="'+url+'">' if tag == 'css' else '<script src="'+url+'" defer></script>'
         if asset not in raw:
             raw = raw.replace('</head>',markup+'\n</head>',1)
-    for extension, version in [('css', '20261021g'), ('js', '20261021audit')]:
+    for extension, version in [('css', '20261028a11y2'), ('js', '20261027visual4')]:
         raw = re.sub(r'(assets/experiencia\.' + extension + r'\?v=)[^"\s]+', lambda m: m[1] + version, raw)
-    raw = re.sub(r'(assets/mejoras\.js\?v=)[^"\s]+', r'\g<1>20261021audit', raw)
+    raw = re.sub(r'(assets/mejoras\.js\?v=)[^"\s]+', r'\g<1>20261027claims', raw)
     raw = re.sub(r'<meta name="grafico-contexto"[^>]*>\s*', '', raw)
+    raw = re.sub(r'<!-- lamina-anual-visual -->[\s\S]*?<!-- /lamina-anual-visual -->\s*', '', raw)
+    if relative == 'proyectos/index.html':
+        atlas = ('<!-- lamina-anual-visual --><section class="lamina-anual" aria-labelledby="titulo-lamina-anual">'
+                 '<div><p class="etiqueta">Línea de pase · Edición visual 2026</p><h2 id="titulo-lamina-anual">Cuatro proyectos, cuatro formas de mirar el juego</h2>'
+                 '<p>Cifras de trabajos ya publicados; cada temporada y su corte permanecen visibles en el análisis correspondiente.</p>'
+                 '<nav class="enlaces enlaces-lamina" aria-label="Abrir proyectos y formatos visuales"><a href="real-zaragoza/">Temporada</a><a href="real-zaragoza/simulacion.html">Simulación</a><a href="liga-f-xt/">Amenaza esperada</a><a href="futbol-femenino/">Territorio</a><a href="../assets/ilustraciones/anuario-visual-2026-cuadrado.png" download>PNG cuadrado</a><a href="../assets/ilustraciones/anuario-visual-2026-vertical.png" download>PNG vertical 4:5</a><a href="../assets/ilustraciones/anuario-visual-2026-apaisado.png" download>PNG apaisado 16:9</a><a href="../assets/ilustraciones/anuario-visual-2026-impresion.pdf" download>PDF para imprimir</a><a href="../galeria-visual/">Abrir galería visual</a></nav></div>'
+                 '<figure><a href="../assets/ilustraciones/anuario-visual-2026.svg" target="_blank" rel="noopener"><img src="../assets/ilustraciones/anuario-visual-2026.svg" width="600" height="870" loading="lazy" alt="Lámina editorial 2026 con cuatro proyectos: seguimiento del Zaragoza, simulación de liga, amenaza esperada de Liga F y fútbol femenino territorial."></a>'
+                 '<figcaption><a href="../assets/ilustraciones/anuario-visual-2026.svg" download>Descargar la lámina vectorial (SVG)</a></figcaption></figure></section><!-- /lamina-anual-visual -->')
+        marker = '<div class="filtros"'
+        if marker in raw:
+            raw = raw.replace(marker, atlas + marker, 1)
     context = None
     if relative == 'index.html':
         data = json.loads((ROOT/'datos/zaragoza.json').read_text(encoding='utf-8'))
@@ -116,9 +127,40 @@ def enrich(raw, file):
     if context:
         raw = raw.replace('</head>','<meta name="grafico-contexto" content="'+e(context,quote=True)+'">\n</head>',1)
     raw = re.sub(r'<!-- tres-claves -->[\s\S]*?<!-- /tres-claves -->', '', raw)
+    # Compartir una URL usa la tarjeta social que ya genera el proceso SEO;
+    # la descarga abre la misma tarjeta de 1200 × 630 para guardarla.
+    raw = re.sub(r'<nav class="acciones-articulo"[\s\S]*?</nav>\s*', '', raw)
+    if relative.startswith('proyectos/') or relative in {
+        'mapa-grupo/index.html', 'esquemas-del-juego/index.html',
+        'pizarron-de-una-jugada/index.html', 'partidos-espejo/index.html',
+        'reloj-del-marcador/index.html', 'mapa-de-lo-que-cambio/index.html'
+    }:
+        slug = relative.removesuffix('.html').replace('/', '-')
+        editorial = re.search(r'<meta name="imagen-editorial" content="([^"]+)"', raw)
+        card_path = ROOT / editorial[1] if editorial else ROOT / 'assets' / 'compartir' / (slug + '.png')
+        social = os.path.relpath(card_path, file.parent).replace('\\', '/')
+        toolbar = ('<nav class="acciones-articulo" aria-label="Compartir o imprimir este análisis">'
+                   '<button class="boton" type="button" data-compartir-pagina>Compartir análisis</button>'
+                   '<a class="boton" href="'+social+'" target="_blank" rel="noopener">Abrir imagen para compartir</a>'
+                   '<button class="boton" type="button" data-imprimir-pagina>Imprimir / Guardar en PDF</button>'
+                   '<span class="estado-acciones-articulo" role="status" aria-live="polite"></span></nav>')
+        pos = raw.find('>', raw.find('<main'))
+        if pos != -1:
+            raw = raw[:pos+1] + toolbar + raw[pos+1:]
     clues = summaries().get(relative)
+    match_article = re.fullmatch(r'proyectos/real-zaragoza/jornada-\d+\.html', relative)
+    if clues and match_article:
+        data = json.loads((ROOT/'datos/zaragoza.json').read_text(encoding='utf-8'))
+        jornada = match_article[0].split('jornada-')[1].split('.')[0]
+        match = next(row for row in data['partidos'] if str(row['jornada']) == jornada)
+        goals = (str(match['goles_favor'])+'–'+str(match['goles_contra'])) if match['sede'] == 'Casa' else (str(match['goles_contra'])+'–'+str(match['goles_favor']))
+        home = 'Real Zaragoza' if match['sede'] == 'Casa' else match['rival']
+        away = match['rival'] if match['sede'] == 'Casa' else 'Real Zaragoza'
+        clues = [('Hecho documentado', f"Jornada {match['jornada']}: {home} {goals} {away}."), ('Cifra publicada', clues[1][1]), ('Interpretación editorial', clues[2][1])]
     if clues and '<main' in raw:
-        block = '<!-- tres-claves --><aside class="tres-claves" aria-labelledby="titulo-claves"><p class="etiqueta">Antes de entrar en detalle</p><h2 id="titulo-claves">Tres claves del análisis</h2><ol>' + ''.join('<li><strong>' + title + '</strong><p>' + e(value) + '</p></li>' for title, value in clues) + '</ol></aside><!-- /tres-claves -->'
+        intro = '<p class="nota guia-lectura">Hecho y marcador en la ficha; cifra atribuida a su fuente; interpretación identificada como lectura editorial.</p>' if match_article else ''
+        heading = 'Hecho, cifra e interpretación' if match_article else 'Tres claves del análisis'
+        block = '<!-- tres-claves --><aside class="tres-claves" aria-labelledby="titulo-claves"><p class="etiqueta">Antes de entrar en detalle</p><h2 id="titulo-claves">' + heading + '</h2>' + intro + '<ol>' + ''.join('<li><strong>' + title + '</strong><p>' + e(value) + '</p></li>' for title, value in clues) + '</ol></aside><!-- /tres-claves -->'
         main = raw.index('<main')
         end = raw.find('</section>', main)
         if end != -1:
@@ -152,13 +194,17 @@ def generate_comparator(page):
     records = [{key: (float(row[key]) if row[key] else None) if key in numeric else row[key] for key in fields} for row in rows]
     assert len({(r['equipo'], r['jornada']) for r in records}) == len(records)
     data = {'jornada': int(max(r['jornada'] for r in records)), 'fecha': max(r['fecha'] for r in records), 'partidos': records}
+    from cortes import nota_corte_grupo
+    seguimiento = json.loads((ROOT/'datos/zaragoza.json').read_text(encoding='utf-8'))
+    corte = nota_corte_grupo(data['jornada'], data['fecha'], seguimiento['jornada'], seguimiento['corte'])
     (ROOT/'datos/comparador-grupo2.json').write_text(json.dumps(data, ensure_ascii=False, allow_nan=False, indent=1), encoding='utf-8')
     teams = sorted({r['equipo'] for r in records})
     controls = '<div class="archivo-controles" id="controles-comparador" hidden>'
     for key, label, selected in [('a', 'Primer equipo', 'Real Zaragoza'), ('b', 'Segundo equipo', 'Villarreal B')]:
         controls += '<label for="equipo-' + key + '">' + label + '<select id="equipo-' + key + '">' + ''.join('<option' + (' selected' if team == selected else '') + '>' + e(team) + '</option>' for team in teams) + '</select></label>'
     controls += '<label for="sede-comparador">Dónde juega<select id="sede-comparador"><option value="">Casa y fuera</option><option>Casa</option><option>Fuera</option></select></label><label for="fuentes-comparador">Fuente de xG<select id="fuentes-comparador"><option value="sofascore">Solo Sofascore</option><option value="todas">Todas las fuentes documentadas</option></select></label><label for="modo-comparador">Mostrar<select id="modo-comparador"><option value="promedio">Por partido</option><option value="totales">Totales</option></select></label><label for="periodo-comparador">Periodo<select id="periodo-comparador"><option value="toda">Toda la temporada</option><option value="ultimas5">Últimas cinco jornadas</option></select></label></div>'
-    body = '<p class="nota">Primera Federación · Grupo 2 · Temporada 2026/27. Datos hasta la jornada ' + str(data['jornada']) + '. Los indicadores por partido se calculan solo con los encuentros que tienen ese dato.</p>' + controls
+    art = '<figure class="comparador-hero"><img src="../assets/ilustraciones/comparador-grupo2.webp" width="1672" height="941" fetchpriority="high" alt="Dos equipos enfrentados en un campo, con trayectorias y datos representados como líneas de juego"><figcaption>La vista reúne resultados, ocasiones y contexto para los dos equipos.</figcaption></figure>'
+    body = art + '<p class="nota corte-datos">Primera Federación · Temporada 2026/27. ' + e(corte) + ' Los indicadores por partido se calculan solo con los encuentros que tienen ese dato. <a href="../proyectos/real-zaragoza/grupo-2.html#metodo-grupo">Cobertura y método</a>.</p>' + controls
     body += '<div class="acciones-comparador"><button class="boton" id="intercambiar-equipos" type="button">Intercambiar equipos</button><button class="boton" id="copiar-comparacion" type="button">Copiar comparación</button><button class="boton" id="descargar-comparacion" type="button">Descargar comparativa (PNG)</button><a class="boton" id="ir-mapa" href="../mapa-grupo/index.html">Ver el mapa del grupo</a></div><p id="estado-compartir" role="status"></p><input id="enlace-comparacion" aria-label="Enlace de la comparación" readonly hidden>'
     body += '<p id="estado-comparador" role="status" aria-live="polite">Cargando comparación…</p><p class="nota">Las barras utilizan una escala común para los veinte equipos del filtro. La marca vertical señala la media del grupo. En móvil, la tabla se puede desplazar horizontalmente.</p><div id="resultado-comparador"></div><p class="nota">Por partido, la referencia se calcula con todos los registros disponibles del grupo tras aplicar los filtros; en totales, se muestra la media de los equipos. La posesión siempre conserva su media porcentual. El selector de fuente afecta únicamente a xG. Las fuentes complementarias pueden utilizar modelos diferentes.</p><details class="desplegable"><summary>Consultar cobertura y procedencia de los xG</summary><div id="fuentes-comparadas"></div></details><noscript><p>La tabla del <a href="../proyectos/real-zaragoza/grupo-2.html">análisis del grupo</a> está disponible sin JavaScript.</p></noscript><p><a href="../datos/comparador-grupo2.json" download>Descargar los datos del comparador (JSON)</a> · <a href="../proyectos/real-zaragoza/grupo-2.html#metodo-grupo">Método y límites del análisis</a></p><script src="../assets/metricas-grupo.js?v=20261021g" defer></script><script src="../assets/comparador.js?v=20261021g" defer></script>'
     (ROOT/'comparador').mkdir(exist_ok=True)

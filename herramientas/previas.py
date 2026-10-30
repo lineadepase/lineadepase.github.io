@@ -1,0 +1,490 @@
+"""Publica las previas con imagen, URL estable y tarjeta en la portada."""
+from pathlib import Path
+from html import escape
+import json
+import re
+import xml.etree.ElementTree as ET
+from datetime import datetime, timedelta, timezone
+from zoneinfo import ZoneInfo
+
+ROOT = Path(__file__).resolve().parents[1]
+START = '<!-- previas-portada -->'
+END = '<!-- /previas-portada -->'
+BASE = 'https://lineadepase.com/'
+CALENDAR = 'calendario'
+MAX_EDITORIAL_IMAGE_BYTES = 600_000
+
+
+def calendar_path(entry):
+    return f'{CALENDAR}/{Path(entry["pagina"]).stem}.ics'
+
+
+def partido_iniciado(entry, ahora=None):
+    if not entry.get('fecha_partido') or not entry.get('hora'):
+        return False
+    inicio = datetime.fromisoformat(entry['fecha_partido']+'T'+entry['hora']).replace(
+        tzinfo=ZoneInfo('Europe/Madrid'))
+    return (ahora or datetime.now(ZoneInfo('Europe/Madrid'))) >= inicio
+
+
+def escape_ics(value):
+    return (str(value).replace('\\', '\\\\').replace(';', '\\;')
+            .replace(',', '\\,').replace('\r\n', '\\n').replace('\n', '\\n'))
+
+
+def calendar_event(entry):
+    """Produce un evento RFC 5545 con horas UTC para evitar desfases de zona."""
+    local = datetime.fromisoformat(entry['fecha_partido']+'T'+entry['hora']).replace(
+        tzinfo=ZoneInfo('Europe/Madrid'))
+    start = local.astimezone(timezone.utc)
+    end = (local+timedelta(hours=2, minutes=30)).astimezone(timezone.utc)
+    stamp = datetime.fromisoformat(entry.get('fecha_publicacion', entry['fecha_partido'])+'T12:00:00').replace(
+        tzinfo=ZoneInfo('Europe/Madrid')).astimezone(timezone.utc)
+    url = BASE+entry['pagina']
+    description = escape_ics(entry.get('resumen', 'Previa del partido'))+'\\n'+url
+    lines = [
+        'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Linea de pase//Calendario de partidos//ES',
+        'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', 'BEGIN:VEVENT',
+        'UID:'+Path(entry['pagina']).stem+'@lineadepase.com',
+        'DTSTAMP:'+stamp.strftime('%Y%m%dT%H%M%SZ'),
+        'DTSTART:'+start.strftime('%Y%m%dT%H%M%SZ'),
+        'DTEND:'+end.strftime('%Y%m%dT%H%M%SZ'),
+        'SUMMARY:'+escape_ics(entry['titulo']),
+        'LOCATION:'+escape_ics(entry.get('estadio', '')),
+        'DESCRIPTION:'+description, 'URL:'+url, 'STATUS:CONFIRMED',
+        'END:VEVENT', 'END:VCALENDAR', ''
+    ]
+    return '\r\n'.join(lines)
+
+
+def escribir_calendario(entry, root=ROOT):
+    path = root/calendar_path(entry)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(calendar_event(entry), encoding='utf-8', newline='')
+    return path
+
+
+def guardar(path, text):
+    path.write_text(text, encoding='utf-8', newline='\n')
+
+
+def registro(root=ROOT):
+    entries = json.loads((root / 'datos/previas.json').read_text(encoding='utf-8'))
+    for entry in entries:
+        image = (root / entry['imagen']).resolve()
+        if not image.is_relative_to(root.resolve()) or not image.is_file():
+            raise ValueError('Falta la imagen editorial de la previa: ' + entry['imagen'])
+        if image.stat().st_size > MAX_EDITORIAL_IMAGE_BYTES:
+            raise ValueError('La imagen editorial de la previa supera 600 KB; comprímela antes de publicarla: ' + entry['imagen'])
+        page = (root / entry['pagina']).resolve()
+        if not page.is_relative_to(root.resolve()):
+            raise ValueError('La página de la previa debe estar dentro de la web')
+        postmatch = entry.get('postpartido_url')
+        result = entry.get('resultado_confirmado')
+        if bool(postmatch) != bool(result):
+            raise ValueError('La crónica y el resultado necesitan confirmación editorial conjunta')
+        if postmatch:
+            post_page = (root/postmatch).resolve()
+            if not post_page.is_relative_to(root.resolve()) or not post_page.is_file():
+                raise ValueError('La crónica vinculada debe existir dentro de la web: '+str(postmatch))
+            if not isinstance(result, dict) or not re.fullmatch(r'\d+\s*[–-]\s*\d+', str(result.get('marcador', ''))):
+                raise ValueError('El resultado confirmado necesita un marcador numérico válido')
+            try:
+                checked = datetime.fromisoformat(result.get('fecha_verificacion', ''))
+            except ValueError as exc:
+                raise ValueError('El resultado confirmado necesita una hora de comprobación con zona horaria') from exc
+            if checked.tzinfo is None:
+                raise ValueError('El resultado confirmado necesita una hora de comprobación con zona horaria')
+            if checked.astimezone(timezone.utc) > datetime.now(timezone.utc):
+                raise ValueError('La hora de comprobación del resultado no puede estar en el futuro')
+            if entry.get('fecha_partido') and entry.get('hora'):
+                kickoff = datetime.fromisoformat(entry['fecha_partido']+'T'+entry['hora']).replace(tzinfo=ZoneInfo('Europe/Madrid'))
+                if checked.astimezone(timezone.utc) < kickoff.astimezone(timezone.utc):
+                    raise ValueError('El resultado no puede confirmarse antes de la hora del partido')
+            sources = result.get('fuentes')
+            if not isinstance(sources, list) or not 1 <= len(sources) <= 2:
+                raise ValueError('El resultado confirmado necesita una o dos fuentes, como máximo')
+            for source in sources:
+                if not isinstance(source, dict) or not source.get('nombre') or not re.match(r'^https://', source.get('url', '')):
+                    raise ValueError('Cada fuente del resultado debe tener nombre y URL HTTPS')
+        if entry.get('noticia_html'):
+            validar_noticia_previa(entry['noticia_html'])
+        if entry.get('pregunta_abierta') and not isinstance(entry['pregunta_abierta'], str):
+            raise ValueError('La pregunta abierta debe ser texto editorial')
+        if entry.get('fuera_de_plano') and not isinstance(entry['fuera_de_plano'], str):
+            raise ValueError('La nota de límites debe ser texto editorial')
+        if result:
+            if entry.get('pregunta_abierta') and not result.get('respuesta_pregunta'):
+                raise ValueError('La respuesta editorial de la pregunta queda pendiente')
+            moments = result.get('momentos_clave')
+            if moments is not None:
+                if not isinstance(moments, list) or len(moments) != 3:
+                    raise ValueError('La cronología debe reunir tres momentos comprobados')
+                for moment in moments:
+                    if (not isinstance(moment, dict) or not re.fullmatch(r'\d{1,3}(?:\+\d{1,2})?', str(moment.get('minuto', '')))
+                            or not moment.get('hecho') or not re.fullmatch(r'\d+\s*[–-]\s*\d+', str(moment.get('marcador', '')))):
+                        raise ValueError('Cada momento necesita minuto, hecho y marcador comprobables')
+        centro = entry.get('centro_partido')
+        if centro:
+            if not isinstance(centro, dict) or not centro.get('fuentes') or len(centro['fuentes']) > 2:
+                raise ValueError('El centro del partido necesita una o dos fuentes, como máximo')
+            comprobacion = datetime.fromisoformat(centro.get('fecha_verificacion', ''))
+            if comprobacion.tzinfo is None:
+                raise ValueError('La última comprobación necesita fecha, hora y zona horaria')
+            for fuente in centro['fuentes']:
+                if not fuente.get('nombre') or not re.match(r'^https://', fuente.get('url', '')):
+                    raise ValueError('Cada fuente del centro debe tener nombre y URL HTTPS')
+    return entries
+
+
+def validar_noticia_previa(markup):
+    """Comprueba límites editoriales básicos del texto de una previa."""
+    links = re.findall(r'<a\b[^>]*href=[\"\']https://', markup, flags=re.I)
+    if len(links) > 2:
+        raise ValueError('La noticia de la previa debe apoyarse en un máximo de dos fuentes')
+    plain = re.sub(r'<[^>]+>', ' ', markup)
+    plain = re.sub(r'&(?:#\d+|#x[0-9a-f]+|[a-z]+);', ' ', plain, flags=re.I)
+    plain = re.sub(r'\s+', ' ', plain).casefold()
+    # Señala solo marcas claras de voz personal o apelación al lector. La revisión
+    # automática no juzga el estilo: evita que estas fórmulas lleguen por descuido.
+    cues = (
+        r'\byo\b', r'\bnosotros\b', r'\bnuestro(?:s|a|as)?\b',
+        r'\bmi\b', r'\bconmigo\b', r'\bt[uú]\b', r'\bte\b',
+        r'\bhe\s+(?:visto|analizado|revisado|comprobado)\b', r'\bhemos\s+\w+\b',
+        r'\bcontigo\b', r'\bquiero\b', r'\bcreemos\b', r'\banalizamos\b',
+        r'\bcomparamos\b', r'\bmira\b', r'\belige\b', r'\bcompara\b',
+        r'\bpuedes\b', r'\bimagina(?:te)?\b',
+    )
+    if any(re.search(cue, plain) for cue in cues):
+        raise ValueError('La noticia de la previa debe redactarse en tercera persona y sin dirigirse al lector')
+
+
+def centro_partido_html(entry):
+    """Genera un seguimiento editorial sin simular datos en directo."""
+    centro = entry.get('centro_partido')
+    if not centro:
+        return ''
+    def dato(value, pending):
+        if not value:
+            return pending
+        if isinstance(value, list):
+            return ', '.join(escape(str(item)) for item in value) or pending
+        return escape(str(value))
+    sources = ''.join(
+        '<li><a href="'+escape(source['url'], quote=True)+'" target="_blank" rel="noopener">'
+        +escape(source['nombre'])+'</a></li>'
+        for source in centro['fuentes']
+    )
+    incidents = centro.get('incidencias') or []
+    incident_markup = ('<ul>'+''.join('<li>'+escape(str(item))+'</li>' for item in incidents)+'</ul>'
+                       if incidents else '<p class="nota">Aún no hay incidencias añadidas a esta ficha.</p>')
+    verificacion = datetime.fromisoformat(centro['fecha_verificacion']).astimezone(ZoneInfo('Europe/Madrid'))
+    fecha_verificacion = verificacion.strftime('%d/%m/%Y a las %H:%M (hora peninsular)')
+    return ('<!-- centro-partido --><section class="seccion lectura centro-partido" aria-labelledby="titulo-centro-partido">'
+            '<p class="etiqueta">Seguimiento editorial</p><h2 id="titulo-centro-partido">Centro del partido</h2>'
+            '<p class="aviso-centro">Esta ficha no ofrece marcador en directo. El equipo editorial incorporará los datos cuando los confirme.</p>'
+            '<dl class="datos-centro">'
+            '<div><dt>Marcador</dt><dd>'+dato(centro.get('marcador'), 'Pendiente de actualización editorial.')+'</dd></div>'
+            '<div><dt>Alineaciones</dt><dd>'+dato(centro.get('alineaciones'), 'Pendientes de confirmación en esta ficha.')+'</dd></div>'
+            '</dl><h3>Incidencias</h3>'+incident_markup+
+            '<p class="etiqueta">Fuente consultada</p><ul>'+sources+'</ul>'
+            '<p class="nota"><time datetime="'+escape(centro['fecha_verificacion'], quote=True)+'">Comprobado el '+escape(fecha_verificacion)+'.</time></p>'
+            '</section><!-- /centro-partido -->')
+
+
+def con_imagen(html, entry):
+    """Añade el recurso editorial sin alterar el análisis de datos existente."""
+    image = entry['imagen'].removeprefix('proyectos/real-zaragoza/')
+    figure = ('<!-- imagen-previa --><figure class="foto imagen-editorial-previa">'
+              f'<img src="{escape(image)}" width="{entry["ancho"]}" height="{entry["alto"]}" '
+              f'alt="{escape(entry["alt"], quote=True)}" style="width:100%;height:auto;border-radius:12px">'
+              '<figcaption>Imagen recreada con IA.</figcaption></figure><!-- /imagen-previa -->')
+    if '<!-- imagen-previa -->' in html:
+        html = re.sub(r'<!-- imagen-previa -->.*?<!-- /imagen-previa -->', lambda _: figure, html, flags=re.S)
+    else:
+        # Siempre después de la cabecera, antes de tablas y gráficos.
+        html, count = re.subn(r'(<(?:section|header) class="cab-proyecto">.*?</(?:section|header)>)', lambda m: m[0]+figure, html, count=1, flags=re.S)
+        if count != 1:
+            raise ValueError('No se encontró la cabecera de la previa')
+    if entry.get('noticia_html'):
+        news = '<!-- noticia-previa -->'+entry['noticia_html']+'<!-- /noticia-previa -->'
+        if '<!-- noticia-previa -->' in html:
+            html = re.sub(r'<!-- noticia-previa -->.*?<!-- /noticia-previa -->', lambda _: news, html, flags=re.S)
+        else:
+            html = html.replace('<!-- /imagen-previa -->', '<!-- /imagen-previa -->'+news, 1)
+    html = re.sub(r'<section class="seccion lectura" aria-labelledby="ficha-copa">[\s\S]*?</section>\s*', '', html)
+    # Ficha práctica homogénea: solo muestra los datos confirmados disponibles.
+    details = []
+    if entry.get('fecha_partido'):
+        try:
+            date = datetime.fromisoformat(entry['fecha_partido']).strftime('%A %d de %B de %Y')
+            months = {'October':'octubre','November':'noviembre','December':'diciembre'}
+            for en, es in months.items(): date = date.replace(en, es)
+            days = {'Monday':'lunes','Tuesday':'martes','Wednesday':'miércoles','Thursday':'jueves','Friday':'viernes','Saturday':'sábado','Sunday':'domingo'}
+            for en, es in days.items(): date = date.replace(en, es)
+        except ValueError:
+            date = entry['fecha_partido']
+        date = date[:1].upper()+date[1:]
+        if entry.get('hora'):
+            date += ', '+entry['hora']+' h (hora peninsular)'
+        details.append('<li><strong>Cuándo:</strong> '+escape(date)+'</li>')
+    if entry.get('estadio'):
+        details.append('<li><strong>Dónde:</strong> '+escape(entry['estadio'])+'</li>')
+    if entry.get('competicion'):
+        details.append('<li><strong>Competición:</strong> '+escape(entry['competicion'])+'</li>')
+    if details:
+        block = '<!-- ficha-previa --><section class="seccion lectura ficha-previa" aria-labelledby="ficha-previa"><p class="etiqueta">La cita</p><h2 id="ficha-previa">'+escape(entry['titulo'])+'</h2>'
+        if entry.get('fecha_partido'):
+            today = datetime.now(ZoneInfo('Europe/Madrid')).date().isoformat()
+            date = entry['fecha_partido']
+            result=entry.get('resultado_confirmado')
+            state = ('Resultado confirmado · '+result['marcador']) if result else ('Pendiente de confirmación editorial' if date < today else ('Hoy'+(' · '+entry['hora'] if entry.get('hora') else '') if date == today else 'Próxima cita · '+date[8:10]+'/'+date[5:7]))
+            confirmed='true' if result else 'false'
+            score=escape(result['marcador'],quote=True) if result else ''
+            block += '<p class="estado-previa estado-partido-detalle" data-fecha="'+escape(date)+'" data-hora="'+escape(entry.get('hora',''))+'" data-resultado-confirmado="'+confirmed+'" data-marcador="'+score+'">'+escape(state)+'</p>'
+        block += '<ul class="claves">'+''.join(details)+'</ul>'
+        result = entry.get('resultado_confirmado')
+        if result:
+            verified = datetime.fromisoformat(result['fecha_verificacion']).astimezone(ZoneInfo('Europe/Madrid'))
+            verified_label = verified.strftime('%d/%m/%Y a las %H:%M (hora peninsular)')
+            source_links = ' · '.join('<a href="'+escape(source['url'],quote=True)+'" target="_blank" rel="noopener">'+escape(source['nombre'])+'</a>' for source in result['fuentes'])
+            block += '<p class="resultado-confirmado"><strong>Resultado confirmado: '+escape(result['marcador'])+'</strong> · Comprobado el '+escape(verified_label)+'.</p><p class="nota">Fuente'+('s' if len(result['fuentes'])>1 else '')+': '+ source_links+'.</p>'
+        if entry.get('fuente_partido'):
+            block += '<p class="nota">Horario y estadio: <a href="'+escape(entry['fuente_partido'],quote=True)+'" rel="noopener" target="_blank">confirmación oficial del Real Zaragoza</a>.</p>'
+        if entry.get('hora') and entry.get('fecha_partido'):
+            postmatch = entry.get('postpartido_url', '')
+            postmatch_link = f'<p class="nota postpartido-disponible" data-fecha="{escape(entry["fecha_partido"])}" data-resultado-confirmado="true">Resultado confirmado: <a class="enlace-postpartido" href="../../{escape(postmatch,quote=True)}">Leer el análisis →</a></p>' if postmatch and postmatch != entry['pagina'] and entry.get('resultado_confirmado') else ''
+            calendar_hidden = ' hidden' if partido_iniciado(entry) else ''
+            block += ('<p class="calendario-partido" data-fecha="'+escape(entry['fecha_partido'])+'" data-hora="'+escape(entry['hora'])+'"'+calendar_hidden+'>'
+                      '<a class="boton" href="../../'+escape(calendar_path(entry),quote=True)+'" download>Añadir al calendario (.ics)</a></p>')
+            if postmatch_link:
+                block += postmatch_link
+        block += '</section><!-- /ficha-previa -->'
+        if '<!-- ficha-previa -->' in html:
+            html = re.sub(r'<!-- ficha-previa -->.*?<!-- /ficha-previa -->', lambda _: block, html, flags=re.S)
+        else:
+            html = html.replace('<!-- /imagen-previa -->', '<!-- /imagen-previa -->'+block, 1)
+    center = centro_partido_html(entry)
+    if center:
+        if '<!-- centro-partido -->' in html:
+            html = re.sub(r'<!-- centro-partido -->.*?<!-- /centro-partido -->', lambda _: center, html, flags=re.S)
+        else:
+            html = html.replace('<!-- /ficha-previa -->', '<!-- /ficha-previa -->'+center, 1)
+    elif '<!-- centro-partido -->' in html:
+        html = re.sub(r'<!-- centro-partido -->.*?<!-- /centro-partido -->', '', html, flags=re.S)
+    question = entry.get('pregunta_abierta')
+    limitation = entry.get('fuera_de_plano')
+    if question or limitation or (entry.get('resultado_confirmado') or {}).get('respuesta_pregunta') or (entry.get('resultado_confirmado') or {}).get('momentos_clave'):
+        result = entry.get('resultado_confirmado') or {}
+        has_question = bool(question or result.get('respuesta_pregunta'))
+        label = 'aria-labelledby="titulo-pregunta-partido"' if has_question else 'aria-label="Límites de los datos del partido"'
+        block = '<!-- pregunta-partido --><section class="seccion lectura pregunta-partido" '+label+'>'
+        if has_question:
+            question_heading = 'La pregunta previa' if result.get('respuesta_pregunta') else 'La pregunta que queda abierta'
+            block += '<p class="etiqueta">Una pregunta para volver</p><h2 id="titulo-pregunta-partido">'+question_heading+'</h2>'
+        if question:
+            block += '<p class="pregunta-partido-texto">'+escape(question)+'</p>'
+        if result.get('respuesta_pregunta'):
+            block += '<p class="respuesta-pregunta"><strong>Después del partido.</strong> '+escape(result['respuesta_pregunta'])+'</p>'
+        elif question:
+            block += '<p class="nota">La respuesta se añadirá tras revisar el partido y los datos disponibles.</p>'
+        moments = result.get('momentos_clave') or []
+        if moments:
+            block += '<h3>El partido en tres momentos</h3><ol class="momentos-partido">'
+            for moment in moments:
+                block += '<li><span class="momento-minuto">'+escape(str(moment['minuto']))+'’</span><div><strong>'+escape(moment['marcador'])+'</strong><p>'+escape(moment['hecho'])+'</p></div></li>'
+            block += '</ol>'
+        if limitation:
+            block += '<aside class="fuera-de-plano"><h3>Lo que los datos no muestran</h3><p>'+escape(limitation)+'</p></aside>'
+        block += '</section><!-- /pregunta-partido -->'
+        if '<!-- pregunta-partido -->' in html:
+            html = re.sub(r'<!-- pregunta-partido -->.*?<!-- /pregunta-partido -->', lambda _: block, html, flags=re.S)
+        elif '<!-- /centro-partido -->' in html:
+            html = html.replace('<!-- /centro-partido -->', '<!-- /centro-partido -->'+block, 1)
+        elif '<!-- /ficha-previa -->' in html:
+            html = html.replace('<!-- /ficha-previa -->', '<!-- /ficha-previa -->'+block, 1)
+        else:
+            html = html.replace('<!-- /imagen-previa -->', '<!-- /imagen-previa -->'+block, 1)
+    states = entry.get('estados_previa') or {}
+    confirmed_text = states.get('confirmado') or 'Horario, estadio y competición de la ficha.'
+    pending_text = states.get('pendiente') or 'La convocatoria y el once, cuando el club los confirme.'
+    after_text = states.get('despues') or 'La pregunta previa se revisará con lo ocurrido en el campo.'
+    states_block = ('<!-- previa-tres-estados --><section class="seccion lectura previa-tres-estados" aria-labelledby="titulo-tres-estados">'
+                    '<p class="etiqueta">Antes y después</p><h2 id="titulo-tres-estados">Tres cosas que conviene separar</h2>'
+                    '<ol><li><span>Confirmado</span><p>'+escape(confirmed_text)+'</p></li>'
+                    '<li><span>Pendiente</span><p>'+escape(pending_text)+'</p></li>'
+                    '<li><span>Se revisará después</span><p>'+escape(after_text)+'</p></li></ol></section><!-- /previa-tres-estados -->')
+    if '<!-- previa-tres-estados -->' in html:
+        html = re.sub(r'<!-- previa-tres-estados -->[\s\S]*?<!-- /previa-tres-estados -->', lambda _: states_block, html, flags=re.S)
+    else:
+        html = html.replace('<!-- /pregunta-partido -->', '<!-- /pregunta-partido -->'+states_block, 1)
+    share = ('<!-- compartir-previa --><div class="compartir-previa" aria-label="Compartir esta previa">'
+             '<button class="boton" type="button" data-compartir-previa>Compartir</button>'
+             '<button class="boton" type="button" data-copiar-previa>Copiar enlace</button>'
+             '<span class="estado-compartir" data-estado-compartir role="status" aria-live="polite"></span>'
+             '</div><!-- /compartir-previa -->')
+    if '<!-- compartir-previa -->' in html:
+        html = re.sub(r'<!-- compartir-previa -->.*?<!-- /compartir-previa -->', lambda _: share, html, flags=re.S)
+    else:
+        html = html.replace('<!-- /imagen-previa -->', '<!-- /imagen-previa -->'+share, 1)
+    if 'assets/compartir-previa.js' not in html:
+        html = html.replace('</head>', '<link rel="stylesheet" href="../../assets/compartir-previa.css?v=20261027a">\n<script src="../../assets/compartir-previa.js?v=20261027" defer></script>\n</head>', 1)
+    html = re.sub(r'(assets/compartir-previa\.css\?v=)[^"\s]+', r'\g<1>20261027a', html)
+    if 'assets/estado-partido.js' not in html:
+        html = html.replace('</head>', '<script src="../../assets/estado-partido.js?v=20261027b" defer></script>\n</head>', 1)
+    if 'assets/ideas-editoriales.css' not in html:
+        html = html.replace('</head>', '<link rel="stylesheet" href="../../assets/ideas-editoriales.css?v=20261027d">\n</head>', 1)
+    html = re.sub(r'(assets/ideas-editoriales\.css\?v=)[^"\s]+', r'\g<1>20261027d', html)
+    html = re.sub(r'(assets/estado-partido\.js\?v=)[^"\s]+', r'\g<1>20261027b', html)
+    html = re.sub(r'(assets/real-zaragoza\.css\?v=)[^"\s]+', r'\g<1>20261027c', html)
+    # La fecha de publicación no cambia al editar; la actualización sí.
+    published = entry.get('fecha_publicacion', entry.get('fecha_partido',''))
+    modified = entry.get('fecha_actualizacion', published)
+    published_label = datetime.fromisoformat(published).strftime('%d/%m/%Y') if published else ''
+    modified_label = datetime.fromisoformat(modified).strftime('%d/%m/%Y') if modified else ''
+    date_block = '<p class="fecha-datos">Publicado el '+published_label+((' · Revisado el '+modified_label) if modified else '')+' · Ángel Marqueta Alonso</p>'
+    if re.search(r'<p class="fecha-datos">.*?</p>', html, flags=re.S):
+        html = re.sub(r'<p class="fecha-datos">.*?</p>', lambda _: date_block, html, count=1, flags=re.S)
+    else:
+        html = re.sub(r'(</(?:section|header)>)(<!-- imagen-previa -->)', lambda m: m[1]+date_block+m[2], html, count=1)
+    # Metadatos explícitos: el generador SEO los conserva en las siguientes pasadas.
+    html = re.sub(r'<meta name="imagen-editorial"[^>]*>\s*', '', html)
+    html = html.replace('</head>', f'<meta name="imagen-editorial" content="{entry["imagen"]}">\n</head>', 1)
+    canonical = BASE + entry['pagina']
+    html = re.sub(r'(<link rel="canonical" href=")[^"]*', lambda m: m[1]+canonical, html)
+    html = re.sub(r'(<meta property="og:url" content=")[^"]*', lambda m: m[1]+canonical, html)
+    for key in ('og:image', 'twitter:image'):
+        html = re.sub(r'(<meta (?:property|name)="'+key+r'" content=")[^"]*', lambda m: m[1]+BASE+entry['imagen'], html)
+    html = re.sub(r'(<meta property="og:image:type" content=")[^"]*', lambda m: m[1]+'image/webp', html)
+    for key in ('ancho', 'alto'):
+        prop = 'width' if key == 'ancho' else 'height'
+        html = re.sub(r'(<meta property="og:image:'+prop+r'" content=")[^"]*', lambda m: m[1]+str(entry[key]), html)
+    def schema(match):
+        value = json.loads(match[1])
+        for item in value.get('@graph', [value]):
+            if item.get('@type') == 'Article':
+                item['image'] = [BASE+entry['imagen']]
+                item['mainEntityOfPage'] = canonical
+                item['@id'] = canonical+'#analisis'
+                if published: item['datePublished'] = published
+                if modified: item['dateModified'] = modified
+            if item.get('@type') == 'BreadcrumbList' and item.get('itemListElement'):
+                item['itemListElement'][-1]['item'] = canonical
+        return '<script type="application/ld+json">'+json.dumps(value,ensure_ascii=False)+'</script>'
+    return re.sub(r'<script type="application/ld\+json">(.*?)</script>', schema, html, flags=re.S)
+
+
+def ordenar(entries, hoy):
+    upcoming = sorted((x for x in entries if x['fecha_partido'] >= hoy), key=lambda x: x['fecha_partido'])
+    past = sorted((x for x in entries if x['fecha_partido'] < hoy), key=lambda x: x['fecha_partido'], reverse=True)
+    return upcoming+past
+
+
+def portada(root=ROOT, hoy=None):
+    entries = registro(root)
+    hoy = hoy or datetime.now(ZoneInfo('Europe/Madrid')).date().isoformat()
+    cards = []
+    for entry in ordenar(entries, hoy)[:4]:
+        if not (root / entry['pagina']).is_file():
+            raise ValueError('Publica primero la noticia: '+entry['pagina'])
+        fecha = entry['fecha_partido']
+        dia = fecha[8:10]+'/'+fecha[5:7]
+        result = entry.get('resultado_confirmado')
+        state = ('Resultado confirmado · '+result['marcador']) if result else (('Hoy'+(' · '+entry['hora'] if entry.get('hora') else '')) if fecha == hoy else ('Pendiente de confirmación editorial' if fecha < hoy else 'Próxima cita · '+dia))
+        fact = dia+(' · '+entry['hora']+' h' if entry.get('hora') else '')+(' · '+entry['estadio'] if entry.get('estadio') else '')
+        event_hidden = ' hidden' if partido_iniciado(entry) else ''
+        event_link = (f'<a class="boton calendario-partido" data-fecha="{fecha}" data-hora="{escape(entry.get("hora", ""))}"{event_hidden} href="{escape(calendar_path(entry))}" download>Añadir al calendario</a>'
+                      if entry.get('hora') else '')
+        postmatch_link = (f'<a class="enlace-postpartido postpartido-disponible" data-fecha="{fecha}" data-resultado-confirmado="true" href="{escape(entry["postpartido_url"])}">Leer el análisis →</a>'
+                          if result and entry.get('postpartido_url') and entry['postpartido_url'] != entry['pagina'] else '')
+        center_link = (f'<a class="enlace-centro-partido" href="{escape(entry["pagina"])}#titulo-centro-partido">Centro del partido →</a>'
+                       if entry.get('centro_partido') else '')
+        published = entry.get('fecha_publicacion')
+        modified = entry.get('fecha_actualizacion')
+        date_line = ''
+        if published:
+            published_label = datetime.fromisoformat(published).strftime('%d/%m/%Y')
+            date_line = f'<p class="fecha-datos"><time datetime="{escape(published, quote=True)}">Publicada el {published_label}</time>'
+            if modified and modified > published:
+                modified_label = datetime.fromisoformat(modified).strftime('%d/%m/%Y')
+                date_line += f' · <time datetime="{escape(modified, quote=True)}">Actualizada el {modified_label}</time>'
+            date_line += '</p>'
+        confirmed = 'true' if result else 'false'
+        score = escape(result['marcador'], quote=True) if result else ''
+        score_block = f'<p class="marcador-previa"><span class="solo-lectores">Marcador final: </span>{escape(result["marcador"])}</p>' if result else ''
+        cards.append(f'<article class="tarjeta-previa" data-fecha="{fecha}" data-hora="{escape(entry.get("hora", ""))}" data-resultado-confirmado="{confirmed}" data-marcador="{score}"><a href="{escape(entry["pagina"])}">'
+                     f'<img src="{escape(entry["imagen"])}" alt="{escape(entry["alt"],quote=True)}" '
+                     f'width="{entry["ancho"]}" height="{entry["alto"]}" loading="lazy"></a>'
+                     f'<p class="estado-previa">{state}</p><p class="etiqueta">{escape(entry["etiqueta"])}</p><p class="datos-partido">{escape(fact)}</p>{score_block}{date_line}<h3><a href="{escape(entry["pagina"])}">'
+                     f'{escape(entry["titulo"])}</a></h3><p>{escape(entry["resumen"])}</p>'
+                     f'<a class="enlace-editorial" href="{escape(entry["pagina"])}">{'Leer el análisis' if result else 'Leer la previa'}</a>{event_link}{postmatch_link}{center_link}</article>')
+    block = START+'<section class="previas-portada" aria-labelledby="titulo-previas"><p class="etiqueta">Partidos</p><h2 id="titulo-previas">Partidos y análisis</h2><div class="previas-rejilla">'+''.join(cards)+'</div></section>'+END
+    path = root / 'index.html'
+    html = path.read_text(encoding='utf-8')
+    if START in html:
+        html = re.sub(re.escape(START)+'.*?'+re.escape(END), lambda _: block, html, flags=re.S)
+    else:
+        marker = '<section class="actualidad-editorial actualidad-compacta">'
+        if marker not in html:
+            raise ValueError('No se encontró el bloque editorial de la portada')
+        html = html.replace(marker, block+marker, 1)
+    if 'assets/previas.css' not in html:
+        html = html.replace('</head>', '<link rel="stylesheet" href="assets/previas.css?v=20261027">\n</head>', 1)
+    html = re.sub(r'(assets/previas\.css\?v=)[^"\s]+', r'\g<1>20261027e', html)
+    if 'assets/previas.js' not in html:
+        html = html.replace('</head>', '<script src="assets/previas.js?v=20261027" defer></script>\n</head>', 1)
+    if 'assets/estado-partido.js' not in html:
+        html = html.replace('</head>', '<script src="assets/estado-partido.js?v=20261027b" defer></script>\n</head>', 1)
+    html = re.sub(r'(assets/estado-partido\.js\?v=)[^"\s]+', r'\g<1>20261027b', html)
+    news_path = root / 'datos/novedades.json'
+    if news_path.is_file():
+        news = json.loads(news_path.read_text(encoding='utf-8'))
+        items = ''.join(f'<li><time datetime="{n["fecha"]}">{n["fecha"][8:10]}/{n["fecha"][5:7]}</time>'
+                        f'<span>{escape(n["tipo"])}</span><a href="{escape(n["url"])}">{escape(n["titulo"])}</a></li>'
+                        for n in news[:3])
+        html = re.sub(r'(<section class="actualizaciones-breves">.*?<ul>).*?(</ul>)',
+                      lambda m: m[1]+items+m[2], html, count=1, flags=re.S)
+    guardar(path, html)
+
+
+def publicar_liga(jornada, html, root=ROOT):
+    entries = registro(root)
+    entry = next((x for x in entries if x.get('jornada') == jornada), None)
+    if entry is None:
+        raise ValueError(f'Antes de publicar la previa J{jornada}, añade su noticia e imagen a datos/previas.json')
+    for item in entries:
+        item['alias'] = ['proyectos/real-zaragoza/previa.html'] if item is entry else []
+    guardar(root / 'datos/previas.json', json.dumps(entries, ensure_ascii=False, indent=2)+'\n')
+    html = con_imagen(html, entry)
+    # Guardar una URL que no cambiará al generar la siguiente jornada.
+    archived = html.replace(BASE+'proyectos/real-zaragoza/previa.html', BASE+entry['pagina'])
+    guardar(root / entry['pagina'], archived)
+    portada(root)
+    if root == ROOT:
+        from actualizar_exploracion import generate_archive
+        generate_archive()
+    return html
+
+
+def sincronizar(root=ROOT):
+    for entry in registro(root):
+        escribir_calendario(entry, root)
+        for page in [entry['pagina']]+entry.get('alias', []):
+            path = root / page
+            if path.is_file():
+                guardar(path, con_imagen(path.read_text(encoding='utf-8'), entry))
+    portada(root)
+    path = root / 'sitemap.xml'
+    tree = ET.parse(path)
+    ns = '{http://www.sitemaps.org/schemas/sitemap/0.9}'
+    existing = {x.text for x in tree.getroot().iter(ns+'loc')}
+    for entry in registro(root):
+        if BASE+entry['pagina'] not in existing:
+            ET.SubElement(ET.SubElement(tree.getroot(), ns+'url'), ns+'loc').text = BASE+entry['pagina']
+    ET.register_namespace('', ns[1:-1])
+    ET.indent(tree)
+    tree.write(path, encoding='utf-8', xml_declaration=True)
+
+
+if __name__ == '__main__':
+    sincronizar()

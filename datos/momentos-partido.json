@@ -1,0 +1,32 @@
+{
+  "9": {
+    "limite": "El marcador sirve como referencia de cada secuencia. La ficha no desglosa tiros ni posesión por minutos, así que estos momentos no permiten medir cambios en esas métricas ni atribuir el gol a una sustitución.",
+    "fuentes": [
+      {
+        "nombre": "Ficha del Real Zaragoza",
+        "url": "https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-9-ce-europa-vs-real-zaragoza-3940"
+      },
+      {
+        "nombre": "Resumen en vídeo",
+        "url": "https://www.youtube.com/watch?v=gBB7ameQWbI"
+      }
+    ],
+    "momentos": [
+      {
+        "minuto": 56,
+        "marcador": "0–0",
+        "hecho": "Entraron Rubén Díez y Pau Sans por Yussif Saidu y Óscar Ureña. El partido seguía igualado."
+      },
+      {
+        "minuto": 78,
+        "marcador": "0–0",
+        "hecho": "J. Tobajas y Marcos Cuenca sustituyeron a Raúl Pereira y Jaume Jardí; el marcador aún no se había movido."
+      },
+      {
+        "minuto": 80,
+        "marcador": "0–1",
+        "hecho": "En un córner, Diego González remató y el desvío de Álex Cano terminó en gol en propia puerta."
+      }
+    ]
+  }
+}

@@ -135,11 +135,16 @@ def generar(jornada):
 
     local, visitante = ((ZARAGOZA, nombre_rival) if proximo["sede"] == "Casa"
                         else (nombre_rival, ZARAGOZA))
-    fuentes = sorted(set(rival["fuente_url"]))
-    fuentes_html = ", ".join(
-        '<a href="{url}" rel="noopener" target="_blank">{nombre}</a>'.format(
-            url=escape(u), nombre="BeSoccer" if "besoccer" in u else "futbolme")
-        for u in fuentes)
+    # Un enlace por proveedor (el primero que aparece), con su nombre real
+    proveedores = {"besoccer": "BeSoccer", "futbolme": "futbolme", "fotmob": "FotMob",
+                   "sofascore": "Sofascore", "goal.com": "Goal"}
+    por_proveedor = {}
+    for u in rival["fuente_url"]:
+        nombre = next((n for clave, n in proveedores.items() if clave in u), "otra fuente")
+        por_proveedor.setdefault(nombre, u)
+    enlaces = ['<a href="{url}" rel="noopener" target="_blank">{nombre}</a>'.format(url=escape(u), nombre=n)
+               for n, u in por_proveedor.items()]
+    fuentes_html = enlaces[0] if len(enlaces) == 1 else ", ".join(enlaces[:-1]) + " y " + enlaces[-1]
 
     extra_ruta = CARPETA_ENTRADA.parent.parent / "textos" / f"previa_j{jornada}_extra.html"
     extra = extra_ruta.read_text(encoding="utf-8") if extra_ruta.exists() else ""
@@ -159,7 +164,7 @@ def generar(jornada):
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Big+Shoulders+Display:wght@700;800&display=swap">
 <script src="../../assets/tema.js"></script>
-<link rel="stylesheet" href="../../assets/estilo.css?v=20261021fotos">
+<link rel="stylesheet" href="../../assets/estilo.css?v=20261028a11y1">
 <link rel="stylesheet" href="../../assets/real-zaragoza.css?v=20261016b">
 <script src="../../assets/mejoras.js?v=20261021fotos" defer></script>
 <link rel="icon" href="../../assets/icono.svg" type="image/svg+xml">
@@ -223,7 +228,7 @@ def generar(jornada):
 
   <section class="seccion lectura">
     <p class="etiqueta">Fuentes</p>
-    <p>Resultados del {escape(nombre_rival)}: {fuentes_html}, contrastados entre futbolme y BeSoccer. Datos del Real Zaragoza: los mismos del <a href="informe-completo.html">informe completo</a>.</p>
+    <p>Resultados del {escape(nombre_rival)}: {fuentes_html}; las comprobaciones y discrepancias están en el <a href="../../analisis/real-zaragoza/datos/entrada/incidencias.csv">registro de incidencias</a>. Datos del Real Zaragoza: los mismos del <a href="informe-completo.html">informe completo</a>.</p>
     <div class="enlaces"><a class="boton" href="index.html">Volver al panel</a></div>
   </section>
 </main>
@@ -240,7 +245,12 @@ def generar(jornada):
     ruta = RAIZ_WEB / "proyectos" / "real-zaragoza" / "previa.html"
     from presentacion_web import enriquecer
     html = enriquecer(html, "previa.html", jornada=jornada)
+    # Cada previa requiere su imagen editorial y se anuncia en la portada.
+    sys.path.insert(0, str(RAIZ_WEB / "herramientas"))
+    from previas import publicar_liga, sincronizar
+    html = publicar_liga(jornada, html)
     ruta.write_text(html, encoding="utf-8")
+    sincronizar()
     print(f"Previa generada: {local} – {visitante} (jornada {jornada}).")
 
 

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 540" role="img" aria-labelledby="titulo descripcion">
+  <title id="titulo">El juego, en perspectiva</title>
+  <desc id="descripcion">Ilustración original de un campo de fútbol con una trayectoria punteada y un balón naranja, sin representar un partido concreto.</desc>
+  <defs><linearGradient id="campo" x2="1" y2="1"><stop stop-color="#174b2e"/><stop offset="1" stop-color="#0c2d1d"/></linearGradient><pattern id="franjas" width="180" height="540" patternUnits="userSpaceOnUse"><rect width="90" height="540" fill="#ffffff" opacity=".025"/></pattern></defs>
+  <rect width="720" height="540" rx="24" fill="url(#campo)"/><rect width="720" height="540" rx="24" fill="url(#franjas)"/>
+  <g fill="none" stroke="#f4f7f1" stroke-opacity=".62" stroke-width="3"><rect x="30" y="30" width="660" height="480" rx="8"/><path d="M360 30v480"/><circle cx="360" cy="270" r="77"/><rect x="30" y="152" width="96" height="236"/><rect x="594" y="152" width="96" height="236"/><path d="M30 205h34v130H30m660-130h-34v130h34"/></g>
+  <path d="M128 365C224 362 242 207 333 228s114 139 188 112 80-97 112-142" fill="none" stroke="#ff6a2b" stroke-width="8" stroke-linecap="round" stroke-dasharray="2 20"/>
+  <g fill="#f4f7f1"><circle cx="128" cy="365" r="11"/><circle cx="333" cy="228" r="11"/><circle cx="521" cy="340" r="11"/></g>
+  <circle cx="633" cy="198" r="28" fill="#ff6a2b" stroke="#f4f7f1" stroke-width="5"/><path d="m633 183 8 6-3 10h-10l-3-10zm-8 6-8-4m21 4 8-4m-18 14-6 7m13-7 6 7" fill="none" stroke="#0f2418" stroke-width="3" stroke-linecap="round"/>
+  <g fill="#f4f7f1" font-family="Arial,sans-serif"><text x="52" y="82" font-size="16" letter-spacing="4" opacity=".75">LÍNEA DE PASE</text><path d="M52 101h72" stroke="#ff6a2b" stroke-width="4"/><text x="52" y="468" font-size="19" opacity=".85">Fútbol · datos · contexto</text></g>
+</svg>

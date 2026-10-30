@@ -2,6 +2,7 @@
   "jornada": 9,
   "rival": "CE Europa",
   "jugador": {
+    "titulo": "La referencia del Europa en el área",
     "nombre": "Khalid Noureddine",
     "dorsal": "9",
     "posicion": "Delantero centro",
@@ -20,8 +21,10 @@
         "su último gol: de cabeza ante el Algeciras (2-1)"
       ]
     ],
-    "lectura": "Es la referencia en el área de un equipo que marca menos de lo que genera: 6 goles con 10,2 xG.",
-    "fuentes": "BeSoccer, FotMob y Andalucía Información"
+    "lectura": "Juega en un equipo que marca menos de lo que genera: 6 goles con 10,2 xG. Si el Europa afina, buena parte pasa por él.",
+    "fuentes": "BeSoccer, FotMob y Andalucía Información",
+    "foto": "recursos/jugadores/khalid-noureddine.png",
+    "foto_credito": "CE Europa"
   },
   "expectativa": {
     "local": 38.7,

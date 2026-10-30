@@ -26,9 +26,9 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import pandas as pd
 from matplotlib.lines import Line2D
-from matplotlib.patches import FancyBboxPatch, Rectangle
+from matplotlib.patches import Circle, FancyBboxPatch, Rectangle
 
-from cargar_datos import CARPETA_ENTRADA, CARPETA_SALIDA, CARPETA_TEXTOS, RAIZ_WEB
+from cargar_datos import CARPETA_ENTRADA, CARPETA_PROYECTO, CARPETA_SALIDA, CARPETA_TEXTOS, RAIZ_WEB
 
 FONDO = "#12221d"
 PANEL = "#1a2f27"
@@ -88,11 +88,12 @@ def tendencia(p, rival, jornada, corte, ruta):
     etiquetas = [f"J{j}" for j in p["jornada"]]
     x = range(len(p))
     for i, (col_g, col_xg, titulo, y0) in enumerate([
-            ("goles_favor", "xg", "A favor", 0.45), ("goles_contra", "xg_rival", "En contra", 0.165)]):
-        ax = fig.add_axes([0.08, y0, 0.84, 0.19])
+            ("goles_favor", "xg", "A favor", 0.46), ("goles_contra", "xg_rival", "En contra", 0.185)]):
+        ax = fig.add_axes([0.08, y0, 0.84, 0.18])
         ax.set_facecolor(FONDO)
-        ax.bar(x, p[col_g], color=VERDE if i == 0 else "#b8452a", width=0.6, label="Goles")
-        ax.plot(x, p[col_xg], color=NARANJA, marker="o", lw=2.2, ms=6, label="xG")
+        lado = titulo.lower()
+        ax.bar(x, p[col_g], color=VERDE if i == 0 else "#b8452a", width=0.6, label=f"Goles {lado}")
+        ax.plot(x, p[col_xg], color=TEXTO, marker="o", lw=2, ms=5.5, label=f"xG {lado}")
         ax.set_xticks(list(x), etiquetas, color=SUAVE, fontsize=10)
         ax.set_ylim(0, 3.6)
         ax.set_yticks([0, 1, 2, 3])
@@ -103,9 +104,8 @@ def tendencia(p, rival, jornada, corte, ruta):
         ax.grid(axis="y", color=LINEA, lw=0.6)
         ax.set_axisbelow(True)
         ax.text(0.0, 1.1, titulo.upper(), fontsize=10.5, fontweight="bold", color=NARANJA, transform=ax.transAxes)
-        if i == 0:
-            ax.legend(loc="upper right", bbox_to_anchor=(1.0, 1.22), ncol=2, fontsize=10,
-                      labelcolor=SUAVE, frameon=False)
+        ax.legend(loc="upper right", bbox_to_anchor=(1.0, 1.22), ncol=2, fontsize=10,
+                  labelcolor=SUAVE, frameon=False)
     pie(fig, f"Goles y xG por partido, jornadas 1 a {corte}. Fuente: Sofascore.")
     fig.savefig(ruta, dpi=150, facecolor=FONDO)
     plt.close(fig)
@@ -119,38 +119,71 @@ def grafico_web(p, rival, ruta):
     etiquetas = [f"J{j}" for j in p["jornada"]]
     for ax, (col_g, col_xg, titulo, color) in zip(ejes, [
             ("goles_favor", "xg", "A favor", "#1f6b3e"), ("goles_contra", "xg_rival", "En contra", "#b8452a")]):
-        ax.bar(x, p[col_g], color=color, width=0.6, label="Goles")
-        ax.plot(x, p[col_xg], color="#ff6a2b", marker="o", lw=2, label="xG")
+        ax.bar(x, p[col_g], color=color, width=0.6, label=f"Goles {titulo.lower()}")
+        ax.plot(x, p[col_xg], color="#0f2418", marker="o", lw=2, label=f"xG {titulo.lower()}")
+        ax.legend(frameon=False, loc="upper left")
         ax.set_xticks(list(x), etiquetas)
         ax.set_title(f"{rival} · {titulo.lower()}", loc="left", fontweight="bold", color="#0f2418")
         ax.spines[["top", "right"]].set_visible(False)
         ax.grid(axis="y", color="#e3e7e0")
         ax.set_axisbelow(True)
-    ejes[0].legend(frameon=False)
     fig.tight_layout()
     fig.savefig(ruta, dpi=150, facecolor="white")
     plt.close(fig)
 
 
+def foto_redondeada(ruta, ancho_px, alto_px, radio=22):
+    """Recorta la foto a la proporción del hueco, con fondo blanco y esquinas redondeadas."""
+    from PIL import Image, ImageDraw, ImageOps
+    import numpy as np
+    foto = Image.open(ruta).convert("RGBA")
+    fondo = Image.new("RGBA", foto.size, "white")
+    foto = Image.alpha_composite(fondo, foto)
+    foto = ImageOps.fit(foto, (int(ancho_px), int(alto_px)), Image.LANCZOS, centering=(0.5, 0.0))
+    mascara = Image.new("L", foto.size, 0)
+    ImageDraw.Draw(mascara).rounded_rectangle([0, 0, foto.size[0] - 1, foto.size[1] - 1], radio, fill=255)
+    foto.putalpha(mascara)
+    return np.asarray(foto)
+
+
 def jugador(c, jornada, ruta):
     j = c["jugador"]
     fig = lienzo(jornada, "JUGADOR A SEGUIR")
-    # Dorsal grande en lugar de foto (sin imágenes con derechos de terceros)
-    fig.add_artist(FancyBboxPatch((0.08, 0.50), 0.36, 0.33, transform=fig.transFigure,
-                                  boxstyle="round,pad=0,rounding_size=0.02", fc=PANEL, ec=LINEA))
-    fig.text(0.26, 0.655, j["dorsal"], fontsize=150, fontweight="bold", color=NARANJA,
-             ha="center", va="center")
-    fig.text(0.50, 0.78, j["nombre"].split(" ")[0], fontsize=28, fontweight="bold", color=TEXTO)
-    fig.text(0.50, 0.735, " ".join(j["nombre"].split(" ")[1:]), fontsize=28, fontweight="bold", color=TEXTO)
-    fig.text(0.50, 0.69, c["rival"], fontsize=13, color=VERDE_CLARO, fontweight="bold")
-    fig.text(0.50, 0.655, f"{j['posicion']} · {j['edad']} años", fontsize=12.5, color=SUAVE)
-    y = 0.43
+    titular = textwrap.wrap(j.get("titulo", f"Jugador a seguir del {c['rival']}"), 24)
+    for k, linea in enumerate(titular[:2]):
+        fig.text(0.08, 0.81 - 0.045 * k, linea, fontsize=27, fontweight="bold", color=TEXTO)
+    foto = j.get("foto")
+    if foto:
+        # Foto facilitada por Ángel, con su crédito en el pie, y dorsal en un círculo
+        x0, y0, ancho, alto = 0.08, 0.44, 0.30, 0.27
+        eje = fig.add_axes([x0, y0, ancho, alto])
+        eje.imshow(foto_redondeada(CARPETA_PROYECTO / "codigo" / foto, ancho * 1080, alto * 1350), aspect="auto")
+        eje.axis("off")
+        fig.add_artist(FancyBboxPatch((x0, y0), ancho, alto, transform=fig.transFigure, fc="none",
+                                      boxstyle="round,pad=0,rounding_size=0.02", ec=LINEA, zorder=4))
+        cx, cy = x0 + ancho - 0.012, y0 + alto - 0.015
+        fig.add_artist(Circle((cx, cy), 0.042, transform=fig.transFigure,
+                              fc=NARANJA, ec=FONDO, lw=3, zorder=5))
+        fig.text(cx, cy - 0.002, j["dorsal"], fontsize=24, fontweight="bold",
+                 color="white", ha="center", va="center", zorder=6)
+    else:
+        # Sin foto con derechos de uso: dorsal grande
+        fig.add_artist(FancyBboxPatch((0.08, 0.465), 0.30, 0.24, transform=fig.transFigure,
+                                      boxstyle="round,pad=0,rounding_size=0.02", fc=PANEL, ec=LINEA))
+        fig.text(0.23, 0.585, j["dorsal"], fontsize=110, fontweight="bold", color=NARANJA,
+                 ha="center", va="center")
+    fig.text(0.44, 0.655, j["nombre"].split(" ")[0], fontsize=24, fontweight="bold", color=TEXTO)
+    fig.text(0.44, 0.615, " ".join(j["nombre"].split(" ")[1:]), fontsize=24, fontweight="bold", color=TEXTO)
+    fig.text(0.44, 0.565, c["rival"], fontsize=13, color=VERDE_CLARO, fontweight="bold")
+    fig.text(0.44, 0.53, f"{j['posicion']} · {j['edad']} años", fontsize=12.5, color=SUAVE)
+    y = 0.385
     for cifra, texto in j["datos"]:
         fig.text(0.08, y, cifra, fontsize=30, fontweight="bold", color=TEXTO)
         fig.text(0.30, y + 0.012, texto, fontsize=12.5, color=SUAVE)
-        y -= 0.07
-    fig.text(0.08, 0.215, textwrap.fill(j["lectura"], 62), fontsize=11.5, color=TEXTO, linespacing=1.5, va="top")
-    pie(fig, f"Datos de liga hasta la jornada {jornada - 1}. Fuentes: {j['fuentes']}.")
+        y -= 0.062
+    fig.text(0.08, 0.2, textwrap.fill(j["lectura"], 62), fontsize=11.5, color=TEXTO, linespacing=1.5, va="top")
+    credito = f" · Foto: {j['foto_credito']}" if j.get("foto") else ""
+    pie(fig, f"Datos hasta la J{jornada - 1} · {j['fuentes']}{credito}")
     fig.savefig(ruta, dpi=150, facecolor=FONDO)
     plt.close(fig)
 

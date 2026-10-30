@@ -74,6 +74,16 @@ En `datos/tablas/` están las mismas tablas listas para abrir con doble clic en 
 
 ## Cómo se actualiza
 
+### Previas con imagen y presencia en portada
+
+Cada previa se publica con una ilustración editorial propia y su noticia. Antes de generar una nueva jornada con `codigo/previa.py`, se añade su entrada a `datos/previas.json` (en la raíz de la web): jornada, fecha del partido, título, resumen, página permanente, imagen, dimensiones y texto alternativo. La imagen debe existir; el generador se detiene si falta para evitar publicar una previa sin portada o con la ilustración de otro rival.
+
+`herramientas/previas.py` incorpora la imagen y el texto editorial a la noticia, conserva una URL por jornada y actualiza el bloque de previas de la página principal. La dirección `previa.html` sigue mostrando la jornada más reciente; las noticias anteriores mantienen su propia dirección. El bloque muestra las cuatro previas más recientes. Las previas de Copa se añaden al mismo registro con una página propia, sin campo `jornada`, para mantener separadas las competiciones.
+
+La regeneración de portada y la actualización SEO también sincronizan este bloque. La portada prioriza el partido pendiente más cercano; las etiquetas se actualizan con la fecha de Madrid sin deducir si el encuentro ha comenzado o terminado. El archivo recoge las previas de liga y Copa, y la simulación. `previa.html` comparte la canónica de su noticia permanente.
+
+Para sincronizar páginas ya publicadas: `python herramientas/previas.py`. La actualización SEO termina con `herramientas/calidad_web.py`: elimina metadatos duplicados, conserva la imagen editorial, incorpora dimensiones y genera versiones ligeras de las imágenes grandes sin sustituir los originales. Para comprobar el ciclo de publicación: `python -m unittest discover -s herramientas/pruebas -p 'test_*.py'` y `node herramientas/pruebas/previas.test.cjs`.
+
 1. Añadir el partido nuevo a los CSV de `datos/entrada` (y la clasificación de esa jornada).
 2. Ejecutar desde la raíz del repositorio:
    ```
@@ -82,7 +92,7 @@ En `datos/tablas/` están las mismas tablas listas para abrir con doble clic en 
    Rscript analisis/real-zaragoza/codigo/comprobar.R
    ```
 3. Si alguna comprobación falla, el script para y no cambia nada de la web.
-   `actualizar.py` también regenera las pestañas «Jornada a jornada» (una página por partido, `paginas_partidos.py`) y «Último partido», y las tablas para Excel con su diccionario (`preparar_tablas.py`, en `datos/tablas/`).
+   `actualizar.py` también regenera las pestañas «Jornada a jornada» (una página por partido, `paginas_partidos.py`) y «Último partido», las tablas para Excel (`preparar_tablas.py`) y la publicación visual del partido más reciente. Su paso final reconstruye portada y galería, exporta el marcador SVG a PNG y comprueba que las piezas usan la misma jornada y fecha. Solo añade posesión y tiros cuando la ficha está completa y ambas métricas son válidas. Los tiros a puerta son opcionales y se incluyen si pasan las comprobaciones frente a tiros totales y goles. Si la cobertura principal no está completa, omite y retira el gráfico estadístico. Para ese paso se necesita Chrome o Edge instalado; también se puede indicar con `CHROME_PATH`.
    Para los goles en vídeo y el xG, después de apuntar los goles de la jornada en `video/goles_video.csv` y sus estadísticas en `sofascore.csv`:
    ```
    python analisis/real-zaragoza/codigo/goles_video.py
@@ -91,6 +101,8 @@ En `datos/tablas/` están las mismas tablas listas para abrir con doble clic en 
 5. Previa del siguiente partido: añadir los resultados del rival a `partidos_rivales.csv` y ejecutar `python analisis/real-zaragoza/codigo/previa.py <jornada>`. Para redes, `python analisis/real-zaragoza/codigo/previa_redes.py <jornada> --estadio "<estadio>"` crea `datos/salida/previa_redes.png` y `previa_redes.json` con las mismas cifras; después, `python analisis/real-zaragoza/codigo/previa_portada.py` crea la portada `previa_portada.png` (primera imagen del carrusel de Instagram).
 
 Los partidos de copa van en los mismos archivos con su competición; no cuentan para los puntos ni para la clasificación.
+
+El índice `/archivo-visual/` conserva una tarjeta descargable por jornada y una tarjeta estadística solo cuando las métricas pasan las validaciones de cobertura. Resume cada temporada por separado, permite comparar dos jornadas y comparte su selección y filtros mediante el enlace de la página. La comparación se exporta en SVG o PNG. Los nombres incluyen temporada si se acumulan campañas con jornadas repetidas. Al actualizar datos, `herramientas/actualizar_publicacion_jornada.py` regenera esas piezas sin sustituir la tarjeta vigente de portada.
 
 ## Límites
 
