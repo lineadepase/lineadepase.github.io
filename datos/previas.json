@@ -27,7 +27,10 @@
       "confirmado": "El partido se juega el 31 de octubre a las 21:00 en Ibercaja Estadio.",
       "pendiente": "Las convocatorias y los onces, hasta que los equipos los hagan públicos.",
       "despues": "Se revisará quién logró llegar más veces al área rival, con los datos disponibles del encuentro."
-    }
+    },
+    "imagen_social": "assets/compartir/previa-real-zaragoza-villarreal-b-j10-social.jpg",
+    "ancho_social": 1200,
+    "alto_social": 675
   },
   {
     "pagina": "proyectos/real-zaragoza/previa-copa-tudelano-20261027.html",

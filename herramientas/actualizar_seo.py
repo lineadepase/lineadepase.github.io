@@ -6,6 +6,7 @@ Requiere Pillow. No incluye fragmentos de análisis ni páginas de redirección.
 from pathlib import Path
 from html.parser import HTMLParser
 from html import escape, unescape
+from mimetypes import guess_type
 import json
 import re
 import xml.etree.ElementTree as ET
@@ -138,6 +139,12 @@ def build():
         if editorial:
             image_path = editorial[1]
             image_url = BASE + '/' + image_path
+        image_file = ROOT / image_path.lstrip('/\\')
+        if not image_file.is_file():
+            raise FileNotFoundError(f'No existe la imagen para compartir de {path}: {image_path}')
+        with Image.open(image_file) as social_image:
+            image_width, image_height = social_image.size
+            image_type = guess_type(image_file.name)[0] or 'image/png'
         title = head.title.strip()
         display = title.replace(' · Línea de pase', '').strip()
         if path == 'index.html':
@@ -179,9 +186,9 @@ def build():
                 f'<meta property="og:description" content="{e(description)}">',
                 f'<meta property="og:url" content="{e(url)}">',
                 f'<meta property="og:image" content="{e(image_url)}">',
-                '<meta property="og:image:type" content="image/png">',
-                '<meta property="og:image:width" content="1200">',
-                '<meta property="og:image:height" content="630">',
+                f'<meta property="og:image:type" content="{e(image_type)}">',
+                f'<meta property="og:image:width" content="{image_width}">',
+                f'<meta property="og:image:height" content="{image_height}">',
                 f'<meta property="og:image:alt" content="{e(display + " · Línea de pase")}">',
                 '<meta name="twitter:card" content="summary_large_image">',
                 f'<meta name="twitter:title" content="{e(title)}">',

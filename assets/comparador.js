@@ -16,7 +16,7 @@
       const sample=LPGrupo.filter(data.partidos,options),names=[a.value,b.value],rows=names.map(team=>sample.filter(r=>r.equipo===team));
       if(save){const url=new URL(location.href);Object.entries({a:a.value,b:b.value,sede:venue.value,fuente:source.value,modo:mode.value,periodo:period.value}).forEach(([k,v])=>url.searchParams.set(k,v));history.replaceState(null,'',url);}
       result.replaceChildren();provenance.replaceChildren();exported=[];
-      const wrap=node('div',undefined,'tabla-comparador'),table=node('table');
+      const wrap=node('div',undefined,'tabla-comparador'),table=node('table');wrap.tabIndex=0;wrap.setAttribute('role','region');wrap.setAttribute('aria-label','Tabla comparativa; se puede desplazar horizontalmente');
       table.append(node('caption',names.join(' frente a ')+' · '+(venue.value||'Casa y fuera')+' · '+(period.value==='ultimas5'?'Últimas cinco jornadas':'Toda la temporada')));
       const head=node('thead'),hr=node('tr');['Indicador',...names,'Media del grupo'].forEach(t=>{const th=node('th',t);th.scope='col';hr.append(th);});head.append(hr);table.append(head);
       const body=node('tbody');

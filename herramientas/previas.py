@@ -5,6 +5,7 @@ import json
 import re
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta, timezone
+from mimetypes import guess_type
 from zoneinfo import ZoneInfo
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -347,23 +348,27 @@ def con_imagen(html, entry):
         html = re.sub(r'<p class="fecha-datos">.*?</p>', lambda _: date_block, html, count=1, flags=re.S)
     else:
         html = re.sub(r'(</(?:section|header)>)(<!-- imagen-previa -->)', lambda m: m[1]+date_block+m[2], html, count=1)
+    # La imagen editorial del artículo puede diferir de la tarjeta social.
+    social_image = entry.get('imagen_social', entry['imagen'])
+    social_width = entry.get('ancho_social', entry['ancho'])
+    social_height = entry.get('alto_social', entry['alto'])
+    social_type = guess_type(social_image)[0] or 'image/webp'
     # Metadatos explícitos: el generador SEO los conserva en las siguientes pasadas.
     html = re.sub(r'<meta name="imagen-editorial"[^>]*>\s*', '', html)
-    html = html.replace('</head>', f'<meta name="imagen-editorial" content="{entry["imagen"]}">\n</head>', 1)
+    html = html.replace('</head>', f'<meta name="imagen-editorial" content="{social_image}">\n</head>', 1)
     canonical = BASE + entry['pagina']
     html = re.sub(r'(<link rel="canonical" href=")[^"]*', lambda m: m[1]+canonical, html)
     html = re.sub(r'(<meta property="og:url" content=")[^"]*', lambda m: m[1]+canonical, html)
     for key in ('og:image', 'twitter:image'):
-        html = re.sub(r'(<meta (?:property|name)="'+key+r'" content=")[^"]*', lambda m: m[1]+BASE+entry['imagen'], html)
-    html = re.sub(r'(<meta property="og:image:type" content=")[^"]*', lambda m: m[1]+'image/webp', html)
-    for key in ('ancho', 'alto'):
-        prop = 'width' if key == 'ancho' else 'height'
-        html = re.sub(r'(<meta property="og:image:'+prop+r'" content=")[^"]*', lambda m: m[1]+str(entry[key]), html)
+        html = re.sub(r'(<meta (?:property|name)="'+key+r'" content=")[^"]*', lambda m: m[1]+BASE+social_image, html)
+    html = re.sub(r'(<meta property="og:image:type" content=")[^"]*', lambda m: m[1]+social_type, html)
+    html = re.sub(r'(<meta property="og:image:width" content=")[^"]*', lambda m: m[1]+str(social_width), html)
+    html = re.sub(r'(<meta property="og:image:height" content=")[^"]*', lambda m: m[1]+str(social_height), html)
     def schema(match):
         value = json.loads(match[1])
         for item in value.get('@graph', [value]):
             if item.get('@type') == 'Article':
-                item['image'] = [BASE+entry['imagen']]
+                item['image'] = [BASE+social_image]
                 item['mainEntityOfPage'] = canonical
                 item['@id'] = canonical+'#analisis'
                 if published: item['datePublished'] = published
@@ -430,7 +435,7 @@ def portada(root=ROOT, hoy=None):
         html = html.replace(marker, block+marker, 1)
     if 'assets/previas.css' not in html:
         html = html.replace('</head>', '<link rel="stylesheet" href="assets/previas.css?v=20261027">\n</head>', 1)
-    html = re.sub(r'(assets/previas\.css\?v=)[^"\s]+', r'\g<1>20261027e', html)
+    html = re.sub(r'(assets/previas\.css\?v=)[^"\s]+', r'\g<1>20261028a', html)
     if 'assets/previas.js' not in html:
         html = html.replace('</head>', '<script src="assets/previas.js?v=20261027" defer></script>\n</head>', 1)
     if 'assets/estado-partido.js' not in html:

@@ -66,7 +66,9 @@
       '<div class="consentimiento-acciones"><button type="button" data-eleccion="aceptado">Aceptar analítica</button>' +
       '<button type="button" data-eleccion="rechazado">Rechazar</button>' +
       '<button type="button" data-cerrar hidden>Cerrar sin cambiar</button></div>';
-    document.body.appendChild(aviso);
+    const salto = document.querySelector('a.saltar[href^="#"]');
+    if (salto) salto.insertAdjacentElement('afterend', aviso);
+    else document.body.prepend(aviso);
     const estado = aviso.querySelector('.consentimiento-estado');
     const cerrar = aviso.querySelector('[data-cerrar]');
     const mostrar = (enfocar = false) => {

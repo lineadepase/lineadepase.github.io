@@ -13,4 +13,4 @@
 .consentimiento-acciones button[hidden]{display:none}
 .pie .cookies-enlaces{display:flex;justify-content:center;gap:.7rem;flex-wrap:wrap;font-size:.85rem}
 .pie .cookies-enlaces a,.pie .cookies-enlaces button{font:inherit;color:inherit;text-decoration:underline;background:none;border:0;cursor:pointer;padding:.35rem}
-@media(max-width:760px){.consentimiento{inset:auto .6rem .6rem;padding:1rem;display:block}.consentimiento-acciones{margin-top:1rem;justify-content:stretch}.consentimiento h2{font-size:1.15rem}}
+@media(max-width:760px){.consentimiento{inset:auto .6rem .6rem;padding:1rem;display:block;box-sizing:border-box;width:auto;max-width:calc(100vw - 1.2rem)}.consentimiento-acciones{display:grid;grid-template-columns:minmax(0,1fr);width:100%;min-width:0;margin-top:1rem}.consentimiento-acciones button{width:100%;min-width:0;overflow-wrap:anywhere}.consentimiento h2{font-size:1.15rem}}

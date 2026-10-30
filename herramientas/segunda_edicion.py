@@ -309,9 +309,9 @@ def generate_home():
     raw=re.sub(r'<main[\s\S]*?</main>',lambda _:html,raw,count=1)
     raw=re.sub(r'(assets/estilo\.css\?v=)[^"\s]+',r'\g<1>20261028a11y1',raw)
     if 'assets/fotografia-editorial.css' not in raw:
-        raw=raw.replace('</head>', '<link rel="stylesheet" href="assets/fotografia-editorial.css?v=20261027visual02">\n</head>',1)
+        raw=raw.replace('</head>', '<link rel="stylesheet" href="assets/fotografia-editorial.css?v=20261029mobile1">\n</head>',1)
     else:
-        raw=re.sub(r'(assets/fotografia-editorial\.css\?v=)[^"\s]+',r'\g<1>20261027visual02',raw)
+        raw=re.sub(r'(assets/fotografia-editorial\.css\?v=)[^"\s]+',r'\g<1>20261029mobile1',raw)
     original=file.read_bytes()
     if b'\r\n' in original and b'\n' not in original.replace(b'\r\n',b''):
         raw=raw.replace('\r\n','\n').replace('\n','\r\n')

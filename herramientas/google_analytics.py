@@ -1,7 +1,7 @@
 """Integra el consentimiento básico de Analytics en las páginas públicas."""
 import re
 
-ETIQUETA = '<!-- Consentimiento de analítica -->\n<link rel="stylesheet" href="/assets/consentimiento.css?v=20261021">\n<script src="/assets/consentimiento.js?v=20261021" defer></script>\n<!-- /Consentimiento de analítica -->'
+ETIQUETA = '<!-- Consentimiento de analítica -->\n<link rel="stylesheet" href="/assets/consentimiento.css?v=20261029mobile1">\n<script src="/assets/consentimiento.js?v=20261029keyboard2" defer></script>\n<!-- /Consentimiento de analítica -->'
 PIE = '<!-- Preferencias de cookies -->\n<div class="cookies-enlaces"><a href="/privacidad/">Privacidad y cookies</a><button type="button" data-preferencias-cookies hidden>Preferencias de cookies</button></div>\n<!-- /Preferencias de cookies -->'
 
 
