@@ -250,8 +250,6 @@ def con_imagen(html, entry):
             verified_label = verified.strftime('%d/%m/%Y a las %H:%M (hora peninsular)')
             source_links = ' · '.join('<a href="'+escape(source['url'],quote=True)+'" target="_blank" rel="noopener">'+escape(source['nombre'])+'</a>' for source in result['fuentes'])
             block += '<p class="resultado-confirmado"><strong>Resultado confirmado: '+escape(result['marcador'])+'</strong> · Comprobado el '+escape(verified_label)+'.</p><p class="nota">Fuente'+('s' if len(result['fuentes'])>1 else '')+': '+ source_links+'.</p>'
-        if entry.get('fuente_partido'):
-            block += '<p class="nota">Horario y estadio: <a href="'+escape(entry['fuente_partido'],quote=True)+'" rel="noopener" target="_blank">confirmación oficial del Real Zaragoza</a>.</p>'
         if entry.get('hora') and entry.get('fecha_partido'):
             postmatch = entry.get('postpartido_url', '')
             postmatch_link = f'<p class="nota postpartido-disponible" data-fecha="{escape(entry["fecha_partido"])}" data-resultado-confirmado="true">Resultado confirmado: <a class="enlace-postpartido" href="../../{escape(postmatch,quote=True)}">Leer el análisis →</a></p>' if postmatch and postmatch != entry['pagina'] and entry.get('resultado_confirmado') else ''
