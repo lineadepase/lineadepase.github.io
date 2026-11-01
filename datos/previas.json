@@ -7,16 +7,16 @@
     ],
     "fecha_partido": "2026-10-31",
     "fecha_publicacion": "2026-10-27",
-    "fecha_actualizacion": "2026-10-27",
-    "titulo": "Real Zaragoza – Villarreal B",
-    "etiqueta": "Primera Federación · J10 · 31 de octubre",
-    "resumen": "Duelo en lo más alto: primero y segundo, empatados a 20 puntos. Forma, rendimiento por sede y claves antes del partido.",
+    "fecha_actualizacion": "2026-11-01",
+    "titulo": "Real Zaragoza 2–2 Villarreal B: del 0-2 al empate en siete minutos",
+    "etiqueta": "Primera Federación · J10 · Resultado final",
+    "resumen": "El Villarreal B marcó en el 64' y el 70'; Jardí, en el rechace de su penalti, y Diego González, en el 90+3', igualaron el duelo entre los dos primeros.",
     "pregunta_abierta": "¿Quién llegará más veces al área rival: el Zaragoza en casa o el Villarreal B fuera?",
     "fuera_de_plano": "El balance por sede reúne tres partidos del Zaragoza en casa y cuatro salidas del Villarreal B. Es una muestra corta y no permite anticipar cómo se desarrollará este encuentro.",
-    "imagen": "proyectos/real-zaragoza/graficos/previa/real-zaragoza-villarreal-b-j10-v2.webp",
+    "imagen": "proyectos/real-zaragoza/graficos/jornada-10/resultado-zaragoza-villarreal-b.webp",
     "ancho": 1672,
     "alto": 941,
-    "alt": "Previa Real Zaragoza–Villarreal B: un gran submarino amarillo frente al león blanquillo, duelo entre equipos con 20 puntos.",
+    "alt": "Marcador Real Zaragoza 2–2 Villarreal B, jornada 10 de Primera Federación, con los goleadores y el titular «Del 0-2 al 2-2 en siete minutos».",
     "noticia_html": "<section class=\"seccion lectura\" aria-labelledby=\"noticia-previa-j10\"><p class=\"etiqueta\">El contexto del partido</p><h2 id=\"noticia-previa-j10\">El liderato se juega entre iguales en puntos</h2><p>El Real Zaragoza recibe al Villarreal B el 31 de octubre con los dos equipos empatados a 20 puntos tras nueve jornadas. El filial amarillo encabeza la tabla por diferencia de goles: 21 a favor y 10 en contra, frente a los 17–10 del Zaragoza.</p><p>El contraste por sede añade contexto. El Zaragoza ha ganado sus tres partidos de liga en casa, con seis goles a favor y uno en contra. El Villarreal B llega con diez puntos de doce en cuatro salidas y un balance de once goles a favor y cinco en contra.</p><p>El partido pondrá a prueba la capacidad de ambos equipos para avanzar con el balón y proteger los espacios tras una pérdida. La muestra es corta: describe el inicio de temporada, pero no anticipa el resultado.</p><p class=\"nota\">Datos de liga hasta la jornada 9. La Copa del Rey se analiza por separado. El corte y la comparación completa aparecen al final.</p></section>",
     "rival": "Villarreal B",
     "hora": "21:00",
@@ -30,7 +30,40 @@
     },
     "imagen_social": "assets/compartir/previa-real-zaragoza-villarreal-b-j10-social.jpg",
     "ancho_social": 1200,
-    "alto_social": 675
+    "alto_social": 675,
+    "postpartido_url": "proyectos/real-zaragoza/jornada-10.html",
+    "resultado_confirmado": {
+      "marcador": "2–2",
+      "fecha_verificacion": "2026-11-01T10:15:00+01:00",
+      "fuentes": [
+        {
+          "nombre": "Real Zaragoza: ficha del partido Real Zaragoza - Villarreal B",
+          "url": "https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-10-real-zaragoza-vs-villarreal-b-3962"
+        },
+        {
+          "nombre": "Aragón Digital: Real Zaragoza y Villarreal B suman unas vibrantes tablas de líderes (2-2)",
+          "url": "https://www.aragondigital.es/articulo/real-zaragoza/vibrantes-tablas-lideres/202610312339161019099.html"
+        }
+      ],
+      "respuesta_pregunta": "Por volumen de remates, el Zaragoza: la ficha del club le da 16 tiros por 10 del Villarreal B y 8 a puerta por 3, con un 63 % de posesión. La ficha no publica llegadas ni toques en el área y tiene campos incompletos, así que la respuesta se limita a los tiros. Aun así, el filial marcó primero dos veces y el Zaragoza empató con goles en el 86' y el 90+3'.",
+      "momentos_clave": [
+        {
+          "minuto": "70",
+          "marcador": "0–2",
+          "hecho": "Álvaro García remató un centro de Eneko, seis minutos después del 0-1 de Albert García."
+        },
+        {
+          "minuto": "86",
+          "marcador": "1–2",
+          "hecho": "Kinareikin paró el penalti a Jardí, que marcó en el rechace."
+        },
+        {
+          "minuto": "90+3",
+          "marcador": "2–2",
+          "hecho": "Diego González cabeceó un centro de Pau Sans."
+        }
+      ]
+    }
   },
   {
     "pagina": "proyectos/real-zaragoza/previa-copa-tudelano-20261027.html",

@@ -1,0 +1,122 @@
+{
+ "partido_id": 10,
+ "local": "Real Zaragoza",
+ "visitante": "Villarreal B",
+ "marcador": "2-2",
+ "fecha": "2026-10-31",
+ "eventos": [
+  {
+   "tipo": "cambios",
+   "minuto": "59",
+   "jugador": "J. Tobajas, Pau Sans, Iker Vadillo",
+   "equipo": "Real Zaragoza",
+   "propio": true,
+   "detalle": "3 cambios a la vez"
+  },
+  {
+   "tipo": "gol",
+   "minuto": "64",
+   "jugador": "Albert García",
+   "equipo": "Villarreal B",
+   "propio": false,
+   "marcador": "0-1",
+   "detalle": ""
+  },
+  {
+   "tipo": "gol",
+   "minuto": "70",
+   "jugador": "Álvaro García",
+   "equipo": "Villarreal B",
+   "propio": false,
+   "marcador": "0-2",
+   "detalle": ""
+  },
+  {
+   "tipo": "gol",
+   "minuto": "86",
+   "jugador": "Jaume Jardí",
+   "equipo": "Real Zaragoza",
+   "propio": true,
+   "marcador": "1-2",
+   "detalle": ""
+  },
+  {
+   "tipo": "gol",
+   "minuto": "90+3",
+   "jugador": "Diego González",
+   "equipo": "Real Zaragoza",
+   "propio": true,
+   "marcador": "2-2",
+   "detalle": "pase de Pau Sans"
+  },
+  {
+   "tipo": "roja",
+   "minuto": "90+7",
+   "jugador": "J. Tobajas",
+   "equipo": "Real Zaragoza",
+   "propio": true,
+   "detalle": "doble amarilla"
+  }
+ ],
+ "numeros": [
+  {
+   "metrica": "Posesión",
+   "zaragoza": "63 %",
+   "rival": "37 %"
+  },
+  {
+   "metrica": "Tiros",
+   "zaragoza": "16",
+   "rival": "10"
+  },
+  {
+   "metrica": "Tiros a puerta",
+   "zaragoza": "8",
+   "rival": "3"
+  },
+  {
+   "metrica": "Pases",
+   "zaragoza": "484",
+   "rival": "287"
+  },
+  {
+   "metrica": "Precisión en el pase",
+   "zaragoza": "81 %",
+   "rival": "69 %"
+  }
+ ],
+ "siguiente": {
+  "local": "Real Zaragoza",
+  "visitante": "SD Huesca",
+  "competicion": "Primera Federación",
+  "jornada": 11,
+  "tv": "",
+  "inicio": "2026-11-07T21:00:00+01:00"
+ },
+ "textos": {
+  "partido_id": 10,
+  "estadio": "Ibercaja Estadio",
+  "titular": "Del 0-2 al 2-2 en siete minutos",
+  "subtitulo": "Dos goles después del minuto 85 para empatar el duelo entre los dos primeros",
+  "destacados": [
+   {
+    "cifra": "9 de 19",
+    "texto": "goles de liga del Zaragoza llegan desde el minuto 76"
+   },
+   {
+    "cifra": "21",
+    "texto": "puntos en diez jornadas: seis victorias, tres empates y una derrota"
+   },
+   {
+    "cifra": "10 de 12",
+    "texto": "puntos en casa; es el primer partido en el que recibe dos goles en Zaragoza"
+   },
+   {
+    "cifra": "5 + 4",
+    "texto": "goles y asistencias de Jaume Jardí en liga"
+   }
+  ],
+  "nota_estadisticas": "Fuente: ficha estadística del Real Zaragoza. Sin xG publicado para este partido.",
+  "fuentes": "Datos públicos: web del Real Zaragoza, FotMob, Aragón Digital y Sport Aragón"
+ }
+}

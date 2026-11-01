@@ -1,0 +1,14 @@
+{
+  "partido_id": 10,
+  "estadio": "Ibercaja Estadio",
+  "titular": "Del 0-2 al 2-2 en siete minutos",
+  "subtitulo": "Dos goles después del minuto 85 para empatar el duelo entre los dos primeros",
+  "destacados": [
+    {"cifra": "9 de 19", "texto": "goles de liga del Zaragoza llegan desde el minuto 76"},
+    {"cifra": "21", "texto": "puntos en diez jornadas: seis victorias, tres empates y una derrota"},
+    {"cifra": "10 de 12", "texto": "puntos en casa; es el primer partido en el que recibe dos goles en Zaragoza"},
+    {"cifra": "5 + 4", "texto": "goles y asistencias de Jaume Jardí en liga"}
+  ],
+  "nota_estadisticas": "Fuente: ficha estadística del Real Zaragoza. Sin xG publicado para este partido.",
+  "fuentes": "Datos públicos: web del Real Zaragoza, FotMob, Aragón Digital y Sport Aragón"
+}
