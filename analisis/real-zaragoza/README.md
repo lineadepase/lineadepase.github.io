@@ -20,7 +20,8 @@ real-zaragoza/
 │   ├── previa_redes.py    imagen y cifras de la previa para redes
 │   ├── previa_portada.py  portada de la previa (imagen de fondo en codigo/recursos/portada_previa.jpg, sin escudos)
 │   ├── previa_carrusel.py diapositivas de la previa: rival, jugador, expectativa y cierre
-│   ├── tarjeta_dato.py    imagen de «El dato de la jornada» para LinkedIn
+│   ├── tarjeta_dato.py    imagen de «El dato de la jornada» (ya no se usa en redes)
+│   ├── resultado_redes.py imágenes del resultado y análisis del último partido (redes y web)
 │   ├── comprobar.R        repite los cálculos en R y los compara (ejecuta las piezas de R/)
 │   └── R/
 │       ├── utilidades.R   leer CSV en UTF-8 y comparar una tabla de R con la de Python
@@ -31,7 +32,8 @@ real-zaragoza/
 │       └── resumen.R      resumen que se imprime cuando todo cuadra
 ├── textos/
 │   ├── conclusiones.html  conclusiones del informe, escritas a mano
-│   └── dato_jornada.json  texto de la tarjeta de la semana
+│   ├── dato_jornada.json  texto de la tarjeta de la semana
+│   └── resultado_jornada.json  titular y destacados de las imágenes del resultado
 └── TABLEAU.md             cómo montar el panel en Tableau Public
 ```
 
@@ -99,6 +101,8 @@ Para sincronizar páginas ya publicadas: `python herramientas/previas.py`. La ac
    ```
 4. Revisar `textos/conclusiones.html` y los textos de la página del proyecto.
 5. Previa del siguiente partido: añadir los resultados del rival a `partidos_rivales.csv` y ejecutar `python analisis/real-zaragoza/codigo/previa.py <jornada>`. Para redes, `python analisis/real-zaragoza/codigo/previa_redes.py <jornada> --estadio "<estadio>"` crea `datos/salida/previa_redes.png` y `previa_redes.json` con las mismas cifras; después, `python analisis/real-zaragoza/codigo/previa_portada.py` crea la portada `previa_portada.png` (primera imagen del carrusel de Instagram).
+
+6. Resultado y análisis del partido: actualizar `textos/resultado_jornada.json` y ejecutar `python analisis/real-zaragoza/codigo/resultado_redes.py`. Crea en `datos/salida/resultado/` cinco imágenes de 1080 × 1350 (portada, cronología, números, contexto y siguiente partido) y una de 1672 × 941 para la web, dibujadas con HTML y CSS (tipografías Archivo y Big Shoulders Display en `codigo/recursos/fuentes/`, licencia OFL) y exportadas con Chromium. Sin escudos, logotipos, fotos ni imágenes generadas con IA.
 
 Los partidos de copa van en los mismos archivos con su competición; no cuentan para los puntos ni para la clasificación.
 
