@@ -239,7 +239,7 @@ def con_imagen(html, entry):
             today = datetime.now(ZoneInfo('Europe/Madrid')).date().isoformat()
             date = entry['fecha_partido']
             result=entry.get('resultado_confirmado')
-            state = ('Resultado confirmado · '+result['marcador']) if result else ('Pendiente de confirmación editorial' if date < today else ('Hoy'+(' · '+entry['hora'] if entry.get('hora') else '') if date == today else 'Próxima cita · '+date[8:10]+'/'+date[5:7]))
+            state = ('Final · '+result['marcador']) if result else ('Partido jugado · resultado en revisión' if date < today else ('Hoy'+(' · '+entry['hora'] if entry.get('hora') else '') if date == today else 'Próxima cita · '+date[8:10]+'/'+date[5:7]))
             confirmed='true' if result else 'false'
             score=escape(result['marcador'],quote=True) if result else ''
             block += '<p class="estado-previa estado-partido-detalle" data-fecha="'+escape(date)+'" data-hora="'+escape(entry.get('hora',''))+'" data-resultado-confirmado="'+confirmed+'" data-marcador="'+score+'">'+escape(state)+'</p>'
@@ -248,10 +248,10 @@ def con_imagen(html, entry):
         if result:
             verified = datetime.fromisoformat(result['fecha_verificacion']).astimezone(ZoneInfo('Europe/Madrid'))
             verified_label = verified.strftime('%d/%m/%Y a las %H:%M (hora peninsular)')
-            block += '<p class="resultado-confirmado"><strong>Resultado confirmado: '+escape(result['marcador'])+'</strong> · Comprobado el '+escape(verified_label)+'.</p>'
+            block += '<p class="resultado-confirmado"><strong>Resultado final: '+escape(result['marcador'])+'</strong></p>'
         if entry.get('hora') and entry.get('fecha_partido'):
             postmatch = entry.get('postpartido_url', '')
-            postmatch_link = f'<p class="nota postpartido-disponible" data-fecha="{escape(entry["fecha_partido"])}" data-resultado-confirmado="true">Resultado confirmado: <a class="enlace-postpartido" href="../../{escape(postmatch,quote=True)}">Leer el análisis →</a></p>' if postmatch and postmatch != entry['pagina'] and entry.get('resultado_confirmado') else ''
+            postmatch_link = f'<p class="nota postpartido-disponible" data-fecha="{escape(entry["fecha_partido"])}" data-resultado-confirmado="true"><a class="enlace-postpartido" href="../../{escape(postmatch,quote=True)}">Leer el análisis del partido →</a></p>' if postmatch and postmatch != entry['pagina'] and entry.get('resultado_confirmado') else ''
             calendar_hidden = ' hidden' if partido_iniciado(entry) else ''
             block += ('<p class="calendario-partido" data-fecha="'+escape(entry['fecha_partido'])+'" data-hora="'+escape(entry['hora'])+'"'+calendar_hidden+'>'
                       '<a class="boton" href="../../'+escape(calendar_path(entry),quote=True)+'" download>Añadir al calendario (.ics)</a></p>')
@@ -329,7 +329,7 @@ def con_imagen(html, entry):
         html = html.replace('</head>', '<link rel="stylesheet" href="../../assets/compartir-previa.css?v=20261027a">\n<script src="../../assets/compartir-previa.js?v=20261027" defer></script>\n</head>', 1)
     html = re.sub(r'(assets/compartir-previa\.css\?v=)[^"\s]+', r'\g<1>20261027a', html)
     if 'assets/estado-partido.js' not in html:
-        html = html.replace('</head>', '<script src="../../assets/estado-partido.js?v=20261027b" defer></script>\n</head>', 1)
+        html = html.replace('</head>', '<script src="../../assets/estado-partido.js?v=20261101a" defer></script>\n</head>', 1)
     if 'assets/ideas-editoriales.css' not in html:
         html = html.replace('</head>', '<link rel="stylesheet" href="../../assets/ideas-editoriales.css?v=20261027d">\n</head>', 1)
     html = re.sub(r'(assets/ideas-editoriales\.css\?v=)[^"\s]+', r'\g<1>20261027d', html)
@@ -392,7 +392,7 @@ def portada(root=ROOT, hoy=None):
         fecha = entry['fecha_partido']
         dia = fecha[8:10]+'/'+fecha[5:7]
         result = entry.get('resultado_confirmado')
-        state = ('Resultado confirmado · '+result['marcador']) if result else (('Hoy'+(' · '+entry['hora'] if entry.get('hora') else '')) if fecha == hoy else ('Pendiente de confirmación editorial' if fecha < hoy else 'Próxima cita · '+dia))
+        state = ('Final · '+result['marcador']) if result else (('Hoy'+(' · '+entry['hora'] if entry.get('hora') else '')) if fecha == hoy else ('Partido jugado · resultado en revisión' if fecha < hoy else 'Próxima cita · '+dia))
         fact = dia+(' · '+entry['hora']+' h' if entry.get('hora') else '')+(' · '+entry['estadio'] if entry.get('estadio') else '')
         event_hidden = ' hidden' if partido_iniciado(entry) else ''
         event_link = (f'<a class="boton calendario-partido" data-fecha="{fecha}" data-hora="{escape(entry.get("hora", ""))}"{event_hidden} href="{escape(calendar_path(entry))}" download>Añadir al calendario</a>'
@@ -436,7 +436,7 @@ def portada(root=ROOT, hoy=None):
     if 'assets/previas.js' not in html:
         html = html.replace('</head>', '<script src="assets/previas.js?v=20261027" defer></script>\n</head>', 1)
     if 'assets/estado-partido.js' not in html:
-        html = html.replace('</head>', '<script src="assets/estado-partido.js?v=20261027b" defer></script>\n</head>', 1)
+        html = html.replace('</head>', '<script src="assets/estado-partido.js?v=20261101a" defer></script>\n</head>', 1)
     html = re.sub(r'(assets/estado-partido\.js\?v=)[^"\s]+', r'\g<1>20261027b', html)
     news_path = root / 'datos/novedades.json'
     if news_path.is_file():

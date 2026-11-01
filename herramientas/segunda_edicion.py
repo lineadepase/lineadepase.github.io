@@ -279,7 +279,7 @@ def generate_home():
     brief=('<a class="boton lleno" href="tras-la-jornada/index.html">Leer las claves del partido →</a>') if delivery else ''
     date=data['corte'][8:10]+'/'+data['corte'][5:7]+'/'+data['corte'][:4]
     detail_visual=''
-    coverage_note=('<p class="aviso-ficha-estadistica validada">Ficha estadística validada.</p>' if latest_statistics else '<p class="aviso-ficha-estadistica pendiente">Resultado confirmado · ficha estadística pendiente de validación. Las métricas de este partido no se muestran en la portada.</p>')
+    coverage_note=('<p class="aviso-ficha-estadistica validada">Ficha estadística validada.</p>' if latest_statistics else '<p class="aviso-ficha-estadistica pendiente">Ficha estadística pendiente de validación. Las métricas de este partido no se muestran en la portada.</p>')
     if latest_statistics:
         possession=max(0,min(100,round(float(latest_statistics['posesion_pct']))))
         moments=json.loads((ROOT/'datos/momentos-partido.json').read_text(encoding='utf-8')).get(str(j),{})

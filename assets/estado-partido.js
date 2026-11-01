@@ -11,7 +11,7 @@
 
   const labelFor = (date, time, now, confirmed, score) => {
     const passed = date < now.date || (date === now.date && time && now.time >= time);
-    if (passed) return confirmed ? `Resultado confirmado · ${score}` : 'Pendiente de confirmación editorial';
+    if (passed) return confirmed ? `Final · ${score}` : 'Partido jugado · resultado en revisión';
     if (date === now.date) {
       if (time && now.time >= time) return `Inicio previsto superado · sin marcador en directo`;
       return `Hoy${time ? ` · ${time}` : ''}`;
