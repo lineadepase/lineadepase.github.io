@@ -5,10 +5,15 @@ Pide la imagen al servicio público de Pollinations (https://image.pollinations.
 que genera con modelos abiertos a partir de una descripción. El dominio
 image.pollinations.ai tiene que estar permitido en el entorno.
 
-Uso, desde la raíz del repositorio:
+Uso, desde la raíz del repositorio. Lo normal es una escena temática del partido,
+construida con textos/temas_ilustracion.json (león de Zaragoza frente a los
+colores del rival, según el resultado o la previa) y un momento propio del partido:
     python analisis/real-zaragoza/codigo/ilustracion_ia.py \
-        --descripcion "un león con camiseta blanca y azul ..." \
+        --rival "Villarreal B" --estado empate \
+        --momento "orange fire in the stands" \
         --formato vertical --salida analisis/real-zaragoza/codigo/recursos/ilustraciones/j10-vertical.jpg
+Con --descripcion se puede escribir la escena completa a mano.
+Conviene probar varias semillas y quedarse con la mejor.
 
 Formatos: vertical (1080 × 1350, redes) y panoramica (1672 × 941, web).
 Con --webp guarda además una copia .webp de menos de 600 KB para la web.
@@ -19,6 +24,7 @@ mirarla antes de usarla: el script no puede saber si tiene defectos.
 """
 
 import argparse
+import json
 import io
 import random
 import sys
@@ -29,11 +35,21 @@ from pathlib import Path
 
 from PIL import Image
 
-ESTILO = (" Editorial football illustration for a data-journalism website: night match in a big stadium "
-          "with floodlights, dark green striped pitch, deep green colour palette with vivid orange accent light, "
-          "cinematic lighting, high contrast, bold poster style, clean dark areas at the top and bottom for headline text. "
+TEMAS = Path(__file__).resolve().parents[1] / "textos" / "temas_ilustracion.json"
+ESTILO = (" Epic cinematic poster art for a football match, set in a packed football stadium at night with floodlights, "
+          "vivid saturated colours, teal and orange light, dramatic lighting, high contrast, dynamic composition, "
+          "main subject in the upper-middle part, darker area at the bottom for headline text. "
           "Absolutely no text, no letters, no numbers, no logos, no club crests, no badges, no watermarks, no real people.")
 FORMATOS = {"vertical": (1080, 1350), "panoramica": (1672, 941)}
+
+
+def escena(rival, estado, momento=""):
+    """Escena temática: el león de Zaragoza frente a los colores del rival, según el resultado o la previa."""
+    temas = json.loads(TEMAS.read_text(encoding="utf-8"))
+    colores = temas["rivales"].get(rival, "dark storm-grey")
+    texto = (f"Epic poster art: {temas['zaragoza']} " + temas["estados"][estado].format(c=colores)
+             + ", over a football pitch in a packed stadium at night")
+    return texto + (f", {momento}" if momento else "")
 
 
 def generar(descripcion, ancho, alto, semilla, intentos=3):
@@ -72,12 +88,19 @@ def ajustar(imagen, ancho, alto):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--descripcion", required=True, help="Escena del partido, en inglés funciona mejor")
+    p.add_argument("--descripcion", help="Escena completa escrita a mano (en inglés funciona mejor)")
+    p.add_argument("--rival", help="Rival, como en partidos.csv o proximos.csv")
+    p.add_argument("--estado", choices=["victoria", "empate", "derrota", "previa"])
+    p.add_argument("--momento", default="", help="Detalle propio del partido, en inglés")
     p.add_argument("--formato", choices=FORMATOS, default="vertical")
     p.add_argument("--salida", required=True)
     p.add_argument("--semilla", type=int, default=None)
     p.add_argument("--webp", action="store_true")
     a = p.parse_args()
+    if not a.descripcion:
+        if not (a.rival and a.estado):
+            p.error("usa --descripcion o bien --rival y --estado")
+        a.descripcion = escena(a.rival, a.estado, a.momento)
     ancho, alto = FORMATOS[a.formato]
     semilla = a.semilla if a.semilla is not None else random.randint(1, 999_999)
     imagen = ajustar(generar(a.descripcion, ancho, alto, semilla), ancho, alto)

@@ -176,8 +176,9 @@ def con_ilustracion(extra, t, clave):
     return extra + f"""
 body{{background:#0b1d13 url({imagen.as_uri()}) center/cover no-repeat}}
 .campo{{display:none}}
-.velo{{background:linear-gradient(180deg,rgba(7,22,14,.82) 0%,rgba(7,22,14,.35) 30%,rgba(7,22,14,.35) 52%,rgba(7,22,14,.9) 74%,rgba(7,22,14,.96) 100%)}}
-.goles,.equipo,.titular{{text-shadow:0 6px 30px rgba(0,0,0,.6)}}
+.velo{{background:linear-gradient(180deg,rgba(7,22,14,.6) 0%,rgba(7,22,14,.08) 26%,rgba(7,22,14,.08) 50%,rgba(7,22,14,.88) 72%,rgba(7,22,14,.96) 100%)}}
+body{{filter:saturate(1.15)}}
+.goles,.equipo,.titular{{text-shadow:0 4px 24px rgba(0,0,0,.85),0 0 4px rgba(0,0,0,.5)}}
 """
 
 

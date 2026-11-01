@@ -1,0 +1,23 @@
+{
+  "_nota": "Temas para ilustracion_ia.py: el león de Zaragoza frente a los colores de la equipación del rival. Solo colores contrastados; un rival que no esté aquí usa una tormenta oscura. El modelo gratuito no dibuja bien objetos ni personas: no añadas símbolos.",
+  "zaragoza": "a white lion with a blue mane",
+  "rivales": {
+    "Villarreal B": "yellow",
+    "SD Huesca": "deep claret red",
+    "Real Madrid Castilla": "all white",
+    "Atlético Madrileño": "red and white stripes",
+    "Cartagena": "black and white",
+    "Hércules": "blue and white stripes",
+    "Real Murcia": "red",
+    "Gimnàstic": "dark red",
+    "Algeciras": "red and white stripes",
+    "UD Ibiza": "sky blue",
+    "Alcorcón": "yellow"
+  },
+  "estados": {
+    "victoria": "leaping out of blue smoke and tearing through a wave of {c} smoke and {c} flares, the {c} smoke scattering, golden sparks and fireworks",
+    "empate": "leaping out of blue smoke on the left side, clashing in mid-air with a wave of {c} smoke and {c} flares coming from the right side, explosion of sparks where they meet",
+    "derrota": "pushed back by a towering wave of {c} smoke and {c} flares, standing defiant in the rain, cold dramatic light",
+    "previa": "charging out of blue smoke towards a wall of {c} smoke and {c} flares, the moment before impact, sparks in the air"
+  }
+}
