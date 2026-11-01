@@ -1,23 +1,21 @@
 {
-  "_nota": "Temas para ilustracion_ia.py: el león de Zaragoza frente a los colores de la equipación del rival. Solo colores contrastados; un rival que no esté aquí usa una tormenta oscura. El modelo gratuito no dibuja bien objetos ni personas: no añadas símbolos.",
-  "zaragoza": "a white lion with a blue mane",
+  "_nota": "Referencia para escribir la descripción de ilustracion_ia.py. Cada partido lleva su propia idea, sacada de lo que pasó o de lo que está en juego, y distinta de la de su previa. Solo colores y símbolos contrastados; si un rival no está, añádelo solo con datos comprobados.",
+  "Real Zaragoza": {"colores": "white shirts and blue shorts", "simbolos": "lion (symbol of the city of Zaragoza)"},
   "rivales": {
-    "Villarreal B": "yellow",
-    "SD Huesca": "deep claret red",
-    "Real Madrid Castilla": "all white",
-    "Atlético Madrileño": "red and white stripes",
-    "Cartagena": "black and white",
-    "Hércules": "blue and white stripes",
-    "Real Murcia": "red",
-    "Gimnàstic": "dark red",
-    "Algeciras": "red and white stripes",
-    "UD Ibiza": "sky blue",
-    "Alcorcón": "yellow"
+    "Villarreal B": {"colores": "yellow", "simbolos": "yellow submarine (nickname «Submarino Amarillo»)"},
+    "SD Huesca": {"colores": "blue and claret", "simbolos": ""},
+    "Real Madrid Castilla": {"colores": "all white", "simbolos": ""},
+    "Atlético Madrileño": {"colores": "red and white stripes", "simbolos": ""},
+    "Cartagena": {"colores": "black and white", "simbolos": ""},
+    "Hércules": {"colores": "blue and white stripes", "simbolos": ""},
+    "Real Murcia": {"colores": "red", "simbolos": ""},
+    "Gimnàstic": {"colores": "dark red", "simbolos": ""},
+    "Algeciras": {"colores": "red and white stripes", "simbolos": ""},
+    "UD Ibiza": {"colores": "sky blue", "simbolos": ""},
+    "Alcorcón": {"colores": "yellow", "simbolos": ""}
   },
-  "estados": {
-    "victoria": "leaping out of blue smoke and tearing through a wave of {c} smoke and {c} flares, the {c} smoke scattering, golden sparks and fireworks",
-    "empate": "leaping out of blue smoke on the left side, clashing in mid-air with a wave of {c} smoke and {c} flares coming from the right side, explosion of sparks where they meet",
-    "derrota": "pushed back by a towering wave of {c} smoke and {c} flares, standing defiant in the rain, cold dramatic light",
-    "previa": "charging out of blue smoke towards a wall of {c} smoke and {c} flares, the moment before impact, sparks in the air"
+  "ideas_usadas": {
+    "previa J10 · Villarreal B": "lion in Zaragoza kit versus yellow submarine on a pitch",
+    "resultado J10 · Villarreal B": "giant hourglass running out: yellow sand below, blue and white sand falling at the last moment"
   }
 }

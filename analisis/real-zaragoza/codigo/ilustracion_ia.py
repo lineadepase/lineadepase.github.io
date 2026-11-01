@@ -1,31 +1,32 @@
 """
-Ilustración generada con IA para las previas y los resultados (gratuita, sin cuenta).
+Ilustración generada con IA para las previas y los resultados (gratuita).
 
-Pide la imagen al servicio público de Pollinations (https://image.pollinations.ai),
-que genera con modelos abiertos a partir de una descripción. El dominio
-image.pollinations.ai tiene que estar permitido en el entorno.
+Pide la imagen a Pollinations a partir de una descripción escrita para cada partido.
+Con la variable de entorno POLLINATIONS_KEY (clave gratuita de https://enter.pollinations.ai)
+usa gen.pollinations.ai y un modelo de calidad (por defecto zimage). Sin clave usa el
+servicio anónimo image.pollinations.ai, de calidad mucho menor. El dominio usado tiene
+que estar permitido en el entorno. La clave no se guarda nunca en el repositorio.
 
-Uso, desde la raíz del repositorio. Lo normal es una escena temática del partido,
-construida con textos/temas_ilustracion.json (león de Zaragoza frente a los
-colores del rival, según el resultado o la previa) y un momento propio del partido:
+Cada partido lleva su propia idea visual, sacada de lo que pasó (resultado) o de lo que
+está en juego (previa), y distinta de la idea de la imagen de su previa. Los colores y
+símbolos contrastados de cada rival están en textos/temas_ilustracion.json.
+
+Uso, desde la raíz del repositorio:
     python analisis/real-zaragoza/codigo/ilustracion_ia.py \
-        --rival "Villarreal B" --estado empate \
-        --momento "orange fire in the stands" \
+        --descripcion "a giant hourglass on a floodlit football pitch ..." \
         --formato vertical --salida analisis/real-zaragoza/codigo/recursos/ilustraciones/j10-vertical.jpg
-Con --descripcion se puede escribir la escena completa a mano.
-Conviene probar varias semillas y quedarse con la mejor.
+Conviene probar varias semillas, de una en una, y quedarse con la mejor.
 
 Formatos: vertical (1080 × 1350, redes) y panoramica (1672 × 941, web).
 Con --webp guarda además una copia .webp de menos de 600 KB para la web.
 
-La descripción se completa siempre con el estilo de Línea de pase y con la
-prohibición de texto, escudos, logotipos y personas reales. La imagen hay que
-mirarla antes de usarla: el script no puede saber si tiene defectos.
+La descripción se completa con la prohibición de texto, escudos, logotipos y personas
+reales. La imagen hay que mirarla antes de usarla: el script no puede saber si tiene defectos.
 """
 
 import argparse
-import json
 import io
+import os
 import random
 import sys
 import time
@@ -35,48 +36,42 @@ from pathlib import Path
 
 from PIL import Image
 
-TEMAS = Path(__file__).resolve().parents[1] / "textos" / "temas_ilustracion.json"
-ESTILO = (" Epic cinematic poster art for a football match, set in a packed football stadium at night with floodlights, "
-          "vivid saturated colours, teal and orange light, dramatic lighting, high contrast, dynamic composition, "
-          "main subject in the upper-middle part, darker area at the bottom for headline text. "
-          "Absolutely no text, no letters, no numbers, no logos, no club crests, no badges, no watermarks, no real people.")
+ESTILO = (" Highly detailed cinematic digital illustration, vivid colours, dramatic lighting, sharp focus, "
+          "clear readable main subject, darker area at the bottom for headline text. "
+          "No text, no letters, no numbers, no logos, no club crests, no badges, no watermarks, no real people.")
 FORMATOS = {"vertical": (1080, 1350), "panoramica": (1672, 941)}
 
 
-def escena(rival, estado, momento=""):
-    """Escena temática: el león de Zaragoza frente a los colores del rival, según el resultado o la previa."""
-    temas = json.loads(TEMAS.read_text(encoding="utf-8"))
-    colores = temas["rivales"].get(rival, "dark storm-grey")
-    texto = (f"Epic poster art: {temas['zaragoza']} " + temas["estados"][estado].format(c=colores)
-             + ", over a football pitch in a packed stadium at night")
-    return texto + (f", {momento}" if momento else "")
-
-
-def generar(descripcion, ancho, alto, semilla, intentos=3):
-    prompt = descripcion.strip() + ESTILO
-    url = ("https://image.pollinations.ai/prompt/" + urllib.parse.quote(prompt) + "?"
-           + urllib.parse.urlencode({"width": ancho, "height": alto, "seed": semilla,
-                                     "model": "flux", "nologo": "true", "enhance": "false"}))
+def generar(descripcion, ancho, alto, semilla, modelo, intentos=3):
+    prompt = urllib.parse.quote(descripcion.strip() + ESTILO)
+    clave = os.environ.get("POLLINATIONS_KEY", "").strip()
+    parametros = {"width": ancho, "height": alto, "seed": semilla, "nologo": "true"}
+    cabeceras = {"User-Agent": "lineadepase"}
+    if clave:
+        url = f"https://gen.pollinations.ai/image/{prompt}?" + urllib.parse.urlencode({**parametros, "model": modelo})
+        cabeceras["Authorization"] = f"Bearer {clave}"
+    else:
+        url = f"https://image.pollinations.ai/prompt/{prompt}?" + urllib.parse.urlencode(
+            {**parametros, "model": "flux", "enhance": "false"})
     ultimo = None
     for intento in range(1, intentos + 1):
         try:
-            with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": "lineadepase"}),
-                                        timeout=180) as r:
+            with urllib.request.urlopen(urllib.request.Request(url, headers=cabeceras), timeout=240) as r:
                 datos = r.read()
-            imagen = Image.open(io.BytesIO(datos)).convert("RGB")
-            return imagen
+            return Image.open(io.BytesIO(datos)).convert("RGB"), bool(clave)
         except Exception as exc:          # servicio gratuito: puede fallar o tardar
             ultimo = exc
-            time.sleep(10 * intento)
+            time.sleep(15 * intento)
     raise SystemExit(f"No se pudo generar la ilustración: {ultimo}")
 
 
-def ajustar(imagen, ancho, alto):
-    """Quita la franja inferior (marca del servicio gratuito), recorta al centro y escala."""
+def ajustar(imagen, ancho, alto, con_marca):
+    """Quita la franja inferior si trae la marca del servicio anónimo, recorta al centro y escala."""
     proporcion = ancho / alto
     w, h = imagen.size
-    h = int(h * 0.92)
-    imagen = imagen.crop((0, 0, w, h))
+    if con_marca:
+        h = int(h * 0.92)
+        imagen = imagen.crop((0, 0, w, h))
     if w / h > proporcion:
         nuevo = int(h * proporcion)
         imagen = imagen.crop(((w - nuevo) // 2, 0, (w - nuevo) // 2 + nuevo, h))
@@ -88,26 +83,21 @@ def ajustar(imagen, ancho, alto):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--descripcion", help="Escena completa escrita a mano (en inglés funciona mejor)")
-    p.add_argument("--rival", help="Rival, como en partidos.csv o proximos.csv")
-    p.add_argument("--estado", choices=["victoria", "empate", "derrota", "previa"])
-    p.add_argument("--momento", default="", help="Detalle propio del partido, en inglés")
+    p.add_argument("--descripcion", required=True, help="Escena del partido, en inglés")
     p.add_argument("--formato", choices=FORMATOS, default="vertical")
     p.add_argument("--salida", required=True)
     p.add_argument("--semilla", type=int, default=None)
+    p.add_argument("--modelo", default="zimage", help="Modelo de gen.pollinations.ai (solo con clave)")
     p.add_argument("--webp", action="store_true")
     a = p.parse_args()
-    if not a.descripcion:
-        if not (a.rival and a.estado):
-            p.error("usa --descripcion o bien --rival y --estado")
-        a.descripcion = escena(a.rival, a.estado, a.momento)
     ancho, alto = FORMATOS[a.formato]
     semilla = a.semilla if a.semilla is not None else random.randint(1, 999_999)
-    imagen = ajustar(generar(a.descripcion, ancho, alto, semilla), ancho, alto)
+    imagen, con_clave = generar(a.descripcion, ancho, alto, semilla, a.modelo)
+    imagen = ajustar(imagen, ancho, alto, con_marca=not con_clave)
     salida = Path(a.salida)
     salida.parent.mkdir(parents=True, exist_ok=True)
     imagen.save(salida, quality=92)
-    print(f"Ilustración guardada en {salida} (semilla {semilla})")
+    print(f"Ilustración guardada en {salida} (semilla {semilla}, {'con clave' if con_clave else 'sin clave'})")
     if a.webp:
         calidad = 86
         ruta = salida.with_suffix(".webp")
