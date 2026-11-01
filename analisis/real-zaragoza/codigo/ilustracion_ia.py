@@ -56,9 +56,11 @@ def generar(descripcion, ancho, alto, semilla, intentos=3):
 
 
 def ajustar(imagen, ancho, alto):
-    """Recorta al centro y escala al tamaño exacto."""
+    """Quita la franja inferior (marca del servicio gratuito), recorta al centro y escala."""
     proporcion = ancho / alto
     w, h = imagen.size
+    h = int(h * 0.92)
+    imagen = imagen.crop((0, 0, w, h))
     if w / h > proporcion:
         nuevo = int(h * proporcion)
         imagen = imagen.crop(((w - nuevo) // 2, 0, (w - nuevo) // 2 + nuevo, h))

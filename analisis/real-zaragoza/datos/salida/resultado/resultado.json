@@ -117,6 +117,8 @@
    }
   ],
   "nota_estadisticas": "Fuente: ficha estadística del Real Zaragoza. Sin xG publicado para este partido.",
-  "fuentes": "Datos públicos: web del Real Zaragoza, FotMob, Aragón Digital y Sport Aragón"
+  "fuentes": "Datos públicos: web del Real Zaragoza, FotMob, Aragón Digital y Sport Aragón",
+  "ilustracion": "analisis/real-zaragoza/codigo/recursos/ilustraciones/j10-vertical.jpg",
+  "ilustracion_web": "analisis/real-zaragoza/codigo/recursos/ilustraciones/j10-panoramica.jpg"
  }
 }
