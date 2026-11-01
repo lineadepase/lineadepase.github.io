@@ -164,6 +164,23 @@ def sin_corte(texto):
     return re.sub(r"(\d+-\d+)", r'<span style="white-space:nowrap">\1</span>', escape(texto))
 
 
+def con_ilustracion(extra, t, clave):
+    """Si textos/resultado_jornada.json trae una ilustración (ruta desde la raíz del repositorio),
+    la usa de fondo con un velo oscuro para que el marcador y el titular se lean bien."""
+    ruta = t.get(clave)
+    if not ruta:
+        return extra
+    imagen = (RAIZ_WEB / ruta).resolve()
+    if not imagen.is_file():
+        raise SystemExit(f"No existe la ilustración {ruta}")
+    return extra + f"""
+body{{background:#0b1d13 url({imagen.as_uri()}) center/cover no-repeat}}
+.campo{{display:none}}
+.velo{{background:linear-gradient(180deg,rgba(7,22,14,.82) 0%,rgba(7,22,14,.35) 30%,rgba(7,22,14,.35) 52%,rgba(7,22,14,.9) 74%,rgba(7,22,14,.96) 100%)}}
+.goles,.equipo,.titular{{text-shadow:0 6px 30px rgba(0,0,0,.6)}}
+"""
+
+
 def pagina(cuerpo, ancho=1080, alto=1350, extra=""):
     css = CSS.replace("FUENTES", FUENTES.as_uri()).replace("WIDTH", str(ancho)).replace("HEIGHT", str(alto))
     return f"""<!doctype html><html lang="es"><head><meta charset="utf-8"><style>{css}{extra}</style></head>
@@ -201,6 +218,7 @@ def portada(d, t, cab):
 <p class="sub">{sin_corte(t['subtitulo'])}</p>
 <p class="lugar">{escape(fecha_larga(d['partido']['fecha']).capitalize())} · {escape(t['estadio'])}</p>
 {pie(t['fuentes'])}"""
+    extra = con_ilustracion(extra, t, "ilustracion")
     return pagina(cuerpo, extra=extra)
 
 
@@ -324,6 +342,7 @@ def web(d, t, cab):
 <div class="autores"><span>{lista(d['local'])}</span><span>{lista(d['visitante'])}</span></div>
 <h1 class="titulo titular">{sin_corte(t['titular'])}</h1>
 <p class="lugar">{escape(fecha_larga(d['partido']['fecha']).capitalize())} · {escape(t['estadio'])}</p>{pie(t['fuentes'])}"""
+    extra = con_ilustracion(extra, t, "ilustracion_web")
     return pagina(cuerpo, 1672, 941, extra)
 
 
