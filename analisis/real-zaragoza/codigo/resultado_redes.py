@@ -223,6 +223,54 @@ def portada(d, t, cab):
     return pagina(cuerpo, extra=extra)
 
 
+def cartel(d, t, cab, panoramica=False):
+    """Portada con la ilustración a la vista: el texto ocupa una franja (arriba en vertical,
+    a la izquierda en la web) y deja ver la escena del partido."""
+    clave = "ilustracion_web" if panoramica else "ilustracion"
+    imagen = (RAIZ_WEB / t[clave]).resolve()
+    if not imagen.is_file():
+        raise SystemExit(f"No existe la ilustración {t[clave]}")
+    if panoramica:
+        extra = f"""
+.lienzo{{padding:64px 84px}}
+body{{background:#0b1d13 url({imagen.as_uri()}) center/cover no-repeat}}
+.campo{{display:none}}
+.velo{{background:linear-gradient(90deg,rgba(7,22,14,.94) 0%,rgba(7,22,14,.82) 30%,rgba(7,22,14,0) 46%),linear-gradient(0deg,rgba(7,22,14,.85) 0%,rgba(7,22,14,0) 16%)}}
+.bloque{{width:600px;margin-top:40px}}
+.equipo{{font-family:Big;font-weight:900;font-size:78px;text-transform:uppercase;line-height:.95}}
+.goles{{font-family:Big;font-weight:900;font-size:190px;line-height:.85;margin:14px 0;white-space:nowrap}}
+.goles i{{font-style:normal;color:var(--senal);font-size:110px;margin:0 14px;vertical-align:middle}}
+.titular{{margin-top:34px;font-size:64px}}
+.lugar{{margin-top:16px;font-size:26px;color:var(--claro);font-weight:600}}
+.pie{{font-size:20px}}
+"""
+        cuerpo = f"""<p class="etiqueta">{escape(cab)}</p>
+<div class="bloque"><div class="equipo">{escape(d['local'])}</div>
+<div class="goles">{d['gl']}<i>–</i>{d['gv']}</div>
+<div class="equipo">{escape(d['visitante'])}</div>
+<h1 class="titulo titular">{sin_corte(t['titular'])}</h1>
+<p class="lugar">{escape(fecha_larga(d['partido']['fecha']).capitalize())} · {escape(t['estadio'])}</p></div>
+<div style="flex:1"></div>{pie(t['fuentes'] + ' · Ilustración creada con IA')}"""
+        return pagina(cuerpo, 1672, 941, extra)
+    extra = f"""
+body{{background:#0b1d13 url({imagen.as_uri()}) center/cover no-repeat}}
+.campo{{display:none}}
+.velo{{background:linear-gradient(180deg,rgba(7,22,14,.95) 0%,rgba(7,22,14,.85) 22%,rgba(7,22,14,0) 40%,rgba(7,22,14,0) 86%,rgba(7,22,14,.9) 100%)}}
+.marcador{{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:26px}}
+.equipo{{font-family:Big;font-weight:900;font-size:66px;text-transform:uppercase;line-height:.95;width:330px}}
+.equipo.der{{text-align:right}}
+.goles{{font-family:Big;font-weight:900;font-size:150px;line-height:.85;white-space:nowrap}}
+.goles i{{font-style:normal;color:var(--senal);font-size:90px;margin:0 10px;vertical-align:middle}}
+.titular{{margin-top:22px;font-size:62px;text-align:center}}
+"""
+    cuerpo = f"""<p class="etiqueta" style="text-align:center">{escape(cab)}</p>
+<div class="marcador"><div class="equipo">{escape(d['local'])}</div><div class="goles">{d['gl']}<i>–</i>{d['gv']}</div>
+<div class="equipo der">{escape(d['visitante'])}</div></div>
+<h1 class="titulo titular">{sin_corte(t['titular'])}</h1>
+<div style="flex:1"></div>{pie(t['fuentes'] + ' · Ilustración creada con IA')}"""
+    return pagina(cuerpo, extra=extra)
+
+
 def cronologia(d, t, cab):
     extra = """
 .lista{margin-top:40px;position:relative;padding-left:190px;flex:1;display:flex;flex-direction:column;justify-content:center;gap:22px}
@@ -355,9 +403,10 @@ def main():
     cab = (f"{p['competicion']} · Jornada {int(p['jornada'])}" if pd.notna(p["jornada"])
            else str(p["competicion"])) + f" · {pd.Timestamp(p['fecha']).day} {MESES[pd.Timestamp(p['fecha']).month - 1][:3]}"
     s = siguiente_partido(p["fecha"])
-    piezas = [("resultado_1_portada", portada(d, t, cab)), ("resultado_2_cronologia", cronologia(d, t, cab)),
+    con_ia = bool(t.get("ilustracion")) and bool(t.get("ilustracion_web"))
+    piezas = [("resultado_1_portada", cartel(d, t, cab) if con_ia else portada(d, t, cab)), ("resultado_2_cronologia", cronologia(d, t, cab)),
               ("resultado_3_numeros", numeros(d, t, cab)), ("resultado_4_contexto", contexto(d, t, cab)),
-              ("resultado_5_siguiente", siguiente(d, t, cab, s)), ("resultado_web", web(d, t, cab))]
+              ("resultado_5_siguiente", siguiente(d, t, cab, s)), ("resultado_web", cartel(d, t, cab, True) if con_ia else web(d, t, cab))]
     SALIDA.mkdir(parents=True, exist_ok=True)
     with sync_playwright() as pw:
         navegador = pw.chromium.launch()

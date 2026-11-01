@@ -37,7 +37,7 @@ from pathlib import Path
 from PIL import Image
 
 ESTILO = (" Highly detailed cinematic digital illustration, vivid colours, dramatic lighting, sharp focus, "
-          "clear readable main subject, darker area at the bottom for headline text. "
+          "clear readable main subject, empty dark grass in the lower part of the image. "
           "No text, no letters, no numbers, no logos, no club crests, no badges, no watermarks, no real people.")
 FORMATOS = {"vertical": (1080, 1350), "panoramica": (1672, 941)}
 
