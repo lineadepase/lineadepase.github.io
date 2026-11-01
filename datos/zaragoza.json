@@ -1,6 +1,6 @@
 {
- "corte": "2026-10-23",
- "jornada": 9,
+ "corte": "2026-10-31",
+ "jornada": 10,
  "clasificacion_tras": 9,
  "partidos": [
   {
@@ -154,6 +154,23 @@
    "tiros_zaragoza": 9,
    "tiros_rival": 8,
    "posesion_pct": 67.0,
+   "completo": false
+  },
+  {
+   "partido_id": 10,
+   "jornada": 10,
+   "fecha": "2026-10-31",
+   "sede": "Casa",
+   "rival": "Villarreal B",
+   "goles_favor": 2,
+   "goles_contra": 2,
+   "resultado": "Empate",
+   "puntos": 1,
+   "puntos_acumulados": 21,
+   "posicion_rival": 1,
+   "tiros_zaragoza": 16,
+   "tiros_rival": 10,
+   "posesion_pct": 63.0,
    "completo": false
   }
  ],
@@ -508,31 +525,99 @@
    "rol_goleador": "",
    "penalti": false,
    "propia_puerta": true
+  },
+  {
+   "partido_id": 10,
+   "rival": "Villarreal B",
+   "sede": "Casa",
+   "sentido": "Contra",
+   "minuto_texto": "64",
+   "tramo": "61–75",
+   "jugador": "Albert García",
+   "asistencia": "",
+   "rol_goleador": "",
+   "penalti": false,
+   "propia_puerta": false
+  },
+  {
+   "partido_id": 10,
+   "rival": "Villarreal B",
+   "sede": "Casa",
+   "sentido": "Contra",
+   "minuto_texto": "70",
+   "tramo": "61–75",
+   "jugador": "Álvaro García",
+   "asistencia": "",
+   "rol_goleador": "",
+   "penalti": false,
+   "propia_puerta": false
+  },
+  {
+   "partido_id": 10,
+   "rival": "Villarreal B",
+   "sede": "Casa",
+   "sentido": "Favor",
+   "minuto_texto": "86",
+   "tramo": "76–90+",
+   "jugador": "Jaume Jardí",
+   "asistencia": "",
+   "rol_goleador": "Titular",
+   "penalti": false,
+   "propia_puerta": false
+  },
+  {
+   "partido_id": 10,
+   "rival": "Villarreal B",
+   "sede": "Casa",
+   "sentido": "Favor",
+   "minuto_texto": "90+3",
+   "tramo": "76–90+",
+   "jugador": "Diego González",
+   "asistencia": "Pau Sans",
+   "rol_goleador": "Titular",
+   "penalti": false,
+   "propia_puerta": false
   }
  ],
  "jugadores": [
   {
    "jugador": "Westerveld",
-   "partidos": 8,
-   "titularidades": 8,
-   "minutos": 720.0,
+   "partidos": 9,
+   "titularidades": 9,
+   "minutos": 810.0,
    "goles": 0,
    "asistencias": 0
   },
   {
    "jugador": "Jaume Jardí",
-   "partidos": 9,
-   "titularidades": 8,
-   "minutos": 717.0,
-   "goles": 4,
+   "partidos": 10,
+   "titularidades": 9,
+   "minutos": 807.0,
+   "goles": 5,
    "asistencias": 4
   },
   {
    "jugador": "Rubo",
-   "partidos": 8,
-   "titularidades": 8,
-   "minutos": 702.0,
+   "partidos": 9,
+   "titularidades": 9,
+   "minutos": 792.0,
    "goles": 2,
+   "asistencias": 0
+  },
+  {
+   "jugador": "Diego González",
+   "partidos": 9,
+   "titularidades": 9,
+   "minutos": 781.0,
+   "goles": 2,
+   "asistencias": 1
+  },
+  {
+   "jugador": "Marco Sangalli",
+   "partidos": 9,
+   "titularidades": 7,
+   "minutos": 708.0,
+   "goles": 0,
    "asistencias": 0
   },
   {
@@ -544,18 +629,10 @@
    "asistencias": 0
   },
   {
-   "jugador": "Diego González",
+   "jugador": "P. Ademo",
    "partidos": 8,
-   "titularidades": 8,
-   "minutos": 691.0,
-   "goles": 1,
-   "asistencias": 1
-  },
-  {
-   "jugador": "Marco Sangalli",
-   "partidos": 8,
-   "titularidades": 6,
-   "minutos": 618.0,
+   "titularidades": 7,
+   "minutos": 586.0,
    "goles": 0,
    "asistencias": 0
   },
@@ -568,74 +645,66 @@
    "asistencias": 0
   },
   {
-   "jugador": "P. Ademo",
-   "partidos": 7,
-   "titularidades": 6,
-   "minutos": 496.0,
-   "goles": 0,
-   "asistencias": 0
-  },
-  {
    "jugador": "Óscar Ureña",
-   "partidos": 8,
-   "titularidades": 5,
-   "minutos": 419.0,
+   "partidos": 9,
+   "titularidades": 6,
+   "minutos": 478.0,
    "goles": 3,
    "asistencias": 1
   },
   {
-   "jugador": "Joaquín",
-   "partidos": 7,
-   "titularidades": 3,
-   "minutos": 391.0,
-   "goles": 0,
-   "asistencias": 0
-  },
-  {
    "jugador": "Rubén Díez",
-   "partidos": 7,
-   "titularidades": 5,
-   "minutos": 388.0,
+   "partidos": 8,
+   "titularidades": 6,
+   "minutos": 467.0,
    "goles": 0,
    "asistencias": 1
   },
   {
-   "jugador": "Pau Sans",
+   "jugador": "Joaquín",
    "partidos": 8,
    "titularidades": 3,
-   "minutos": 334.0,
-   "goles": 1,
+   "minutos": 409.0,
+   "goles": 0,
    "asistencias": 0
   },
   {
    "jugador": "Edu Espiau",
-   "partidos": 6,
-   "titularidades": 4,
-   "minutos": 331.0,
+   "partidos": 7,
+   "titularidades": 5,
+   "minutos": 390.0,
    "goles": 3,
    "asistencias": 2
   },
   {
    "jugador": "Ander Herrera",
-   "partidos": 5,
-   "titularidades": 4,
-   "minutos": 313.0,
+   "partidos": 6,
+   "titularidades": 5,
+   "minutos": 372.0,
+   "goles": 0,
+   "asistencias": 0
+  },
+  {
+   "jugador": "Pau Sans",
+   "partidos": 9,
+   "titularidades": 3,
+   "minutos": 365.0,
+   "goles": 1,
+   "asistencias": 1
+  },
+  {
+   "jugador": "S. Escudero",
+   "partidos": 7,
+   "titularidades": 6,
+   "minutos": 364.0,
    "goles": 0,
    "asistencias": 0
   },
   {
    "jugador": "Iker Vadillo",
-   "partidos": 5,
-   "titularidades": 4,
-   "minutos": 294.0,
-   "goles": 0,
-   "asistencias": 0
-  },
-  {
-   "jugador": "S. Escudero",
    "partidos": 6,
-   "titularidades": 5,
-   "minutos": 292.0,
+   "titularidades": 4,
+   "minutos": 325.0,
    "goles": 0,
    "asistencias": 0
   },
@@ -649,9 +718,9 @@
   },
   {
    "jugador": "Yussif Saidu",
-   "partidos": 6,
+   "partidos": 7,
    "titularidades": 1,
-   "minutos": 187.0,
+   "minutos": 198.0,
    "goles": 1,
    "asistencias": 0
   },
@@ -689,9 +758,9 @@
   },
   {
    "jugador": "J. Tobajas",
-   "partidos": 2,
+   "partidos": 3,
    "titularidades": 0,
-   "minutos": 31.0,
+   "minutos": 62.0,
    "goles": 0,
    "asistencias": 0
   },
@@ -935,14 +1004,6 @@
   }
  ],
  "proximos": [
-  {
-   "jornada": 10,
-   "competicion": "Primera Federación",
-   "fecha": "2026-10-31",
-   "sede": "Casa",
-   "rival": "Villarreal B",
-   "posicion_rival": 1
-  },
   {
    "jornada": 11,
    "competicion": "Primera Federación",
@@ -1523,6 +1584,75 @@
     }
    ],
    "tarjetas": []
+  },
+  {
+   "partido_id": 10,
+   "competicion": "Primera Federación",
+   "jornada": 10,
+   "fecha": "2026-10-31",
+   "sede": "Casa",
+   "rival": "Villarreal B",
+   "goles_favor": 2,
+   "goles_contra": 2,
+   "gf_descanso": 0,
+   "gc_descanso": 0,
+   "goles": [
+    {
+     "sentido": "Contra",
+     "minuto": "64",
+     "jugador": "Albert García",
+     "asistencia": null,
+     "penalti": false,
+     "propia_puerta": false
+    },
+    {
+     "sentido": "Contra",
+     "minuto": "70",
+     "jugador": "Álvaro García",
+     "asistencia": null,
+     "penalti": false,
+     "propia_puerta": false
+    },
+    {
+     "sentido": "Favor",
+     "minuto": "86",
+     "jugador": "Jaume Jardí",
+     "asistencia": null,
+     "penalti": false,
+     "propia_puerta": false
+    },
+    {
+     "sentido": "Favor",
+     "minuto": "90+3",
+     "jugador": "Diego González",
+     "asistencia": "Pau Sans",
+     "penalti": false,
+     "propia_puerta": false
+    }
+   ],
+   "tarjetas": [
+    {
+     "jugador": "Rubo",
+     "tarjeta": "Amarilla"
+    },
+    {
+     "jugador": "S. Escudero",
+     "tarjeta": "Amarilla"
+    },
+    {
+     "jugador": "J. Tobajas",
+     "tarjeta": "Amarilla"
+    },
+    {
+     "jugador": "J. Tobajas",
+     "tarjeta": "Segunda amarilla"
+    }
+   ],
+   "tiros_zaragoza": 16.0,
+   "tiros_rival": 10.0,
+   "a_puerta_zaragoza": 8.0,
+   "a_puerta_rival": 3.0,
+   "posesion_pct": 63.0
   }
  ],
  "copa": [

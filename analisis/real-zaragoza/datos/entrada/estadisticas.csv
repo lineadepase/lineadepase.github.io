@@ -161,3 +161,7 @@ partido_id,periodo,metrica,zaragoza,valor_rival,calidad,fuente_url
 9,Partido,pases,677,330,ok,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-9-ce-europa-vs-real-zaragoza-3940
 9,Partido,pases_completados,596,237,ok,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-9-ce-europa-vs-real-zaragoza-3940
 9,Partido,fueras_juego,2,2,dudosa,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-9-ce-europa-vs-real-zaragoza-3940
+10,Partido,posesion_pct,63,37,ok,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-10-real-zaragoza-vs-villarreal-b-3962
+10,Partido,pases,484,287,ok,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-10-real-zaragoza-vs-villarreal-b-3962
+10,Partido,pases_completados,394,198,ok,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-10-real-zaragoza-vs-villarreal-b-3962
+10,Partido,fueras_juego,0,5,dudosa,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-10-real-zaragoza-vs-villarreal-b-3962
