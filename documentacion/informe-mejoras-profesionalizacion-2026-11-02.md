@@ -28,7 +28,7 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 ## Aspectos pendientes que requieren datos o acceso externo
 
 - La comparación de grupo está cortada en la jornada 8, mientras que el seguimiento individual del Zaragoza llega a la J10. El sitio ya lo declara de forma visible. Para sincronizarlo se necesita revisar e incorporar fuentes actuales y actualizar datos, análisis y visualizaciones en conjunto.
-- No se pudo confirmar desde el entorno local la página 404 servida por GitHub Pages ni el estado de la publicación remota. El archivo `404.html` ya está listo para el despliegue estático.
+- GitHub Actions completó con éxito la revisión del sitio y la publicación de Pages para el commit `3e764a2`. La comprobación HTTP directa del dominio agotó el tiempo de espera desde este entorno; por eso no afirmo haber visto la versión servida públicamente. El archivo `404.html` está incluido en el despliegue.
 - Los auditores comprueban código y recursos locales; no sustituyen mediciones reales de velocidad, lectores de pantalla ni revisión jurídica de las licencias originales.
 
 ## Próximo paquete sugerido
