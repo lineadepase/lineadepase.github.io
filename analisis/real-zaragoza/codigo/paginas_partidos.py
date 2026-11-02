@@ -264,14 +264,11 @@ def bloque_estadisticas(p, sofa, tiros):
     """Barras enfrentadas Zaragoza-rival con las estadísticas de Sofascore.
     Si Sofascore no tiene el partido, uso al menos los tiros y la posesión de tiros.csv."""
     s = dict(sofa.get(p.partido_id, {}))
-    fuente = "Fuente: Sofascore. Su modelo de xG no es público; lo uso para comparar partidos entre sí."
     if not s:
         t = tiros[tiros["partido_id"] == p.partido_id]
         if t.empty:
             return ""
         t = t.iloc[0]
-        fuente = (f'Fuente: <a href="{e(t.fuente_url)}" target="_blank" rel="noopener">'
-                  'ficha estadística del partido</a>. Tiros y posesión; sin xG disponible.')
         s = {"posesion_pct": (t.posesion_pct, 100 - t.posesion_pct),
              "tiros": (t.tiros_zaragoza, t.tiros_rival),
              "tiros_a_puerta": (t.a_puerta_zaragoza, t.a_puerta_rival)}
@@ -293,7 +290,7 @@ def bloque_estadisticas(p, sofa, tiros):
       <h3>Estadísticas</h3>
       <p class="leyenda"><span><i style="background:var(--cesped)"></i>Real Zaragoza (izquierda)</span><span><i style="background:var(--muted)"></i>{e(p.rival)}</span></p>
       <dl class="mp-stats">{"".join(filas)}</dl>
-      <p class="mp-pie">{fuente}</p>
+      <p class="mp-pie">Las métricas de goles esperados no están disponibles en todos los partidos.</p>
     </div>"""
 
 
@@ -404,17 +401,9 @@ def ficha(p, d, sofa, activa, titulo_extra=""):
         s = siguiente.iloc[0]
         navegacion.append(f'<a class="boton" href="jornada-{s.jornada}.html">J{s.jornada} · {e(s.rival)} →</a>')
 
-    # Fuentes del partido: la ficha que apunté en partidos.csv, Sofascore y el vídeo
-    fuentes = [f'<li><a href="{e(p.fuente_url)}" target="_blank" rel="noopener">Ficha del partido</a></li>']
-    if p.partido_id in sofa:
-        fila = d["sofascore"][d["sofascore"]["partido_id"] == p.partido_id].iloc[0]
-        # Enlazo la respuesta de su API: es justo el dato que he copiado, sin interpretaciones
-        fuentes.append(f'<li><a href="{e(fila.fuente_url)}" target="_blank" rel="noopener">Estadísticas de Sofascore (datos en bruto)</a></li>')
-    r = d["resumenes"][d["resumenes"]["partido_id"] == p.partido_id] if len(d["resumenes"]) else []
-    for x in (r.itertuples() if len(r) else []):
-        fuentes.append(f'<li><a href="{e(x.url)}" target="_blank" rel="noopener">Resumen de {e(x.canal)}</a></li>')
-
-    fuentes_html = "" if '<h3>Fuentes</h3>' in bloque_analisis_video(p) else f'<h2>Fuentes</h2><ul>{"".join(fuentes)}</ul>'
+    # La procedencia detallada permanece en los registros editoriales; la página
+    # pública prioriza el partido y la navegación entre jornadas.
+    fuentes_html = ""
 
     return f"""<main class="envoltorio">
   <p class="migas"><a href="../index.html">Proyectos</a> / <a href="index.html">Real Zaragoza 2026/27</a> / Jornada {p.jornada}</p>

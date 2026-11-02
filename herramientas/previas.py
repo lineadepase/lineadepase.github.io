@@ -199,7 +199,7 @@ def con_imagen(html, entry):
     figure = ('<!-- imagen-previa --><figure class="foto imagen-editorial-previa">'
               f'<img src="{escape(image)}" width="{entry["ancho"]}" height="{entry["alto"]}" '
               f'alt="{escape(entry["alt"], quote=True)}" style="width:100%;height:auto;border-radius:12px">'
-              '<figcaption>Imagen recreada con IA.</figcaption></figure><!-- /imagen-previa -->')
+              '<figcaption>Ilustración editorial de Línea de pase.</figcaption></figure><!-- /imagen-previa -->')
     if '<!-- imagen-previa -->' in html:
         html = re.sub(r'<!-- imagen-previa -->.*?<!-- /imagen-previa -->', lambda _: figure, html, flags=re.S)
     else:
@@ -304,14 +304,24 @@ def con_imagen(html, entry):
         else:
             html = html.replace('<!-- /imagen-previa -->', '<!-- /imagen-previa -->'+block, 1)
     states = entry.get('estados_previa') or {}
-    confirmed_text = states.get('confirmado') or 'Horario, estadio y competición de la ficha.'
-    pending_text = states.get('pendiente') or 'La convocatoria y el once, cuando el club los confirme.'
-    after_text = states.get('despues') or 'La pregunta previa se revisará con lo ocurrido en el campo.'
+    result = entry.get('resultado_confirmado')
+    if result:
+        confirmed_text = states.get('confirmado') or 'El marcador final fue '+result['marcador']+'.'
+        pending_text = states.get('pendiente') or 'Las llegadas al área no figuran en la ficha estadística disponible.'
+        after_text = states.get('despues') or 'La lectura del partido se limita a los datos publicados y a la secuencia de goles.'
+        label, heading = 'Después del partido', 'Qué queda claro y qué no'
+        labels = ('Marcador', 'Dato que falta', 'Lectura')
+    else:
+        confirmed_text = states.get('confirmado') or 'Horario, estadio y competición de la ficha.'
+        pending_text = states.get('pendiente') or 'La convocatoria y el once, cuando el club los confirme.'
+        after_text = states.get('despues') or 'La pregunta previa se revisará con lo ocurrido en el campo.'
+        label, heading = 'Antes y después', 'Tres cosas que conviene separar'
+        labels = ('Confirmado', 'Pendiente', 'Se revisará después')
     states_block = ('<!-- previa-tres-estados --><section class="seccion lectura previa-tres-estados" aria-labelledby="titulo-tres-estados">'
-                    '<p class="etiqueta">Antes y después</p><h2 id="titulo-tres-estados">Tres cosas que conviene separar</h2>'
-                    '<ol><li><span>Confirmado</span><p>'+escape(confirmed_text)+'</p></li>'
-                    '<li><span>Pendiente</span><p>'+escape(pending_text)+'</p></li>'
-                    '<li><span>Se revisará después</span><p>'+escape(after_text)+'</p></li></ol></section><!-- /previa-tres-estados -->')
+                    '<p class="etiqueta">'+label+'</p><h2 id="titulo-tres-estados">'+heading+'</h2>'
+                    '<ol><li><span>'+labels[0]+'</span><p>'+escape(confirmed_text)+'</p></li>'
+                    '<li><span>'+labels[1]+'</span><p>'+escape(pending_text)+'</p></li>'
+                    '<li><span>'+labels[2]+'</span><p>'+escape(after_text)+'</p></li></ol></section><!-- /previa-tres-estados -->')
     if '<!-- previa-tres-estados -->' in html:
         html = re.sub(r'<!-- previa-tres-estados -->[\s\S]*?<!-- /previa-tres-estados -->', lambda _: states_block, html, flags=re.S)
     else:
@@ -333,7 +343,7 @@ def con_imagen(html, entry):
     if 'assets/ideas-editoriales.css' not in html:
         html = html.replace('</head>', '<link rel="stylesheet" href="../../assets/ideas-editoriales.css?v=20261027d">\n</head>', 1)
     html = re.sub(r'(assets/ideas-editoriales\.css\?v=)[^"\s]+', r'\g<1>20261027d', html)
-    html = re.sub(r'(assets/estado-partido\.js\?v=)[^"\s]+', r'\g<1>20261027b', html)
+    html = re.sub(r'(assets/estado-partido\.js\?v=)[^"\s]+', r'\g<1>20261101a', html)
     html = re.sub(r'(assets/real-zaragoza\.css\?v=)[^"\s]+', r'\g<1>20261027c', html)
     # La fecha de publicación no cambia al editar; la actualización sí.
     published = entry.get('fecha_publicacion', entry.get('fecha_partido',''))
@@ -470,7 +480,9 @@ def publicar_liga(jornada, html, root=ROOT):
 
 def sincronizar(root=ROOT):
     for entry in registro(root):
-        escribir_calendario(entry, root)
+        # No reescribir eventos ya disputados con el titular y resumen posteriores.
+        if not entry.get('resultado_confirmado'):
+            escribir_calendario(entry, root)
         for page in [entry['pagina']]+entry.get('alias', []):
             path = root / page
             if path.is_file():

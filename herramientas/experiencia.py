@@ -156,10 +156,10 @@ def enrich(raw, file):
         goals = (str(match['goles_favor'])+'–'+str(match['goles_contra'])) if match['sede'] == 'Casa' else (str(match['goles_contra'])+'–'+str(match['goles_favor']))
         home = 'Real Zaragoza' if match['sede'] == 'Casa' else match['rival']
         away = match['rival'] if match['sede'] == 'Casa' else 'Real Zaragoza'
-        clues = [('Hecho documentado', f"Jornada {match['jornada']}: {home} {goals} {away}."), ('Cifra publicada', clues[1][1]), ('Interpretación editorial', clues[2][1])]
+        clues = [('El marcador', f"Jornada {match['jornada']}: {home} {goals} {away}."), ('El dato', clues[1][1]), ('La lectura', clues[2][1])]
     if clues and '<main' in raw:
-        intro = '<p class="nota guia-lectura">Hecho y marcador en la ficha; cifra atribuida a su fuente; interpretación identificada como lectura editorial.</p>' if match_article else ''
-        heading = 'Hecho, cifra e interpretación' if match_article else 'Tres claves del análisis'
+        intro = ''
+        heading = 'Tres claves del partido' if match_article else 'Tres claves del análisis'
         block = '<!-- tres-claves --><aside class="tres-claves" aria-labelledby="titulo-claves"><p class="etiqueta">Antes de entrar en detalle</p><h2 id="titulo-claves">' + heading + '</h2>' + intro + '<ol>' + ''.join('<li><strong>' + title + '</strong><p>' + e(value) + '</p></li>' for title, value in clues) + '</ol></aside><!-- /tres-claves -->'
         main = raw.index('<main')
         end = raw.find('</section>', main)

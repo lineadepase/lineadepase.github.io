@@ -20,6 +20,7 @@ Escribe en datos/salida/resultado/:
 """
 
 import json
+import os
 import re
 from datetime import datetime
 from html import escape
@@ -189,7 +190,9 @@ def pagina(cuerpo, ancho=1080, alto=1350, extra=""):
 
 
 def pie(fuentes):
-    return f'<div class="pie"><span><strong>Línea de pase</strong><br>lineadepase.com</span><span style="text-align:right;max-width:620px">{escape(fuentes)}</span></div>'
+    marca = '<span><strong>Línea de pase</strong><br>lineadepase.com</span>'
+    credito = f'<span style="text-align:right;max-width:620px">{escape(fuentes)}</span>' if fuentes.strip() else ''
+    return f'<div class="pie">{marca}{credito}</div>'
 
 
 def portada(d, t, cab):
@@ -250,7 +253,7 @@ body{{background:#0b1d13 url({imagen.as_uri()}) center/cover no-repeat}}
 <div class="equipo">{escape(d['visitante'])}</div>
 <h1 class="titulo titular">{sin_corte(t['titular'])}</h1>
 <p class="lugar">{escape(fecha_larga(d['partido']['fecha']).capitalize())} · {escape(t['estadio'])}</p></div>
-<div style="flex:1"></div>{pie(t['fuentes'] + ' · Ilustración creada con IA')}"""
+<div style="flex:1"></div>{pie(t['fuentes'])}"""
         return pagina(cuerpo, 1672, 941, extra)
     extra = f"""
 body{{background:#0b1d13 url({imagen.as_uri()}) center/cover no-repeat}}
@@ -267,7 +270,7 @@ body{{background:#0b1d13 url({imagen.as_uri()}) center/cover no-repeat}}
 <div class="marcador"><div class="equipo">{escape(d['local'])}</div><div class="goles">{d['gl']}<i>–</i>{d['gv']}</div>
 <div class="equipo der">{escape(d['visitante'])}</div></div>
 <h1 class="titulo titular">{sin_corte(t['titular'])}</h1>
-<div style="flex:1"></div>{pie(t['fuentes'] + ' · Ilustración creada con IA')}"""
+<div style="flex:1"></div>{pie(t['fuentes'])}"""
     return pagina(cuerpo, extra=extra)
 
 
@@ -409,7 +412,7 @@ def main():
               ("resultado_5_siguiente", siguiente(d, t, cab, s)), ("resultado_web", cartel(d, t, cab, True) if con_ia else web(d, t, cab))]
     SALIDA.mkdir(parents=True, exist_ok=True)
     with sync_playwright() as pw:
-        navegador = pw.chromium.launch()
+        navegador = pw.chromium.launch(executable_path=os.environ.get("CHROME_PATH") or None)
         for nombre, html in piezas:
             if html is None:
                 continue

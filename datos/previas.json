@@ -11,22 +11,22 @@
     "titulo": "Real Zaragoza 2–2 Villarreal B: del 0-2 al empate en siete minutos",
     "etiqueta": "Primera Federación · J10 · Resultado final",
     "resumen": "El Villarreal B marcó en el 64' y el 70'; Jardí, en el rechace de su penalti, y Diego González, en el 90+3', igualaron el duelo entre los dos primeros.",
-    "pregunta_abierta": "¿Quién llegará más veces al área rival: el Zaragoza en casa o el Villarreal B fuera?",
-    "fuera_de_plano": "El balance por sede reúne tres partidos del Zaragoza en casa y cuatro salidas del Villarreal B. Es una muestra corta y no permite anticipar cómo se desarrollará este encuentro.",
+    "pregunta_abierta": "¿Quién terminó con más remates: el Zaragoza o el Villarreal B?",
+    "fuera_de_plano": "La ficha recoge los remates, pero no las llegadas ni los toques dentro del área. El recuento sirve para comparar el volumen de tiro; por sí solo no describe el dominio territorial.",
     "imagen": "proyectos/real-zaragoza/graficos/jornada-10/resultado-zaragoza-villarreal-b.webp",
     "ancho": 1672,
     "alto": 941,
-    "alt": "Marcador Real Zaragoza 2–2 Villarreal B, jornada 10 de Primera Federación, con los goleadores, el titular «Del 0-2 al 2-2 en siete minutos» y una ilustración creada con IA de un reloj de arena con arena amarilla abajo y blanquiazul cayendo al final.",
-    "noticia_html": "<section class=\"seccion lectura\" aria-labelledby=\"noticia-previa-j10\"><p class=\"etiqueta\">El contexto del partido</p><h2 id=\"noticia-previa-j10\">El liderato se juega entre iguales en puntos</h2><p>El Real Zaragoza recibe al Villarreal B el 31 de octubre con los dos equipos empatados a 20 puntos tras nueve jornadas. El filial amarillo encabeza la tabla por diferencia de goles: 21 a favor y 10 en contra, frente a los 17–10 del Zaragoza.</p><p>El contraste por sede añade contexto. El Zaragoza ha ganado sus tres partidos de liga en casa, con seis goles a favor y uno en contra. El Villarreal B llega con diez puntos de doce en cuatro salidas y un balance de once goles a favor y cinco en contra.</p><p>El partido pondrá a prueba la capacidad de ambos equipos para avanzar con el balón y proteger los espacios tras una pérdida. La muestra es corta: describe el inicio de temporada, pero no anticipa el resultado.</p><p class=\"nota\">Datos de liga hasta la jornada 9. La Copa del Rey se analiza por separado. El corte y la comparación completa aparecen al final.</p></section>",
+    "alt": "Marcador final Real Zaragoza 2–2 Villarreal B en la jornada 10. Los goles de Jardí y Diego González completan la remontada en los últimos minutos, sobre una ilustración de un reloj de arena en el césped.",
+    "noticia_html": "<section class=\"seccion lectura\" aria-labelledby=\"noticia-previa-j10\"><p class=\"etiqueta\">La crónica</p><h2 id=\"noticia-previa-j10\">El Zaragoza rescata un punto con dos goles al final</h2><p>El Villarreal B se puso 0–2 con tantos de Albert García y Álvaro García. El Zaragoza evitó la derrota en el tramo final: Jaume Jardí marcó en el rechace de un penalti en el 86 y Diego González empató de cabeza en el 90+3.</p><p>El equipo aragonés terminó con más remates, 16 por 10, y más tiros a puerta, 8 por 3. La ficha también registra un 63 % de posesión. Son cifras que explican el volumen ofensivo, aunque no permiten medir por sí solas cuántas veces llegó cada equipo al área.</p><p>El empate mantiene la lectura abierta: el Zaragoza encontró dos goles cuando el partido parecía escaparse, pero el Villarreal B había construido una ventaja de dos tantos. La remontada llegó en siete minutos.</p></section>",
     "rival": "Villarreal B",
     "hora": "21:00",
     "estadio": "Ibercaja Estadio",
     "competicion": "Primera Federación · Jornada 10",
     "fuente_partido": "https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-10-real-zaragoza-vs-villarreal-b-3962",
     "estados_previa": {
-      "confirmado": "El partido se juega el 31 de octubre a las 21:00 en Ibercaja Estadio.",
-      "pendiente": "Las convocatorias y los onces, hasta que los equipos los hagan públicos.",
-      "despues": "Se revisará quién logró llegar más veces al área rival, con los datos disponibles del encuentro."
+      "confirmado": "El Real Zaragoza y el Villarreal B empataron 2–2 en el Ibercaja Estadio.",
+      "pendiente": "La ficha no ofrece un recuento de llegadas ni de toques en el área.",
+      "despues": "El Zaragoza acabó con más remates (16–10) y tiros a puerta (8–3); esas cifras no equivalen a un registro de llegadas."
     },
     "imagen_social": "assets/compartir/previa-real-zaragoza-villarreal-b-j10-social.jpg",
     "ancho_social": 1200,
@@ -45,7 +45,7 @@
           "url": "https://www.aragondigital.es/articulo/real-zaragoza/vibrantes-tablas-lideres/202610312339161019099.html"
         }
       ],
-      "respuesta_pregunta": "Por volumen de remates, el Zaragoza: la ficha del club le da 16 tiros por 10 del Villarreal B y 8 a puerta por 3, con un 63 % de posesión. La ficha no publica llegadas ni toques en el área y tiene campos incompletos, así que la respuesta se limita a los tiros. Aun así, el filial marcó primero dos veces y el Zaragoza empató con goles en el 86' y el 90+3'.",
+      "respuesta_pregunta": "El Zaragoza terminó con más remates: 16 por 10, con ocho tiros a puerta frente a tres y un 63 % de posesión. Las cifras comparan el volumen de tiro, aunque no permiten saber cuántas veces llegó cada equipo al área. El Villarreal B marcó primero dos veces y el Zaragoza empató con goles en el 86' y el 90+3'.",
       "momentos_clave": [
         {
           "minuto": "70",
