@@ -498,6 +498,11 @@ def sincronizar(root=ROOT):
     ET.register_namespace('', ns[1:-1])
     ET.indent(tree)
     tree.write(path, encoding='utf-8', xml_declaration=True)
+    # Las tarjetas de portada se reconstruyen arriba; volver a insertar sus
+    # variantes adaptativas evita que una sincronización aislada cargue originales pesados.
+    if root.resolve() == ROOT.resolve():
+        from calidad_web import build as adaptar_imagenes
+        adaptar_imagenes(root)
 
 
 if __name__ == '__main__':
