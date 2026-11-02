@@ -32,6 +32,6 @@
       const query=new URLSearchParams({a:'Real Zaragoza',b:rival,sede:venue.value,fuente:source.value,periodo:period.value,modo:'promedio'});const compareLink=document.getElementById('mapa-comparar');compareLink.href='../comparador/index.html?'+query;compareLink.textContent=team.value==='Real Zaragoza'?'Comparar Zaragoza y Villarreal B':'Comparar el equipo con el Zaragoza';
       const url=new URL(location.href);Object.entries({equipo:team.value,x:xMetric.value,y:yMetric.value,sede:venue.value,fuente:source.value,periodo:period.value}).forEach(([k,v])=>url.searchParams.set(k,v));history.replaceState(null,'',url);
     }
-    document.getElementById('controles-mapa').hidden=false;[team,xMetric,yMetric,venue,period,source].forEach(s=>s.addEventListener('change',update));update();
+    document.getElementById('controles-mapa').hidden=false;[team,xMetric,yMetric,venue,period,source].forEach(s=>s.addEventListener('change',update));document.getElementById('restablecer-mapa').addEventListener('click',()=>{team.value='Real Zaragoza';xMetric.value='xg';yMetric.value='xgc';venue.value='';period.value='toda';source.value='sofascore';update();});update();
   }).catch(()=>{document.getElementById('mapa-detalle').textContent='No se han podido cargar los datos del mapa. La tabla del análisis del grupo sigue disponible.';});
 })();

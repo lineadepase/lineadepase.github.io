@@ -1,5 +1,7 @@
 [hidden]{display:none!important}
 .archivo-controles{display:flex;align-items:end;flex-wrap:wrap;gap:1rem;padding:1.25rem;background:var(--panel);border:1px solid var(--linea);border-radius:var(--radio);margin:2rem 0 1rem}
+.recuento-catalogo,#recuento-archivo{min-height:1.5em;margin:.75rem 0;color:var(--tinta-suave);font-size:.88rem;font-weight:650}
+.catalogo-sin-resultados,#archivo-vacio{padding:1rem 1.2rem;border-left:3px solid var(--senal);background:var(--panel);color:var(--tinta-suave)}
 .archivo-controles label{display:grid;gap:.35rem;flex:1 1 10rem;font-size:.9rem;font-weight:600}
 .archivo-controles label:first-child{flex:2 1 16rem}
 .archivo-controles input,.archivo-controles select{width:100%;min-width:0;padding:.75rem;border:1px solid var(--linea);border-radius:6px;background:var(--papel);color:var(--tinta);font:inherit}

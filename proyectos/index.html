@@ -73,13 +73,15 @@
   <section class="catalogo" aria-label="Catálogo de proyectos">
     <div class="envoltorio">
       <header class="cabecera-coleccion"><div><p class="etiqueta">Línea de pase · Colección visual</p><h2>Cuadernos de fútbol y datos</h2><p>Una pregunta guía cada análisis. El sello identifica su enfoque; la competición, el método y los límites aparecen junto a cada portada.</p></div><span class="coleccion-folio" aria-hidden="true">LP<small>CUADERNOS</small></span></header>
-      <!-- lamina-anual-visual --><section class="lamina-anual" aria-labelledby="titulo-lamina-anual"><div><p class="etiqueta">Línea de pase · Edición visual 2026</p><h2 id="titulo-lamina-anual">Cuatro proyectos, cuatro formas de mirar el juego</h2><p>Cifras de trabajos ya publicados; cada temporada y su corte permanecen visibles en el análisis correspondiente.</p><nav class="enlaces enlaces-lamina" aria-label="Abrir proyectos y formatos visuales"><a href="real-zaragoza/">Temporada</a><a href="real-zaragoza/simulacion.html">Simulación</a><a href="liga-f-xt/">Amenaza esperada</a><a href="futbol-femenino/">Territorio</a><a href="../assets/ilustraciones/anuario-visual-2026-cuadrado.png" download>PNG cuadrado</a><a href="../assets/ilustraciones/anuario-visual-2026-vertical.png" download>PNG vertical 4:5</a><a href="../assets/ilustraciones/anuario-visual-2026-apaisado.png" download>PNG apaisado 16:9</a><a href="../assets/ilustraciones/anuario-visual-2026-impresion.pdf" download>PDF para imprimir</a><a href="../galeria-visual/">Abrir galería visual</a></nav></div><figure><a href="../assets/ilustraciones/anuario-visual-2026.svg" target="_blank" rel="noopener"><img src="../assets/ilustraciones/anuario-visual-2026.svg" width="600" height="870" loading="lazy" alt="Lámina editorial 2026 con cuatro proyectos: seguimiento del Zaragoza, simulación de liga, amenaza esperada de Liga F y fútbol femenino territorial."></a><figcaption><a href="../assets/ilustraciones/anuario-visual-2026.svg" download>Descargar la lámina vectorial (SVG)</a></figcaption></figure></section><!-- /lamina-anual-visual --><div class="filtros" role="group" aria-label="Filtrar por tipo de proyecto" hidden>
+      <!-- lamina-anual-visual --><section class="lamina-anual" aria-labelledby="titulo-lamina-anual"><div><p class="etiqueta">Línea de pase · Edición visual 2026</p><h2 id="titulo-lamina-anual">Cuatro proyectos, cuatro formas de mirar el juego</h2><p>Cifras de trabajos ya publicados; cada temporada y su corte permanecen visibles en el análisis correspondiente.</p><nav class="enlaces enlaces-lamina" aria-label="Abrir proyectos y formatos visuales"><a href="real-zaragoza/">Temporada</a><a href="real-zaragoza/simulacion.html">Simulación</a><a href="liga-f-xt/">Amenaza esperada</a><a href="futbol-femenino/">Territorio</a><a href="../assets/ilustraciones/anuario-visual-2026-cuadrado.png" download>PNG cuadrado</a><a href="../assets/ilustraciones/anuario-visual-2026-vertical.png" download>PNG vertical 4:5</a><a href="../assets/ilustraciones/anuario-visual-2026-apaisado.png" download>PNG apaisado 16:9</a><a href="../assets/ilustraciones/anuario-visual-2026-impresion.pdf" download>PDF para imprimir</a><a href="../galeria-visual/">Abrir galería visual</a></nav></div><figure><a href="../assets/ilustraciones/anuario-visual-2026.svg" target="_blank" rel="noopener"><img src="../assets/ilustraciones/anuario-visual-2026.svg" width="600" height="870" loading="lazy" alt="Lámina editorial 2026 con cuatro proyectos: seguimiento del Zaragoza, simulación de liga, amenaza esperada de Liga F y fútbol femenino territorial."></a><figcaption><a href="../assets/ilustraciones/anuario-visual-2026.svg" download>Descargar la lámina vectorial (SVG)</a></figcaption></figure></section><!-- /lamina-anual-visual --><div class="divisor-campo" aria-hidden="true"></div><div class="filtros" role="group" aria-label="Filtrar por tipo de proyecto" hidden>
         <button type="button" data-filtro="todos" aria-pressed="true">Todos <span>5</span></button>
         <button type="button" data-filtro="temporada" aria-pressed="false">Seguimiento de temporada <span>1</span></button>
         <button type="button" data-filtro="master" aria-pressed="false">Trabajos del máster <span>1</span></button>
         <button type="button" data-filtro="investigacion" aria-pressed="false">Investigaciones <span>3</span></button>
         <button type="button" data-filtro="divulgacion" aria-pressed="false">Divulgación <span>1</span></button>
       </div>
+      <p class="recuento-catalogo" id="recuento-proyectos" role="status" aria-live="polite">5 proyectos</p>
+      <p class="catalogo-sin-resultados" id="proyectos-sin-resultados" role="status" hidden>No hay proyectos en esta categoría. Elige otro filtro.</p>
       <ul class="tarjetas-proyecto" id="catalogo">
         <li data-tipo="investigacion" data-coleccion="modelo">
           <a class="tarjeta-proyecto" href="real-zaragoza/simulacion.html">
@@ -207,15 +209,37 @@
 (function () {
   const filtros = document.querySelector('.filtros');
   const tarjetas = document.querySelectorAll('#catalogo > li');
+  const recuento = document.getElementById('recuento-proyectos');
+  const vacio = document.getElementById('proyectos-sin-resultados');
   if (tarjetas.length < 4) return;
   filtros.hidden = false;
+  const botones = [...filtros.querySelectorAll('button')];
+  const tipos = new Set(botones.map(b => b.dataset.filtro));
+  function aplicar(tipo, sincronizar = true) {
+    if (!tipos.has(tipo)) tipo = 'todos';
+    botones.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.filtro === tipo)));
+    let visibles = 0;
+    tarjetas.forEach(li => {
+      li.hidden = tipo !== 'todos' && li.dataset.tipo !== tipo;
+      if (!li.hidden) visibles += 1;
+    });
+    recuento.textContent = `${visibles} ${visibles === 1 ? 'proyecto' : 'proyectos'}`;
+    vacio.hidden = visibles !== 0;
+    if (sincronizar) {
+      const params = new URLSearchParams(location.search);
+      if (tipo === 'todos') params.delete('tipo');
+      else params.set('tipo', tipo);
+      const query = params.toString();
+      history.replaceState(history.state, '', location.pathname + (query ? `?${query}` : '') + location.hash);
+    }
+  }
+  aplicar(new URLSearchParams(location.search).get('tipo') || 'todos', false);
   filtros.addEventListener('click', e => {
     const boton = e.target.closest('button');
     if (!boton) return;
-    const tipo = boton.dataset.filtro;
-    filtros.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b === boton)));
-    tarjetas.forEach(li => { li.hidden = tipo !== 'todos' && li.dataset.tipo !== tipo; });
+    aplicar(boton.dataset.filtro);
   });
+  window.addEventListener('popstate', () => aplicar(new URLSearchParams(location.search).get('tipo') || 'todos', false));
 })();
 // Miniatura del Real Zaragoza: sale del mismo JSON que el panel, así se actualiza sola cada jornada.
 (function () {
