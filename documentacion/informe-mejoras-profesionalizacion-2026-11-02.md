@@ -84,8 +84,17 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 - La previa mantiene sus secciones y tablas dentro del ancho de pantalla. No vi una corrección móvil concreta que justificara cambiar el CSS en esta pasada.
 - Restablecí el navegador al tamaño normal y lo dejé de nuevo en la portada.
 
+## Auditoría técnica general · 3 de noviembre de 2026
+
+- En 53 páginas, el auditor revisó 2.305 enlaces y recursos locales y 116 imágenes: no encontró rutas rotas, anclas inválidas, textos alternativos ausentes ni identificadores duplicados problemáticos.
+- La comprobación de metadatos encontró canonical correctos en 52 páginas; la 404 no lleva canonical por diseño.
+- La revisión de accesibilidad visual no detectó errores en grupos de controles de 44 px, indicadores de foco, contraste de los SVG en tema claro y oscuro, nombres accesibles de 1.744 enlaces o títulos y descripciones de 23 SVG exportables.
+- El auditor de imágenes no detectó textos alternativos pendientes ni páginas por encima del presupuesto. La simulación estima 655 KiB de imágenes a un ancho máximo de 800 px frente a un presupuesto de 1.200 KiB. Portada estima 2 KiB de imagen prioritaria y 436 KiB diferidos; el catálogo, 10 KiB iniciales y 229 KiB diferidos. Son estimaciones basadas en atributos y `srcset`, no mediciones de red ni de rendimiento real.
+- Los cuatro auditores terminaron correctamente. No hice cambios de código porque no encontraron un defecto que corregir en esta pasada.
+
 ## Próximo paquete de pasos
 
 1. Tras disputarse la jornada 11, verificar el resultado publicado y actualizar el seguimiento y la simulación con marcadores oficiales; incorporar métricas avanzadas solo con datos verificables.
 2. En la próxima ronda, revisar metadatos canonical y `og:url` en producción mediante un acceso que permita inspeccionar el HTML sin eludir las restricciones del navegador.
-3. Repetir la comprobación móvil cuando cambie la portada o el catálogo; los anchos probados hoy no requieren ajustes.
+3. Medir tiempos de respuesta y carga con una herramienta de rendimiento real cuando haya una sesión de diagnóstico disponible; las cifras de imágenes de esta auditoría son estimaciones locales.
+4. Repetir la comprobación móvil cuando cambie la portada o el catálogo; los anchos probados hoy no requieren ajustes.
