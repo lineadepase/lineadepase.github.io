@@ -74,10 +74,18 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 - La tarjeta de J11 conserva la imagen original optimizada de 159 KB y usa versiones responsivas entre 26 KB y 131 KB, para que el navegador elija un tamaño acorde a la pantalla.
 - La ilustración del comparador pesa 291 KB en su versión maestra, pero la portada ofrece `srcset` con derivados WebP de 480, 800, 1200, 1600 y 1672 píxeles; el navegador no tiene que descargar el archivo grande en todas las pantallas.
 - No encontré en la portada un problema visual o de contenido que justifique cambiar el diseño en esta pasada. La ruta del catálogo mostró el control de seguridad de Cloudflare en una sesión nueva, por lo que no intenté sortearlo; el catálogo ya se había comprobado públicamente en la revisión anterior.
-- La revisión fue de escritorio. La comprobación móvil registrada anteriormente sigue siendo la referencia para el ancho de página; queda repetirla en la próxima ronda visual si cambia la portada o el sistema de tarjetas.
+- La revisión de escritorio se complementa con la comprobación móvil de las tres páginas descrita en el apartado siguiente.
+
+## Comprobación móvil · 3 de noviembre de 2026
+
+- Revisé la portada, el catálogo y la previa Zaragoza–Huesca con un viewport de 390 px; también comprobé la portada a 320 px. En las mediciones de las tres rutas, el ancho desplazable coincide con el ancho visible, sin desbordamiento horizontal de página.
+- La portada coloca el titular, las llamadas principales y la ilustración en una columna; la tarjeta de la previa conserva imagen, fecha, hora y enlaces legibles.
+- El catálogo mantiene una columna para las fichas. Sus filtros forman una fila desplazable propia, sin ensanchar la página; aparecen los seis proyectos y el contador coincide.
+- La previa mantiene sus secciones y tablas dentro del ancho de pantalla. No vi una corrección móvil concreta que justificara cambiar el CSS en esta pasada.
+- Restablecí el navegador al tamaño normal y lo dejé de nuevo en la portada.
 
 ## Próximo paquete de pasos
 
-1. Cuando haya un acceso autorizado que permita inspeccionar HTML, comprobar canonical y `og:url` en producción para Eurocopa y simulación; la vista pública normal no expone esa comprobación.
-2. Tras la jornada 11, actualizar marcadores y simulación con los resultados oficiales; añadir métricas avanzadas únicamente si hay datos verificables.
-3. En la siguiente revisión visual, comprobar catálogo y portada en móvil desde una sesión normal, y confirmar que las tarjetas siguen usando los derivados responsivos tras nuevas publicaciones.
+1. Tras disputarse la jornada 11, verificar el resultado publicado y actualizar el seguimiento y la simulación con marcadores oficiales; incorporar métricas avanzadas solo con datos verificables.
+2. En la próxima ronda, revisar metadatos canonical y `og:url` en producción mediante un acceso que permita inspeccionar el HTML sin eludir las restricciones del navegador.
+3. Repetir la comprobación móvil cuando cambie la portada o el catálogo; los anchos probados hoy no requieren ajustes.
