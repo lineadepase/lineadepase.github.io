@@ -254,6 +254,7 @@ def _etiquetar_svg(ruta, titulo, descripcion):
               "</title><desc id=\"descripcion-linea-de-pase\">" +
               escape_xml(" ".join(descripcion.split())) + "</desc>")
     source = source[:match.start()] + opening + labels + source[match.end():]
+    source = "\n".join(line.rstrip() for line in source.splitlines()) + "\n"
     path.write_text(source, encoding="utf-8")
 
 

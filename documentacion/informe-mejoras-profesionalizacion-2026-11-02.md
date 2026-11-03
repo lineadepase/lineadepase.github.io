@@ -33,21 +33,19 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 - Encontré una cifra fija desactualizada en el botón «Todos»: decía 5 con seis proyectos publicados. La corregí a 6 en el catálogo.
 - En el comparador y el mapa probé cambiar filtros y restablecerlos. Ambos recuperan su configuración inicial, conservan filtros en la URL y muestran la información esperada.
 
-## Aspectos pendientes que requieren datos o acceso externo
+## Estado y trabajo completado · 3 de noviembre de 2026
 
-- La comparación de grupo está cortada en la jornada 8, mientras que el seguimiento individual del Zaragoza llega a la J10. El sitio ya lo declara de forma visible. Para sincronizarlo se necesita revisar e incorporar fuentes actuales y actualizar datos, análisis y visualizaciones en conjunto.
-- GitHub Actions completó con éxito la revisión del sitio y la publicación de Pages para `715a42a` (`Corrige el total de proyectos en el catálogo`). La 404 y el catálogo se comprobaron en producción.
-- Los auditores comprueban código y recursos locales; no sustituyen mediciones reales de velocidad, lectores de pantalla ni revisión jurídica de las licencias originales.
+- La URL canónica `https://lineadepase.com/proyectos/` ya muestra «Todos 6» y seis proyectos. La caché se actualizó sin una purga manual; esta sesión no tiene acceso al panel de Cloudflare. Las peticiones de cabeceras desde consola reciben 403, por lo que no se pudo medir la política de caché.
+- Actualicé la simulación del Grupo 2 a la J10. Usa 80 partidos con estadísticas y marcadores hasta la J8, más 20 resultados de J9-J10 en la base independiente de solo marcadores. La clasificación calculada reproduce exactamente la clasificación publicada tras la J10: 100 partidos jugados y 280 pendientes.
+- Regeneré 10.000 temporadas, probabilidades, tablas, gráficos, página de la simulación, descarga CSV y borradores para Instagram, Facebook y LinkedIn. El catálogo señala ahora el corte de resultados J10 y distingue que las métricas avanzadas llegan a la J8.
+- En el modelo, el Zaragoza queda primero en el 22,9 % de las simulaciones y entre los cinco primeros en el 72,8 % (49,9 % playoff); el descenso aparece en el 0,7 %. Su puntuación media simulada es 65 puntos. Son resultados del modelo, no un pronóstico.
+- No añadí xG ni completé las métricas avanzadas de J9-J10, que siguen pendientes de datos verificables. La limitación se explica en la página y en el código.
+- El despliegue previo del catálogo, commit `715a42a`, pasó la revisión del sitio y la publicación de Pages. Los cambios de este paquete aún deben publicarse.
+- `git diff --check` no detecta errores. No ejecuté pytest; la comprobación integrada del generador sí validó todos los marcadores frente a la clasificación J10 antes de simular.
 
-## Seguimiento de caché del catálogo · 3 de noviembre de 2026
+## Límites y próximos paquetes
 
-- El código publicado ya muestra «Todos 6». La URL de comprobación con parámetro de versión también muestra seis, pero la ruta canónica `https://lineadepase.com/proyectos/` continuó mostrando «Todos 5» durante la revisión. Esto apunta a una respuesta antigua en caché.
-- No se pudo confirmar una purga: la sesión disponible no tiene acceso al panel de Cloudflare. La publicación y el despliegue de GitHub Pages sí finalizaron correctamente; la actualización visible en la ruta canónica queda pendiente de purgar y verificar.
-- Purga puntual recomendada: Cloudflare → Caching → Configuration → Purge Cache → Custom Purge → Purge by URL, con `https://lineadepase.com/proyectos/`. Evitar una purga global. Si sigue sirviendo la cifra antigua, revisar la regla de caché HTML y purgar también `https://lineadepase.com/proyectos/index.html`.
-
-## Próximo paquete de pasos
-
-1. Purgar la URL canónica del catálogo en Cloudflare.
-2. Volver a abrir `/proyectos/` en móvil y escritorio y confirmar que el botón y la lista muestran seis proyectos.
-3. Revisar si otras páginas HTML tienen una política de caché demasiado larga; mantener la caché de recursos estáticos con nombres versionados.
-4. Después, actualizar el corte de datos del Grupo 2 y regenerar sus comparativas.
+1. Publicar este paquete y revisar en producción la página de simulación, su CSV y el catálogo en móvil y escritorio.
+2. Incorporar xG y métricas avanzadas de J9-J10 solo cuando Sofascore u otra fuente permita verificar el conjunto; mientras tanto, conservar la separación entre resultados y estadísticas.
+3. Tras disputarse la J11, actualizar marcadores, clasificación y simulación; volver a comprobar la URL canónica y el peso de los gráficos.
+4. Revisar la política de caché HTML desde Cloudflare cuando se pueda consultar el panel; conservar la caché de recursos estáticos versionados.
