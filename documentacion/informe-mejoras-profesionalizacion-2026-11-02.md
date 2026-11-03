@@ -40,12 +40,19 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 - Regeneré 10.000 temporadas, probabilidades, tablas, gráficos, página, CSV y borradores de redes. El Zaragoza queda primero en el 22,9 % y entre los cinco primeros en el 72,8 % de las simulaciones (49,9 % en playoff); el descenso aparece en el 0,7 %. La puntuación media simulada es 65 puntos. Son resultados del modelo, no un pronóstico.
 - No completé xG ni estadísticas avanzadas para J9-J10 porque no hay un conjunto verificable. La página separa ese corte del corte de resultados.
 - La revisión y Pages finalizaron correctamente para `bbca564` (`Corrige metadatos y cortes de la simulacion`). Sin embargo, la versión que devuelve Cloudflare aún muestra el canonical de `grupo-2.html` en la página de simulación y la etiqueta antigua del catálogo. La comprobación con parámetro de versión también devuelve esa copia anterior.
-- No se pudo purgar: no hay credenciales de Cloudflare API ni acceso confirmado al panel en esta sesión; las peticiones de cabeceras desde consola reciben 403. No se hizo una purga global.
+- En ese momento no se pudo purgar: no había credenciales de Cloudflare API ni acceso confirmado al panel. La situación posterior queda registrada en la sección de verificación.
 - Imágenes web de la simulación: 1200×630 para compartir (75 KB), 1600×900 para los gráficos (86–106 KB). `git diff --check` está limpio. No ejecuté pytest; el generador comprobó los marcadores contra la clasificación J10 antes de calcular.
+
+## Verificación posterior a la purga · 3 de noviembre de 2026
+
+- El usuario confirmó que la purga selectiva ya se realizó.
+- Al volver a abrir el catálogo, Cloudflare mostró su verificación de seguridad anti-bots; las solicitudes de comprobación desde consola devolvieron HTTP 403.
+- Por ese bloqueo no fue posible leer el HTML servido ni confirmar el canonical de la simulación o la etiqueta del catálogo después de la purga. La confirmación de la purga queda registrada, pero la comprobación del contenido publicado sigue pendiente.
+- Próximo paso: revisar las dos rutas desde un navegador que haya superado la verificación de Cloudflare y confirmar el recuento, los cortes J10/J8 y el canonical. Después, revisar la política de caché HTML y conservar la caché de recursos estáticos versionados.
 
 ## Próximo paquete de pasos
 
-1. En Cloudflare, purgar por URL `https://lineadepase.com/proyectos/` y `https://lineadepase.com/proyectos/real-zaragoza/simulacion.html`. La purga por URL borra solo esas respuestas, sin afectar al resto del sitio.
-2. Reabrir ambas rutas y confirmar «Todos 6», la etiqueta de corte J10/J8 y el canonical correcto de la simulación.
-3. Revisar la política de caché HTML desde el panel para evitar que vuelva a servirse una página anterior; conservar la caché de recursos estáticos versionados.
-4. Cuando haya datos avanzados verificables, actualizar J9-J10. Después del partido de J11, actualizar marcadores y simulación.
+1. Verificar desde un navegador autorizado `https://lineadepase.com/proyectos/` y `https://lineadepase.com/proyectos/real-zaragoza/simulacion.html`.
+2. Confirmar «Todos 6», la etiqueta de resultados y clasificación J10 / métricas avanzadas J8, y el canonical propio de la simulación.
+3. Revisar la política de caché HTML para reducir la posibilidad de que se repita la discrepancia, manteniendo la caché de recursos estáticos versionados.
+4. Cuando haya datos avanzados verificables, completar J9-J10; después de J11, actualizar marcadores y simulación.
