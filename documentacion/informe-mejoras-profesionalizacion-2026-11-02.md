@@ -48,6 +48,7 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 - El usuario confirmó que la purga selectiva ya se realizó.
 - Al volver a abrir el catálogo, Cloudflare mostró su verificación de seguridad anti-bots; las solicitudes de comprobación desde consola devolvieron HTTP 403.
 - Por ese bloqueo no fue posible leer el HTML servido ni confirmar el canonical de la simulación o la etiqueta del catálogo después de la purga. La confirmación de la purga queda registrada, pero la comprobación del contenido publicado sigue pendiente.
+- La previsualización local de `127.0.0.1:8879` no respondía al abrir la ruta del proyecto de Eurocopa. Inicié el servidor local; `proyectos/espana-eurocopa-redes/` devuelve HTTP 200 y el título esperado. Esto valida la copia del repositorio, no la versión pública.
 - Próximo paso: revisar las dos rutas desde un navegador que haya superado la verificación de Cloudflare y confirmar el recuento, los cortes J10/J8 y el canonical. Después, revisar la política de caché HTML y conservar la caché de recursos estáticos versionados.
 
 ## Próximo paquete de pasos
