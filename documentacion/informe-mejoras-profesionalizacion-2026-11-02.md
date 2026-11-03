@@ -57,9 +57,10 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 ## Revisión de la configuración de caché · 3 de noviembre de 2026
 
 - El repositorio publica con GitHub Pages y contiene el dominio personalizado en `CNAME`; no hay archivo `_headers`, configuración de Wrangler ni Worker de Cloudflare que controle cabeceras o caché.
-- Por tanto, la política de caché HTML se administra fuera del repositorio, en Cloudflare. No hay acceso al panel ni credenciales de API en esta sesión, así que no apliqué una regla que pudiera alterar la entrega de todo el sitio.
-- El HTML generado de la simulación sí contiene el canonical y `og:url` correctos. El canonical servido en producción sigue sin comprobarse: el cuerpo público se verificó, pero la herramienta del navegador bloquea la vista de fuente y las peticiones directas al dominio responden 403.
-- Recomendación para el siguiente acceso al panel: inspeccionar las reglas que afectan a HTML y establecer una expiración de HTML acorde al ritmo editorial, manteniendo una caché larga para recursos estáticos versionados.
+- Revisé el panel de Cloudflare: nivel de caché `Standard`, sin reglas de caché ni reglas de respuesta, y Development Mode desactivado.
+- Cambié Browser Cache TTL de cuatro horas a `Respect Existing Headers`. Esto permite que Cloudflare siga las cabeceras que envía el origen en vez de imponer cuatro horas a las copias guardadas por los navegadores. La documentación de Cloudflare confirma que esta opción no inserta ni sobrescribe `Cache-Control` salvo que una regla lo indique: [Browser Cache TTL](https://developers.cloudflare.com/cache/how-to/edge-browser-cache-ttl/).
+- Ejecuté una purga selectiva por URL de `https://lineadepase.com/proyectos/espana-eurocopa-redes/`. Cloudflare confirmó que recibió la petición y que debía surtir efecto en menos de cinco segundos; no usé «Purge Everything».
+- Volví a abrir la página pública tras la purga. Carga con el título, resumen, datos, gráficos y secciones esperados. La herramienta de navegador sigue sin permitir leer el HTML de origen, así que no doy por confirmado el canonical/`og:url` servido aunque el código local y la auditoría de CI sí los validan.
 
 ## Protección de metadatos · 3 de noviembre de 2026
 
@@ -69,7 +70,6 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 
 ## Próximo paquete de pasos
 
-1. Tras el despliegue, purgar por URL `https://lineadepase.com/proyectos/espana-eurocopa-redes/` para publicar el `og:url` corregido.
-2. Confirmar el canonical de la simulación en producción cuando se pueda inspeccionar su HTML; el repositorio ya lo valida automáticamente.
-3. En Cloudflare, inspeccionar las reglas que afectan a HTML y ajustar su expiración según el ritmo editorial; conservar la caché larga de los recursos estáticos versionados.
-4. Tras la J11, actualizar marcadores y simulación; añadir métricas avanzadas solo si hay datos verificables.
+1. Cuando haya un acceso autorizado que permita inspeccionar HTML, comprobar canonical y `og:url` en producción para Eurocopa y simulación; la vista pública normal no expone esa comprobación.
+2. Tras la jornada 11, actualizar marcadores y simulación con los resultados oficiales; añadir métricas avanzadas únicamente si hay datos verificables.
+3. En la siguiente publicación, comprobar en navegador la portada, la ficha y el recurso gráfico; comparar los tiempos de carga y errores con el estado actual antes de añadir reglas nuevas de caché.
