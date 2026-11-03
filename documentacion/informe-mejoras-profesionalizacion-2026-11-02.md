@@ -36,11 +36,18 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 ## Aspectos pendientes que requieren datos o acceso externo
 
 - La comparación de grupo está cortada en la jornada 8, mientras que el seguimiento individual del Zaragoza llega a la J10. El sitio ya lo declara de forma visible. Para sincronizarlo se necesita revisar e incorporar fuentes actuales y actualizar datos, análisis y visualizaciones en conjunto.
-- GitHub Actions completó con éxito la revisión del sitio y la publicación de Pages para el commit `6ebcd1e`. La 404 fue probada en producción. El recuento del catálogo se ajustó en el código del sitio y se volvió a comprobar con los auditores locales.
+- GitHub Actions completó con éxito la revisión del sitio y la publicación de Pages para `715a42a` (`Corrige el total de proyectos en el catálogo`). La 404 y el catálogo se comprobaron en producción.
 - Los auditores comprueban código y recursos locales; no sustituyen mediciones reales de velocidad, lectores de pantalla ni revisión jurídica de las licencias originales.
 
-## Próximo paquete sugerido
+## Seguimiento de caché del catálogo · 3 de noviembre de 2026
 
-1. Actualizar los datos de jornadas pendientes del Grupo 2 y regenerar las vistas que dependen de ellos.
-2. Comprobar la 404, el catálogo y las dos herramientas en producción en escritorio y móvil después de publicar la corrección del contador.
-3. Actualizar los datos del Grupo 2 con un corte nuevo y hacer una última lectura editorial de la muestra de artículos.
+- El código publicado ya muestra «Todos 6». La URL de comprobación con parámetro de versión también muestra seis, pero la ruta canónica `https://lineadepase.com/proyectos/` continuó mostrando «Todos 5» durante la revisión. Esto apunta a una respuesta antigua en caché.
+- No se pudo confirmar una purga: la sesión disponible no tiene acceso al panel de Cloudflare. La publicación y el despliegue de GitHub Pages sí finalizaron correctamente; la actualización visible en la ruta canónica queda pendiente de purgar y verificar.
+- Purga puntual recomendada: Cloudflare → Caching → Configuration → Purge Cache → Custom Purge → Purge by URL, con `https://lineadepase.com/proyectos/`. Evitar una purga global. Si sigue sirviendo la cifra antigua, revisar la regla de caché HTML y purgar también `https://lineadepase.com/proyectos/index.html`.
+
+## Próximo paquete de pasos
+
+1. Purgar la URL canónica del catálogo en Cloudflare.
+2. Volver a abrir `/proyectos/` en móvil y escritorio y confirmar que el botón y la lista muestran seis proyectos.
+3. Revisar si otras páginas HTML tienen una política de caché demasiado larga; mantener la caché de recursos estáticos con nombres versionados.
+4. Después, actualizar el corte de datos del Grupo 2 y regenerar sus comparativas.
