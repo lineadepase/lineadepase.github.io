@@ -52,8 +52,15 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 - La previsualización local de `127.0.0.1:8879` no respondía al abrir la ruta del proyecto de Eurocopa. Inicié el servidor local; `proyectos/espana-eurocopa-redes/` devuelve HTTP 200 y el título esperado. Esto valida la copia del repositorio, no la versión pública.
 - Próximo paso: confirmar el canonical de producción y revisar la política de caché HTML, conservando la caché de recursos estáticos versionados.
 
+## Revisión de la configuración de caché · 3 de noviembre de 2026
+
+- El repositorio publica con GitHub Pages y contiene el dominio personalizado en `CNAME`; no hay archivo `_headers`, configuración de Wrangler ni Worker de Cloudflare que controle cabeceras o caché.
+- Por tanto, la política de caché HTML se administra fuera del repositorio, en Cloudflare. No hay acceso al panel ni credenciales de API en esta sesión, así que no apliqué una regla que pudiera alterar la entrega de todo el sitio.
+- El HTML generado de la simulación sí contiene el canonical y `og:url` correctos. El canonical servido en producción sigue sin comprobarse: el cuerpo público se verificó, pero la herramienta del navegador bloquea la vista de fuente y las peticiones directas al dominio responden 403.
+- Recomendación para el siguiente acceso al panel: inspeccionar las reglas que afectan a HTML y establecer una expiración de HTML acorde al ritmo editorial, manteniendo una caché larga para recursos estáticos versionados.
+
 ## Próximo paquete de pasos
 
-1. Confirmar en producción el canonical de `https://lineadepase.com/proyectos/real-zaragoza/simulacion.html`.
-2. Revisar la política de caché HTML para reducir la posibilidad de que se repita la discrepancia, manteniendo la caché de recursos estáticos versionados.
+1. Desde un navegador con acceso al código fuente, confirmar que el canonical de `https://lineadepase.com/proyectos/real-zaragoza/simulacion.html` coincide con esa misma URL.
+2. En Cloudflare, inspeccionar las reglas que afectan a HTML y ajustar su expiración según el ritmo editorial; conservar la caché larga de los recursos estáticos versionados.
 3. Cuando haya datos avanzados verificables, completar J9-J10; después de J11, actualizar marcadores y simulación.
