@@ -66,10 +66,18 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 
 - La auditoría local detectó que la página de España en la Eurocopa tenía `og:url` con `/index.html`, mientras su canonical usaba la ruta limpia. Corregí la plantilla compartida para no heredar tarjetas sociales del proyecto usado como plantilla y generar `og:url` con la misma ruta que el canonical.
 - Añadí `herramientas/auditar_canonicos.py` al flujo de revisión de GitHub. Comprueba canonical y `og:url` en 52 páginas; admite la 404 sin canonical y las rutas especiales de contacto y la previa más reciente.
-- La auditoría local termina sin errores. La respuesta pública de la página de España deberá renovarse en Cloudflare tras el despliegue para que la corrección de `og:url` sustituya cualquier HTML almacenado.
+- La auditoría local termina sin errores. Tras el despliegue purgué en Cloudflare la URL pública de la página para retirar cualquier HTML almacenado antes de la corrección.
+
+## Revisión visual de portada y recursos · 3 de noviembre de 2026
+
+- Revisé la portada pública en escritorio: la cabecera, el mensaje principal y los accesos a proyectos y herramientas mantienen una jerarquía clara; la previa Zaragoza–Huesca encabeza la sección y los dos partidos ya disputados aparecen con sus marcadores y enlaces de análisis.
+- La tarjeta de J11 conserva la imagen original optimizada de 159 KB y usa versiones responsivas entre 26 KB y 131 KB, para que el navegador elija un tamaño acorde a la pantalla.
+- La ilustración del comparador pesa 291 KB en su versión maestra, pero la portada ofrece `srcset` con derivados WebP de 480, 800, 1200, 1600 y 1672 píxeles; el navegador no tiene que descargar el archivo grande en todas las pantallas.
+- No encontré en la portada un problema visual o de contenido que justifique cambiar el diseño en esta pasada. La ruta del catálogo mostró el control de seguridad de Cloudflare en una sesión nueva, por lo que no intenté sortearlo; el catálogo ya se había comprobado públicamente en la revisión anterior.
+- La revisión fue de escritorio. La comprobación móvil registrada anteriormente sigue siendo la referencia para el ancho de página; queda repetirla en la próxima ronda visual si cambia la portada o el sistema de tarjetas.
 
 ## Próximo paquete de pasos
 
 1. Cuando haya un acceso autorizado que permita inspeccionar HTML, comprobar canonical y `og:url` en producción para Eurocopa y simulación; la vista pública normal no expone esa comprobación.
 2. Tras la jornada 11, actualizar marcadores y simulación con los resultados oficiales; añadir métricas avanzadas únicamente si hay datos verificables.
-3. En la siguiente publicación, comprobar en navegador la portada, la ficha y el recurso gráfico; comparar los tiempos de carga y errores con el estado actual antes de añadir reglas nuevas de caché.
+3. En la siguiente revisión visual, comprobar catálogo y portada en móvil desde una sesión normal, y confirmar que las tarjetas siguen usando los derivados responsivos tras nuevas publicaciones.
