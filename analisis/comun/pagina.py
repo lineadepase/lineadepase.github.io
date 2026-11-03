@@ -34,6 +34,9 @@ def escribir_pagina(carpeta, titulo, descripcion, migas, cuerpo, fuentes_pie):
     # para esta página con herramientas/actualizar_exploracion.py.
     cabeza = re.sub(r'<meta name="grafico-contexto"[^>]*>\s*', '', cabeza)
     cabeza = re.sub(r'<link rel="canonical"[^>]*>\s*', '', cabeza)
+    # No heredar tarjetas sociales de la plantilla: cada artículo usa sus propios valores.
+    cabeza = re.sub(r'<meta\b[^>]*(?:property="(?:og:[^"]+)"|name="(?:twitter:[^"]+)")[^>]*>\s*',
+                    '', cabeza, flags=re.I)
     cabeza = re.sub(r'<link rel="stylesheet" href="[^"]*assets/(?:explorar|experiencia|fotografia-editorial)\.css[^"]*">\s*',
                     '', cabeza)
     cabeza = re.sub(r'<script src="[^"]*assets/experiencia\.js[^"]*" defer></script>\s*', '', cabeza)
@@ -43,7 +46,8 @@ def escribir_pagina(carpeta, titulo, descripcion, migas, cuerpo, fuentes_pie):
     if destino.exists():
         previo = re.search(r'<!-- SEO:.*?<!-- /SEO -->\n?', destino.read_text(encoding="utf-8"), re.S)
         seo_actual = previo.group(0) if previo else ""
-    url = f"https://lineadepase.com/proyectos/{carpeta}/index.html"
+    # GitHub Pages sirve index.html bajo la ruta limpia; canonicals y og:url deben coincidir.
+    url = f"https://lineadepase.com/proyectos/{carpeta}/"
     imagen = f"https://lineadepase.com/proyectos/{carpeta}/graficos/compartir.png"
     # Vista previa al compartir el enlace en redes.
     if not seo_actual:  # el bloque SEO ya trae la dirección canónica

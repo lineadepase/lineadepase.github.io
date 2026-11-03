@@ -48,6 +48,7 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 - El usuario confirmó que la purga selectiva ya se realizó.
 - Tras la verificación de Cloudflare, el catálogo público muestra «Todos 6», «6 proyectos» y la ficha del Zaragoza con resultados y clasificación tras J10 y métricas avanzadas hasta J8.
 - La simulación pública muestra el título de J10, 100 partidos jugados y 280 pendientes. También muestra el Zaragoza con 23 % de ascenso directo, 50 % de playoff y 1 % de descenso; sus datos explican que los marcadores llegan a J10 y las métricas avanzadas a J8.
+- La portada pública ya presenta la previa Zaragoza–Huesca como primera tarjeta, con imagen, hora y botón para añadirla al calendario. La imagen pesa 163 KB y la página completa de la previa abre correctamente.
 - La jornada 11 todavía no se ha disputado. El calendario consultado el 3 de noviembre sitúa el Real Zaragoza–Huesca el sábado 7 de noviembre a las 21:00; no corresponde regenerar aún la simulación con marcadores de J11. [Calendario de Primera Federación, AS](https://as.com/resultados/futbol/primera_rfef/2026_2027/jornada/grupos_a_11/).
 - No pude leer el canonical en el HTML público porque el navegador conectado no permite abrir la vista de código fuente. En el archivo generado local, el canonical y `og:url` apuntan a `https://lineadepase.com/proyectos/real-zaragoza/simulacion.html`; queda pendiente contrastar ese metadato en producción.
 - La previsualización local de `127.0.0.1:8879` no respondía al abrir la ruta del proyecto de Eurocopa. Inicié el servidor local; `proyectos/espana-eurocopa-redes/` devuelve HTTP 200 y el título esperado. Esto valida la copia del repositorio, no la versión pública.
@@ -60,8 +61,15 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 - El HTML generado de la simulación sí contiene el canonical y `og:url` correctos. El canonical servido en producción sigue sin comprobarse: el cuerpo público se verificó, pero la herramienta del navegador bloquea la vista de fuente y las peticiones directas al dominio responden 403.
 - Recomendación para el siguiente acceso al panel: inspeccionar las reglas que afectan a HTML y establecer una expiración de HTML acorde al ritmo editorial, manteniendo una caché larga para recursos estáticos versionados.
 
+## Protección de metadatos · 3 de noviembre de 2026
+
+- La auditoría local detectó que la página de España en la Eurocopa tenía `og:url` con `/index.html`, mientras su canonical usaba la ruta limpia. Corregí la plantilla compartida para no heredar tarjetas sociales del proyecto usado como plantilla y generar `og:url` con la misma ruta que el canonical.
+- Añadí `herramientas/auditar_canonicos.py` al flujo de revisión de GitHub. Comprueba canonical y `og:url` en 52 páginas; admite la 404 sin canonical y las rutas especiales de contacto y la previa más reciente.
+- La auditoría local termina sin errores. La respuesta pública de la página de España deberá renovarse en Cloudflare tras el despliegue para que la corrección de `og:url` sustituya cualquier HTML almacenado.
+
 ## Próximo paquete de pasos
 
-1. Desde un navegador con acceso al código fuente, confirmar que el canonical de `https://lineadepase.com/proyectos/real-zaragoza/simulacion.html` coincide con esa misma URL.
-2. En Cloudflare, inspeccionar las reglas que afectan a HTML y ajustar su expiración según el ritmo editorial; conservar la caché larga de los recursos estáticos versionados.
-3. Cuando haya datos avanzados verificables, completar J9-J10; después de J11, actualizar marcadores y simulación.
+1. Tras el despliegue, purgar por URL `https://lineadepase.com/proyectos/espana-eurocopa-redes/` para publicar el `og:url` corregido.
+2. Confirmar el canonical de la simulación en producción cuando se pueda inspeccionar su HTML; el repositorio ya lo valida automáticamente.
+3. En Cloudflare, inspeccionar las reglas que afectan a HTML y ajustar su expiración según el ritmo editorial; conservar la caché larga de los recursos estáticos versionados.
+4. Tras la J11, actualizar marcadores y simulación; añadir métricas avanzadas solo si hay datos verificables.
