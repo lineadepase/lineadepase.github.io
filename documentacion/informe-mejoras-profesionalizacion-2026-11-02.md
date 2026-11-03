@@ -25,14 +25,22 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 - `node --check` de `assets/comparador.js` y `assets/mapa-grupo.js`, y `git diff --check`: sin errores.
 - En navegador local, el comparador recuperó Zaragoza–Villarreal B y dejó un mensaje de estado. El mapa volvió a Zaragoza, xG a favor, xG en contra, casa y fuera, temporada completa y Sofascore.
 
+## Revisión de producción · 3 de noviembre de 2026
+
+- La portada y una ruta inexistente abren correctamente; la ruta inexistente muestra la página 404 de Línea de pase.
+- En móvil (390 px), la portada, el catálogo, el comparador y el mapa no provocan desbordamiento horizontal de página.
+- El filtro por trabajos del máster conserva `?tipo=master`, deja un único proyecto visible y actualiza el recuento dinámico.
+- Encontré una cifra fija desactualizada en el botón «Todos»: decía 5 con seis proyectos publicados. La corregí a 6 en el catálogo.
+- En el comparador y el mapa probé cambiar filtros y restablecerlos. Ambos recuperan su configuración inicial, conservan filtros en la URL y muestran la información esperada.
+
 ## Aspectos pendientes que requieren datos o acceso externo
 
 - La comparación de grupo está cortada en la jornada 8, mientras que el seguimiento individual del Zaragoza llega a la J10. El sitio ya lo declara de forma visible. Para sincronizarlo se necesita revisar e incorporar fuentes actuales y actualizar datos, análisis y visualizaciones en conjunto.
-- GitHub Actions completó con éxito la revisión del sitio y la publicación de Pages para el commit `3e764a2`. La comprobación HTTP directa del dominio agotó el tiempo de espera desde este entorno; por eso no afirmo haber visto la versión servida públicamente. El archivo `404.html` está incluido en el despliegue.
+- GitHub Actions completó con éxito la revisión del sitio y la publicación de Pages para el commit `6ebcd1e`. La 404 fue probada en producción. El recuento del catálogo se ajustó en el código del sitio y se volvió a comprobar con los auditores locales.
 - Los auditores comprueban código y recursos locales; no sustituyen mediciones reales de velocidad, lectores de pantalla ni revisión jurídica de las licencias originales.
 
 ## Próximo paquete sugerido
 
 1. Actualizar los datos de jornadas pendientes del Grupo 2 y regenerar las vistas que dependen de ellos.
-2. Comprobar la 404, el catálogo y las dos herramientas en producción en escritorio y móvil.
-3. Revisar una muestra de artículos con una lectura editorial final y preparar una pauta mensual de enlaces, imágenes y cortes de datos.
+2. Comprobar la 404, el catálogo y las dos herramientas en producción en escritorio y móvil después de publicar la corrección del contador.
+3. Actualizar los datos del Grupo 2 con un corte nuevo y hacer una última lectura editorial de la muestra de artículos.
