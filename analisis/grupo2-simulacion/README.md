@@ -27,7 +27,7 @@ grupo2-simulacion/
 
 ## Datos
 
-Solo usa resultados: quién jugó contra quién, en qué campo y con qué marcador. Los lee de `analisis/real-zaragoza/datos/entrada/grupo2_partidos.csv`, el archivo que ya mantiene el seguimiento, y no utiliza ninguna otra columna. Antes de simular, comprueba que esos resultados reproducen exactamente la clasificación publicada tras la última jornada (`clasificacion.csv`); si no cuadra, se detiene.
+Solo usa resultados: quién jugó contra quién, en qué campo y con qué marcador. Lee los marcadores de `analisis/real-zaragoza/datos/entrada/grupo2_partidos.csv`, el archivo que ya mantiene el seguimiento, y completa las jornadas que falten con `grupo2_resultados.csv`. No utiliza ninguna otra estadística. Antes de simular, comprueba que los resultados reproducen exactamente los partidos jugados, goles a favor y en contra, y puntos de la clasificación tras la última jornada (`clasificacion.csv`); si no cuadra, se detiene.
 
 ## Método
 
@@ -43,7 +43,7 @@ Desde la raíz del repositorio, después de actualizar los resultados de la jorn
 
 ```
 pip install -r analisis/grupo2-simulacion/requirements.txt
-python analisis/grupo2-simulacion/codigo/ejecutar.py
+python analisis/grupo2-simulacion/codigo/ejecutar.py --sin-carrusel
 python analisis/grupo2-simulacion/codigo/web.py
 python -m pytest analisis/grupo2-simulacion/pruebas
 ```

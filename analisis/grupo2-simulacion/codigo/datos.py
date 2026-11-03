@@ -5,6 +5,8 @@ La simulación solo usa resultados: quién jugó contra quién, en qué campo y
 cuántos goles marcó cada uno. Los lee del archivo que ya mantiene el
 seguimiento del Real Zaragoza (analisis/real-zaragoza/datos/entrada/
 grupo2_partidos.csv), del que aprovecha únicamente las columnas del resultado.
+Cuando la fuente estadística aún no tiene una jornada, completa sus marcadores
+con grupo2_resultados.csv.
 
 Antes de simular, compruebo que la clasificación que sale de esos resultados
 coincide punto por punto con la clasificación publicada tras la última jornada
@@ -21,8 +23,9 @@ RAIZ_WEB = Path(__file__).resolve().parents[3]
 ENTRADA = RAIZ_WEB / "analisis" / "real-zaragoza" / "datos" / "entrada"
 
 
-def leer_resultados(ruta=ENTRADA / "grupo2_partidos.csv"):
-    """Una fila por partido jugado, desde el punto de vista del equipo local."""
+def leer_resultados(ruta=ENTRADA / "grupo2_partidos.csv",
+                    ruta_resultados=ENTRADA / "grupo2_resultados.csv"):
+    """Resultados disponibles, completando jornadas ausentes sin duplicarlas."""
     filas = pd.read_csv(ruta)
     locales = filas[filas.sede == "Casa"]
     partidos = pd.DataFrame({
@@ -32,7 +35,29 @@ def leer_resultados(ruta=ENTRADA / "grupo2_partidos.csv"):
         "visitante": locales.rival,
         "goles_local": locales.goles_favor.astype(int),
         "goles_visitante": locales.goles_contra.astype(int),
-    }).sort_values(["jornada", "fecha", "local"]).reset_index(drop=True)
+    })
+
+    # Sofascore aún puede no ofrecer las estadísticas de una jornada recién
+    # terminada. El modelo solo necesita marcador y localía, así que incorpora
+    # los resultados de las jornadas posteriores a la última jornada estadística.
+    if ruta_resultados.exists():
+        resultados = pd.read_csv(ruta_resultados)
+        corte = int(partidos.jornada.max()) if not partidos.empty else 0
+        posteriores = resultados[resultados.jornada.astype(int) > corte]
+        if not posteriores.empty:
+            complementarios = pd.DataFrame({
+                "jornada": posteriores.jornada.astype(int),
+                "fecha": posteriores.fecha,
+                "local": posteriores.local,
+                "visitante": posteriores.visitante,
+                "goles_local": posteriores.goles_local.astype(int),
+                "goles_visitante": posteriores.goles_visitante.astype(int),
+            })
+            partidos = pd.concat([partidos, complementarios], ignore_index=True)
+
+    duplicados = partidos.duplicated(["jornada", "local", "visitante"])
+    assert not duplicados.any(), f"Hay partidos duplicados: {partidos.loc[duplicados].to_dict('records')}"
+    partidos = partidos.sort_values(["jornada", "fecha", "local"]).reset_index(drop=True)
     return partidos
 
 

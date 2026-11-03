@@ -14,6 +14,7 @@ Pasos:
 
 Se ejecuta en unos segundos; está pensado para repetirse después de cada jornada.
 """
+import argparse
 import json
 import platform
 from importlib import metadata
@@ -43,6 +44,11 @@ def referencia_sin_equipos(partidos, equipos):
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Recalcula la simulación Monte Carlo del grupo 2.")
+    parser.add_argument("--sin-carrusel", action="store_true",
+                        help="no regenerar el carrusel de Instagram")
+    args = parser.parse_args()
+
     salida, doc = RAIZ / "datos" / "salida", RAIZ / "documentacion"
     salida.mkdir(parents=True, exist_ok=True)
     doc.mkdir(parents=True, exist_ok=True)
@@ -122,7 +128,8 @@ def main():
     (doc / "validacion.json").write_text(json.dumps(validacion, ensure_ascii=False, indent=2), encoding="utf-8")
 
     crear_figuras(tabla, distribucion, evolucion, jornada, SIMULACIONES, RAIZ / "graficos")
-    crear_carrusel(tabla, jornada, RAIZ / "graficos", RAIZ / "publicaciones" / "instagram")
+    if not args.sin_carrusel:
+        crear_carrusel(tabla, jornada, RAIZ / "graficos", RAIZ / "publicaciones" / "instagram")
 
     pd.set_option("display.width", 200)
     print(tabla[["equipo", "ascenso_directo", "playoff", "descenso", "puntos_medios"]].round(3).to_string(index=False))
