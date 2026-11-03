@@ -35,17 +35,17 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 
 ## Estado y trabajo completado · 3 de noviembre de 2026
 
-- La URL canónica `https://lineadepase.com/proyectos/` ya muestra «Todos 6» y seis proyectos. La caché se actualizó sin una purga manual; esta sesión no tiene acceso al panel de Cloudflare. Las peticiones de cabeceras desde consola reciben 403, por lo que no se pudo medir la política de caché.
-- Actualicé la simulación del Grupo 2 a la J10. Usa 80 partidos con estadísticas y marcadores hasta la J8, más 20 resultados de J9-J10 en la base independiente de solo marcadores. La clasificación calculada reproduce exactamente la clasificación publicada tras la J10: 100 partidos jugados y 280 pendientes.
-- Regeneré 10.000 temporadas, probabilidades, tablas, gráficos, página de la simulación, descarga CSV y borradores para Instagram, Facebook y LinkedIn. El catálogo señala ahora el corte de resultados J10 y distingue que las métricas avanzadas llegan a la J8.
-- En el modelo, el Zaragoza queda primero en el 22,9 % de las simulaciones y entre los cinco primeros en el 72,8 % (49,9 % playoff); el descenso aparece en el 0,7 %. Su puntuación media simulada es 65 puntos. Son resultados del modelo, no un pronóstico.
-- No añadí xG ni completé las métricas avanzadas de J9-J10, que siguen pendientes de datos verificables. La limitación se explica en la página y en el código.
-- El despliegue previo del catálogo, commit `715a42a`, pasó la revisión del sitio y la publicación de Pages. Los cambios de este paquete aún deben publicarse.
-- `git diff --check` no detecta errores. No ejecuté pytest; la comprobación integrada del generador sí validó todos los marcadores frente a la clasificación J10 antes de simular.
+- El catálogo de producción ya muestra seis proyectos y «Todos 6», pero todavía sirve una etiqueta antigua para el proyecto del Zaragoza. El código actualizado indica resultados y clasificación J10, con métricas avanzadas hasta J8.
+- Actualicé la simulación del Grupo 2 a la J10. Usa marcadores hasta J8 desde la base estadística y añade 20 resultados de J9-J10 en la base separada de solo marcadores. La clasificación calculada coincide exactamente con la publicada: 100 partidos jugados y 280 pendientes.
+- Regeneré 10.000 temporadas, probabilidades, tablas, gráficos, página, CSV y borradores de redes. El Zaragoza queda primero en el 22,9 % y entre los cinco primeros en el 72,8 % de las simulaciones (49,9 % en playoff); el descenso aparece en el 0,7 %. La puntuación media simulada es 65 puntos. Son resultados del modelo, no un pronóstico.
+- No completé xG ni estadísticas avanzadas para J9-J10 porque no hay un conjunto verificable. La página separa ese corte del corte de resultados.
+- La revisión y Pages finalizaron correctamente para `bbca564` (`Corrige metadatos y cortes de la simulacion`). Sin embargo, la versión que devuelve Cloudflare aún muestra el canonical de `grupo-2.html` en la página de simulación y la etiqueta antigua del catálogo. La comprobación con parámetro de versión también devuelve esa copia anterior.
+- No se pudo purgar: no hay credenciales de Cloudflare API ni acceso confirmado al panel en esta sesión; las peticiones de cabeceras desde consola reciben 403. No se hizo una purga global.
+- Imágenes web de la simulación: 1200×630 para compartir (75 KB), 1600×900 para los gráficos (86–106 KB). `git diff --check` está limpio. No ejecuté pytest; el generador comprobó los marcadores contra la clasificación J10 antes de calcular.
 
-## Límites y próximos paquetes
+## Próximo paquete de pasos
 
-1. Publicar este paquete y revisar en producción la página de simulación, su CSV y el catálogo en móvil y escritorio.
-2. Incorporar xG y métricas avanzadas de J9-J10 solo cuando Sofascore u otra fuente permita verificar el conjunto; mientras tanto, conservar la separación entre resultados y estadísticas.
-3. Tras disputarse la J11, actualizar marcadores, clasificación y simulación; volver a comprobar la URL canónica y el peso de los gráficos.
-4. Revisar la política de caché HTML desde Cloudflare cuando se pueda consultar el panel; conservar la caché de recursos estáticos versionados.
+1. En Cloudflare, purgar por URL `https://lineadepase.com/proyectos/` y `https://lineadepase.com/proyectos/real-zaragoza/simulacion.html`. La purga por URL borra solo esas respuestas, sin afectar al resto del sitio.
+2. Reabrir ambas rutas y confirmar «Todos 6», la etiqueta de corte J10/J8 y el canonical correcto de la simulación.
+3. Revisar la política de caché HTML desde el panel para evitar que vuelva a servirse una página anterior; conservar la caché de recursos estáticos versionados.
+4. Cuando haya datos avanzados verificables, actualizar J9-J10. Después del partido de J11, actualizar marcadores y simulación.
