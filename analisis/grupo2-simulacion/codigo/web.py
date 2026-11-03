@@ -6,6 +6,7 @@ Uso, desde la raíz del repositorio y después de ejecutar.py:
     python analisis/grupo2-simulacion/codigo/web.py
 """
 import json
+import re
 import shutil
 import sys
 from pathlib import Path
@@ -48,6 +49,52 @@ def tabla_html(tabla):
             '<th scope="col" class="num">#</th><th scope="col">Equipo</th><th scope="col" class="num">Puntos medios</th>'
             '<th scope="col" class="num">Ascenso directo</th><th scope="col" class="num">Playoff</th>'
             '<th scope="col" class="num">Descenso</th></tr></thead><tbody>' + "".join(filas) + "</tbody></table></div>")
+
+
+def actualizar_metadatos(destino, titulo, descripcion):
+    """Evita heredar el canonical y la tarjeta social de la página del grupo."""
+    url = "https://lineadepase.com/proyectos/real-zaragoza/simulacion.html"
+    imagen = url.replace("simulacion.html", "graficos/simulacion/compartir.png")
+    html = destino.read_text(encoding="utf-8")
+    html = re.sub(r'<link rel="canonical" href="[^"]*">',
+                  f'<link rel="canonical" href="{url}">', html)
+    valores = {
+        'property="og:title"': ("og:title", titulo),
+        'property="og:description"': ("og:description", descripcion),
+        'property="og:url"': ("og:url", url),
+        'property="og:image"': ("og:image", imagen),
+        'property="og:image:alt"': ("og:image:alt", f"{titulo} · Línea de pase"),
+        'name="twitter:title"': ("twitter:title", f"{titulo} · Línea de pase"),
+        'name="twitter:description"': ("twitter:description", descripcion),
+        'name="twitter:image"': ("twitter:image", imagen),
+        'name="twitter:image:alt"': ("twitter:image:alt", f"{titulo} · Línea de pase"),
+    }
+    for selector, (atributo, valor) in valores.items():
+        html = re.sub(rf'<meta {re.escape(selector)} content="[^"]*">',
+                      f'<meta {selector} content="{valor}">', html)
+    meta_imagen = '<meta name="imagen-editorial" content="proyectos/real-zaragoza/graficos/simulacion/compartir.png">'
+    if 'name="imagen-editorial"' in html:
+        html = re.sub(r'<meta name="imagen-editorial" content="[^"]*">', meta_imagen, html)
+    else:
+        html = html.replace("</head>", f"{meta_imagen}\n</head>")
+    html = re.sub(r'<meta name="grafico-contexto" content="[^"]*">',
+                  '<meta name="grafico-contexto" content="Resultados hasta la J10; métricas avanzadas del grupo hasta la J8.">', html)
+    schema = {"@context": "https://schema.org", "@graph": [
+        {"@type": "BreadcrumbList", "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://lineadepase.com/"},
+            {"@type": "ListItem", "position": 2, "name": "Proyectos", "item": "https://lineadepase.com/proyectos/"},
+            {"@type": "ListItem", "position": 3, "name": "Real Zaragoza", "item": "https://lineadepase.com/proyectos/real-zaragoza/"},
+            {"@type": "ListItem", "position": 4, "name": titulo, "item": url},
+        ]},
+        {"@type": "Article", "@id": url + "#analisis", "headline": titulo,
+         "description": descripcion, "image": [imagen], "inLanguage": "es",
+         "mainEntityOfPage": url,
+         "author": {"@type": "Person", "name": "Ángel Marqueta Alonso",
+                    "url": "https://lineadepase.com/sobre-mi/"}},
+    ]}
+    json_ld = '<script type="application/ld+json">' + json.dumps(schema, ensure_ascii=False) + '</script>'
+    html = re.sub(r'<script type="application/ld\+json">.*?</script>', json_ld, html, count=1, flags=re.S)
+    destino.write_text(html, encoding="utf-8")
 
 
 def main():
@@ -135,6 +182,7 @@ def main():
         cuerpo,
         "",
     )
+    actualizar_metadatos(destino, f"Simulación del grupo 2 (J{jornada})", f"10.000 simulaciones del resto de la temporada del grupo 2 de Primera Federación: probabilidades de ascenso, playoff y descenso tras la jornada {jornada}.")
     print(f"Página escrita en {destino.relative_to(RAIZ_WEB)}")
 
 
