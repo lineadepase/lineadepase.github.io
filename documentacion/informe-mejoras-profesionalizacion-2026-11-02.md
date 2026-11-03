@@ -90,11 +90,19 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 - La comprobación de metadatos encontró canonical correctos en 52 páginas; la 404 no lleva canonical por diseño.
 - La revisión de accesibilidad visual no detectó errores en grupos de controles de 44 px, indicadores de foco, contraste de los SVG en tema claro y oscuro, nombres accesibles de 1.744 enlaces o títulos y descripciones de 23 SVG exportables.
 - El auditor de imágenes no detectó textos alternativos pendientes ni páginas por encima del presupuesto. La simulación estima 655 KiB de imágenes a un ancho máximo de 800 px frente a un presupuesto de 1.200 KiB. Portada estima 2 KiB de imagen prioritaria y 436 KiB diferidos; el catálogo, 10 KiB iniciales y 229 KiB diferidos. Son estimaciones basadas en atributos y `srcset`, no mediciones de red ni de rendimiento real.
-- Los cuatro auditores terminaron correctamente. No hice cambios de código porque no encontraron un defecto que corregir en esta pasada.
+- Los cuatro auditores locales terminaron correctamente dentro de los criterios que revisan. PageSpeed Insights encontró después un problema de contraste en el texto duplicado del comparador; la corrección queda detallada en el apartado siguiente.
+
+## PageSpeed y corrección de contraste · 3 de noviembre de 2026
+
+- PageSpeed Insights midió la portada con Lighthouse 13.6.0. En móvil obtuvo 95 en rendimiento, 96 en accesibilidad, 100 en prácticas recomendadas y 100 en SEO; FCP 1,5 s, LCP 2,6 s, TBT 0 ms y CLS 0,083. En escritorio obtuvo 97, 96, 100 y 100; FCP 0,4 s, LCP 0,7 s, TBT 0 ms y CLS 0,102. El informe no encontró datos de usuarios reales para esta página, así que son pruebas de laboratorio y no mediciones de experiencia de visitantes. [Informe de PageSpeed](https://pagespeed.web.dev/analysis?url=https%3A%2F%2Flineadepase.com%2F&form_factor=mobile) · [Cómo funciona PageSpeed Insights](https://developers.google.com/speed/docs/insights/v5/about).
+- Lighthouse señaló contraste insuficiente en el texto «Abrir el comparador de equipos» y en su enlace. El texto estaba duplicado junto a la ilustración y la clase `solo-lectores` no lo ocultaba. Lo retiré del HTML y de `herramientas/segunda_edicion.py`; el enlace conserva su `aria-label` y la descripción de la imagen.
+- La auditoría local de accesibilidad visual pasa tras el cambio. Publiqué el arreglo en el commit `267f58c`.
+- Lighthouse también atribuye el CLS de escritorio (0,102) al bloque principal y marca la ilustración SVG de portada como imagen sin tamaño durante el desplazamiento, aunque el HTML declara `width="720"` y `height="540"`. Lo dejo pendiente de análisis antes de tocar dimensiones o estilos.
+- El intento de volver a cargar la portada para verificar el despliegue encontró la página de comprobación de seguridad de Cloudflare. No intenté resolverla ni sortearla; la presencia del cambio en producción queda pendiente de una sesión normal.
 
 ## Próximo paquete de pasos
 
-1. Tras disputarse la jornada 11, verificar el resultado publicado y actualizar el seguimiento y la simulación con marcadores oficiales; incorporar métricas avanzadas solo con datos verificables.
-2. En la próxima ronda, revisar metadatos canonical y `og:url` en producción mediante un acceso que permita inspeccionar el HTML sin eludir las restricciones del navegador.
-3. Medir tiempos de respuesta y carga con una herramienta de rendimiento real cuando haya una sesión de diagnóstico disponible; las cifras de imágenes de esta auditoría son estimaciones locales.
-4. Repetir la comprobación móvil cuando cambie la portada o el catálogo; los anchos probados hoy no requieren ajustes.
+1. Comprobar el cambio publicado y volver a ejecutar PageSpeed cuando la portada abra en una sesión normal; medir también el catálogo en móvil y escritorio.
+2. Investigar el CLS de escritorio en la ilustración principal sin cambiar sus proporciones ni su presentación editorial.
+3. Tras disputarse la jornada 11, actualizar el seguimiento y la simulación con marcadores oficiales; añadir métricas avanzadas solo con datos verificables.
+4. Revisar canonical y `og:url` de producción mediante una vía que permita leer el HTML sin sortear las restricciones del navegador.
