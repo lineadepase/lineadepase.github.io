@@ -1,10 +1,42 @@
 [
   {
-    "jornada": 10,
-    "pagina": "proyectos/real-zaragoza/previa-jornada-10.html",
+    "jornada": 11,
+    "pagina": "proyectos/real-zaragoza/previa-jornada-11.html",
     "alias": [
       "proyectos/real-zaragoza/previa.html"
     ],
+    "fecha_partido": "2026-11-07",
+    "fecha_publicacion": "2026-11-03",
+    "fecha_actualizacion": "2026-11-03",
+    "titulo": "Real Zaragoza – SD Huesca",
+    "etiqueta": "Primera Federación · J11 · 7 de noviembre",
+    "resumen": "Derbi aragonés en el Ibercaja Estadio: el Zaragoza, segundo con 21 puntos, recibe a un Huesca décimo con 15 que solo ha perdido un partido de liga.",
+    "pregunta_abierta": "¿Romperá el Huesca su serie de cuatro empates fuera de casa?",
+    "fuera_de_plano": "El balance por sede reúne cuatro partidos del Zaragoza en casa y cuatro salidas del Huesca. Es una muestra corta y no permite anticipar cómo se desarrollará el derbi.",
+    "imagen": "proyectos/real-zaragoza/graficos/previa/real-zaragoza-sd-huesca-j11.webp",
+    "ancho": 1672,
+    "alto": 941,
+    "alt": "Previa Real Zaragoza–SD Huesca: un tablero de ajedrez sobre el césped de un estadio iluminado, con piezas blancas y azules frente a piezas azules y granates. Ilustración creada con IA.",
+    "pie": "Ilustración creada con IA para Línea de pase.",
+    "noticia_html": "<section class=\"seccion lectura\" aria-labelledby=\"noticia-previa-j11\"><p class=\"etiqueta\">El contexto del partido</p><h2 id=\"noticia-previa-j11\">Un derbi entre el segundo y un Huesca de empates</h2><p>El Real Zaragoza recibe a la SD Huesca el sábado 7 de noviembre con seis puntos más: es segundo con 21, empatado con el líder Villarreal B, y el Huesca es décimo con 15. El equipo oscense solo ha perdido un partido de liga, ante el Villarreal B, pero suma seis empates en diez jornadas.</p><p>La sede marca el contraste. El Zaragoza lleva diez puntos de doce en casa, con ocho goles a favor y tres en contra. El Huesca ha empatado sus cuatro salidas (6-6 en goles) y ha hecho once de sus quince puntos en El Alcoraz, donde ganó 2-0 al Gimnàstic el lunes.</p><p>Las dos rachas recientes son parecidas: nueve puntos en los últimos cinco partidos para el Zaragoza y otros nueve para el Huesca. La muestra es corta: describe el inicio de temporada, pero no anticipa el resultado.</p><p class=\"nota\">Datos de liga hasta la jornada 10. La Copa del Rey se analiza por separado. El corte y la comparación completa aparecen al final.</p></section>",
+    "rival": "SD Huesca",
+    "hora": "21:00",
+    "estadio": "Ibercaja Estadio",
+    "competicion": "Primera Federación · Jornada 11",
+    "fuente_partido": "https://www.sportaragon.com/articulo/real-zaragoza/real-zaragoza-sd-huesca-regresa-noviembre-confirmado-horario-derbi-aragones/20261015201714161176.html",
+    "estados_previa": {
+      "confirmado": "El partido se juega el sábado 7 de noviembre a las 21:00 en el Ibercaja Estadio, con emisión en abierto en Aragón TV.",
+      "pendiente": "Las convocatorias y los onces, hasta que los equipos los hagan públicos.",
+      "despues": "Se revisará si el Huesca logró su primera victoria fuera o mantuvo su serie de empates a domicilio."
+    },
+    "imagen_social": "assets/compartir/previa-real-zaragoza-sd-huesca-j11-social.jpg",
+    "ancho_social": 1200,
+    "alto_social": 675
+  },
+  {
+    "jornada": 10,
+    "pagina": "proyectos/real-zaragoza/previa-jornada-10.html",
+    "alias": [],
     "fecha_partido": "2026-10-31",
     "fecha_publicacion": "2026-10-27",
     "fecha_actualizacion": "2026-11-01",

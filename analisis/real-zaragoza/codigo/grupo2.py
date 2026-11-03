@@ -476,7 +476,7 @@ def tabla_html(t):
 def fuente_nombre(url):
     """Nombre legible del medio a partir de su URL."""
     nombres = {"as.com": "AS", "realzaragoza.com": "la web del Real Zaragoza", "besoccer.com": "BeSoccer",
-               "elperiodicodeceuta.es": "El Periódico de Ceuta", "rfef.es": "la RFEF"}
+               "elperiodicodeceuta.es": "El Periódico de Ceuta", "aupazaragoza.com": "Aupa Zaragoza", "rfef.es": "la RFEF"}
     return next((v for k, v in nombres.items() if k in str(url)), "la fuente")
 
 
@@ -496,9 +496,9 @@ def actualidad_html():
     partidos = ''.join(f'<li>{e(f.local)} <strong>{f.goles_local}–{f.goles_visitante}</strong> {e(f.visitante)}</li>'
                        for f in resultados.itertuples())
     return j, f"""<section class="seccion" aria-labelledby="t-actualidad">
-    <p class="etiqueta">Actualizado el 26/10/2026 · Jornada {j} completa</p>
+    <p class="etiqueta">Actualizado el 03/11/2026 · Jornada {j} completa</p>
     <h2 id="t-actualidad">Resultados y clasificación tras la jornada {j}</h2>
-    <p>El Villarreal B y el Zaragoza siguen empatados, ahora con 20 puntos; el filial lidera por diferencia de goles (+11 frente a +7). Real Jaén y Real Murcia suman 16 y el Cartagena, 15. La jornada deja 30 goles: cinco victorias locales, una visitante y cuatro empates.</p>
+    <p>El Villarreal B y el Zaragoza siguen igualados, ahora con 21 puntos tras empatar entre ellos (2–2); el filial lidera por diferencia de goles (+11 frente a +7). Real Jaén y Real Murcia suman 19 y la UD Ibiza, 17. La jornada deja 23 goles: seis victorias locales, una visitante y tres empates.</p>
     <ul>{partidos}</ul>
     <div class="tarjeta tabla" tabindex="0" role="region" aria-label="Clasificación tras la jornada {j}, desplazable"><table>
     <thead><tr><th>#</th><th>Equipo</th><th>PJ</th><th>Pts</th><th>G</th><th>E</th><th>P</th><th>GF</th><th>GC</th><th>DG</th></tr></thead>

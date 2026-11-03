@@ -1,5 +1,19 @@
 [
   {
+    "fecha": "2026-11-03",
+    "tipo": "Publicación",
+    "titulo": "Previa J11: Real Zaragoza – SD Huesca",
+    "texto": "El derbi aragonés enfrenta al segundo, con 21 puntos, y a un Huesca décimo con 15 que ha empatado sus cuatro salidas. Datos de liga hasta la jornada 10.",
+    "url": "proyectos/real-zaragoza/previa-jornada-11.html"
+  },
+  {
+    "fecha": "2026-11-01",
+    "tipo": "Actualización",
+    "titulo": "Jornada 10: Real Zaragoza 2–2 Villarreal B",
+    "texto": "La ficha posterior al partido incorpora la secuencia del 0-2 al 2-2, los cambios, los datos disponibles y los límites de la lectura estadística.",
+    "url": "proyectos/real-zaragoza/jornada-10.html"
+  },
+  {
     "fecha": "2026-10-28",
     "tipo": "Actualización",
     "titulo": "Tudelano 0–4 Real Zaragoza: análisis de Copa",

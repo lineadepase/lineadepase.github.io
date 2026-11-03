@@ -199,7 +199,7 @@ def con_imagen(html, entry):
     figure = ('<!-- imagen-previa --><figure class="foto imagen-editorial-previa">'
               f'<img src="{escape(image)}" width="{entry["ancho"]}" height="{entry["alto"]}" '
               f'alt="{escape(entry["alt"], quote=True)}" style="width:100%;height:auto;border-radius:12px">'
-              '<figcaption>Ilustración editorial de Línea de pase.</figcaption></figure><!-- /imagen-previa -->')
+              f'<figcaption>{escape(entry.get("pie", "Ilustración editorial de Línea de pase."))}</figcaption></figure><!-- /imagen-previa -->')
     if '<!-- imagen-previa -->' in html:
         html = re.sub(r'<!-- imagen-previa -->.*?<!-- /imagen-previa -->', lambda _: figure, html, flags=re.S)
     else:
