@@ -46,14 +46,14 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 ## Verificación posterior a la purga · 3 de noviembre de 2026
 
 - El usuario confirmó que la purga selectiva ya se realizó.
-- Al volver a abrir el catálogo, Cloudflare mostró su verificación de seguridad anti-bots; las solicitudes de comprobación desde consola devolvieron HTTP 403.
-- Por ese bloqueo no fue posible leer el HTML servido ni confirmar el canonical de la simulación o la etiqueta del catálogo después de la purga. La confirmación de la purga queda registrada, pero la comprobación del contenido publicado sigue pendiente.
+- Tras la verificación de Cloudflare, el catálogo público muestra «Todos 6», «6 proyectos» y la ficha del Zaragoza con resultados y clasificación tras J10 y métricas avanzadas hasta J8.
+- La simulación pública muestra el título de J10, 100 partidos jugados y 280 pendientes. También muestra el Zaragoza con 23 % de ascenso directo, 50 % de playoff y 1 % de descenso; sus datos explican que los marcadores llegan a J10 y las métricas avanzadas a J8.
+- No pude leer el canonical en el HTML público porque el navegador conectado no permite abrir la vista de código fuente. En el archivo generado local, el canonical y `og:url` apuntan a `https://lineadepase.com/proyectos/real-zaragoza/simulacion.html`; queda pendiente contrastar ese metadato en producción.
 - La previsualización local de `127.0.0.1:8879` no respondía al abrir la ruta del proyecto de Eurocopa. Inicié el servidor local; `proyectos/espana-eurocopa-redes/` devuelve HTTP 200 y el título esperado. Esto valida la copia del repositorio, no la versión pública.
-- Próximo paso: revisar las dos rutas desde un navegador que haya superado la verificación de Cloudflare y confirmar el recuento, los cortes J10/J8 y el canonical. Después, revisar la política de caché HTML y conservar la caché de recursos estáticos versionados.
+- Próximo paso: confirmar el canonical de producción y revisar la política de caché HTML, conservando la caché de recursos estáticos versionados.
 
 ## Próximo paquete de pasos
 
-1. Verificar desde un navegador autorizado `https://lineadepase.com/proyectos/` y `https://lineadepase.com/proyectos/real-zaragoza/simulacion.html`.
-2. Confirmar «Todos 6», la etiqueta de resultados y clasificación J10 / métricas avanzadas J8, y el canonical propio de la simulación.
-3. Revisar la política de caché HTML para reducir la posibilidad de que se repita la discrepancia, manteniendo la caché de recursos estáticos versionados.
-4. Cuando haya datos avanzados verificables, completar J9-J10; después de J11, actualizar marcadores y simulación.
+1. Confirmar en producción el canonical de `https://lineadepase.com/proyectos/real-zaragoza/simulacion.html`.
+2. Revisar la política de caché HTML para reducir la posibilidad de que se repita la discrepancia, manteniendo la caché de recursos estáticos versionados.
+3. Cuando haya datos avanzados verificables, completar J9-J10; después de J11, actualizar marcadores y simulación.
