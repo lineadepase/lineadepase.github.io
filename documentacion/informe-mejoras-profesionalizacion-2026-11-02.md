@@ -150,7 +150,7 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 - Actualicé las versiones de caché del CSS y del JavaScript en 51 páginas y tres plantillas para que se soliciten los recursos corregidos.
 - En la captura móvil local de 390 px no hubo desbordamiento horizontal, pero apareció un CLS de 0,080. No coincide con el CLS de escritorio ya localizado; no atribuí ese movimiento a una causa sin aislarla. PageSpeed había medido CLS móvil 0 en las comprobaciones públicas anteriores.
 - Las auditorías locales siguen sin incidencias: 53 páginas y 2.319 enlaces/recursos locales; 52 canonicals correctos; 116 imágenes sin `alt` ausentes ni páginas por encima del presupuesto; controles y nombres accesibles correctos en la revisión visual. `node --check assets/mejoras.js` terminó correctamente.
-- La producción sigue mostrando 403 a las solicitudes directas en esta sesión, por lo que queda pendiente comprobar el recurso desplegado y volver a medir en una sesión pública normal. No se ha enviado ni purgado nada de Cloudflare en esta pasada.
+- El commit `0f72efe` pasó la revisión del sitio y el despliegue de GitHub Pages terminó correctamente ([revisión](https://github.com/lineadepase/lineadepase.github.io/actions/runs/41901888109) · [Pages](https://github.com/lineadepase/lineadepase.github.io/actions/runs/41901888184)). Tras el despliegue, la portada de `lineadepase.com` todavía responde HTTP 403 a las solicitudes desde esta sesión; falta confirmar visualmente los recursos servidos desde una sesión pública normal. No se ha enviado ni purgado nada de Cloudflare en esta pasada.
 
 ## Próximo paquete de pasos
 
