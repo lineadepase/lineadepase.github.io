@@ -133,6 +133,7 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 ## Recuento inicial del catálogo · 4 de noviembre de 2026
 
 - La guía visual y los sellos de las tres familias ya están aplicados en las tarjetas; no hacía falta repetir ese trabajo. Encontré que el texto de respaldo del catálogo indicaba «5 proyectos» aunque hay seis fichas. Lo corregí a seis, de modo que el mensaje sea correcto antes de que JavaScript actualice el recuento.
+- Aclaré también que la lámina anual muestra una selección de cuatro trabajos, aunque el catálogo reúna seis; así se entiende mejor la relación entre la pieza destacada y el archivo completo.
 - Las auditorías pasaron: 53 páginas y 2.319 enlaces/recursos sin problemas, 52 canonicals correctos, y git diff --check limpio.
 
 ## Próximo paquete de pasos
