@@ -130,8 +130,13 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 - El workflow «pages build and deployment» terminó correctamente para el commit `6b37d8a` el 4 de noviembre. Sin embargo, al abrir la ruta de la simulación en una sesión Chrome nueva, Cloudflare mostró una verificación de seguridad; la petición HTTP directa también respondió 403. No intenté resolver ni evadir esa comprobación, así que falta comprobar visualmente en producción que ya se sirven los nuevos `srcset`. El control de Windows también detuvo el intento de traza porque no pudo identificar con confianza la URL de Chrome. El CLS de escritorio sigue pendiente de localizar; no hice cambios basados solo en la atribución genérica de Lighthouse.
 - En el HTML local, las imágenes de portada y catálogo tienen `width` y `height`. En el catálogo, los filtros empiezan con `hidden` y un script al final los muestra; esto es una posible fuente de reflujo, no una causa confirmada y no explica por sí sola la portada. No cambié el comportamiento sin una traza. Una consulta nueva a PageSpeed API devolvió HTTP 429; no hay puntuación nueva. El entorno también bloqueó iniciar una instancia aislada de Chrome con depuración remota para obtener la traza. La vista local de la simulación abrió con el contenido esperado; comprobé las 14 rutas WebP declaradas en sus `srcset`: todas respondieron HTTP 200 con tipo `image/webp`. Esta comprobación valida los recursos del repositorio y del servidor local, no la entrega pública tras Cloudflare.
 
+## Recuento inicial del catálogo · 4 de noviembre de 2026
+
+- La guía visual y los sellos de las tres familias ya están aplicados en las tarjetas; no hacía falta repetir ese trabajo. Encontré que el texto de respaldo del catálogo indicaba «5 proyectos» aunque hay seis fichas. Lo corregí a seis, de modo que el mensaje sea correcto antes de que JavaScript actualice el recuento.
+- Las auditorías pasaron: 53 páginas y 2.319 enlaces/recursos sin problemas, 52 canonicals correctos, y git diff --check limpio.
+
 ## Próximo paquete de pasos
 
-1. Grabar una traza de escritorio en una sesión identificable y aislar el elemento que provoca el CLS residual.
-2. Tras disputarse la jornada 11 (7 de noviembre), actualizar seguimiento y simulación con marcadores oficiales; añadir métricas avanzadas solo con datos verificables.
-3. Repetir la revisión editorial de portada y catálogo tras publicar los resultados de la J11.
+1. Capturar una traza de escritorio en una sesión identificable y localizar el CLS residual.
+2. Confirmar los srcset desde producción cuando la ruta cargue sin la verificación de Cloudflare.
+3. Tras disputarse la jornada 11 (7 de noviembre), actualizar seguimiento y simulación con marcadores oficiales; añadir métricas avanzadas solo con datos verificables.
