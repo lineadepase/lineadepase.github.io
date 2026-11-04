@@ -121,8 +121,16 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 - En la tabla nueva del catálogo ya no aparecen los archivos de fuente entre los causantes; solo figura `<main id="contenido">` con CLS 0,100. En portada, la ilustración tampoco vuelve a aparecer como imagen sin tamaño; el único elemento señalado es `<main id="contenido">`. La nueva medida confirma que los cambios se sirven tras la purga, pero el CLS restante requiere una traza de DevTools para identificar su origen.
 - PageSpeed es una medición de laboratorio y cambia entre pasadas; sin datos de campo, no se debe interpretar una única diferencia como mejora estable. La revisión en Chrome completó la carga pública sin pantalla de comprobación. El único pendiente técnico de esta pasada es aislar el CLS de escritorio con una traza; el diagnóstico genérico de Lighthouse no basta para cambiar estilos con seguridad.
 
+## Revisión de contenido y adaptación de imágenes · 4 de noviembre de 2026
+
+- La portada pública mantiene como próxima cita Zaragoza–Huesca (7 de noviembre, 21:00) y como último partido el 2–2 ante Villarreal B. El catálogo muestra seis proyectos; el seguimiento del Zaragoza diferencia resultados hasta J10 y métricas avanzadas hasta J8. Las fotos editoriales visibles incluyen crédito y licencia. No encontré en esta pasada una fecha o ficha claramente caducada.
+- Los auditores locales encontraron 53 páginas y 2.319 enlaces o recursos sin rutas, anclas, atributos `alt` o IDs problemáticos. Los canonicals son correctos en 52 páginas; la 404 los omite por diseño. El auditor de imágenes contó 116 imágenes: 94 informativas, 22 decorativas, ninguna sin `alt` ni pendiente de revisión; ninguna página supera el presupuesto de 1.200 KiB. La revisión de accesibilidad visual pasó en 58 páginas.
+- `herramientas/calidad_web.py` añadió variantes WebP y `srcset` a las imágenes grandes de la simulación J10. Ajusté además `sizes` para reflejar el ancho real de las dos ilustraciones limitadas a 360 y 560 px, evitando pedir candidatos de 800 px en escritorio. El auditor estima que las imágenes de esa página pasan de 655 KiB a 265 KiB a 800 px (aprox. 59 % menos) y la carga inicial estimada de 86 KiB a 32 KiB. Es una estimación del auditor según los tamaños declarados, no una medición de red real.
+- Los metadatos sociales se mantienen: el generador eliminó únicamente etiquetas Open Graph duplicadas. `git diff --check` y las auditorías de enlaces, canonicals, imágenes y accesibilidad visual terminaron sin incidencias.
+- El intento de capturar una traza DevTools con el navegador de escritorio volvió a detenerse por el control de seguridad, que no pudo identificar con confianza la URL de Chrome. El CLS de escritorio sigue pendiente de localizar; no hice cambios basados solo en la atribución genérica de Lighthouse.
+
 ## Próximo paquete de pasos
 
-1. Grabar una traza DevTools de la carga en escritorio para identificar el CLS residual que Lighthouse atribuye a `<main id="contenido">`.
-2. Tras disputarse la jornada 11 (7 de noviembre), actualizar el seguimiento y la simulación con marcadores oficiales; añadir métricas avanzadas solo con datos verificables.
-3. Hacer una pasada editorial de portada y catálogo para detectar fichas, fechas o enlaces que hayan quedado desactualizados desde el último despliegue.
+1. Grabar una traza de escritorio en una sesión identificable y aislar el elemento que provoca el CLS residual.
+2. Tras disputarse la jornada 11 (7 de noviembre), actualizar seguimiento y simulación con marcadores oficiales; añadir métricas avanzadas solo con datos verificables.
+3. Repetir la revisión editorial de portada y catálogo tras publicar los resultados de la J11.
