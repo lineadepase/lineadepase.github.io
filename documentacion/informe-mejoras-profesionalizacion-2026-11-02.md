@@ -152,8 +152,15 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 - Las auditorías locales siguen sin incidencias: 53 páginas y 2.319 enlaces/recursos locales; 52 canonicals correctos; 116 imágenes sin `alt` ausentes ni páginas por encima del presupuesto; controles y nombres accesibles correctos en la revisión visual. `node --check assets/mejoras.js` terminó correctamente.
 - El commit `0f72efe` pasó la revisión del sitio y el despliegue de GitHub Pages terminó correctamente ([revisión](https://github.com/lineadepase/lineadepase.github.io/actions/runs/41901888109) · [Pages](https://github.com/lineadepase/lineadepase.github.io/actions/runs/41901888184)). Tras el despliegue, la portada de `lineadepase.com` todavía responde HTTP 403 a las solicitudes desde esta sesión; falta confirmar visualmente los recursos servidos desde una sesión pública normal. No se ha enviado ni purgado nada de Cloudflare en esta pasada.
 
+## Estabilidad del menú en móvil · 4 de noviembre de 2026
+
+- La traza móvil local confirmó el segundo origen del CLS: el menú completo se dibujaba antes de convertirse en menú plegable. Preparé el estado de inicialización en el script temprano y reservé la altura final de la cabecera antes del primer dibujo; si JavaScript está desactivado, la navegación sigue visible.
+- Tras ajustar el espacio al relleno real en ambos rangos móviles, Chrome local registró CLS 0 a 390, 768 y 1365 px. El ancho desplazable coincidió con el viewport en los tres tamaños. Con JavaScript desactivado, los siete enlaces de navegación siguen visibles a 390 px.
+- Versioné los recursos actualizados en las páginas y ajusté los archivos de generación. `node --check` pasó para los dos JavaScript modificados; las auditorías locales de enlaces, canonicals, imágenes y accesibilidad visual siguen sin incidencias.
+- La lectura pública permanece bloqueada por HTTP 403 en esta sesión. Todavía no hay PageSpeed posterior a este ajuste; el cero de CLS corresponde a las capturas locales y no a una medición de visitantes o de producción.
+
 ## Próximo paquete de pasos
 
-1. Publicar la corrección y confirmar la nueva carga de CSS/JavaScript desde una sesión pública normal; comprobar la cabecera en escritorio y móvil.
-2. Repetir PageSpeed después del despliegue y comparar CLS de laboratorio; aislar el CLS móvil local solo si también aparece en la medición pública.
-3. Tras la jornada 11 (7 de noviembre), actualizar el seguimiento y la simulación con marcadores oficiales; sumar métricas avanzadas únicamente cuando haya datos verificables.
+1. Publicar este segundo ajuste y validar en una sesión pública normal la cabecera responsive y la versión de CSS/JavaScript servida.
+2. Medir portada y catálogo con PageSpeed después del despliegue; confirmar CLS en escritorio y móvil.
+3. Después del partido Zaragoza–Huesca del 7 de noviembre, actualizar la simulación con marcadores oficiales y añadir métricas avanzadas solo si se dispone de un conjunto verificable.

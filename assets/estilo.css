@@ -255,6 +255,7 @@ tr.propio td,tr.propio th{font-weight:700;color:var(--senal-texto)}
 .modal-abierto{overflow:hidden}
 @media(max-width:760px){
  .cabecera .envoltorio{gap:.3rem .6rem;padding-block:.5rem}
+ .js-inicializando .cabecera .envoltorio,.menu-preparado .cabecera .envoltorio{min-height:calc(44px + 1rem)}
  html{scroll-padding-top:6rem}
  .marca{font-size:1.4rem;gap:.5rem}
  .marca svg{width:36px;height:27px}
