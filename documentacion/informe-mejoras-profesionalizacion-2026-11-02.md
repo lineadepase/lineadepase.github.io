@@ -142,8 +142,18 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 - Las dos fotografías identificables de la portada corresponden a Graham Hansen y a la selección española en Riazor. Ambas constan en el registro de imágenes con licencia CC BY-SA 4.0 y tienen crédito y enlace de licencia junto a la foto. El retrato del autor también está identificado.
 - No hizo falta sustituir imágenes ni modificar créditos.
 
+## Diagnóstico y corrección del CLS de escritorio · 4 de noviembre de 2026
+
+- Capturé una traza de la portada local en Chrome a 1365 × 900. El salto reproducía un CLS de 0,0944; los elementos afectados eran la navegación y el `<main>`.
+- Aislé el cambio bloqueando recursos y scripts de uno en uno. El salto desapareció al bloquear `mejoras.js`, mientras bloquear las fuentes o `experiencia.js` no lo eliminó. El selector de tema se insertaba después del primer dibujo: la cabecera crecía unos 5 px y el menú se desplazaba unos 136 px.
+- Reservé en escritorio el espacio del selector antes de ejecutar ese script. Al crearlo, se retira la reserva en el mismo paso. La siguiente captura local registró cero saltos de diseño en escritorio y conservó la altura final de la cabecera; la página no desbordó el ancho disponible.
+- Actualicé las versiones de caché del CSS y del JavaScript en 51 páginas y tres plantillas para que se soliciten los recursos corregidos.
+- En la captura móvil local de 390 px no hubo desbordamiento horizontal, pero apareció un CLS de 0,080. No coincide con el CLS de escritorio ya localizado; no atribuí ese movimiento a una causa sin aislarla. PageSpeed había medido CLS móvil 0 en las comprobaciones públicas anteriores.
+- Las auditorías locales siguen sin incidencias: 53 páginas y 2.319 enlaces/recursos locales; 52 canonicals correctos; 116 imágenes sin `alt` ausentes ni páginas por encima del presupuesto; controles y nombres accesibles correctos en la revisión visual. `node --check assets/mejoras.js` terminó correctamente.
+- La producción sigue mostrando 403 a las solicitudes directas en esta sesión, por lo que queda pendiente comprobar el recurso desplegado y volver a medir en una sesión pública normal. No se ha enviado ni purgado nada de Cloudflare en esta pasada.
+
 ## Próximo paquete de pasos
 
-1. Confirmar los srcset desde producción cuando la ruta cargue sin la verificación de Cloudflare.
-2. Capturar una traza de escritorio en una sesión identificable y localizar el CLS residual.
-3. Tras disputarse la jornada 11 (7 de noviembre), actualizar seguimiento y simulación con marcadores oficiales; añadir métricas avanzadas solo con datos verificables.
+1. Publicar la corrección y confirmar la nueva carga de CSS/JavaScript desde una sesión pública normal; comprobar la cabecera en escritorio y móvil.
+2. Repetir PageSpeed después del despliegue y comparar CLS de laboratorio; aislar el CLS móvil local solo si también aparece en la medición pública.
+3. Tras la jornada 11 (7 de noviembre), actualizar el seguimiento y la simulación con marcadores oficiales; sumar métricas avanzadas únicamente cuando haya datos verificables.
