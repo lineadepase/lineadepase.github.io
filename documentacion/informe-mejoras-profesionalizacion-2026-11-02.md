@@ -100,9 +100,16 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 - Lighthouse también atribuye el CLS de escritorio (0,102) al bloque principal y marca la ilustración SVG de portada como imagen sin tamaño durante el desplazamiento, aunque el HTML declara `width="720"` y `height="540"`. Lo dejo pendiente de análisis antes de tocar dimensiones o estilos.
 - El intento de volver a cargar la portada para verificar el despliegue encontró la página de comprobación de seguridad de Cloudflare. No intenté resolverla ni sortearla; la presencia del cambio en producción queda pendiente de una sesión normal.
 
+## Medición posterior y diagnóstico del CLS · 3 de noviembre de 2026
+
+- Repetí PageSpeed Insights tras la publicación. En la portada, accesibilidad quedó en 100 tanto en móvil como en escritorio; rendimiento fue 94 en móvil y 97 en escritorio. En móvil: FCP 1,5 s, LCP 2,7 s, TBT 0 ms y CLS 0. En escritorio: FCP 0,4 s, LCP 0,7 s, TBT 0 ms y CLS 0,102.
+- En el catálogo, PageSpeed dio 98 en rendimiento móvil y 97 en escritorio, con accesibilidad, prácticas recomendadas y SEO en 100. El CLS fue 0 en móvil y 0,103 en escritorio. [Informe móvil del catálogo](https://pagespeed.web.dev/analysis?url=https%3A%2F%2Flineadepase.com%2Fproyectos%2F&form_factor=mobile).
+- Los diagnósticos de CLS atribuyen aproximadamente 0,102 al `<main id="contenido">` tanto en portada como en catálogo; en portada también muestran el SVG principal. No aíslan un elemento descendiente responsable. La ilustración de portada declara `width="720"` y `height="540"`; por ahora no hay evidencia suficiente para cambiar dimensiones o estilos sin alterar su presentación.
+- Estos son resultados de laboratorio Lighthouse, no datos de usuarios reales. El patrón repetido de CLS solo en escritorio merece una traza de rendimiento en una sesión normal para localizar qué elemento cambia de posición. No hice más cambios visuales basados en una atribución imprecisa.
+- La prueba anterior en Chrome encontró un control de seguridad de Cloudflare; no lo sorteé. Por tanto, la comprobación directa en una sesión normal sigue pendiente aunque PageSpeed ya mida la página publicada.
+
 ## Próximo paquete de pasos
 
-1. Comprobar el cambio publicado y volver a ejecutar PageSpeed cuando la portada abra en una sesión normal; medir también el catálogo en móvil y escritorio.
-2. Investigar el CLS de escritorio en la ilustración principal sin cambiar sus proporciones ni su presentación editorial.
+1. Grabar una traza de rendimiento en escritorio durante la carga de portada y catálogo para identificar el elemento que produce el CLS.
+2. Confirmar en una sesión normal que la última corrección de accesibilidad está publicada y que canonical y `og:url` servidos coinciden con las rutas limpias.
 3. Tras disputarse la jornada 11, actualizar el seguimiento y la simulación con marcadores oficiales; añadir métricas avanzadas solo con datos verificables.
-4. Revisar canonical y `og:url` de producción mediante una vía que permita leer el HTML sin sortear las restricciones del navegador.
