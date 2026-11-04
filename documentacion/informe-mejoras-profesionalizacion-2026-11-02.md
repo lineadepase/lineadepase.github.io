@@ -108,8 +108,19 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 - Estos son resultados de laboratorio Lighthouse, no datos de usuarios reales. El patrón repetido de CLS solo en escritorio merece una traza de rendimiento en una sesión normal para localizar qué elemento cambia de posición. No hice más cambios visuales basados en una atribución imprecisa.
 - La prueba anterior en Chrome encontró un control de seguridad de Cloudflare; no lo sorteé. Por tanto, la comprobación directa en una sesión normal sigue pendiente aunque PageSpeed ya mida la página publicada.
 
+## CLS de fuentes y nueva revisión · 4 de noviembre de 2026
+
+- La nueva pasada de PageSpeed Insights para la portada, a las 14:32, obtuvo 94 en rendimiento móvil y 97 en escritorio; accesibilidad, prácticas recomendadas y SEO quedaron en 100. FCP/LCP/TBT/CLS fueron 1,5 s / 2,7 s / 0 ms / 0 en móvil y 0,4 s / 0,7 s / 0 ms / 0,102 en escritorio. No hay datos de usuarios reales para la URL.
+- El ajuste anterior añadió `aspect-ratio: 4/3` a la ilustración de portada. PageSpeed dejó de listarla como imagen sin tamaño, pero el CLS global siguió en 0,102; el único elemento desplazado que identifica es `<main id="contenido">`. La causa del salto restante en la portada aún no queda localizada.
+- En el catálogo, PageSpeed identificó como fuentes del salto a dos archivos de Google Fonts. Antes del cambio, la medición de las 14:29 dio CLS 0,084 en móvil y 0,125 en escritorio. Cambié `display=swap` por `display=optional` en las 53 páginas y plantillas que cargan Archivo y Big Shoulders Display. Google Fonts admite `optional`; web.dev explica que evita sustituir la fuente si llega tarde, aunque en la primera visita lenta puede mantenerse la fuente de respaldo. [Google Fonts CSS API](https://developers.google.com/fonts/docs/css2) · [Reducir CLS](https://web.dev/articles/optimize-cls/).
+- En la nueva medición del catálogo a las 14:33, PageSpeed dio 98 en rendimiento móvil y 97 en escritorio, 100 en accesibilidad, prácticas recomendadas y SEO, y CLS 0 en móvil y 0,100 en escritorio. La tabla aún muestra las fuentes como origen del salto. Frente a la pasada inmediatamente anterior, el CLS de escritorio bajó 0,025; hace falta una traza para confirmar cuánto corresponde al cambio y cuánto a la variación de laboratorio. [Informe PageSpeed del catálogo](https://pagespeed.web.dev/analysis/https-lineadepase-com-proyectos/yzbyxax74w?form_factor=desktop).
+- El HTML de portada confirma canonical y `og:url` como `https://lineadepase.com/`. Una recarga posterior mostró la verificación de seguridad de Cloudflare; no la resolví ni la evadí. No pude confirmar el HTML actual del catálogo en una sesión normal.
+- Al revisar la configuración de Cloudflare, el panel mostraba Browser Cache TTL «4 horas», en contraste con el cambio a «Respect Existing Headers» descrito en el apartado anterior. Dejo anotada esta discrepancia para reconciliarla; no hice una purga ni modifiqué esa opción en esta revisión.
+- PageSpeed es una medición de laboratorio y cambió entre pasadas; sin datos de campo, no se debe interpretar una única diferencia como mejora estable. La traza de DevTools sigue pendiente para localizar el CLS que Lighthouse atribuye al bloque principal.
+
 ## Próximo paquete de pasos
 
-1. Grabar una traza de rendimiento en escritorio durante la carga de portada y catálogo para identificar el elemento que produce el CLS.
-2. Confirmar en una sesión normal que la última corrección de accesibilidad está publicada y que canonical y `og:url` servidos coinciden con las rutas limpias.
-3. Tras disputarse la jornada 11, actualizar el seguimiento y la simulación con marcadores oficiales; añadir métricas avanzadas solo con datos verificables.
+1. Grabar una traza DevTools de la carga en escritorio para identificar el CLS residual de portada y catálogo.
+2. Reconciliar en Cloudflare el Browser Cache TTL actual de cuatro horas con el valor «Respect Existing Headers» que figuraba en la revisión anterior; confirmar luego la política aplicada.
+3. Confirmar canonical y `og:url` del catálogo en una sesión normal, cuando la protección de Cloudflare permita abrirlo.
+4. Tras disputarse la jornada 11, actualizar el seguimiento y la simulación con marcadores oficiales; añadir métricas avanzadas solo con datos verificables.
