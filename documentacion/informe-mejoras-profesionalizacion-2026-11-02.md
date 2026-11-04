@@ -136,8 +136,14 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 - Aclaré también que la lámina anual muestra una selección de cuatro trabajos, aunque el catálogo reúna seis; así se entiende mejor la relación entre la pieza destacada y el archivo completo.
 - Las auditorías pasaron: 53 páginas y 2.319 enlaces/recursos sin problemas, 52 canonicals correctos, y git diff --check limpio.
 
+## Revisión de derechos de imagen en portada · 4 de noviembre de 2026
+
+- La portada usa como imagen social una tarjeta gráfica original, no una fotografía. Revisé la imagen compartida y no contiene a Ander Herrera ni otra foto editorial.
+- Las dos fotografías identificables de la portada corresponden a Graham Hansen y a la selección española en Riazor. Ambas constan en el registro de imágenes con licencia CC BY-SA 4.0 y tienen crédito y enlace de licencia junto a la foto. El retrato del autor también está identificado.
+- No hizo falta sustituir imágenes ni modificar créditos.
+
 ## Próximo paquete de pasos
 
-1. Capturar una traza de escritorio en una sesión identificable y localizar el CLS residual.
-2. Confirmar los srcset desde producción cuando la ruta cargue sin la verificación de Cloudflare.
+1. Confirmar los srcset desde producción cuando la ruta cargue sin la verificación de Cloudflare.
+2. Capturar una traza de escritorio en una sesión identificable y localizar el CLS residual.
 3. Tras disputarse la jornada 11 (7 de noviembre), actualizar seguimiento y simulación con marcadores oficiales; añadir métricas avanzadas solo con datos verificables.
