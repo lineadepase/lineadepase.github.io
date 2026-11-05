@@ -1,0 +1,16 @@
+¿En qué perfil está tu jugadora favorita?
+
+Línea de pase ha agrupado a 220 jugadoras de la Liga F 2023/24 según lo que hacen con el balón y sin él, no según la posición que figura en la alineación. Salen cuatro perfiles con nombre propio:
+
+· Iniciadoras (67): sacan el balón jugando, con pases largos y progresivos.
+· Pulmones (86): presionan, cortan y recuperan.
+· Las de área (39): reciben cerca de la portería rival y presionan arriba.
+· Desequilibrantes (28): la amenaza esperada (xT) por 90 minutos es de 0,17, más de tres veces la del resto (0,05).
+
+Barcelona: 11 desequilibrantes, 5 iniciadoras y ninguna pulmón ni de área. Real Madrid: 6 desequilibrantes.
+
+Cómo está hecho: 18 variables por 90 minutos de 220 jugadoras con al menos 900 minutos, estandarizadas, PCA para el mapa y k-means para los grupos; el número de perfiles se eligió con silueta y estabilidad en 200 remuestras. Python, scikit-learn y datos de StatsBomb Open Data; código en abierto.
+
+https://lineadepase.com/proyectos/liga-f-perfiles/?utm_source=linkedin&utm_medium=social&utm_campaign=liga-f-perfiles
+
+#AnaliticaDeportiva #FutbolFemenino #LigaF #Python #CienciaDeDatos
