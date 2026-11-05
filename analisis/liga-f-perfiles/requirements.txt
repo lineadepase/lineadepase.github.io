@@ -1,0 +1,5 @@
+numpy==2.5.3
+pandas==3.0.5
+matplotlib==3.11.2
+Pillow==12.3.0
+# Se añadirá scikit-learn (PCA, k-means, silueta) con su versión fijada al empezar el desarrollo.
