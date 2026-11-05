@@ -192,6 +192,11 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 - La comprobación local encontró 50 URLs en el sitemap; todas resuelven a un archivo HTML y coinciden con el canonical correspondiente. La auditoría pasó en 52 páginas y ahora compara el sitemap con las páginas indexables para detectar alias, duplicados, rutas sin HTML y URLs omitidas. Contacto permanece fuera del sitemap por noindex.
 - En producción, sitemap.xml y robots.txt responden HTTP 200. El sitemap servido contiene 50 URLs, incluye la previa canónica de la J11 y ya no enumera el alias anterior previa.html. El comparador continúa respondiendo HTTP 403 desde esta sesión.
 
+## Texto alternativo de la previa · 5 de noviembre de 2026
+
+- Revisé los textos alternativos de todas las páginas: una variante repetida en tres páginas describía la procedencia de la ilustración en vez de limitarse a la escena. La sustituí por una descripción visual breve y mantuve la atribución en el pie editorial de la imagen.
+- Actualicé la fuente datos/previas.json y las tres páginas generadas: portada, previa J11 y su alias. La auditoría de imágenes pasó: 53 páginas, 116 imágenes, ningún alt ausente y ninguna página sobre el presupuesto de peso. La auditoría de canonicals y sitemap también pasó.
+
 ## Próximo paquete de pasos
 
 1. Medir el comparador en navegador a 390, 768 y 1365 px cuando la sesión permita abrirlo sin HTTP 403; confirmar CLS y controles tras la carga.
