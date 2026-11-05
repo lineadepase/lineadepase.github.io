@@ -84,12 +84,12 @@ def summaries():
 def enrich(raw, file):
     relative = file.relative_to(ROOT).as_posix()
     for asset, tag in [('assets/experiencia.css', 'css'), ('assets/experiencia.js', 'js')]:
-        version = '20261105mapcls1' if tag == 'css' else '20261104clsmobile1'
+        version = '20261105reservacomp1' if tag == 'css' else '20261104clsmobile1'
         url = os.path.relpath(ROOT/asset, file.parent).replace('\\', '/') + '?v=' + version
         markup = '<link rel="stylesheet" href="'+url+'">' if tag == 'css' else '<script src="'+url+'" defer></script>'
         if asset not in raw:
             raw = raw.replace('</head>',markup+'\n</head>',1)
-    for extension, version in [('css', '20261105mapcls1'), ('js', '20261104clsmobile1')]:
+    for extension, version in [('css', '20261105reservacomp1'), ('js', '20261104clsmobile1')]:
         raw = re.sub(r'(assets/experiencia\.' + extension + r'\?v=)[^"\s]+', lambda m: m[1] + version, raw)
     raw = re.sub(r'(assets/mejoras\.js\?v=)[^"\s]+', r'\g<1>20261104clsfix1', raw)
     raw = re.sub(r'<meta name="grafico-contexto"[^>]*>\s*', '', raw)

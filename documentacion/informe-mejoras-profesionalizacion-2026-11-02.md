@@ -179,8 +179,14 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 - El commit `f10175e` está en `main`. Los workflows de revisión del sitio ([resultado](https://github.com/lineadepase/lineadepase.github.io/actions/runs/41999196181)) y publicación en GitHub Pages ([resultado](https://github.com/lineadepase/lineadepase.github.io/actions/runs/41999196230)) finalizaron correctamente.
 - La comprobación pública de https://lineadepase.com/ desde esta sesión responde HTTP 403 por la capa de seguridad. No fue posible comprobar visualmente en producción ni lanzar una medición PageSpeed posterior; la confirmación visual de CLS se limita a Chrome local.
 
+## Reserva del comparador · 5 de noviembre de 2026
+
+- La pasada local anterior dejó un CLS móvil de 0,0049 en el comparador. Su HTML mantiene los filtros con hidden hasta que llega el JSON; al aparecer, podrían empujar contenido. Reservé el mismo espacio de la cuadrícula mientras permanece invisible, mediante CSS condicionado a JavaScript activo, para evitar ese cambio de geometría.
+- Actualicé la versión de caché de xperiencia.css en las páginas y en herramientas/experiencia.py, de modo que las visitas reciban la regla nueva y se conserve al regenerar las páginas.
+- La revisión de código identifica y cubre la fuente probable del pequeño salto. No atribuyo un nuevo valor de CLS sin una captura posterior en navegador; la sesión pública continúa respondiendo HTTP 403.
+
 ## Próximo paquete de pasos
 
-1. Repetir la comprobación visual y PageSpeed cuando el dominio permita una sesión normal desde aquí.
+1. Medir de nuevo el comparador en navegador a 390, 768 y 1365 px; confirmar su CLS y revisar controles tras la carga.
 2. Tras el Zaragoza–Huesca del 7 de noviembre, incorporar el marcador y estadísticas verificadas; revisar después la simulación y coherencia de datos entre páginas.
 3. Mantener la revisión de tamaños de imágenes y estabilidad responsive al siguiente cambio editorial.
