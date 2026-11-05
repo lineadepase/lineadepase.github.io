@@ -174,8 +174,13 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 - Actualicé las versiones de caché y los generadores `herramientas/experiencia.py` y `herramientas/segunda_edicion.py` para conservar los cambios al regenerar las páginas. Las auditorías volvieron a pasar: 53 páginas y 2.319 enlaces/recursos sin errores; 52 canonicals; 116 imágenes; accesibilidad visual correcta. `node --check` pasó en los scripts modificados.
 - Sigue pendiente confirmar la vista pública porque Cloudflare presenta la comprobación de seguridad; no se intentó resolverla ni eludirla. Estas medidas corresponden a Chrome local, no a visitantes ni a PageSpeed en producción.
 
+## Estado final del ajuste del mapa · 5 de noviembre de 2026
+
+- El commit `f10175e` está en `main`. Los workflows de revisión del sitio ([resultado](https://github.com/lineadepase/lineadepase.github.io/actions/runs/41999196181)) y publicación en GitHub Pages ([resultado](https://github.com/lineadepase/lineadepase.github.io/actions/runs/41999196230)) finalizaron correctamente.
+- La comprobación pública de https://lineadepase.com/ desde esta sesión responde HTTP 403 por la capa de seguridad. No fue posible comprobar visualmente en producción ni lanzar una medición PageSpeed posterior; la confirmación visual de CLS se limita a Chrome local.
+
 ## Próximo paquete de pasos
 
-1. Publicar la corrección del mapa y confirmar que revisión y Pages terminan correctamente.
-2. Comprobar mapa y menú en producción cuando la sesión abra sin el intersticial; repetir PageSpeed.
-3. Tras el Zaragoza–Huesca del 7 de noviembre, actualizar resultado, estadísticas verificadas y simulación; comprobar que cada página muestra el mismo corte.
+1. Repetir la comprobación visual y PageSpeed cuando el dominio permita una sesión normal desde aquí.
+2. Tras el Zaragoza–Huesca del 7 de noviembre, incorporar el marcador y estadísticas verificadas; revisar después la simulación y coherencia de datos entre páginas.
+3. Mantener la revisión de tamaños de imágenes y estabilidad responsive al siguiente cambio editorial.
