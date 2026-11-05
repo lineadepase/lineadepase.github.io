@@ -491,8 +491,16 @@ def sincronizar(root=ROOT):
     path = root / 'sitemap.xml'
     tree = ET.parse(path)
     ns = '{http://www.sitemaps.org/schemas/sitemap/0.9}'
+    entries = registro(root)
+    primary_urls = {BASE + entry['pagina'] for entry in entries}
+    alias_urls = {BASE + alias for entry in entries
+                  for alias in entry.get('alias', [])} - primary_urls
+    for url in list(tree.getroot().findall(ns+'url')):
+        location = url.find(ns+'loc')
+        if location is not None and location.text in alias_urls:
+            tree.getroot().remove(url)
     existing = {x.text for x in tree.getroot().iter(ns+'loc')}
-    for entry in registro(root):
+    for entry in entries:
         if BASE+entry['pagina'] not in existing:
             ET.SubElement(ET.SubElement(tree.getroot(), ns+'url'), ns+'loc').text = BASE+entry['pagina']
     ET.register_namespace('', ns[1:-1])

@@ -185,8 +185,14 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 - Actualicé la versión de caché de experiencia.css en las páginas y en herramientas/experiencia.py, de modo que las visitas reciban la regla nueva y se conserve al regenerar las páginas.
 - La revisión del sitio y la publicación de GitHub Pages para el commit 65e8b4d terminaron correctamente. La comprobación pública del comparador responde HTTP 403 desde esta sesión. No obtuve una captura de navegador posterior al ajuste; por tanto, 0,0049 sigue siendo la medición anterior y no asigno un CLS nuevo.
 
+## Indexación y coherencia del sitemap · 5 de noviembre de 2026
+
+- robots.txt permite el rastreo y declara el sitemap correcto. La revisión encontró una URL antigua de la previa que apuntaba a un alias con canonical hacia la noticia de la J11.
+- Retiré el alias del sitemap y actualicé herramientas/previas.py para que la sincronización no vuelva a añadir URLs de alias. La página canónica de la previa J11 permanece incluida.
+- La comprobación final encontró 50 URLs en el sitemap; todas resuelven a un archivo HTML y cada URL coincide con el canonical de su página. La auditoría independiente de canonicals pasó en 52 páginas. Contacto permanece fuera del sitemap por noindex.
+
 ## Próximo paquete de pasos
 
-1. Medir de nuevo el comparador en navegador a 390, 768 y 1365 px; confirmar su CLS y revisar controles tras la carga.
-2. Tras el Zaragoza–Huesca del 7 de noviembre, incorporar el marcador y estadísticas verificadas; revisar después la simulación y coherencia de datos entre páginas.
-3. Mantener la revisión de tamaños de imágenes y estabilidad responsive al siguiente cambio editorial.
+1. Confirmar que el sitemap actualizado se sirve en producción cuando la sesión permita acceder sin HTTP 403.
+2. Medir el comparador en navegador a 390, 768 y 1365 px; confirmar su CLS y revisar controles tras la carga.
+3. Tras el Zaragoza–Huesca del 7 de noviembre, incorporar el marcador y estadísticas verificadas; revisar después la simulación y coherencia de datos entre páginas.
