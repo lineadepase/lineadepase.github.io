@@ -189,10 +189,11 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 
 - robots.txt permite el rastreo y declara el sitemap correcto. La revisión encontró una URL antigua de la previa que apuntaba a un alias con canonical hacia la noticia de la J11.
 - Retiré el alias del sitemap y actualicé herramientas/previas.py para que la sincronización no vuelva a añadir URLs de alias. La página canónica de la previa J11 permanece incluida.
-- La comprobación final encontró 50 URLs en el sitemap; todas resuelven a un archivo HTML y cada URL coincide con el canonical de su página. La auditoría independiente de canonicals pasó en 52 páginas. Contacto permanece fuera del sitemap por noindex.
+- La comprobación local encontró 50 URLs en el sitemap; todas resuelven a un archivo HTML y coinciden con el canonical correspondiente. La auditoría independiente de canonicals pasó en 52 páginas. Contacto permanece fuera del sitemap por noindex.
+- En producción, sitemap.xml y robots.txt responden HTTP 200. El sitemap servido contiene 50 URLs, incluye la previa canónica de la J11 y ya no enumera el alias anterior previa.html. El comparador continúa respondiendo HTTP 403 desde esta sesión.
 
 ## Próximo paquete de pasos
 
-1. Confirmar que el sitemap actualizado se sirve en producción cuando la sesión permita acceder sin HTTP 403.
-2. Medir el comparador en navegador a 390, 768 y 1365 px; confirmar su CLS y revisar controles tras la carga.
-3. Tras el Zaragoza–Huesca del 7 de noviembre, incorporar el marcador y estadísticas verificadas; revisar después la simulación y coherencia de datos entre páginas.
+1. Medir el comparador en navegador a 390, 768 y 1365 px cuando la sesión permita abrirlo sin HTTP 403; confirmar CLS y controles tras la carga.
+2. Tras el Zaragoza–Huesca del 7 de noviembre, incorporar el marcador y estadísticas verificadas; revisar después la simulación y coherencia de datos entre páginas.
+3. Mantener la revisión de tamaños de imágenes y estabilidad responsive al siguiente cambio editorial.
