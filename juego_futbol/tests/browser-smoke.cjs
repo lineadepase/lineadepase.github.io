@@ -4,6 +4,7 @@ const { chromium, devices } = require('playwright');
 const assert = require('node:assert/strict');
 const fs = require('node:fs/promises');
 const { installScreenNavigation } = require('./screen-navigation.cjs');
+const baseUrl = process.env.BASE_URL || 'http://127.0.0.1:8765';
 
 async function recargarPartida(page) {
   await page.reload();
@@ -50,7 +51,7 @@ async function recargarPartida(page) {
       });
       page.on('dialog', dialog => dialog.accept());
       // La web presenta el juego en el catálogo y ofrece una explicación real de xG.
-      await page.goto('http://127.0.0.1:8765/proyectos/', { waitUntil: 'load' });
+      await page.goto(`${baseUrl}/proyectos/`, { waitUntil: 'load' });
       const ctaJuego = page.getByRole('link', { name: 'Probar el juego web' });
       assert.equal(await ctaJuego.getAttribute('href'), '../juego_futbol/index.html',
         'el catálogo enlaza al juego web y no promete una descarga móvil');
@@ -62,7 +63,7 @@ async function recargarPartida(page) {
       await enlaceXg.click();
       await page.waitForURL('**/proyectos/xg/index.html');
       assert.match(await page.locator('h1').innerText(), /xG/i, 'la explicación enlazada se puede abrir');
-      await page.goto('http://127.0.0.1:8765/juego_futbol/', { waitUntil: 'load' });
+      await page.goto(`${baseUrl}/juego_futbol/`, { waitUntil: 'load' });
       if (mode === 'mobile') assert.equal(await page.evaluate(() => window.innerWidth), 390, 'ancho de pantalla móvil esperado');
       await page.emulateMedia({ reducedMotion: 'reduce' });
       const movimientoReducido = await page.evaluate(() => ({
@@ -1155,6 +1156,11 @@ async function recargarPartida(page) {
       });
       await page.evaluate(() => { window.__testMatchSpeed = 50; });
       await page.locator('button').filter({ hasText: 'SIMULAR JORNADA' }).click();
+      await page.waitForFunction(() => document.getElementById('floating-cta').textContent.includes('Partido en curso'));
+      assert.equal(await page.locator('#floating-cta').isDisabled(), true,
+        'el CTA indica que el partido está en curso y no se puede volver a iniciar');
+      assert.match(await page.locator('#floating-cta').getAttribute('title'), /espera al pitido final/,
+        'el CTA explica cuándo se podrá continuar');
       await page.locator('[data-power="cierzo"]').click();
       await page.evaluate(() => { window.__powerTestRandom = Math.random; Math.random = () => .99; });
       await page.locator('[data-power="rasmia"]').click();

@@ -25,6 +25,7 @@ Esta revisión amplía la anterior navegación sin scroll a **ocho departamentos
 - Se mantiene el visionado 2D, con líneas que responden a la mentalidad, energía visible, nombres asociados a las acciones de la crónica y trayectorias de recreación.
 - La mentalidad cambia ataque y defensa durante el partido; «Pedir gol» da +10 ataque y −5 defensa una vez. No garantiza marcar. Los poderes también se incorporan al cálculo de fuerzas.
 - **Modo jugable de ocasiones 2D**, no un partido completo de control de once futbolistas: en dos ataques oficiales se controla al jugador con flechas/WASD o cruceta táctil, Espacio para disparar y X para pasar. Hay balón independiente, rebotes, defensores, portero y límite de 18 segundos. Los goles de estas ocasiones se añaden al marcador real de la simulación. La práctica es independiente y no modifica la liga.
+- Durante la simulación, el botón fijo anuncia «Partido en curso», queda desactivado y explica que hay que esperar al pitido final.
 
 ### Implementación y comprobación
 
