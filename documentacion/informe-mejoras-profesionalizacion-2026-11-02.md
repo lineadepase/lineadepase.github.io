@@ -189,7 +189,7 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 
 - robots.txt permite el rastreo y declara el sitemap correcto. La revisión encontró una URL antigua de la previa que apuntaba a un alias con canonical hacia la noticia de la J11.
 - Retiré el alias del sitemap y actualicé herramientas/previas.py para que la sincronización no vuelva a añadir URLs de alias. La página canónica de la previa J11 permanece incluida.
-- La comprobación local encontró 50 URLs en el sitemap; todas resuelven a un archivo HTML y coinciden con el canonical correspondiente. La auditoría independiente de canonicals pasó en 52 páginas. Contacto permanece fuera del sitemap por noindex.
+- La comprobación local encontró 50 URLs en el sitemap; todas resuelven a un archivo HTML y coinciden con el canonical correspondiente. La auditoría pasó en 52 páginas y ahora compara el sitemap con las páginas indexables para detectar alias, duplicados, rutas sin HTML y URLs omitidas. Contacto permanece fuera del sitemap por noindex.
 - En producción, sitemap.xml y robots.txt responden HTTP 200. El sitemap servido contiene 50 URLs, incluye la previa canónica de la J11 y ya no enumera el alias anterior previa.html. El comparador continúa respondiendo HTTP 403 desde esta sesión.
 
 ## Próximo paquete de pasos
