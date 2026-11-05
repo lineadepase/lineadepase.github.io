@@ -159,8 +159,15 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 - Versioné los recursos actualizados en las páginas y ajusté los archivos de generación. `node --check` pasó para los dos JavaScript modificados; las auditorías locales de enlaces, canonicals, imágenes y accesibilidad visual siguen sin incidencias.
 - La lectura pública permanece bloqueada por HTTP 403 en esta sesión. Todavía no hay PageSpeed posterior a este ajuste; el cero de CLS corresponde a las capturas locales y no a una medición de visitantes o de producción.
 
+## Revisión tras la previa de la J11 · 5 de noviembre de 2026
+
+- Integré la última revisión de `main` (`8c09572`), que actualiza la previa social de Zaragoza–Huesca y corrige los horarios de J12 y J13. La agenda del club confirma J12 el sábado 14 de noviembre a las 21:00 y J13 el sábado 21 de noviembre a las 16:30; la noticia del club confirma el Huesca el sábado 7 a las 21:00. [Calendario oficial](https://www.realzaragoza.com/partidos) · [Horario del derbi](https://www.realzaragoza.com/noticias/prioridad-para-nuestros-socios-en-la-venta-de-entradas-para-el-partido-contra-el-huesca-en-ibercaja-estadio).
+- La tarjeta de redes es 1080 × 1350 y pesa 186.969 bytes; la imagen WebP que usa la previa de la web pesa 163.088 bytes. Ambas quedan en tamaños razonables para su uso.
+- Repetí la revisión estática sobre la versión actual: 53 páginas y 2.319 enlaces/recursos sin errores; 52 canonicals correctos; 116 imágenes, sin `alt` ausentes ni páginas por encima del presupuesto; controles y enlaces accesibles correctos en la revisión visual. Los scripts modificados pasan `node --check`.
+- La publicación de `c9ca227` y la última revisión de datos `8c09572` tienen ambos workflows de revisión y Pages en éxito. En esta sesión, la pestaña pública sigue detenida en la verificación de seguridad de Cloudflare; no la resolví ni la eludí, así que la observación visual en producción queda pendiente.
+
 ## Próximo paquete de pasos
 
-1. Publicar este segundo ajuste y validar en una sesión pública normal la cabecera responsive y la versión de CSS/JavaScript servida.
-2. Medir portada y catálogo con PageSpeed después del despliegue; confirmar CLS en escritorio y móvil.
-3. Después del partido Zaragoza–Huesca del 7 de noviembre, actualizar la simulación con marcadores oficiales y añadir métricas avanzadas solo si se dispone de un conjunto verificable.
+1. Tras el Zaragoza–Huesca del sábado 7, actualizar el resultado y solo las estadísticas que se puedan verificar.
+2. Regenerar la simulación con el resultado oficial y revisar que portada, catálogo, clasificación y horarios mantengan el mismo corte.
+3. Volver a medir CLS público y comprobar visualmente el menú cuando la web abra sin el intersticial de Cloudflare.
