@@ -1,42 +1,42 @@
 {
-  "jornada": 10,
-  "datos_hasta_jornada": 9,
+  "jornada": 11,
+  "datos_hasta_jornada": 10,
   "local": "Real Zaragoza",
-  "visitante": "Villarreal B",
-  "rival": "Villarreal B",
+  "visitante": "SD Huesca",
+  "rival": "SD Huesca",
   "sede_zaragoza": "Casa",
-  "inicio_madrid": "2026-10-31T21:00:00+01:00",
+  "inicio_madrid": "2026-11-07T21:00:00+01:00",
   "estadio": "Ibercaja Estadio (Zaragoza)",
   "zaragoza": {
     "posicion": 2,
-    "puntos": 20,
-    "goles_favor": 17,
-    "goles_contra": 10,
-    "sede": {
-      "puntos": 9,
-      "posibles": 9,
-      "partidos": 3,
-      "goles_favor": 6,
-      "goles_contra": 1
-    },
-    "forma": "VVEEV"
-  },
-  "rival_datos": {
-    "posicion": 1,
-    "puntos": 20,
-    "goles_favor": 21,
-    "goles_contra": 10,
+    "puntos": 21,
+    "goles_favor": 19,
+    "goles_contra": 12,
     "sede": {
       "puntos": 10,
       "posibles": 12,
       "partidos": 4,
-      "goles_favor": 11,
-      "goles_contra": 5
+      "goles_favor": 8,
+      "goles_contra": 3
     },
-    "forma": "VDEVV"
+    "forma": "VEEVE"
+  },
+  "rival_datos": {
+    "posicion": 10,
+    "puntos": 15,
+    "goles_favor": 13,
+    "goles_contra": 11,
+    "sede": {
+      "puntos": 4,
+      "posibles": 12,
+      "partidos": 4,
+      "goles_favor": 6,
+      "goles_contra": 6
+    },
+    "forma": "VEEEV"
   },
   "lider": {
     "equipo": "Villarreal B",
-    "puntos": 20
+    "puntos": 21
   }
 }

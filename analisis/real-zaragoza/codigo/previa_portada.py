@@ -85,13 +85,17 @@ PLANTILLA = """<!doctype html>
 
 
 def main():
+    import argparse
+    lector = argparse.ArgumentParser(description="Portada de la previa para redes")
+    lector.add_argument("--fondo", default="", help="Imagen de fondo vertical (por defecto, recursos/portada_previa.jpg)")
+    args = lector.parse_args()
     c = json.loads((CARPETA_SALIDA / "previa_redes.json").read_text(encoding="utf-8"))
     if not c["inicio_madrid"]:
         raise SystemExit("La hora del partido no está confirmada: no se genera la portada")
     inicio = datetime.fromisoformat(c["inicio_madrid"])
     cuando = f"{DIAS[inicio.weekday()].capitalize()} {inicio.day} de {MESES[inicio.month - 1]} · {inicio:%H:%M}"
 
-    fondo = RECURSOS / "portada_previa.jpg"
+    fondo = Path(args.fondo) if args.fondo else RECURSOS / "portada_previa.jpg"
     if not fondo.exists():
         raise SystemExit("Falta la imagen de fondo en codigo/recursos/portada_previa.jpg: no se genera la portada")
     fondo_uri = "data:image/jpeg;base64," + base64.b64encode(fondo.read_bytes()).decode("ascii")
