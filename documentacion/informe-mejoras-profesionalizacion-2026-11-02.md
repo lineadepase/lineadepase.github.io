@@ -182,8 +182,8 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 ## Reserva del comparador · 5 de noviembre de 2026
 
 - La pasada local anterior dejó un CLS móvil de 0,0049 en el comparador. Su HTML mantiene los filtros con hidden hasta que llega el JSON; al aparecer, podrían empujar contenido. Reservé el mismo espacio de la cuadrícula mientras permanece invisible, mediante CSS condicionado a JavaScript activo, para evitar ese cambio de geometría.
-- Actualicé la versión de caché de xperiencia.css en las páginas y en herramientas/experiencia.py, de modo que las visitas reciban la regla nueva y se conserve al regenerar las páginas.
-- La revisión de código identifica y cubre la fuente probable del pequeño salto. No atribuyo un nuevo valor de CLS sin una captura posterior en navegador; la sesión pública continúa respondiendo HTTP 403.
+- Actualicé la versión de caché de experiencia.css en las páginas y en herramientas/experiencia.py, de modo que las visitas reciban la regla nueva y se conserve al regenerar las páginas.
+- La revisión del sitio y la publicación de GitHub Pages para el commit 65e8b4d terminaron correctamente. La comprobación pública del comparador responde HTTP 403 desde esta sesión. No obtuve una captura de navegador posterior al ajuste; por tanto, 0,0049 sigue siendo la medición anterior y no asigno un CLS nuevo.
 
 ## Próximo paquete de pasos
 
