@@ -166,8 +166,16 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 - Repetí la revisión estática sobre la versión actual: 53 páginas y 2.319 enlaces/recursos sin errores; 52 canonicals correctos; 116 imágenes, sin `alt` ausentes ni páginas por encima del presupuesto; controles y enlaces accesibles correctos en la revisión visual. Los scripts modificados pasan `node --check`.
 - La publicación de `c9ca227` y la última revisión de datos `8c09572` tienen ambos workflows de revisión y Pages en éxito. En esta sesión, la pestaña pública sigue detenida en la verificación de seguridad de Cloudflare; no la resolví ni la eludí, así que la observación visual en producción queda pendiente.
 
+## Revisión de herramientas y CLS del mapa · 5 de noviembre de 2026
+
+- Extendí la captura local a portada, catálogo, previa, comparador y mapa a 390, 768 y 1365 px. Portada, catálogo y previa registraron CLS 0 en los tres tamaños; el comparador, 0,0049 en una captura móvil y 0 en escritorio, sin desbordamiento.
+- El mapa llegó a 0,112 de CLS en 768 px porque filtros ocultos y el gráfico SVG aparecían tras cargar los datos. Reservé el espacio responsive de los controles y la proporción 850:540 del gráfico; el menú mantiene una reserva vertical acorde a la anchura.
+- Tras el ajuste, el mapa registra CLS 0 a 390, 768 y 1365 px y no amplía el ancho de página. Con JavaScript desactivado, los controles siguen ocultos y el contenido alternativo queda disponible.
+- Actualicé las versiones de caché y los generadores `herramientas/experiencia.py` y `herramientas/segunda_edicion.py` para conservar los cambios al regenerar las páginas. Las auditorías volvieron a pasar: 53 páginas y 2.319 enlaces/recursos sin errores; 52 canonicals; 116 imágenes; accesibilidad visual correcta. `node --check` pasó en los scripts modificados.
+- Sigue pendiente confirmar la vista pública porque Cloudflare presenta la comprobación de seguridad; no se intentó resolverla ni eludirla. Estas medidas corresponden a Chrome local, no a visitantes ni a PageSpeed en producción.
+
 ## Próximo paquete de pasos
 
-1. Tras el Zaragoza–Huesca del sábado 7, actualizar el resultado y solo las estadísticas que se puedan verificar.
-2. Regenerar la simulación con el resultado oficial y revisar que portada, catálogo, clasificación y horarios mantengan el mismo corte.
-3. Volver a medir CLS público y comprobar visualmente el menú cuando la web abra sin el intersticial de Cloudflare.
+1. Publicar la corrección del mapa y confirmar que revisión y Pages terminan correctamente.
+2. Comprobar mapa y menú en producción cuando la sesión abra sin el intersticial; repetir PageSpeed.
+3. Tras el Zaragoza–Huesca del 7 de noviembre, actualizar resultado, estadísticas verificadas y simulación; comprobar que cada página muestra el mismo corte.

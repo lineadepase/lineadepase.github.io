@@ -1,6 +1,7 @@
 (() => {
   'use strict';
   const chart=document.getElementById('mapa-plot');if(!chart)return;
+  const controls=document.getElementById('controles-mapa');if(controls){controls.hidden=false;controls.classList.add('mapa-controles-cargando');controls.setAttribute('aria-hidden','true');}
   const team=document.getElementById('mapa-equipo'),xMetric=document.getElementById('mapa-x'),yMetric=document.getElementById('mapa-y'),venue=document.getElementById('mapa-sede'),period=document.getElementById('mapa-periodo'),source=document.getElementById('mapa-fuente');
   const fmt=n=>n.toLocaleString('es-ES',{maximumFractionDigits:2});
   const node=(tag,text)=>{const el=document.createElement(tag);if(text!==undefined)el.textContent=text;return el;};
@@ -32,6 +33,6 @@
       const query=new URLSearchParams({a:'Real Zaragoza',b:rival,sede:venue.value,fuente:source.value,periodo:period.value,modo:'promedio'});const compareLink=document.getElementById('mapa-comparar');compareLink.href='../comparador/index.html?'+query;compareLink.textContent=team.value==='Real Zaragoza'?'Comparar Zaragoza y Villarreal B':'Comparar el equipo con el Zaragoza';
       const url=new URL(location.href);Object.entries({equipo:team.value,x:xMetric.value,y:yMetric.value,sede:venue.value,fuente:source.value,periodo:period.value}).forEach(([k,v])=>url.searchParams.set(k,v));history.replaceState(null,'',url);
     }
-    document.getElementById('controles-mapa').hidden=false;[team,xMetric,yMetric,venue,period,source].forEach(s=>s.addEventListener('change',update));document.getElementById('restablecer-mapa').addEventListener('click',()=>{team.value='Real Zaragoza';xMetric.value='xg';yMetric.value='xgc';venue.value='';period.value='toda';source.value='sofascore';update();});update();
-  }).catch(()=>{document.getElementById('mapa-detalle').textContent='No se han podido cargar los datos del mapa. La tabla del análisis del grupo sigue disponible.';});
+    controls.classList.remove('mapa-controles-cargando');controls.removeAttribute('aria-hidden');[team,xMetric,yMetric,venue,period,source].forEach(s=>s.addEventListener('change',update));document.getElementById('restablecer-mapa').addEventListener('click',()=>{team.value='Real Zaragoza';xMetric.value='xg';yMetric.value='xgc';venue.value='';period.value='toda';source.value='sofascore';update();});update();
+  }).catch(()=>{if(controls){controls.hidden=true;controls.classList.remove('mapa-controles-cargando');controls.removeAttribute('aria-hidden');}document.getElementById('mapa-detalle').textContent='No se han podido cargar los datos del mapa. La tabla del análisis del grupo sigue disponible.';});
 })();

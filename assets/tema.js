@@ -1,5 +1,6 @@
 (() => {
   const raiz = document.documentElement;
+  raiz.classList.add('js-activo');
   raiz.classList.add('js-inicializando');
   window.addEventListener('load', () => raiz.classList.remove('js-inicializando'), {once:true});
   try {
