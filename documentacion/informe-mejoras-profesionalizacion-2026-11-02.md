@@ -197,8 +197,10 @@ Se completaron, en el orden previsto, siete paquetes de mejora: guía visual; po
 - Revisé los textos alternativos de todas las páginas: una variante repetida en tres páginas describía la procedencia de la ilustración en vez de limitarse a la escena. La sustituí por una descripción visual breve y mantuve la atribución en el pie editorial de la imagen.
 - Actualicé la fuente datos/previas.json y las tres páginas generadas: portada, previa J11 y su alias. La auditoría de imágenes pasó: 53 páginas, 116 imágenes, ningún alt ausente y ninguna página sobre el presupuesto de peso. La auditoría de canonicals y sitemap también pasó.
 
+- El commit 4c900cd pasó la revisión del sitio y el despliegue de GitHub Pages ([revisión](https://github.com/lineadepase/lineadepase.github.io/actions/runs/42058465225) · [Pages](https://github.com/lineadepase/lineadepase.github.io/actions/runs/42058464084)). No pude revisar la portada ni la previa desde la web por el bloqueo HTTP 403; el sitemap y robots.txt sí son accesibles y están verificados.
+
 ## Próximo paquete de pasos
 
-1. Medir el comparador en navegador a 390, 768 y 1365 px cuando la sesión permita abrirlo sin HTTP 403; confirmar CLS y controles tras la carga.
-2. Tras el Zaragoza–Huesca del 7 de noviembre, incorporar el marcador y estadísticas verificadas; revisar después la simulación y coherencia de datos entre páginas.
-3. Mantener la revisión de tamaños de imágenes y estabilidad responsive al siguiente cambio editorial.
+1. Comprobar en producción la portada y la previa cuando el HTML sea accesible; confirmar que se sirve el alt corregido.
+2. Medir el comparador en navegador a 390, 768 y 1365 px cuando la sesión permita abrirlo sin HTTP 403; confirmar CLS y controles tras la carga.
+3. Tras el Zaragoza–Huesca del 7 de noviembre, incorporar el marcador y estadísticas verificadas; revisar después la simulación y coherencia de datos entre páginas.
