@@ -7,31 +7,64 @@
     ],
     "fecha_partido": "2026-11-07",
     "fecha_publicacion": "2026-11-03",
-    "fecha_actualizacion": "2026-11-03",
-    "titulo": "Real Zaragoza – SD Huesca",
-    "etiqueta": "Primera Federación · J11 · 7 de noviembre",
-    "resumen": "Derbi aragonés en el Ibercaja Estadio: el Zaragoza, segundo con 21 puntos, recibe a un Huesca décimo con 15 que solo ha perdido un partido de liga.",
+    "fecha_actualizacion": "2026-11-08",
+    "titulo": "Real Zaragoza 2–0 SD Huesca: dos robos para ganar el derbi",
+    "etiqueta": "Primera Federación · J11 · Resultado final",
+    "resumen": "Joaquín, en el 23', y Vadillo, en el 50', marcaron tras dos pérdidas del Huesca en la salida de balón. El equipo oscense terminó con un solo remate y con diez desde el 67'.",
     "pregunta_abierta": "¿Romperá el Huesca su serie de cuatro empates fuera de casa?",
     "fuera_de_plano": "El balance por sede reúne cuatro partidos del Zaragoza en casa y cuatro salidas del Huesca. Es una muestra corta y no permite anticipar cómo se desarrollará el derbi.",
-    "imagen": "proyectos/real-zaragoza/graficos/previa/real-zaragoza-sd-huesca-j11.webp",
+    "imagen": "proyectos/real-zaragoza/graficos/jornada-11/resultado-zaragoza-huesca.webp",
     "ancho": 1672,
     "alto": 941,
-    "alt": "Tablero de ajedrez sobre el césped de un estadio iluminado; las piezas combinan tonos blancos, azules y granates.",
+    "alt": "Marcador final Real Zaragoza 2–0 SD Huesca en la jornada 11, con el titular «Dos robos para ganar el derbi», sobre una ilustración de dos balones dentro de la red de una portería.",
     "pie": "Ilustración creada con IA para Línea de pase.",
-    "noticia_html": "<section class=\"seccion lectura\" aria-labelledby=\"noticia-previa-j11\"><p class=\"etiqueta\">El contexto del partido</p><h2 id=\"noticia-previa-j11\">Un derbi entre el segundo y un Huesca de empates</h2><p>El Real Zaragoza recibe a la SD Huesca el sábado 7 de noviembre con seis puntos más: es segundo con 21, empatado con el líder Villarreal B, y el Huesca es décimo con 15. El equipo oscense solo ha perdido un partido de liga, ante el Villarreal B, pero suma seis empates en diez jornadas.</p><p>La sede marca el contraste. El Zaragoza lleva diez puntos de doce en casa, con ocho goles a favor y tres en contra. El Huesca ha empatado sus cuatro salidas (6-6 en goles) y ha hecho once de sus quince puntos en El Alcoraz, donde ganó 2-0 al Gimnàstic el lunes.</p><p>Las dos rachas recientes son parecidas: nueve puntos en los últimos cinco partidos para el Zaragoza y otros nueve para el Huesca. La muestra es corta: describe el inicio de temporada, pero no anticipa el resultado.</p><p class=\"nota\">Datos de liga hasta la jornada 10. La Copa del Rey se analiza por separado. El corte y la comparación completa aparecen al final.</p></section>",
+    "noticia_html": "<section class=\"seccion lectura\" aria-labelledby=\"noticia-previa-j11\"><p class=\"etiqueta\">La crónica</p><h2 id=\"noticia-previa-j11\">El Zaragoza gana el derbi con dos robos</h2><p>El Real Zaragoza ganó 2–0 a la SD Huesca en el Ibercaja Estadio. Joaquín abrió el marcador en el 23, después de que Jardí recuperara un balón perdido por Kembo en la salida, y Vadillo hizo el segundo en el 50 tras otro robo en campo rival. Diego Gómez fue expulsado por doble amarilla en el 67.</p><p>La ficha del club da 18 remates del Zaragoza, ocho a puerta, por uno del Huesca, que no llegó a tirar entre los palos. La posesión fue más repartida, 54 % a 46 %. No hay xG de Sofascore para este partido y el desglose de tiros está incompleto, de modo que las cifras describen el volumen, no la calidad de las ocasiones.</p><p>El Huesca, que llegaba con cuatro empates en sus cuatro salidas, perdió por primera vez fuera de casa. El Zaragoza suma 24 puntos en once jornadas y visita al Real Jaén el sábado 14 de noviembre.</p></section>",
     "rival": "SD Huesca",
     "hora": "21:00",
     "estadio": "Ibercaja Estadio",
     "competicion": "Primera Federación · Jornada 11",
     "fuente_partido": "https://www.sportaragon.com/articulo/real-zaragoza/real-zaragoza-sd-huesca-regresa-noviembre-confirmado-horario-derbi-aragones/20261015201714161176.html",
     "estados_previa": {
-      "confirmado": "El partido se juega el sábado 7 de noviembre a las 21:00 en el Ibercaja Estadio, con emisión en abierto en Aragón TV.",
-      "pendiente": "Las convocatorias y los onces, hasta que los equipos los hagan públicos.",
-      "despues": "Se revisará si el Huesca logró su primera victoria fuera o mantuvo su serie de empates a domicilio."
+      "confirmado": "El Real Zaragoza ganó 2–0 a la SD Huesca en el Ibercaja Estadio.",
+      "pendiente": "La ficha no ofrece xG ni un desglose completo de los tiros.",
+      "despues": "El Huesca perdió su primer partido fuera de casa tras cuatro empates a domicilio."
     },
     "imagen_social": "assets/compartir/previa-real-zaragoza-sd-huesca-j11-social.jpg",
     "ancho_social": 1200,
-    "alto_social": 675
+    "alto_social": 675,
+    "postpartido_url": "proyectos/real-zaragoza/jornada-11.html",
+    "resultado_confirmado": {
+      "marcador": "2–0",
+      "fecha_verificacion": "2026-11-08T08:20:00+01:00",
+      "fuentes": [
+        {
+          "nombre": "Real Zaragoza: ficha del partido Real Zaragoza - SD Huesca",
+          "url": "https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-11-real-zaragoza-vs-sd-huesca-3977"
+        },
+        {
+          "nombre": "Aragón Digital: Dos regalos valen una noche de líder",
+          "url": "https://www.aragondigital.es/articulo/real-zaragoza/dos-regalos-valen-noche-lider/202611072333481020455.html"
+        }
+      ],
+      "respuesta_pregunta": "El Huesca no rompió su serie, pero tampoco la alargó: perdió por primera vez fuera de casa esta temporada. Tras cuatro empates a domicilio, cayó 2–0 en el Ibercaja Estadio con un solo remate y jugó con diez desde el 67'. Es un único partido y no permite sacar conclusiones sobre su rendimiento como visitante.",
+      "momentos_clave": [
+        {
+          "minuto": "23",
+          "marcador": "1–0",
+          "hecho": "Jardí recuperó un balón perdido por Kembo en la salida y Joaquín, solo ante Gazzaniga, abrió el marcador."
+        },
+        {
+          "minuto": "50",
+          "marcador": "2–0",
+          "hecho": "Vadillo robó otro balón en la salida del Huesca, se fue hacia dentro y marcó con un disparo cruzado."
+        },
+        {
+          "minuto": "67",
+          "marcador": "2–0",
+          "hecho": "Diego Gómez vio la segunda amarilla y el Huesca jugó con diez el último tramo."
+        }
+      ]
+    }
   },
   {
     "jornada": 10,

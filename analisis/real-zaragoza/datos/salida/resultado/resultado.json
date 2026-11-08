@@ -1,124 +1,113 @@
 {
- "partido_id": 10,
+ "partido_id": 11,
  "local": "Real Zaragoza",
- "visitante": "Villarreal B",
- "marcador": "2-2",
- "fecha": "2026-10-31",
+ "visitante": "SD Huesca",
+ "marcador": "2-0",
+ "fecha": "2026-11-07",
  "eventos": [
   {
-   "tipo": "cambios",
-   "minuto": "59",
-   "jugador": "J. Tobajas, Pau Sans, Iker Vadillo",
+   "tipo": "gol",
+   "minuto": "23",
+   "jugador": "Joaquín",
    "equipo": "Real Zaragoza",
    "propio": true,
-   "detalle": "3 cambios a la vez"
+   "marcador": "1-0",
+   "detalle": "pase de Jaume Jardí"
   },
   {
    "tipo": "gol",
-   "minuto": "64",
-   "jugador": "Albert García",
-   "equipo": "Villarreal B",
-   "propio": false,
-   "marcador": "0-1",
-   "detalle": ""
-  },
-  {
-   "tipo": "gol",
-   "minuto": "70",
-   "jugador": "Álvaro García",
-   "equipo": "Villarreal B",
-   "propio": false,
-   "marcador": "0-2",
-   "detalle": ""
-  },
-  {
-   "tipo": "gol",
-   "minuto": "86",
-   "jugador": "Jaume Jardí",
+   "minuto": "50",
+   "jugador": "Iker Vadillo",
    "equipo": "Real Zaragoza",
    "propio": true,
-   "marcador": "1-2",
+   "marcador": "2-0",
    "detalle": ""
-  },
-  {
-   "tipo": "gol",
-   "minuto": "90+3",
-   "jugador": "Diego González",
-   "equipo": "Real Zaragoza",
-   "propio": true,
-   "marcador": "2-2",
-   "detalle": "pase de Pau Sans"
   },
   {
    "tipo": "roja",
-   "minuto": "90+7",
-   "jugador": "J. Tobajas",
+   "minuto": "67",
+   "jugador": "Diego Gómez",
+   "equipo": "SD Huesca",
+   "propio": false,
+   "detalle": "doble amarilla"
+  },
+  {
+   "tipo": "cambios",
+   "minuto": "79",
+   "jugador": "Óscar Ureña, Edu Espiau",
    "equipo": "Real Zaragoza",
    "propio": true,
-   "detalle": "doble amarilla"
+   "detalle": "2 cambios a la vez"
   }
  ],
  "numeros": [
   {
    "metrica": "Posesión",
-   "zaragoza": "63 %",
-   "rival": "37 %"
+   "zaragoza": "54 %",
+   "rival": "46 %"
   },
   {
    "metrica": "Tiros",
-   "zaragoza": "16",
-   "rival": "10"
+   "zaragoza": "18",
+   "rival": "1"
   },
   {
    "metrica": "Tiros a puerta",
    "zaragoza": "8",
-   "rival": "3"
+   "rival": "0"
   },
   {
    "metrica": "Pases",
-   "zaragoza": "484",
-   "rival": "287"
+   "zaragoza": "479",
+   "rival": "399"
   },
   {
    "metrica": "Precisión en el pase",
-   "zaragoza": "81 %",
-   "rival": "69 %"
+   "zaragoza": "87 %",
+   "rival": "77 %"
   }
  ],
  "siguiente": {
-  "local": "Real Zaragoza",
-  "visitante": "SD Huesca",
+  "local": "Real Jaén",
+  "visitante": "Real Zaragoza",
   "competicion": "Primera Federación",
-  "jornada": 11,
+  "jornada": 12,
   "tv": "",
-  "inicio": "2026-11-07T21:00:00+01:00"
+  "inicio": "2026-11-14T21:00:00+01:00"
  },
  "textos": {
-  "partido_id": 10,
+  "partido_id": 11,
   "estadio": "Ibercaja Estadio",
-  "titular": "Del 0-2 al 2-2 en siete minutos",
-  "subtitulo": "Dos goles después del minuto 85 para empatar el duelo entre los dos primeros",
+  "titular": "Dos robos para ganar el derbi",
+  "subtitulo": "Joaquín y Vadillo marcaron tras dos pérdidas del Huesca en la salida de balón; el rival terminó con un solo remate",
   "destacados": [
    {
-    "cifra": "9 de 19",
-    "texto": "goles de liga del Zaragoza llegan desde el minuto 76"
+    "cifra": "1",
+    "texto": "remate del Huesca en todo el partido, el registro más bajo de un rival del Zaragoza esta temporada"
    },
    {
-    "cifra": "21",
-    "texto": "puntos en diez jornadas: seis victorias, tres empates y una derrota"
+    "cifra": "24",
+    "texto": "puntos en once jornadas: siete victorias, tres empates y una derrota"
    },
    {
-    "cifra": "10 de 12",
-    "texto": "puntos en casa; es el primer partido en el que recibe dos goles en Zaragoza"
+    "cifra": "13 de 15",
+    "texto": "puntos en casa, con tres porterías a cero en el Ibercaja Estadio"
    },
    {
-    "cifra": "5 + 4",
-    "texto": "goles y asistencias de Jaume Jardí en liga"
+    "cifra": "5 + 5",
+    "texto": "goles y asistencias de Jaume Jardí en liga; dio el pase del 1-0"
    }
   ],
-  "nota_estadisticas": "Sin xG publicado para este partido; algunos campos de la ficha están incompletos.",
-  "fuentes": "",
-  "ilustracion": "analisis/real-zaragoza/codigo/recursos/ilustraciones/j10-vertical.jpg",
-  "ilustracion_web": "analisis/real-zaragoza/codigo/recursos/ilustraciones/j10-panoramica.jpg"
+  "expulsiones_rival": [
+   {
+    "minuto": "67",
+    "jugador": "Diego Gómez",
+    "detalle": "doble amarilla"
+   }
+  ],
+  "nota_estadisticas": "Datos de la ficha del club. Sin xG de Sofascore para este partido; la ficha no desglosa todos los tiros.",
+  "fuentes": "Datos: Real Zaragoza y Aupa Zaragoza",
+  "ilustracion": "analisis/real-zaragoza/codigo/recursos/ilustraciones/j11-vertical.jpg",
+  "ilustracion_web": "analisis/real-zaragoza/codigo/recursos/ilustraciones/j11-panoramica.jpg"
  }
 }

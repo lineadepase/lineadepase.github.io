@@ -1,6 +1,6 @@
 {
- "corte": "2026-10-31",
- "jornada": 10,
+ "corte": "2026-11-07",
+ "jornada": 11,
  "clasificacion_tras": 10,
  "partidos": [
   {
@@ -171,6 +171,23 @@
    "tiros_zaragoza": 16,
    "tiros_rival": 10,
    "posesion_pct": 63.0,
+   "completo": false
+  },
+  {
+   "partido_id": 11,
+   "jornada": 11,
+   "fecha": "2026-11-07",
+   "sede": "Casa",
+   "rival": "SD Huesca",
+   "goles_favor": 2,
+   "goles_contra": 0,
+   "resultado": "Victoria",
+   "puntos": 3,
+   "puntos_acumulados": 24,
+   "posicion_rival": 10,
+   "tiros_zaragoza": 18,
+   "tiros_rival": 1,
+   "posesion_pct": 54.0,
    "completo": false
   }
  ],
@@ -577,46 +594,72 @@
    "rol_goleador": "Titular",
    "penalti": false,
    "propia_puerta": false
+  },
+  {
+   "partido_id": 11,
+   "rival": "SD Huesca",
+   "sede": "Casa",
+   "sentido": "Favor",
+   "minuto_texto": "23",
+   "tramo": "16–30",
+   "jugador": "Joaquín",
+   "asistencia": "Jaume Jardí",
+   "rol_goleador": "Titular",
+   "penalti": false,
+   "propia_puerta": false
+  },
+  {
+   "partido_id": 11,
+   "rival": "SD Huesca",
+   "sede": "Casa",
+   "sentido": "Favor",
+   "minuto_texto": "50",
+   "tramo": "46–60",
+   "jugador": "Iker Vadillo",
+   "asistencia": "",
+   "rol_goleador": "Titular",
+   "penalti": false,
+   "propia_puerta": false
   }
  ],
  "jugadores": [
   {
    "jugador": "Westerveld",
-   "partidos": 9,
-   "titularidades": 9,
-   "minutos": 810.0,
+   "partidos": 10,
+   "titularidades": 10,
+   "minutos": 900.0,
    "goles": 0,
    "asistencias": 0
   },
   {
-   "jugador": "Jaume Jardí",
-   "partidos": 10,
-   "titularidades": 9,
-   "minutos": 807.0,
-   "goles": 5,
-   "asistencias": 4
-  },
-  {
    "jugador": "Rubo",
-   "partidos": 9,
-   "titularidades": 9,
-   "minutos": 792.0,
+   "partidos": 10,
+   "titularidades": 10,
+   "minutos": 882.0,
    "goles": 2,
    "asistencias": 0
   },
   {
+   "jugador": "Jaume Jardí",
+   "partidos": 11,
+   "titularidades": 10,
+   "minutos": 877.0,
+   "goles": 5,
+   "asistencias": 5
+  },
+  {
    "jugador": "Diego González",
-   "partidos": 9,
-   "titularidades": 9,
-   "minutos": 781.0,
+   "partidos": 10,
+   "titularidades": 10,
+   "minutos": 871.0,
    "goles": 2,
    "asistencias": 1
   },
   {
    "jugador": "Marco Sangalli",
-   "partidos": 9,
-   "titularidades": 7,
-   "minutos": 708.0,
+   "partidos": 10,
+   "titularidades": 8,
+   "minutos": 798.0,
    "goles": 0,
    "asistencias": 0
   },
@@ -630,11 +673,19 @@
   },
   {
    "jugador": "P. Ademo",
-   "partidos": 8,
-   "titularidades": 7,
-   "minutos": 586.0,
+   "partidos": 9,
+   "titularidades": 8,
+   "minutos": 676.0,
    "goles": 0,
    "asistencias": 0
+  },
+  {
+   "jugador": "Rubén Díez",
+   "partidos": 9,
+   "titularidades": 7,
+   "minutos": 546.0,
+   "goles": 0,
+   "asistencias": 1
   },
   {
    "jugador": "Raúl Pereira",
@@ -646,35 +697,51 @@
   },
   {
    "jugador": "Óscar Ureña",
-   "partidos": 9,
+   "partidos": 10,
    "titularidades": 6,
-   "minutos": 478.0,
+   "minutos": 489.0,
    "goles": 3,
    "asistencias": 1
   },
   {
-   "jugador": "Rubén Díez",
-   "partidos": 8,
-   "titularidades": 6,
-   "minutos": 467.0,
-   "goles": 0,
-   "asistencias": 1
+   "jugador": "Joaquín",
+   "partidos": 9,
+   "titularidades": 4,
+   "minutos": 488.0,
+   "goles": 1,
+   "asistencias": 0
   },
   {
-   "jugador": "Joaquín",
+   "jugador": "S. Escudero",
    "partidos": 8,
-   "titularidades": 3,
-   "minutos": 409.0,
+   "titularidades": 7,
+   "minutos": 422.0,
    "goles": 0,
    "asistencias": 0
   },
   {
    "jugador": "Edu Espiau",
-   "partidos": 7,
+   "partidos": 8,
    "titularidades": 5,
-   "minutos": 390.0,
+   "minutos": 401.0,
    "goles": 3,
    "asistencias": 2
+  },
+  {
+   "jugador": "Pau Sans",
+   "partidos": 10,
+   "titularidades": 3,
+   "minutos": 398.0,
+   "goles": 1,
+   "asistencias": 1
+  },
+  {
+   "jugador": "Iker Vadillo",
+   "partidos": 7,
+   "titularidades": 5,
+   "minutos": 382.0,
+   "goles": 1,
+   "asistencias": 0
   },
   {
    "jugador": "Ander Herrera",
@@ -685,43 +752,19 @@
    "asistencias": 0
   },
   {
-   "jugador": "Pau Sans",
-   "partidos": 9,
-   "titularidades": 3,
-   "minutos": 365.0,
+   "jugador": "Yussif Saidu",
+   "partidos": 8,
+   "titularidades": 2,
+   "minutos": 288.0,
    "goles": 1,
-   "asistencias": 1
-  },
-  {
-   "jugador": "S. Escudero",
-   "partidos": 7,
-   "titularidades": 6,
-   "minutos": 364.0,
-   "goles": 0,
-   "asistencias": 0
-  },
-  {
-   "jugador": "Iker Vadillo",
-   "partidos": 6,
-   "titularidades": 4,
-   "minutos": 325.0,
-   "goles": 0,
    "asistencias": 0
   },
   {
    "jugador": "J. Gabilondo",
-   "partidos": 4,
+   "partidos": 5,
    "titularidades": 3,
-   "minutos": 233.0,
+   "minutos": 265.0,
    "goles": 0,
-   "asistencias": 0
-  },
-  {
-   "jugador": "Yussif Saidu",
-   "partidos": 7,
-   "titularidades": 1,
-   "minutos": 198.0,
-   "goles": 1,
    "asistencias": 0
   },
   {
@@ -734,9 +777,9 @@
   },
   {
    "jugador": "Marcos Cuenca",
-   "partidos": 6,
+   "partidos": 7,
    "titularidades": 2,
-   "minutos": 132.0,
+   "minutos": 152.0,
    "goles": 0,
    "asistencias": 0
   },
@@ -1005,12 +1048,12 @@
  ],
  "proximos": [
   {
-   "jornada": 11,
+   "jornada": 12,
    "competicion": "Primera Federación",
-   "fecha": "2026-11-07",
-   "sede": "Casa",
-   "rival": "SD Huesca",
-   "posicion_rival": 10
+   "fecha": "2026-11-14",
+   "sede": "Fuera",
+   "rival": "Real Jaén",
+   "posicion_rival": 3
   }
  ],
  "fichas": [
@@ -1653,6 +1696,47 @@
    "a_puerta_zaragoza": 8.0,
    "a_puerta_rival": 3.0,
    "posesion_pct": 63.0
+  },
+  {
+   "partido_id": 11,
+   "competicion": "Primera Federación",
+   "jornada": 11,
+   "fecha": "2026-11-07",
+   "sede": "Casa",
+   "rival": "SD Huesca",
+   "goles_favor": 2,
+   "goles_contra": 0,
+   "gf_descanso": 1,
+   "gc_descanso": 0,
+   "goles": [
+    {
+     "sentido": "Favor",
+     "minuto": "23",
+     "jugador": "Joaquín",
+     "asistencia": "Jaume Jardí",
+     "penalti": false,
+     "propia_puerta": false
+    },
+    {
+     "sentido": "Favor",
+     "minuto": "50",
+     "jugador": "Iker Vadillo",
+     "asistencia": null,
+     "penalti": false,
+     "propia_puerta": false
+    }
+   ],
+   "tarjetas": [
+    {
+     "jugador": "Yussif Saidu",
+     "tarjeta": "Amarilla"
+    }
+   ],
+   "tiros_zaragoza": 18.0,
+   "tiros_rival": 1.0,
+   "a_puerta_zaragoza": 8.0,
+   "a_puerta_rival": 0.0,
+   "posesion_pct": 54.0
   }
  ],
  "copa": [

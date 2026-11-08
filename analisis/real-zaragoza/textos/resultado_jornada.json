@@ -1,28 +1,35 @@
 {
-  "partido_id": 10,
+  "partido_id": 11,
   "estadio": "Ibercaja Estadio",
-  "titular": "Del 0-2 al 2-2 en siete minutos",
-  "subtitulo": "Dos goles después del minuto 85 para empatar el duelo entre los dos primeros",
+  "titular": "Dos robos para ganar el derbi",
+  "subtitulo": "Joaquín y Vadillo marcaron tras dos pérdidas del Huesca en la salida de balón; el rival terminó con un solo remate",
   "destacados": [
     {
-      "cifra": "9 de 19",
-      "texto": "goles de liga del Zaragoza llegan desde el minuto 76"
+      "cifra": "1",
+      "texto": "remate del Huesca en todo el partido, el registro más bajo de un rival del Zaragoza esta temporada"
     },
     {
-      "cifra": "21",
-      "texto": "puntos en diez jornadas: seis victorias, tres empates y una derrota"
+      "cifra": "24",
+      "texto": "puntos en once jornadas: siete victorias, tres empates y una derrota"
     },
     {
-      "cifra": "10 de 12",
-      "texto": "puntos en casa; es el primer partido en el que recibe dos goles en Zaragoza"
+      "cifra": "13 de 15",
+      "texto": "puntos en casa, con tres porterías a cero en el Ibercaja Estadio"
     },
     {
-      "cifra": "5 + 4",
-      "texto": "goles y asistencias de Jaume Jardí en liga"
+      "cifra": "5 + 5",
+      "texto": "goles y asistencias de Jaume Jardí en liga; dio el pase del 1-0"
     }
   ],
-  "nota_estadisticas": "Sin xG publicado para este partido; algunos campos de la ficha están incompletos.",
-  "fuentes": "",
-  "ilustracion": "analisis/real-zaragoza/codigo/recursos/ilustraciones/j10-vertical.jpg",
-  "ilustracion_web": "analisis/real-zaragoza/codigo/recursos/ilustraciones/j10-panoramica.jpg"
+  "expulsiones_rival": [
+    {
+      "minuto": "67",
+      "jugador": "Diego Gómez",
+      "detalle": "doble amarilla"
+    }
+  ],
+  "nota_estadisticas": "Datos de la ficha del club. Sin xG de Sofascore para este partido; la ficha no desglosa todos los tiros.",
+  "fuentes": "Datos: Real Zaragoza y Aupa Zaragoza",
+  "ilustracion": "analisis/real-zaragoza/codigo/recursos/ilustraciones/j11-vertical.jpg",
+  "ilustracion_web": "analisis/real-zaragoza/codigo/recursos/ilustraciones/j11-panoramica.jpg"
 }

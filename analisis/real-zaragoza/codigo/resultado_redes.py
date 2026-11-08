@@ -403,6 +403,13 @@ def main():
     t = json.loads((CARPETA_TEXTOS / "resultado_jornada.json").read_text(encoding="utf-8"))
     d = datos_partido(t["partido_id"])
     p = d["partido"]
+    # Expulsiones del rival (tarjetas.csv solo recoge las del Zaragoza), comprobadas y anotadas a mano
+    for e in t.get("expulsiones_rival", []):
+        m, a = (int(x) for x in (str(e["minuto"]).split("+") + ["0"])[:2])
+        d["eventos"].append({"tipo": "roja", "minuto": minuto_texto(m, a), "orden": m + a / 100,
+                             "jugador": e["jugador"], "equipo": p["rival"], "propio": False,
+                             "detalle": e.get("detalle", "")})
+    d["eventos"].sort(key=lambda e: e["orden"])
     cab = (f"{p['competicion']} · Jornada {int(p['jornada'])}" if pd.notna(p["jornada"])
            else str(p["competicion"])) + f" · {pd.Timestamp(p['fecha']).day} {MESES[pd.Timestamp(p['fecha']).month - 1][:3]}"
     s = siguiente_partido(p["fecha"])
