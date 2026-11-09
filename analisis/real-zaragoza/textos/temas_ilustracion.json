@@ -12,12 +12,14 @@
     "Gimnàstic": {"colores": "dark red", "simbolos": ""},
     "Algeciras": {"colores": "red and white stripes", "simbolos": ""},
     "UD Ibiza": {"colores": "sky blue", "simbolos": ""},
-    "Alcorcón": {"colores": "yellow", "simbolos": ""}
+    "Alcorcón": {"colores": "yellow", "simbolos": ""},
+    "Real Jaén": {"colores": "all white", "simbolos": ""}
   },
   "ideas_usadas": {
     "previa J10 · Villarreal B": "lion in Zaragoza kit versus yellow submarine on a pitch",
     "resultado J10 · Villarreal B": "giant hourglass running out: yellow sand below, blue and white sand falling at the last moment",
     "previa J11 · SD Huesca": "chessboard on a floodlit pitch with white, blue and claret pieces",
-    "resultado J11 · SD Huesca": "Aragonese derby: packed stadium with a tifo of the flag of Aragon with horizontal bars and no coat of arms (drawn by code and composited, because the model draws it wrongly), Basilica del Pilar and snowy Pyrenees above the roof, ball in the foreground"
+    "resultado J11 · SD Huesca": "Aragonese derby: packed stadium with a tifo of the flag of Aragon with horizontal bars and no coat of arms (drawn by code and composited, because the model draws it wrongly), Basilica del Pilar and snowy Pyrenees above the roof, ball in the foreground",
+    "previa J12 · Real Jaén": "floodlit pitch on top of a hill of olive groves at dusk, winding path climbing to it, white and blue ball on the centre spot, castle silhouette on a nearby hill (the leader defends the summit away)"
   }
 }

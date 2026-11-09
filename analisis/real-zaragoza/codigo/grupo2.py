@@ -496,9 +496,9 @@ def actualidad_html():
     partidos = ''.join(f'<li>{e(f.local)} <strong>{f.goles_local}–{f.goles_visitante}</strong> {e(f.visitante)}</li>'
                        for f in resultados.itertuples())
     return j, f"""<section class="seccion" aria-labelledby="t-actualidad">
-    <p class="etiqueta">Actualizado el 03/11/2026 · Jornada {j} completa</p>
+    <p class="etiqueta">Actualizado el 09/11/2026 · Jornada {j} completa</p>
     <h2 id="t-actualidad">Resultados y clasificación tras la jornada {j}</h2>
-    <p>El Villarreal B y el Zaragoza siguen igualados, ahora con 21 puntos tras empatar entre ellos (2–2); el filial lidera por diferencia de goles (+11 frente a +7). Real Jaén y Real Murcia suman 19 y la UD Ibiza, 17. La jornada deja 23 goles: seis victorias locales, una visitante y tres empates.</p>
+    <p>El Zaragoza pasa a liderar en solitario con 24 puntos, dos más que el Villarreal B, que empató en casa ante el Juventud Torremolinos (1–1). El Real Murcia, tercero, suma 20 y el Real Jaén, próximo rival del Zaragoza, se queda en 19 tras perder 4–3 en Alcorcón. La jornada deja 34 goles: cuatro victorias locales, ninguna visitante y seis empates.</p>
     <ul>{partidos}</ul>
     <div class="tarjeta tabla" tabindex="0" role="region" aria-label="Clasificación tras la jornada {j}, desplazable"><table>
     <thead><tr><th>#</th><th>Equipo</th><th>PJ</th><th>Pts</th><th>G</th><th>E</th><th>P</th><th>GF</th><th>GC</th><th>DG</th></tr></thead>
