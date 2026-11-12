@@ -7,7 +7,7 @@
     ],
     "fecha_partido": "2026-11-14",
     "fecha_publicacion": "2026-11-09",
-    "fecha_actualizacion": "2026-11-09",
+    "fecha_actualizacion": "2026-11-12",
     "titulo": "Real Jaén – Real Zaragoza",
     "etiqueta": "Primera Federación · J12 · 14 de noviembre",
     "resumen": "El líder visita La Victoria: el Zaragoza, primero con 24 puntos, se mide a un Real Jaén cuarto con 19 que no ha perdido en casa.",
@@ -25,8 +25,8 @@
     "competicion": "Primera Federación · Jornada 12",
     "fuente_partido": "https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-12-jaen-vs-real-zaragoza-3995",
     "estados_previa": {
-      "confirmado": "El partido se juega el sábado 14 de noviembre a las 21:00 en el Estadio de La Victoria (Jaén).",
-      "pendiente": "La emisión por televisión de este partido, las convocatorias y los onces.",
+      "confirmado": "El partido se juega el sábado 14 de noviembre a las 21:00 en el Estadio de La Victoria (Jaén) y se emite en el canal Primera Federación de Movistar Plus+ (de pago).",
+      "pendiente": "Las convocatorias y los onces.",
       "despues": "Se revisará si el Jaén mantuvo su racha sin perder en casa ante el líder."
     },
     "imagen_social": "assets/compartir/previa-real-jaen-real-zaragoza-j12-social.jpg",

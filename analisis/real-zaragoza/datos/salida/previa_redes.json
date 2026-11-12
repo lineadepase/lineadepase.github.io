@@ -1,42 +1,42 @@
 {
-  "jornada": 11,
-  "datos_hasta_jornada": 10,
-  "local": "Real Zaragoza",
-  "visitante": "SD Huesca",
-  "rival": "SD Huesca",
-  "sede_zaragoza": "Casa",
-  "inicio_madrid": "2026-11-07T21:00:00+01:00",
-  "estadio": "Ibercaja Estadio (Zaragoza)",
+  "jornada": 12,
+  "datos_hasta_jornada": 11,
+  "local": "Real Jaén",
+  "visitante": "Real Zaragoza",
+  "rival": "Real Jaén",
+  "sede_zaragoza": "Fuera",
+  "inicio_madrid": "2026-11-14T21:00:00+01:00",
+  "estadio": "Estadio de La Victoria (Jaén)",
   "zaragoza": {
-    "posicion": 2,
-    "puntos": 21,
-    "goles_favor": 19,
+    "posicion": 1,
+    "puntos": 24,
+    "goles_favor": 21,
     "goles_contra": 12,
     "sede": {
-      "puntos": 10,
-      "posibles": 12,
-      "partidos": 4,
-      "goles_favor": 8,
-      "goles_contra": 3
+      "puntos": 11,
+      "posibles": 18,
+      "partidos": 6,
+      "goles_favor": 11,
+      "goles_contra": 9
     },
-    "forma": "VEEVE"
+    "forma": "EEVEV"
   },
   "rival_datos": {
-    "posicion": 10,
-    "puntos": 15,
-    "goles_favor": 13,
-    "goles_contra": 11,
+    "posicion": 4,
+    "puntos": 19,
+    "goles_favor": 19,
+    "goles_contra": 15,
     "sede": {
-      "puntos": 4,
-      "posibles": 12,
-      "partidos": 4,
-      "goles_favor": 6,
-      "goles_contra": 6
+      "puntos": 11,
+      "posibles": 15,
+      "partidos": 5,
+      "goles_favor": 11,
+      "goles_contra": 8
     },
-    "forma": "VEEEV"
+    "forma": "EVEVD"
   },
   "lider": {
-    "equipo": "Villarreal B",
-    "puntos": 21
+    "equipo": "Real Zaragoza",
+    "puntos": 24
   }
 }

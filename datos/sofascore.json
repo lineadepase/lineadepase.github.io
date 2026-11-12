@@ -1,7 +1,7 @@
 {
  "_nota": "Calendario facilitado para el seguimiento del Real Zaragoza. Las horas de inicio están en UTC y pueden cambiar. La web muestra el último resultado revisado hasta el martes por la mañana si hay partido entre semana o hasta el miércoles en caso contrario; después, el próximo partido. El estado en directo se consulta en Sofascore y nunca se deduce de la hora. El campo tv contiene únicamente los canales indicados para cada encuentro; si está vacío, la emisión está pendiente de confirmar.",
  "equipo_sofascore": 2815,
- "actualizado": "2026-11-08",
+ "actualizado": "2026-11-12",
  "partidos": [
   {
    "id": 16599515,
@@ -24,7 +24,12 @@
    "visitante": "Real Zaragoza",
    "competicion": "Primera Federación",
    "jornada": 12,
-   "tv": []
+   "tv": [
+    {
+     "canal": "Primera Federación (Movistar Plus+)",
+     "abierto": false
+    }
+   ]
   },
   {
    "id": 16599774,
