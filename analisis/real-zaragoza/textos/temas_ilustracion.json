@@ -1,5 +1,6 @@
 {
   "_nota": "Referencia para escribir la descripción de ilustracion_ia.py. Cada partido lleva su propia idea, sacada de lo que pasó o de lo que está en juego, y distinta de la de su previa. Solo colores y símbolos contrastados; si un rival no está, añádelo solo con datos comprobados.",
+  "_criterio_14_nov_2026": "Norma fijada por Ángel: la imagen de portada de cada jornada (web y redes) debe ser creativa, distinta cada jornada, relacionada con el partido y en línea con la web y su contenido (analítica de fútbol: sobria, nocturna, azul y blanco del Zaragoza, sin recargar). La idea sale de algo concreto de lo que pasó o de lo que está en juego. No valen estadios, céspedes o focos genéricos ni repetir ideas de «ideas_usadas». Si el modelo dibuja mal un elemento clave (balones, banderas, números), dibújalo por código con PIL y compónlo sobre la escena. Mira la portada entera antes de pedir el «ok».",
   "Real Zaragoza": {
     "colores": "white shirts and blue shorts",
     "simbolos": "lion (symbol of the city of Zaragoza)"
