@@ -1,25 +1,65 @@
 {
   "_nota": "Referencia para escribir la descripción de ilustracion_ia.py. Cada partido lleva su propia idea, sacada de lo que pasó o de lo que está en juego, y distinta de la de su previa. Solo colores y símbolos contrastados; si un rival no está, añádelo solo con datos comprobados.",
-  "Real Zaragoza": {"colores": "white shirts and blue shorts", "simbolos": "lion (symbol of the city of Zaragoza)"},
+  "Real Zaragoza": {
+    "colores": "white shirts and blue shorts",
+    "simbolos": "lion (symbol of the city of Zaragoza)"
+  },
   "rivales": {
-    "Villarreal B": {"colores": "yellow", "simbolos": "yellow submarine (nickname «Submarino Amarillo»)"},
-    "SD Huesca": {"colores": "blue and claret", "simbolos": ""},
-    "Real Madrid Castilla": {"colores": "all white", "simbolos": ""},
-    "Atlético Madrileño": {"colores": "red and white stripes", "simbolos": ""},
-    "Cartagena": {"colores": "black and white", "simbolos": ""},
-    "Hércules": {"colores": "blue and white stripes", "simbolos": ""},
-    "Real Murcia": {"colores": "red", "simbolos": ""},
-    "Gimnàstic": {"colores": "dark red", "simbolos": ""},
-    "Algeciras": {"colores": "red and white stripes", "simbolos": ""},
-    "UD Ibiza": {"colores": "sky blue", "simbolos": ""},
-    "Alcorcón": {"colores": "yellow", "simbolos": ""},
-    "Real Jaén": {"colores": "all white", "simbolos": ""}
+    "Villarreal B": {
+      "colores": "yellow",
+      "simbolos": "yellow submarine (nickname «Submarino Amarillo»)"
+    },
+    "SD Huesca": {
+      "colores": "blue and claret",
+      "simbolos": ""
+    },
+    "Real Madrid Castilla": {
+      "colores": "all white",
+      "simbolos": ""
+    },
+    "Atlético Madrileño": {
+      "colores": "red and white stripes",
+      "simbolos": ""
+    },
+    "Cartagena": {
+      "colores": "black and white",
+      "simbolos": ""
+    },
+    "Hércules": {
+      "colores": "blue and white stripes",
+      "simbolos": ""
+    },
+    "Real Murcia": {
+      "colores": "red",
+      "simbolos": ""
+    },
+    "Gimnàstic": {
+      "colores": "dark red",
+      "simbolos": ""
+    },
+    "Algeciras": {
+      "colores": "red and white stripes",
+      "simbolos": ""
+    },
+    "UD Ibiza": {
+      "colores": "sky blue",
+      "simbolos": ""
+    },
+    "Alcorcón": {
+      "colores": "yellow",
+      "simbolos": ""
+    },
+    "Real Jaén": {
+      "colores": "all white",
+      "simbolos": ""
+    }
   },
   "ideas_usadas": {
     "previa J10 · Villarreal B": "lion in Zaragoza kit versus yellow submarine on a pitch",
     "resultado J10 · Villarreal B": "giant hourglass running out: yellow sand below, blue and white sand falling at the last moment",
     "previa J11 · SD Huesca": "chessboard on a floodlit pitch with white, blue and claret pieces",
     "resultado J11 · SD Huesca": "Aragonese derby: packed stadium with a tifo of the flag of Aragon with horizontal bars and no coat of arms (drawn by code and composited, because the model draws it wrongly), Basilica del Pilar and snowy Pyrenees above the roof, ball in the foreground",
-    "previa J12 · Real Jaén": "floodlit pitch on top of a hill of olive groves at dusk, winding path climbing to it, white and blue ball on the centre spot, castle silhouette on a nearby hill (the leader defends the summit away)"
+    "previa J12 · Real Jaén": "floodlit pitch on top of a hill of olive groves at dusk, winding path climbing to it, white and blue ball on the centre spot, castle silhouette on a nearby hill (the leader defends the summit away)",
+    "resultado J12 · Real Jaén": "starry night over a Jaén hill with a ruined castle, four lights rising in an arc (three big blue-white ones for the three goals from substitutes, one smaller for Jardí's opener); lights drawn by code and composited because the model draws them wrongly"
   }
 }
