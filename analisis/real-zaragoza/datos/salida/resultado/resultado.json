@@ -1,113 +1,90 @@
 {
- "partido_id": 11,
- "local": "Real Zaragoza",
- "visitante": "SD Huesca",
- "marcador": "2-0",
- "fecha": "2026-11-07",
+ "partido_id": 12,
+ "local": "Real Jaén",
+ "visitante": "Real Zaragoza",
+ "marcador": "0-4",
+ "fecha": "2026-11-14",
  "eventos": [
   {
    "tipo": "gol",
-   "minuto": "23",
-   "jugador": "Joaquín",
+   "minuto": "45+3",
+   "jugador": "Jaume Jardí",
    "equipo": "Real Zaragoza",
    "propio": true,
-   "marcador": "1-0",
-   "detalle": "pase de Jaume Jardí"
-  },
-  {
-   "tipo": "gol",
-   "minuto": "50",
-   "jugador": "Iker Vadillo",
-   "equipo": "Real Zaragoza",
-   "propio": true,
-   "marcador": "2-0",
-   "detalle": ""
-  },
-  {
-   "tipo": "roja",
-   "minuto": "67",
-   "jugador": "Diego Gómez",
-   "equipo": "SD Huesca",
-   "propio": false,
-   "detalle": "doble amarilla"
+   "marcador": "0-1",
+   "detalle": "de penalti"
   },
   {
    "tipo": "cambios",
-   "minuto": "79",
-   "jugador": "Óscar Ureña, Edu Espiau",
+   "minuto": "46",
+   "jugador": "Lucas Terrer, Marcos Cuenca, Óscar Ureña",
    "equipo": "Real Zaragoza",
    "propio": true,
-   "detalle": "2 cambios a la vez"
+   "detalle": "3 cambios a la vez"
+  },
+  {
+   "tipo": "gol",
+   "minuto": "54",
+   "jugador": "Marcos Cuenca",
+   "equipo": "Real Zaragoza",
+   "propio": true,
+   "marcador": "0-2",
+   "detalle": "pase de Rubén Díez"
+  },
+  {
+   "tipo": "gol",
+   "minuto": "78",
+   "jugador": "Pau Sans",
+   "equipo": "Real Zaragoza",
+   "propio": true,
+   "marcador": "0-3",
+   "detalle": "de penalti"
+  },
+  {
+   "tipo": "gol",
+   "minuto": "80",
+   "jugador": "Óscar Ureña",
+   "equipo": "Real Zaragoza",
+   "propio": true,
+   "marcador": "0-4",
+   "detalle": ""
   }
  ],
- "numeros": [
-  {
-   "metrica": "Posesión",
-   "zaragoza": "54 %",
-   "rival": "46 %"
-  },
-  {
-   "metrica": "Tiros",
-   "zaragoza": "18",
-   "rival": "1"
-  },
-  {
-   "metrica": "Tiros a puerta",
-   "zaragoza": "8",
-   "rival": "0"
-  },
-  {
-   "metrica": "Pases",
-   "zaragoza": "479",
-   "rival": "399"
-  },
-  {
-   "metrica": "Precisión en el pase",
-   "zaragoza": "87 %",
-   "rival": "77 %"
-  }
- ],
+ "numeros": [],
  "siguiente": {
-  "local": "Real Jaén",
-  "visitante": "Real Zaragoza",
+  "local": "Real Zaragoza",
+  "visitante": "Rayo Majadahonda",
   "competicion": "Primera Federación",
-  "jornada": 12,
+  "jornada": 13,
   "tv": "",
-  "inicio": "2026-11-14T21:00:00+01:00"
+  "inicio": "2026-11-21T16:30:00+01:00"
  },
  "textos": {
-  "partido_id": 11,
-  "estadio": "Ibercaja Estadio",
-  "titular": "El derbi aragonés se queda en Zaragoza",
-  "subtitulo": "Joaquín y Vadillo marcaron tras dos pérdidas del Huesca en la salida de balón; el equipo oscense terminó con un solo remate",
+  "partido_id": 12,
+  "estadio": "Estadio de La Victoria",
+  "titular": "Tres goles desde el banquillo en Jaén",
+  "subtitulo": "Cuenca, Pau Sans y Ureña marcaron tras entrar; el 0-4 llegó con dos penaltis y un pase de Rubén Díez",
   "destacados": [
    {
-    "cifra": "1",
-    "texto": "remate del Huesca en todo el partido, el registro más bajo de un rival del Zaragoza esta temporada"
+    "cifra": "3 de 4",
+    "texto": "goles del Zaragoza en La Victoria los marcaron jugadores que salieron desde el banquillo"
    },
    {
-    "cifra": "24",
-    "texto": "puntos en once jornadas: siete victorias, tres empates y una derrota"
+    "cifra": "27",
+    "texto": "puntos en doce jornadas: ocho victorias, tres empates y una derrota"
    },
    {
-    "cifra": "13 de 15",
-    "texto": "puntos en casa, con tres porterías a cero en el Ibercaja Estadio"
+    "cifra": "14 de 21",
+    "texto": "puntos fuera de casa, con 15 goles a favor y 9 en contra"
    },
    {
-    "cifra": "5 + 5",
-    "texto": "goles y asistencias de Jaume Jardí en liga; dio el pase del 1-0"
+    "cifra": "7",
+    "texto": "porterías a cero en doce jornadas de liga"
    }
   ],
-  "expulsiones_rival": [
-   {
-    "minuto": "67",
-    "jugador": "Diego Gómez",
-    "detalle": "doble amarilla"
-   }
-  ],
-  "nota_estadisticas": "Datos de la ficha del club. Sin xG de Sofascore para este partido; la ficha no desglosa todos los tiros.",
-  "fuentes": "Datos: Real Zaragoza y Aupa Zaragoza",
-  "ilustracion": "analisis/real-zaragoza/codigo/recursos/ilustraciones/j11-vertical.jpg",
-  "ilustracion_web": "analisis/real-zaragoza/codigo/recursos/ilustraciones/j11-panoramica.jpg"
+  "nota_estadisticas": "Datos de futboltotal, Diario Jaén y Cadena SER. Sin posesión, tiros ni xG publicados todavía para este partido.",
+  "fuentes": "Datos: futboltotal, Diario Jaén y Cadena SER",
+  "ilustracion": "analisis/real-zaragoza/codigo/recursos/ilustraciones/j12-vertical.jpg",
+  "ilustracion_web": "analisis/real-zaragoza/codigo/recursos/ilustraciones/j12-panoramica.jpg"
  }
 }

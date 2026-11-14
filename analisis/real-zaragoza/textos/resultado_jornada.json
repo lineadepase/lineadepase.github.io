@@ -1,35 +1,28 @@
 {
-  "partido_id": 11,
-  "estadio": "Ibercaja Estadio",
-  "titular": "El derbi aragonés se queda en Zaragoza",
-  "subtitulo": "Joaquín y Vadillo marcaron tras dos pérdidas del Huesca en la salida de balón; el equipo oscense terminó con un solo remate",
+  "partido_id": 12,
+  "estadio": "Estadio de La Victoria",
+  "titular": "Tres goles desde el banquillo en Jaén",
+  "subtitulo": "Cuenca, Pau Sans y Ureña marcaron tras entrar; el 0-4 llegó con dos penaltis y un pase de Rubén Díez",
   "destacados": [
     {
-      "cifra": "1",
-      "texto": "remate del Huesca en todo el partido, el registro más bajo de un rival del Zaragoza esta temporada"
+      "cifra": "3 de 4",
+      "texto": "goles del Zaragoza en La Victoria los marcaron jugadores que salieron desde el banquillo"
     },
     {
-      "cifra": "24",
-      "texto": "puntos en once jornadas: siete victorias, tres empates y una derrota"
+      "cifra": "27",
+      "texto": "puntos en doce jornadas: ocho victorias, tres empates y una derrota"
     },
     {
-      "cifra": "13 de 15",
-      "texto": "puntos en casa, con tres porterías a cero en el Ibercaja Estadio"
+      "cifra": "14 de 21",
+      "texto": "puntos fuera de casa, con 15 goles a favor y 9 en contra"
     },
     {
-      "cifra": "5 + 5",
-      "texto": "goles y asistencias de Jaume Jardí en liga; dio el pase del 1-0"
+      "cifra": "7",
+      "texto": "porterías a cero en doce jornadas de liga"
     }
   ],
-  "expulsiones_rival": [
-    {
-      "minuto": "67",
-      "jugador": "Diego Gómez",
-      "detalle": "doble amarilla"
-    }
-  ],
-  "nota_estadisticas": "Datos de la ficha del club. Sin xG de Sofascore para este partido; la ficha no desglosa todos los tiros.",
-  "fuentes": "Datos: Real Zaragoza y Aupa Zaragoza",
-  "ilustracion": "analisis/real-zaragoza/codigo/recursos/ilustraciones/j11-vertical.jpg",
-  "ilustracion_web": "analisis/real-zaragoza/codigo/recursos/ilustraciones/j11-panoramica.jpg"
+  "nota_estadisticas": "Datos de futboltotal, Diario Jaén y Cadena SER. Sin posesión, tiros ni xG publicados todavía para este partido.",
+  "fuentes": "Datos: futboltotal, Diario Jaén y Cadena SER",
+  "ilustracion": "analisis/real-zaragoza/codigo/recursos/ilustraciones/j12-vertical.jpg",
+  "ilustracion_web": "analisis/real-zaragoza/codigo/recursos/ilustraciones/j12-panoramica.jpg"
 }

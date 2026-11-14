@@ -1,6 +1,6 @@
 {
- "corte": "2026-11-07",
- "jornada": 11,
+ "corte": "2026-11-14",
+ "jornada": 12,
  "clasificacion_tras": 11,
  "partidos": [
   {
@@ -15,8 +15,8 @@
    "puntos": 0,
    "puntos_acumulados": 0,
    "posicion_rival": 11,
-   "tiros_zaragoza": 33,
-   "tiros_rival": 10,
+   "tiros_zaragoza": 33.0,
+   "tiros_rival": 10.0,
    "posesion_pct": 75.0,
    "completo": false
   },
@@ -32,8 +32,8 @@
    "puntos": 3,
    "puntos_acumulados": 3,
    "posicion_rival": 12,
-   "tiros_zaragoza": 19,
-   "tiros_rival": 10,
+   "tiros_zaragoza": 19.0,
+   "tiros_rival": 10.0,
    "posesion_pct": 67.0,
    "completo": true
   },
@@ -49,8 +49,8 @@
    "puntos": 3,
    "puntos_acumulados": 6,
    "posicion_rival": 18,
-   "tiros_zaragoza": 16,
-   "tiros_rival": 6,
+   "tiros_zaragoza": 16.0,
+   "tiros_rival": 6.0,
    "posesion_pct": null,
    "completo": false
   },
@@ -66,8 +66,8 @@
    "puntos": 3,
    "puntos_acumulados": 9,
    "posicion_rival": 8,
-   "tiros_zaragoza": 17,
-   "tiros_rival": 8,
+   "tiros_zaragoza": 17.0,
+   "tiros_rival": 8.0,
    "posesion_pct": 62.0,
    "completo": true
   },
@@ -83,8 +83,8 @@
    "puntos": 3,
    "puntos_acumulados": 12,
    "posicion_rival": 6,
-   "tiros_zaragoza": 8,
-   "tiros_rival": 8,
+   "tiros_zaragoza": 8.0,
+   "tiros_rival": 8.0,
    "posesion_pct": 56.0,
    "completo": true
   },
@@ -100,8 +100,8 @@
    "puntos": 3,
    "puntos_acumulados": 15,
    "posicion_rival": 20,
-   "tiros_zaragoza": 17,
-   "tiros_rival": 5,
+   "tiros_zaragoza": 17.0,
+   "tiros_rival": 5.0,
    "posesion_pct": 64.0,
    "completo": true
   },
@@ -117,8 +117,8 @@
    "puntos": 1,
    "puntos_acumulados": 16,
    "posicion_rival": 15,
-   "tiros_zaragoza": 16,
-   "tiros_rival": 15,
+   "tiros_zaragoza": 16.0,
+   "tiros_rival": 15.0,
    "posesion_pct": 65.0,
    "completo": true
   },
@@ -134,8 +134,8 @@
    "puntos": 1,
    "puntos_acumulados": 17,
    "posicion_rival": 3,
-   "tiros_zaragoza": 9,
-   "tiros_rival": 9,
+   "tiros_zaragoza": 9.0,
+   "tiros_rival": 9.0,
    "posesion_pct": 49.0,
    "completo": true
   },
@@ -151,8 +151,8 @@
    "puntos": 3,
    "puntos_acumulados": 20,
    "posicion_rival": 16,
-   "tiros_zaragoza": 9,
-   "tiros_rival": 8,
+   "tiros_zaragoza": 9.0,
+   "tiros_rival": 8.0,
    "posesion_pct": 67.0,
    "completo": false
   },
@@ -168,8 +168,8 @@
    "puntos": 1,
    "puntos_acumulados": 21,
    "posicion_rival": 2,
-   "tiros_zaragoza": 16,
-   "tiros_rival": 10,
+   "tiros_zaragoza": 16.0,
+   "tiros_rival": 10.0,
    "posesion_pct": 63.0,
    "completo": false
   },
@@ -185,10 +185,27 @@
    "puntos": 3,
    "puntos_acumulados": 24,
    "posicion_rival": 10,
-   "tiros_zaragoza": 18,
-   "tiros_rival": 1,
+   "tiros_zaragoza": 18.0,
+   "tiros_rival": 1.0,
    "posesion_pct": 54.0,
    "completo": false
+  },
+  {
+   "partido_id": 12,
+   "jornada": 12,
+   "fecha": "2026-11-14",
+   "sede": "Fuera",
+   "rival": "Real Jaén",
+   "goles_favor": 4,
+   "goles_contra": 0,
+   "resultado": "Victoria",
+   "puntos": 3,
+   "puntos_acumulados": 27,
+   "posicion_rival": 4,
+   "tiros_zaragoza": null,
+   "tiros_rival": null,
+   "posesion_pct": null,
+   "completo": null
   }
  ],
  "goles": [
@@ -620,71 +637,139 @@
    "rol_goleador": "Titular",
    "penalti": false,
    "propia_puerta": false
+  },
+  {
+   "partido_id": 12,
+   "rival": "Real Jaén",
+   "sede": "Fuera",
+   "sentido": "Favor",
+   "minuto_texto": "45+3",
+   "tramo": "31–45+",
+   "jugador": "Jaume Jardí",
+   "asistencia": "",
+   "rol_goleador": "Titular",
+   "penalti": true,
+   "propia_puerta": false
+  },
+  {
+   "partido_id": 12,
+   "rival": "Real Jaén",
+   "sede": "Fuera",
+   "sentido": "Favor",
+   "minuto_texto": "54",
+   "tramo": "46–60",
+   "jugador": "Marcos Cuenca",
+   "asistencia": "Rubén Díez",
+   "rol_goleador": "Suplente",
+   "penalti": false,
+   "propia_puerta": false
+  },
+  {
+   "partido_id": 12,
+   "rival": "Real Jaén",
+   "sede": "Fuera",
+   "sentido": "Favor",
+   "minuto_texto": "78",
+   "tramo": "76–90+",
+   "jugador": "Pau Sans",
+   "asistencia": "",
+   "rol_goleador": "Suplente",
+   "penalti": true,
+   "propia_puerta": false
+  },
+  {
+   "partido_id": 12,
+   "rival": "Real Jaén",
+   "sede": "Fuera",
+   "sentido": "Favor",
+   "minuto_texto": "80",
+   "tramo": "76–90+",
+   "jugador": "Óscar Ureña",
+   "asistencia": "",
+   "rol_goleador": "Suplente",
+   "penalti": false,
+   "propia_puerta": false
   }
  ],
  "jugadores": [
   {
    "jugador": "Westerveld",
-   "partidos": 10,
-   "titularidades": 10,
-   "minutos": 900.0,
+   "partidos": 11,
+   "titularidades": 11,
+   "minutos": 990.0,
    "goles": 0,
    "asistencias": 0
   },
   {
    "jugador": "Rubo",
-   "partidos": 10,
-   "titularidades": 10,
-   "minutos": 882.0,
+   "partidos": 11,
+   "titularidades": 11,
+   "minutos": 972.0,
    "goles": 2,
    "asistencias": 0
   },
   {
-   "jugador": "Jaume Jardí",
-   "partidos": 11,
-   "titularidades": 10,
-   "minutos": 877.0,
-   "goles": 5,
-   "asistencias": 5
-  },
-  {
    "jugador": "Diego González",
-   "partidos": 10,
-   "titularidades": 10,
-   "minutos": 871.0,
+   "partidos": 11,
+   "titularidades": 11,
+   "minutos": 961.0,
    "goles": 2,
    "asistencias": 1
   },
   {
+   "jugador": "Jaume Jardí",
+   "partidos": 12,
+   "titularidades": 11,
+   "minutos": 923.0,
+   "goles": 6,
+   "asistencias": 5
+  },
+  {
    "jugador": "Marco Sangalli",
-   "partidos": 10,
-   "titularidades": 8,
-   "minutos": 798.0,
+   "partidos": 11,
+   "titularidades": 9,
+   "minutos": 888.0,
    "goles": 0,
    "asistencias": 0
   },
   {
    "jugador": "Lucas Terrer",
-   "partidos": 9,
+   "partidos": 10,
    "titularidades": 8,
-   "minutos": 696.0,
+   "minutos": 740.0,
    "goles": 0,
    "asistencias": 0
   },
   {
    "jugador": "P. Ademo",
-   "partidos": 9,
-   "titularidades": 8,
-   "minutos": 676.0,
+   "partidos": 10,
+   "titularidades": 9,
+   "minutos": 722.0,
    "goles": 0,
    "asistencias": 0
   },
   {
    "jugador": "Rubén Díez",
-   "partidos": 9,
-   "titularidades": 7,
-   "minutos": 546.0,
+   "partidos": 10,
+   "titularidades": 8,
+   "minutos": 636.0,
    "goles": 0,
+   "asistencias": 2
+  },
+  {
+   "jugador": "Joaquín",
+   "partidos": 10,
+   "titularidades": 5,
+   "minutos": 558.0,
+   "goles": 1,
+   "asistencias": 0
+  },
+  {
+   "jugador": "Óscar Ureña",
+   "partidos": 11,
+   "titularidades": 6,
+   "minutos": 533.0,
+   "goles": 4,
    "asistencias": 1
   },
   {
@@ -696,18 +781,10 @@
    "asistencias": 0
   },
   {
-   "jugador": "Óscar Ureña",
-   "partidos": 10,
+   "jugador": "Iker Vadillo",
+   "partidos": 8,
    "titularidades": 6,
-   "minutos": 489.0,
-   "goles": 3,
-   "asistencias": 1
-  },
-  {
-   "jugador": "Joaquín",
-   "partidos": 9,
-   "titularidades": 4,
-   "minutos": 488.0,
+   "minutos": 428.0,
    "goles": 1,
    "asistencias": 0
   },
@@ -720,28 +797,20 @@
    "asistencias": 0
   },
   {
+   "jugador": "Pau Sans",
+   "partidos": 11,
+   "titularidades": 3,
+   "minutos": 418.0,
+   "goles": 2,
+   "asistencias": 1
+  },
+  {
    "jugador": "Edu Espiau",
    "partidos": 8,
    "titularidades": 5,
    "minutos": 401.0,
    "goles": 3,
    "asistencias": 2
-  },
-  {
-   "jugador": "Pau Sans",
-   "partidos": 10,
-   "titularidades": 3,
-   "minutos": 398.0,
-   "goles": 1,
-   "asistencias": 1
-  },
-  {
-   "jugador": "Iker Vadillo",
-   "partidos": 7,
-   "titularidades": 5,
-   "minutos": 382.0,
-   "goles": 1,
-   "asistencias": 0
   },
   {
    "jugador": "Ander Herrera",
@@ -753,18 +822,26 @@
   },
   {
    "jugador": "Yussif Saidu",
-   "partidos": 8,
-   "titularidades": 2,
-   "minutos": 288.0,
+   "partidos": 9,
+   "titularidades": 3,
+   "minutos": 366.0,
    "goles": 1,
    "asistencias": 0
   },
   {
    "jugador": "J. Gabilondo",
-   "partidos": 5,
-   "titularidades": 3,
-   "minutos": 265.0,
+   "partidos": 6,
+   "titularidades": 4,
+   "minutos": 355.0,
    "goles": 0,
+   "asistencias": 0
+  },
+  {
+   "jugador": "Marcos Cuenca",
+   "partidos": 8,
+   "titularidades": 2,
+   "minutos": 196.0,
+   "goles": 1,
    "asistencias": 0
   },
   {
@@ -772,14 +849,6 @@
    "partidos": 4,
    "titularidades": 1,
    "minutos": 168.0,
-   "goles": 0,
-   "asistencias": 0
-  },
-  {
-   "jugador": "Marcos Cuenca",
-   "partidos": 7,
-   "titularidades": 2,
-   "minutos": 152.0,
    "goles": 0,
    "asistencias": 0
   },
@@ -801,9 +870,9 @@
   },
   {
    "jugador": "J. Tobajas",
-   "partidos": 3,
+   "partidos": 4,
    "titularidades": 0,
-   "minutos": 62.0,
+   "minutos": 74.0,
    "goles": 0,
    "asistencias": 0
   },
@@ -1048,12 +1117,12 @@
  ],
  "proximos": [
   {
-   "jornada": 12,
+   "jornada": 13,
    "competicion": "Primera Federación",
-   "fecha": "2026-11-14",
-   "sede": "Fuera",
-   "rival": "Real Jaén",
-   "posicion_rival": 4
+   "fecha": "2026-11-21",
+   "sede": "Casa",
+   "rival": "Rayo Majadahonda",
+   "posicion_rival": 19
   }
  ],
  "fichas": [
@@ -1737,6 +1806,66 @@
    "a_puerta_zaragoza": 8.0,
    "a_puerta_rival": 0.0,
    "posesion_pct": 54.0
+  },
+  {
+   "partido_id": 12,
+   "competicion": "Primera Federación",
+   "jornada": 12,
+   "fecha": "2026-11-14",
+   "sede": "Fuera",
+   "rival": "Real Jaén",
+   "goles_favor": 4,
+   "goles_contra": 0,
+   "gf_descanso": 1,
+   "gc_descanso": 0,
+   "goles": [
+    {
+     "sentido": "Favor",
+     "minuto": "45+3",
+     "jugador": "Jaume Jardí",
+     "asistencia": null,
+     "penalti": true,
+     "propia_puerta": false
+    },
+    {
+     "sentido": "Favor",
+     "minuto": "54",
+     "jugador": "Marcos Cuenca",
+     "asistencia": "Rubén Díez",
+     "penalti": false,
+     "propia_puerta": false
+    },
+    {
+     "sentido": "Favor",
+     "minuto": "78",
+     "jugador": "Pau Sans",
+     "asistencia": null,
+     "penalti": true,
+     "propia_puerta": false
+    },
+    {
+     "sentido": "Favor",
+     "minuto": "80",
+     "jugador": "Óscar Ureña",
+     "asistencia": null,
+     "penalti": false,
+     "propia_puerta": false
+    }
+   ],
+   "tarjetas": [
+    {
+     "jugador": "Joaquín",
+     "tarjeta": "Amarilla"
+    },
+    {
+     "jugador": "P. Ademo",
+     "tarjeta": "Amarilla"
+    },
+    {
+     "jugador": "Rubo",
+     "tarjeta": "Amarilla"
+    }
+   ]
   }
  ],
  "copa": [
