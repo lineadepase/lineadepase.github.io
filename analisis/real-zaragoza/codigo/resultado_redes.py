@@ -226,6 +226,12 @@ def portada(d, t, cab):
     return pagina(cuerpo, extra=extra)
 
 
+def dos_lineas(nombre):
+    """Parte el nombre del equipo en dos líneas para que local y visitante tengan la misma altura."""
+    partes = nombre.split(" ", 1)
+    return "<br>".join(escape(p) for p in partes)
+
+
 def cartel(d, t, cab, panoramica=False):
     """Portada con la ilustración a la vista: el texto ocupa una franja (arriba en vertical,
     a la izquierda en la web) y deja ver la escena del partido."""
@@ -264,11 +270,11 @@ body{{background:#0b1d13 url({imagen.as_uri()}) center/cover no-repeat}}
 .equipo.der{{text-align:right}}
 .goles{{font-family:Big;font-weight:900;font-size:150px;line-height:.85;white-space:nowrap}}
 .goles i{{font-style:normal;color:var(--senal);font-size:90px;margin:0 10px;vertical-align:middle}}
-.titular{{margin-top:22px;font-size:62px;text-align:center}}
+.titular{{margin-top:40px;font-size:56px;text-align:center}}
 """
     cuerpo = f"""<p class="etiqueta" style="text-align:center">{escape(cab)}</p>
-<div class="marcador"><div class="equipo">{escape(d['local'])}</div><div class="goles">{d['gl']}<i>–</i>{d['gv']}</div>
-<div class="equipo der">{escape(d['visitante'])}</div></div>
+<div class="marcador"><div class="equipo">{dos_lineas(d['local'])}</div><div class="goles">{d['gl']}<i>–</i>{d['gv']}</div>
+<div class="equipo der">{dos_lineas(d['visitante'])}</div></div>
 <h1 class="titulo titular">{sin_corte(t['titular'])}</h1>
 <div style="flex:1"></div>{pie(t['fuentes'])}"""
     return pagina(cuerpo, extra=extra)
