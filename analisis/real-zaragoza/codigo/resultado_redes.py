@@ -361,7 +361,7 @@ def siguiente(d, t, cab, s):
         return None
     comp = s["competicion"] + (f" · Jornada {s['jornada']}" if s["jornada"] else "")
     hora = s["inicio"].strftime("%H:%M")
-    lugar = t["estadio"] if s["local"] == ZARAGOZA else ""
+    lugar = "Ibercaja Estadio" if s["local"] == ZARAGOZA else ""
     donde = " · ".join(x for x in [lugar, s["tv"]] if x)
     cuerpo = f"""<p class="etiqueta">{escape(cab)}</p>
 <div class="caja"><p class="etiqueta">Próximo partido · {escape(comp)}</p>
