@@ -26,10 +26,10 @@ MINUTOS = ["45+3'", "54'", "78'", "80'"]          # goles.csv, partido 12, de me
 CONF = {
     "vertical": dict(W=1080, H=1350, gy=800, vp=640, hb=1560, camino=250, r0=88, sep=250, curva=-150,
                      luces=[1118, 1012, 932, 872], etq_px=[56, 50, 44, 40],
-                     castillo=(640, 7.5), estrellas=900, nube=0),
+                     castillo=(640, 8.6), estrellas=900, nube=0),
     "panoramica": dict(W=1672, H=941, gy=520, vp=1290, hb=1130, camino=175, r0=62, sep=178, curva=-95,
                        luces=[752, 688, 636, 597], etq_px=[38, 34, 30, 27],
-                       castillo=(1290, 5.5), estrellas=1300, nube=0),
+                       castillo=(1290, 6.2), estrellas=1300, nube=0),
 }
 
 
@@ -125,83 +125,133 @@ def sierra(im, c):
 
 # ------------------------------------------------------------------ castillo, risco y ciudad
 def castillo(im, c, rnd):
+    """Castillo de Santa Catalina: recinto alargado sobre una cresta que baja hacia un lado, iluminado
+    desde abajo con focos cálidos, y Jaén extendida al pie, con sus calles y ventanas encendidas."""
     cx, k = c["castillo"]
+    f = k / 7.5
     gy = c["gy"]
     S = 3
     W, H = im.size
-    capa = Image.new("RGBA", (W * S, H * S), (0, 0, 0, 0))
-    d = ImageDraw.Draw(capa)
-    roca = (12, 17, 38, 255)
-    u = k * 2.6                                          # módulo de construcción
-    def P(x, y):
-        return (x * S, y * S)
-    # risco: perfil escarpado y asimétrico
     base_y = gy + 6
-    ancho = 17 * u
-    perfil = [(-1.55, 0), (-1.25, -.12), (-1.02, -.1), (-.88, -.38), (-.78, -.7), (-.7, -1.04), (-.4, -1.1), (.3, -1.12), (.66, -1.08), (.74, -.8), (.86, -.58), (1.0, -.34), (1.25, -.18), (1.6, 0)]
-    alto = 10 * u
-    pts = [P(cx + px * ancho, base_y + py * alto) for px, py in perfil]
-    pts = [P(cx - 1.7 * ancho, base_y + 30)] + pts + [P(cx + 1.7 * ancho, base_y + 30)]
-    d.polygon(pts, fill=roca)
-    cima = base_y - 1.1 * alto + 6
-    xl, xr = cx - .55 * ancho, cx + .55 * ancho
 
-    def bloque(x0, x1, y0, y1, almenas=True):
-        d.rectangle((*P(x0, y0), *P(x1, y1)), fill=roca)
+    def PX(dx, h):
+        return ((cx + dx * f) * S, (base_y - h * f) * S)
+
+    cresta = [(-700, -30), (-600, 6), (-500, 22), (-430, 58), (-370, 96), (-310, 130), (-250, 160), (-215, 184),
+              (-120, 190), (0, 190), (115, 188), (160, 168), (215, 140), (280, 118), (350, 100), (430, 84),
+              (500, 58), (580, 30), (650, 6), (700, -30)]
+    suave = []
+    for (x0, h0), (x1, h1) in zip(cresta, cresta[1:]):
+        for t in (0, .33, .66):
+            suave.append((x0 + (x1 - x0) * t + rnd.uniform(-5, 5), h0 + (h1 - h0) * t + rnd.uniform(-4, 4)))
+    suave.append(cresta[-1])
+
+    def alto_cresta(dx):
+        for (x0, h0), (x1, h1) in zip(cresta, cresta[1:]):
+            if x0 <= dx <= x1:
+                return h0 + (h1 - h0) * (dx - x0) / (x1 - x0)
+        return 0
+
+    roca = Image.new("RGBA", (W * S, H * S), (0, 0, 0, 0))
+    ImageDraw.Draw(roca).polygon([PX(x, h) for x, h in suave], fill=(13, 18, 40, 255))
+    # luz de luna en el filo de la cresta
+    filo = Image.new("RGBA", (W * S, H * S), (0, 0, 0, 0))
+    ImageDraw.Draw(filo).line([PX(x, h) for x, h in suave if -330 < x < 330], fill=(70, 88, 140, 150), width=3 * S // 2)
+    # recinto
+    cast = Image.new("RGBA", (W * S, H * S), (0, 0, 0, 0))
+    d = ImageDraw.Draw(cast)
+    pared = (34, 28, 46, 255)
+    P0 = 188
+
+    def bloque(x0, x1, h, almenas=True, base=P0):
+        d.rectangle((*PX(x0, base + h), *PX(x1, base - 40)), fill=pared)
         if almenas:
-            n = max(2, int((x1 - x0) / (u * .6)))
+            n = max(2, int((x1 - x0) / 9))
             w = (x1 - x0) / (2 * n - 1)
             for j in range(n):
-                d.rectangle((*P(x0 + 2 * j * w, y0 - u * .5), *P(x0 + 2 * j * w + w, y0 + 1)), fill=roca)
+                d.rectangle((*PX(x0 + 2 * j * w, base + h + 6), *PX(x0 + 2 * j * w + w, base + h + 1)), fill=pared)
 
-    # muralla continua y torres (Santa Catalina: recinto alargado con torre del homenaje a un lado)
-    bloque(xl, xr, cima - 1.5 * u, cima + 4)
-    bloque(xl - 1.2 * u, xl + 1.7 * u, cima - 5.2 * u, cima + 4)               # torre izquierda
-    bloque(xl + 4.8 * u, xl + 6.5 * u, cima - 3.6 * u, cima + 4)
-    bloque(xl + 8.5 * u, xl + 12.8 * u, cima - 3.0 * u, cima + 4)               # cuerpo central bajo
-    bloque(xr - 6.5 * u, xr - 1.2 * u, cima - 8.4 * u, cima + 4)                # torre del homenaje
-    bloque(xr - .2 * u, xr + 2.2 * u, cima - 4.2 * u, cima + 4)
-    d.polygon([P(xl + 8.2 * u, cima - 3.0 * u - .5 * u), P(xl + 13.1 * u, cima - 3.0 * u - .5 * u), P(xl + 10.65 * u, cima - 5.4 * u)], fill=roca)  # capilla
-    d.rectangle((*P(xr - 4.0 * u, cima - 10.6 * u), *P(xr - 3.8 * u, cima - 8.8 * u)), fill=roca)                  # asta
-    d.rectangle((*P(xr - 4.6 * u, cima - 10.1 * u), *P(xr - 3.2 * u, cima - 10.0 * u)), fill=roca)
-    # ciudad al pie: casas bajas apiñadas con tejados
-    for i in range(70):
-        t = i / 69
-        x = cx + (t - .5) * 3.1 * ancho
-        e = abs(t - .5) * 2
-        h = (1.4 + rnd.random() * 2.6) * u * (1 - .45 * e) * .75
-        w = (1.1 + rnd.random() * 1.6) * u * .75
-        y_base = base_y + 18 - e ** 2 * 6 * u * .3
-        d.rectangle((*P(x - w / 2, y_base - h), *P(x + w / 2, y_base + 30)), fill=(15, 21, 44, 255))
-        if rnd.random() < .5:
-            d.polygon([P(x - w / 2 - 1, y_base - h), P(x + w / 2 + 1, y_base - h), P(x, y_base - h - w * .35)], fill=(15, 21, 44, 255))
-    capa = capa.resize((W, H), Image.LANCZOS)
-    # luz cálida en ventanas del castillo y de la ciudad
+    bloque(-215, 115, 24)                          # muralla
+    bloque(-236, -192, 58)                         # torre izquierda
+    bloque(-172, -128, 36, False)                  # capilla
+    d.polygon([PX(-176, P0 + 36), PX(-124, P0 + 36), PX(-150, P0 + 62)], fill=pared)
+    bloque(-118, -92, 44)
+    bloque(-72, -18, 112)                          # torre del homenaje
+    bloque(22, 56, 48)
+    bloque(92, 130, 56)
+    # lienzo de muralla que baja por la cresta
+    xs = list(range(115, 230, 6))
+    arriba = [PX(x, alto_cresta(x) + 17) for x in xs]
+    abajo = [PX(x, alto_cresta(x) - 6) for x in reversed(xs)]
+    d.polygon(arriba + abajo, fill=pared)
+    for x in range(121, 225, 14):
+        d.rectangle((*PX(x, alto_cresta(x) + 22), *PX(x + 6, alto_cresta(x) + 16)), fill=pared)
+    bloque(196, 222, 30, True, base=alto_cresta(209))
+    # ciudad al pie: casas, algunas con tejado, siguiendo la base de la cresta
+    ciudad = Image.new("RGBA", (W * S, H * S), (0, 0, 0, 0))
+    dc = ImageDraw.Draw(ciudad)
+    casas = []
+    dx = -690
+    while dx < 690:
+        w = rnd.uniform(9, 20)
+        e = abs(dx) / 690
+        h = rnd.uniform(10, 34) * (1 - .5 * e) + 4
+        casas.append((dx, w, h))
+        dx += w * rnd.uniform(.8, 1.05)
+    for dx, w, h in casas:
+        yb = -4
+        dc.rectangle((*PX(dx, yb + h), *PX(dx + w, yb - 34)), fill=(16, 21, 44, 255))
+        if rnd.random() < .45:
+            dc.polygon([PX(dx - 1, yb + h), PX(dx + w + 1, yb + h), PX(dx + w / 2, yb + h + w * .35)], fill=(16, 21, 44, 255))
+    roca = roca.resize((W, H), Image.LANCZOS)
+    filo = filo.resize((W, H), Image.LANCZOS).filter(ImageFilter.GaussianBlur(1))
+    cast = cast.resize((W, H), Image.LANCZOS)
+    ciudad = ciudad.resize((W, H), Image.LANCZOS)
+    # focos: la muralla se ilumina desde abajo con luz cálida y se pierde hacia arriba
+    ytop = base_y - (P0 + 120) * f
+    yfin = base_y - (P0 - 10) * f
+    rampa = np.clip((np.arange(H) - ytop) / (yfin - ytop), 0, 1) ** 1.6 * .5
+    alfa = np.asarray(cast.getchannel("A")).astype(np.float32) / 255 * rampa[:, None]
+    cal = np.zeros((H, W, 4), np.uint8)
+    cal[..., 0], cal[..., 1], cal[..., 2] = 238, 150, 92
+    cal[..., 3] = (alfa * 255).astype(np.uint8)
+    cal = Image.fromarray(cal, "RGBA")
+    # ventanas (ranuras) y luces de la ciudad
     luz = vacia(c)
     dl = ImageDraw.Draw(luz)
-    ventanas = [(xl + .2 * u, cima - 4.0 * u), (xl + .2 * u, cima - 2.4 * u), (xr - 5.2 * u, cima - 7.0 * u),
-                (xr - 3.2 * u, cima - 7.0 * u), (xr - 5.2 * u, cima - 5.2 * u), (xr - 3.2 * u, cima - 5.2 * u),
-                (xr - 4.2 * u, cima - 3.2 * u), (xr + .9 * u, cima - 2.8 * u), (xl + 10.4 * u, cima - 1.4 * u),
-                (xl + 5.6 * u, cima - 2.0 * u), (xl + 14.3 * u, cima - .3 * u)]
-    for x, y in ventanas:
-        dl.rectangle((x - u * .16, y - u * .36, x + u * .16, y + u * .36), fill=(255, 196, 108, 255))
-    for i in range(190):
-        t = rnd.random()
-        x = cx + (t - .5) * 3.0 * ancho
-        e = abs(t - .5) * 2
-        y = base_y + 18 - rnd.random() * (3.0 * u) * (1 - .5 * e) * .8
-        if y > gy + 22:
-            continue
-        a = rnd.choice([(255, 190, 100, 255), (255, 214, 140, 255), (255, 170, 80, 255)])
-        dl.rectangle((x, y, x + u * .2, y + u * .24), fill=a)
-    # bruma cálida de la ciudad, contraluz del risco y brillo de ventanas
-    cal = vacia(c)
-    ImageDraw.Draw(cal).ellipse((cx - 1.5 * ancho, gy - 20 * u * .6, cx + 1.5 * ancho, gy + 10), fill=(255, 160, 90, 60))
-    cal = cal.filter(ImageFilter.GaussianBlur(u * 3))
-    brillo = luz.filter(ImageFilter.GaussianBlur(u * .9))
+    ranuras = [(-58, 270), (-44, 270), (-58, 244), (-44, 244), (-51, 218), (-205, 228), (-110, 214), (40, 222),
+               (112, 226), (-150, 205), (205, 150)]
+    for dx, h in ranuras:
+        x, y = cx + dx * f, base_y - h * f
+        dl.rectangle((x - 1.5 * f, y - 4.5 * f, x + 1.5 * f, y + 4.5 * f), fill=(255, 205, 120, 255))
+    for dx, w, h in casas:
+        for _ in range(int(w / 6)):
+            if rnd.random() < .5:
+                x = cx + (dx + rnd.uniform(1, w - 1)) * f
+                y = base_y - rnd.uniform(-2, h) * f
+                dl.rectangle((x, y, x + 1.8, y + 2.2), fill=rnd.choice([(255, 190, 100, 255), (255, 214, 140, 255), (255, 168, 80, 255)]))
+    calles = vacia(c)
+    dcl = ImageDraw.Draw(calles)
+    for fila in range(6):
+        yy = base_y + 10 - fila * 6.5 * f
+        dx = -700
+        while dx < 700:
+            p_ = max(.08, .9 - abs(dx) / 760)
+            if rnd.random() < p_:
+                dcl.ellipse((cx + dx * f, yy, cx + dx * f + 2.3, yy + 2.3), fill=rnd.choice([(255, 196, 110, 255), (255, 176, 84, 255), (255, 220, 150, 255)]))
+            dx += rnd.uniform(5, 9)
+    glow = vacia(c)
+    ImageDraw.Draw(glow).ellipse((cx - 720 * f, gy - 48, cx + 720 * f, gy + 16), fill=(255, 150, 80, 82))
+    glow = glow.filter(ImageFilter.GaussianBlur(26))
+    im = Image.alpha_composite(im, glow)
+    im = Image.alpha_composite(im, cast)
     im = Image.alpha_composite(im, cal)
-    im = Image.alpha_composite(im, capa)
-    im = Image.alpha_composite(im, brillo)
+    im = Image.alpha_composite(im, roca)
+    im = Image.alpha_composite(im, filo)
+    im = Image.alpha_composite(im, ciudad)
+    brillo = luz.filter(ImageFilter.GaussianBlur(2.2))
+    im = Image.alpha_composite(im, calles.filter(ImageFilter.GaussianBlur(1.6)))
+    im = Image.alpha_composite(im, calles)
     im = Image.alpha_composite(im, brillo)
     return Image.alpha_composite(im, luz)
 
@@ -218,7 +268,8 @@ def suelo(im, c):
     capa = Image.fromarray(arr.astype(np.uint8)).convert("RGBA")
     base = vacia(c)
     base.paste(capa, (0, gy))
-    d = ImageDraw.Draw(base)
+    surcos = vacia(c)
+    d = ImageDraw.Draw(surcos)
     # surcos entre hileras: franjas que convergen en el punto de fuga
     off = c["camino"] * 1.45
     i = 0
@@ -234,10 +285,16 @@ def suelo(im, c):
                 u = .005 + k / 40 * 1.5
                 y = gy + (hb - gy) * u
                 pts.append((centro(c, u) + sg * (off + ancho) * u, y))
-            d.polygon(pts, fill=(4, 9, 24, 28))
+            d.polygon(pts, fill=(4, 9, 24, 20))
         off += c["sep"]
         i += 1
+    # el campo nace del pie de la ciudad: sin línea de horizonte dura
+    al = np.asarray(base.getchannel('A')).copy()
+    for i in range(70):
+        al[gy + i] = (al[gy + i] * (i / 70) ** 1.4).astype(np.uint8)
+    base.putalpha(Image.fromarray(al))
     im = Image.alpha_composite(im, base)
+    im = Image.alpha_composite(im, surcos.filter(ImageFilter.GaussianBlur(1.6)))
     # camino iluminado por la luna
     cam = vacia(c)
     dc = ImageDraw.Draw(cam)
@@ -275,7 +332,7 @@ def olivos(im, c, rnd):
     for u, fila in arboles:
         y = gy + (hb - gy) * u
         x = centro(c, u) + (fila + c["sep"] * .2) * u + rnd.uniform(-.14, .14) * c["sep"] * u
-        r = c["r0"] * u * rnd.uniform(.8, 1.2)
+        r = c["r0"] * u * rnd.uniform(.72, 1.28)
         if x < -r * 2 or x > W + r * 2 or y - r * 1.7 > H or rnd.random() < .05:
             continue
         lejos = max(0, 1 - u * 1.9)
@@ -306,7 +363,7 @@ def olivos(im, c, rnd):
     br = vacia(c)
     db = ImageDraw.Draw(br)
     for i in range(190):
-        db.line([(0, gy + i), (W, gy + i)], fill=(120, 130, 190, int(78 * (1 - i / 190) ** 1.8)))
+        db.line([(0, gy + i), (W, gy + i)], fill=(165, 150, 200, int(92 * (1 - i / 190) ** 1.7)))
     return Image.alpha_composite(im, br)
 
 
