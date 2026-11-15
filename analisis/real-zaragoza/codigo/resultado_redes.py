@@ -264,7 +264,7 @@ body{{background:#0b1d13 url({imagen.as_uri()}) center/cover no-repeat}}
     extra = f"""
 body{{background:#0b1d13 url({imagen.as_uri()}) center/cover no-repeat}}
 .campo{{display:none}}
-.velo{{background:linear-gradient(180deg,rgba(7,22,14,.95) 0%,rgba(7,22,14,.85) 22%,rgba(7,22,14,0) 40%,rgba(7,22,14,0) 86%,rgba(7,22,14,.9) 100%)}}
+.velo{{background:linear-gradient(180deg,rgba(7,22,14,.95) 0%,rgba(7,22,14,.82) 19%,rgba(7,22,14,0) 30%,rgba(7,22,14,0) 86%,rgba(7,22,14,.9) 100%)}}
 .marcador{{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:26px}}
 .equipo{{font-family:Big;font-weight:900;font-size:66px;text-transform:uppercase;line-height:.95;width:330px}}
 .equipo.der{{text-align:right}}

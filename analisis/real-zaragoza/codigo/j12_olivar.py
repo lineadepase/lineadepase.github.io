@@ -247,6 +247,19 @@ def castillo(im, c, rnd):
     im = Image.alpha_composite(im, cast)
     im = Image.alpha_composite(im, cal)
     im = Image.alpha_composite(im, roca)
+    # luz de luna en las laderas: más clara arriba y a la izquierda, con algo de textura de roca
+    yy = np.arange(H)[:, None].astype(np.float32)
+    xx = np.arange(W)[None, :].astype(np.float32)
+    cima_y = base_y - 190 * f
+    vert = np.clip(1 - (yy - cima_y) / (base_y - cima_y), 0, 1) ** 1.3
+    horiz = np.clip(1.1 - (xx - (cx - 500 * f)) / (1000 * f), .15, 1)
+    ruido = np.random.default_rng(7).random((H // 6 + 1, W // 6 + 1)).astype(np.float32)
+    ruido = np.asarray(Image.fromarray((ruido * 255).astype(np.uint8)).resize((W, H), Image.BICUBIC)).astype(np.float32) / 255
+    luna = np.zeros((H, W, 4), np.uint8)
+    luna[..., 0], luna[..., 1], luna[..., 2] = 74, 96, 156
+    a_roca = np.asarray(roca.getchannel("A")).astype(np.float32) / 255
+    luna[..., 3] = (a_roca * vert * horiz * (.16 + .26 * ruido) * 255).astype(np.uint8)
+    im = Image.alpha_composite(im, Image.fromarray(luna, "RGBA"))
     im = Image.alpha_composite(im, filo)
     im = Image.alpha_composite(im, ciudad)
     brillo = luz.filter(ImageFilter.GaussianBlur(2.2))
