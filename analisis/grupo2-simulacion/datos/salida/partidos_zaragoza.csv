@@ -1,28 +1,27 @@
 local,visitante,goles_local_esperados,goles_visitante_esperados,victoria_local,empate,victoria_visitante
-Alcorcón,Real Zaragoza,1.728,1.125,0.515,0.238,0.248
-Algeciras,Real Zaragoza,1.622,1.173,0.478,0.246,0.276
-Antequera,Real Zaragoza,1.637,1.146,0.488,0.245,0.267
-CD Teruel,Real Zaragoza,1.403,1.192,0.418,0.262,0.32
-CDA Águilas FC,Real Zaragoza,1.492,1.168,0.446,0.256,0.297
-Cartagena,Real Zaragoza,1.622,1.113,0.492,0.247,0.261
-Hércules,Real Zaragoza,1.526,1.125,0.465,0.255,0.28
-Rayo Majadahonda,Real Zaragoza,1.466,1.142,0.446,0.259,0.295
-Real Jaén,Real Zaragoza,1.683,1.143,0.5,0.241,0.259
-Real Madrid Castilla,Real Zaragoza,1.586,1.124,0.48,0.25,0.27
-Real Zaragoza,Alcorcón,1.764,1.102,0.529,0.234,0.237
-Real Zaragoza,Algeciras,1.84,1.034,0.562,0.227,0.21
-Real Zaragoza,Atlético Madrileño,1.898,1.08,0.564,0.223,0.213
-Real Zaragoza,CDA Águilas FC,1.832,0.951,0.581,0.227,0.193
-Real Zaragoza,CE Europa,1.917,0.94,0.602,0.218,0.18
-Real Zaragoza,Gimnàstic,1.837,1.034,0.562,0.228,0.211
-Real Zaragoza,Hércules,1.765,0.973,0.56,0.234,0.206
-Real Zaragoza,Juventud Torremolinos CF,1.923,0.984,0.593,0.219,0.189
-Real Zaragoza,Rayo Majadahonda,1.792,0.934,0.576,0.23,0.194
-Real Zaragoza,Real Jaén,1.793,1.073,0.542,0.232,0.226
-Real Zaragoza,Real Madrid Castilla,1.762,1.011,0.55,0.234,0.216
-Real Zaragoza,Real Murcia,1.664,0.992,0.531,0.244,0.225
-Real Zaragoza,Sant Andreu,1.777,1.007,0.555,0.233,0.213
-Real Zaragoza,UD Ibiza,1.768,1.06,0.54,0.234,0.226
-SD Huesca,Real Zaragoza,1.546,1.12,0.471,0.253,0.275
-Sant Andreu,Real Zaragoza,1.579,1.133,0.477,0.25,0.273
-Villarreal B,Real Zaragoza,1.775,1.121,0.527,0.234,0.24
+Alcorcón,Real Zaragoza,1.681,1.263,0.472,0.24,0.288
+Algeciras,Real Zaragoza,1.502,1.364,0.407,0.249,0.345
+Antequera,Real Zaragoza,1.518,1.31,0.422,0.25,0.328
+CD Teruel,Real Zaragoza,1.143,1.368,0.313,0.267,0.42
+CDA Águilas FC,Real Zaragoza,1.3,1.316,0.365,0.263,0.372
+Cartagena,Real Zaragoza,1.49,1.203,0.438,0.255,0.306
+Hércules,Real Zaragoza,1.36,1.295,0.385,0.261,0.355
+Rayo Majadahonda,Real Zaragoza,1.215,1.306,0.344,0.268,0.387
+Real Madrid Castilla,Real Zaragoza,1.436,1.225,0.419,0.259,0.322
+Real Zaragoza,Alcorcón,1.855,1.144,0.54,0.227,0.233
+Real Zaragoza,Algeciras,2.004,1.022,0.601,0.212,0.187
+Real Zaragoza,Atlético Madrileño,2.062,1.075,0.601,0.208,0.191
+Real Zaragoza,CDA Águilas FC,1.933,0.885,0.619,0.215,0.166
+Real Zaragoza,CE Europa,2.169,0.84,0.678,0.19,0.133
+Real Zaragoza,Gimnàstic,1.987,0.987,0.606,0.213,0.181
+Real Zaragoza,Hércules,1.902,0.926,0.603,0.219,0.178
+Real Zaragoza,Juventud Torremolinos CF,2.088,0.927,0.641,0.201,0.158
+Real Zaragoza,Rayo Majadahonda,1.919,0.827,0.631,0.214,0.155
+Real Zaragoza,Real Jaén,2.03,1.043,0.602,0.21,0.188
+Real Zaragoza,Real Madrid Castilla,1.8,0.977,0.567,0.23,0.203
+Real Zaragoza,Real Murcia,1.724,0.935,0.56,0.237,0.203
+Real Zaragoza,Sant Andreu,1.85,0.988,0.576,0.226,0.199
+Real Zaragoza,UD Ibiza,1.866,1.025,0.57,0.225,0.205
+SD Huesca,Real Zaragoza,1.342,1.24,0.392,0.265,0.344
+Sant Andreu,Real Zaragoza,1.452,1.259,0.416,0.256,0.328
+Villarreal B,Real Zaragoza,1.757,1.275,0.487,0.234,0.278

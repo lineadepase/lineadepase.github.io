@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="777.6pt" height="972pt" viewBox="0 0 777.6 972" xmlns="http://www.w3.org/2000/svg" version="1.1" role="img" aria-labelledby="titulo-linea-de-pase descripcion-linea-de-pase"><title id="titulo-linea-de-pase">Jornada a jornada</title><desc id="descripcion-linea-de-pase">Probabilidad del Real Zaragoza de ascender directamente y de acabar entre los cinco primeros, con los datos de cada momento. Cada punto repite la simulación solo con los resultados disponibles en esa jornada. Primera Federación 2026/27, grupo 2 · Tras la jornada 11 · Marcadores: Sofascore y RFEF Modelo de Poisson con ataque, defensa y ventaja local · 10.000 simulaciones</desc>
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="777.6pt" height="972pt" viewBox="0 0 777.6 972" xmlns="http://www.w3.org/2000/svg" version="1.1" role="img" aria-labelledby="titulo-linea-de-pase descripcion-linea-de-pase"><title id="titulo-linea-de-pase">Jornada a jornada</title><desc id="descripcion-linea-de-pase">Probabilidad del Real Zaragoza de ascender directamente y de acabar entre los cinco primeros, con los datos de cada momento. Cada punto repite la simulación solo con los resultados disponibles en esa jornada. Primera Federación 2026/27, grupo 2 · Tras la jornada 12 · Marcadores: Sofascore y RFEF Modelo de Poisson con ataque, defensa y ventaja local · 10.000 simulaciones</desc>
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-11-09T07:21:18.137467</dc:date>
+    <dc:date>2026-11-16T07:18:21.356297</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -35,7 +35,7 @@ L 777.6 61.92
 L 777.6 0
 L 0 0
 z
-" clip-path="url(#p5238a05df2)" style="fill: #142e7c; stroke: #142e7c; stroke-linejoin: miter"/>
+" clip-path="url(#pa976ed6dd0)" style="fill: #142e7c; stroke: #142e7c; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
     <path d="M 0 61.92
@@ -43,7 +43,7 @@ L 58.32 61.92
 L 58.32 0
 L 0 0
 z
-" clip-path="url(#p5238a05df2)" style="fill: #1b3788; stroke: #1b3788; stroke-linejoin: miter"/>
+" clip-path="url(#pa976ed6dd0)" style="fill: #1b3788; stroke: #1b3788; stroke-linejoin: miter"/>
    </g>
    <g id="patch_4">
     <path d="M 116.64 61.92
@@ -51,7 +51,7 @@ L 174.96 61.92
 L 174.96 0
 L 116.64 0
 z
-" clip-path="url(#p5238a05df2)" style="fill: #1b3788; stroke: #1b3788; stroke-linejoin: miter"/>
+" clip-path="url(#pa976ed6dd0)" style="fill: #1b3788; stroke: #1b3788; stroke-linejoin: miter"/>
    </g>
    <g id="patch_5">
     <path d="M 233.28 61.92
@@ -59,7 +59,7 @@ L 291.6 61.92
 L 291.6 0
 L 233.28 0
 z
-" clip-path="url(#p5238a05df2)" style="fill: #1b3788; stroke: #1b3788; stroke-linejoin: miter"/>
+" clip-path="url(#pa976ed6dd0)" style="fill: #1b3788; stroke: #1b3788; stroke-linejoin: miter"/>
    </g>
    <g id="patch_6">
     <path d="M 349.92 61.92
@@ -67,7 +67,7 @@ L 408.24 61.92
 L 408.24 0
 L 349.92 0
 z
-" clip-path="url(#p5238a05df2)" style="fill: #1b3788; stroke: #1b3788; stroke-linejoin: miter"/>
+" clip-path="url(#pa976ed6dd0)" style="fill: #1b3788; stroke: #1b3788; stroke-linejoin: miter"/>
    </g>
    <g id="patch_7">
     <path d="M 466.56 61.92
@@ -75,7 +75,7 @@ L 524.88 61.92
 L 524.88 0
 L 466.56 0
 z
-" clip-path="url(#p5238a05df2)" style="fill: #1b3788; stroke: #1b3788; stroke-linejoin: miter"/>
+" clip-path="url(#pa976ed6dd0)" style="fill: #1b3788; stroke: #1b3788; stroke-linejoin: miter"/>
    </g>
    <g id="patch_8">
     <path d="M 583.2 61.92
@@ -83,7 +83,7 @@ L 641.52 61.92
 L 641.52 0
 L 583.2 0
 z
-" clip-path="url(#p5238a05df2)" style="fill: #1b3788; stroke: #1b3788; stroke-linejoin: miter"/>
+" clip-path="url(#pa976ed6dd0)" style="fill: #1b3788; stroke: #1b3788; stroke-linejoin: miter"/>
    </g>
    <g id="patch_9">
     <path d="M 699.84 61.92
@@ -91,7 +91,7 @@ L 758.16 61.92
 L 758.16 0
 L 699.84 0
 z
-" clip-path="url(#p5238a05df2)" style="fill: #1b3788; stroke: #1b3788; stroke-linejoin: miter"/>
+" clip-path="url(#pa976ed6dd0)" style="fill: #1b3788; stroke: #1b3788; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
     <!-- Línea de pase -->
@@ -942,7 +942,7 @@ z
      <g id="line2d_2"/>
      <g id="text_4">
       <!-- J4 -->
-      <g style="fill: #4b607e" transform="translate(152.338111 834.678) scale(0.11 -0.11)">
+      <g style="fill: #4b607e" transform="translate(143.807202 834.678) scale(0.11 -0.11)">
        <defs>
         <path id="Archivo-SemiBold-1d6" d="M 2221 0
 L 2221 1075
@@ -982,7 +982,7 @@ z
      <g id="line2d_3"/>
      <g id="text_5">
       <!-- J5 -->
-      <g style="fill: #4b607e" transform="translate(229.028636 834.678) scale(0.11 -0.11)">
+      <g style="fill: #4b607e" transform="translate(211.966818 834.678) scale(0.11 -0.11)">
        <defs>
         <path id="Archivo-SemiBold-1d7" d="M 1856 -77
 Q 1395 -77 1049 96
@@ -1028,7 +1028,7 @@ z
      <g id="line2d_4"/>
      <g id="text_6">
       <!-- J6 -->
-      <g style="fill: #4b607e" transform="translate(305.795646 834.678) scale(0.11 -0.11)">
+      <g style="fill: #4b607e" transform="translate(280.202919 834.678) scale(0.11 -0.11)">
        <defs>
         <path id="Archivo-SemiBold-1d8" d="M 1920 -77
 Q 1542 -77 1244 32
@@ -1084,7 +1084,7 @@ z
      <g id="line2d_5"/>
      <g id="text_7">
       <!-- J7 -->
-      <g style="fill: #4b607e" transform="translate(382.683828 834.678) scale(0.11 -0.11)">
+      <g style="fill: #4b607e" transform="translate(348.560192 834.678) scale(0.11 -0.11)">
        <defs>
         <path id="Archivo-SemiBold-1d9" d="M 928 0
 Q 928 595 1081 1145
@@ -1114,7 +1114,7 @@ z
      <g id="line2d_6"/>
      <g id="text_8">
       <!-- J8 -->
-      <g style="fill: #4b607e" transform="translate(459.345994 834.678) scale(0.11 -0.11)">
+      <g style="fill: #4b607e" transform="translate(416.691449 834.678) scale(0.11 -0.11)">
        <defs>
         <path id="Archivo-SemiBold-1da" d="M 1837 -77
 Q 1293 -77 953 96
@@ -1169,7 +1169,7 @@ z
      <g id="line2d_7"/>
      <g id="text_9">
       <!-- J9 -->
-      <g style="fill: #4b607e" transform="translate(536.130192 834.678) scale(0.11 -0.11)">
+      <g style="fill: #4b607e" transform="translate(484.944737 834.678) scale(0.11 -0.11)">
        <defs>
         <path id="Archivo-SemiBold-1db" d="M 1760 -77
 Q 1293 -77 998 102
@@ -1225,7 +1225,7 @@ z
      <g id="line2d_8"/>
      <g id="text_10">
       <!-- J10 -->
-      <g style="fill: #4b607e" transform="translate(610.043217 834.678) scale(0.11 -0.11)">
+      <g style="fill: #4b607e" transform="translate(550.326854 834.678) scale(0.11 -0.11)">
        <defs>
         <path id="Archivo-SemiBold-1d3" d="M 429 0
 L 429 480
@@ -1254,23 +1254,34 @@ z
      <g id="line2d_9"/>
      <g id="text_11">
       <!-- J11 -->
-      <g style="fill: #4b607e" transform="translate(687.107571 834.678) scale(0.11 -0.11)">
+      <g style="fill: #4b607e" transform="translate(618.860298 834.678) scale(0.11 -0.11)">
        <use xlink:href="#Archivo-SemiBold-59"/>
        <use xlink:href="#Archivo-SemiBold-1d3" transform="translate(55.90625 0)"/>
        <use xlink:href="#Archivo-SemiBold-1d3" transform="translate(108 0)"/>
       </g>
      </g>
     </g>
+    <g id="xtick_10">
+     <g id="line2d_10"/>
+     <g id="text_12">
+      <!-- J12 -->
+      <g style="fill: #4b607e" transform="translate(686.854055 834.678) scale(0.11 -0.11)">
+       <use xlink:href="#Archivo-SemiBold-59"/>
+       <use xlink:href="#Archivo-SemiBold-1d3" transform="translate(55.90625 0)"/>
+       <use xlink:href="#Archivo-SemiBold-1d4" transform="translate(108 0)"/>
+      </g>
+     </g>
+    </g>
    </g>
    <g id="matplotlib.axis_2">
     <g id="ytick_1">
-     <g id="line2d_10">
+     <g id="line2d_11">
       <path d="M 50.976 821.52
 L 726.624 821.52
-" clip-path="url(#pc61e7d9258)" style="fill: none; stroke: #d6e0f0; stroke-width: 0.8; stroke-linecap: square"/>
+" clip-path="url(#p9bcce4fbbb)" style="fill: none; stroke: #d6e0f0; stroke-width: 0.8; stroke-linecap: square"/>
      </g>
-     <g id="line2d_11"/>
-     <g id="text_12">
+     <g id="line2d_12"/>
+     <g id="text_13">
       <!-- 0 -->
       <g style="fill: #4b607e" transform="translate(41.173344 826.349) scale(0.11 -0.11)">
        <use xlink:href="#Archivo-SemiBold-1d2"/>
@@ -1278,13 +1289,13 @@ L 726.624 821.52
      </g>
     </g>
     <g id="ytick_2">
-     <g id="line2d_12">
+     <g id="line2d_13">
       <path d="M 50.976 705.22
 L 726.624 705.22
-" clip-path="url(#pc61e7d9258)" style="fill: none; stroke: #d6e0f0; stroke-width: 0.8; stroke-linecap: square"/>
+" clip-path="url(#p9bcce4fbbb)" style="fill: none; stroke: #d6e0f0; stroke-width: 0.8; stroke-linecap: square"/>
      </g>
-     <g id="line2d_13"/>
-     <g id="text_13">
+     <g id="line2d_14"/>
+     <g id="text_14">
       <!-- 20 -->
       <g style="fill: #4b607e" transform="translate(34.936 710.049) scale(0.11 -0.11)">
        <use xlink:href="#Archivo-SemiBold-1d4"/>
@@ -1293,13 +1304,13 @@ L 726.624 705.22
      </g>
     </g>
     <g id="ytick_3">
-     <g id="line2d_14">
+     <g id="line2d_15">
       <path d="M 50.976 588.92
 L 726.624 588.92
-" clip-path="url(#pc61e7d9258)" style="fill: none; stroke: #d6e0f0; stroke-width: 0.8; stroke-linecap: square"/>
+" clip-path="url(#p9bcce4fbbb)" style="fill: none; stroke: #d6e0f0; stroke-width: 0.8; stroke-linecap: square"/>
      </g>
-     <g id="line2d_15"/>
-     <g id="text_14">
+     <g id="line2d_16"/>
+     <g id="text_15">
       <!-- 40 -->
       <g style="fill: #4b607e" transform="translate(35.068344 593.749) scale(0.11 -0.11)">
        <use xlink:href="#Archivo-SemiBold-1d6"/>
@@ -1308,13 +1319,13 @@ L 726.624 588.92
      </g>
     </g>
     <g id="ytick_4">
-     <g id="line2d_16">
+     <g id="line2d_17">
       <path d="M 50.976 472.62
 L 726.624 472.62
-" clip-path="url(#pc61e7d9258)" style="fill: none; stroke: #d6e0f0; stroke-width: 0.8; stroke-linecap: square"/>
+" clip-path="url(#p9bcce4fbbb)" style="fill: none; stroke: #d6e0f0; stroke-width: 0.8; stroke-linecap: square"/>
      </g>
-     <g id="line2d_17"/>
-     <g id="text_15">
+     <g id="line2d_18"/>
+     <g id="text_16">
       <!-- 60 -->
       <g style="fill: #4b607e" transform="translate(34.870687 477.449) scale(0.11 -0.11)">
        <use xlink:href="#Archivo-SemiBold-1d8"/>
@@ -1323,13 +1334,13 @@ L 726.624 472.62
      </g>
     </g>
     <g id="ytick_5">
-     <g id="line2d_18">
+     <g id="line2d_19">
       <path d="M 50.976 356.32
 L 726.624 356.32
-" clip-path="url(#pc61e7d9258)" style="fill: none; stroke: #d6e0f0; stroke-width: 0.8; stroke-linecap: square"/>
+" clip-path="url(#p9bcce4fbbb)" style="fill: none; stroke: #d6e0f0; stroke-width: 0.8; stroke-linecap: square"/>
      </g>
-     <g id="line2d_19"/>
-     <g id="text_16">
+     <g id="line2d_20"/>
+     <g id="text_17">
       <!-- 80 -->
       <g style="fill: #4b607e" transform="translate(34.858656 361.149) scale(0.11 -0.11)">
        <use xlink:href="#Archivo-SemiBold-1da"/>
@@ -1338,13 +1349,13 @@ L 726.624 356.32
      </g>
     </g>
     <g id="ytick_6">
-     <g id="line2d_20">
+     <g id="line2d_21">
       <path d="M 50.976 240.02
 L 726.624 240.02
-" clip-path="url(#pc61e7d9258)" style="fill: none; stroke: #d6e0f0; stroke-width: 0.8; stroke-linecap: square"/>
+" clip-path="url(#p9bcce4fbbb)" style="fill: none; stroke: #d6e0f0; stroke-width: 0.8; stroke-linecap: square"/>
      </g>
-     <g id="line2d_21"/>
-     <g id="text_17">
+     <g id="line2d_22"/>
+     <g id="text_18">
       <!-- 100 -->
       <g style="fill: #4b607e" transform="translate(29.140375 244.849) scale(0.11 -0.11)">
        <use xlink:href="#Archivo-SemiBold-1d3"/>
@@ -1353,7 +1364,7 @@ L 726.624 240.02
       </g>
      </g>
     </g>
-    <g id="text_18">
+    <g id="text_19">
      <!-- Probabilidad (%) -->
      <g style="fill: #4b607e" transform="translate(22.620375 575.525313) rotate(-90) scale(0.12 -0.12)">
       <defs>
@@ -1670,19 +1681,20 @@ z
      </g>
     </g>
    </g>
-   <g id="line2d_22">
-    <path d="M 81.687273 643.87175
-L 158.465455 594.880375
-L 235.243636 529.752375
-L 312.021818 480.324875
-L 388.8 462.7345
-L 465.578182 459.681625
-L 542.356364 399.787125
-L 619.134545 417.3775
-L 695.912727 371.72975
-" clip-path="url(#pc61e7d9258)" style="fill: none; stroke: #213e96; stroke-width: 3.5; stroke-linecap: square"/>
+   <g id="line2d_23">
+    <path d="M 81.687273 646.052375
+L 149.934545 602.2945
+L 218.181818 528.444
+L 286.429091 470.439375
+L 354.676364 450.086875
+L 422.923636 433.223375
+L 491.170909 382.19675
+L 559.418182 404.003
+L 627.665455 354.5755
+L 695.912727 297.87925
+" clip-path="url(#p9bcce4fbbb)" style="fill: none; stroke: #213e96; stroke-width: 3.5; stroke-linecap: square"/>
     <defs>
-     <path id="m81b432de8c" d="M 0 5
+     <path id="m77a90feddd" d="M 0 5
 C 1.326016 5 2.597899 4.473168 3.535534 3.535534
 C 4.473168 2.597899 5 1.326016 5 0
 C 5 -1.326016 4.473168 -2.597899 3.535534 -3.535534
@@ -1694,31 +1706,33 @@ C -2.597899 4.473168 -1.326016 5 0 5
 z
 " style="stroke: #213e96"/>
     </defs>
-    <g clip-path="url(#pc61e7d9258)">
-     <use xlink:href="#m81b432de8c" x="81.687273" y="643.87175" style="fill: #213e96; stroke: #213e96"/>
-     <use xlink:href="#m81b432de8c" x="158.465455" y="594.880375" style="fill: #213e96; stroke: #213e96"/>
-     <use xlink:href="#m81b432de8c" x="235.243636" y="529.752375" style="fill: #213e96; stroke: #213e96"/>
-     <use xlink:href="#m81b432de8c" x="312.021818" y="480.324875" style="fill: #213e96; stroke: #213e96"/>
-     <use xlink:href="#m81b432de8c" x="388.8" y="462.7345" style="fill: #213e96; stroke: #213e96"/>
-     <use xlink:href="#m81b432de8c" x="465.578182" y="459.681625" style="fill: #213e96; stroke: #213e96"/>
-     <use xlink:href="#m81b432de8c" x="542.356364" y="399.787125" style="fill: #213e96; stroke: #213e96"/>
-     <use xlink:href="#m81b432de8c" x="619.134545" y="417.3775" style="fill: #213e96; stroke: #213e96"/>
-     <use xlink:href="#m81b432de8c" x="695.912727" y="371.72975" style="fill: #213e96; stroke: #213e96"/>
+    <g clip-path="url(#p9bcce4fbbb)">
+     <use xlink:href="#m77a90feddd" x="81.687273" y="646.052375" style="fill: #213e96; stroke: #213e96"/>
+     <use xlink:href="#m77a90feddd" x="149.934545" y="602.2945" style="fill: #213e96; stroke: #213e96"/>
+     <use xlink:href="#m77a90feddd" x="218.181818" y="528.444" style="fill: #213e96; stroke: #213e96"/>
+     <use xlink:href="#m77a90feddd" x="286.429091" y="470.439375" style="fill: #213e96; stroke: #213e96"/>
+     <use xlink:href="#m77a90feddd" x="354.676364" y="450.086875" style="fill: #213e96; stroke: #213e96"/>
+     <use xlink:href="#m77a90feddd" x="422.923636" y="433.223375" style="fill: #213e96; stroke: #213e96"/>
+     <use xlink:href="#m77a90feddd" x="491.170909" y="382.19675" style="fill: #213e96; stroke: #213e96"/>
+     <use xlink:href="#m77a90feddd" x="559.418182" y="404.003" style="fill: #213e96; stroke: #213e96"/>
+     <use xlink:href="#m77a90feddd" x="627.665455" y="354.5755" style="fill: #213e96; stroke: #213e96"/>
+     <use xlink:href="#m77a90feddd" x="695.912727" y="297.87925" style="fill: #213e96; stroke: #213e96"/>
     </g>
    </g>
-   <g id="line2d_23">
-    <path d="M 81.687273 787.2115
-L 158.465455 772.0925
-L 235.243636 739.092375
-L 312.021818 710.598875
-L 388.8 706.528375
-L 465.578182 707.25525
-L 542.356364 666.695625
-L 619.134545 691.8455
-L 695.912727 644.8603
-" clip-path="url(#pc61e7d9258)" style="fill: none; stroke-dasharray: 12.95,5.6; stroke-dashoffset: 0; stroke: #142e7c; stroke-width: 3.5"/>
+   <g id="line2d_24">
+    <path d="M 81.687273 787.793
+L 149.934545 773.691625
+L 218.181818 745.3435
+L 286.429091 713.65175
+L 354.676364 698.096625
+L 422.923636 688.06575
+L 491.170909 657.82775
+L 559.418182 685.449
+L 627.665455 634.131625
+L 695.912727 537.6317
+" clip-path="url(#p9bcce4fbbb)" style="fill: none; stroke-dasharray: 12.95,5.6; stroke-dashoffset: 0; stroke: #142e7c; stroke-width: 3.5"/>
     <defs>
-     <path id="m03de96a504" d="M 0 5
+     <path id="mb60b7221d6" d="M 0 5
 C 1.326016 5 2.597899 4.473168 3.535534 3.535534
 C 4.473168 2.597899 5 1.326016 5 0
 C 5 -1.326016 4.473168 -2.597899 3.535534 -3.535534
@@ -1730,16 +1744,17 @@ C -2.597899 4.473168 -1.326016 5 0 5
 z
 " style="stroke: #142e7c"/>
     </defs>
-    <g clip-path="url(#pc61e7d9258)">
-     <use xlink:href="#m03de96a504" x="81.687273" y="787.2115" style="fill: #142e7c; stroke: #142e7c"/>
-     <use xlink:href="#m03de96a504" x="158.465455" y="772.0925" style="fill: #142e7c; stroke: #142e7c"/>
-     <use xlink:href="#m03de96a504" x="235.243636" y="739.092375" style="fill: #142e7c; stroke: #142e7c"/>
-     <use xlink:href="#m03de96a504" x="312.021818" y="710.598875" style="fill: #142e7c; stroke: #142e7c"/>
-     <use xlink:href="#m03de96a504" x="388.8" y="706.528375" style="fill: #142e7c; stroke: #142e7c"/>
-     <use xlink:href="#m03de96a504" x="465.578182" y="707.25525" style="fill: #142e7c; stroke: #142e7c"/>
-     <use xlink:href="#m03de96a504" x="542.356364" y="666.695625" style="fill: #142e7c; stroke: #142e7c"/>
-     <use xlink:href="#m03de96a504" x="619.134545" y="691.8455" style="fill: #142e7c; stroke: #142e7c"/>
-     <use xlink:href="#m03de96a504" x="695.912727" y="644.8603" style="fill: #142e7c; stroke: #142e7c"/>
+    <g clip-path="url(#p9bcce4fbbb)">
+     <use xlink:href="#mb60b7221d6" x="81.687273" y="787.793" style="fill: #142e7c; stroke: #142e7c"/>
+     <use xlink:href="#mb60b7221d6" x="149.934545" y="773.691625" style="fill: #142e7c; stroke: #142e7c"/>
+     <use xlink:href="#mb60b7221d6" x="218.181818" y="745.3435" style="fill: #142e7c; stroke: #142e7c"/>
+     <use xlink:href="#mb60b7221d6" x="286.429091" y="713.65175" style="fill: #142e7c; stroke: #142e7c"/>
+     <use xlink:href="#mb60b7221d6" x="354.676364" y="698.096625" style="fill: #142e7c; stroke: #142e7c"/>
+     <use xlink:href="#mb60b7221d6" x="422.923636" y="688.06575" style="fill: #142e7c; stroke: #142e7c"/>
+     <use xlink:href="#mb60b7221d6" x="491.170909" y="657.82775" style="fill: #142e7c; stroke: #142e7c"/>
+     <use xlink:href="#mb60b7221d6" x="559.418182" y="685.449" style="fill: #142e7c; stroke: #142e7c"/>
+     <use xlink:href="#mb60b7221d6" x="627.665455" y="634.131625" style="fill: #142e7c; stroke: #142e7c"/>
+     <use xlink:href="#mb60b7221d6" x="695.912727" y="537.6317" style="fill: #142e7c; stroke: #142e7c"/>
     </g>
    </g>
    <g id="patch_11">
@@ -1752,177 +1767,195 @@ L 50.976 240.02
 L 726.624 821.52
 " style="fill: none; stroke: #d6e0f0; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="text_19">
-    <!-- 31 % -->
-    <g style="fill: #0f1f3a" transform="translate(67.780398 629.33425) scale(0.12 -0.12)">
-     <use xlink:href="#Archivo-SemiBold-1d5"/>
-     <use xlink:href="#Archivo-SemiBold-1d3" transform="translate(57.59375 0)"/>
-     <use xlink:href="#Archivo-SemiBold-26b" transform="translate(115.1875 0)"/>
-     <use xlink:href="#Archivo-SemiBold-2a9" transform="translate(135.1875 0)"/>
-    </g>
-   </g>
    <g id="text_20">
-    <!-- 39 % -->
-    <g style="fill: #0f1f3a" transform="translate(144.564205 580.342875) scale(0.12 -0.12)">
+    <!-- 30 % -->
+    <g style="fill: #0f1f3a" transform="translate(67.786023 631.514875) scale(0.12 -0.12)">
      <use xlink:href="#Archivo-SemiBold-1d5"/>
-     <use xlink:href="#Archivo-SemiBold-1db" transform="translate(57.59375 0)"/>
+     <use xlink:href="#Archivo-SemiBold-1d2" transform="translate(57.59375 0)"/>
      <use xlink:href="#Archivo-SemiBold-26b" transform="translate(115.09375 0)"/>
      <use xlink:href="#Archivo-SemiBold-2a9" transform="translate(135.09375 0)"/>
     </g>
    </g>
    <g id="text_21">
+    <!-- 38 % -->
+    <g style="fill: #0f1f3a" transform="translate(136.02767 587.757) scale(0.12 -0.12)">
+     <use xlink:href="#Archivo-SemiBold-1d5"/>
+     <use xlink:href="#Archivo-SemiBold-1da" transform="translate(57.59375 0)"/>
+     <use xlink:href="#Archivo-SemiBold-26b" transform="translate(115.1875 0)"/>
+     <use xlink:href="#Archivo-SemiBold-2a9" transform="translate(135.1875 0)"/>
+    </g>
+   </g>
+   <g id="text_22">
     <!-- 50 % -->
-    <g style="fill: #0f1f3a" transform="translate(221.348011 515.214875) scale(0.12 -0.12)">
+    <g style="fill: #0f1f3a" transform="translate(204.286193 513.9065) scale(0.12 -0.12)">
      <use xlink:href="#Archivo-SemiBold-1d7"/>
      <use xlink:href="#Archivo-SemiBold-1d2" transform="translate(57.5 0)"/>
      <use xlink:href="#Archivo-SemiBold-26b" transform="translate(115 0)"/>
      <use xlink:href="#Archivo-SemiBold-2a9" transform="translate(135 0)"/>
     </g>
    </g>
-   <g id="text_22">
-    <!-- 59 % -->
-    <g style="fill: #0f1f3a" transform="translate(298.126193 465.787375) scale(0.12 -0.12)">
-     <use xlink:href="#Archivo-SemiBold-1d7"/>
-     <use xlink:href="#Archivo-SemiBold-1db" transform="translate(57.5 0)"/>
-     <use xlink:href="#Archivo-SemiBold-26b" transform="translate(115 0)"/>
-     <use xlink:href="#Archivo-SemiBold-2a9" transform="translate(135 0)"/>
-    </g>
-   </g>
    <g id="text_23">
-    <!-- 62 % -->
-    <g style="fill: #0f1f3a" transform="translate(374.893125 448.197) scale(0.12 -0.12)">
+    <!-- 60 % -->
+    <g style="fill: #0f1f3a" transform="translate(272.527841 455.901875) scale(0.12 -0.12)">
      <use xlink:href="#Archivo-SemiBold-1d8"/>
-     <use xlink:href="#Archivo-SemiBold-1d4" transform="translate(57.59375 0)"/>
-     <use xlink:href="#Archivo-SemiBold-26b" transform="translate(115.1875 0)"/>
-     <use xlink:href="#Archivo-SemiBold-2a9" transform="translate(135.1875 0)"/>
-    </g>
-   </g>
-   <g id="text_24">
-    <!-- 62 % -->
-    <g style="fill: #0f1f3a" transform="translate(451.671307 445.144125) scale(0.12 -0.12)">
-     <use xlink:href="#Archivo-SemiBold-1d8"/>
-     <use xlink:href="#Archivo-SemiBold-1d4" transform="translate(57.59375 0)"/>
-     <use xlink:href="#Archivo-SemiBold-26b" transform="translate(115.1875 0)"/>
-     <use xlink:href="#Archivo-SemiBold-2a9" transform="translate(135.1875 0)"/>
-    </g>
-   </g>
-   <g id="text_25">
-    <!-- 73 % -->
-    <g style="fill: #0f1f3a" transform="translate(528.449489 385.249625) scale(0.12 -0.12)">
-     <use xlink:href="#Archivo-SemiBold-1d9"/>
-     <use xlink:href="#Archivo-SemiBold-1d5" transform="translate(57.59375 0)"/>
-     <use xlink:href="#Archivo-SemiBold-26b" transform="translate(115.1875 0)"/>
-     <use xlink:href="#Archivo-SemiBold-2a9" transform="translate(135.1875 0)"/>
-    </g>
-   </g>
-   <g id="text_26">
-    <!-- 70 % -->
-    <g style="fill: #0f1f3a" transform="translate(605.233295 402.84) scale(0.12 -0.12)">
-     <use xlink:href="#Archivo-SemiBold-1d9"/>
      <use xlink:href="#Archivo-SemiBold-1d2" transform="translate(57.59375 0)"/>
      <use xlink:href="#Archivo-SemiBold-26b" transform="translate(115.09375 0)"/>
      <use xlink:href="#Archivo-SemiBold-2a9" transform="translate(135.09375 0)"/>
     </g>
    </g>
-   <g id="text_27">
-    <!-- 77 % -->
-    <g style="fill: #0f1f3a" transform="translate(682.065852 357.19225) scale(0.12 -0.12)">
-     <use xlink:href="#Archivo-SemiBold-1d9"/>
-     <use xlink:href="#Archivo-SemiBold-1d9" transform="translate(56.59375 0)"/>
-     <use xlink:href="#Archivo-SemiBold-26b" transform="translate(114.1875 0)"/>
-     <use xlink:href="#Archivo-SemiBold-2a9" transform="translate(134.1875 0)"/>
-    </g>
-   </g>
-   <g id="text_28">
-    <!-- 6 % -->
-    <g style="fill: #0f1f3a" transform="translate(71.236023 772.674) scale(0.12 -0.12)">
+   <g id="text_24">
+    <!-- 64 % -->
+    <g style="fill: #0f1f3a" transform="translate(340.762926 435.549375) scale(0.12 -0.12)">
      <use xlink:href="#Archivo-SemiBold-1d8"/>
-     <use xlink:href="#Archivo-SemiBold-26b" transform="translate(57.59375 0)"/>
-     <use xlink:href="#Archivo-SemiBold-2a9" transform="translate(77.59375 0)"/>
-    </g>
-   </g>
-   <g id="text_29">
-    <!-- 8 % -->
-    <g style="fill: #0f1f3a" transform="translate(148.014205 757.555) scale(0.12 -0.12)">
-     <use xlink:href="#Archivo-SemiBold-1da"/>
-     <use xlink:href="#Archivo-SemiBold-26b" transform="translate(57.59375 0)"/>
-     <use xlink:href="#Archivo-SemiBold-2a9" transform="translate(77.59375 0)"/>
-    </g>
-   </g>
-   <g id="text_30">
-    <!-- 14 % -->
-    <g style="fill: #0f1f3a" transform="translate(221.330199 724.554875) scale(0.12 -0.12)">
-     <use xlink:href="#Archivo-SemiBold-1d3"/>
      <use xlink:href="#Archivo-SemiBold-1d6" transform="translate(57.59375 0)"/>
      <use xlink:href="#Archivo-SemiBold-26b" transform="translate(115.296875 0)"/>
      <use xlink:href="#Archivo-SemiBold-2a9" transform="translate(135.296875 0)"/>
     </g>
    </g>
+   <g id="text_25">
+    <!-- 67 % -->
+    <g style="fill: #0f1f3a" transform="translate(409.016761 418.685875) scale(0.12 -0.12)">
+     <use xlink:href="#Archivo-SemiBold-1d8"/>
+     <use xlink:href="#Archivo-SemiBold-1d9" transform="translate(57.59375 0)"/>
+     <use xlink:href="#Archivo-SemiBold-26b" transform="translate(115.1875 0)"/>
+     <use xlink:href="#Archivo-SemiBold-2a9" transform="translate(135.1875 0)"/>
+    </g>
+   </g>
+   <g id="text_26">
+    <!-- 76 % -->
+    <g style="fill: #0f1f3a" transform="translate(477.264034 367.65925) scale(0.12 -0.12)">
+     <use xlink:href="#Archivo-SemiBold-1d9"/>
+     <use xlink:href="#Archivo-SemiBold-1d8" transform="translate(57.59375 0)"/>
+     <use xlink:href="#Archivo-SemiBold-26b" transform="translate(115.1875 0)"/>
+     <use xlink:href="#Archivo-SemiBold-2a9" transform="translate(135.1875 0)"/>
+    </g>
+   </g>
+   <g id="text_27">
+    <!-- 72 % -->
+    <g style="fill: #0f1f3a" transform="translate(545.511307 389.4655) scale(0.12 -0.12)">
+     <use xlink:href="#Archivo-SemiBold-1d9"/>
+     <use xlink:href="#Archivo-SemiBold-1d4" transform="translate(57.59375 0)"/>
+     <use xlink:href="#Archivo-SemiBold-26b" transform="translate(115.1875 0)"/>
+     <use xlink:href="#Archivo-SemiBold-2a9" transform="translate(135.1875 0)"/>
+    </g>
+   </g>
+   <g id="text_28">
+    <!-- 80 % -->
+    <g style="fill: #0f1f3a" transform="translate(613.764205 340.038) scale(0.12 -0.12)">
+     <use xlink:href="#Archivo-SemiBold-1da"/>
+     <use xlink:href="#Archivo-SemiBold-1d2" transform="translate(57.59375 0)"/>
+     <use xlink:href="#Archivo-SemiBold-26b" transform="translate(115.09375 0)"/>
+     <use xlink:href="#Archivo-SemiBold-2a9" transform="translate(135.09375 0)"/>
+    </g>
+   </g>
+   <g id="text_29">
+    <!-- 90 % -->
+    <g style="fill: #0f1f3a" transform="translate(682.017102 283.34175) scale(0.12 -0.12)">
+     <use xlink:href="#Archivo-SemiBold-1db"/>
+     <use xlink:href="#Archivo-SemiBold-1d2" transform="translate(57.5 0)"/>
+     <use xlink:href="#Archivo-SemiBold-26b" transform="translate(115 0)"/>
+     <use xlink:href="#Archivo-SemiBold-2a9" transform="translate(135 0)"/>
+    </g>
+   </g>
+   <g id="text_30">
+    <!-- 6 % -->
+    <g style="fill: #0f1f3a" transform="translate(71.236023 773.2555) scale(0.12 -0.12)">
+     <use xlink:href="#Archivo-SemiBold-1d8"/>
+     <use xlink:href="#Archivo-SemiBold-26b" transform="translate(57.59375 0)"/>
+     <use xlink:href="#Archivo-SemiBold-2a9" transform="translate(77.59375 0)"/>
+    </g>
+   </g>
    <g id="text_31">
+    <!-- 8 % -->
+    <g style="fill: #0f1f3a" transform="translate(139.483295 759.154125) scale(0.12 -0.12)">
+     <use xlink:href="#Archivo-SemiBold-1da"/>
+     <use xlink:href="#Archivo-SemiBold-26b" transform="translate(57.59375 0)"/>
+     <use xlink:href="#Archivo-SemiBold-2a9" transform="translate(77.59375 0)"/>
+    </g>
+   </g>
+   <g id="text_32">
+    <!-- 13 % -->
+    <g style="fill: #0f1f3a" transform="translate(204.274943 730.806) scale(0.12 -0.12)">
+     <use xlink:href="#Archivo-SemiBold-1d3"/>
+     <use xlink:href="#Archivo-SemiBold-1d5" transform="translate(57.59375 0)"/>
+     <use xlink:href="#Archivo-SemiBold-26b" transform="translate(115.1875 0)"/>
+     <use xlink:href="#Archivo-SemiBold-2a9" transform="translate(135.1875 0)"/>
+    </g>
+   </g>
+   <g id="text_33">
     <!-- 19 % -->
-    <g style="fill: #0f1f3a" transform="translate(298.120568 696.061375) scale(0.12 -0.12)">
+    <g style="fill: #0f1f3a" transform="translate(272.527841 699.11425) scale(0.12 -0.12)">
      <use xlink:href="#Archivo-SemiBold-1d3"/>
      <use xlink:href="#Archivo-SemiBold-1db" transform="translate(57.59375 0)"/>
      <use xlink:href="#Archivo-SemiBold-26b" transform="translate(115.09375 0)"/>
      <use xlink:href="#Archivo-SemiBold-2a9" transform="translate(135.09375 0)"/>
     </g>
    </g>
-   <g id="text_32">
-    <!-- 20 % -->
-    <g style="fill: #0f1f3a" transform="translate(374.89875 691.990875) scale(0.12 -0.12)">
-     <use xlink:href="#Archivo-SemiBold-1d4"/>
-     <use xlink:href="#Archivo-SemiBold-1d2" transform="translate(57.59375 0)"/>
-     <use xlink:href="#Archivo-SemiBold-26b" transform="translate(115.09375 0)"/>
-     <use xlink:href="#Archivo-SemiBold-2a9" transform="translate(135.09375 0)"/>
-    </g>
-   </g>
-   <g id="text_33">
-    <!-- 20 % -->
-    <g style="fill: #0f1f3a" transform="translate(451.676932 692.71775) scale(0.12 -0.12)">
-     <use xlink:href="#Archivo-SemiBold-1d4"/>
-     <use xlink:href="#Archivo-SemiBold-1d2" transform="translate(57.59375 0)"/>
-     <use xlink:href="#Archivo-SemiBold-26b" transform="translate(115.09375 0)"/>
-     <use xlink:href="#Archivo-SemiBold-2a9" transform="translate(135.09375 0)"/>
-    </g>
-   </g>
    <g id="text_34">
-    <!-- 27 % -->
-    <g style="fill: #0f1f3a" transform="translate(528.449489 652.158125) scale(0.12 -0.12)">
+    <!-- 21 % -->
+    <g style="fill: #0f1f3a" transform="translate(340.769489 683.559125) scale(0.12 -0.12)">
      <use xlink:href="#Archivo-SemiBold-1d4"/>
-     <use xlink:href="#Archivo-SemiBold-1d9" transform="translate(57.59375 0)"/>
+     <use xlink:href="#Archivo-SemiBold-1d3" transform="translate(57.59375 0)"/>
      <use xlink:href="#Archivo-SemiBold-26b" transform="translate(115.1875 0)"/>
      <use xlink:href="#Archivo-SemiBold-2a9" transform="translate(135.1875 0)"/>
     </g>
    </g>
    <g id="text_35">
-    <!-- 22 % -->
-    <g style="fill: #0f1f3a" transform="translate(605.22767 677.308) scale(0.12 -0.12)">
+    <!-- 23 % -->
+    <g style="fill: #0f1f3a" transform="translate(409.016761 673.52825) scale(0.12 -0.12)">
      <use xlink:href="#Archivo-SemiBold-1d4"/>
-     <use xlink:href="#Archivo-SemiBold-1d4" transform="translate(57.59375 0)"/>
+     <use xlink:href="#Archivo-SemiBold-1d5" transform="translate(57.59375 0)"/>
      <use xlink:href="#Archivo-SemiBold-26b" transform="translate(115.1875 0)"/>
      <use xlink:href="#Archivo-SemiBold-2a9" transform="translate(135.1875 0)"/>
     </g>
    </g>
    <g id="text_36">
-    <!-- 30 % -->
-    <g style="fill: #0f1f3a" transform="translate(682.011477 630.3228) scale(0.12 -0.12)">
+    <!-- 28 % -->
+    <g style="fill: #0f1f3a" transform="translate(477.264034 643.29025) scale(0.12 -0.12)">
+     <use xlink:href="#Archivo-SemiBold-1d4"/>
+     <use xlink:href="#Archivo-SemiBold-1da" transform="translate(57.59375 0)"/>
+     <use xlink:href="#Archivo-SemiBold-26b" transform="translate(115.1875 0)"/>
+     <use xlink:href="#Archivo-SemiBold-2a9" transform="translate(135.1875 0)"/>
+    </g>
+   </g>
+   <g id="text_37">
+    <!-- 23 % -->
+    <g style="fill: #0f1f3a" transform="translate(545.511307 670.9115) scale(0.12 -0.12)">
+     <use xlink:href="#Archivo-SemiBold-1d4"/>
+     <use xlink:href="#Archivo-SemiBold-1d5" transform="translate(57.59375 0)"/>
+     <use xlink:href="#Archivo-SemiBold-26b" transform="translate(115.1875 0)"/>
+     <use xlink:href="#Archivo-SemiBold-2a9" transform="translate(135.1875 0)"/>
+    </g>
+   </g>
+   <g id="text_38">
+    <!-- 32 % -->
+    <g style="fill: #0f1f3a" transform="translate(613.75858 619.594125) scale(0.12 -0.12)">
      <use xlink:href="#Archivo-SemiBold-1d5"/>
-     <use xlink:href="#Archivo-SemiBold-1d2" transform="translate(57.59375 0)"/>
-     <use xlink:href="#Archivo-SemiBold-26b" transform="translate(115.09375 0)"/>
-     <use xlink:href="#Archivo-SemiBold-2a9" transform="translate(135.09375 0)"/>
+     <use xlink:href="#Archivo-SemiBold-1d4" transform="translate(57.59375 0)"/>
+     <use xlink:href="#Archivo-SemiBold-26b" transform="translate(115.1875 0)"/>
+     <use xlink:href="#Archivo-SemiBold-2a9" transform="translate(135.1875 0)"/>
+    </g>
+   </g>
+   <g id="text_39">
+    <!-- 49 % -->
+    <g style="fill: #0f1f3a" transform="translate(682.004915 523.0942) scale(0.12 -0.12)">
+     <use xlink:href="#Archivo-SemiBold-1d6"/>
+     <use xlink:href="#Archivo-SemiBold-1db" transform="translate(57.703125 0)"/>
+     <use xlink:href="#Archivo-SemiBold-26b" transform="translate(115.203125 0)"/>
+     <use xlink:href="#Archivo-SemiBold-2a9" transform="translate(135.203125 0)"/>
     </g>
    </g>
    <g id="legend_1">
-    <g id="line2d_24">
+    <g id="line2d_25">
      <path d="M 61.776 257.156
 L 73.776 257.156
 L 85.776 257.156
 " style="fill: none; stroke: #213e96; stroke-width: 3.5; stroke-linecap: square"/>
      <g>
-      <use xlink:href="#m81b432de8c" x="73.776" y="257.156" style="fill: #213e96; stroke: #213e96"/>
+      <use xlink:href="#m77a90feddd" x="73.776" y="257.156" style="fill: #213e96; stroke: #213e96"/>
      </g>
     </g>
-    <g id="text_37">
+    <g id="text_40">
      <!-- Entre los cinco primeros -->
      <g style="fill: #0f1f3a" transform="translate(95.376 261.356) scale(0.12 -0.12)">
       <defs>
@@ -2204,16 +2237,16 @@ z
       <use xlink:href="#Archivo-SemiBold-17a" transform="translate(1015.9375 0)"/>
      </g>
     </g>
-    <g id="line2d_25">
+    <g id="line2d_26">
      <path d="M 61.776 276.212
 L 73.776 276.212
 L 85.776 276.212
 " style="fill: none; stroke-dasharray: 12.95,5.6; stroke-dashoffset: 0; stroke: #142e7c; stroke-width: 3.5"/>
      <g>
-      <use xlink:href="#m03de96a504" x="73.776" y="276.212" style="fill: #142e7c; stroke: #142e7c"/>
+      <use xlink:href="#mb60b7221d6" x="73.776" y="276.212" style="fill: #142e7c; stroke: #142e7c"/>
      </g>
     </g>
-    <g id="text_38">
+    <g id="text_41">
      <!-- Ascenso directo (1.º) -->
      <g style="fill: #0f1f3a" transform="translate(95.376 280.412) scale(0.12 -0.12)">
       <defs>
@@ -2277,12 +2310,12 @@ z
     </g>
    </g>
   </g>
-  <g id="line2d_26">
+  <g id="line2d_27">
    <path d="M 43.2 905.76
 L 734.4 905.76
 " style="fill: none; stroke: #d6e0f0; stroke-linecap: square"/>
   </g>
-  <g id="text_39">
+  <g id="text_42">
    <!-- Jornada a jornada -->
    <g style="fill: #0f1f3a" transform="translate(43.2 131.281525) scale(0.52 -0.52)">
     <defs>
@@ -2406,7 +2439,7 @@ z
     <use xlink:href="#BigShouldersDisplay-Thin-fd" transform="translate(623.03125 0)"/>
    </g>
   </g>
-  <g id="text_40">
+  <g id="text_43">
    <!-- Probabilidad del Real Zaragoza de ascender directamente -->
    <g style="fill: #4b607e" transform="translate(43.2 178.487569) scale(0.17 -0.17)">
     <defs>
@@ -2675,8 +2708,8 @@ z
     <use xlink:href="#Archivo-SemiBold-235" transform="translate(3035.625 0)"/>
    </g>
   </g>
-  <g id="text_41">
-   <!-- Primera Federación 2026/27, grupo 2 · Tras la jornada 11 · Marcadores: Sofascore y RFEF -->
+  <g id="text_44">
+   <!-- Primera Federación 2026/27, grupo 2 · Tras la jornada 12 · Marcadores: Sofascore y RFEF -->
    <g style="fill: #4b607e" transform="translate(43.2 931.036528) scale(0.11 -0.11)">
     <defs>
      <path id="Archivo-SemiBold-3e" d="M 550 0
@@ -2913,38 +2946,38 @@ z
     <use xlink:href="#Archivo-SemiBold-e1" transform="translate(2298.46875 0)"/>
     <use xlink:href="#Archivo-SemiBold-26b" transform="translate(2352.96875 0)"/>
     <use xlink:href="#Archivo-SemiBold-1d3" transform="translate(2373.875 0)"/>
-    <use xlink:href="#Archivo-SemiBold-1d3" transform="translate(2425.96875 0)"/>
-    <use xlink:href="#Archivo-SemiBold-26b" transform="translate(2478.0625 0)"/>
-    <use xlink:href="#Archivo-SemiBold-23e" transform="translate(2498.96875 0)"/>
-    <use xlink:href="#Archivo-SemiBold-26b" transform="translate(2532.265625 0)"/>
-    <use xlink:href="#Archivo-SemiBold-65" transform="translate(2553.171875 0)"/>
-    <use xlink:href="#Archivo-SemiBold-e1" transform="translate(2637.875 0)"/>
-    <use xlink:href="#Archivo-SemiBold-174" transform="translate(2692.375 0)"/>
-    <use xlink:href="#Archivo-SemiBold-fe" transform="translate(2724.578125 0)"/>
-    <use xlink:href="#Archivo-SemiBold-e1" transform="translate(2776.484375 0)"/>
-    <use xlink:href="#Archivo-SemiBold-104" transform="translate(2830.984375 0)"/>
-    <use xlink:href="#Archivo-SemiBold-151" transform="translate(2887.6875 0)"/>
-    <use xlink:href="#Archivo-SemiBold-174" transform="translate(2944.6875 0)"/>
-    <use xlink:href="#Archivo-SemiBold-109" transform="translate(2976.890625 0)"/>
-    <use xlink:href="#Archivo-SemiBold-17a" transform="translate(3031.6875 0)"/>
-    <use xlink:href="#Archivo-SemiBold-237" transform="translate(3082.6875 0)"/>
-    <use xlink:href="#Archivo-SemiBold-26b" transform="translate(3112.28125 0)"/>
-    <use xlink:href="#Archivo-SemiBold-98" transform="translate(3133.1875 0)"/>
-    <use xlink:href="#Archivo-SemiBold-151" transform="translate(3200.484375 0)"/>
-    <use xlink:href="#Archivo-SemiBold-11e" transform="translate(3257.484375 0)"/>
-    <use xlink:href="#Archivo-SemiBold-e1" transform="translate(3284.984375 0)"/>
-    <use xlink:href="#Archivo-SemiBold-17a" transform="translate(3339.484375 0)"/>
-    <use xlink:href="#Archivo-SemiBold-fe" transform="translate(3390.484375 0)"/>
-    <use xlink:href="#Archivo-SemiBold-151" transform="translate(3442.390625 0)"/>
-    <use xlink:href="#Archivo-SemiBold-174" transform="translate(3499.390625 0)"/>
-    <use xlink:href="#Archivo-SemiBold-109" transform="translate(3531.59375 0)"/>
-    <use xlink:href="#Archivo-SemiBold-26b" transform="translate(3586.390625 0)"/>
-    <use xlink:href="#Archivo-SemiBold-1aa" transform="translate(3607.296875 0)"/>
-    <use xlink:href="#Archivo-SemiBold-26b" transform="translate(3657.703125 0)"/>
-    <use xlink:href="#Archivo-SemiBold-92" transform="translate(3678.609375 0)"/>
-    <use xlink:href="#Archivo-SemiBold-3e" transform="translate(3751.3125 0)"/>
-    <use xlink:href="#Archivo-SemiBold-2a" transform="translate(3812.515625 0)"/>
-    <use xlink:href="#Archivo-SemiBold-3e" transform="translate(3880.21875 0)"/>
+    <use xlink:href="#Archivo-SemiBold-1d4" transform="translate(2425.96875 0)"/>
+    <use xlink:href="#Archivo-SemiBold-26b" transform="translate(2482.671875 0)"/>
+    <use xlink:href="#Archivo-SemiBold-23e" transform="translate(2503.578125 0)"/>
+    <use xlink:href="#Archivo-SemiBold-26b" transform="translate(2536.875 0)"/>
+    <use xlink:href="#Archivo-SemiBold-65" transform="translate(2557.78125 0)"/>
+    <use xlink:href="#Archivo-SemiBold-e1" transform="translate(2642.484375 0)"/>
+    <use xlink:href="#Archivo-SemiBold-174" transform="translate(2696.984375 0)"/>
+    <use xlink:href="#Archivo-SemiBold-fe" transform="translate(2729.1875 0)"/>
+    <use xlink:href="#Archivo-SemiBold-e1" transform="translate(2781.09375 0)"/>
+    <use xlink:href="#Archivo-SemiBold-104" transform="translate(2835.59375 0)"/>
+    <use xlink:href="#Archivo-SemiBold-151" transform="translate(2892.296875 0)"/>
+    <use xlink:href="#Archivo-SemiBold-174" transform="translate(2949.296875 0)"/>
+    <use xlink:href="#Archivo-SemiBold-109" transform="translate(2981.5 0)"/>
+    <use xlink:href="#Archivo-SemiBold-17a" transform="translate(3036.296875 0)"/>
+    <use xlink:href="#Archivo-SemiBold-237" transform="translate(3087.296875 0)"/>
+    <use xlink:href="#Archivo-SemiBold-26b" transform="translate(3116.890625 0)"/>
+    <use xlink:href="#Archivo-SemiBold-98" transform="translate(3137.796875 0)"/>
+    <use xlink:href="#Archivo-SemiBold-151" transform="translate(3205.09375 0)"/>
+    <use xlink:href="#Archivo-SemiBold-11e" transform="translate(3262.09375 0)"/>
+    <use xlink:href="#Archivo-SemiBold-e1" transform="translate(3289.59375 0)"/>
+    <use xlink:href="#Archivo-SemiBold-17a" transform="translate(3344.09375 0)"/>
+    <use xlink:href="#Archivo-SemiBold-fe" transform="translate(3395.09375 0)"/>
+    <use xlink:href="#Archivo-SemiBold-151" transform="translate(3447 0)"/>
+    <use xlink:href="#Archivo-SemiBold-174" transform="translate(3504 0)"/>
+    <use xlink:href="#Archivo-SemiBold-109" transform="translate(3536.203125 0)"/>
+    <use xlink:href="#Archivo-SemiBold-26b" transform="translate(3591 0)"/>
+    <use xlink:href="#Archivo-SemiBold-1aa" transform="translate(3611.90625 0)"/>
+    <use xlink:href="#Archivo-SemiBold-26b" transform="translate(3662.3125 0)"/>
+    <use xlink:href="#Archivo-SemiBold-92" transform="translate(3683.21875 0)"/>
+    <use xlink:href="#Archivo-SemiBold-3e" transform="translate(3755.921875 0)"/>
+    <use xlink:href="#Archivo-SemiBold-2a" transform="translate(3817.125 0)"/>
+    <use xlink:href="#Archivo-SemiBold-3e" transform="translate(3884.828125 0)"/>
    </g>
    <!-- Modelo de Poisson con ataque, defensa y ventaja local · 10.000 simulaciones -->
    <g style="fill: #4b607e" transform="translate(43.2 949.564584) scale(0.11 -0.11)">
@@ -3082,7 +3115,7 @@ z
     <use xlink:href="#Archivo-SemiBold-17a" transform="translate(3347.671875 0)"/>
    </g>
   </g>
-  <g id="text_42">
+  <g id="text_45">
    <!-- Cada punto repite la simulación solo con los resultados disponibles en esa jornada. -->
    <g style="fill: #4b607e" transform="translate(43.2 887.837625) scale(0.12 -0.12)">
     <use xlink:href="#Archivo-SemiBold-1e"/>
@@ -3172,10 +3205,10 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="p5238a05df2">
+  <clipPath id="pa976ed6dd0">
    <rect x="0" y="0" width="777.6" height="61.92"/>
   </clipPath>
-  <clipPath id="pc61e7d9258">
+  <clipPath id="p9bcce4fbbb">
    <rect x="50.976" y="240.02" width="675.648" height="581.5"/>
   </clipPath>
  </defs>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="777.6pt" height="972pt" viewBox="0 0 777.6 972" xmlns="http://www.w3.org/2000/svg" version="1.1" role="img" aria-labelledby="titulo-linea-de-pase descripcion-linea-de-pase"><title id="titulo-linea-de-pase">Lo que la simulación no sabe</title><desc id="descripcion-linea-de-pase">No sabe de lesiones, fichajes ni cambios de entrenador. Con 11 jornadas, la fuerza de cada equipo todavía es muy incierta. Supone que los goles de cada equipo son independientes. Probabilidad no es pronóstico: un 20 % pasa una de cada cinco veces. Estudio completo: lineadepase.com</desc>
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="777.6pt" height="972pt" viewBox="0 0 777.6 972" xmlns="http://www.w3.org/2000/svg" version="1.1" role="img" aria-labelledby="titulo-linea-de-pase descripcion-linea-de-pase"><title id="titulo-linea-de-pase">Lo que la simulación no sabe</title><desc id="descripcion-linea-de-pase">No sabe de lesiones, fichajes ni cambios de entrenador. Con 12 jornadas, la fuerza de cada equipo todavía es muy incierta. Supone que los goles de cada equipo son independientes. Probabilidad no es pronóstico: un 20 % pasa una de cada cinco veces. Estudio completo: lineadepase.com</desc>
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-11-09T07:21:18.516371</dc:date>
+    <dc:date>2026-11-16T07:18:21.495711</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -35,7 +35,7 @@ L 777.6 61.92
 L 777.6 0
 L 0 0
 z
-" clip-path="url(#pcdc288efd7)" style="fill: #142e7c; stroke: #142e7c; stroke-linejoin: miter"/>
+" clip-path="url(#p6e47c0837e)" style="fill: #142e7c; stroke: #142e7c; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
     <path d="M 0 61.92
@@ -43,7 +43,7 @@ L 58.32 61.92
 L 58.32 0
 L 0 0
 z
-" clip-path="url(#pcdc288efd7)" style="fill: #1b3788; stroke: #1b3788; stroke-linejoin: miter"/>
+" clip-path="url(#p6e47c0837e)" style="fill: #1b3788; stroke: #1b3788; stroke-linejoin: miter"/>
    </g>
    <g id="patch_4">
     <path d="M 116.64 61.92
@@ -51,7 +51,7 @@ L 174.96 61.92
 L 174.96 0
 L 116.64 0
 z
-" clip-path="url(#pcdc288efd7)" style="fill: #1b3788; stroke: #1b3788; stroke-linejoin: miter"/>
+" clip-path="url(#p6e47c0837e)" style="fill: #1b3788; stroke: #1b3788; stroke-linejoin: miter"/>
    </g>
    <g id="patch_5">
     <path d="M 233.28 61.92
@@ -59,7 +59,7 @@ L 291.6 61.92
 L 291.6 0
 L 233.28 0
 z
-" clip-path="url(#pcdc288efd7)" style="fill: #1b3788; stroke: #1b3788; stroke-linejoin: miter"/>
+" clip-path="url(#p6e47c0837e)" style="fill: #1b3788; stroke: #1b3788; stroke-linejoin: miter"/>
    </g>
    <g id="patch_6">
     <path d="M 349.92 61.92
@@ -67,7 +67,7 @@ L 408.24 61.92
 L 408.24 0
 L 349.92 0
 z
-" clip-path="url(#pcdc288efd7)" style="fill: #1b3788; stroke: #1b3788; stroke-linejoin: miter"/>
+" clip-path="url(#p6e47c0837e)" style="fill: #1b3788; stroke: #1b3788; stroke-linejoin: miter"/>
    </g>
    <g id="patch_7">
     <path d="M 466.56 61.92
@@ -75,7 +75,7 @@ L 524.88 61.92
 L 524.88 0
 L 466.56 0
 z
-" clip-path="url(#pcdc288efd7)" style="fill: #1b3788; stroke: #1b3788; stroke-linejoin: miter"/>
+" clip-path="url(#p6e47c0837e)" style="fill: #1b3788; stroke: #1b3788; stroke-linejoin: miter"/>
    </g>
    <g id="patch_8">
     <path d="M 583.2 61.92
@@ -83,7 +83,7 @@ L 641.52 61.92
 L 641.52 0
 L 583.2 0
 z
-" clip-path="url(#pcdc288efd7)" style="fill: #1b3788; stroke: #1b3788; stroke-linejoin: miter"/>
+" clip-path="url(#p6e47c0837e)" style="fill: #1b3788; stroke: #1b3788; stroke-linejoin: miter"/>
    </g>
    <g id="patch_9">
     <path d="M 699.84 61.92
@@ -91,7 +91,7 @@ L 758.16 61.92
 L 758.16 0
 L 699.84 0
 z
-" clip-path="url(#pcdc288efd7)" style="fill: #1b3788; stroke: #1b3788; stroke-linejoin: miter"/>
+" clip-path="url(#p6e47c0837e)" style="fill: #1b3788; stroke: #1b3788; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
     <!-- Línea de pase -->
@@ -1319,7 +1319,7 @@ z
    </g>
   </g>
   <g id="text_6">
-   <!-- Con 11 jornadas, la fuerza de -->
+   <!-- Con 12 jornadas, la fuerza de -->
    <g style="fill: #0f1f3a" transform="translate(85.536 389.561063) scale(0.2 -0.2)">
     <defs>
      <path id="Archivo-SemiBold-1e" d="M 2426 -77
@@ -1365,6 +1365,44 @@ L 2106 480
 L 3149 480
 L 3149 0
 L 429 0
+z
+" transform="scale(0.015625)"/>
+     <path id="Archivo-SemiBold-1d4" d="M 320 0
+L 320 186
+Q 320 454 425 681
+Q 531 909 707 1097
+Q 883 1286 1107 1459
+Q 1331 1632 1562 1798
+Q 1875 2016 2140 2233
+Q 2406 2451 2566 2704
+Q 2726 2957 2726 3270
+Q 2726 3469 2633 3632
+Q 2541 3795 2355 3891
+Q 2170 3987 1882 3987
+Q 1542 3987 1337 3872
+Q 1133 3757 1040 3565
+Q 947 3373 947 3142
+L 947 2880
+L 390 2880
+Q 384 2912 377 2979
+Q 371 3046 371 3136
+Q 371 3610 582 3901
+Q 794 4192 1146 4329
+Q 1498 4467 1907 4467
+Q 2272 4467 2534 4368
+Q 2797 4269 2969 4096
+Q 3142 3923 3225 3702
+Q 3309 3482 3309 3238
+Q 3309 2938 3203 2688
+Q 3098 2438 2909 2224
+Q 2720 2010 2467 1811
+Q 2214 1613 1920 1408
+Q 1715 1274 1516 1123
+Q 1318 973 1177 819
+Q 1037 666 998 525
+L 3334 525
+L 3334 0
+L 320 0
 z
 " transform="scale(0.015625)"/>
      <path id="Archivo-SemiBold-11e" d="M 576 0
@@ -1434,30 +1472,30 @@ z
     <use xlink:href="#Archivo-SemiBold-148" transform="translate(129.796875 0)"/>
     <use xlink:href="#Archivo-SemiBold-26b" transform="translate(186.09375 0)"/>
     <use xlink:href="#Archivo-SemiBold-1d3" transform="translate(207 0)"/>
-    <use xlink:href="#Archivo-SemiBold-1d3" transform="translate(259.09375 0)"/>
-    <use xlink:href="#Archivo-SemiBold-26b" transform="translate(311.1875 0)"/>
-    <use xlink:href="#Archivo-SemiBold-13a" transform="translate(332.09375 0)"/>
-    <use xlink:href="#Archivo-SemiBold-151" transform="translate(354.390625 0)"/>
-    <use xlink:href="#Archivo-SemiBold-174" transform="translate(411.390625 0)"/>
-    <use xlink:href="#Archivo-SemiBold-148" transform="translate(444.59375 0)"/>
-    <use xlink:href="#Archivo-SemiBold-e1" transform="translate(500.890625 0)"/>
-    <use xlink:href="#Archivo-SemiBold-104" transform="translate(555.390625 0)"/>
-    <use xlink:href="#Archivo-SemiBold-e1" transform="translate(612.09375 0)"/>
-    <use xlink:href="#Archivo-SemiBold-17a" transform="translate(666.59375 0)"/>
-    <use xlink:href="#Archivo-SemiBold-236" transform="translate(717.59375 0)"/>
-    <use xlink:href="#Archivo-SemiBold-26b" transform="translate(745.296875 0)"/>
-    <use xlink:href="#Archivo-SemiBold-140" transform="translate(766.203125 0)"/>
-    <use xlink:href="#Archivo-SemiBold-e1" transform="translate(788.703125 0)"/>
-    <use xlink:href="#Archivo-SemiBold-26b" transform="translate(843.203125 0)"/>
-    <use xlink:href="#Archivo-SemiBold-11e" transform="translate(864.109375 0)"/>
-    <use xlink:href="#Archivo-SemiBold-189" transform="translate(892.109375 0)"/>
-    <use xlink:href="#Archivo-SemiBold-109" transform="translate(948.3125 0)"/>
-    <use xlink:href="#Archivo-SemiBold-174" transform="translate(1003.109375 0)"/>
-    <use xlink:href="#Archivo-SemiBold-1b3" transform="translate(1036.3125 0)"/>
-    <use xlink:href="#Archivo-SemiBold-e1" transform="translate(1084.109375 0)"/>
-    <use xlink:href="#Archivo-SemiBold-26b" transform="translate(1138.609375 0)"/>
-    <use xlink:href="#Archivo-SemiBold-104" transform="translate(1159.515625 0)"/>
-    <use xlink:href="#Archivo-SemiBold-109" transform="translate(1216.21875 0)"/>
+    <use xlink:href="#Archivo-SemiBold-1d4" transform="translate(259.09375 0)"/>
+    <use xlink:href="#Archivo-SemiBold-26b" transform="translate(315.796875 0)"/>
+    <use xlink:href="#Archivo-SemiBold-13a" transform="translate(336.703125 0)"/>
+    <use xlink:href="#Archivo-SemiBold-151" transform="translate(359 0)"/>
+    <use xlink:href="#Archivo-SemiBold-174" transform="translate(416 0)"/>
+    <use xlink:href="#Archivo-SemiBold-148" transform="translate(449.203125 0)"/>
+    <use xlink:href="#Archivo-SemiBold-e1" transform="translate(505.5 0)"/>
+    <use xlink:href="#Archivo-SemiBold-104" transform="translate(560 0)"/>
+    <use xlink:href="#Archivo-SemiBold-e1" transform="translate(616.703125 0)"/>
+    <use xlink:href="#Archivo-SemiBold-17a" transform="translate(671.203125 0)"/>
+    <use xlink:href="#Archivo-SemiBold-236" transform="translate(722.203125 0)"/>
+    <use xlink:href="#Archivo-SemiBold-26b" transform="translate(749.90625 0)"/>
+    <use xlink:href="#Archivo-SemiBold-140" transform="translate(770.8125 0)"/>
+    <use xlink:href="#Archivo-SemiBold-e1" transform="translate(793.3125 0)"/>
+    <use xlink:href="#Archivo-SemiBold-26b" transform="translate(847.8125 0)"/>
+    <use xlink:href="#Archivo-SemiBold-11e" transform="translate(868.71875 0)"/>
+    <use xlink:href="#Archivo-SemiBold-189" transform="translate(896.71875 0)"/>
+    <use xlink:href="#Archivo-SemiBold-109" transform="translate(952.921875 0)"/>
+    <use xlink:href="#Archivo-SemiBold-174" transform="translate(1007.71875 0)"/>
+    <use xlink:href="#Archivo-SemiBold-1b3" transform="translate(1040.921875 0)"/>
+    <use xlink:href="#Archivo-SemiBold-e1" transform="translate(1088.71875 0)"/>
+    <use xlink:href="#Archivo-SemiBold-26b" transform="translate(1143.21875 0)"/>
+    <use xlink:href="#Archivo-SemiBold-104" transform="translate(1164.125 0)"/>
+    <use xlink:href="#Archivo-SemiBold-109" transform="translate(1220.828125 0)"/>
    </g>
    <!-- cada equipo todavía es muy incierta. -->
    <g style="fill: #0f1f3a" transform="translate(85.536 419.945375) scale(0.2 -0.2)">
@@ -1948,44 +1986,6 @@ z
    <!-- un 20 % pasa una de cada cinco veces. -->
    <g style="fill: #0f1f3a" transform="translate(85.536 575.236) scale(0.2 -0.2)">
     <defs>
-     <path id="Archivo-SemiBold-1d4" d="M 320 0
-L 320 186
-Q 320 454 425 681
-Q 531 909 707 1097
-Q 883 1286 1107 1459
-Q 1331 1632 1562 1798
-Q 1875 2016 2140 2233
-Q 2406 2451 2566 2704
-Q 2726 2957 2726 3270
-Q 2726 3469 2633 3632
-Q 2541 3795 2355 3891
-Q 2170 3987 1882 3987
-Q 1542 3987 1337 3872
-Q 1133 3757 1040 3565
-Q 947 3373 947 3142
-L 947 2880
-L 390 2880
-Q 384 2912 377 2979
-Q 371 3046 371 3136
-Q 371 3610 582 3901
-Q 794 4192 1146 4329
-Q 1498 4467 1907 4467
-Q 2272 4467 2534 4368
-Q 2797 4269 2969 4096
-Q 3142 3923 3225 3702
-Q 3309 3482 3309 3238
-Q 3309 2938 3203 2688
-Q 3098 2438 2909 2224
-Q 2720 2010 2467 1811
-Q 2214 1613 1920 1408
-Q 1715 1274 1516 1123
-Q 1318 973 1177 819
-Q 1037 666 998 525
-L 3334 525
-L 3334 0
-L 320 0
-z
-" transform="scale(0.015625)"/>
      <path id="Archivo-SemiBold-1d2" d="M 1837 -77
 Q 1478 -77 1196 28
 Q 915 134 716 393
@@ -2251,7 +2251,7 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="pcdc288efd7">
+  <clipPath id="p6e47c0837e">
    <rect x="0" y="0" width="777.6" height="61.92"/>
   </clipPath>
  </defs>
