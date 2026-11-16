@@ -476,7 +476,8 @@ def tabla_html(t):
 def fuente_nombre(url):
     """Nombre legible del medio a partir de su URL."""
     nombres = {"as.com": "AS", "realzaragoza.com": "la web del Real Zaragoza", "besoccer.com": "BeSoccer",
-               "elperiodicodeceuta.es": "El Periódico de Ceuta", "aupazaragoza.com": "Aupa Zaragoza", "rfef.es": "la RFEF"}
+               "elperiodicodeceuta.es": "El Periódico de Ceuta", "aupazaragoza.com": "Aupa Zaragoza", "rfef.es": "la RFEF",
+               "futbolme.com": "futbolme"}
     return next((v for k, v in nombres.items() if k in str(url)), "la fuente")
 
 
@@ -496,9 +497,9 @@ def actualidad_html():
     partidos = ''.join(f'<li>{e(f.local)} <strong>{f.goles_local}–{f.goles_visitante}</strong> {e(f.visitante)}</li>'
                        for f in resultados.itertuples())
     return j, f"""<section class="seccion" aria-labelledby="t-actualidad">
-    <p class="etiqueta">Actualizado el 09/11/2026 · Jornada {j} completa</p>
+    <p class="etiqueta">Actualizado el 16/11/2026 · Jornada {j} completa</p>
     <h2 id="t-actualidad">Resultados y clasificación tras la jornada {j}</h2>
-    <p>El Zaragoza pasa a liderar en solitario con 24 puntos, dos más que el Villarreal B, que empató en casa ante el Juventud Torremolinos (1–1). El Real Murcia, tercero, suma 20 y el Real Jaén, próximo rival del Zaragoza, se queda en 19 tras perder 4–3 en Alcorcón. La jornada deja 34 goles: cuatro victorias locales, ninguna visitante y seis empates.</p>
+    <p>El Zaragoza suma 27 puntos y amplía a cuatro su ventaja sobre el Villarreal B, que empató 2–2 en Alicante ante el Hércules. El Alcorcón sube al tercer puesto con 21 tras ganar 1–2 en Murcia, y el Real Murcia, cuarto, se queda en 20. El Rayo Majadahonda, próximo rival del Zaragoza, perdió 0–1 en casa ante el Águilas y es penúltimo con 7. La jornada deja 21 goles: tres victorias locales, seis visitantes y un empate.</p>
     <ul>{partidos}</ul>
     <div class="tarjeta tabla" tabindex="0" role="region" aria-label="Clasificación tras la jornada {j}, desplazable"><table>
     <thead><tr><th>#</th><th>Equipo</th><th>PJ</th><th>Pts</th><th>G</th><th>E</th><th>P</th><th>GF</th><th>GC</th><th>DG</th></tr></thead>

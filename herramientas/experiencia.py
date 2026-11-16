@@ -34,11 +34,13 @@ def summaries():
         ('La conclusión', 'El Villarreal B y el Zaragoza encabezan el grupo con 17 puntos tras ocho jornadas.'),
         ('El dato', 'La diferencia de goles separa a ambos: +8 para el Villarreal B y +6 para el Zaragoza.'),
         ('La lectura', 'Para valorar el rendimiento conviene comparar también las ocasiones generadas y concedidas, atendiendo a la cobertura de xG.')]
-    ranking = sorted(read_csv('analisis/real-zaragoza/datos/salida/grupo2_equipos.csv'),key=lambda row:int(row['posicion']))
+    standings = read_csv('analisis/real-zaragoza/datos/entrada/clasificacion.csv')
+    last_round = max(int(row['tras_jornada']) for row in standings)
+    ranking = sorted((row for row in standings if int(row['tras_jornada']) == last_round),key=lambda row:int(row['posicion']))
     first, second = ranking[:2]
     items[base+'grupo-2.html'][:2] = [
-        ('La clasificación',first['equipo']+' encabeza el grupo con '+first['puntos']+' puntos; '+second['equipo']+' es segundo con '+second['puntos']+'.'),
-        ('El dato','Diferencia de goles: '+str(int(first['gf'])-int(first['gc']))+' para '+first['equipo']+' y '+str(int(second['gf'])-int(second['gc']))+' para '+second['equipo']+'.')]
+        ('La clasificación',first['equipo']+' encabeza el grupo con '+first['puntos']+' puntos tras la jornada '+str(last_round)+'; '+second['equipo']+' es segundo con '+second['puntos']+'.'),
+        ('El dato','Diferencia de goles: '+format(int(first['gf'])-int(first['gc']),'+d')+' para '+first['equipo']+' y '+format(int(second['gf'])-int(second['gc']),'+d')+' para '+second['equipo']+'.')]
     items['proyectos/futbol-femenino/index.html'] = [
         ('La propuesta', 'Andalucía y la Comunidad Valenciana son el punto de partida propuesto para un programa piloto de iniciación.'),
         ('El dato', 'Reúnen el 28,6 % de las mujeres de España y el 23,4 % de las licencias femeninas de fútbol.'),
