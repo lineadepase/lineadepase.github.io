@@ -129,7 +129,8 @@ def main():
 
     crear_figuras(tabla, distribucion, evolucion, jornada, SIMULACIONES, RAIZ / "graficos")
     if not args.sin_carrusel:
-        crear_carrusel(tabla, jornada, RAIZ / "graficos", RAIZ / "publicaciones" / "instagram")
+        crear_carrusel(tabla, jornada, RAIZ / "graficos", RAIZ / "publicaciones" / "instagram",
+                       n=SIMULACIONES, jugados=len(partidos), pendientes=len(pendientes))
 
     pd.set_option("display.width", 200)
     print(tabla[["equipo", "ascenso_directo", "playoff", "descenso", "puntos_medios"]].round(3).to_string(index=False))

@@ -140,21 +140,60 @@ def crear_figuras(tabla, distribucion, evolucion, jornada, n, carpeta):
     guardar(fig, carpeta, "03_evolucion_zaragoza_instagram")
 
 
-def crear_carrusel(tabla, jornada, carpeta_graficos, carpeta):
+def crear_portada(jornada, n, jugados, pendientes, destino):
+    """Portada del carrusel: la ilustración original con una franja inferior que dice el corte."""
+    import matplotlib.pyplot as plt
+    from matplotlib.colors import to_rgba
+    from estilo import PX, TITULAR, preparar  # noqa: E402
+
+    c = preparar(PALETA)
+    recursos = Path(__file__).resolve().parents[1] / "recursos"
+    imagen = plt.imread(recursos / "portada_ia_instagram.png")
+    fig = plt.figure(figsize=(10.8, 13.5), dpi=100)
+    ax = fig.add_axes([0, 0, 1, 1])
+    ax.imshow(imagen, extent=(0, 1080, 1350, 0))
+    ax.set_xlim(0, 1080)
+    ax.set_ylim(1350, 0)
+    ax.axis("off")
+    # Degradado suave para que la franja no corte la escena de golpe.
+    alto, inicio = 70, 1150
+    degradado = np.zeros((alto, 1, 4))
+    degradado[..., :3] = to_rgba(c["noche"])[:3]
+    degradado[:, 0, 3] = np.linspace(0, 0.92, alto)
+    ax.imshow(degradado, extent=(0, 1080, inicio, inicio - alto), aspect="auto")
+    ax.add_patch(Rectangle((0, inicio), 1080, 1350 - inicio, color=c["noche"], alpha=0.92, lw=0))
+    ax.add_patch(Rectangle((60, inicio + 26), 90, 6, color="#f2c94c", lw=0))
+    ax.text(60, inicio + 48, f"TRAS LA JORNADA {jornada}", fontfamily=TITULAR, fontweight=800,
+            fontsize=58, color=c["cal"], va="top")
+    simulaciones = f"{n:,}".replace(",", ".")
+    ax.text(60, 1350 - 38, f"{simulaciones} temporadas simuladas  ·  {jugados} partidos jugados  ·  "
+                           f"{pendientes} por jugar", fontsize=19, color=c["cal"], va="bottom")
+    fig._linea_pase_svg_title = f"Simulación del grupo 2 tras la jornada {jornada}"
+    fig.savefig(destino, dpi=100)
+    plt.close(fig)
+    return destino
+
+
+def crear_carrusel(tabla, jornada, carpeta_graficos, carpeta, n=None, jugados=None, pendientes=None):
+    """Carrusel de Instagram y Facebook: portada con el corte, gráfica del Zaragoza y explicación."""
     carpeta = Path(carpeta)
     carpeta.mkdir(parents=True, exist_ok=True)
-    fila = tabla[tabla.equipo == EQUIPO].iloc[0]
-    recursos = Path(__file__).resolve().parents[1] / "recursos"
-    # La portada es una ilustración generada con IA (recursos/portada_ia_instagram.png).
-    shutil.copy(recursos / "portada_ia_instagram.png", carpeta / "01_portada.png")
-    for origen, destino in (("01_puesto_zaragoza_instagram", "02_puesto"), ("02_veinte_equipos_instagram", "03_grupo"),
-                            ("03_evolucion_zaragoza_instagram", "04_evolucion")):
+    for antiguo in ("03_grupo", "04_evolucion", "05_limites"):
         for extension in ("png", "svg"):
-            shutil.copy(Path(carpeta_graficos) / f"{origen}.{extension}", carpeta / f"{destino}.{extension}")
-    fig = cierre("Lo que la\nsimulación no sabe",
-                 ["No sabe de lesiones, fichajes\nni cambios de entrenador.",
-                  f"Con {jornada} jornadas, la fuerza de\ncada equipo todavía es muy incierta.",
-                  "Supone que los goles de cada\nequipo son independientes.",
+            (carpeta / f"{antiguo}.{extension}").unlink(missing_ok=True)
+    # La portada es una ilustración generada con IA (recursos/portada_ia_instagram.png).
+    crear_portada(jornada, n, jugados, pendientes, carpeta / "01_portada.png")
+    for extension in ("png", "svg"):
+        shutil.copy(Path(carpeta_graficos) / f"01_puesto_zaragoza_instagram.{extension}",
+                    carpeta / f"02_puesto.{extension}")
+    simulaciones = f"{n:,}".replace(",", ".")
+    fig = cierre("Cómo se ha\nhecho",
+                 [f"Un modelo de goles estima el ataque,\nla defensa y la ventaja local de cada\n"
+                  f"equipo con los {jugados} partidos jugados.",
+                  f"Con él se juegan {simulaciones} veces\nlos {pendientes} partidos que faltan.",
+                  "Cada porcentaje es la parte de esas\ntemporadas en la que ocurre algo.",
+                  f"No sabe de lesiones, fichajes ni cambios\nde entrenador, y con {jornada} jornadas la fuerza\n"
+                  "de cada equipo todavía es incierta.",
                   "Probabilidad no es pronóstico:\nun 20 % pasa una de cada cinco veces."],
                  paleta=PALETA)
-    guardar(fig, carpeta, "05_limites")
+    guardar(fig, carpeta, "03_explicacion")
