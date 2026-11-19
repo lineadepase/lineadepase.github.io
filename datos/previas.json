@@ -1,10 +1,42 @@
 [
   {
-    "jornada": 12,
-    "pagina": "proyectos/real-zaragoza/previa-jornada-12.html",
+    "jornada": 13,
+    "pagina": "proyectos/real-zaragoza/previa-jornada-13.html",
     "alias": [
       "proyectos/real-zaragoza/previa.html"
     ],
+    "fecha_partido": "2026-11-21",
+    "fecha_publicacion": "2026-11-19",
+    "fecha_actualizacion": "2026-11-19",
+    "titulo": "Real Zaragoza – Rayo Majadahonda",
+    "etiqueta": "Primera Federación · J13 · 21 de noviembre",
+    "resumen": "El líder, con 27 puntos y 13 de 15 en casa, recibe a un Rayo Majadahonda penúltimo con 7 que todavía no ha puntuado fuera.",
+    "pregunta_abierta": "¿Sumará el Rayo Majadahonda su primer punto lejos de casa ante el líder?",
+    "fuera_de_plano": "El balance por sede reúne cinco partidos del Zaragoza en casa y seis salidas del Rayo Majadahonda. Es una muestra corta y no permite anticipar cómo se desarrollará el partido.",
+    "imagen": "proyectos/real-zaragoza/graficos/previa/real-zaragoza-rayo-majadahonda-j13.webp",
+    "ancho": 1672,
+    "alto": 941,
+    "alt": "Escalinata de piedra iluminada bajo un cielo nocturno estrellado: un balón blanco y azul brilla en el escalón más alto y un balón gris descansa en uno de los más bajos.",
+    "pie": "Ilustración creada con IA para Línea de pase.",
+    "noticia_html": "<section class=\"seccion lectura\" aria-labelledby=\"noticia-previa-j13\"><p class=\"etiqueta\">El contexto del partido</p><h2 id=\"noticia-previa-j13\">El líder recibe al penúltimo</h2><p>El Real Zaragoza llega a la jornada 13 como líder, con 27 puntos y cuatro de ventaja sobre el Villarreal B, después de ganar 0-4 en Jaén. El Rayo Majadahonda es penúltimo con 7 puntos, 20 menos, tras perder 0-1 en casa ante el Águilas.</p><p>La sede marca la mayor diferencia. El Zaragoza ha sumado 13 de 15 puntos en el Ibercaja Estadio, con 10 goles a favor y 3 en contra. El Rayo no ha puntuado fuera: seis derrotas, con 2 goles marcados y 10 recibidos.</p><p>La forma reciente va en la misma línea: 11 puntos en los últimos cinco partidos para el Zaragoza y 3 para el Rayo. Son doce jornadas: los datos sitúan el partido, no adivinan el resultado.</p><p class=\"nota\">Datos de liga hasta la jornada 12. La Copa del Rey se analiza por separado. El corte y la comparación completa aparecen al final.</p></section>",
+    "rival": "Rayo Majadahonda",
+    "hora": "16:30",
+    "estadio": "Ibercaja Estadio",
+    "competicion": "Primera Federación · Jornada 13",
+    "fuente_partido": "https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-13-real-zaragoza-vs-cf-rayo-4022",
+    "estados_previa": {
+      "confirmado": "El partido se juega el sábado 21 de noviembre a las 16:30 en el Ibercaja Estadio (Zaragoza).",
+      "pendiente": "La emisión televisiva, las convocatorias y los onces.",
+      "despues": "Se revisará si el Rayo Majadahonda logró puntuar fuera de casa ante el líder."
+    },
+    "imagen_social": "assets/compartir/previa-real-zaragoza-rayo-majadahonda-j13-social.jpg",
+    "ancho_social": 1200,
+    "alto_social": 675
+  },
+  {
+    "jornada": 12,
+    "pagina": "proyectos/real-zaragoza/previa-jornada-12.html",
+    "alias": [],
     "fecha_partido": "2026-11-14",
     "fecha_publicacion": "2026-11-09",
     "fecha_actualizacion": "2026-11-12",
