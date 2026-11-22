@@ -463,7 +463,7 @@ def pagina_jornadas(d, sofa):
   <section class="seccion primera" aria-labelledby="t-jornadas">
     <p class="etiqueta">Archivo de temporada</p>
     <h1 id="t-jornadas">Jornada a jornada</h1>
-    <p class="entradilla">Cada partido de liga tiene su propia ficha: marcador, goles, tarjetas, alineación, estadísticas de Sofascore y, cuando lo he visto, cómo fueron los goles con el resumen en vídeo.</p>
+    <p class="entradilla">Cada partido de liga tiene su propia ficha: marcador, goles, tarjetas, alineación, estadísticas de Sofascore y, cuando hay resumen en vídeo, cómo fueron los goles.</p>
     <p class="nota">Marcador desde el punto de vista del Real Zaragoza: goles a favor–goles en contra. Los puntos son acumulados.</p>
     <div class="rejilla-jornadas">{"".join(tarjetas)}</div>
     <p class="nota"><a href="../../analisis/real-zaragoza/datos/salida/partidos_liga.csv" download>Descargar los partidos de liga (CSV)</a> · <a href="../../analisis/real-zaragoza/datos/tablas/datos_real_zaragoza.xlsx" download>Todas las tablas en Excel</a></p>

@@ -1,6 +1,6 @@
 {
- "corte": "2026-11-14",
- "jornada": 12,
+ "corte": "2026-11-21",
+ "jornada": 13,
  "clasificacion_tras": 12,
  "partidos": [
   {
@@ -206,6 +206,23 @@
    "tiros_rival": null,
    "posesion_pct": null,
    "completo": null
+  },
+  {
+   "partido_id": 13,
+   "jornada": 13,
+   "fecha": "2026-11-21",
+   "sede": "Casa",
+   "rival": "Rayo Majadahonda",
+   "goles_favor": 2,
+   "goles_contra": 0,
+   "resultado": "Victoria",
+   "puntos": 3,
+   "puntos_acumulados": 30,
+   "posicion_rival": 19,
+   "tiros_zaragoza": 16.0,
+   "tiros_rival": 5.0,
+   "posesion_pct": 64.0,
+   "completo": false
   }
  ],
  "goles": [
@@ -689,15 +706,65 @@
    "rol_goleador": "Suplente",
    "penalti": false,
    "propia_puerta": false
+  },
+  {
+   "partido_id": 13,
+   "rival": "Rayo Majadahonda",
+   "sede": "Casa",
+   "sentido": "Favor",
+   "minuto_texto": "37",
+   "tramo": "31–45+",
+   "jugador": "Marco Sangalli",
+   "asistencia": "Rubén Díez",
+   "rol_goleador": "Titular",
+   "penalti": false,
+   "propia_puerta": false
+  },
+  {
+   "partido_id": 13,
+   "rival": "Rayo Majadahonda",
+   "sede": "Casa",
+   "sentido": "Favor",
+   "minuto_texto": "68",
+   "tramo": "61–75",
+   "jugador": "Edu Espiau",
+   "asistencia": "Marcos Cuenca",
+   "rol_goleador": "Suplente",
+   "penalti": false,
+   "propia_puerta": false
   }
  ],
  "jugadores": [
   {
    "jugador": "Westerveld",
-   "partidos": 11,
-   "titularidades": 11,
-   "minutos": 990.0,
+   "partidos": 12,
+   "titularidades": 12,
+   "minutos": 1080.0,
    "goles": 0,
+   "asistencias": 0
+  },
+  {
+   "jugador": "Diego González",
+   "partidos": 12,
+   "titularidades": 12,
+   "minutos": 1040.0,
+   "goles": 2,
+   "asistencias": 1
+  },
+  {
+   "jugador": "Jaume Jardí",
+   "partidos": 13,
+   "titularidades": 12,
+   "minutos": 985.0,
+   "goles": 6,
+   "asistencias": 5
+  },
+  {
+   "jugador": "Marco Sangalli",
+   "partidos": 12,
+   "titularidades": 10,
+   "minutos": 978.0,
+   "goles": 1,
    "asistencias": 0
   },
   {
@@ -709,76 +776,68 @@
    "asistencias": 0
   },
   {
-   "jugador": "Diego González",
-   "partidos": 11,
-   "titularidades": 11,
-   "minutos": 961.0,
-   "goles": 2,
-   "asistencias": 1
-  },
-  {
-   "jugador": "Jaume Jardí",
-   "partidos": 12,
-   "titularidades": 11,
-   "minutos": 923.0,
-   "goles": 6,
-   "asistencias": 5
-  },
-  {
-   "jugador": "Marco Sangalli",
+   "jugador": "Lucas Terrer",
    "partidos": 11,
    "titularidades": 9,
-   "minutos": 888.0,
-   "goles": 0,
-   "asistencias": 0
-  },
-  {
-   "jugador": "Lucas Terrer",
-   "partidos": 10,
-   "titularidades": 8,
-   "minutos": 740.0,
+   "minutos": 830.0,
    "goles": 0,
    "asistencias": 0
   },
   {
    "jugador": "P. Ademo",
-   "partidos": 10,
-   "titularidades": 9,
-   "minutos": 722.0,
+   "partidos": 11,
+   "titularidades": 10,
+   "minutos": 812.0,
    "goles": 0,
    "asistencias": 0
   },
   {
    "jugador": "Rubén Díez",
-   "partidos": 10,
-   "titularidades": 8,
-   "minutos": 636.0,
+   "partidos": 11,
+   "titularidades": 9,
+   "minutos": 726.0,
    "goles": 0,
-   "asistencias": 2
+   "asistencias": 3
   },
   {
    "jugador": "Joaquín",
-   "partidos": 10,
-   "titularidades": 5,
-   "minutos": 558.0,
+   "partidos": 11,
+   "titularidades": 6,
+   "minutos": 620.0,
    "goles": 1,
    "asistencias": 0
   },
   {
-   "jugador": "Óscar Ureña",
-   "partidos": 11,
+   "jugador": "Raúl Pereira",
+   "partidos": 9,
    "titularidades": 6,
-   "minutos": 533.0,
+   "minutos": 611.0,
+   "goles": 0,
+   "asistencias": 0
+  },
+  {
+   "jugador": "Óscar Ureña",
+   "partidos": 12,
+   "titularidades": 7,
+   "minutos": 604.0,
    "goles": 4,
    "asistencias": 1
   },
   {
-   "jugador": "Raúl Pereira",
-   "partidos": 8,
+   "jugador": "Pau Sans",
+   "partidos": 12,
+   "titularidades": 3,
+   "minutos": 437.0,
+   "goles": 2,
+   "asistencias": 1
+  },
+  {
+   "jugador": "Edu Espiau",
+   "partidos": 9,
    "titularidades": 5,
-   "minutos": 521.0,
-   "goles": 0,
-   "asistencias": 0
+   "minutos": 429.0,
+   "goles": 4,
+   "asistencias": 2
   },
   {
    "jugador": "Iker Vadillo",
@@ -795,22 +854,6 @@
    "minutos": 422.0,
    "goles": 0,
    "asistencias": 0
-  },
-  {
-   "jugador": "Pau Sans",
-   "partidos": 11,
-   "titularidades": 3,
-   "minutos": 418.0,
-   "goles": 2,
-   "asistencias": 1
-  },
-  {
-   "jugador": "Edu Espiau",
-   "partidos": 8,
-   "titularidades": 5,
-   "minutos": 401.0,
-   "goles": 3,
-   "asistencias": 2
   },
   {
    "jugador": "Ander Herrera",
@@ -838,25 +881,33 @@
   },
   {
    "jugador": "Marcos Cuenca",
-   "partidos": 8,
+   "partidos": 9,
    "titularidades": 2,
-   "minutos": 196.0,
+   "minutos": 224.0,
    "goles": 1,
-   "asistencias": 0
+   "asistencias": 1
   },
   {
    "jugador": "H. Barrachina",
-   "partidos": 4,
+   "partidos": 5,
    "titularidades": 1,
-   "minutos": 168.0,
+   "minutos": 179.0,
    "goles": 0,
    "asistencias": 0
   },
   {
    "jugador": "Tachi",
-   "partidos": 2,
-   "titularidades": 1,
-   "minutos": 108.0,
+   "partidos": 3,
+   "titularidades": 2,
+   "minutos": 154.0,
+   "goles": 0,
+   "asistencias": 0
+  },
+  {
+   "jugador": "J. Tobajas",
+   "partidos": 5,
+   "titularidades": 0,
+   "minutos": 118.0,
    "goles": 0,
    "asistencias": 0
   },
@@ -865,14 +916,6 @@
    "partidos": 1,
    "titularidades": 1,
    "minutos": 90.0,
-   "goles": 0,
-   "asistencias": 0
-  },
-  {
-   "jugador": "J. Tobajas",
-   "partidos": 4,
-   "titularidades": 0,
-   "minutos": 74.0,
    "goles": 0,
    "asistencias": 0
   },
@@ -1117,12 +1160,12 @@
  ],
  "proximos": [
   {
-   "jornada": 13,
+   "jornada": 14,
    "competicion": "Primera Federación",
-   "fecha": "2026-11-21",
-   "sede": "Casa",
-   "rival": "Rayo Majadahonda",
-   "posicion_rival": 19
+   "fecha": "2026-11-29",
+   "sede": "Fuera",
+   "rival": "AD Alcorcón",
+   "posicion_rival": 3
   }
  ],
  "fichas": [
@@ -1866,6 +1909,55 @@
      "tarjeta": "Amarilla"
     }
    ]
+  },
+  {
+   "partido_id": 13,
+   "competicion": "Primera Federación",
+   "jornada": 13,
+   "fecha": "2026-11-21",
+   "sede": "Casa",
+   "rival": "Rayo Majadahonda",
+   "goles_favor": 2,
+   "goles_contra": 0,
+   "gf_descanso": 1,
+   "gc_descanso": 0,
+   "goles": [
+    {
+     "sentido": "Favor",
+     "minuto": "37",
+     "jugador": "Marco Sangalli",
+     "asistencia": "Rubén Díez",
+     "penalti": false,
+     "propia_puerta": false
+    },
+    {
+     "sentido": "Favor",
+     "minuto": "68",
+     "jugador": "Edu Espiau",
+     "asistencia": "Marcos Cuenca",
+     "penalti": false,
+     "propia_puerta": false
+    }
+   ],
+   "tarjetas": [
+    {
+     "jugador": "Tachi",
+     "tarjeta": "Amarilla"
+    },
+    {
+     "jugador": "Diego González",
+     "tarjeta": "Amarilla"
+    },
+    {
+     "jugador": "Westerveld",
+     "tarjeta": "Amarilla"
+    }
+   ],
+   "tiros_zaragoza": 16.0,
+   "tiros_rival": 5.0,
+   "a_puerta_zaragoza": 5.0,
+   "a_puerta_rival": 1.0,
+   "posesion_pct": 64.0
   }
  ],
  "copa": [

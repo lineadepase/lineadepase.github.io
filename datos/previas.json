@@ -7,17 +7,17 @@
     ],
     "fecha_partido": "2026-11-21",
     "fecha_publicacion": "2026-11-19",
-    "fecha_actualizacion": "2026-11-19",
-    "titulo": "Real Zaragoza – Rayo Majadahonda",
-    "etiqueta": "Primera Federación · J13 · 21 de noviembre",
-    "resumen": "El líder, con 27 puntos y 13 de 15 en casa, recibe a un Rayo Majadahonda penúltimo con 7 que todavía no ha puntuado fuera.",
+    "fecha_actualizacion": "2026-11-22",
+    "titulo": "Real Zaragoza 2–0 Rayo Majadahonda: un gol por banda y otro desde el banquillo",
+    "etiqueta": "Primera Federación · J13 · Resultado final",
+    "resumen": "Sangalli marcó en el 37' y Espiau, que había entrado en el 62', cerró el 2-0 en el 68'. El Zaragoza suma 30 puntos y 16 de 18 en casa.",
     "pregunta_abierta": "¿Sumará el Rayo Majadahonda su primer punto lejos de casa ante el líder?",
     "fuera_de_plano": "El balance por sede reúne cinco partidos del Zaragoza en casa y seis salidas del Rayo Majadahonda. Es una muestra corta y no permite anticipar cómo se desarrollará el partido.",
-    "imagen": "proyectos/real-zaragoza/graficos/previa/real-zaragoza-rayo-majadahonda-j13.webp",
+    "imagen": "proyectos/real-zaragoza/graficos/jornada-13/resultado-zaragoza-rayo-majadahonda.webp",
     "ancho": 1672,
     "alto": 941,
-    "alt": "León con la camiseta blanca de cuello y puños azules del Real Zaragoza rugiendo de perfil hacia un rayo que cae sobre la basílica del Pilar, iluminada de noche junto al Ebro.",
-    "pie": "Ilustración creada con IA para Línea de pase.",
+    "alt": "Marcador final Real Zaragoza 2–0 Rayo Majadahonda en la jornada 13, con goles de Marco Sangalli (37') y Edu Espiau (68') y el titular «Un gol por banda y otro desde el banquillo».",
+    "pie": "Imagen de Línea de pase con el marcador final.",
     "noticia_html": "<section class=\"seccion lectura\" aria-labelledby=\"noticia-previa-j13\"><p class=\"etiqueta\">El contexto del partido</p><h2 id=\"noticia-previa-j13\">El líder recibe al penúltimo</h2><p>El Real Zaragoza llega a la jornada 13 como líder, con 27 puntos y cuatro de ventaja sobre el Villarreal B, después de ganar 0-4 en Jaén. El Rayo Majadahonda es penúltimo con 7 puntos, 20 menos, tras perder 0-1 en casa ante el Águilas.</p><p>La sede marca la mayor diferencia. El Zaragoza ha sumado 13 de 15 puntos en el Ibercaja Estadio, con 10 goles a favor y 3 en contra. El Rayo no ha puntuado fuera: seis derrotas, con 2 goles marcados y 10 recibidos.</p><p>La forma reciente va en la misma línea: 11 puntos en los últimos cinco partidos para el Zaragoza y 3 para el Rayo. Son doce jornadas: los datos sitúan el partido, no adivinan el resultado.</p><p class=\"nota\">Datos de liga hasta la jornada 12. La Copa del Rey se analiza por separado. El corte y la comparación completa aparecen al final.</p></section>",
     "rival": "Rayo Majadahonda",
     "hora": "16:30",
@@ -25,13 +25,46 @@
     "competicion": "Primera Federación · Jornada 13",
     "fuente_partido": "https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-13-real-zaragoza-vs-cf-rayo-4022",
     "estados_previa": {
-      "confirmado": "El partido se juega el sábado 21 de noviembre a las 16:30 en el Ibercaja Estadio (Zaragoza) y se emite en el canal de Primera Federación (Movistar Plus+ y otras plataformas de pago).",
-      "pendiente": "Las convocatorias y los onces.",
-      "despues": "Se revisará si el Rayo Majadahonda logró puntuar fuera de casa ante el líder."
+      "confirmado": "El Real Zaragoza ganó 2–0 al Rayo Majadahonda en el Ibercaja Estadio.",
+      "pendiente": "La ficha no ofrece xG ni un desglose completo de los tiros; la clasificación tras la J13 se publicará cuando termine la jornada.",
+      "despues": "El Rayo Majadahonda sigue sin puntuar fuera de casa: siete salidas, siete derrotas."
     },
     "imagen_social": "assets/compartir/previa-real-zaragoza-rayo-majadahonda-j13-social.jpg",
     "ancho_social": 1200,
-    "alto_social": 675
+    "alto_social": 675,
+    "postpartido_url": "proyectos/real-zaragoza/jornada-13.html",
+    "resultado_confirmado": {
+      "marcador": "2–0",
+      "fecha_verificacion": "2026-11-22T08:15:00+01:00",
+      "fuentes": [
+        {
+          "nombre": "Real Zaragoza: ficha del partido Real Zaragoza - CF Rayo",
+          "url": "https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-13-real-zaragoza-vs-cf-rayo-4022"
+        },
+        {
+          "nombre": "Aragón Digital: Cómodo triunfo del Real Zaragoza para afianzarse en el liderato (2-0)",
+          "url": "https://www.aragondigital.es/articulo/real-zaragoza/comodo-triunfo-afianzarse-liderato/202611211855421023451.html"
+        }
+      ],
+      "respuesta_pregunta": "No. El Rayo Majadahonda perdió 2–0 y sigue sin puntuar fuera de casa: siete salidas, siete derrotas. El Zaragoza tuvo más balón (64 % según la ficha del club) y remató más (16 tiros por 5), aunque sin xG publicado esas cifras miden volumen y no calidad. Es una muestra corta y no permite sacar conclusiones sobre el resto de la temporada del Rayo.",
+      "momentos_clave": [
+        {
+          "minuto": "37",
+          "marcador": "1–0",
+          "hecho": "Rubén Díez dio el pase y Sangalli, desde cerca de la línea de fondo, marcó su primer gol de la temporada."
+        },
+        {
+          "minuto": "62",
+          "marcador": "1–0",
+          "hecho": "Entraron Marcos Cuenca y Edu Espiau por Jaume Jardí y Joaquín."
+        },
+        {
+          "minuto": "68",
+          "marcador": "2–0",
+          "hecho": "Cuenca dio el pase y Espiau, seis minutos después de entrar, cerró el partido."
+        }
+      ]
+    }
   },
   {
     "jornada": 12,

@@ -1,90 +1,96 @@
 {
- "partido_id": 12,
- "local": "Real Jaén",
- "visitante": "Real Zaragoza",
- "marcador": "0-4",
- "fecha": "2026-11-14",
+ "partido_id": 13,
+ "local": "Real Zaragoza",
+ "visitante": "Rayo Majadahonda",
+ "marcador": "2-0",
+ "fecha": "2026-11-21",
  "eventos": [
   {
    "tipo": "gol",
-   "minuto": "45+3",
-   "jugador": "Jaume Jardí",
+   "minuto": "37",
+   "jugador": "Marco Sangalli",
    "equipo": "Real Zaragoza",
    "propio": true,
-   "marcador": "0-1",
-   "detalle": "de penalti"
-  },
-  {
-   "tipo": "cambios",
-   "minuto": "46",
-   "jugador": "Lucas Terrer, Marcos Cuenca, Óscar Ureña",
-   "equipo": "Real Zaragoza",
-   "propio": true,
-   "detalle": "3 cambios a la vez"
-  },
-  {
-   "tipo": "gol",
-   "minuto": "54",
-   "jugador": "Marcos Cuenca",
-   "equipo": "Real Zaragoza",
-   "propio": true,
-   "marcador": "0-2",
+   "marcador": "1-0",
    "detalle": "pase de Rubén Díez"
   },
   {
-   "tipo": "gol",
-   "minuto": "78",
-   "jugador": "Pau Sans",
+   "tipo": "cambios",
+   "minuto": "62",
+   "jugador": "Marcos Cuenca, Edu Espiau",
    "equipo": "Real Zaragoza",
    "propio": true,
-   "marcador": "0-3",
-   "detalle": "de penalti"
+   "detalle": "2 cambios a la vez"
   },
   {
    "tipo": "gol",
-   "minuto": "80",
-   "jugador": "Óscar Ureña",
+   "minuto": "68",
+   "jugador": "Edu Espiau",
    "equipo": "Real Zaragoza",
    "propio": true,
-   "marcador": "0-4",
-   "detalle": ""
+   "marcador": "2-0",
+   "detalle": "pase de Marcos Cuenca"
   }
  ],
- "numeros": [],
+ "numeros": [
+  {
+   "metrica": "Posesión",
+   "zaragoza": "64 %",
+   "rival": "36 %"
+  },
+  {
+   "metrica": "Tiros",
+   "zaragoza": "16",
+   "rival": "5"
+  },
+  {
+   "metrica": "Tiros a puerta",
+   "zaragoza": "5",
+   "rival": "1"
+  },
+  {
+   "metrica": "Pases",
+   "zaragoza": "613",
+   "rival": "334"
+  },
+  {
+   "metrica": "Precisión en el pase",
+   "zaragoza": "85 %",
+   "rival": "75 %"
+  }
+ ],
  "siguiente": {
-  "local": "Real Zaragoza",
-  "visitante": "Rayo Majadahonda",
+  "local": "AD Alcorcón",
+  "visitante": "Real Zaragoza",
   "competicion": "Primera Federación",
-  "jornada": 13,
+  "jornada": 14,
   "tv": "",
-  "inicio": "2026-11-21T16:30:00+01:00"
+  "inicio": "2026-11-29T17:00:00+01:00"
  },
  "textos": {
-  "partido_id": 12,
-  "estadio": "Estadio de La Victoria",
-  "titular": "Tres goles desde el banquillo en Jaén",
-  "subtitulo": "Cuenca, Pau Sans y Ureña marcaron tras entrar; el 0-4 llegó con dos penaltis y un pase de Rubén Díez",
+  "partido_id": 13,
+  "estadio": "Ibercaja Estadio",
+  "titular": "Un gol por banda y otro desde el banquillo",
+  "subtitulo": "Sangalli marcó en el 37' y Espiau, que había entrado en el 62', cerró el 2-0 en el 68'",
   "destacados": [
    {
-    "cifra": "3 de 4",
-    "texto": "goles del Zaragoza en La Victoria los marcaron jugadores que salieron desde el banquillo"
+    "cifra": "30",
+    "texto": "puntos en trece jornadas: nueve victorias, tres empates y una derrota"
    },
    {
-    "cifra": "27",
-    "texto": "puntos en doce jornadas: ocho victorias, tres empates y una derrota"
+    "cifra": "16 de 18",
+    "texto": "puntos en casa, con cuatro porterías a cero en el Ibercaja Estadio"
    },
    {
-    "cifra": "14 de 21",
-    "texto": "puntos fuera de casa, con 15 goles a favor y 9 en contra"
+    "cifra": "16-5",
+    "texto": "tiros según la ficha del club, con 5 a puerta por 1 del Rayo"
    },
    {
-    "cifra": "7",
-    "texto": "porterías a cero en doce jornadas de liga"
+    "cifra": "6",
+    "texto": "puntos sobre el Villarreal B, segundo, a falta de los partidos del 22 de noviembre"
    }
   ],
-  "nota_estadisticas": "Datos de futboltotal, Diario Jaén y Cadena SER. Sin posesión, tiros ni xG publicados todavía para este partido.",
-  "fuentes": "Datos: futboltotal, Diario Jaén y Cadena SER",
-  "ilustracion": "analisis/real-zaragoza/codigo/recursos/ilustraciones/j12-vertical.jpg",
-  "ilustracion_web": "analisis/real-zaragoza/codigo/recursos/ilustraciones/j12-panoramica.jpg"
+  "nota_estadisticas": "Tiros y posesión de la ficha del club, que no desglosa todos los tiros. Sin xG publicado para este partido.",
+  "fuentes": "Datos: ficha del club, FotMob, Aragón Digital y Aragón Play"
  }
 }

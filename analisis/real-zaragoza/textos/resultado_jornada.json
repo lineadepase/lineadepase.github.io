@@ -1,28 +1,26 @@
 {
-  "partido_id": 12,
-  "estadio": "Estadio de La Victoria",
-  "titular": "Tres goles desde el banquillo en Jaén",
-  "subtitulo": "Cuenca, Pau Sans y Ureña marcaron tras entrar; el 0-4 llegó con dos penaltis y un pase de Rubén Díez",
+  "partido_id": 13,
+  "estadio": "Ibercaja Estadio",
+  "titular": "Un gol por banda y otro desde el banquillo",
+  "subtitulo": "Sangalli marcó en el 37' y Espiau, que había entrado en el 62', cerró el 2-0 en el 68'",
   "destacados": [
     {
-      "cifra": "3 de 4",
-      "texto": "goles del Zaragoza en La Victoria los marcaron jugadores que salieron desde el banquillo"
+      "cifra": "30",
+      "texto": "puntos en trece jornadas: nueve victorias, tres empates y una derrota"
     },
     {
-      "cifra": "27",
-      "texto": "puntos en doce jornadas: ocho victorias, tres empates y una derrota"
+      "cifra": "16 de 18",
+      "texto": "puntos en casa, con cuatro porterías a cero en el Ibercaja Estadio"
     },
     {
-      "cifra": "14 de 21",
-      "texto": "puntos fuera de casa, con 15 goles a favor y 9 en contra"
+      "cifra": "16-5",
+      "texto": "tiros según la ficha del club, con 5 a puerta por 1 del Rayo"
     },
     {
-      "cifra": "7",
-      "texto": "porterías a cero en doce jornadas de liga"
+      "cifra": "6",
+      "texto": "puntos sobre el Villarreal B, segundo, a falta de los partidos del 22 de noviembre"
     }
   ],
-  "nota_estadisticas": "Datos de futboltotal, Diario Jaén y Cadena SER. Sin posesión, tiros ni xG publicados todavía para este partido.",
-  "fuentes": "Datos: futboltotal, Diario Jaén y Cadena SER",
-  "ilustracion": "analisis/real-zaragoza/codigo/recursos/ilustraciones/j12-vertical.jpg",
-  "ilustracion_web": "analisis/real-zaragoza/codigo/recursos/ilustraciones/j12-panoramica.jpg"
+  "nota_estadisticas": "Tiros y posesión de la ficha del club, que no desglosa todos los tiros. Sin xG publicado para este partido.",
+  "fuentes": "Datos: ficha del club, FotMob, Aragón Digital y Aragón Play"
 }

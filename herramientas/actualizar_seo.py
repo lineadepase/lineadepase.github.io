@@ -140,6 +140,12 @@ def build():
             image_path = editorial[1]
             image_url = BASE + '/' + image_path
         image_file = ROOT / image_path.lstrip('/\\')
+        if not editorial and not image_file.is_file():
+            # Página nueva (por ejemplo, la ficha de una jornada recién jugada):
+            # se crea su tarjeta antes de leer sus dimensiones.
+            card(head.title.strip().replace(' · Línea de pase', '').strip(),
+                 'Real Zaragoza · 2026/27' if '/real-zaragoza/' in path else 'Analítica de fútbol',
+                 image_file)
         if not image_file.is_file():
             raise FileNotFoundError(f'No existe la imagen para compartir de {path}: {image_path}')
         with Image.open(image_file) as social_image:
