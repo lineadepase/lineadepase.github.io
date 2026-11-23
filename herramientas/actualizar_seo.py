@@ -242,8 +242,22 @@ def build():
     ET.register_namespace('', 'http://www.sitemaps.org/schemas/sitemap/0.9')
     ns = '{http://www.sitemaps.org/schemas/sitemap/0.9}'
     root = ET.Element(ns + 'urlset')
+    import subprocess
+
+    def ultima_modificacion(url):
+        ruta = url.replace(BASE + '/', '')
+        if ruta == '' or ruta.endswith('/'):
+            ruta += 'index.html'
+        salida = subprocess.run(['git', 'log', '-1', '--format=%cs', '--', ruta],
+                                cwd=ROOT, capture_output=True, text=True).stdout.strip()
+        return salida or None
+
     for url in sorted(urls):
-        ET.SubElement(ET.SubElement(root, ns + 'url'), ns + 'loc').text = url
+        elemento = ET.SubElement(root, ns + 'url')
+        ET.SubElement(elemento, ns + 'loc').text = url
+        fecha = ultima_modificacion(url)
+        if fecha:
+            ET.SubElement(elemento, ns + 'lastmod').text = fecha
     ET.indent(root)
     ET.ElementTree(root).write(ROOT / 'sitemap.xml', encoding='utf-8', xml_declaration=True)
     (ROOT / 'robots.txt').write_text('User-agent: *\nAllow: /\n\nSitemap: ' + BASE + '/sitemap.xml\n', encoding='utf-8')

@@ -4,7 +4,7 @@
 .apertura-visual .entradilla{max-width:42ch;font-size:1.1rem}
 .foto-portada,.foto-lectura{margin:0;max-width:24rem;min-width:0}
 .foto-portada img,.foto-lectura img{display:block;max-width:100%;width:auto;height:auto;max-height:20rem;margin-inline:auto;border-radius:10px}
-.foto-portada figcaption,.foto-lectura figcaption{font-size:.74rem;line-height:1.5;margin-top:.55rem;color:var(--tinta-suave)}
+.foto-portada figcaption,.foto-lectura figcaption{font-size:.82rem;line-height:1.5;margin-top:.55rem;color:var(--tinta-suave)}
 .foto-portada figcaption,.foto-portada figcaption a{color:#d5e5d9}
 .entrada-fotografica{display:block;text-decoration:none;color:var(--cal)}
 .entrada-fotografica span{display:block;font-weight:600;margin-top:.65rem;font-size:1rem}
