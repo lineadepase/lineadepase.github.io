@@ -167,7 +167,7 @@ Todos los partidos del grupo 2 con estadísticas de Sofascore. Una fila por equi
 
 ## clasificacion
 
-Clasificación del grupo 2 después de cada jornada apuntada. Archivo: `datos/entrada/clasificacion.csv` (140 filas).
+Clasificación del grupo 2 después de cada jornada apuntada. Archivo: `datos/entrada/clasificacion.csv` (160 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|
@@ -191,10 +191,10 @@ Próximos partidos del calendario. Archivo: `datos/entrada/proximos.csv` (1 fila
 |---|---|---|---|
 | `jornada` | Jornada. | Número entero | 14 |
 | `competicion` | Competición. | Texto | Primera Federación |
-| `fecha` | Fecha prevista (puede cambiar). | Texto | 2026-11-29 |
+| `fecha` | Fecha prevista (puede cambiar). | Texto | 2026-11-28 |
 | `sede` | «Casa» o «Fuera». | Texto | Fuera |
 | `rival` | Rival. | Texto | AD Alcorcón |
-| `fuente_url` | Página de la que saqué el dato. | Texto | https://futboltotal.futbol/partido/alcorcon-vs-zaragoza-p… |
+| `fuente_url` | Página de la que saqué el dato. | Texto | https://www.fotmob.com/es/matches/real-zaragoza-vs-alcorc… |
 
 ## partidos_rivales
 
@@ -213,7 +213,7 @@ Resultados del próximo rival esta temporada, para la previa. Archivo: `datos/en
 
 ## incidencias
 
-Diferencias entre fuentes y qué dato me quedo. Es el registro de decisiones del proyecto. Archivo: `datos/entrada/incidencias.csv` (126 filas).
+Diferencias entre fuentes y qué dato me quedo. Es el registro de decisiones del proyecto. Archivo: `datos/entrada/incidencias.csv` (128 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|

@@ -112,10 +112,10 @@ clasificacion;puntos;Puntos.;Número entero;15
 clasificacion;fuente_url;Página de la que saqué el dato.;Texto;https://www.fotmob.com/es-419/teams/8394/overview
 proximos;jornada;Jornada.;Número entero;14
 proximos;competicion;Competición.;Texto;Primera Federación
-proximos;fecha;Fecha prevista (puede cambiar).;Texto;2026-11-29
+proximos;fecha;Fecha prevista (puede cambiar).;Texto;2026-11-28
 proximos;sede;«Casa» o «Fuera».;Texto;Fuera
 proximos;rival;Rival.;Texto;AD Alcorcón
-proximos;fuente_url;Página de la que saqué el dato.;Texto;https://futboltotal.futbol/partido/alcorcon-vs-zaragoza-p…
+proximos;fuente_url;Página de la que saqué el dato.;Texto;https://www.fotmob.com/es/matches/real-zaragoza-vs-alcorc…
 partidos_rivales;equipo;Equipo del que son los resultados.;Texto;Real Murcia
 partidos_rivales;jornada;Jornada.;Número entero;1
 partidos_rivales;fecha;Fecha.;Texto;2026-08-29
