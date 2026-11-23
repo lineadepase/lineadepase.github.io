@@ -748,7 +748,7 @@ def pagina_ultimo(d, sofa):
   {siguiente_html}
 </main>"""
     (CARPETA_PAGINAS / "ultimo-partido.html").write_text(
-        pagina(f"Último partido del Real Zaragoza: {titulo}",
+        pagina(f"Último partido: {titulo}",
                f"Crónica con datos del último partido del Real Zaragoza: {titulo}.", cuerpo),
         encoding="utf-8")
 

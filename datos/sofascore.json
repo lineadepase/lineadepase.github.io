@@ -24,7 +24,16 @@
    "visitante": "Real Zaragoza",
    "competicion": "Primera Federación",
    "jornada": 14,
-   "tv": []
+   "tv": [
+    {
+     "canal": "FANPlay (Esp)",
+     "abierto": false
+    },
+    {
+     "canal": "Footballclub",
+     "abierto": false
+    }
+   ]
   },
   {
    "id": 16599873,
