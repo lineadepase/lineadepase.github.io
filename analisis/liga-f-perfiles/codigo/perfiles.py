@@ -43,7 +43,6 @@ def preparar(base, minimo=MINIMO, con_xt=True):
         if abs(x[v].skew()) > 1 and x[v].min() >= 0:
             x[v] = np.log1p(x[v])
     corr = x.corr().abs()
-    quitar = [b for i, a in enumerate(variables) for b in variables[i + 1:] if corr.loc[a, b] > 0.85 and b not in ()]
     # La primera de cada par se conserva; la segunda se descarta (sin cascada sobre las ya descartadas).
     descartadas = []
     for i, a in enumerate(variables):

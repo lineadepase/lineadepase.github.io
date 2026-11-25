@@ -29,17 +29,20 @@ def utm(red):
 
 
 def tabla_html(d):
+    """Dos columnas con texto que se parte en líneas: se lee entera en móvil y en escritorio."""
     filas = []
     for i, nombre in enumerate(NOMBRES):
         proto, cima = graficos.seleccion(d, i, 3)
         filas.append(
-            f'<tr><th scope="row">{nombre}</th><td class="num">{int((d.perfil == i).sum())}</td>'
-            f'<td>{", ".join(graficos.corto(j) for j in proto.jugadora)}</td>'
-            f'<td>{", ".join(graficos.corto(j) for j in cima.jugadora)}</td></tr>')
-    return ('<div class="tabla-editorial" role="region" aria-label="Jugadoras de cada perfil, tabla desplazable" tabindex="0">'
+            f'<tr><th scope="row" style="vertical-align:top">{nombre}<br><span style="font-weight:400">'
+            f'{int((d.perfil == i).sum())} jugadoras</span></th>'
+            f'<td style="white-space:normal"><strong>Las más típicas:</strong> '
+            f'{", ".join(graficos.corto(j) for j in proto.jugadora)}.<br>'
+            f'<strong>Las que más lo llevan al extremo:</strong> '
+            f'{", ".join(graficos.corto(j) for j in cima.jugadora)}.</td></tr>')
+    return ('<div class="tabla-editorial" role="region" aria-label="Jugadoras de cada perfil" tabindex="0">'
             '<table><caption>Jugadoras de cada perfil</caption>'
-            '<thead><tr><th scope="col">Perfil</th><th scope="col" class="num">Jugadoras</th>'
-            '<th scope="col">Las más típicas</th><th scope="col">Las que más lo llevan al extremo</th></tr></thead><tbody>'
+            '<thead><tr><th scope="col">Perfil</th><th scope="col" style="white-space:normal">Jugadoras que lo representan</th></tr></thead><tbody>'
             + "".join(filas) + "</tbody></table></div>")
 
 
@@ -49,6 +52,13 @@ def main():
     sens = json.loads((ESTUDIO / "datos" / "salida" / "sensibilidad.json").read_text(encoding="utf-8"))
     cob = json.loads((ESTUDIO / "documentacion" / "cobertura.json").read_text(encoding="utf-8"))
     pos = pd.read_csv(ESTUDIO / "datos" / "salida" / "perfiles_por_posicion.csv", index_col=0)
+    manifiesto = json.loads((ESTUDIO / "documentacion" / "manifiesto_descargas.json").read_text(encoding="utf-8"))
+    descarga = max(pd.Timestamp(r["fecha_descarga_utc"]) for r in manifiesto)
+    meses = "enero febrero marzo abril mayo junio julio agosto septiembre octubre noviembre diciembre".split()
+    fecha_datos = f"{descarga.day} de {meses[descarga.month - 1]} de {descarga.year}"
+    # Frases que comparan: si los datos cambian y dejan de ser ciertas, se detiene.
+    assert equipos.drop(["Barcelona WFC", "Real Madrid CF W"])["Desequilibrantes"].max() <= 2
+    assert d[d.perfil == 3].xt_neto_90.mean() > 3 * d[d.perfil != 3].xt_neto_90.mean()
     n = len(d)
     tam = d.perfil.value_counts().sort_index()
     xt = d.groupby("perfil").xt_neto_90.mean()
@@ -74,7 +84,7 @@ def main():
     <p class="entradilla">En la alineación son defensas, centrocampistas y delanteras. Pero lo que hacen con el balón, y sin él, cuenta otra historia. Este estudio agrupa a {n} jugadoras de la Liga F 2023/24 según cómo juegan: salen cuatro perfiles con nombre propio.</p>
     <dl class="ficha-tecnica">
       <div><dt>Pregunta</dt><dd>¿Qué tipos de jugadora hay en la Liga F según lo que hacen en el campo, más allá de su posición?</dd></div>
-      <div><dt>Datos</dt><dd>StatsBomb Open Data · {cob['partidos']} partidos · {numero(cob['eventos'], 0)} eventos · {n} jugadoras de campo con al menos 900 minutos</dd></div>
+      <div><dt>Datos</dt><dd>StatsBomb Open Data · {cob['partidos']} partidos · {numero(cob['eventos'], 0)} eventos · {n} jugadoras de campo con al menos 900 minutos · temporada 2023/24, descargados el {fecha_datos}</dd></div>
       <div><dt>Herramientas</dt><dd>Python (pandas, scikit-learn, Matplotlib) · k-means y PCA · <a href="{CODIGO_GITHUB}">código y datos</a></dd></div>
     </dl>
   </section>
@@ -107,13 +117,13 @@ def main():
     <p>Por plantillas, el Barcelona suma {int(barca['Desequilibrantes'])} desequilibrantes y {int(barca['Iniciadoras'])} iniciadoras, y ninguna jugadora de los otros dos perfiles. El Real Madrid es el segundo equipo con más desequilibrantes ({int(madrid['Desequilibrantes'])}); en el resto de plantillas hay dos o menos. Muchas plantillas se parecen entre sí: mucho pulmón, alguna iniciadora, poca amenaza.</p>
   </section>
 
-  <figure class="figura"><img loading="lazy" src="graficos/03_equipos_web.png" width="1600" height="900" alt="Barras con el número de jugadoras de cada perfil en cada equipo: el Barcelona tiene 11 desequilibrantes y el Real Madrid 6."><figcaption>Jugadoras de campo con al menos 900 minutos, por equipo y perfil.</figcaption></figure>
+  <figure class="figura"><img loading="lazy" src="graficos/03_equipos_web.png" width="1600" height="900" alt="Barras con el número de jugadoras de cada perfil en cada equipo: el Barcelona tiene {int(barca['Desequilibrantes'])} desequilibrantes y el Real Madrid {int(madrid['Desequilibrantes'])}."><figcaption>Jugadoras de campo con al menos 900 minutos, por equipo y perfil.</figcaption></figure>
 
   <section class="seccion lectura" id="metodo">
     <p class="etiqueta">Método</p>
     <h2>De los eventos a los perfiles</h2>
-    <p>Para cada jugadora con al menos 900 minutos (se excluyen las porteras) se calculan 18 variables por 90 minutos: pases progresivos, largos y de tiro, centros, conducciones progresivas, altura media de sus acciones, recepciones en el área, regates, presiones, recuperaciones, intercepciones, entradas, tiros, xG y la amenaza esperada (xT) del <a href="../liga-f-xt/">estudio anterior</a>. Se descartan {len(sens['variables_descartadas'])} por repetir información de otras (correlación mayor de 0,85) y quedan {len(sens['variables_usadas'])}.</p>
-    <p>Las variables se estandarizan para que ninguna domine por escala, y las muy asimétricas pasan antes por un logaritmo. El análisis de componentes principales (PCA) sirve para dibujar el mapa; el agrupamiento se hace con k-means sobre todas las variables.</p>
+    <p>Para cada jugadora con al menos 900 minutos (se excluyen las porteras) se calculan 18 variables, casi todas por 90 minutos: pases (totales, progresivos, largos y de tiro) y su porcentaje de acierto, centros, conducciones progresivas, altura media de sus acciones, porcentaje de presiones en campo rival, recepciones en el área, regates, presiones, recuperaciones, intercepciones, entradas, tiros, xG y la amenaza esperada (xT) del <a href="../liga-f-xt/">estudio anterior</a>. Se descartan {len(sens['variables_descartadas'])} por repetir información de otras (correlación mayor de 0,85) y quedan {len(sens['variables_usadas'])}.</p>
+    <p>Las variables se estandarizan para que ninguna domine por escala, y las muy asimétricas pasan antes por un logaritmo. El análisis de componentes principales (PCA) sirve para dibujar el mapa; el agrupamiento se hace con k-means sobre las {len(sens['variables_usadas'])} variables que quedan.</p>
     <p>El número de perfiles se fija con una regla escrita antes de mirar los grupos: entre 4 y 7, con al menos 8 jugadoras por grupo, gana el que mejor combina el coeficiente de silueta y la estabilidad (índice de Rand ajustado en 200 remuestras de jugadoras). Con 4 perfiles la silueta es {numero(k4.silueta, 2)} y la estabilidad {numero(k4.estabilidad_rand, 2)}; con 5 baja a {numero(k[k.k == 5].silueta.iloc[0], 2)} y {numero(k[k.k == 5].estabilidad_rand.iloc[0], 2)}.</p>
     <p>Como comprobación, con un mínimo de 600 minutos ({sens['jugadoras_600']} jugadoras) o sin la xT, las jugadoras vuelven a agruparse de forma muy parecida (índice de Rand ajustado de {numero(sens['rand_900_vs_600'], 2)} y {numero(sens['rand_con_vs_sin_xt'], 2)}).</p>
   </section>
@@ -143,7 +153,10 @@ def main():
     )
     sys.path.insert(0, str(RAIZ_WEB / "herramientas"))
     from actualizar_exploracion import enrich  # noqa: E402
-    destino.write_text(enrich(destino.read_text(encoding="utf-8"), destino), encoding="utf-8")
+    # La imagen para compartir es el propio gráfico del estudio, no una tarjeta genérica.
+    editorial = '<meta name="imagen-editorial" content="proyectos/liga-f-perfiles/graficos/compartir.png">\n'
+    pagina = destino.read_text(encoding="utf-8").replace("</head>", editorial + "</head>", 1)
+    destino.write_text(enrich(pagina, destino), encoding="utf-8")
     print(f"Página escrita en {destino.relative_to(RAIZ_WEB)}")
     redes(d, equipos, tam, xt, otras, barca, madrid, hansen)
 
@@ -157,9 +170,9 @@ def redes(d, equipos, tam, xt, otras, barca, madrid, hansen):
              "05_perfil_3_instagram", "06_perfil_4_instagram", "07_equipos_instagram", "08_cierre_instagram"]
     nombres_ig = ["01_portada", "02_mapa", "03_iniciadoras", "04_pulmones", "05_las_de_area", "06_desequilibrantes", "07_equipos", "08_cierre"]
     for a, b in zip(orden, nombres_ig):
-        for ext in ("png", "svg"):
+        for ext in (("jpg",) if b == "01_portada" else ("png", "svg")):
             shutil.copy(ESTUDIO / "graficos" / f"{a}.{ext}", ig / f"{b}.{ext}")
-    nombres = ", ".join(NOMBRES[:3]) + f" y {NOMBRES[3].lower()}"
+    nombres = ", ".join(n.lower() for n in NOMBRES[:3]) + f" y {NOMBRES[3].lower()}"
     comun_dato = (f"Barcelona: {int(barca['Desequilibrantes'])} desequilibrantes, {int(barca['Iniciadoras'])} iniciadoras y ninguna pulmón ni de área. "
                   f"Real Madrid: {int(madrid['Desequilibrantes'])} desequilibrantes.")
     (pub / "linkedin.txt").write_text(f"""¿En qué perfil está tu jugadora favorita?
@@ -190,11 +203,11 @@ Datos: StatsBomb Open Data. Temporada 2023/24.
 """, encoding="utf-8")
     (pub / "instagram.txt").write_text(f"""¿En qué perfil está tu jugadora favorita?
 
-Hemos agrupado a {n} jugadoras de la Liga F 2023/24 según lo que hacen con y sin balón. Salen cuatro perfiles: {nombres}.
+Línea de pase ha agrupado a {n} jugadoras de la Liga F 2023/24 según lo que hacen con y sin balón. Salen cuatro perfiles: {nombres}.
 
 Desliza para ver el mapa, cada perfil con sus jugadoras más típicas y las que más lo llevan al extremo, y cómo se reparten las plantillas. {comun_dato}
 
-Cuéntanos en comentarios en qué perfil pondrías a tu jugadora favorita.
+¿En qué perfil pondrías a tu jugadora favorita? Los comentarios están abiertos.
 
 Estudio completo y listado de las {n} jugadoras: enlace en la bio.
 
@@ -203,7 +216,8 @@ Datos: StatsBomb Open Data. Temporada 2023/24.
 #LigaF #FutbolFemenino #AnaliticaDeportiva #DatosYFutbol #LineaDePase
 """, encoding="utf-8")
     alt = [
-        "Portada: «¿En qué perfil está tu jugadora favorita?». Cuatro perfiles para 220 jugadoras de la Liga F 2023/24.",
+        "Portada: «¿En qué perfil está tu jugadora favorita?». Ilustración de cuatro futbolistas dibujadas con puntos de luz "
+        "(azul, verde, morada y naranja, un color por perfil) unidas por líneas de pase sobre un campo. Liga F 2023/24.",
         f"Mapa de {n} jugadoras de la Liga F agrupadas en cuatro perfiles; las iniciadoras a la izquierda, las desequilibrantes arriba a la derecha.",
     ] + [f"Perfil {NOMBRES[i]}: radar con lo que hace el grupo y sus jugadoras más típicas y más extremas." for i in range(4)] + [
         f"Barras con los perfiles de cada plantilla; el Barcelona tiene {int(barca['Desequilibrantes'])} desequilibrantes.",

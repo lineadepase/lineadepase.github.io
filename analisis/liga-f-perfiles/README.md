@@ -19,10 +19,11 @@ liga-f-perfiles/
 │   └── ejecutar.py         ejecuta todo en orden
 ├── datos/salida/           resultados agregados (no contiene eventos de StatsBomb)
 ├── documentacion/          manifiesto de descargas con SHA-256 y cobertura
-├── graficos/               PNG y SVG: web y LinkedIn 1600×900, Facebook 1200×630, Instagram 1080×1350
+├── graficos/               PNG y SVG: web y LinkedIn 1600×900, Facebook 1200×630, Instagram 1080×1350 (la portada, en JPG)
 ├── publicaciones/          carrusel de Instagram (8 diapositivas), textos de cada red y textos alternativos
 ├── pruebas/                pruebas con soluciones conocidas
 ├── recursos/statsbomb.png  logotipo del proveedor, obligatorio en lo publicado
+├── recursos/portada.jpg    ilustración de fondo de la portada de redes
 └── requirements.txt
 ```
 

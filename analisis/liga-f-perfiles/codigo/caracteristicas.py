@@ -1,7 +1,7 @@
 """Variables por jugadora y partido a partir de los eventos de StatsBomb.
 
 Cada contador sale de un tipo de evento concreto y se suma por partido; la
-conversión a «por 90 minutos» se hace en perfiles.py con los minutos
+conversión a «por 90 minutos» se hace en base.py con los minutos
 reconstruidos en datos.py.
 """
 from collections import Counter, defaultdict

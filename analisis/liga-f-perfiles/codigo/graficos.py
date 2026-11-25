@@ -16,7 +16,7 @@ from PIL import Image
 
 ESTUDIO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ESTUDIO.parent / 'comun'))
-from estilo import FORMATOS, PX, TEXTO, TITULAR, cierre, colores, estilo_ejes, guardar, lienzo, portada, preparar  # noqa: E402
+from estilo import FORMATOS, PX, TEXTO, TITULAR, cierre, colores, estilo_ejes, guardar, lienzo, preparar  # noqa: E402
 
 SALIDA = ESTUDIO / 'datos' / 'salida'
 GRAFICOS = ESTUDIO / 'graficos'
@@ -142,34 +142,73 @@ def seleccion(d, perfil, n=3):
 
 
 def leyenda(px, x, y, c, tam=15, separacion=22):
+    ren = px.ax.figure.canvas.get_renderer()
     for i, nombre in enumerate(NOMBRES):
         px.ax.scatter([x], [y], s=tam * 11, marker=MARCAS[i], color=COLORES[i], zorder=6, linewidths=0)
         t = px.ax.text(x + 18, y, nombre, va='center', fontsize=tam, color=c['tinta'], fontweight=600, zorder=6)
-        x += 36 + len(nombre) * tam * 0.62 + separacion
+        fin = px.ax.transData.inverted().transform((t.get_window_extent(ren).x1, 0))[0]
+        x = fin + 14 + separacion
 
 
 # --------------------------------------------------------------------------- mapa
+def se_cruzan(a, b):
+    """Indica si dos segmentos ((x, y), (x, y)) se cortan."""
+    def lado(p, q, r):
+        return np.sign((q[0] - p[0]) * (r[1] - p[1]) - (q[1] - p[1]) * (r[0] - p[0]))
+    return lado(a[0], a[1], b[0]) * lado(a[0], a[1], b[1]) < 0 and lado(b[0], b[1], a[0]) * lado(b[0], b[1], a[1]) < 0
+
+
+def pisa(segmento, bb):
+    """Indica si un segmento atraviesa la caja de una etiqueta."""
+    a, b = np.asarray(segmento[0]), np.asarray(segmento[1])
+    return any(bb.x0 <= x <= bb.x1 and bb.y0 <= y <= bb.y1 for x, y in (a + (b - a) * k for k in np.linspace(0, 1, 40)))
+
+
 def etiquetar(ax, puntos, c, tam):
-    """Coloca las etiquetas sin pisarse: prueba varios desplazamientos y se queda con el primero libre."""
+    """Etiqueta jugadoras sin confundirlas: aro en su punto, línea hasta el nombre y,
+    entre los huecos probados, el que no pisa otra etiqueta y tapa menos puntos."""
     fig = ax.figure
     fig.canvas.draw()
     ren = fig.canvas.get_renderer()
-    ocupadas = []
-    candidatos = [(10, 8, 'left', 'bottom'), (10, -8, 'left', 'top'), (-10, 8, 'right', 'bottom'), (-10, -8, 'right', 'top'),
-                  (14, 22, 'left', 'bottom'), (-14, 22, 'right', 'bottom'), (14, -22, 'left', 'top'), (-14, -22, 'right', 'top'),
-                  (0, 30, 'center', 'bottom'), (0, -30, 'center', 'top')]
+    nube = np.vstack([col.get_offsets() for col in ax.collections])
+    nube = ax.transData.transform(nube)
+    marcados = ax.transData.transform([(x, y) for x, y, *_ in puntos])
+    ax.scatter([p[0] for p in puntos], [p[1] for p in puntos], s=230, facecolors='none',
+               edgecolors=c['tinta'], linewidths=1.5, zorder=6, clip_on=False)
     caja = ax.get_window_extent(ren)
-    for x, y, texto, color in puntos:
-        for dx, dy, ha, va in candidatos:
+    ocupadas, lineas = [], []
+    desplazamientos = [(r * np.cos(np.radians(a)), r * np.sin(np.radians(a)))
+                       for r in (22, 34, 48, 64, 84, 108) for a in (35, 145, -35, -145, 90, -90, 0, 180, 60, 120, -60, -120)]
+    for (x, y, texto, color), origen in zip(puntos, marcados):
+        mejor = None
+        for orden, (dx, dy) in enumerate(desplazamientos):
+            ha = 'left' if dx > 1 else 'right' if dx < -1 else 'center'
+            va = 'bottom' if dy > 1 else 'top' if dy < -1 else 'center'
             t = ax.annotate(texto, (x, y), xytext=(dx, dy), textcoords='offset points', ha=ha, va=va, fontsize=tam,
-                            color=c['tinta'], fontweight=700, zorder=8,
-                            bbox=dict(boxstyle='round,pad=0.18', fc=c['papel'], ec='none', alpha=0.88))
-            bb = t.get_window_extent(ren).expanded(1.02, 1.1)
-            dentro = caja.x0 <= bb.x0 and bb.x1 <= caja.x1 and caja.y0 <= bb.y0 and bb.y1 <= caja.y1
-            if dentro and not any(bb.overlaps(o) for o in ocupadas):
-                ocupadas.append(bb)
-                break
+                            color=c['tinta'], fontweight=700, zorder=8)
+            bb = t.get_window_extent(ren).expanded(1.04, 1.25)
             t.remove()
+            if not (caja.x0 <= bb.x0 and bb.x1 <= caja.x1 and caja.y0 <= bb.y0 and bb.y1 <= caja.y1):
+                continue
+            if any(bb.overlaps(o) for o in ocupadas):
+                continue
+            tapados = sum(bb.x0 - 4 <= px <= bb.x1 + 4 and bb.y0 - 4 <= py <= bb.y1 + 4 for px, py in nube)
+            aros = sum(bb.x0 - 8 <= px <= bb.x1 + 8 and bb.y0 - 8 <= py <= bb.y1 + 8 for px, py in marcados)
+            linea = (origen, origen + np.array([dx, dy]) * fig.dpi / 72)
+            cruces = sum(se_cruzan(linea, otra) for otra in lineas)
+            cruces += sum(pisa(linea, o) for o in ocupadas) + sum(pisa(otra, bb) for otra in lineas)
+            coste = 10 * tapados + 100 * aros + 300 * cruces + orden * 0.15
+            if mejor is None or coste < mejor[0]:
+                mejor = (coste, dx, dy, ha, va, bb, linea)
+        if mejor is None:
+            raise ValueError(f'No hay hueco para la etiqueta de {texto}')
+        _, dx, dy, ha, va, bb, linea = mejor
+        ax.annotate(texto, (x, y), xytext=(dx, dy), textcoords='offset points', ha=ha, va=va, fontsize=tam,
+                    color=c['tinta'], fontweight=700, zorder=8,
+                    bbox=dict(boxstyle='round,pad=0.12', fc=c['papel'], ec='none', alpha=0.9),
+                    arrowprops=dict(arrowstyle='-', color=c['tinta'], linewidth=1, shrinkA=0, shrinkB=9))
+        ocupadas.append(bb)
+        lineas.append(linea)
 
 
 def dibujar_mapa(ax, d, c, etiquetadas, tam_pt=60, tam_texto=11):
@@ -222,22 +261,22 @@ def tarjeta_perfil(px, fig, d, centros, resumen, i, x, y, w, h, c, tam=1.0, comp
     px.ax.add_patch(Rectangle((x, y), w, 7, color=COLORES[i], zorder=2))
     n = int((d.perfil == i).sum())
     px.ax.text(x + 18, y + 20, NOMBRES[i], fontfamily=TITULAR, fontweight=800, fontsize=27 * tam, color=COLORES[i] if i != 3 else c['acento_texto'], va='top', zorder=5)
-    px.ax.text(x + 18, y + 20 + 34, LEMA[i], fontsize=12.5, color=c['tinta'], va='top', zorder=5)
-    px.ax.text(x + 18, y + 20 + 53, f'{n} jugadoras', fontsize=11, color=c['tinta_suave'], va='top', zorder=5)
+    px.ax.text(x + 18, y + 20 + 42, LEMA[i], fontsize=12.5, color=c['tinta'], va='top', zorder=5)
+    px.ax.text(x + 18, y + 20 + 62, f'{n} jugadoras', fontsize=11, color=c['tinta_suave'], va='top', zorder=5)
     bloque = 96
-    rad = min(w - 120, h - 82 - 2 * bloque - 74)
-    radar(fig, px.marco(x + (w - rad) / 2, y + 82 + 30, rad, rad), valores_radar(centros, i), COLORES[i], c, tam=8.5, cortas=True)
+    rad = min(w - 120, h - 90 - 2 * bloque - 74)
+    radar(fig, px.marco(x + (w - rad) / 2, y + 90 + 30, rad, rad), valores_radar(centros, i), COLORES[i], c, tam=8.5, cortas=True)
     proto, cima = seleccion(d, i, 3)
-    y0 = y + 82 + 30 + rad + 44
+    y0 = y + 90 + 30 + rad + 40
     px.ax.text(x + 18, y0, 'LAS MÁS TÍPICAS', fontsize=10 * tam, color=c['tinta_suave'], fontweight=700, va='center', zorder=5)
     for k, r in enumerate(proto.itertuples()):
-        cx = x + 18 + 26 + k * (w - 36) / 3
+        cx = x + (k + 0.5) * w / 3
         px.chapa(cx, y0 + 28, 17, i, r.jugadora, c)
         px.ax.text(cx, y0 + 50, dos_lineas(corto(r.jugadora)), ha='center', va='top', fontsize=10, color=c['tinta'], fontweight=600, linespacing=1.1, zorder=5)
     y1 = y0 + bloque
     px.ax.text(x + 18, y1, 'LAS QUE MÁS LO LLEVAN AL EXTREMO', fontsize=10 * tam, color=c['tinta_suave'], fontweight=700, va='center', zorder=5)
     for k, r in enumerate(cima.itertuples()):
-        cx = x + 18 + 26 + k * (w - 36) / 3
+        cx = x + (k + 0.5) * w / 3
         px.chapa(cx, y1 + 28, 17, i, r.jugadora, c)
         px.ax.text(cx, y1 + 50, dos_lineas(corto(r.jugadora)), ha='center', va='top', fontsize=10, color=c['tinta'], fontweight=600, linespacing=1.1, zorder=5)
 
@@ -285,8 +324,11 @@ def diapositiva_perfil(i, d, centros, resumen, nombre):
 def equipos(formato, d, tabla, nombre):
     c = preparar()
     vertical = formato == 'instagram'
-    fig, area = lienzo(formato, '¿Cómo es tu equipo?\nPerfiles por plantilla',
-                       ('Jugadoras de campo con al menos 900 minutos, por perfil.\nEl Barcelona suma 11 de las 28 desequilibrantes.' if vertical else 'Jugadoras de campo con al menos 900 minutos, por perfil. El Barcelona suma 11 de las 28 desequilibrantes.'),
+    barca = int(tabla.loc['Barcelona WFC', 'Desequilibrantes'])
+    total = int(tabla['Desequilibrantes'].sum())
+    sub = ('Jugadoras de campo con al menos 900 minutos, por perfil.' + ('\n' if vertical else ' ')
+           + f'El Barcelona suma {barca} de las {total} desequilibrantes.')
+    fig, area = lienzo(formato, '¿Cómo es tu equipo?\nPerfiles por plantilla', sub,
                        pie=PIE.format(n=len(d)), etiqueta=ETIQUETA, logo_fuente=LOGO)
     px = Px(fig)
     ax = fig.add_axes([area[0] + 0.11 if vertical else area[0] + 0.09, area[1] - 0.02, area[2] - (0.14 if vertical else 0.11), area[3] + 0.02])
@@ -309,11 +351,30 @@ def equipos(formato, d, tabla, nombre):
 
 # --------------------------------------------------------------------------- carrusel de Instagram
 def portada_ig(d, nombre):
-    fig = portada('¿En qué perfil\nestá tu jugadora\nfavorita?',
-                  'Hemos agrupado a 220 jugadoras de la Liga F\nsegún lo que hacen con y sin balón.\nSalen cuatro tipos muy distintos.',
-                  '4', 'perfiles\ncon nombre propio:\niniciadoras, pulmones,\nlas de área y desequilibrantes',
-                  etiqueta=ETIQUETA, antetitulo='Liga F 2023/24 · Datos de StatsBomb')
-    guardar(fig, GRAFICOS, nombre)
+    """Portada de redes: ilustración de los cuatro perfiles (recursos/portada.jpg) con la pregunta encima."""
+    c = preparar()
+    ancho, alto = 1080, 1350
+    fig = plt.figure(figsize=(ancho / 100, alto / 100), dpi=100)
+    ax = fig.add_axes([0, 0, 1, 1])
+    fondo = np.asarray(Image.open(ESTUDIO / 'recursos' / 'portada.jpg').convert('RGB'))
+    ax.imshow(fondo, extent=(0, ancho, alto, 0), interpolation='lanczos')
+    # Sombra suave en la esquina inferior derecha para que el texto se lea bien.
+    xx, yy = np.meshgrid(np.linspace(0, ancho, 270), np.linspace(0, alto, 338))
+    sombra = np.zeros(xx.shape + (4,))
+    sombra[..., 3] = 0.72 * np.clip((xx - 560) / 300, 0, 1) * np.clip((yy - 820) / 220, 0, 1)
+    ax.imshow(sombra, extent=(0, ancho, alto, 0), interpolation='bilinear')
+    ax.set_xlim(0, ancho); ax.set_ylim(alto, 0); ax.axis('off')
+    for k, linea in enumerate(('¿En qué', 'perfil está', 'tu jugadora', 'favorita?')):
+        ax.text(1040, 975 + k * 76, linea, ha='right', va='center', fontfamily=TITULAR, fontweight=800,
+                fontsize=80 / PX, color=c['cal'])
+    pie = ax.text(1040, 1306, f'Línea de pase · Liga F 2023/24', ha='right', va='center',
+                  fontsize=22 / PX, fontweight=700, color=c['cal'])
+    fig.canvas.draw()
+    x0 = ax.transData.inverted().transform((pie.get_window_extent().x0, 0))[0]
+    ax.scatter([x0 - 20], [1306], s=110, color=c['acento'], zorder=5)
+    # Solo JPG: al ser una ilustración, un SVG pesaría megas sin aportar nada.
+    fig.savefig(GRAFICOS / f'{nombre}.jpg', dpi=100, pil_kwargs={'quality': 92, 'optimize': True})
+    plt.close(fig)
 
 
 def cierre_ig(d, tabla, nombre):
@@ -322,12 +383,13 @@ def cierre_ig(d, tabla, nombre):
                  [f'Barcelona: {int(barca["Desequilibrantes"])} desequilibrantes, {int(barca["Iniciadoras"])} iniciadoras,\nninguna pulmón ni de área.',
                   f'Real Madrid: {int(madrid["Desequilibrantes"])} desequilibrantes,\nla segunda plantilla con más.',
                   f'En la web, las {len(d)} jugadoras con su perfil,\npara descargar.',
-                  'Cuéntanos: ¿en qué perfil pondrías\na tu jugadora favorita?'])
+                  'En comentarios: ¿en qué perfil\npondrías a tu jugadora favorita?'])
     guardar(fig, GRAFICOS, nombre)
 
 
 def crear_todo():
     GRAFICOS.mkdir(exist_ok=True)
+    plt.rcParams['text.hinting'] = 'none'  # sin ajuste a píxel: interletrado regular en cualquier equipo
     d, centros, resumen, tabla = cargar()
     for f, n in (('web', '01_mapa_web'), ('linkedin', '01_mapa_linkedin'), ('facebook', '01_mapa_facebook'), ('instagram', '02_mapa_instagram')):
         mapa(f, d, n)

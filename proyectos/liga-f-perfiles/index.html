@@ -11,16 +11,16 @@
 <meta name="description" content="Cuatro perfiles de jugadora en la Liga F 2023/24: iniciadoras, pulmones, las de área y desequilibrantes, con 220 jugadoras y datos de StatsBomb.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Big+Shoulders+Display:wght@700;800&display=swap">
-<script src="../../assets/tema.js"></script>
-<link rel="stylesheet" href="../../assets/estilo.css?v=20261028a11y1">
-<script src="../../assets/mejoras.js?v=20261027claims" defer></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Big+Shoulders+Display:wght@700;800&display=optional">
+<script src="../../assets/tema.js?v=20261105mapcls1"></script>
+<link rel="stylesheet" href="../../assets/estilo.css?v=20261104clsmobile2">
+<script src="../../assets/mejoras.js?v=20261104clsfix1" defer></script>
 <link rel="icon" href="../../assets/icono.svg" type="image/svg+xml">
-<link rel="canonical" href="https://lineadepase.com/proyectos/liga-f-perfiles/index.html">
+<link rel="canonical" href="https://lineadepase.com/proyectos/liga-f-perfiles/">
 <meta property="og:type" content="article">
 <meta property="og:locale" content="es_ES">
 <meta property="og:site_name" content="Línea de pase">
-<meta property="og:url" content="https://lineadepase.com/proyectos/liga-f-perfiles/index.html">
+<meta property="og:url" content="https://lineadepase.com/proyectos/liga-f-perfiles/">
 <meta property="og:title" content="¿En qué perfil está tu jugadora favorita?">
 <meta property="og:description" content="Cuatro perfiles de jugadora en la Liga F 2023/24: iniciadoras, pulmones, las de área y desequilibrantes, con 220 jugadoras y datos de StatsBomb.">
 <meta property="og:image" content="https://lineadepase.com/proyectos/liga-f-perfiles/graficos/compartir.png">
@@ -32,8 +32,9 @@
 <meta name="twitter:image" content="https://lineadepase.com/proyectos/liga-f-perfiles/graficos/compartir.png">
 <link rel="stylesheet" href="../../assets/investigacion.css?v=20261021fotos">
 <link rel="stylesheet" href="../../assets/fotografia-editorial.css?v=20261021b">
-<link rel="stylesheet" href="../../assets/experiencia.css?v=20261030responsive2">
-<script src="../../assets/experiencia.js?v=20261027visual4" defer></script>
+<meta name="imagen-editorial" content="proyectos/liga-f-perfiles/graficos/compartir.png">
+<link rel="stylesheet" href="../../assets/experiencia.css?v=20261105reservacomp1">
+<script src="../../assets/experiencia.js?v=20261104clsmobile1" defer></script>
 <link rel="stylesheet" href="../../assets/explorar.css?v=20261021e">
 </head>
 <body>
@@ -47,7 +48,7 @@
   </div>
 </header>
 
-<main class="envoltorio"><nav class="acciones-articulo" aria-label="Compartir o imprimir este análisis"><button class="boton" type="button" data-compartir-pagina>Compartir análisis</button><a class="boton" href="../../assets/compartir/proyectos-liga-f-perfiles-index.png" target="_blank" rel="noopener">Abrir imagen para compartir</a><button class="boton" type="button" data-imprimir-pagina>Imprimir / Guardar en PDF</button><span class="estado-acciones-articulo" role="status" aria-live="polite"></span></nav>
+<main class="envoltorio"><nav class="acciones-articulo" aria-label="Compartir o imprimir este análisis"><button class="boton" type="button" data-compartir-pagina>Compartir análisis</button><a class="boton" href="graficos/compartir.png" target="_blank" rel="noopener">Abrir imagen para compartir</a><button class="boton" type="button" data-imprimir-pagina>Imprimir / Guardar en PDF</button><span class="estado-acciones-articulo" role="status" aria-live="polite"></span></nav>
   <p class="migas"><a href="../index.html">Proyectos</a> / Investigación</p>
   <section class="cab-proyecto">
     <aside class="aviso-historico" aria-label="Periodo del análisis"><strong>ANÁLISIS HISTÓRICO · 2023/24</strong><span>Datos de la Liga F 2023/24, temporada terminada en 2024. No describe la temporada actual.</span></aside>
@@ -56,7 +57,7 @@
     <p class="entradilla">En la alineación son defensas, centrocampistas y delanteras. Pero lo que hacen con el balón, y sin él, cuenta otra historia. Este estudio agrupa a 220 jugadoras de la Liga F 2023/24 según cómo juegan: salen cuatro perfiles con nombre propio.</p>
     <dl class="ficha-tecnica">
       <div><dt>Pregunta</dt><dd>¿Qué tipos de jugadora hay en la Liga F según lo que hacen en el campo, más allá de su posición?</dd></div>
-      <div><dt>Datos</dt><dd>StatsBomb Open Data · 240 partidos · 835.429 eventos · 220 jugadoras de campo con al menos 900 minutos</dd></div>
+      <div><dt>Datos</dt><dd>StatsBomb Open Data · 240 partidos · 835.429 eventos · 220 jugadoras de campo con al menos 900 minutos · temporada 2023/24, descargados el 5 de noviembre de 2026</dd></div>
       <div><dt>Herramientas</dt><dd>Python (pandas, scikit-learn, Matplotlib) · k-means y PCA · <a href="https://github.com/lineadepase/lineadepase.github.io/tree/main/analisis/liga-f-perfiles">código y datos</a></dd></div>
     </dl>
   </section>
@@ -74,7 +75,7 @@
 
   <figure class="figura"><img src="graficos/02_perfiles_web.png" width="1600" height="900" alt="Los cuatro perfiles de jugadora de la Liga F: iniciadoras, pulmones, las de área y desequilibrantes, con un radar de lo que hace cada grupo y las jugadoras más típicas y más extremas de cada uno."><figcaption>Perfil medio de cada grupo (por 90 minutos, frente a la media de todas) y jugadoras que lo representan.</figcaption></figure>
 
-  <div class="tabla-editorial" role="region" aria-label="Jugadoras de cada perfil, tabla desplazable" tabindex="0"><table><caption>Jugadoras de cada perfil</caption><thead><tr><th scope="col">Perfil</th><th scope="col" class="num">Jugadoras</th><th scope="col">Las más típicas</th><th scope="col">Las que más lo llevan al extremo</th></tr></thead><tbody><tr><th scope="row">Iniciadoras</th><td class="num">67</td><td>Bibi, Kathellen Sousa, Teresa Merida</td><td>Manuela Vanegas, Irene Paredes, Núria Mendoza</td></tr><tr><th scope="row">Pulmones</th><td class="num">86</td><td>Thaís Ferreira, Miku Kojima, Pauleta</td><td>Bernadette Amani, Rosa Márquez, Leicy Santos</td></tr><tr><th scope="row">Las de área</th><td class="num">39</td><td>Synne Jensen, Julia Aguado, Ane Azkona</td><td>Ludmila da Silva, Signe Bruun, Jassina Blom</td></tr><tr><th scope="row">Desequilibrantes</th><td class="num">28</td><td>Rasheedat Ajibade, Eva Maria, Athenea del Castillo</td><td>Caroline Graham Hansen, Mariona Caldentey, Aitana Bonmatí</td></tr></tbody></table></div>
+  <div class="tabla-editorial" role="region" aria-label="Jugadoras de cada perfil" tabindex="0"><table><caption>Jugadoras de cada perfil</caption><thead><tr><th scope="col">Perfil</th><th scope="col" style="white-space:normal">Jugadoras que lo representan</th></tr></thead><tbody><tr><th scope="row" style="vertical-align:top">Iniciadoras<br><span style="font-weight:400">67 jugadoras</span></th><td style="white-space:normal"><strong>Las más típicas:</strong> Bibi, Kathellen Sousa, Teresa Merida.<br><strong>Las que más lo llevan al extremo:</strong> Manuela Vanegas, Irene Paredes, Núria Mendoza.</td></tr><tr><th scope="row" style="vertical-align:top">Pulmones<br><span style="font-weight:400">86 jugadoras</span></th><td style="white-space:normal"><strong>Las más típicas:</strong> Thaís Ferreira, Miku Kojima, Pauleta.<br><strong>Las que más lo llevan al extremo:</strong> Bernadette Amani, Rosa Márquez, Leicy Santos.</td></tr><tr><th scope="row" style="vertical-align:top">Las de área<br><span style="font-weight:400">39 jugadoras</span></th><td style="white-space:normal"><strong>Las más típicas:</strong> Synne Jensen, Julia Aguado, Ane Azkona.<br><strong>Las que más lo llevan al extremo:</strong> Ludmila da Silva, Signe Bruun, Jassina Blom.</td></tr><tr><th scope="row" style="vertical-align:top">Desequilibrantes<br><span style="font-weight:400">28 jugadoras</span></th><td style="white-space:normal"><strong>Las más típicas:</strong> Rasheedat Ajibade, Eva Maria, Athenea del Castillo.<br><strong>Las que más lo llevan al extremo:</strong> Caroline Graham Hansen, Mariona Caldentey, Aitana Bonmatí.</td></tr></tbody></table></div>
 
   <section class="seccion lectura" id="mapa">
     <h2>Un mapa de 220 jugadoras</h2>
@@ -94,8 +95,8 @@
   <section class="seccion lectura" id="metodo">
     <p class="etiqueta">Método</p>
     <h2>De los eventos a los perfiles</h2>
-    <p>Para cada jugadora con al menos 900 minutos (se excluyen las porteras) se calculan 18 variables por 90 minutos: pases progresivos, largos y de tiro, centros, conducciones progresivas, altura media de sus acciones, recepciones en el área, regates, presiones, recuperaciones, intercepciones, entradas, tiros, xG y la amenaza esperada (xT) del <a href="../liga-f-xt/">estudio anterior</a>. Se descartan 4 por repetir información de otras (correlación mayor de 0,85) y quedan 14.</p>
-    <p>Las variables se estandarizan para que ninguna domine por escala, y las muy asimétricas pasan antes por un logaritmo. El análisis de componentes principales (PCA) sirve para dibujar el mapa; el agrupamiento se hace con k-means sobre todas las variables.</p>
+    <p>Para cada jugadora con al menos 900 minutos (se excluyen las porteras) se calculan 18 variables, casi todas por 90 minutos: pases (totales, progresivos, largos y de tiro) y su porcentaje de acierto, centros, conducciones progresivas, altura media de sus acciones, porcentaje de presiones en campo rival, recepciones en el área, regates, presiones, recuperaciones, intercepciones, entradas, tiros, xG y la amenaza esperada (xT) del <a href="../liga-f-xt/">estudio anterior</a>. Se descartan 4 por repetir información de otras (correlación mayor de 0,85) y quedan 14.</p>
+    <p>Las variables se estandarizan para que ninguna domine por escala, y las muy asimétricas pasan antes por un logaritmo. El análisis de componentes principales (PCA) sirve para dibujar el mapa; el agrupamiento se hace con k-means sobre las 14 variables que quedan.</p>
     <p>El número de perfiles se fija con una regla escrita antes de mirar los grupos: entre 4 y 7, con al menos 8 jugadoras por grupo, gana el que mejor combina el coeficiente de silueta y la estabilidad (índice de Rand ajustado en 200 remuestras de jugadoras). Con 4 perfiles la silueta es 0,23 y la estabilidad 0,80; con 5 baja a 0,21 y 0,69.</p>
     <p>Como comprobación, con un mínimo de 600 minutos (247 jugadoras) o sin la xT, las jugadoras vuelven a agruparse de forma muy parecida (índice de Rand ajustado de 0,80 y 0,80).</p>
   </section>
