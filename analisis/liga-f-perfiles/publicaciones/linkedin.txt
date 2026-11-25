@@ -9,7 +9,7 @@ Línea de pase ha agrupado a 220 jugadoras de la Liga F 2023/24 según lo que ha
 
 Barcelona: 11 desequilibrantes, 5 iniciadoras y ninguna pulmón ni de área. Real Madrid: 6 desequilibrantes.
 
-Cómo está hecho: 18 variables por 90 minutos de 220 jugadoras con al menos 900 minutos, estandarizadas, PCA para el mapa y k-means para los grupos; el número de perfiles se eligió con silueta y estabilidad en 200 remuestras. Python, scikit-learn y datos de StatsBomb Open Data; código en abierto.
+Cómo está hecho: 18 variables, casi todas por 90 minutos, de 220 jugadoras con al menos 900 minutos; se descartan 4 que repiten información y se estandarizan las 14 restantes, con PCA para el mapa y k-means para los grupos; el número de perfiles se eligió con silueta y estabilidad en 200 remuestras. Python, scikit-learn y datos de StatsBomb Open Data; código en abierto.
 
 https://lineadepase.com/proyectos/liga-f-perfiles/?utm_source=linkedin&utm_medium=social&utm_campaign=liga-f-perfiles
 

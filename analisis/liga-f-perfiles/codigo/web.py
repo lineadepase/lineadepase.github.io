@@ -158,10 +158,10 @@ def main():
     pagina = destino.read_text(encoding="utf-8").replace("</head>", editorial + "</head>", 1)
     destino.write_text(enrich(pagina, destino), encoding="utf-8")
     print(f"Página escrita en {destino.relative_to(RAIZ_WEB)}")
-    redes(d, equipos, tam, xt, otras, barca, madrid, hansen)
+    redes(d, equipos, tam, xt, otras, barca, madrid, hansen, sens)
 
 
-def redes(d, equipos, tam, xt, otras, barca, madrid, hansen):
+def redes(d, equipos, tam, xt, otras, barca, madrid, hansen, sens):
     n = len(d)
     pub = ESTUDIO / "publicaciones"
     ig = pub / "instagram"
@@ -186,7 +186,7 @@ Línea de pase ha agrupado a {n} jugadoras de la Liga F 2023/24 según lo que ha
 
 {comun_dato}
 
-Cómo está hecho: 18 variables por 90 minutos de {n} jugadoras con al menos 900 minutos, estandarizadas, PCA para el mapa y k-means para los grupos; el número de perfiles se eligió con silueta y estabilidad en 200 remuestras. Python, scikit-learn y datos de StatsBomb Open Data; código en abierto.
+Cómo está hecho: 18 variables, casi todas por 90 minutos, de {n} jugadoras con al menos 900 minutos; se descartan {18 - len(sens['variables_usadas'])} que repiten información y se estandarizan las {len(sens['variables_usadas'])} restantes, con PCA para el mapa y k-means para los grupos; el número de perfiles se eligió con silueta y estabilidad en 200 remuestras. Python, scikit-learn y datos de StatsBomb Open Data; código en abierto.
 
 {utm('linkedin')}
 
