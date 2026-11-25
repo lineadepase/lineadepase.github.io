@@ -20,6 +20,7 @@ Escribe en datos/salida/resultado/:
 """
 
 import json
+import os
 import re
 from datetime import datetime
 from html import escape
@@ -176,8 +177,9 @@ def con_ilustracion(extra, t, clave):
     return extra + f"""
 body{{background:#0b1d13 url({imagen.as_uri()}) center/cover no-repeat}}
 .campo{{display:none}}
-.velo{{background:linear-gradient(180deg,rgba(7,22,14,.82) 0%,rgba(7,22,14,.35) 30%,rgba(7,22,14,.35) 52%,rgba(7,22,14,.9) 74%,rgba(7,22,14,.96) 100%)}}
-.goles,.equipo,.titular{{text-shadow:0 6px 30px rgba(0,0,0,.6)}}
+.velo{{background:linear-gradient(180deg,rgba(7,22,14,.6) 0%,rgba(7,22,14,.08) 26%,rgba(7,22,14,.08) 50%,rgba(7,22,14,.88) 72%,rgba(7,22,14,.96) 100%)}}
+body{{filter:saturate(1.15)}}
+.goles,.equipo,.titular{{text-shadow:0 4px 24px rgba(0,0,0,.85),0 0 4px rgba(0,0,0,.5)}}
 """
 
 
@@ -188,7 +190,9 @@ def pagina(cuerpo, ancho=1080, alto=1350, extra=""):
 
 
 def pie(fuentes):
-    return f'<div class="pie"><span><strong>Línea de pase</strong><br>lineadepase.com</span><span style="text-align:right;max-width:620px">{escape(fuentes)}</span></div>'
+    marca = '<span><strong>Línea de pase</strong><br>lineadepase.com</span>'
+    credito = f'<span style="text-align:right;max-width:620px">{escape(fuentes)}</span>' if fuentes.strip() else ''
+    return f'<div class="pie">{marca}{credito}</div>'
 
 
 def portada(d, t, cab):
@@ -219,6 +223,60 @@ def portada(d, t, cab):
 <p class="lugar">{escape(fecha_larga(d['partido']['fecha']).capitalize())} · {escape(t['estadio'])}</p>
 {pie(t['fuentes'])}"""
     extra = con_ilustracion(extra, t, "ilustracion")
+    return pagina(cuerpo, extra=extra)
+
+
+def dos_lineas(nombre):
+    """Parte el nombre del equipo en dos líneas para que local y visitante tengan la misma altura."""
+    partes = nombre.split(" ", 1)
+    return "<br>".join(escape(p) for p in partes)
+
+
+def cartel(d, t, cab, panoramica=False):
+    """Portada con la ilustración a la vista: el texto ocupa una franja (arriba en vertical,
+    a la izquierda en la web) y deja ver la escena del partido."""
+    clave = "ilustracion_web" if panoramica else "ilustracion"
+    imagen = (RAIZ_WEB / t[clave]).resolve()
+    if not imagen.is_file():
+        raise SystemExit(f"No existe la ilustración {t[clave]}")
+    if panoramica:
+        extra = f"""
+.lienzo{{padding:64px 84px}}
+body{{background:#0b1d13 url({imagen.as_uri()}) center/cover no-repeat}}
+.campo{{display:none}}
+.velo{{background:linear-gradient(90deg,rgba(7,22,14,.94) 0%,rgba(7,22,14,.82) 30%,rgba(7,22,14,0) 46%),linear-gradient(0deg,rgba(7,22,14,.85) 0%,rgba(7,22,14,0) 16%)}}
+.bloque{{width:600px;margin-top:40px}}
+.equipo{{font-family:Big;font-weight:900;font-size:78px;text-transform:uppercase;line-height:.95}}
+.goles{{font-family:Big;font-weight:900;font-size:190px;line-height:.85;margin:14px 0;white-space:nowrap}}
+.goles i{{font-style:normal;color:var(--senal);font-size:110px;margin:0 14px;vertical-align:middle}}
+.titular{{margin-top:34px;font-size:64px}}
+.lugar{{margin-top:16px;font-size:26px;color:var(--claro);font-weight:600}}
+.pie{{font-size:20px}}
+"""
+        cuerpo = f"""<p class="etiqueta">{escape(cab)}</p>
+<div class="bloque"><div class="equipo">{escape(d['local'])}</div>
+<div class="goles">{d['gl']}<i>–</i>{d['gv']}</div>
+<div class="equipo">{escape(d['visitante'])}</div>
+<h1 class="titulo titular">{sin_corte(t['titular'])}</h1>
+<p class="lugar">{escape(fecha_larga(d['partido']['fecha']).capitalize())} · {escape(t['estadio'])}</p></div>
+<div style="flex:1"></div>{pie(t['fuentes'])}"""
+        return pagina(cuerpo, 1672, 941, extra)
+    extra = f"""
+body{{background:#0b1d13 url({imagen.as_uri()}) center/cover no-repeat}}
+.campo{{display:none}}
+.velo{{background:linear-gradient(180deg,rgba(7,22,14,.95) 0%,rgba(7,22,14,.82) 19%,rgba(7,22,14,0) 30%,rgba(7,22,14,0) 86%,rgba(7,22,14,.9) 100%)}}
+.marcador{{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:26px}}
+.equipo{{font-family:Big;font-weight:900;font-size:66px;text-transform:uppercase;line-height:.95;width:330px}}
+.equipo.der{{text-align:right}}
+.goles{{font-family:Big;font-weight:900;font-size:150px;line-height:.85;white-space:nowrap}}
+.goles i{{font-style:normal;color:var(--senal);font-size:90px;margin:0 10px;vertical-align:middle}}
+.titular{{margin-top:40px;font-size:56px;text-align:center}}
+"""
+    cuerpo = f"""<p class="etiqueta" style="text-align:center">{escape(cab)}</p>
+<div class="marcador"><div class="equipo">{dos_lineas(d['local'])}</div><div class="goles">{d['gl']}<i>–</i>{d['gv']}</div>
+<div class="equipo der">{dos_lineas(d['visitante'])}</div></div>
+<h1 class="titulo titular">{sin_corte(t['titular'])}</h1>
+<div style="flex:1"></div>{pie(t['fuentes'])}"""
     return pagina(cuerpo, extra=extra)
 
 
@@ -309,7 +367,7 @@ def siguiente(d, t, cab, s):
         return None
     comp = s["competicion"] + (f" · Jornada {s['jornada']}" if s["jornada"] else "")
     hora = s["inicio"].strftime("%H:%M")
-    lugar = t["estadio"] if s["local"] == ZARAGOZA else ""
+    lugar = "Ibercaja Estadio" if s["local"] == ZARAGOZA else ""
     donde = " · ".join(x for x in [lugar, s["tv"]] if x)
     cuerpo = f"""<p class="etiqueta">{escape(cab)}</p>
 <div class="caja"><p class="etiqueta">Próximo partido · {escape(comp)}</p>
@@ -351,15 +409,23 @@ def main():
     t = json.loads((CARPETA_TEXTOS / "resultado_jornada.json").read_text(encoding="utf-8"))
     d = datos_partido(t["partido_id"])
     p = d["partido"]
+    # Expulsiones del rival (tarjetas.csv solo recoge las del Zaragoza), comprobadas y anotadas a mano
+    for e in t.get("expulsiones_rival", []):
+        m, a = (int(x) for x in (str(e["minuto"]).split("+") + ["0"])[:2])
+        d["eventos"].append({"tipo": "roja", "minuto": minuto_texto(m, a), "orden": m + a / 100,
+                             "jugador": e["jugador"], "equipo": p["rival"], "propio": False,
+                             "detalle": e.get("detalle", "")})
+    d["eventos"].sort(key=lambda e: e["orden"])
     cab = (f"{p['competicion']} · Jornada {int(p['jornada'])}" if pd.notna(p["jornada"])
            else str(p["competicion"])) + f" · {pd.Timestamp(p['fecha']).day} {MESES[pd.Timestamp(p['fecha']).month - 1][:3]}"
     s = siguiente_partido(p["fecha"])
-    piezas = [("resultado_1_portada", portada(d, t, cab)), ("resultado_2_cronologia", cronologia(d, t, cab)),
+    con_ia = bool(t.get("ilustracion")) and bool(t.get("ilustracion_web"))
+    piezas = [("resultado_1_portada", cartel(d, t, cab) if con_ia else portada(d, t, cab)), ("resultado_2_cronologia", cronologia(d, t, cab)),
               ("resultado_3_numeros", numeros(d, t, cab)), ("resultado_4_contexto", contexto(d, t, cab)),
-              ("resultado_5_siguiente", siguiente(d, t, cab, s)), ("resultado_web", web(d, t, cab))]
+              ("resultado_5_siguiente", siguiente(d, t, cab, s)), ("resultado_web", cartel(d, t, cab, True) if con_ia else web(d, t, cab))]
     SALIDA.mkdir(parents=True, exist_ok=True)
     with sync_playwright() as pw:
-        navegador = pw.chromium.launch()
+        navegador = pw.chromium.launch(executable_path=os.environ.get("CHROME_PATH") or None)
         for nombre, html in piezas:
             if html is None:
                 continue

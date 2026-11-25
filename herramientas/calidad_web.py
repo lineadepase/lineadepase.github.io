@@ -20,12 +20,17 @@ PAGE_IMAGE_MIN_BYTES={
     'proyectos/futbol-femenino/index.html':40_000,
     'proyectos/real-zaragoza/previa-jornada-10.html':40_000,
     'proyectos/real-zaragoza/previa.html':40_000,
+    'proyectos/espana-eurocopa-redes/index.html':40_000,
     'comparador/index.html':40_000,
     'galeria-visual/index.html':20_000,
 }
 PAGE_IMAGE_SIZES={
     'proyectos/index.html':'(max-width: 600px) 112px, 480px',
     'galeria-visual/index.html':'(max-width: 640px) calc(100vw - 32px), 360px',
+    'proyectos/real-zaragoza/simulacion.html':{
+        'proyectos/real-zaragoza/graficos/simulacion/portada_ia.jpg':'(max-width: 640px) calc(100vw - 48px), 360px',
+        'proyectos/real-zaragoza/graficos/simulacion/03_evolucion_zaragoza_instagram.png':'(max-width: 640px) calc(100vw - 48px), 560px',
+    },
     'index.html':{
         'proyectos/real-zaragoza/graficos/previa/real-zaragoza-villarreal-b-j10-v2.webp':'(max-width: 640px) calc(100vw - 32px), (max-width: 1200px) calc((100vw - 80px)/2), 560px',
         'proyectos/real-zaragoza/graficos/previa/noche-copa-tudela-20261027.webp':'(max-width: 640px) calc(100vw - 32px), (max-width: 1200px) calc((100vw - 80px)/2), 560px',
@@ -33,6 +38,13 @@ PAGE_IMAGE_SIZES={
         'proyectos/liga-f-xt/graficos/foto.jpg':'(max-width: 416px) calc(100vw - 32px), 384px',
         'assets/fotos/seleccion-espanola-riazor-2024.jpg':'(max-width: 366px) calc(100vw - 32px), 334px',
         'assets/fvs-portada.jpg':'(max-width: 380px) 192px, 384px',
+    },
+    'proyectos/espana-eurocopa-redes/index.html':{
+        'proyectos/espana-eurocopa-redes/graficos/foto-900.webp':'(max-width: 640px) calc(100vw - 48px), 800px',
+        'proyectos/espana-eurocopa-redes/graficos/01_red_final_instagram.webp':'(max-width: 640px) calc(100vw - 48px), 560px',
+        'proyectos/espana-eurocopa-redes/graficos/03_intermediacion_instagram.webp':'(max-width: 640px) calc(100vw - 48px), 560px',
+        'proyectos/espana-eurocopa-redes/graficos/04_ritmo_concentracion_instagram.webp':'(max-width: 640px) calc(100vw - 48px), 560px',
+        'proyectos/espana-eurocopa-redes/graficos/05_seis_redes_web.webp':'(max-width: 640px) calc(100vw - 48px), 800px',
     },
     'proyectos/futbol-femenino/index.html':{
         'proyectos/futbol-femenino/mapa.png':'(max-width: 640px) calc(100vw - 32px), 1120px',

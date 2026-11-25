@@ -1,122 +1,96 @@
 {
- "partido_id": 10,
+ "partido_id": 13,
  "local": "Real Zaragoza",
- "visitante": "Villarreal B",
- "marcador": "2-2",
- "fecha": "2026-10-31",
+ "visitante": "Rayo Majadahonda",
+ "marcador": "2-0",
+ "fecha": "2026-11-21",
  "eventos": [
   {
+   "tipo": "gol",
+   "minuto": "37",
+   "jugador": "Marco Sangalli",
+   "equipo": "Real Zaragoza",
+   "propio": true,
+   "marcador": "1-0",
+   "detalle": "pase de Rubén Díez"
+  },
+  {
    "tipo": "cambios",
-   "minuto": "59",
-   "jugador": "J. Tobajas, Pau Sans, Iker Vadillo",
+   "minuto": "62",
+   "jugador": "Marcos Cuenca, Edu Espiau",
    "equipo": "Real Zaragoza",
    "propio": true,
-   "detalle": "3 cambios a la vez"
+   "detalle": "2 cambios a la vez"
   },
   {
    "tipo": "gol",
-   "minuto": "64",
-   "jugador": "Albert García",
-   "equipo": "Villarreal B",
-   "propio": false,
-   "marcador": "0-1",
-   "detalle": ""
-  },
-  {
-   "tipo": "gol",
-   "minuto": "70",
-   "jugador": "Álvaro García",
-   "equipo": "Villarreal B",
-   "propio": false,
-   "marcador": "0-2",
-   "detalle": ""
-  },
-  {
-   "tipo": "gol",
-   "minuto": "86",
-   "jugador": "Jaume Jardí",
+   "minuto": "68",
+   "jugador": "Edu Espiau",
    "equipo": "Real Zaragoza",
    "propio": true,
-   "marcador": "1-2",
-   "detalle": ""
-  },
-  {
-   "tipo": "gol",
-   "minuto": "90+3",
-   "jugador": "Diego González",
-   "equipo": "Real Zaragoza",
-   "propio": true,
-   "marcador": "2-2",
-   "detalle": "pase de Pau Sans"
-  },
-  {
-   "tipo": "roja",
-   "minuto": "90+7",
-   "jugador": "J. Tobajas",
-   "equipo": "Real Zaragoza",
-   "propio": true,
-   "detalle": "doble amarilla"
+   "marcador": "2-0",
+   "detalle": "pase de Marcos Cuenca"
   }
  ],
  "numeros": [
   {
    "metrica": "Posesión",
-   "zaragoza": "63 %",
-   "rival": "37 %"
+   "zaragoza": "64 %",
+   "rival": "36 %"
   },
   {
    "metrica": "Tiros",
    "zaragoza": "16",
-   "rival": "10"
+   "rival": "5"
   },
   {
    "metrica": "Tiros a puerta",
-   "zaragoza": "8",
-   "rival": "3"
+   "zaragoza": "5",
+   "rival": "1"
   },
   {
    "metrica": "Pases",
-   "zaragoza": "484",
-   "rival": "287"
+   "zaragoza": "613",
+   "rival": "334"
   },
   {
    "metrica": "Precisión en el pase",
-   "zaragoza": "81 %",
-   "rival": "69 %"
+   "zaragoza": "85 %",
+   "rival": "75 %"
   }
  ],
  "siguiente": {
-  "local": "Real Zaragoza",
-  "visitante": "SD Huesca",
+  "local": "AD Alcorcón",
+  "visitante": "Real Zaragoza",
   "competicion": "Primera Federación",
-  "jornada": 11,
+  "jornada": 14,
   "tv": "",
-  "inicio": "2026-11-07T21:00:00+01:00"
+  "inicio": "2026-11-29T17:00:00+01:00"
  },
  "textos": {
-  "partido_id": 10,
+  "partido_id": 13,
   "estadio": "Ibercaja Estadio",
-  "titular": "Del 0-2 al 2-2 en siete minutos",
-  "subtitulo": "Dos goles después del minuto 85 para empatar el duelo entre los dos primeros",
+  "titular": "Un gol por banda y otro desde el banquillo",
+  "subtitulo": "Sangalli marcó en el 37' y Espiau, que había entrado en el 62', cerró el 2-0 en el 68'",
   "destacados": [
    {
-    "cifra": "9 de 19",
-    "texto": "goles de liga del Zaragoza llegan desde el minuto 76"
+    "cifra": "30",
+    "texto": "puntos en trece jornadas: nueve victorias, tres empates y una derrota"
    },
    {
-    "cifra": "21",
-    "texto": "puntos en diez jornadas: seis victorias, tres empates y una derrota"
+    "cifra": "16 de 18",
+    "texto": "puntos en casa, con cuatro porterías a cero en el Ibercaja Estadio"
    },
    {
-    "cifra": "10 de 12",
-    "texto": "puntos en casa; es el primer partido en el que recibe dos goles en Zaragoza"
+    "cifra": "16-5",
+    "texto": "tiros según la ficha del club, con 5 a puerta por 1 del Rayo"
    },
    {
-    "cifra": "5 + 4",
-    "texto": "goles y asistencias de Jaume Jardí en liga"
+    "cifra": "6",
+    "texto": "puntos sobre el Villarreal B, segundo, a falta de los partidos del 22 de noviembre"
    }
   ],
-  "nota_estadisticas": "Fuente: ficha estadística del Real Zaragoza. Sin xG publicado para este partido.",
-  "fuentes": "Datos públicos: web del Real Zaragoza, FotMob, Aragón Digital y Sport Aragón"
+  "nota_estadisticas": "Tiros y posesión de la ficha del club, que no desglosa todos los tiros. Sin xG publicado para este partido.",
+  "fuentes": "Datos: ficha del club, FotMob, Aragón Digital y Aragón Play"
  }
 }

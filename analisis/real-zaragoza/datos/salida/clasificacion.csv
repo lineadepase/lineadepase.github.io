@@ -1,21 +1,21 @@
 ﻿tras_jornada,posicion,equipo,pj,g,e,p,gf,gc,puntos,fuente_url,dg,puntos_por_partido,puesto_ataque,puesto_defensa
-9,1,Villarreal B,9,6,2,1,21,10,20,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,11,2.22,1,5
-9,2,Real Zaragoza,9,6,2,1,17,10,20,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,7,2.22,2,5
-9,3,Real Jaén,9,4,4,1,13,9,16,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,4,1.78,9,2
-9,4,Real Murcia,9,5,1,3,11,8,16,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,3,1.78,11,1
-9,5,Cartagena,9,4,3,2,14,9,15,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,5,1.67,6,2
-9,6,Alcorcón,9,3,5,1,17,9,14,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,8,1.56,2,2
-9,7,Gimnàstic,9,4,2,3,15,14,14,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,1,1.56,5,15
-9,8,UD Ibiza,9,4,2,3,14,13,14,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,1,1.56,6,12
-9,9,Algeciras,9,4,1,4,13,13,13,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,0,1.44,9,12
-9,10,Hércules,9,4,1,4,8,11,13,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,-3,1.44,17,8
-9,11,SD Huesca,9,2,6,1,11,11,12,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,0,1.33,11,8
-9,12,Real Madrid Castilla,9,3,3,3,11,11,12,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,0,1.33,11,8
-9,13,Antequera,9,2,5,2,14,13,11,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,1,1.22,6,12
-9,14,Atlético Madrileño,9,2,4,3,17,15,10,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,2,1.11,2,16
-9,15,Sant Andreu,9,2,3,4,10,12,9,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,-2,1.0,15,11
-9,16,Rayo Majadahonda,9,2,1,6,7,10,7,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,-3,0.78,18,5
-9,17,CDA Águilas FC,9,1,4,4,9,15,7,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,-6,0.78,16,16
-9,18,CE Europa,9,2,1,6,6,15,7,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,-9,0.78,19,16
-9,19,Juventud Torremolinos CF,9,1,3,5,11,20,6,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,-9,0.67,11,20
-9,20,CD Teruel,9,1,3,5,4,15,6,https://es.besoccer.com/competicion/clasificacion/primera_division_rfef/2027/grupo2,-11,0.67,20,16
+13,1,Real Zaragoza,13,9,3,1,27,12,30,https://futbolme.com/resultados-directo/torneo/primera-federacion-grupo-2/3056/,15,2.31,2,2
+13,2,Villarreal B,13,6,6,1,28,17,24,https://futbolme.com/resultados-directo/torneo/primera-federacion-grupo-2/3056/,11,1.85,1,9
+13,3,Alcorcón,13,6,6,1,25,14,24,https://futbolme.com/resultados-directo/torneo/primera-federacion-grupo-2/3056/,11,1.85,3,3
+13,4,Real Murcia,13,7,2,4,16,11,23,https://futbolme.com/resultados-directo/torneo/primera-federacion-grupo-2/3056/,5,1.77,12,1
+13,5,Cartagena,13,6,4,3,21,15,22,https://futbolme.com/resultados-directo/torneo/primera-federacion-grupo-2/3056/,6,1.69,6,4
+13,6,UD Ibiza,13,6,3,4,22,15,21,https://futbolme.com/resultados-directo/torneo/primera-federacion-grupo-2/3056/,7,1.62,5,4
+13,7,Hércules,13,6,3,4,15,15,21,https://futbolme.com/resultados-directo/torneo/primera-federacion-grupo-2/3056/,0,1.62,14,4
+13,8,Real Madrid Castilla,13,5,4,4,16,15,19,https://futbolme.com/resultados-directo/torneo/primera-federacion-grupo-2/3056/,1,1.46,12,4
+13,9,Real Jaén,13,5,4,4,21,23,19,https://futbolme.com/resultados-directo/torneo/primera-federacion-grupo-2/3056/,-2,1.46,6,19
+13,10,Atlético Madrileño,13,4,5,4,23,20,17,https://futbolme.com/resultados-directo/torneo/primera-federacion-grupo-2/3056/,3,1.31,4,15
+13,11,Antequera,13,4,5,4,20,18,17,https://futbolme.com/resultados-directo/torneo/primera-federacion-grupo-2/3056/,2,1.31,8,10
+13,12,Algeciras,13,5,2,6,18,19,17,https://futbolme.com/resultados-directo/torneo/primera-federacion-grupo-2/3056/,-1,1.31,9,14
+13,13,Sant Andreu,13,4,4,5,17,16,16,https://futbolme.com/resultados-directo/torneo/primera-federacion-grupo-2/3056/,1,1.23,11,8
+13,14,Gimnàstic,13,4,4,5,18,20,16,https://futbolme.com/resultados-directo/torneo/primera-federacion-grupo-2/3056/,-2,1.23,9,15
+13,15,SD Huesca,13,3,6,4,13,18,15,https://futbolme.com/resultados-directo/torneo/primera-federacion-grupo-2/3056/,-5,1.15,16,10
+13,16,CE Europa,13,4,1,8,11,22,13,https://futbolme.com/resultados-directo/torneo/primera-federacion-grupo-2/3056/,-11,1.0,17,18
+13,17,CDA Águilas FC,13,2,6,5,11,18,12,https://futbolme.com/resultados-directo/torneo/primera-federacion-grupo-2/3056/,-7,0.92,17,10
+13,18,Juventud Torremolinos CF,13,2,5,6,14,23,11,https://futbolme.com/resultados-directo/torneo/primera-federacion-grupo-2/3056/,-9,0.85,15,19
+13,19,Rayo Majadahonda,13,2,1,10,8,18,7,https://futbolme.com/resultados-directo/torneo/primera-federacion-grupo-2/3056/,-10,0.54,19,10
+13,20,CD Teruel,13,1,4,8,5,20,7,https://futbolme.com/resultados-directo/torneo/primera-federacion-grupo-2/3056/,-15,0.54,20,15

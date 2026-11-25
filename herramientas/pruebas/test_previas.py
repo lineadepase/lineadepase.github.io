@@ -186,11 +186,11 @@ class PublicacionPrevias(unittest.TestCase):
         article=(self.root/entry['pagina']).read_text(encoding='utf-8')
         self.assertIn('data-resultado-confirmado="true"',home)
         self.assertIn('data-marcador="2-1"',home)
-        self.assertIn('Resultado confirmado · 2-1',home)
+        self.assertIn('Final · 2-1',home)
         self.assertIn('class="marcador-previa"',home)
         self.assertIn('Leer la crónica o el análisis',home)
         self.assertIn('Releer la previa',home)
-        self.assertIn('Resultado confirmado: 2-1',article)
+        self.assertIn('Resultado final: 2-1',article)
         self.assertIn('href="https://club.example/resultado"',article)
         self.assertIn('Real Zaragoza',article)
 
@@ -204,7 +204,7 @@ class PublicacionPrevias(unittest.TestCase):
         from previas import portada
         portada(self.root)
         home=(self.root/'index.html').read_text(encoding='utf-8')
-        self.assertIn('Pendiente de confirmación editorial',home)
+        self.assertIn('Partido jugado · resultado en revisión',home)
         self.assertNotIn('marcador-previa',home)
         self.assertNotIn('Partido disputado',home)
         self.assertNotIn('Leer la crónica o el análisis',home)

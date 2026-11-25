@@ -1,14 +1,26 @@
 {
-  "partido_id": 10,
+  "partido_id": 13,
   "estadio": "Ibercaja Estadio",
-  "titular": "Del 0-2 al 2-2 en siete minutos",
-  "subtitulo": "Dos goles después del minuto 85 para empatar el duelo entre los dos primeros",
+  "titular": "Un gol por banda y otro desde el banquillo",
+  "subtitulo": "Sangalli marcó en el 37' y Espiau, que había entrado en el 62', cerró el 2-0 en el 68'",
   "destacados": [
-    {"cifra": "9 de 19", "texto": "goles de liga del Zaragoza llegan desde el minuto 76"},
-    {"cifra": "21", "texto": "puntos en diez jornadas: seis victorias, tres empates y una derrota"},
-    {"cifra": "10 de 12", "texto": "puntos en casa; es el primer partido en el que recibe dos goles en Zaragoza"},
-    {"cifra": "5 + 4", "texto": "goles y asistencias de Jaume Jardí en liga"}
+    {
+      "cifra": "30",
+      "texto": "puntos en trece jornadas: nueve victorias, tres empates y una derrota"
+    },
+    {
+      "cifra": "16 de 18",
+      "texto": "puntos en casa, con cuatro porterías a cero en el Ibercaja Estadio"
+    },
+    {
+      "cifra": "16-5",
+      "texto": "tiros según la ficha del club, con 5 a puerta por 1 del Rayo"
+    },
+    {
+      "cifra": "6",
+      "texto": "puntos sobre el Villarreal B, segundo, a falta de los partidos del 22 de noviembre"
+    }
   ],
-  "nota_estadisticas": "Fuente: ficha estadística del Real Zaragoza. Sin xG publicado para este partido.",
-  "fuentes": "Datos públicos: web del Real Zaragoza, FotMob, Aragón Digital y Sport Aragón"
+  "nota_estadisticas": "Tiros y posesión de la ficha del club, que no desglosa todos los tiros. Sin xG publicado para este partido.",
+  "fuentes": "Datos: ficha del club, FotMob, Aragón Digital y Aragón Play"
 }

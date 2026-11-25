@@ -165,3 +165,11 @@ partido_id,periodo,metrica,zaragoza,valor_rival,calidad,fuente_url
 10,Partido,pases,484,287,ok,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-10-real-zaragoza-vs-villarreal-b-3962
 10,Partido,pases_completados,394,198,ok,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-10-real-zaragoza-vs-villarreal-b-3962
 10,Partido,fueras_juego,0,5,dudosa,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-10-real-zaragoza-vs-villarreal-b-3962
+11,Partido,posesion_pct,54,46,ok,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-11-real-zaragoza-vs-sd-huesca-3977
+11,Partido,pases,479,399,ok,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-11-real-zaragoza-vs-sd-huesca-3977
+11,Partido,pases_completados,416,309,ok,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-11-real-zaragoza-vs-sd-huesca-3977
+11,Partido,fueras_juego,4,2,ok,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-11-real-zaragoza-vs-sd-huesca-3977
+13,Partido,posesion_pct,64,36,ok,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-13-real-zaragoza-vs-cf-rayo-4022
+13,Partido,pases,613,334,ok,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-13-real-zaragoza-vs-cf-rayo-4022
+13,Partido,pases_completados,524,249,ok,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-13-real-zaragoza-vs-cf-rayo-4022
+13,Partido,fueras_juego,1,3,ok,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-13-real-zaragoza-vs-cf-rayo-4022

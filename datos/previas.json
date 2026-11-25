@@ -1,32 +1,194 @@
 [
   {
-    "jornada": 10,
-    "pagina": "proyectos/real-zaragoza/previa-jornada-10.html",
+    "jornada": 13,
+    "pagina": "proyectos/real-zaragoza/previa-jornada-13.html",
     "alias": [
       "proyectos/real-zaragoza/previa.html"
     ],
+    "fecha_partido": "2026-11-21",
+    "fecha_publicacion": "2026-11-19",
+    "fecha_actualizacion": "2026-11-22",
+    "titulo": "Real Zaragoza 2–0 Rayo Majadahonda: un gol por banda y otro desde el banquillo",
+    "etiqueta": "Primera Federación · J13 · Resultado final",
+    "resumen": "Sangalli marcó en el 37' y Espiau, que había entrado en el 62', cerró el 2-0 en el 68'. El Zaragoza suma 30 puntos y 16 de 18 en casa.",
+    "pregunta_abierta": "¿Sumará el Rayo Majadahonda su primer punto lejos de casa ante el líder?",
+    "fuera_de_plano": "El balance por sede reúne cinco partidos del Zaragoza en casa y seis salidas del Rayo Majadahonda. Es una muestra corta y no permite anticipar cómo se desarrollará el partido.",
+    "imagen": "proyectos/real-zaragoza/graficos/jornada-13/resultado-zaragoza-rayo-majadahonda.webp",
+    "ancho": 1672,
+    "alto": 941,
+    "alt": "Marcador final Real Zaragoza 2–0 Rayo Majadahonda en la jornada 13, con goles de Marco Sangalli (37') y Edu Espiau (68') y el titular «Un gol por banda y otro desde el banquillo».",
+    "pie": "Imagen de Línea de pase con el marcador final.",
+    "noticia_html": "<section class=\"seccion lectura\" aria-labelledby=\"noticia-previa-j13\"><p class=\"etiqueta\">El contexto del partido</p><h2 id=\"noticia-previa-j13\">El líder recibe al penúltimo</h2><p>El Real Zaragoza llega a la jornada 13 como líder, con 27 puntos y cuatro de ventaja sobre el Villarreal B, después de ganar 0-4 en Jaén. El Rayo Majadahonda es penúltimo con 7 puntos, 20 menos, tras perder 0-1 en casa ante el Águilas.</p><p>La sede marca la mayor diferencia. El Zaragoza ha sumado 13 de 15 puntos en el Ibercaja Estadio, con 10 goles a favor y 3 en contra. El Rayo no ha puntuado fuera: seis derrotas, con 2 goles marcados y 10 recibidos.</p><p>La forma reciente va en la misma línea: 11 puntos en los últimos cinco partidos para el Zaragoza y 3 para el Rayo. Son doce jornadas: los datos sitúan el partido, no adivinan el resultado.</p><p class=\"nota\">Datos de liga hasta la jornada 12. La Copa del Rey se analiza por separado. El corte y la comparación completa aparecen al final.</p></section>",
+    "rival": "Rayo Majadahonda",
+    "hora": "16:30",
+    "estadio": "Ibercaja Estadio",
+    "competicion": "Primera Federación · Jornada 13",
+    "fuente_partido": "https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-13-real-zaragoza-vs-cf-rayo-4022",
+    "estados_previa": {
+      "confirmado": "El Real Zaragoza ganó 2–0 al Rayo Majadahonda en el Ibercaja Estadio.",
+      "pendiente": "La ficha no ofrece xG ni un desglose completo de los tiros; la clasificación tras la J13 se publicará cuando termine la jornada.",
+      "despues": "El Rayo Majadahonda sigue sin puntuar fuera de casa: siete salidas, siete derrotas."
+    },
+    "imagen_social": "assets/compartir/previa-real-zaragoza-rayo-majadahonda-j13-social.jpg",
+    "ancho_social": 1200,
+    "alto_social": 675,
+    "postpartido_url": "proyectos/real-zaragoza/jornada-13.html",
+    "resultado_confirmado": {
+      "marcador": "2–0",
+      "fecha_verificacion": "2026-11-22T08:15:00+01:00",
+      "fuentes": [
+        {
+          "nombre": "Real Zaragoza: ficha del partido Real Zaragoza - CF Rayo",
+          "url": "https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-13-real-zaragoza-vs-cf-rayo-4022"
+        },
+        {
+          "nombre": "Aragón Digital: Cómodo triunfo del Real Zaragoza para afianzarse en el liderato (2-0)",
+          "url": "https://www.aragondigital.es/articulo/real-zaragoza/comodo-triunfo-afianzarse-liderato/202611211855421023451.html"
+        }
+      ],
+      "respuesta_pregunta": "No. El Rayo Majadahonda perdió 2–0 y sigue sin puntuar fuera de casa: siete salidas, siete derrotas. El Zaragoza tuvo más balón (64 % según la ficha del club) y remató más (16 tiros por 5), aunque sin xG publicado esas cifras miden volumen y no calidad. Es una muestra corta y no permite sacar conclusiones sobre el resto de la temporada del Rayo.",
+      "momentos_clave": [
+        {
+          "minuto": "37",
+          "marcador": "1–0",
+          "hecho": "Rubén Díez dio el pase y Sangalli, desde cerca de la línea de fondo, marcó su primer gol de la temporada."
+        },
+        {
+          "minuto": "62",
+          "marcador": "1–0",
+          "hecho": "Entraron Marcos Cuenca y Edu Espiau por Jaume Jardí y Joaquín."
+        },
+        {
+          "minuto": "68",
+          "marcador": "2–0",
+          "hecho": "Cuenca dio el pase y Espiau, seis minutos después de entrar, cerró el partido."
+        }
+      ]
+    }
+  },
+  {
+    "jornada": 12,
+    "pagina": "proyectos/real-zaragoza/previa-jornada-12.html",
+    "alias": [],
+    "fecha_partido": "2026-11-14",
+    "fecha_publicacion": "2026-11-09",
+    "fecha_actualizacion": "2026-11-12",
+    "titulo": "Real Jaén – Real Zaragoza",
+    "etiqueta": "Primera Federación · J12 · 14 de noviembre",
+    "resumen": "El líder visita La Victoria: el Zaragoza, primero con 24 puntos, se mide a un Real Jaén cuarto con 19 que no ha perdido en casa.",
+    "pregunta_abierta": "¿Seguirá el Real Jaén sin perder en La Victoria ante el líder?",
+    "fuera_de_plano": "El balance por sede reúne cinco partidos del Jaén en casa y seis salidas del Zaragoza. Es una muestra corta y no permite anticipar cómo se desarrollará el partido.",
+    "imagen": "proyectos/real-zaragoza/graficos/previa/real-jaen-real-zaragoza-j12.webp",
+    "ancho": 1672,
+    "alto": 941,
+    "alt": "Campo de fútbol iluminado en lo alto de una colina cubierta de olivos al anochecer, con un camino de tierra que sube entre los olivares, un balón blanco y azul en el centro del campo y la silueta de un castillo en el cerro vecino.",
+    "pie": "Ilustración creada con IA para Línea de pase.",
+    "noticia_html": "<section class=\"seccion lectura\" aria-labelledby=\"noticia-previa-j12\"><p class=\"etiqueta\">El contexto del partido</p><h2 id=\"noticia-previa-j12\">El líder visita a un Jaén invicto en casa</h2><p>El Real Zaragoza llega a La Victoria como líder, con 24 puntos y dos de ventaja sobre el Villarreal B. El Real Jaén es cuarto con 19, a cinco puntos, después de perder 4-3 en Alcorcón en la última jornada.</p><p>La sede marca el contraste. El Jaén no ha perdido en casa: tres victorias y dos empates, 11 puntos de 15 con 11 goles a favor y 8 en contra. El Zaragoza ha sumado 11 de 18 fuera, con 11 goles marcados y 9 recibidos.</p><p>Las rachas recientes son parecidas: nueve puntos en los últimos cinco partidos para el Zaragoza y ocho para el Jaén. La muestra es corta: describe el inicio de temporada, pero no anticipa el resultado.</p><p class=\"nota\">Datos de liga hasta la jornada 11. La Copa del Rey se analiza por separado. El corte y la comparación completa aparecen al final.</p></section>",
+    "rival": "Real Jaén",
+    "hora": "21:00",
+    "estadio": "Estadio de La Victoria",
+    "competicion": "Primera Federación · Jornada 12",
+    "fuente_partido": "https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-12-jaen-vs-real-zaragoza-3995",
+    "estados_previa": {
+      "confirmado": "El partido se juega el sábado 14 de noviembre a las 21:00 en el Estadio de La Victoria (Jaén) y se emite en el canal Primera Federación de Movistar Plus+ (de pago).",
+      "pendiente": "Las convocatorias y los onces.",
+      "despues": "Se revisará si el Jaén mantuvo su racha sin perder en casa ante el líder."
+    },
+    "imagen_social": "assets/compartir/previa-real-jaen-real-zaragoza-j12-social.jpg",
+    "ancho_social": 1200,
+    "alto_social": 675
+  },
+  {
+    "jornada": 11,
+    "pagina": "proyectos/real-zaragoza/previa-jornada-11.html",
+    "alias": [],
+    "fecha_partido": "2026-11-07",
+    "fecha_publicacion": "2026-11-03",
+    "fecha_actualizacion": "2026-11-08",
+    "titulo": "Real Zaragoza 2–0 SD Huesca: el derbi aragonés se queda en Zaragoza",
+    "etiqueta": "Primera Federación · J11 · Resultado final",
+    "resumen": "Joaquín, en el 23', y Vadillo, en el 50', marcaron tras dos pérdidas del Huesca en la salida de balón. El equipo oscense terminó con un solo remate y con diez desde el 67'.",
+    "pregunta_abierta": "¿Romperá el Huesca su serie de cuatro empates fuera de casa?",
+    "fuera_de_plano": "El balance por sede reúne cuatro partidos del Zaragoza en casa y cuatro salidas del Huesca. Es una muestra corta y no permite anticipar cómo se desarrollará el derbi.",
+    "imagen": "proyectos/real-zaragoza/graficos/jornada-11/resultado-zaragoza-huesca.webp",
+    "ancho": 1672,
+    "alto": 941,
+    "alt": "Marcador final Real Zaragoza 2–0 SD Huesca en la jornada 11, con el titular «El derbi aragonés se queda en Zaragoza», sobre una ilustración de un estadio lleno con un tifo de la bandera de Aragón, la basílica del Pilar y el Pirineo al fondo.",
+    "pie": "Ilustración creada con IA para Línea de pase.",
+    "noticia_html": "<section class=\"seccion lectura\" aria-labelledby=\"noticia-previa-j11\"><p class=\"etiqueta\">La crónica</p><h2 id=\"noticia-previa-j11\">El Zaragoza gana el derbi con dos robos</h2><p>El Real Zaragoza ganó 2–0 a la SD Huesca en el Ibercaja Estadio. Joaquín abrió el marcador en el 23, después de que Jardí recuperara un balón perdido por Kembo en la salida, y Vadillo hizo el segundo en el 50 tras otro robo en campo rival. Diego Gómez fue expulsado por doble amarilla en el 67.</p><p>La ficha del club da 18 remates del Zaragoza, ocho a puerta, por uno del Huesca, que no llegó a tirar entre los palos. La posesión fue más repartida, 54 % a 46 %. No hay xG de Sofascore para este partido y el desglose de tiros está incompleto, de modo que las cifras describen el volumen, no la calidad de las ocasiones.</p><p>El Huesca, que llegaba con cuatro empates en sus cuatro salidas, perdió por primera vez fuera de casa. El Zaragoza suma 24 puntos en once jornadas y visita al Real Jaén el sábado 14 de noviembre.</p></section>",
+    "rival": "SD Huesca",
+    "hora": "21:00",
+    "estadio": "Ibercaja Estadio",
+    "competicion": "Primera Federación · Jornada 11",
+    "fuente_partido": "https://www.sportaragon.com/articulo/real-zaragoza/real-zaragoza-sd-huesca-regresa-noviembre-confirmado-horario-derbi-aragones/20261015201714161176.html",
+    "estados_previa": {
+      "confirmado": "El Real Zaragoza ganó 2–0 a la SD Huesca en el Ibercaja Estadio.",
+      "pendiente": "La ficha no ofrece xG ni un desglose completo de los tiros.",
+      "despues": "El Huesca perdió su primer partido fuera de casa tras cuatro empates a domicilio."
+    },
+    "imagen_social": "assets/compartir/previa-real-zaragoza-sd-huesca-j11-social.jpg",
+    "ancho_social": 1200,
+    "alto_social": 675,
+    "postpartido_url": "proyectos/real-zaragoza/jornada-11.html",
+    "resultado_confirmado": {
+      "marcador": "2–0",
+      "fecha_verificacion": "2026-11-08T08:20:00+01:00",
+      "fuentes": [
+        {
+          "nombre": "Real Zaragoza: ficha del partido Real Zaragoza - SD Huesca",
+          "url": "https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-11-real-zaragoza-vs-sd-huesca-3977"
+        },
+        {
+          "nombre": "Aragón Digital: Dos regalos valen una noche de líder",
+          "url": "https://www.aragondigital.es/articulo/real-zaragoza/dos-regalos-valen-noche-lider/202611072333481020455.html"
+        }
+      ],
+      "respuesta_pregunta": "El Huesca no rompió su serie, pero tampoco la alargó: perdió por primera vez fuera de casa esta temporada. Tras cuatro empates a domicilio, cayó 2–0 en el Ibercaja Estadio con un solo remate y jugó con diez desde el 67'. Es un único partido y no permite sacar conclusiones sobre su rendimiento como visitante.",
+      "momentos_clave": [
+        {
+          "minuto": "23",
+          "marcador": "1–0",
+          "hecho": "Jardí recuperó un balón perdido por Kembo en la salida y Joaquín, solo ante Gazzaniga, abrió el marcador."
+        },
+        {
+          "minuto": "50",
+          "marcador": "2–0",
+          "hecho": "Vadillo robó otro balón en la salida del Huesca, se fue hacia dentro y marcó con un disparo cruzado."
+        },
+        {
+          "minuto": "67",
+          "marcador": "2–0",
+          "hecho": "Diego Gómez vio la segunda amarilla y el Huesca jugó con diez el último tramo."
+        }
+      ]
+    }
+  },
+  {
+    "jornada": 10,
+    "pagina": "proyectos/real-zaragoza/previa-jornada-10.html",
+    "alias": [],
     "fecha_partido": "2026-10-31",
     "fecha_publicacion": "2026-10-27",
     "fecha_actualizacion": "2026-11-01",
     "titulo": "Real Zaragoza 2–2 Villarreal B: del 0-2 al empate en siete minutos",
     "etiqueta": "Primera Federación · J10 · Resultado final",
     "resumen": "El Villarreal B marcó en el 64' y el 70'; Jardí, en el rechace de su penalti, y Diego González, en el 90+3', igualaron el duelo entre los dos primeros.",
-    "pregunta_abierta": "¿Quién llegará más veces al área rival: el Zaragoza en casa o el Villarreal B fuera?",
-    "fuera_de_plano": "El balance por sede reúne tres partidos del Zaragoza en casa y cuatro salidas del Villarreal B. Es una muestra corta y no permite anticipar cómo se desarrollará este encuentro.",
+    "pregunta_abierta": "¿Quién terminó con más remates: el Zaragoza o el Villarreal B?",
+    "fuera_de_plano": "La ficha recoge los remates, pero no las llegadas ni los toques dentro del área. El recuento sirve para comparar el volumen de tiro; por sí solo no describe el dominio territorial.",
     "imagen": "proyectos/real-zaragoza/graficos/jornada-10/resultado-zaragoza-villarreal-b.webp",
     "ancho": 1672,
     "alto": 941,
-    "alt": "Marcador Real Zaragoza 2–2 Villarreal B, jornada 10 de Primera Federación, con los goleadores y el titular «Del 0-2 al 2-2 en siete minutos».",
-    "noticia_html": "<section class=\"seccion lectura\" aria-labelledby=\"noticia-previa-j10\"><p class=\"etiqueta\">El contexto del partido</p><h2 id=\"noticia-previa-j10\">El liderato se juega entre iguales en puntos</h2><p>El Real Zaragoza recibe al Villarreal B el 31 de octubre con los dos equipos empatados a 20 puntos tras nueve jornadas. El filial amarillo encabeza la tabla por diferencia de goles: 21 a favor y 10 en contra, frente a los 17–10 del Zaragoza.</p><p>El contraste por sede añade contexto. El Zaragoza ha ganado sus tres partidos de liga en casa, con seis goles a favor y uno en contra. El Villarreal B llega con diez puntos de doce en cuatro salidas y un balance de once goles a favor y cinco en contra.</p><p>El partido pondrá a prueba la capacidad de ambos equipos para avanzar con el balón y proteger los espacios tras una pérdida. La muestra es corta: describe el inicio de temporada, pero no anticipa el resultado.</p><p class=\"nota\">Datos de liga hasta la jornada 9. La Copa del Rey se analiza por separado. El corte y la comparación completa aparecen al final.</p></section>",
+    "alt": "Marcador final Real Zaragoza 2–2 Villarreal B en la jornada 10. Los goles de Jardí y Diego González completan la remontada en los últimos minutos, sobre una ilustración de un reloj de arena en el césped.",
+    "noticia_html": "<section class=\"seccion lectura\" aria-labelledby=\"noticia-previa-j10\"><p class=\"etiqueta\">La crónica</p><h2 id=\"noticia-previa-j10\">El Zaragoza rescata un punto con dos goles al final</h2><p>El Villarreal B se puso 0–2 con tantos de Albert García y Álvaro García. El Zaragoza evitó la derrota en el tramo final: Jaume Jardí marcó en el rechace de un penalti en el 86 y Diego González empató de cabeza en el 90+3.</p><p>El equipo aragonés terminó con más remates, 16 por 10, y más tiros a puerta, 8 por 3. La ficha también registra un 63 % de posesión. Son cifras que explican el volumen ofensivo, aunque no permiten medir por sí solas cuántas veces llegó cada equipo al área.</p><p>El empate mantiene la lectura abierta: el Zaragoza encontró dos goles cuando el partido parecía escaparse, pero el Villarreal B había construido una ventaja de dos tantos. La remontada llegó en siete minutos.</p></section>",
     "rival": "Villarreal B",
     "hora": "21:00",
     "estadio": "Ibercaja Estadio",
     "competicion": "Primera Federación · Jornada 10",
     "fuente_partido": "https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-10-real-zaragoza-vs-villarreal-b-3962",
     "estados_previa": {
-      "confirmado": "El partido se juega el 31 de octubre a las 21:00 en Ibercaja Estadio.",
-      "pendiente": "Las convocatorias y los onces, hasta que los equipos los hagan públicos.",
-      "despues": "Se revisará quién logró llegar más veces al área rival, con los datos disponibles del encuentro."
+      "confirmado": "El Real Zaragoza y el Villarreal B empataron 2–2 en el Ibercaja Estadio.",
+      "pendiente": "La ficha no ofrece un recuento de llegadas ni de toques en el área.",
+      "despues": "El Zaragoza acabó con más remates (16–10) y tiros a puerta (8–3); esas cifras no equivalen a un registro de llegadas."
     },
     "imagen_social": "assets/compartir/previa-real-zaragoza-villarreal-b-j10-social.jpg",
     "ancho_social": 1200,
@@ -45,7 +207,7 @@
           "url": "https://www.aragondigital.es/articulo/real-zaragoza/vibrantes-tablas-lideres/202610312339161019099.html"
         }
       ],
-      "respuesta_pregunta": "Por volumen de remates, el Zaragoza: la ficha del club le da 16 tiros por 10 del Villarreal B y 8 a puerta por 3, con un 63 % de posesión. La ficha no publica llegadas ni toques en el área y tiene campos incompletos, así que la respuesta se limita a los tiros. Aun así, el filial marcó primero dos veces y el Zaragoza empató con goles en el 86' y el 90+3'.",
+      "respuesta_pregunta": "El Zaragoza terminó con más remates: 16 por 10, con ocho tiros a puerta frente a tres y un 63 % de posesión. Las cifras comparan el volumen de tiro, aunque no permiten saber cuántas veces llegó cada equipo al área. El Villarreal B marcó primero dos veces y el Zaragoza empató con goles en el 86' y el 90+3'.",
       "momentos_clave": [
         {
           "minuto": "70",

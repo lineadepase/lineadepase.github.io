@@ -261,7 +261,7 @@ def main() -> None:
         raise RuntimeError('Faltan las métricas tipográficas del PDF.')
     homepage = (ROOT / 'index.html').read_text(encoding='utf-8')
     latest_match = max(data['partidos'], key=lambda record: int(record['jornada']))
-    if not latest_match.get('completo') and ('ficha estadística pendiente de validación' not in homepage or 'detalle-que-cambia' in homepage):
+    if not latest_match.get('completo') and ('ficha estadística pendiente de validación' not in homepage.lower() or 'detalle-que-cambia' in homepage):
         raise RuntimeError('La portada muestra métricas no validadas o no identifica la ficha pendiente.')
     if 'Ficha estadística sin validar' not in archive_html:
         raise RuntimeError('El archivo visual no identifica las fichas estadísticas pendientes de validación.')

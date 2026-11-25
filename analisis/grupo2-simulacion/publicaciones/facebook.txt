@@ -1,12 +1,14 @@
-¿Qué opciones tiene de verdad el Real Zaragoza de subir?
+Simulación del grupo 2 · Tras la jornada 13
 
-Línea de pase ha simulado 10.000 veces lo que queda de temporada en el grupo 2 de Primera Federación, con un modelo de goles ajustado a los resultados de las 8 primeras jornadas.
+El Real Zaragoza asciende directamente en el 52 % de las 10.000 temporadas simuladas por Línea de pase (+3 puntos respecto a la jornada anterior) y acaba entre los cinco primeros en el 93 % (+2).
 
-· Primero (ascenso directo): 20 %
-· Del segundo al quinto (playoff): 45 %
-· Descenso: 2 %
+· Primero (ascenso directo): 52 %
+· Del segundo al quinto (playoff): 41 %
+· Descenso: 0 %
 
-Es el equipo con más opciones del grupo, pero en el 35 % de las temporadas simuladas se queda fuera de los cinco primeros. Quedan 30 jornadas.
+Es el equipo con más opciones del grupo, pero en el 7 % de las temporadas simuladas se queda fuera de los cinco primeros. Quedan 25 jornadas. Una probabilidad no es un pronóstico.
 
 Todos los equipos, el método y el código:
-https://lineadepase.com/proyectos/real-zaragoza/simulacion.html?utm_source=facebook&utm_medium=social&utm_campaign=simulacion
+https://lineadepase.com/proyectos/real-zaragoza/simulacion.html?utm_source=facebook&utm_medium=social&utm_campaign=simulacion-semanal
+
+Ilustración creada con IA.

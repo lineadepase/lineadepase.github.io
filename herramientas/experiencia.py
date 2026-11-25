@@ -34,11 +34,13 @@ def summaries():
         ('La conclusión', 'El Villarreal B y el Zaragoza encabezan el grupo con 17 puntos tras ocho jornadas.'),
         ('El dato', 'La diferencia de goles separa a ambos: +8 para el Villarreal B y +6 para el Zaragoza.'),
         ('La lectura', 'Para valorar el rendimiento conviene comparar también las ocasiones generadas y concedidas, atendiendo a la cobertura de xG.')]
-    ranking = sorted(read_csv('analisis/real-zaragoza/datos/salida/grupo2_equipos.csv'),key=lambda row:int(row['posicion']))
+    standings = read_csv('analisis/real-zaragoza/datos/entrada/clasificacion.csv')
+    last_round = max(int(row['tras_jornada']) for row in standings)
+    ranking = sorted((row for row in standings if int(row['tras_jornada']) == last_round),key=lambda row:int(row['posicion']))
     first, second = ranking[:2]
     items[base+'grupo-2.html'][:2] = [
-        ('La clasificación',first['equipo']+' encabeza el grupo con '+first['puntos']+' puntos; '+second['equipo']+' es segundo con '+second['puntos']+'.'),
-        ('El dato','Diferencia de goles: '+str(int(first['gf'])-int(first['gc']))+' para '+first['equipo']+' y '+str(int(second['gf'])-int(second['gc']))+' para '+second['equipo']+'.')]
+        ('La clasificación',first['equipo']+' encabeza el grupo con '+first['puntos']+' puntos tras la jornada '+str(last_round)+'; '+second['equipo']+' es segundo con '+second['puntos']+'.'),
+        ('El dato','Diferencia de goles: '+format(int(first['gf'])-int(first['gc']),'+d')+' para '+first['equipo']+' y '+format(int(second['gf'])-int(second['gc']),'+d')+' para '+second['equipo']+'.')]
     items['proyectos/futbol-femenino/index.html'] = [
         ('La propuesta', 'Andalucía y la Comunidad Valenciana son el punto de partida propuesto para un programa piloto de iniciación.'),
         ('El dato', 'Reúnen el 28,6 % de las mujeres de España y el 23,4 % de las licencias femeninas de fútbol.'),
@@ -84,14 +86,14 @@ def summaries():
 def enrich(raw, file):
     relative = file.relative_to(ROOT).as_posix()
     for asset, tag in [('assets/experiencia.css', 'css'), ('assets/experiencia.js', 'js')]:
-        version = '20261030responsive2' if tag == 'css' else '20261027visual4'
+        version = '20261105reservacomp1' if tag == 'css' else '20261104clsmobile1'
         url = os.path.relpath(ROOT/asset, file.parent).replace('\\', '/') + '?v=' + version
         markup = '<link rel="stylesheet" href="'+url+'">' if tag == 'css' else '<script src="'+url+'" defer></script>'
         if asset not in raw:
             raw = raw.replace('</head>',markup+'\n</head>',1)
-    for extension, version in [('css', '20261030responsive2'), ('js', '20261027visual4')]:
+    for extension, version in [('css', '20261105reservacomp1'), ('js', '20261104clsmobile1')]:
         raw = re.sub(r'(assets/experiencia\.' + extension + r'\?v=)[^"\s]+', lambda m: m[1] + version, raw)
-    raw = re.sub(r'(assets/mejoras\.js\?v=)[^"\s]+', r'\g<1>20261027claims', raw)
+    raw = re.sub(r'(assets/mejoras\.js\?v=)[^"\s]+', r'\g<1>20261104clsfix1', raw)
     raw = re.sub(r'<meta name="grafico-contexto"[^>]*>\s*', '', raw)
     raw = re.sub(r'<!-- lamina-anual-visual -->[\s\S]*?<!-- /lamina-anual-visual -->\s*', '', raw)
     if relative == 'proyectos/index.html':
@@ -156,10 +158,10 @@ def enrich(raw, file):
         goals = (str(match['goles_favor'])+'–'+str(match['goles_contra'])) if match['sede'] == 'Casa' else (str(match['goles_contra'])+'–'+str(match['goles_favor']))
         home = 'Real Zaragoza' if match['sede'] == 'Casa' else match['rival']
         away = match['rival'] if match['sede'] == 'Casa' else 'Real Zaragoza'
-        clues = [('Hecho documentado', f"Jornada {match['jornada']}: {home} {goals} {away}."), ('Cifra publicada', clues[1][1]), ('Interpretación editorial', clues[2][1])]
+        clues = [('El marcador', f"Jornada {match['jornada']}: {home} {goals} {away}."), ('El dato', clues[1][1]), ('La lectura', clues[2][1])]
     if clues and '<main' in raw:
-        intro = '<p class="nota guia-lectura">Hecho y marcador en la ficha; cifra atribuida a su fuente; interpretación identificada como lectura editorial.</p>' if match_article else ''
-        heading = 'Hecho, cifra e interpretación' if match_article else 'Tres claves del análisis'
+        intro = ''
+        heading = 'Tres claves del partido' if match_article else 'Tres claves del análisis'
         block = '<!-- tres-claves --><aside class="tres-claves" aria-labelledby="titulo-claves"><p class="etiqueta">Antes de entrar en detalle</p><h2 id="titulo-claves">' + heading + '</h2>' + intro + '<ol>' + ''.join('<li><strong>' + title + '</strong><p>' + e(value) + '</p></li>' for title, value in clues) + '</ol></aside><!-- /tres-claves -->'
         main = raw.index('<main')
         end = raw.find('</section>', main)

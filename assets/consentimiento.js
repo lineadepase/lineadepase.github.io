@@ -17,6 +17,36 @@
     ad_user_data: 'denied', ad_personalization: 'denied'
   });
 
+  /* Campaña de llegada (utm_*): se recuerda solo en esta pestaña para que,
+     si la analítica se acepta en otra página, la visita conserve su origen. */
+  const CAMPANA = 'lineadepase-campana';
+  const UTM = {utm_source: 'campaign_source', utm_medium: 'campaign_medium',
+    utm_campaign: 'campaign_name', utm_content: 'campaign_content', utm_term: 'campaign_term'};
+  function campanaDeLaUrl() {
+    const params = new URLSearchParams(location.search);
+    const datos = {};
+    for (const [utm, campo] of Object.entries(UTM)) {
+      const valor = (params.get(utm) || '').trim().slice(0, 100);
+      if (valor) datos[campo] = valor;
+    }
+    return datos.campaign_source ? datos : null;
+  }
+  const campanaActual = campanaDeLaUrl();
+  try {
+    if (campanaActual && leer() !== 'rechazado') sessionStorage.setItem(CAMPANA, JSON.stringify(campanaActual));
+  }
+  catch (_) { /* Sin almacenamiento de sesión, solo cuenta la campaña de esta página. */ }
+  function campanaGuardada() {
+    if (campanaActual) return null; /* Google ya la lee de la dirección actual. */
+    try {
+      const dato = JSON.parse(sessionStorage.getItem(CAMPANA));
+      return dato && typeof dato.campaign_source === 'string' ? dato : null;
+    } catch (_) { return null; }
+  }
+  function olvidarCampana() {
+    try { sessionStorage.removeItem(CAMPANA); } catch (_) { /* Nada que borrar. */ }
+  }
+
   function leer() {
     try {
       const dato = JSON.parse(localStorage.getItem(KEY));
@@ -47,7 +77,10 @@
     window['ga-disable-' + ID] = false;
     gtag('consent', 'update', {analytics_storage: 'granted'});
     gtag('js', new Date());
-    gtag('config', ID, {allow_google_signals: false, allow_ad_personalization_signals: false});
+    gtag('config', ID, Object.assign(
+      {allow_google_signals: false, allow_ad_personalization_signals: false},
+      campanaGuardada() || {}));
+    olvidarCampana();
     const script = document.createElement('script');
     script.async = true;
     script.src = 'https://www.googletagmanager.com/gtag/js?id=' + ID;
@@ -105,6 +138,7 @@
         else {
           window['ga-disable-' + ID] = true;
           borrarCookies();
+          olvidarCampana();
           if (cargada) location.reload();
         }
       });

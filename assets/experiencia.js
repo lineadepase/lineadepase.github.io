@@ -32,6 +32,7 @@
     document.addEventListener('click',event=>{ if(narrow.matches&&!event.target.closest('.cabecera')) close(); });
     narrow.addEventListener('change',close); close();
     document.documentElement.classList.add('menu-preparado');
+    document.documentElement.classList.remove('js-inicializando');
   }
 
   function wrapText(context, value, width) {

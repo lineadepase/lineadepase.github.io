@@ -199,7 +199,7 @@ def con_imagen(html, entry):
     figure = ('<!-- imagen-previa --><figure class="foto imagen-editorial-previa">'
               f'<img src="{escape(image)}" width="{entry["ancho"]}" height="{entry["alto"]}" '
               f'alt="{escape(entry["alt"], quote=True)}" style="width:100%;height:auto;border-radius:12px">'
-              '<figcaption>Imagen recreada con IA.</figcaption></figure><!-- /imagen-previa -->')
+              f'<figcaption>{escape(entry.get("pie", "Ilustración editorial de Línea de pase."))}</figcaption></figure><!-- /imagen-previa -->')
     if '<!-- imagen-previa -->' in html:
         html = re.sub(r'<!-- imagen-previa -->.*?<!-- /imagen-previa -->', lambda _: figure, html, flags=re.S)
     else:
@@ -239,7 +239,7 @@ def con_imagen(html, entry):
             today = datetime.now(ZoneInfo('Europe/Madrid')).date().isoformat()
             date = entry['fecha_partido']
             result=entry.get('resultado_confirmado')
-            state = ('Resultado confirmado · '+result['marcador']) if result else ('Pendiente de confirmación editorial' if date < today else ('Hoy'+(' · '+entry['hora'] if entry.get('hora') else '') if date == today else 'Próxima cita · '+date[8:10]+'/'+date[5:7]))
+            state = ('Final · '+result['marcador']) if result else ('Partido jugado · resultado en revisión' if date < today else ('Hoy'+(' · '+entry['hora'] if entry.get('hora') else '') if date == today else 'Próxima cita · '+date[8:10]+'/'+date[5:7]))
             confirmed='true' if result else 'false'
             score=escape(result['marcador'],quote=True) if result else ''
             block += '<p class="estado-previa estado-partido-detalle" data-fecha="'+escape(date)+'" data-hora="'+escape(entry.get('hora',''))+'" data-resultado-confirmado="'+confirmed+'" data-marcador="'+score+'">'+escape(state)+'</p>'
@@ -248,10 +248,10 @@ def con_imagen(html, entry):
         if result:
             verified = datetime.fromisoformat(result['fecha_verificacion']).astimezone(ZoneInfo('Europe/Madrid'))
             verified_label = verified.strftime('%d/%m/%Y a las %H:%M (hora peninsular)')
-            block += '<p class="resultado-confirmado"><strong>Resultado confirmado: '+escape(result['marcador'])+'</strong> · Comprobado el '+escape(verified_label)+'.</p>'
+            block += '<p class="resultado-confirmado"><strong>Resultado final: '+escape(result['marcador'])+'</strong></p>'
         if entry.get('hora') and entry.get('fecha_partido'):
             postmatch = entry.get('postpartido_url', '')
-            postmatch_link = f'<p class="nota postpartido-disponible" data-fecha="{escape(entry["fecha_partido"])}" data-resultado-confirmado="true">Resultado confirmado: <a class="enlace-postpartido" href="../../{escape(postmatch,quote=True)}">Leer el análisis →</a></p>' if postmatch and postmatch != entry['pagina'] and entry.get('resultado_confirmado') else ''
+            postmatch_link = f'<p class="nota postpartido-disponible" data-fecha="{escape(entry["fecha_partido"])}" data-resultado-confirmado="true"><a class="enlace-postpartido" href="../../{escape(postmatch,quote=True)}">Leer el análisis del partido →</a></p>' if postmatch and postmatch != entry['pagina'] and entry.get('resultado_confirmado') else ''
             calendar_hidden = ' hidden' if partido_iniciado(entry) else ''
             block += ('<p class="calendario-partido" data-fecha="'+escape(entry['fecha_partido'])+'" data-hora="'+escape(entry['hora'])+'"'+calendar_hidden+'>'
                       '<a class="boton" href="../../'+escape(calendar_path(entry),quote=True)+'" download>Añadir al calendario (.ics)</a></p>')
@@ -304,14 +304,24 @@ def con_imagen(html, entry):
         else:
             html = html.replace('<!-- /imagen-previa -->', '<!-- /imagen-previa -->'+block, 1)
     states = entry.get('estados_previa') or {}
-    confirmed_text = states.get('confirmado') or 'Horario, estadio y competición de la ficha.'
-    pending_text = states.get('pendiente') or 'La convocatoria y el once, cuando el club los confirme.'
-    after_text = states.get('despues') or 'La pregunta previa se revisará con lo ocurrido en el campo.'
+    result = entry.get('resultado_confirmado')
+    if result:
+        confirmed_text = states.get('confirmado') or 'El marcador final fue '+result['marcador']+'.'
+        pending_text = states.get('pendiente') or 'Las llegadas al área no figuran en la ficha estadística disponible.'
+        after_text = states.get('despues') or 'La lectura del partido se limita a los datos publicados y a la secuencia de goles.'
+        label, heading = 'Después del partido', 'Qué queda claro y qué no'
+        labels = ('Marcador', 'Dato que falta', 'Lectura')
+    else:
+        confirmed_text = states.get('confirmado') or 'Horario, estadio y competición de la ficha.'
+        pending_text = states.get('pendiente') or 'La convocatoria y el once, cuando el club los confirme.'
+        after_text = states.get('despues') or 'La pregunta previa se revisará con lo ocurrido en el campo.'
+        label, heading = 'Antes y después', 'Tres cosas que conviene separar'
+        labels = ('Confirmado', 'Pendiente', 'Se revisará después')
     states_block = ('<!-- previa-tres-estados --><section class="seccion lectura previa-tres-estados" aria-labelledby="titulo-tres-estados">'
-                    '<p class="etiqueta">Antes y después</p><h2 id="titulo-tres-estados">Tres cosas que conviene separar</h2>'
-                    '<ol><li><span>Confirmado</span><p>'+escape(confirmed_text)+'</p></li>'
-                    '<li><span>Pendiente</span><p>'+escape(pending_text)+'</p></li>'
-                    '<li><span>Se revisará después</span><p>'+escape(after_text)+'</p></li></ol></section><!-- /previa-tres-estados -->')
+                    '<p class="etiqueta">'+label+'</p><h2 id="titulo-tres-estados">'+heading+'</h2>'
+                    '<ol><li><span>'+labels[0]+'</span><p>'+escape(confirmed_text)+'</p></li>'
+                    '<li><span>'+labels[1]+'</span><p>'+escape(pending_text)+'</p></li>'
+                    '<li><span>'+labels[2]+'</span><p>'+escape(after_text)+'</p></li></ol></section><!-- /previa-tres-estados -->')
     if '<!-- previa-tres-estados -->' in html:
         html = re.sub(r'<!-- previa-tres-estados -->[\s\S]*?<!-- /previa-tres-estados -->', lambda _: states_block, html, flags=re.S)
     else:
@@ -329,11 +339,11 @@ def con_imagen(html, entry):
         html = html.replace('</head>', '<link rel="stylesheet" href="../../assets/compartir-previa.css?v=20261027a">\n<script src="../../assets/compartir-previa.js?v=20261027" defer></script>\n</head>', 1)
     html = re.sub(r'(assets/compartir-previa\.css\?v=)[^"\s]+', r'\g<1>20261027a', html)
     if 'assets/estado-partido.js' not in html:
-        html = html.replace('</head>', '<script src="../../assets/estado-partido.js?v=20261027b" defer></script>\n</head>', 1)
+        html = html.replace('</head>', '<script src="../../assets/estado-partido.js?v=20261101a" defer></script>\n</head>', 1)
     if 'assets/ideas-editoriales.css' not in html:
         html = html.replace('</head>', '<link rel="stylesheet" href="../../assets/ideas-editoriales.css?v=20261027d">\n</head>', 1)
     html = re.sub(r'(assets/ideas-editoriales\.css\?v=)[^"\s]+', r'\g<1>20261027d', html)
-    html = re.sub(r'(assets/estado-partido\.js\?v=)[^"\s]+', r'\g<1>20261027b', html)
+    html = re.sub(r'(assets/estado-partido\.js\?v=)[^"\s]+', r'\g<1>20261101a', html)
     html = re.sub(r'(assets/real-zaragoza\.css\?v=)[^"\s]+', r'\g<1>20261027c', html)
     # La fecha de publicación no cambia al editar; la actualización sí.
     published = entry.get('fecha_publicacion', entry.get('fecha_partido',''))
@@ -392,7 +402,7 @@ def portada(root=ROOT, hoy=None):
         fecha = entry['fecha_partido']
         dia = fecha[8:10]+'/'+fecha[5:7]
         result = entry.get('resultado_confirmado')
-        state = ('Resultado confirmado · '+result['marcador']) if result else (('Hoy'+(' · '+entry['hora'] if entry.get('hora') else '')) if fecha == hoy else ('Pendiente de confirmación editorial' if fecha < hoy else 'Próxima cita · '+dia))
+        state = ('Final · '+result['marcador']) if result else (('Hoy'+(' · '+entry['hora'] if entry.get('hora') else '')) if fecha == hoy else ('Partido jugado · resultado en revisión' if fecha < hoy else 'Próxima cita · '+dia))
         fact = dia+(' · '+entry['hora']+' h' if entry.get('hora') else '')+(' · '+entry['estadio'] if entry.get('estadio') else '')
         event_hidden = ' hidden' if partido_iniciado(entry) else ''
         event_link = (f'<a class="boton calendario-partido" data-fecha="{fecha}" data-hora="{escape(entry.get("hora", ""))}"{event_hidden} href="{escape(calendar_path(entry))}" download>Añadir al calendario</a>'
@@ -436,7 +446,7 @@ def portada(root=ROOT, hoy=None):
     if 'assets/previas.js' not in html:
         html = html.replace('</head>', '<script src="assets/previas.js?v=20261027" defer></script>\n</head>', 1)
     if 'assets/estado-partido.js' not in html:
-        html = html.replace('</head>', '<script src="assets/estado-partido.js?v=20261027b" defer></script>\n</head>', 1)
+        html = html.replace('</head>', '<script src="assets/estado-partido.js?v=20261101a" defer></script>\n</head>', 1)
     html = re.sub(r'(assets/estado-partido\.js\?v=)[^"\s]+', r'\g<1>20261027b', html)
     news_path = root / 'datos/novedades.json'
     if news_path.is_file():
@@ -470,7 +480,9 @@ def publicar_liga(jornada, html, root=ROOT):
 
 def sincronizar(root=ROOT):
     for entry in registro(root):
-        escribir_calendario(entry, root)
+        # No reescribir eventos ya disputados con el titular y resumen posteriores.
+        if not entry.get('resultado_confirmado'):
+            escribir_calendario(entry, root)
         for page in [entry['pagina']]+entry.get('alias', []):
             path = root / page
             if path.is_file():
@@ -479,13 +491,26 @@ def sincronizar(root=ROOT):
     path = root / 'sitemap.xml'
     tree = ET.parse(path)
     ns = '{http://www.sitemaps.org/schemas/sitemap/0.9}'
+    entries = registro(root)
+    primary_urls = {BASE + entry['pagina'] for entry in entries}
+    alias_urls = {BASE + alias for entry in entries
+                  for alias in entry.get('alias', [])} - primary_urls
+    for url in list(tree.getroot().findall(ns+'url')):
+        location = url.find(ns+'loc')
+        if location is not None and location.text in alias_urls:
+            tree.getroot().remove(url)
     existing = {x.text for x in tree.getroot().iter(ns+'loc')}
-    for entry in registro(root):
+    for entry in entries:
         if BASE+entry['pagina'] not in existing:
             ET.SubElement(ET.SubElement(tree.getroot(), ns+'url'), ns+'loc').text = BASE+entry['pagina']
     ET.register_namespace('', ns[1:-1])
     ET.indent(tree)
     tree.write(path, encoding='utf-8', xml_declaration=True)
+    # Las tarjetas de portada se reconstruyen arriba; volver a insertar sus
+    # variantes adaptativas evita que una sincronización aislada cargue originales pesados.
+    if root.resolve() == ROOT.resolve():
+        from calidad_web import build as adaptar_imagenes
+        adaptar_imagenes(root)
 
 
 if __name__ == '__main__':

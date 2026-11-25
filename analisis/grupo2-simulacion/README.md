@@ -27,7 +27,7 @@ grupo2-simulacion/
 
 ## Datos
 
-Solo usa resultados: quién jugó contra quién, en qué campo y con qué marcador. Los lee de `analisis/real-zaragoza/datos/entrada/grupo2_partidos.csv`, el archivo que ya mantiene el seguimiento, y no utiliza ninguna otra columna. Antes de simular, comprueba que esos resultados reproducen exactamente la clasificación publicada tras la última jornada (`clasificacion.csv`); si no cuadra, se detiene.
+Solo usa resultados: quién jugó contra quién, en qué campo y con qué marcador. Hasta la J8 toma los marcadores de `analisis/real-zaragoza/datos/entrada/grupo2_partidos.csv`; para jornadas sin estadísticas avanzadas los completa con `grupo2_resultados.csv`. No estima xG ni rellena estadísticas ausentes. Antes de simular, comprueba que los resultados reproducen exactamente partidos jugados, goles a favor y en contra, y puntos de la clasificación tras la última jornada (`clasificacion.csv`); si no cuadra, se detiene. Las métricas avanzadas del Grupo 2 siguen completas hasta la J8.
 
 ## Método
 
@@ -43,7 +43,7 @@ Desde la raíz del repositorio, después de actualizar los resultados de la jorn
 
 ```
 pip install -r analisis/grupo2-simulacion/requirements.txt
-python analisis/grupo2-simulacion/codigo/ejecutar.py
+python analisis/grupo2-simulacion/codigo/ejecutar.py --sin-carrusel
 python analisis/grupo2-simulacion/codigo/web.py
 python -m pytest analisis/grupo2-simulacion/pruebas
 ```
@@ -58,7 +58,7 @@ Tarda menos de un minuto.
 
 ## Fuentes
 
-- Resultados de Primera Federación 2026/27, grupo 2, tomados de Sofascore y contrastados con la clasificación de BeSoccer.
+- Resultados de Primera Federación 2026/27, grupo 2: Sofascore hasta la J8 y resultados J9-J10 publicados por El Periódico de Ceuta, que atribuye los marcadores a la RFEF. La clasificación se reproduce a partir de esos marcadores.
 - [Normas de competición de Primera Federación 2026/27](https://rfef.es/sites/default/files/2026-06/2._CNL_Primera_Federacion_FINAL.pdf), RFEF.
 - M. J. Maher (1982), *Modelling association football scores*, Statistica Neerlandica 36(3). M. J. Dixon y S. G. Coles (1997), *Modelling association football scores and inefficiencies in the football betting market*, Applied Statistics 46(2).
 

@@ -19,8 +19,43 @@ jornada,fecha,local,visitante,goles_local,goles_visitante,fuente_url
 9,2026-10-25,Villarreal B,Cartagena,4,1,https://www.elperiodicodeceuta.es/resultados-primera-federacion-grupo-2-jornada-9-2026-27/
 9,2026-10-25,Algeciras,Real Madrid Castilla,2,0,https://www.elperiodicodeceuta.es/resultados-primera-federacion-grupo-2-jornada-9-2026-27/
 9,2026-10-25,Gimnàstic,Hércules,4,2,https://www.elperiodicodeceuta.es/resultados-primera-federacion-grupo-2-jornada-9-2026-27/
-10,2026-10-30,Atlético Madrileño,Alcorcón,1,1,https://aupazaragoza.com/articulo/resultados-primera-rfef-grupo-2
-10,2026-10-30,UD Ibiza,CE Europa,3,0,https://aupazaragoza.com/articulo/resultados-primera-rfef-grupo-2
-10,2026-10-31,Sant Andreu,CD Teruel,2,0,https://aupazaragoza.com/articulo/resultados-primera-rfef-grupo-2
-10,2026-10-31,Real Madrid Castilla,Cartagena,2,0,https://aupazaragoza.com/articulo/resultados-primera-rfef-grupo-2
-10,2026-10-31,Real Zaragoza,Villarreal B,2,2,https://aupazaragoza.com/articulo/resultados-primera-rfef-grupo-2
+10,2026-10-30,Atlético Madrileño,Alcorcón,1,1,https://www.elperiodicodeceuta.es/resultados-primera-federacion-grupo-2-jornada-10-2026-27/
+10,2026-10-30,UD Ibiza,CE Europa,3,0,https://www.elperiodicodeceuta.es/resultados-primera-federacion-grupo-2-jornada-10-2026-27/
+10,2026-10-31,Sant Andreu,CD Teruel,2,0,https://www.elperiodicodeceuta.es/resultados-primera-federacion-grupo-2-jornada-10-2026-27/
+10,2026-10-31,Real Madrid Castilla,Cartagena,2,0,https://www.elperiodicodeceuta.es/resultados-primera-federacion-grupo-2-jornada-10-2026-27/
+10,2026-10-31,Real Zaragoza,Villarreal B,2,2,https://www.elperiodicodeceuta.es/resultados-primera-federacion-grupo-2-jornada-10-2026-27/
+10,2026-11-01,Antequera,Real Murcia,0,1,https://www.elperiodicodeceuta.es/resultados-primera-federacion-grupo-2-jornada-10-2026-27/
+10,2026-11-01,Juventud Torremolinos CF,CDA Águilas FC,0,0,https://www.elperiodicodeceuta.es/resultados-primera-federacion-grupo-2-jornada-10-2026-27/
+10,2026-11-01,Hércules,Rayo Majadahonda,2,0,https://www.elperiodicodeceuta.es/resultados-primera-federacion-grupo-2-jornada-10-2026-27/
+10,2026-11-02,Real Jaén,Algeciras,3,2,https://www.elperiodicodeceuta.es/resultados-primera-federacion-grupo-2-jornada-10-2026-27/
+10,2026-11-02,SD Huesca,Gimnàstic,2,0,https://www.elperiodicodeceuta.es/resultados-primera-federacion-grupo-2-jornada-10-2026-27/
+11,2026-11-07,Alcorcón,Real Jaén,4,3,https://www.aupazaragoza.com/articulo/resultados-primera-rfef-grupo-2
+11,2026-11-07,Antequera,Rayo Majadahonda,3,1,https://www.aupazaragoza.com/articulo/resultados-primera-rfef-grupo-2
+11,2026-11-07,Cartagena,Sant Andreu,2,2,https://www.aupazaragoza.com/articulo/resultados-primera-rfef-grupo-2
+11,2026-11-07,Real Zaragoza,SD Huesca,2,0,https://www.aupazaragoza.com/articulo/resultados-primera-rfef-grupo-2
+11,2026-11-08,CD Teruel,UD Ibiza,1,1,https://www.aupazaragoza.com/articulo/resultados-primera-rfef-grupo-2
+11,2026-11-08,CDA Águilas FC,Gimnàstic,1,1,https://www.aupazaragoza.com/articulo/resultados-primera-rfef-grupo-2
+11,2026-11-08,CE Europa,Atlético Madrileño,3,2,https://www.aupazaragoza.com/articulo/resultados-primera-rfef-grupo-2
+11,2026-11-08,Villarreal B,Juventud Torremolinos CF,1,1,https://www.aupazaragoza.com/articulo/resultados-primera-rfef-grupo-2
+11,2026-11-08,Real Madrid Castilla,Hércules,2,2,https://www.aupazaragoza.com/articulo/resultados-primera-rfef-grupo-2
+11,2026-11-08,Real Murcia,Algeciras,1,1,https://www.aupazaragoza.com/articulo/resultados-primera-rfef-grupo-2
+12,2026-11-13,Gimnàstic,Real Madrid Castilla,0,1,https://as.com/futbol/mas_futbol/primera-rfef-grupo-2-resultados-partidos-y-clasificacion-de-la-jornada-12-f202611-n/
+12,2026-11-14,Rayo Majadahonda,CDA Águilas FC,0,1,https://as.com/futbol/primera-rfef/primera-rfef-hoy-en-directo-resultados-y-partidos-de-la-jornada-12-grupos-1-y-2-en-vivo-f202611-d/
+12,2026-11-14,CE Europa,Sant Andreu,0,2,https://as.com/futbol/primera-rfef/primera-rfef-hoy-en-directo-resultados-y-partidos-de-la-jornada-12-grupos-1-y-2-en-vivo-f202611-d/
+12,2026-11-14,Hércules,Villarreal B,2,2,https://as.com/futbol/primera-rfef/primera-rfef-hoy-en-directo-resultados-y-partidos-de-la-jornada-12-grupos-1-y-2-en-vivo-f202611-d/
+12,2026-11-14,Juventud Torremolinos CF,SD Huesca,1,0,https://as.com/futbol/primera-rfef/primera-rfef-hoy-en-directo-resultados-y-partidos-de-la-jornada-12-grupos-1-y-2-en-vivo-f202611-d/
+12,2026-11-14,Real Jaén,Real Zaragoza,0,4,https://futboltotal.futbol/partido/real-jaen-vs-zaragoza-primera-division-rfef-grupo-2-2026-11-15
+12,2026-11-15,Atlético Madrileño,CD Teruel,1,0,https://www.elperiodicodeceuta.es/resultados-primera-federacion-grupo-2-jornada-12-2026-27/
+12,2026-11-15,UD Ibiza,Cartagena,0,1,https://www.elperiodicodeceuta.es/resultados-primera-federacion-grupo-2-jornada-12-2026-27/
+12,2026-11-15,Algeciras,Antequera,2,1,https://www.elperiodicodeceuta.es/resultados-primera-federacion-grupo-2-jornada-12-2026-27/
+12,2026-11-15,Real Murcia,Alcorcón,1,2,https://www.elperiodicodeceuta.es/resultados-primera-federacion-grupo-2-jornada-12-2026-27/
+13,2026-11-20,CD Teruel,Hércules,0,1,https://futbolme.com/resultados-directo/torneo/primera-federacion-grupo-2/3056/
+13,2026-11-20,Villarreal B,Gimnàstic,2,2,https://futbolme.com/resultados-directo/torneo/primera-federacion-grupo-2/3056/
+13,2026-11-20,Real Madrid Castilla,Real Murcia,0,2,https://futbolme.com/resultados-directo/torneo/primera-federacion-grupo-2/3056/
+13,2026-11-21,Real Zaragoza,Rayo Majadahonda,2,0,https://www.realzaragoza.com/partidos/temporada-2026-2027-primera-federacion-13-real-zaragoza-vs-cf-rayo-4022
+13,2026-11-21,Antequera,Juventud Torremolinos CF,2,1,https://futbolme.com/resultados-directo/torneo/primera-federacion-grupo-2/3056/
+13,2026-11-21,CDA Águilas FC,CE Europa,0,2,https://futbolme.com/resultados-directo/torneo/primera-federacion-grupo-2/3056/
+13,2026-11-21,Sant Andreu,Atlético Madrileño,1,2,https://futbolme.com/resultados-directo/torneo/primera-federacion-grupo-2/3056/
+13,2026-11-22,Alcorcón,Algeciras,1,0,https://futbolme.com/resultados-directo/torneo/primera-federacion-grupo-2/3056/
+13,2026-11-22,SD Huesca,UD Ibiza,0,4,https://futboltotal.futbol/partido/huesca-vs-ibiza-primera-division-rfef-grupo-2-2026-11-22
+13,2026-11-22,Cartagena,Real Jaén,4,2,https://futbolme.com/resultados-directo/torneo/primera-federacion-grupo-2/3056/
