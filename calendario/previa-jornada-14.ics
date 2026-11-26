@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Linea de pase//Calendario de partidos//ES
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:previa-jornada-14@lineadepase.com
+DTSTAMP:20261126T110000Z
+DTSTART:20261128T174500Z
+DTEND:20261128T201500Z
+SUMMARY:Alcorcón – Real Zaragoza
+LOCATION:Estadio Municipal de Santo Domingo
+DESCRIPTION:El líder\, con 30 puntos\, visita a un Alcorcón tercero con 24 que no ha perdido en casa: 15 de 21 puntos en Santo Domingo.\nhttps://lineadepase.com/proyectos/real-zaragoza/previa-jornada-14.html
+URL:https://lineadepase.com/proyectos/real-zaragoza/previa-jornada-14.html
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

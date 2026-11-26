@@ -1,10 +1,42 @@
 [
   {
-    "jornada": 13,
-    "pagina": "proyectos/real-zaragoza/previa-jornada-13.html",
+    "jornada": 14,
+    "pagina": "proyectos/real-zaragoza/previa-jornada-14.html",
     "alias": [
       "proyectos/real-zaragoza/previa.html"
     ],
+    "fecha_partido": "2026-11-28",
+    "fecha_publicacion": "2026-11-26",
+    "fecha_actualizacion": "2026-11-26",
+    "titulo": "Alcorcón – Real Zaragoza",
+    "etiqueta": "Primera Federación · J14 · 28 de noviembre",
+    "resumen": "El líder, con 30 puntos, visita a un Alcorcón tercero con 24 que no ha perdido en casa: 15 de 21 puntos en Santo Domingo.",
+    "pregunta_abierta": "¿Seguirá el Alcorcón sin perder en Santo Domingo ante el líder?",
+    "fuera_de_plano": "El balance por sede reúne siete partidos del Alcorcón en casa y siete salidas del Zaragoza. Es una muestra corta y no permite anticipar cómo se desarrollará el partido.",
+    "imagen": "proyectos/real-zaragoza/graficos/previa/alcorcon-real-zaragoza-j14.webp",
+    "ancho": 1672,
+    "alto": 941,
+    "alt": "Verja metálica de un estadio iluminado de noche, cerrada con un gran candado amarillo y oxidado; debajo brilla una llave blanca y azul, y al fondo se ven gradas amarillas y el césped.",
+    "pie": "Ilustración creada con IA para Línea de pase.",
+    "noticia_html": "<section class=\"seccion lectura\" aria-labelledby=\"noticia-previa-j14\"><p class=\"etiqueta\">El contexto del partido</p><h2 id=\"noticia-previa-j14\">El líder visita un campo sin derrotas</h2><p>El Real Zaragoza llega a la jornada 14 como líder, con 30 puntos y seis de ventaja sobre el Villarreal B y el Alcorcón, después de ganar 2-0 al Rayo Majadahonda. El Alcorcón es tercero con 24 puntos y una sola derrota en trece jornadas, la misma cifra que el Zaragoza.</p><p>La sede marca el contraste. El Alcorcón no ha perdido en Santo Domingo: cuatro victorias y tres empates, 15 puntos de 21 con 17 goles a favor y 7 en contra. El Zaragoza ha sumado 14 de 21 fuera, con 15 goles marcados y 9 recibidos.</p><p>Los dos llegan en buena racha: 13 puntos en los últimos cinco partidos para el Zaragoza y 11 para el Alcorcón, que encadena tres victorias. Son trece jornadas: los datos sitúan el partido, no adivinan el resultado.</p><p class=\"nota\">Datos de liga hasta la jornada 13. La Copa del Rey se analiza por separado. El corte y la comparación completa aparecen al final.</p></section>",
+    "rival": "Alcorcón",
+    "hora": "18:45",
+    "estadio": "Estadio Municipal de Santo Domingo",
+    "competicion": "Primera Federación · Jornada 14",
+    "fuente_partido": "https://futbolme.com/resultados-directo/equipo/ad-alcorcon/161/calendario",
+    "estados_previa": {
+      "confirmado": "El partido se juega el sábado 28 de noviembre a las 18:45 en el Estadio Municipal de Santo Domingo (Alcorcón).",
+      "pendiente": "La emisión televisiva, las convocatorias y los onces.",
+      "despues": "Se revisará si el Alcorcón mantuvo su racha sin perder en casa ante el líder."
+    },
+    "imagen_social": "assets/compartir/previa-alcorcon-real-zaragoza-j14-social.jpg",
+    "ancho_social": 1200,
+    "alto_social": 675
+  },
+  {
+    "jornada": 13,
+    "pagina": "proyectos/real-zaragoza/previa-jornada-13.html",
+    "alias": [],
     "fecha_partido": "2026-11-21",
     "fecha_publicacion": "2026-11-19",
     "fecha_actualizacion": "2026-11-22",
