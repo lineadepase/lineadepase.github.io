@@ -10,6 +10,7 @@ import shutil
 import sys
 
 import pandas as pd
+from PIL import Image
 
 ESTUDIO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ESTUDIO.parent / "comun"))
@@ -36,13 +37,11 @@ def tabla_html(d):
         filas.append(
             f'<tr><th scope="row" style="vertical-align:top">{nombre}<br><span style="font-weight:400">'
             f'{int((d.perfil == i).sum())} jugadoras</span></th>'
-            f'<td style="white-space:normal"><strong>Las más típicas:</strong> '
-            f'{", ".join(graficos.corto(j) for j in proto.jugadora)}.<br>'
-            f'<strong>Las que más lo llevan al extremo:</strong> '
-            f'{", ".join(graficos.corto(j) for j in cima.jugadora)}.</td></tr>')
+            f'<td style="white-space:normal">'
+            f'{", ".join(graficos.corto(j) for j in [*proto.jugadora, *cima.jugadora])}.</td></tr>')
     return ('<div class="tabla-editorial" role="region" aria-label="Jugadoras de cada perfil" tabindex="0">'
             '<table><caption>Jugadoras de cada perfil</caption>'
-            '<thead><tr><th scope="col">Perfil</th><th scope="col" style="white-space:normal">Jugadoras que lo representan</th></tr></thead><tbody>'
+            '<thead><tr><th scope="col">Perfil</th><th scope="col" style="white-space:normal">Jugadoras</th></tr></thead><tbody>'
             + "".join(filas) + "</tbody></table></div>")
 
 
@@ -74,13 +73,16 @@ def main():
         shutil.copy(ESTUDIO / "graficos" / f"{nombre}.png", graf / f"{nombre}.png")
     shutil.copy(ESTUDIO / "graficos" / "01_mapa_facebook.png", graf / "compartir.png")
     shutil.copy(ESTUDIO / "recursos" / "statsbomb.png", graf / "statsbomb.png")
+    with Image.open(ESTUDIO / "recursos" / "portada.jpg") as portada:
+        portada.convert("RGB").save(graf / "portada.webp", "WEBP", quality=80, method=6)
     publicas = [c for c in d.columns if not c.startswith("z_")]
     d[publicas].to_csv(CARPETA_WEB / "jugadoras_perfiles.csv", index=False)
 
     cuerpo = f"""  <section class="cab-proyecto">
-    <aside class="aviso-historico" aria-label="Periodo del análisis"><strong>ANÁLISIS HISTÓRICO · 2023/24</strong><span>Datos de la Liga F 2023/24, temporada terminada en 2024. No describe la temporada actual.</span></aside>
+    <aside class="aviso-historico" aria-label="Periodo del análisis"><strong>DATOS DE LA TEMPORADA 2023/24</strong><span>Todo el análisis usa la Liga F 2023/24, terminada en 2024. No describe la temporada actual.</span></aside>
     <p class="etiqueta">Investigación · Fútbol femenino · Liga F 2023/24</p>
     <h1>¿En qué perfil está tu jugadora favorita?</h1>
+    <figure class="figura foto"><img src="graficos/portada.webp" width="1080" height="1350" fetchpriority="high" alt="Cuatro futbolistas dibujadas con puntos de luz, en azul, verde, morado y naranja, unidas por líneas de pase sobre un campo."><figcaption>Un color por perfil: iniciadoras, pulmones, las de área y desequilibrantes. Ilustración creada con IA.</figcaption></figure>
     <p class="entradilla">En la alineación son defensas, centrocampistas y delanteras. Pero lo que hacen con el balón, y sin él, cuenta otra historia. Este estudio agrupa a {n} jugadoras de la Liga F 2023/24 según cómo juegan: salen cuatro perfiles con nombre propio.</p>
     <dl class="ficha-tecnica">
       <div><dt>Pregunta</dt><dd>¿Qué tipos de jugadora hay en la Liga F según lo que hacen en el campo, más allá de su posición?</dd></div>
@@ -100,7 +102,7 @@ def main():
     <p><strong>Desequilibrantes ({tam[3]}).</strong> {DESC[3]} Su amenaza esperada (xT) por 90 minutos es de {numero(xt[3], 2)}, más de tres veces la del resto de jugadoras ({numero(otras, 2)}). Entre ellas están {graficos.corto(hansen.jugadora)} ({numero(hansen.xt_neto_90, 2)}) y {graficos.corto(bonmati.jugadora)}, que en la alineación figura como mediocentro.</p>
   </section>
 
-  <figure class="figura"><img src="graficos/02_perfiles_web.png" width="1600" height="900" alt="Los cuatro perfiles de jugadora de la Liga F: iniciadoras, pulmones, las de área y desequilibrantes, con un radar de lo que hace cada grupo y las jugadoras más típicas y más extremas de cada uno."><figcaption>Perfil medio de cada grupo (por 90 minutos, frente a la media de todas) y jugadoras que lo representan.</figcaption></figure>
+  <figure class="figura"><img src="graficos/02_perfiles_web.png" width="1600" height="900" alt="Los cuatro perfiles de jugadora de la Liga F: iniciadoras, pulmones, las de área y desequilibrantes, con un radar de lo que hace cada grupo y seis jugadoras de cada uno."><figcaption>Perfil medio de cada grupo (por 90 minutos, frente a la media de todas) y jugadoras que lo representan.</figcaption></figure>
 
   {tabla_html(d)}
 
@@ -126,11 +128,6 @@ def main():
     <p>Las variables se estandarizan para que ninguna domine por escala, y las muy asimétricas pasan antes por un logaritmo. El análisis de componentes principales (PCA) sirve para dibujar el mapa; el agrupamiento se hace con k-means sobre las {len(sens['variables_usadas'])} variables que quedan.</p>
     <p>El número de perfiles se fija con una regla escrita antes de mirar los grupos: entre 4 y 7, con al menos 8 jugadoras por grupo, gana el que mejor combina el coeficiente de silueta y la estabilidad (índice de Rand ajustado en 200 remuestras de jugadoras). Con 4 perfiles la silueta es {numero(k4.silueta, 2)} y la estabilidad {numero(k4.estabilidad_rand, 2)}; con 5 baja a {numero(k[k.k == 5].silueta.iloc[0], 2)} y {numero(k[k.k == 5].estabilidad_rand.iloc[0], 2)}.</p>
     <p>Como comprobación, con un mínimo de 600 minutos ({sens['jugadoras_600']} jugadoras) o sin la xT, las jugadoras vuelven a agruparse de forma muy parecida (índice de Rand ajustado de {numero(sens['rand_900_vs_600'], 2)} y {numero(sens['rand_con_vs_sin_xt'], 2)}).</p>
-  </section>
-
-  <section class="seccion lectura" id="alcance">
-    <h2>Cómo leerlo</h2>
-    <p>Son datos de la Liga F 2023/24: no describen el rendimiento ni el club actual de ninguna jugadora. Los perfiles resumen cómo juega cada una, no cuánto vale, y el equipo influye en lo que cada jugadora puede hacer con el balón.</p>
   </section>
 
   <section class="seccion lectura" id="fuentes">

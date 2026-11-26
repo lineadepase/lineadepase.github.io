@@ -256,7 +256,7 @@ def mapa(formato, d, nombre):
 
 
 # --------------------------------------------------------------------------- perfiles
-def tarjeta_perfil(px, fig, d, centros, resumen, i, x, y, w, h, c, tam=1.0, compacta=False):
+def tarjeta_perfil(px, fig, d, centros, resumen, i, x, y, w, h, c, tam=1.0, compacta=False, solo_nombres=False):
     px.ax.add_patch(FancyBboxPatch((x, y), w, h, boxstyle='round,pad=0,rounding_size=10', fc=c['panel'], ec=c['linea'], lw=1.2, zorder=1))
     px.ax.add_patch(Rectangle((x, y), w, 7, color=COLORES[i], zorder=2))
     n = int((d.perfil == i).sum())
@@ -268,6 +268,10 @@ def tarjeta_perfil(px, fig, d, centros, resumen, i, x, y, w, h, c, tam=1.0, comp
     radar(fig, px.marco(x + (w - rad) / 2, y + 90 + 30, rad, rad), valores_radar(centros, i), COLORES[i], c, tam=8.5, cortas=True)
     proto, cima = seleccion(d, i, 3)
     y0 = y + 90 + 30 + rad + 40
+    if solo_nombres:
+        for k, jugadora in enumerate(list(proto.jugadora) + list(cima.jugadora)):
+            px.ax.text(x + w / 2, y0 + 8 + k * 29, corto(jugadora), ha='center', va='center', fontsize=13.5, color=c['tinta'], fontweight=600, zorder=5)
+        return
     px.ax.text(x + 18, y0, 'LAS MÁS TÍPICAS', fontsize=10 * tam, color=c['tinta_suave'], fontweight=700, va='center', zorder=5)
     for k, r in enumerate(proto.itertuples()):
         cx = x + (k + 0.5) * w / 3
@@ -292,7 +296,7 @@ def perfiles(formato, d, centros, resumen, nombre):
     w = (px.W - 120 - 3 * 18) / 4
     h = base - top
     for i in range(4):
-        tarjeta_perfil(px, fig, d, centros, resumen, i, 60 + i * (w + 18), top, w, h, c, tam=0.92)
+        tarjeta_perfil(px, fig, d, centros, resumen, i, 60 + i * (w + 18), top, w, h, c, tam=0.92, solo_nombres=formato == 'web')
     guardar(fig, GRAFICOS, nombre)
 
 
