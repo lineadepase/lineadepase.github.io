@@ -104,17 +104,17 @@
     "alias": [],
     "fecha_partido": "2026-11-14",
     "fecha_publicacion": "2026-11-09",
-    "fecha_actualizacion": "2026-11-12",
-    "titulo": "Real Jaén – Real Zaragoza",
-    "etiqueta": "Primera Federación · J12 · 14 de noviembre",
-    "resumen": "El líder visita La Victoria: el Zaragoza, primero con 24 puntos, se mide a un Real Jaén cuarto con 19 que no ha perdido en casa.",
+    "fecha_actualizacion": "2026-11-26",
+    "titulo": "Real Jaén 0–4 Real Zaragoza: tres goles desde el banquillo en Jaén",
+    "etiqueta": "Primera Federación · J12 · Resultado final",
+    "resumen": "Jardí abrió el marcador de penalti en el 45+3' y Cuenca, Pau Sans y Ureña, que habían salido desde el banquillo, firmaron los otros tres goles. Primera derrota del Jaén en casa.",
     "pregunta_abierta": "¿Seguirá el Real Jaén sin perder en La Victoria ante el líder?",
     "fuera_de_plano": "El balance por sede reúne cinco partidos del Jaén en casa y seis salidas del Zaragoza. Es una muestra corta y no permite anticipar cómo se desarrollará el partido.",
-    "imagen": "proyectos/real-zaragoza/graficos/previa/real-jaen-real-zaragoza-j12.webp",
+    "imagen": "proyectos/real-zaragoza/graficos/jornada-12/resultado-jaen-zaragoza.webp",
     "ancho": 1672,
     "alto": 941,
-    "alt": "Campo de fútbol iluminado en lo alto de una colina cubierta de olivos al anochecer, con un camino de tierra que sube entre los olivares, un balón blanco y azul en el centro del campo y la silueta de un castillo en el cerro vecino.",
-    "pie": "Ilustración creada con IA para Línea de pase.",
+    "alt": "Marcador final Real Jaén 0–4 Real Zaragoza en la jornada 12, con el titular «Tres goles desde el banquillo en Jaén» y cuatro luces en un camino entre olivos con los minutos de los goles (45+3', 54', 78' y 80') bajo el castillo de Santa Catalina. Sábado 14 de noviembre, Estadio de La Victoria.",
+    "pie": "Imagen de Línea de pase con el marcador final, dibujada por código.",
     "noticia_html": "<section class=\"seccion lectura\" aria-labelledby=\"noticia-previa-j12\"><p class=\"etiqueta\">El contexto del partido</p><h2 id=\"noticia-previa-j12\">El líder visita a un Jaén invicto en casa</h2><p>El Real Zaragoza llega a La Victoria como líder, con 24 puntos y dos de ventaja sobre el Villarreal B. El Real Jaén es cuarto con 19, a cinco puntos, después de perder 4-3 en Alcorcón en la última jornada.</p><p>La sede marca el contraste. El Jaén no ha perdido en casa: tres victorias y dos empates, 11 puntos de 15 con 11 goles a favor y 8 en contra. El Zaragoza ha sumado 11 de 18 fuera, con 11 goles marcados y 9 recibidos.</p><p>Las rachas recientes son parecidas: nueve puntos en los últimos cinco partidos para el Zaragoza y ocho para el Jaén. La muestra es corta: describe el inicio de temporada, pero no anticipa el resultado.</p><p class=\"nota\">Datos de liga hasta la jornada 11. La Copa del Rey se analiza por separado. El corte y la comparación completa aparecen al final.</p></section>",
     "rival": "Real Jaén",
     "hora": "21:00",
@@ -128,7 +128,40 @@
     },
     "imagen_social": "assets/compartir/previa-real-jaen-real-zaragoza-j12-social.jpg",
     "ancho_social": 1200,
-    "alto_social": 675
+    "alto_social": 675,
+    "postpartido_url": "proyectos/real-zaragoza/jornada-12.html",
+    "resultado_confirmado": {
+      "marcador": "0–4",
+      "fecha_verificacion": "2026-11-15T00:00:00+01:00",
+      "fuentes": [
+        {
+          "nombre": "futboltotal: Real Jaén vs Zaragoza",
+          "url": "https://futboltotal.futbol/partido/real-jaen-vs-zaragoza-primera-division-rfef-grupo-2-2026-11-15"
+        },
+        {
+          "nombre": "Diario Jaén: el Real Zaragoza impone su autoridad ante un combativo Real Jaén (0-4)",
+          "url": "https://www.diariojaen.es/deportes/el-real-zaragoza-impone-su-autoridades-ante-un-combativo-real-jaen-0-4-OG11715759"
+        }
+      ],
+      "respuesta_pregunta": "No. El Real Jaén, que había sumado tres victorias y dos empates en La Victoria, perdió 0-4: su primera derrota en casa esta temporada. Al descanso iba 0-1 y los otros tres goles llegaron en la segunda parte. No hay posesión, tiros ni xG publicados de este partido, así que el marcador no permite medir cuánto dominó cada equipo, y un partido no basta para sacar conclusiones sobre el Jaén en casa.",
+      "momentos_clave": [
+        {
+          "minuto": "45+3",
+          "marcador": "0–1",
+          "hecho": "Jaume Jardí marcó de penalti en el añadido de la primera parte."
+        },
+        {
+          "minuto": "54",
+          "marcador": "0–2",
+          "hecho": "Marcos Cuenca, que había entrado al descanso, marcó tras un pase de Rubén Díez."
+        },
+        {
+          "minuto": "80",
+          "marcador": "0–4",
+          "hecho": "Óscar Ureña, también suplente, cerró el partido dos minutos después del penalti de Pau Sans (0-3, 78')."
+        }
+      ]
+    }
   },
   {
     "jornada": 11,

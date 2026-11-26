@@ -5,7 +5,7 @@ const vm = require('node:vm');
 // Ejecuta los controles reales con un DOM mínimo: SVG responsivo y SVG con dimensiones.
 function check(attributes, expected) {
   class Element {
-    constructor(attrs = {}) { this.attrs = {...attrs}; this.style = {}; this.listeners = {}; }
+    constructor(attrs = {}) { this.attrs = {...attrs}; this.style = {}; this.listeners = {}; this.dataset = {}; }
     setAttribute(k,v) { this.attrs[k] = v; }
     getAttribute(k) { return this.attrs[k] ?? null; }
     hasAttribute(k) { return k in this.attrs; }

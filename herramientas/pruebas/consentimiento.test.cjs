@@ -19,7 +19,8 @@ function entorno(inicial = null, bloqueado = false) {
   const preferencias = nodo();
   const doc = {
     readyState: 'complete', activeElement: nodo(),
-    head: {appendChild(s) { scripts.push(s); }}, body: {appendChild(n) { nodos.aviso = n; }},
+    head: {appendChild(s) { scripts.push(s); }}, body: {appendChild(n) { nodos.aviso = n; }, prepend(n) { nodos.aviso = n; }},
+    querySelector() { return null; },
     createElement(tipo) { return tipo === 'section' ? aviso : nodo(); },
     querySelectorAll() { return [preferencias]; }
   };
@@ -28,12 +29,12 @@ function entorno(inicial = null, bloqueado = false) {
     set(valor) { borrados.push(valor); }
   });
   const win = {addEventListener(tipo, fn) { eventos[tipo] = fn; }};
-  const contexto = {window: win, document: doc, Date, Number, JSON,
+  const contexto = {window: win, document: doc, Date, Number, JSON, URLSearchParams,
     localStorage: {
       getItem() { if (bloqueado) throw Error('Bloqueado'); return almacenado; },
       setItem(k, v) { if (bloqueado) throw Error('Bloqueado'); almacenado = v; }
     },
-    location: {hostname: 'lineadepase.com', pathname: '/proyectos/index.html', reload() {recargas++;}}
+    location: {hostname: 'lineadepase.com', pathname: '/proyectos/index.html', search: '', reload() {recargas++;}}
   };
   vm.runInNewContext(fuente, contexto);
   return {win, scripts, borrados, aviso, aceptar, rechazar, preferencias, eventos,

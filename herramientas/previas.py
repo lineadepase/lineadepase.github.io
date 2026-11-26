@@ -249,6 +249,10 @@ def con_imagen(html, entry):
             verified = datetime.fromisoformat(result['fecha_verificacion']).astimezone(ZoneInfo('Europe/Madrid'))
             verified_label = verified.strftime('%d/%m/%Y a las %H:%M (hora peninsular)')
             block += '<p class="resultado-confirmado"><strong>Resultado final: '+escape(result['marcador'])+'</strong></p>'
+            links = [f'<a href="{escape(s["url"],quote=True)}" rel="noopener">{escape(s["nombre"])}</a>' for s in result.get('fuentes', [])]
+            if links:
+                block += ('<p class="nota fuente-resultado">Comprobado el '+escape(verified_label)+' en '
+                          +' y '.join(links)+'.</p>')
         if entry.get('hora') and entry.get('fecha_partido'):
             postmatch = entry.get('postpartido_url', '')
             postmatch_link = f'<p class="nota postpartido-disponible" data-fecha="{escape(entry["fecha_partido"])}" data-resultado-confirmado="true"><a class="enlace-postpartido" href="../../{escape(postmatch,quote=True)}">Leer el análisis del partido →</a></p>' if postmatch and postmatch != entry['pagina'] and entry.get('resultado_confirmado') else ''

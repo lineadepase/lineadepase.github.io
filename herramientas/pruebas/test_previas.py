@@ -188,8 +188,8 @@ class PublicacionPrevias(unittest.TestCase):
         self.assertIn('data-marcador="2-1"',home)
         self.assertIn('Final · 2-1',home)
         self.assertIn('class="marcador-previa"',home)
-        self.assertIn('Leer la crónica o el análisis',home)
-        self.assertIn('Releer la previa',home)
+        self.assertIn('href="proyectos/real-zaragoza/cronica-j10.html">Leer el análisis →</a>',home)
+        self.assertIn('class="enlace-editorial"',home)  # estado-partido.js lo cambia a «Releer la previa» en el navegador
         self.assertIn('Resultado final: 2-1',article)
         self.assertIn('href="https://club.example/resultado"',article)
         self.assertIn('Real Zaragoza',article)
