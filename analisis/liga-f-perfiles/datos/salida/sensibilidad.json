@@ -1,0 +1,35 @@
+{
+ "k": 4,
+ "variables_usadas": [
+  "xt_neto_90",
+  "pases_prog_90",
+  "cond_prog_90",
+  "pct_pases",
+  "pases_largos_90",
+  "pases_clave_90",
+  "centros_90",
+  "altura_media",
+  "recepciones_area_90",
+  "regates_90",
+  "presiones_90",
+  "recuperaciones_90",
+  "intercepciones_90",
+  "entradas_90"
+ ],
+ "variables_descartadas": [
+  "pases_90",
+  "pct_presion_rival",
+  "tiros_90",
+  "xg_90"
+ ],
+ "jugadoras": 220,
+ "silueta_kmeans": 0.225935823269774,
+ "rand_kmeans_vs_ward": 0.5164843672391769,
+ "varianza_pca": [
+  0.35881071347167326,
+  0.23783720266962038
+ ],
+ "rand_900_vs_600": 0.8014711967007941,
+ "jugadoras_600": 247,
+ "rand_con_vs_sin_xt": 0.7999299508288759
+}

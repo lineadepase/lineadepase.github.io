@@ -1,0 +1,5 @@
+perfil,perfil_nombre,jugadoras,minutos_medios,xt_neto_90,pases_prog_90,cond_prog_90,pases_90,pct_pases,pases_largos_90,pases_clave_90,centros_90,altura_media,recepciones_area_90,tiros_90,xg_90,regates_90,presiones_90,pct_presion_rival,recuperaciones_90,intercepciones_90,entradas_90,variables_definitorias
+0,Iniciadoras,67,1858.822,0.05,8.795,7.633,47.175,79.183,9.069,0.321,0.333,45.612,0.501,0.585,0.05,0.294,11.531,26.07,4.225,0.596,1.024,"Pases largos, Pases progresivos, % de pases"
+1,Pulmones,86,1774.814,0.054,5.908,6.322,38.599,71.808,6.288,0.741,1.167,61.686,0.657,1.051,0.077,1.075,21.499,40.628,5.979,0.756,1.669,"Entradas ganadas, Recuperaciones, Presiones"
+2,Las de área,39,1715.933,0.046,1.909,4.387,21.848,64.82,2.288,0.86,1.222,76.936,2.361,2.23,0.286,1.009,20.94,68.299,4.1,0.281,0.764,"Altura en el campo, Recepciones en el área, Presiones"
+3,Desequilibrantes,28,1574.061,0.17,5.904,10.113,46.682,74.971,4.429,1.78,3.105,77.825,3.069,2.619,0.304,1.717,18.459,64.913,5.641,0.538,1.239,"Amenaza (xT) por 90, Pases de tiro, Centros"

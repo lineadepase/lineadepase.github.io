@@ -74,13 +74,13 @@
     <div class="envoltorio">
       <header class="cabecera-coleccion"><div><p class="etiqueta">Línea de pase · Colección visual</p><h2>Cuadernos de fútbol y datos</h2><p>Una pregunta guía cada análisis. El sello identifica su enfoque; la competición, el método y los límites aparecen junto a cada portada.</p></div><span class="coleccion-folio" aria-hidden="true">LP<small>CUADERNOS</small></span></header>
       <!-- lamina-anual-visual --><section class="lamina-anual" aria-labelledby="titulo-lamina-anual"><div><p class="etiqueta">Línea de pase · Edición visual 2026</p><h2 id="titulo-lamina-anual">Cuatro proyectos, cuatro formas de mirar el juego</h2><p>Una selección de cuatro trabajos; cada análisis conserva visibles su temporada y el corte de los datos.</p><nav class="enlaces enlaces-lamina" aria-label="Abrir proyectos y formatos visuales"><a href="real-zaragoza/">Temporada</a><a href="real-zaragoza/simulacion.html">Simulación</a><a href="liga-f-xt/">Amenaza esperada</a><a href="futbol-femenino/">Territorio</a><a href="../assets/ilustraciones/anuario-visual-2026-cuadrado.png" download>PNG cuadrado</a><a href="../assets/ilustraciones/anuario-visual-2026-vertical.png" download>PNG vertical 4:5</a><a href="../assets/ilustraciones/anuario-visual-2026-apaisado.png" download>PNG apaisado 16:9</a><a href="../assets/ilustraciones/anuario-visual-2026-impresion.pdf" download>PDF para imprimir</a><a href="../galeria-visual/">Abrir galería visual</a></nav></div><figure><a href="../assets/ilustraciones/anuario-visual-2026.svg" target="_blank" rel="noopener"><img src="../assets/ilustraciones/anuario-visual-2026.svg" width="600" height="870" loading="lazy" alt="Lámina editorial 2026 con cuatro proyectos: seguimiento del Zaragoza, simulación de liga, amenaza esperada de Liga F y fútbol femenino territorial."></a><figcaption><a href="../assets/ilustraciones/anuario-visual-2026.svg" download>Descargar la lámina vectorial (SVG)</a></figcaption></figure></section><!-- /lamina-anual-visual --><div class="divisor-campo" aria-hidden="true"></div><div class="filtros" role="group" aria-label="Filtrar por tipo de proyecto" hidden>
-        <button type="button" data-filtro="todos" aria-pressed="true">Todos <span>6</span></button>
+        <button type="button" data-filtro="todos" aria-pressed="true">Todos <span>7</span></button>
         <button type="button" data-filtro="temporada" aria-pressed="false">Seguimiento de temporada <span>1</span></button>
         <button type="button" data-filtro="master" aria-pressed="false">Trabajos del máster <span>1</span></button>
-        <button type="button" data-filtro="investigacion" aria-pressed="false">Investigaciones <span>3</span></button>
+        <button type="button" data-filtro="investigacion" aria-pressed="false">Investigaciones <span>4</span></button>
         <button type="button" data-filtro="divulgacion" aria-pressed="false">Divulgación <span>1</span></button>
       </div>
-      <p class="recuento-catalogo" id="recuento-proyectos" role="status" aria-live="polite">6 proyectos</p>
+      <p class="recuento-catalogo" id="recuento-proyectos" role="status" aria-live="polite">7 proyectos</p>
       <p class="catalogo-sin-resultados" id="proyectos-sin-resultados" role="status" hidden>No hay proyectos en esta categoría. Elige otro filtro.</p>
       <ul class="tarjetas-proyecto" id="catalogo">
         <li data-tipo="investigacion" data-coleccion="modelo">
@@ -134,6 +134,24 @@
               <h2>Por dónde pasaba el juego de España</h2>
               <p>Las redes de pases de la selección en sus seis partidos de la Eurocopa 2025: quién unía el juego y cómo cambió su circulación de los grupos a la final.</p>
               <dl class="ficha-proyecto"><dt>Pregunta</dt><dd>¿Quién unía el juego de España y cómo cambió su forma de circular el balón?</dd><dt>Método</dt><dd>Grafos de pases con NetworkX: intermediación, PageRank y centralización por partido, con comprobaciones automáticas.</dd><dt>Resultado</dt><dd>Redes por partido, intermediación por jugadora y ritmo de pases, con datos descargables.</dd><dt>Aportación</dt><dd>Preparación de datos, grafos y métricas en Python, pruebas y comunicación del análisis.</dd></dl><span class="ver">Leer la investigación</span>
+            </div>
+          </a>
+        </li>
+        <li data-tipo="investigacion" data-coleccion="perfiles">
+          <a class="tarjeta-proyecto" href="liga-f-perfiles/">
+            <div class="mini-marco">
+              <div class="mini mini-imagen">
+              <img src="../assets/adaptadas/compartir-16b53388db-800.webp" alt="" aria-hidden="true" width="1200" height="630" loading="lazy" srcset="../assets/adaptadas/compartir-16b53388db-480.webp 480w, ../assets/adaptadas/compartir-16b53388db-800.webp 800w, ../assets/adaptadas/compartir-16b53388db-1200.webp 1200w" sizes="(max-width: 600px) 112px, 480px">
+            </div>
+              <span class="sello-portada sello-xt" aria-hidden="true"><b>07</b><svg viewBox="0 0 36 26"><circle cx="8" cy="7" r="3"/><circle cx="28" cy="7" r="3"/><circle cx="8" cy="19" r="3"/><circle cx="28" cy="19" r="3"/></svg><small>PERFILES</small></span>
+              <span class="tipo-proyecto">Investigación</span>
+            </div>
+            <div class="tarjeta-texto">
+              <p class="tipo-texto">Investigación</p>
+              <p class="etiqueta">Liga F 2023/24 · StatsBomb Open Data</p>
+              <h2>¿En qué perfil está tu jugadora favorita?</h2>
+              <p>220 jugadoras de la Liga F agrupadas por lo que hacen con y sin balón, no por la posición que figura en la alineación.</p>
+              <dl class="ficha-proyecto"><dt>Pregunta</dt><dd>¿Qué tipos de jugadora aparecen al mirar lo que hacen y no su posición?</dd><dt>Método</dt><dd>Variables por 90 minutos, PCA y k-means, con silueta y estabilidad en remuestras.</dd><dt>Resultado</dt><dd>Cuatro perfiles, su reparto por plantillas y el listado descargable de las 220 jugadoras.</dd><dt>Aportación</dt><dd>Preparación de datos, agrupamiento en Python, comprobaciones y comunicación del análisis.</dd></dl><span class="ver">Leer la investigación</span>
             </div>
           </a>
         </li>
