@@ -270,5 +270,7 @@ test('secuencia de ocasiones calcula, limita remates y reinicia sin perder foco'
  await expect(page.locator('#secuencia-controles input')).toHaveCount(3);
  await expect(page.locator('#secuencia-resumen')).toContainText('49,6 %');
  await expect(page.locator('#secuencia-p-0')).toBeFocused();
+ const panel=await page.locator('#titulo-secuencia').locator('..').boundingBox();
+ for(const element of await page.locator('#secuencia-controles input, #secuencia-reiniciar').all()){const box=await element.boundingBox();expect(box.x+box.width).toBeLessThanOrEqual(panel.x+panel.width);}
  await page.locator('#titulo-secuencia').locator('..').screenshot({path:require('node:path').join(test.info().outputDir,'secuencia.png')});
 });
