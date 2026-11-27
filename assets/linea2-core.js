@@ -14,6 +14,15 @@
     }
     return values;
   }
+  function variedDistribution(probabilities){
+    if(!Array.isArray(probabilities)||probabilities.length<1||probabilities.length>12||Array.from(probabilities).some(p=>!Number.isFinite(p)||p<0||p>1))throw new RangeError('Define entre uno y doce remates con probabilidades válidas');
+    let values=[1];
+    for(const p of probabilities){
+      const next=new Array(values.length+1).fill(0);
+      values.forEach((value,k)=>{next[k]+=value*(1-p);next[k+1]+=value*p;});values=next;
+    }
+    return values;
+  }
   function wilson(goals,shots){
     if(!Number.isInteger(shots)||shots<1||!Number.isInteger(goals)||goals<0||goals>shots)throw new RangeError('La muestra debe contener remates y goles válidos');
     const z=1.959963984540054,p=goals/shots,den=1+z*z/shots;
@@ -79,5 +88,5 @@
     const labels={pregunta:'Pregunta de investigación',hipotesis:'Hipótesis inicial',fuentes:'Datos y fuentes',metodo:'Método',validacion:'Validación',limites:'Límites del análisis'};
     return 'LÍNEA DE PASE · PRO\nFICHA DE INVESTIGACIÓN · BORRADOR\n\n'+Object.entries(labels).map(([key,label])=>label.toUpperCase()+'\n'+(draft[key].trim()||'Pendiente de definir.')).join('\n\n')+'\n\nFicha de trabajo personal. Su contenido no constituye un resultado validado.\n';
   }
-  return {distribution,wilson,filterMatches,summarize,csv,passport,readView,viewUrl,comparisonUrl,scenario,researchDraft,researchText};
+  return {distribution,variedDistribution,wilson,filterMatches,summarize,csv,passport,readView,viewUrl,comparisonUrl,scenario,researchDraft,researchText};
 });

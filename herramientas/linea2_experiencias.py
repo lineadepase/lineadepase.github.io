@@ -56,7 +56,7 @@ def routes():
 
 def experience_index():
     groups = [
-        ('DataLab', [('Simular una serie de remates','tiros'),('Explorar todos los resultados','titulo-distribucion'),('Comprobar el tamaño de muestra','titulo-muestra'),('Comparar dos escenarios','titulo-escenarios')]),
+        ('DataLab', [('Simular una serie de remates','tiros'),('Explorar todos los resultados','titulo-distribucion'),('Comprobar el tamaño de muestra','titulo-muestra'),('Comparar dos escenarios','titulo-escenarios'),('Construir una secuencia de remates','titulo-secuencia')]),
         ('Museo', [('Visitar las obras','museo'),('Preparar mi cuaderno de visita','museo-cuaderno-titulo')]),
         ('Play', [('Elegir una ronda del trivial','reto-tema')]),
         ('Zaragoza', [('Filtrar y comparar jornadas','titulo-explorador')]),

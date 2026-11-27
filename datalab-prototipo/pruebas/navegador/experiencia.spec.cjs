@@ -240,7 +240,7 @@ test('índice permite encontrar las herramientas sin JavaScript',async({browser,
  const page=await context.newPage();await page.goto(entry);
  await page.locator('#indice-experiencias summary').click();
  const index=page.locator('#indice-experiencias');
- await expect(index.locator('a')).toHaveCount(13);
+ await expect(index.locator('a')).toHaveCount(14);
  await index.screenshot({path:info.outputPath('indice.png')});
  await index.getByRole('link',{name:'Redactar una publicación',exact:true}).click();
  await expect(page).toHaveURL(/#editorial-titulo$/);
@@ -249,4 +249,26 @@ test('índice permite encontrar las herramientas sin JavaScript',async({browser,
  await index.getByRole('link',{name:'Preparar mi cuaderno de visita',exact:true}).click();
  await expect(page).toHaveURL(/#museo-cuaderno-titulo$/);
  await context.close();
+});
+
+
+test('secuencia de ocasiones calcula, limita remates y reinicia sin perder foco',async({page})=>{
+ await page.goto(entry+'#titulo-secuencia');
+ await expect(page.locator('#secuencia-resumen')).toContainText('0,6 goles esperados');
+ await expect(page.locator('#secuencia-resumen')).toContainText('49,6 %');
+ await expect(page.locator('#secuencia-resultados tr')).toHaveCount(4);
+ await page.locator('#secuencia-p-0').fill('100');
+ await expect(page.locator('#secuencia-resumen')).toContainText('100 %');
+ await expect(page.locator('#secuencia-p-0')).toBeFocused();
+ for(let i=3;i<12;i++)await page.locator('#secuencia-anadir').click();
+ await expect(page.locator('#secuencia-anadir')).toBeDisabled();
+ await expect(page.locator('#secuencia-controles input')).toHaveCount(12);
+ for(let i=12;i>1;i--)await page.locator('#secuencia-quitar').click();
+ await expect(page.locator('#secuencia-quitar')).toBeDisabled();
+ await expect(page.locator('#secuencia-resultados tr')).toHaveCount(2);
+ await page.locator('#secuencia-reiniciar').click();
+ await expect(page.locator('#secuencia-controles input')).toHaveCount(3);
+ await expect(page.locator('#secuencia-resumen')).toContainText('49,6 %');
+ await expect(page.locator('#secuencia-p-0')).toBeFocused();
+ await page.locator('#titulo-secuencia').locator('..').screenshot({path:require('node:path').join(test.info().outputDir,'secuencia.png')});
 });

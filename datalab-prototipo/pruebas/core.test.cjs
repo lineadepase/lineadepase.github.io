@@ -24,3 +24,18 @@ test('enlace de comparación conserva temporadas e impide identificadores invál
 
 test('igual esperanza no implica igual probabilidad de marcar',()=>{const a=core.scenario(10,.1),b=core.scenario(2,.5);near(a.expected,1);near(b.expected,1);near(a.atLeastOne,.6513215599);near(b.atLeastOne,.75);assert.throws(()=>core.scenario(0,.5),RangeError);});
 test('fichas rechazan borradores incompletos, excesivos o sin pregunta para exportar',()=>{const draft={version:1,pregunta:'Pregunta',hipotesis:'',fuentes:'',metodo:'',validacion:'',limites:''};assert.equal(core.researchDraft({...draft,extra:'ignorar'}).extra,undefined);assert.match(core.researchText(draft),/Pendiente de definir/);assert.throws(()=>core.researchDraft({...draft,metodo:'a'.repeat(1201)}),TypeError);assert.throws(()=>core.researchText({...draft,pregunta:'  '}),TypeError);assert.throws(()=>core.researchDraft({version:1}),TypeError);});
+
+
+test('secuencia heterogénea: distribución exacta, extremos y validación',()=>{
+ const values=core.variedDistribution([.1,.2,.3]);[.504,.398,.092,.006].forEach((p,i)=>near(values[i],p));
+ assert.deepEqual(core.variedDistribution([0,1,0,1]),[0,0,1,0,0]);
+ for(const value of [[],new Array(13).fill(.1),[NaN],[Infinity],[-.1],[1.1],['0.5'],new Array(2),null])assert.throws(()=>core.variedDistribution(value),RangeError);
+});
+test('secuencias conservan masa, esperanza y producto de fallos',()=>{
+ for(let n=1;n<=12;n++){
+  const ps=Array.from({length:n},(_,i)=>((i*17+n*7)%101)/100),values=core.variedDistribution(ps);
+  near(values.reduce((a,b)=>a+b,0),1);near(values.reduce((a,b,k)=>a+b*k,0),ps.reduce((a,b)=>a+b,0));near(values[0],ps.reduce((a,b)=>a*(1-b),1));
+  core.variedDistribution([...ps].reverse()).forEach((p,i)=>near(p,values[i]));
+  for(const p of [0,.1,.5,1])core.variedDistribution(new Array(n).fill(p)).forEach((v,i)=>near(v,core.distribution(n,p)[i]));
+ }
+});
