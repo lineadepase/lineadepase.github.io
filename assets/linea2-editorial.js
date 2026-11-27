@@ -8,6 +8,14 @@ for(const code of ['a','b']){
 }
 if(matches.length>1)$('editorial-b').selectedIndex=1;
 function invalidate(){$('editorial-salida').hidden=true;$('editorial-texto').value='';$('editorial-estado').textContent='Prepara de nuevo el borrador para incorporar los cambios.';}
+const transfer=$('temporada-redaccion');
+if(transfer)transfer.addEventListener('click',()=>{
+ const selected=[...document.querySelectorAll('[data-compare-id]:checked')].map(box=>matches.findIndex(m=>m.archivo_id===box.dataset.compareId));
+ if(selected.length!==2||selected.some(index=>index<0)||selected[0]===selected[1])return;
+ $('editorial-a').value=String(selected[0]);$('editorial-b').value=String(selected[1]);invalidate();
+ $('editorial-estado').textContent='Jornadas trasladadas desde Zaragoza. Tu pregunta y tu lectura se conservan; prepara de nuevo el borrador.';
+ form.scrollIntoView({behavior:'instant',block:'start'});$('editorial-pregunta').focus({preventScroll:true});
+});
 ['editorial-a','editorial-b','editorial-pregunta','editorial-nota'].forEach(id=>$(id).addEventListener('input',invalidate));
 form.addEventListener('submit',event=>{
  event.preventDefault();if(!form.reportValidity())return;

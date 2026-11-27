@@ -35,6 +35,7 @@ function updateComparison(message=''){
  const status=$('temporada-seleccion'),link=$('temporada-studio');if(!status||!link)return;
  compareBoxes.forEach(box=>box.checked=compareIds.includes(box.dataset.compareId));
  link.hidden=compareIds.length!==2;
+ if($('temporada-redaccion'))$('temporada-redaccion').hidden=compareIds.length!==2;
  if(compareIds.length===2)link.href=core.comparisonUrl(globalThis.location?.href||'https://lineadepase.com/datalab-prototipo/',compareIds);
  const names=compareIds.map(id=>{const match=payload.partidos.find(m=>m.archivo_id===id);return match?'J'+match.jornada+' · '+match.rival:id;});
  status.textContent=message||(names.length?'Selección ('+names.length+'/2): '+names.join(' / '):'Elige dos jornadas de la tabla para compararlas en Studio.');

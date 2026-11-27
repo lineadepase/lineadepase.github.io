@@ -193,3 +193,25 @@ test('Studio prepara un borrador trazable y descarta vistas antiguas',async({pag
  await page.reload();
  await expect(page.locator('#editorial-nota')).toHaveValue('');
 });
+
+
+test('Zaragoza traslada la pareja a redacción conservando texto e invalidando salida',async({page})=>{
+ await page.goto(entry+'#studio');
+ await page.locator('#editorial-pregunta').fill('Mi pregunta');
+ await page.locator('#editorial-nota').fill('Mi lectura personal');
+ await page.getByRole('button',{name:'Preparar borrador',exact:true}).click();
+ await expect(page.locator('#editorial-salida')).toBeVisible();
+ const boxes=page.locator('[data-compare-id]');
+ await boxes.nth(2).check();
+ await expect(page.locator('#temporada-redaccion')).toBeHidden();
+ await boxes.nth(3).check();
+ await page.locator('#temporada-redaccion').click();
+ await expect(page.locator('#editorial-a')).toHaveValue('2');
+ await expect(page.locator('#editorial-b')).toHaveValue('3');
+ await expect(page.locator('#editorial-pregunta')).toHaveValue('Mi pregunta');
+ await expect(page.locator('#editorial-pregunta')).toBeFocused();
+ await expect(page.locator('#editorial-nota')).toHaveValue('Mi lectura personal');
+ await expect(page.locator('#editorial-salida')).toBeHidden();
+ await boxes.nth(2).uncheck();
+ await expect(page.locator('#temporada-redaccion')).toBeHidden();
+});
