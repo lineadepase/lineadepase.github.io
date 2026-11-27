@@ -241,6 +241,7 @@ test('índice permite encontrar las herramientas sin JavaScript',async({browser,
  await page.locator('#indice-experiencias summary').click();
  const index=page.locator('#indice-experiencias');
  await expect(index.locator('a')).toHaveCount(13);
+ await index.screenshot({path:info.outputPath('indice.png')});
  await index.getByRole('link',{name:'Redactar una publicación',exact:true}).click();
  await expect(page).toHaveURL(/#editorial-titulo$/);
  await page.getByRole('link',{name:'Ver todas las herramientas ↑'}).first().click();
