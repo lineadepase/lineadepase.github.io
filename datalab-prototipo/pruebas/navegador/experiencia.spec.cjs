@@ -215,3 +215,21 @@ test('Zaragoza traslada la pareja a redacción conservando texto e invalidando s
  await boxes.nth(2).uncheck();
  await expect(page.locator('#temporada-redaccion')).toBeHidden();
 });
+
+
+test('Museo permite contrastar y descargar una lectura con su contexto',async({page})=>{
+ await page.goto(entry+'#museo');
+ await page.getByText('Pista para la sala de conexiones',{exact:true}).click();
+ await page.locator('#museo details').filter({has:page.getByText('Pista para la sala de conexiones',{exact:true})}).getByText('Contrastar mi interpretación',{exact:true}).click();
+ await expect(page.getByText('No: volumen de pases e intermediación', {exact:false})).toBeVisible();
+ await page.locator('#museo-observo').fill('Observo diferencias de tamaño y color.');
+ let download=page.waitForEvent('download');
+ await page.getByRole('button',{name:'Descargar mi cuaderno de visita'}).click();
+ let text=await fs.readFile(await(await download).path(),'utf8');
+ expect(text).toContain('Observo diferencias');expect(text).toContain('espana-eurocopa-redes/');expect(text).toContain('Pendiente de formular.');
+ await page.locator('#museo-obra').selectOption('territorio');
+ await page.locator('#museo-interpreto').fill('Mi hipótesis personal.');
+ download=page.waitForEvent('download');await page.getByRole('button',{name:'Descargar mi cuaderno de visita'}).click();
+ text=await fs.readFile(await(await download).path(),'utf8');expect(text).toContain('liga-f-xt/');expect(text).toContain('Mi hipótesis personal.');expect(text).not.toContain('espana-eurocopa-redes/');
+ await page.reload();await expect(page.locator('#museo-observo')).toHaveValue('');
+});
