@@ -138,3 +138,9 @@ La ejecución [46073530366](https://github.com/lineadepase/lineadepase.github.io
 La selección de exactamente dos jornadas del explorador ofrece un botón para trasladarlas a la mesa de redacción de Studio. El traslado usa los identificadores reales del archivo, conserva pregunta y lectura, invalida la salida anterior y lleva el foco a la pregunta. Si se retira una jornada o los filtros dejan la pareja incompleta, el botón vuelve a ocultarse. El enlace existente al comparador visual se mantiene.
 
 La ejecución [46073820496](https://github.com/lineadepase/lineadepase.github.io/actions/runs/46073820496), sobre `c29fdde`, superó 42 pruebas de lógica, 12 de generación y 48 de navegador: 102 en total. El nuevo recorrido se comprobó en escritorio, tablet simulada, móvil y móvil estrecho, verificando pareja, conservación de texto, foco, invalidación de salida y ocultación del botón al quitar una jornada. No se ha publicado ni fusionado main.
+
+## Cuaderno de visita del Museo
+
+Las dos obras incorporan pistas y contraste de interpretación mediante desplegables nativos, disponibles sin JavaScript. El cuaderno separa observación, interpretación y comprobaciones pendientes. Su descarga de texto incluye la sala elegida, el contexto, la fuente y el enlace a la metodología; no persiste notas ni las mezcla con el pasaporte. Exige una observación y marca explícitamente los apartados pendientes.
+
+La ejecución [46074104127](https://github.com/lineadepase/lineadepase.github.io/actions/runs/46074104127), sobre `c065a7b`, superó 42 pruebas de lógica, 12 de generación y 52 de navegador: 106 en total. Se revisaron las capturas del Museo en escritorio y móvil estrecho. El navegador verifica apertura de pistas, contraste, contenido de ambas descargas, metodología correspondiente y ausencia de persistencia al recargar. No se ha publicado ni fusionado main.
