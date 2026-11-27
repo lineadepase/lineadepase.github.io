@@ -52,3 +52,18 @@ def season(data, archive=''):
 
 def routes():
     return '''<aside class="routes" aria-label="Recorridos sugeridos"><p class="eyebrow">ELIGE POR DÓNDE EMPEZAR</p><div class="grid"><article><h2>Tengo curiosidad</h2><p>Una pregunta, un experimento y una sorpresa.</p><a href="#datalab">Experimentar con el azar →</a></article><article><h2>Sigo al Zaragoza</h2><p>Del resultado de la jornada al contexto de la temporada.</p><a href="#titulo-explorador">Explorar la temporada →</a></article><article><h2>Quiero crear</h2><p>Encuentra una comparación y conviértela en una lámina.</p><a href="#studio">Entrar en Studio →</a></article></div></aside>'''
+
+
+def experience_index():
+    groups = [
+        ('DataLab', [('Simular una serie de remates','tiros'),('Explorar todos los resultados','titulo-distribucion'),('Comprobar el tamaño de muestra','titulo-muestra'),('Comparar dos escenarios','titulo-escenarios')]),
+        ('Museo', [('Visitar las obras','museo'),('Preparar mi cuaderno de visita','museo-cuaderno-titulo')]),
+        ('Play', [('Elegir una ronda del trivial','reto-tema')]),
+        ('Zaragoza', [('Filtrar y comparar jornadas','titulo-explorador')]),
+        ('Pro', [('Preparar una investigación','pro-ficha')]),
+        ('Studio', [('Crear una lámina o un mapa','studio'),('Redactar una publicación','editorial-titulo')]),
+        ('Media', [('Ver las explicaciones y las intros','media')]),
+        ('Pasaporte', [('Recuperar mi recorrido y mis notas','pasaporte')]),
+    ]
+    content = ''.join('<div><h3>'+name+'</h3><ul>'+''.join(f'<li><a href="#{target}">{label}</a></li>' for label,target in links)+'</ul></div>' for name,links in groups)
+    return '<details id="indice-experiencias" class="experience-index"><summary>Ver todas las experiencias y herramientas</summary><div class="experience-index-grid">'+content+'</div><p>Los cuadernos de Museo y Studio se descargan para conservarlos. Pro permite guardar su borrador en este navegador. El pasaporte conserva por separado tu recorrido y tu nota.</p></details>'

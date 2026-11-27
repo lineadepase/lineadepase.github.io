@@ -233,3 +233,19 @@ test('Museo permite contrastar y descargar una lectura con su contexto',async({p
  text=await fs.readFile(await(await download).path(),'utf8');expect(text).toContain('liga-f-xt/');expect(text).toContain('Mi hipótesis personal.');expect(text).not.toContain('espana-eurocopa-redes/');
  await page.reload();await expect(page.locator('#museo-observo')).toHaveValue('');
 });
+
+
+test('índice permite encontrar las herramientas sin JavaScript',async({browser,baseURL},info)=>{
+ const context=await browser.newContext({javaScriptEnabled:false,baseURL,viewport:info.project.use.viewport});
+ const page=await context.newPage();await page.goto(entry);
+ await page.locator('#indice-experiencias summary').click();
+ const index=page.locator('#indice-experiencias');
+ await expect(index.locator('a')).toHaveCount(13);
+ await index.getByRole('link',{name:'Redactar una publicación',exact:true}).click();
+ await expect(page).toHaveURL(/#editorial-titulo$/);
+ await page.getByRole('link',{name:'Ver todas las herramientas ↑'}).first().click();
+ await expect(page).toHaveURL(/#indice-experiencias$/);
+ await index.getByRole('link',{name:'Preparar mi cuaderno de visita',exact:true}).click();
+ await expect(page).toHaveURL(/#museo-cuaderno-titulo$/);
+ await context.close();
+});
