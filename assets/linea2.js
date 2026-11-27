@@ -2,6 +2,7 @@
 'use strict';
 const $=id=>document.getElementById(id),fmt=new Intl.NumberFormat('es-ES',{maximumFractionDigits:1});
 const tiros=$('tiros'),prob=$('prob');
+if(globalThis.location&&globalThis.LDP2){const view=globalThis.LDP2.readView(globalThis.location.search);if(view.shots!==undefined)tiros.value=String(view.shots);if(view.probability!==undefined)prob.value=String(view.probability);}
 function actualizar(){const n=Number(tiros.value),p=Number(prob.value)/100,q=1-Math.pow(1-p,n);$('n').value=n;$('p').value=fmt.format(p*100)+' %';$('resultado').textContent=fmt.format(q*100)+' %';$('barra').style.width=q*100+'%';$('esperados').textContent='Goles esperados: '+fmt.format(n*p);$('simulacion').textContent='';}
 tiros.addEventListener('input',actualizar);prob.addEventListener('input',actualizar);actualizar();
 $('simular').addEventListener('click',()=>{let goles=0;for(let i=0;i<Number(tiros.value);i++)if(Math.random()<Number(prob.value)/100)goles++;$('simulacion').textContent=goles+' goles en esta serie. Repite: el azar produce resultados distintos incluso con la misma probabilidad.';});
@@ -19,7 +20,15 @@ const studioForm=$('studio-form');
 if(studioForm)studioForm.addEventListener('submit',event=>{if($('studio-jornada_a').value===$('studio-jornada_b').value){event.preventDefault();$('studio-estado').textContent='Elige dos jornadas distintas para comparar.';$('studio-jornada_b').focus();}});
 const key='ldp-pasaporte-v2',areas=['DataLab','Museo','Play','Zaragoza','Pro','Studio','Media'];let state={areas:[],nota:''},storage=true;
 try{const s=JSON.parse(localStorage.getItem(key));if(s&&Array.isArray(s.areas)&&typeof s.nota==='string')state={areas:[...new Set(s.areas.filter(x=>areas.includes(x)))],nota:s.nota.slice(0,2000)};}catch(e){storage=false;}
-function render(){ $('progreso').textContent=new Set(state.areas).size+' de '+areas.length+' áreas exploradas'; }
+const stamps=areas.map(name=>({name,button:$('sello-'+name.toLowerCase())})).filter(item=>item.button);
+function render(){
+ $('progreso').textContent=new Set(state.areas).size+' de '+areas.length+' áreas exploradas';
+ $('sellos').querySelectorAll('input').forEach((input,i)=>input.checked=state.areas.includes(areas[i]));
+ stamps.forEach(({name,button})=>{const marked=state.areas.includes(name);button.textContent=marked?name+' guardado · Quitar del pasaporte':'Guardar '+name+' en mi pasaporte';button.setAttribute('aria-pressed',String(marked));});
+ if($('pasaporte-barra'))$('pasaporte-barra').value=state.areas.length;
+ if($('pasaporte-retomar')){const next=areas.find(name=>!state.areas.includes(name));$('pasaporte-retomar').href='#'+(next?next.toLowerCase():'datalab');$('pasaporte-retomar').textContent=next?'Continuar por '+next+' →':'Has explorado todas las áreas · Volver a DataLab →';}
+}
+stamps.forEach(({name,button})=>{button.hidden=false;button.addEventListener('click',()=>{state.areas=state.areas.includes(name)?state.areas.filter(item=>item!==name):[...state.areas,name];save();});});
 function save(){try{localStorage.setItem(key,JSON.stringify(state));$('guardado').textContent='Guardado en este navegador.';}catch(e){storage=false;$('guardado').textContent='No se puede guardar en este navegador. Descarga tu pasaporte para conservarlo.';}render();}
 areas.forEach(name=>{const label=document.createElement('label'),input=document.createElement('input');input.type='checkbox';input.checked=state.areas.includes(name);input.addEventListener('change',()=>{state.areas=state.areas.filter(x=>x!==name);if(input.checked)state.areas.push(name);save();});label.append(input,document.createTextNode(name));$('sellos').append(label);});
 $('nota').value=state.nota;$('nota').addEventListener('input',()=>{state.nota=$('nota').value;save();});

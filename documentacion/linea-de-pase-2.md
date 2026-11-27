@@ -52,3 +52,11 @@ Las investigaciones nuevas, como «Los puntos engañan» y un xG universal entre
 ## Ampliaciones anotadas
 
 El usuario propuso un trivial de fútbol para Play. Queda registrado como ampliación futura, todavía sin implementar.
+
+## Continuidad de la visita y enlaces compartibles
+
+Cada área permite marcarse o desmarcarse en el pasaporte, junto con acceso para anotar un descubrimiento y continuar a la siguiente sección. El pasaporte sincroniza botones, casillas y barra de progreso, y propone la primera área pendiente. No se marca automáticamente por hacer scroll.
+
+DataLab y el explorador del Zaragoza preparan enlaces con sus controles o filtros. Al abrirlos se restauran los valores válidos; se ignoran los parámetros desconocidos o fuera de rango. Las notas y el pasaporte no forman parte de los enlaces. Si cambian los controles, el enlace preparado se oculta para evitar copiar una vista desactualizada. Los enlaces se muestran en un campo seleccionable y no se envían a ninguna red social.
+
+Validación de esta ampliación: 31 pruebas de cálculo e interacción en entorno simulado y 10 pruebas del generador; revisión visual real todavía pendiente.

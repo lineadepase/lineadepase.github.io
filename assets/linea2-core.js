@@ -42,5 +42,20 @@
     if(!value||value.version!==1||!Array.isArray(value.areas)||typeof value.nota!=='string'||value.nota.length>2000||value.areas.some(x=>typeof x!=='string'||!areas.includes(x)))throw new TypeError('El archivo no tiene el formato de pasaporte esperado');
     return {areas:[...new Set(value.areas)],nota:value.nota};
   }
-  return {distribution,wilson,filterMatches,summarize,csv,passport};
+  function readView(search){
+    const params=new URLSearchParams(search),state={};
+    const numeric=[['n','shots',1,30],['p','probability',0,100],['mn','sampleShots',1,500],['mk','sampleGoals',0,500]];
+    numeric.forEach(([key,name,min,max])=>{const text=params.get(key);if(text!==null&&/^\d+$/.test(text)){const value=Number(text);if(value>=min&&value<=max)state[name]=value;}});
+    const choices=[['sede','venue',['Todas','Casa','Fuera']],['resultado','result',['Todos','Victoria','Empate','Derrota']],['cobertura','coverage',['Todas','Solo completas']]];
+    choices.forEach(([key,name,allowed])=>{if(allowed.includes(params.get(key)))state[name]=params.get(key);});
+    return state;
+  }
+  function viewUrl(base,state,kind){
+    const url=new URL(base);url.search='';
+    const fields=kind==='season'?[['sede','venue'],['resultado','result'],['cobertura','coverage']]:[['n','shots'],['p','probability'],['mn','sampleShots'],['mk','sampleGoals']];
+    fields.forEach(([key,name])=>{if(state[name]!==undefined)url.searchParams.set(key,String(state[name]));});
+    url.hash=kind==='season'?'titulo-explorador':'datalab';
+    return url.href;
+  }
+  return {distribution,wilson,filterMatches,summarize,csv,passport,readView,viewUrl};
 });
