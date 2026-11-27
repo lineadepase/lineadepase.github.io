@@ -45,7 +45,7 @@ La rutina habitual `actualizar_seo.py` regenera primero la exploración existent
 
 Se prueban normalización y esperanza de la distribución, límites y simetría de Wilson, filtros, muestras incompletas, selección vacía, exportaciones, recuperación de almacenamiento, importación de pasaporte, corte temporal, seguridad del JSON incorporado y regeneración sin modificar la portada pública. Las pruebas de interfaz usan un entorno simulado; no sustituyen un navegador real.
 
-**Pendiente:** revisión visual y pruebas de interacción reales en móvil y escritorio. La política del navegador bloqueó la apertura del archivo local y la tablet no aparece entre las superficies controlables de la sesión. No se ha intentado eludir ese bloqueo.
+**Revisión de navegador realizada:** las 24 pruebas de Chromium han pasado en 1440, 820, 390 y 320 px. Se han inspeccionado las capturas de portada y las ocho áreas en estos tamaños, corregido la cabecera estrecha y la ocultación del enlace de salto, y repetido la ejecución con éxito. La tablet física no está accesible; los tamaños móvil/tablet son simulados. La vista previa local de esta sesión sigue sin conexión, pero la revisión se completó con los resultados del entorno de pruebas de GitHub.
 
 Las investigaciones nuevas, como «Los puntos engañan» y un xG universal entrenado, requieren datos, desarrollo y validación independientes; no se presentan como investigaciones terminadas. Las experiencias y generadores existentes mantienen su implementación y sus rutas.
 
@@ -80,3 +80,7 @@ Se ha añadido una batería Playwright para Chromium con cuatro tamaños de pant
 ## Primera ejecución real de navegador
 
 La ejecución [46036801246](https://github.com/lineadepase/lineadepase.github.io/actions/runs/46036801246) sobre `22b9c70` superó 24 pruebas en Chromium (6 recorridos × 4 tamaños), además de las 45 pruebas previas y la regeneración sincronizada. Se inspeccionaron las capturas de portada en los cuatro tamaños y áreas en escritorio y móvil. Se detectó una cabecera comprimida a 320 px y la aparición del enlace de salto en capturas largas; se ajustaron la distribución de cabecera y la ocultación del salto sin foco. Las capturas individuales desactivan la posición sticky del menú durante la toma para evitar que la barra se dibuje sobre el área completa; la portada conserva la navegación normal. Se ha solicitado una segunda ejecución tras estos ajustes.
+
+## Resultado verificado de la segunda ejecución
+
+La ejecución [46037290703](https://github.com/lineadepase/lineadepase.github.io/actions/runs/46037290703), sobre `4667ada`, terminó correctamente: 45 pruebas de lógica/generación y 24 pruebas de Chromium, con regeneración sincronizada y auditoría de enlaces. Se inspeccionaron las 36 capturas resultantes (portada y ocho áreas en cuatro tamaños), con revisión ampliada de cabecera estrecha, pasaporte, DataLab y Museo. La cabecera ya no fragmenta el enlace de pasaporte y el enlace de salto permanece oculto salvo foco. No se ha desplegado ni fusionado main.
