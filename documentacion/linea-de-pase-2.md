@@ -29,3 +29,9 @@ No se ha publicado ni fusionado main.
 ## Continuación
 
 Play incorpora tres retos sobre probabilidad, interpretación de xG y tamaño de muestra, con explicación, recuento de aciertos y reinicio. Una respuesta solo cuenta una vez. La tablet no figura entre las superficies controlables de la sesión; la revisión visual continúa pendiente.
+
+## Integración y siguientes ideas
+
+El prototipo se regenera desde la rutina habitual de SEO, conservando su exclusión del índice. El resumen usa el último resultado de liga anterior al corte, aunque el archivo esté desordenado; omite marcadores pendientes y rechaza marcadores inválidos. Hay contenido inicial y avisos para la navegación sin JavaScript.
+
+Propuesta del usuario para una ampliación futura de Play: un trivial de fútbol. Anotado, sin desarrollar todavía.

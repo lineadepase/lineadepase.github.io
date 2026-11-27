@@ -6,6 +6,7 @@ on:
       - 'datalab-prototipo/**'
       - 'assets/linea2.*'
       - 'herramientas/linea2.py'
+      - 'herramientas/pruebas/test_linea2.py'
       - 'datos/zaragoza.json'
       - '.github/workflows/datalab-prototipo.yml'
   pull_request:
@@ -14,6 +15,7 @@ on:
       - 'datalab-prototipo/**'
       - 'assets/linea2.*'
       - 'herramientas/linea2.py'
+      - 'herramientas/pruebas/test_linea2.py'
       - 'datos/zaragoza.json'
       - '.github/workflows/datalab-prototipo.yml'
 permissions:
@@ -30,3 +32,4 @@ jobs:
       - run: python herramientas/linea2.py
       - run: git diff --exit-code -- datalab-prototipo/index.html
       - run: python herramientas/auditar_enlaces.py
+      - run: python -m unittest discover -s herramientas/pruebas -p test_linea2.py

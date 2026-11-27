@@ -1,6 +1,7 @@
 from pathlib import Path
 from html import escape
 import json
+from datetime import date
 R=Path(__file__).resolve().parents[1]
 D=R/'datalab-prototipo'
 sections={
@@ -14,21 +15,37 @@ sections={
 'pasaporte':('Pasaporte','Tu recorrido, a tu ritmo.','Guarda las áreas que has explorado y una nota de aprendizaje. Solo en este navegador.', [])}
 def cards(items):
  return ''.join(f'<article class="card"><span class="number">{i:02}</span><h3>{escape(t)}</h3><p>{escape(d)}</p><a href="{u if u.startswith("https:") else "../"+u}">Abrir experiencia <span aria-hidden="true">↗</span></a></article>' for i,(t,d,u) in enumerate(items,1))
+def snapshot(data):
+ """Resumen de liga: solo marcadores completos y anteriores al corte."""
+ cutoff = date.fromisoformat(data['corte'])
+ played = []
+ for match in data.get('partidos', []):
+  if any(match.get(key) is None for key in ('goles_favor', 'goles_contra')):
+   continue
+  if any(type(match[key]) is not int or match[key] < 0 for key in ('goles_favor', 'goles_contra')):
+   raise ValueError('Marcador inválido en los datos del Zaragoza')
+  match_date = date.fromisoformat(match['fecha'])
+  if match_date <= cutoff:
+   played.append(match)
+ if not played:
+  return '<div class="snapshot"><p>No hay resultados de liga disponibles para este corte.</p></div>'
+ p = max(played, key=lambda match: (match['fecha'], match['jornada']))
+ return f'<div class="snapshot"><p class="eyebrow">DATOS EXISTENTES · CORTE {escape(data["corte"])}</p><h3>Jornada {p["jornada"]} · {escape(p["rival"])}</h3><p class="result">{p["goles_favor"]} – {p["goles_contra"]}</p><p>Marcador de liga en orden Zaragoza–rival · {escape(p["sede"])} · {escape(p["fecha"])}.</p><p>La cobertura estadística varía entre partidos. Consulta las fuentes y las fichas completas en el panel.</p><a href="../proyectos/real-zaragoza/">Consultar el panel y sus fuentes</a></div>'
+
 def build():
  nav=''.join(f'<a href="#{k}">{v[0]}</a>' for k,v in sections.items())
  body=''
  for k,(name,title,desc,items) in sections.items():
   extra=''
   if k=='datalab':
-   extra='''<div class="experiment"><div><p class="eyebrow">EXPERIMENTO 01 · PROBABILIDAD</p><h3>¿Cuántas ocasiones necesitas?</h3><p>Predice el resultado y mueve los controles.</p><label for="tiros">Disparos: <output id="n">5</output></label><input id="tiros" type="range" min="1" max="30" value="5"><label for="prob">Probabilidad por disparo: <output id="p">15 %</output></label><input id="prob" type="range" min="0" max="100" value="15"></div><div><p>Probabilidad de al menos un gol</p><p id="resultado" class="result" aria-live="polite"></p><div class="bar"><span id="barra"></span></div><p id="esperados"></p><details><summary>Comprende el experimento</summary><p>1 − (1 − p)ⁿ. Disparos independientes con idéntica probabilidad. Es un modelo didáctico, no un xG entrenado ni una predicción real.</p></details><button id="simular" type="button">Simular una serie</button><p id="simulacion" aria-live="polite"></p></div></div>'''
+   extra='''<div class="experiment"><div><p class="eyebrow">EXPERIMENTO 01 · PROBABILIDAD</p><h3>¿Cuántas ocasiones necesitas?</h3><p>Predice el resultado y mueve los controles.</p><label for="tiros">Disparos: <output id="n">5</output></label><input id="tiros" type="range" min="1" max="30" value="5"><label for="prob">Probabilidad por disparo: <output id="p">15 %</output></label><input id="prob" type="range" min="0" max="100" value="15"></div><div><p>Probabilidad de al menos un gol</p><p id="resultado" class="result" aria-live="polite">55,6 %</p><div class="bar"><span id="barra"></span></div><p id="esperados">Goles esperados: 0,8</p><details><summary>Comprende el experimento</summary><p>1 − (1 − p)ⁿ. Disparos independientes con idéntica probabilidad. Es un modelo didáctico, no un xG entrenado ni una predicción real.</p><p><a href="../proyectos/xg/">Profundiza en xG, sin líos</a></p></details><button id="simular" type="button">Simular una serie</button><p id="simulacion" aria-live="polite"></p></div></div>'''
   if k=='play':
    extra='''<div class="experiment"><div><h3>Desafía tu intuición</h3><p id="reto-progreso" role="status"></p><p id="reto-pregunta">Con dos disparos independientes al 50 %, ¿cuál es la probabilidad de marcar al menos una vez?</p><div class="answers"><button data-answer="50">50 %</button><button data-answer="75">75 %</button><button data-answer="100">100 %</button></div><p id="respuesta" aria-live="polite"></p><button id="reto-siguiente" type="button" disabled>Siguiente pregunta</button><button id="reto-reiniciar" type="button">Volver a empezar</button><noscript><p>Activa JavaScript para responder. Solución del primer reto: 75 %. La probabilidad de fallar ambos es 25 %.</p></noscript></div></div>'''
   if k=='zaragoza':
    data=json.loads((R/'datos/zaragoza.json').read_text(encoding='utf-8'))
-   p=data['partidos'][-1]
-   extra=f'<div class="snapshot"><p class="eyebrow">DATOS EXISTENTES · CORTE {escape(data["corte"])}</p><h3>Jornada {p["jornada"]} · {escape(p["rival"])}</h3><p class="result">{p["goles_favor"]} – {p["goles_contra"]}</p><p>Marcador en orden Zaragoza–rival · {escape(p["sede"])}.</p><p>La cobertura estadística varía entre partidos. Consulta las fuentes y las fichas completas en el panel.</p></div>'
+   extra=snapshot(data)
   if k=='pasaporte':
-   extra='''<div class="experiment"><div><p id="progreso" aria-live="polite"></p><div id="sellos"></div><label for="nota">¿Qué has aprendido?</label><textarea id="nota" maxlength="2000" rows="4"></textarea><p id="guardado" role="status"></p><button id="exportar">Descargar pasaporte</button><button id="borrar">Borrar mi recorrido</button></div><div><h3>Un recuerdo de tu visita</h3><p>Marca cada área después de explorarla. Puedes descargar una copia y borrar tus datos cuando quieras. No se crea una cuenta ni se envían tus notas.</p></div></div>'''
+   extra='''<div class="experiment"><div><noscript><p>El pasaporte necesita JavaScript para guardar tu recorrido. Puedes seguir explorando todas las áreas y sus enlaces.</p></noscript><p id="progreso" aria-live="polite"></p><div id="sellos"></div><label for="nota">¿Qué has aprendido?</label><textarea id="nota" maxlength="2000" rows="4"></textarea><p id="guardado" role="status"></p><button id="exportar">Descargar pasaporte</button><button id="borrar">Borrar mi recorrido</button></div><div><h3>Un recuerdo de tu visita</h3><p>Marca cada área después de explorarla. Puedes descargar una copia y borrar tus datos cuando quieras. No se crea una cuenta ni se envían tus notas.</p></div></div>'''
   body+=f'<section id="{k}" aria-labelledby="titulo-{k}"><div class="section-head"><p class="eyebrow">{name.upper()}</p><h2 id="titulo-{k}">{title}</h2><p>{desc}</p></div>{extra}<div class="grid">{cards(items)}</div></section>'
  html=f'''<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><link rel="canonical" href="https://lineadepase.com/datalab-prototipo/"><meta name="description" content="Línea de Pase 2.0: experimenta con la ciencia del fútbol, explora su historia y crea con datos."><title>Línea de Pase 2.0 · Prototipo</title><link rel="icon" href="../assets/icono.svg"><link rel="stylesheet" href="../assets/linea2.css"></head><body><a class="skip" href="#contenido">Saltar al contenido</a><header><a class="brand" href="../"><img src="../assets/logo.svg" width="44" height="44" alt="" role="presentation">Línea de Pase<span>2.0</span></a><a href="#pasaporte">Mi pasaporte ↗</a></header><nav aria-label="Áreas de Línea de Pase">{nav}</nav><main id="contenido"><section class="hero"><p class="eyebrow">FÚTBOL · CIENCIA · CURIOSIDAD</p><h1>No solo mires el fútbol.<br><em>Experiméntalo.</em></h1><p>Un museo vivo para explorar su historia, comprender su presente y jugar con sus posibilidades.</p><a class="cta" href="#datalab">Entra en el laboratorio ↗</a><p class="prototype">Prototipo de desarrollo · sin publicar</p><div class="pitch" aria-hidden="true"><div class="orbit"></div><span class="ball"></span><span class="point p1"></span><span class="point p2"></span><span class="point p3"></span><span class="pitch-label">OBSERVA → PREGUNTA → EXPERIMENTA</span></div></section>{body}</main><footer><a class="brand" href="../">Línea de Pase</a><p>Ángel Marqueta Alonso · Ciencia de datos aplicada al fútbol</p><a href="../sobre-mi/">Sobre el proyecto</a> · <a href="../privacidad/">Privacidad</a><p>Los contenidos conservan sus direcciones originales. Este espacio es una versión en desarrollo.</p></footer><script src="../assets/linea2.js" defer></script></body></html>'''
  (D/'index.html').write_text(html,encoding='utf-8')

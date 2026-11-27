@@ -106,6 +106,8 @@ def card(title, category, output):
 
 
 def build():
+    from linea2 import build as actualizar_linea2
+    actualizar_linea2()
     from actualizar_exploracion import build as exploracion
     exploracion()
     output = ROOT / 'assets' / 'compartir'
