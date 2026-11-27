@@ -76,3 +76,7 @@ La ampliación pasa 34 pruebas de cálculo/interacción en entorno simulado y 11
 ## Revisión de navegador en integración continua
 
 Se ha añadido una batería Playwright para Chromium con cuatro tamaños de pantalla: 1440, 820, 390 y 320 px. Comprueba ausencia de desbordamiento global, carga de imágenes, experimentos por teclado, retos, persistencia/exportación/importación del pasaporte, CSV, filtros, selección de jornadas en el archivo visual y enlaces compartibles. Genera capturas por área e informe; el trabajo no despliega la web. Las dependencias están fijadas y la prueba bloquea peticiones externas. Su ejecución y la inspección de capturas deben completarse antes de declarar resuelta la revisión visual.
+
+## Primera ejecución real de navegador
+
+La ejecución [46036801246](https://github.com/lineadepase/lineadepase.github.io/actions/runs/46036801246) sobre `22b9c70` superó 24 pruebas en Chromium (6 recorridos × 4 tamaños), además de las 45 pruebas previas y la regeneración sincronizada. Se inspeccionaron las capturas de portada en los cuatro tamaños y áreas en escritorio y móvil. Se detectó una cabecera comprimida a 320 px y la aparición del enlace de salto en capturas largas; se ajustaron la distribución de cabecera y la ocultación del salto sin foco. Las capturas individuales desactivan la posición sticky del menú durante la toma para evitar que la barra se dibuje sobre el área completa; la portada conserva la navegación normal. Se ha solicitado una segunda ejecución tras estos ajustes.

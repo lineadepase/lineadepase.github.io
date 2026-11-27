@@ -8,6 +8,7 @@ test.beforeEach(async({page})=>{
 test('portada, áreas, imágenes y capturas sin desbordamiento global',async({page},info)=>{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto(entry);
+  await expect(page.locator('.skip')).toHaveCSS('opacity','0');
   await expect(page.locator('#distribucion-cuerpo tr')).toHaveCount(6);
   await expect(page.locator('#temporada-controles')).toBeVisible();
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
@@ -16,7 +17,7 @@ test('portada, áreas, imágenes y capturas sin desbordamiento global',async({pa
     const section=page.locator('section#'+area);
     await section.scrollIntoViewIfNeeded();
     await expect(section).toBeVisible();
-    await section.screenshot({path:info.outputPath(area+'.png'),animations:'disabled'});
+    await section.screenshot({path:info.outputPath(area+'.png'),animations:'disabled',style:'nav { position: static !important; }'});
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
   }
   for(const img of await page.locator('#museo img').all())expect(await img.evaluate(el=>el.complete&&el.naturalWidth>0)).toBe(true);
@@ -103,4 +104,5 @@ test('enlace compartible y acceso por teclado',async({page})=>{
   await page.goto(entry);
   await page.keyboard.press('Tab');
   await expect(page.getByRole('link',{name:'Saltar al contenido',exact:true})).toBeFocused();
+  await expect(page.locator('.skip')).toHaveCSS('opacity','1');
 });
