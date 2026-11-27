@@ -60,3 +60,9 @@ Cada área permite marcarse o desmarcarse en el pasaporte, junto con acceso para
 DataLab y el explorador del Zaragoza preparan enlaces con sus controles o filtros. Al abrirlos se restauran los valores válidos; se ignoran los parámetros desconocidos o fuera de rango. Las notas y el pasaporte no forman parte de los enlaces. Si cambian los controles, el enlace preparado se oculta para evitar copiar una vista desactualizada. Los enlaces se muestran en un campo seleccionable y no se envían a ninguna red social.
 
 Validación de esta ampliación: 31 pruebas de cálculo e interacción en entorno simulado y 10 pruebas del generador; revisión visual real todavía pendiente.
+
+## Revisión de acceso local y adaptación
+
+Se probó una vista previa HTTP limitada a 127.0.0.1, siguiendo la documentación de desarrollo local del navegador. La conexión no quedó accesible desde el navegador de la sesión, incluso al iniciar el servicio con permiso fuera del entorno restringido. El servicio temporal se detuvo. La revisión visual real continúa pendiente.
+
+La revisión de estilos añadió un tamaño de título específico para pantallas estrechas, objetivos de navegación de al menos 44 px, acciones apiladas en móvil, prevención de desbordamientos en tarjetas y una hoja de impresión para consultar tablas y contenidos. Son cambios revisados en código; no se presentan como verificados visualmente.
