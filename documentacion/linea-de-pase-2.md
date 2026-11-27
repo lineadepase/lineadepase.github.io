@@ -96,3 +96,9 @@ Se incorpora el logotipo original extraído de la intro corta horizontal: futbol
 ## Validación de la dirección editorial y marca original
 
 La ejecución [46038983204](https://github.com/lineadepase/lineadepase.github.io/actions/runs/46038983204), sobre `12d1dcd`, superó las 45 pruebas de lógica/generación y las 24 de Chromium. Se revisaron las capturas de la nueva portada con el logo original en escritorio y móvil estrecho, Studio en tablet y Media en móvil, además de DataLab y Museo de la primera ejecución editorial. La paleta mantiene contrastes de 13,35:1 para el texto principal, 5,71:1 para el secundario y 6,30:1 para el texto de los botones. Las versiones cortas de las intros quedan accesibles desde Media sin autoplay.
+
+## Ambientes por área
+
+Se aplica la distribución indicada por el usuario: Museo y contenidos editoriales conservan papel cálido y tipografía de revista; DataLab usa un laboratorio científico de grafito, retícula sutil, lecturas monoespaciadas y controles diferenciados; Zaragoza usa blanco, azul y escudo del club existente; Play se presenta como un programa deportivo con marcador de progreso y área de juego. No indica que exista una emisión en directo. Studio se propone como mesa de edición neutra y Pro como informe técnico claro. Las dos últimas direcciones son propuestas de diseño del asistente.
+
+Las variantes viven en `assets/linea2-areas.css`, limitadas al contenedor de cada área, y mantienen la navegación, el logo y las funciones comunes.
