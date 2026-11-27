@@ -1,6 +1,7 @@
 from pathlib import Path
 from html import escape
 import json
+import re
 from datetime import date
 from html.parser import HTMLParser
 R=Path(__file__).resolve().parents[1]
@@ -69,8 +70,12 @@ def studio(archive):
  poster_parser=ArchiveOptions('temporada-mapa')
  poster_parser.feed(archive)
  poster=''
- if poster_parser.options:
-  choices=''.join(f'<option value="{escape(value,quote=True)}">{escape(text)}</option>' for value,text in poster_parser.options)
+ poster_options=poster_parser.options
+ if not poster_options:
+  seasons=sorted({value.split('|',1)[0] for value,_ in options if re.fullmatch(r'\d{4}/\d{2}\|[1-9]\d*',value)},reverse=True)
+  poster_options=[(season,season) for season in seasons]
+ if poster_options:
+  choices=''.join(f'<option value="{escape(value,quote=True)}">{escape(text)}</option>' for value,text in poster_options)
   poster='<form class="studio-map" action="../archivo-visual/#titulo-mapa-temporada" method="get"><h3>Un mapa de la temporada</h3><p>Abre el generador con la temporada y el formato que necesitas.</p><label for="studio-mapa-temporada">Temporada</label><select id="studio-mapa-temporada" name="mapa-temporada">'+choices+'</select><label for="studio-mapa-formato">Formato del mapa</label><select id="studio-mapa-formato" name="mapa-formato"><option value="cuadrado">Cuadrado</option><option value="vertical">Vertical</option><option value="historias">Historias</option></select><input type="hidden" name="mapa-archivo" value="webp"><button type="submit">Preparar mapa en el taller →</button></form>'
  return '<div class="experiment"><form id="studio-form" action="../archivo-visual/#titulo-comparar" method="get"><h3>De dos jornadas a una lámina</h3><p>Elige dos jornadas distintas y abre el taller con esa pareja preparada.</p>'+select('jornada_a','Primera jornada',0)+select('jornada_b','Segunda jornada',1)+'<p id="studio-estado" role="status"></p><button type="submit">Abrir la comparación en Studio ↗</button></form><div><h3>Tu proceso de creación</h3><ol><li>Compara los marcadores y revisa la cobertura.</li><li>En el taller, elige formato: cuadrado, vertical, historias o carrusel.</li><li>Revisa la fuente y el texto alternativo antes de descargar.</li></ol><p>Las métricas se muestran solo cuando ambas fichas están completas. El taller permite exportar SVG, PNG o WebP.</p><a href="../archivo-visual/#titulo-mapa-temporada">Crear un mapa de temporada</a></div></div>'+poster
 

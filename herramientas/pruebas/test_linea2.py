@@ -61,6 +61,14 @@ class StudioTests(unittest.TestCase):
         self.assertNotIn('incorrecto', html)
         self.assertIn('method="get"', html)
 
+    def test_mapa_usa_temporadas_reales_cuando_el_selector_del_taller_esta_vacio(self):
+        archive='<select id="comparar-jornada-a"><option value="2026/27|13">J13</option><option value="2025/26|12">J12</option></select><select id="temporada-mapa" data-temporada-mapa></select>'
+        html=module.studio(archive)
+        self.assertIn('id="studio-mapa-temporada"',html)
+        self.assertIn('value="2026/27">2026/27',html)
+        self.assertIn('value="2025/26">2025/26',html)
+        self.assertIn('name="mapa-formato"',html)
+
     def test_sin_pareja_no_inventa_opciones(self):
         self.assertIn('necesita dos jornadas', module.studio('<select id="comparar-jornada-a"><option value="1">Una</option></select>'))
 
