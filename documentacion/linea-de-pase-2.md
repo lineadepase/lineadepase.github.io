@@ -72,3 +72,7 @@ La revisión de estilos añadió un tamaño de título específico para pantalla
 La tabla del Zaragoza permite elegir dos jornadas y abrirlas en el comparador del archivo visual. La identidad se enlaza por número de jornada, fecha y rival, usando el identificador real de temporada del archivo. Si no existe una correspondencia, no se inventa una selección. Solo pueden elegirse dos jornadas; al aplicar filtros se retiran de la pareja las jornadas que dejan de estar visibles, con aviso.
 
 La ampliación pasa 34 pruebas de cálculo/interacción en entorno simulado y 11 del generador. Se comprueban temporadas diferentes con el mismo número de jornada, identificadores inválidos, selección de una tercera jornada y cambios de filtros.
+
+## Revisión de navegador en integración continua
+
+Se ha añadido una batería Playwright para Chromium con cuatro tamaños de pantalla: 1440, 820, 390 y 320 px. Comprueba ausencia de desbordamiento global, carga de imágenes, experimentos por teclado, retos, persistencia/exportación/importación del pasaporte, CSV, filtros, selección de jornadas en el archivo visual y enlaces compartibles. Genera capturas por área e informe; el trabajo no despliega la web. Las dependencias están fijadas y la prueba bloquea peticiones externas. Su ejecución y la inspección de capturas deben completarse antes de declarar resuelta la revisión visual.

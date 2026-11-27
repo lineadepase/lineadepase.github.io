@@ -37,3 +37,32 @@ jobs:
       - run: git diff --exit-code -- datalab-prototipo/index.html
       - run: python herramientas/auditar_enlaces.py
       - run: python -m unittest discover -s herramientas/pruebas -p test_linea2.py
+  navegador:
+    needs: probabilidad
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: datalab-prototipo/pruebas/navegador
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: datalab-prototipo/pruebas/navegador/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+      - run: npm test
+      - name: Conservar informe y capturas
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: revision-navegador-${{ github.sha }}
+          path: |
+            datalab-prototipo/pruebas/navegador/playwright-report/
+            datalab-prototipo/pruebas/navegador/test-results/
+          retention-days: 14
