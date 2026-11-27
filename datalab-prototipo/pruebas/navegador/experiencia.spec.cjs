@@ -147,3 +147,28 @@ test('Pro guarda, recupera y descarga una ficha sin inventar apartados',async({p
  await page.reload();
  await expect(page.locator('#pro-pregunta')).toHaveValue('');
 });
+
+
+test('trivial cambia de tema, explica respuestas y enlaza al pasaporte',async({page})=>{
+ await page.goto(entry+'#play');
+ await page.locator('#reto-tema').selectOption('lectura');
+ await expect(page.locator('#reto-pregunta')).toContainText('posesión');
+ await page.locator('[data-answer]').nth(2).click();
+ await expect(page.locator('#respuesta')).toContainText('Correcto.');
+ await page.locator('#reto-siguiente').click();
+ await page.locator('[data-answer]').nth(1).click();
+ await expect(page.locator('#respuesta')).toContainText('Ausencia de dato no significa cero');
+ await page.locator('#reto-siguiente').click();
+ await page.locator('[data-answer]').nth(2).click();
+ await page.locator('#reto-siguiente').click();
+ await expect(page.locator('#reto-resumen')).toContainText('3 de 3');
+ await expect(page.locator('#reto-resumen a').first()).toHaveAttribute('href','#sello-play');
+ await page.locator('#reto-tema').selectOption('metodo');
+ await expect(page.locator('#reto-progreso')).toContainText('Aciertos: 0');
+ await expect(page.locator('#reto-historial li')).toHaveCount(0);
+ await expect(page.locator('#reto-resumen')).toBeHidden();
+ await page.locator('[data-answer]').nth(0).click();
+ await expect(page.locator('#respuesta')).toContainText('definición');
+ await page.locator('#reto-reiniciar').click();
+ await expect(page.locator('[data-answer]').nth(0)).toBeEnabled();
+});
