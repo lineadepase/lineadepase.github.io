@@ -144,3 +144,9 @@ La ejecución [46073820496](https://github.com/lineadepase/lineadepase.github.io
 Las dos obras incorporan pistas y contraste de interpretación mediante desplegables nativos, disponibles sin JavaScript. El cuaderno separa observación, interpretación y comprobaciones pendientes. Su descarga de texto incluye la sala elegida, el contexto, la fuente y el enlace a la metodología; no persiste notas ni las mezcla con el pasaporte. Exige una observación y marca explícitamente los apartados pendientes.
 
 La ejecución [46074104127](https://github.com/lineadepase/lineadepase.github.io/actions/runs/46074104127), sobre `c065a7b`, superó 42 pruebas de lógica, 12 de generación y 52 de navegador: 106 en total. Se revisaron las capturas del Museo en escritorio y móvil estrecho. El navegador verifica apertura de pistas, contraste, contenido de ambas descargas, metodología correspondiente y ausencia de persistencia al recargar. No se ha publicado ni fusionado main.
+
+## Índice de experiencias
+
+Se añade un índice desplegable de trece accesos directos, agrupados por área, a los experimentos, trivial, explorador, cuadernos y pasaporte. Funciona con enlaces y desplegables nativos, sin JavaScript. Cada área ofrece un retorno al índice. El índice aclara la conservación de los cuadernos: descarga para Museo y Studio, guardado explícito para Pro y recorrido independiente en el pasaporte. No cambia las URLs históricas.
+
+La ejecución [46074748105](https://github.com/lineadepase/lineadepase.github.io/actions/runs/46074748105), sobre `44374e2`, superó 42 pruebas de lógica, 12 de generación y 56 de navegador: 110 en total. El índice se comprobó con JavaScript desactivado en los cuatro tamaños, incluyendo acceso directo a redacción, retorno y cuaderno de Museo. Se revisaron las capturas del índice abierto en escritorio y móvil estrecho. No se ha publicado ni fusionado main.
