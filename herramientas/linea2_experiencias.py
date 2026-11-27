@@ -32,4 +32,3 @@ def season(data):
 
 def routes():
     return '''<aside class="routes" aria-label="Recorridos sugeridos"><p class="eyebrow">ELIGE POR DÓNDE EMPEZAR</p><div class="grid"><article><h2>Tengo curiosidad</h2><p>Una pregunta, un experimento y una sorpresa.</p><a href="#datalab">Experimentar con el azar →</a></article><article><h2>Sigo al Zaragoza</h2><p>Del resultado de la jornada al contexto de la temporada.</p><a href="#titulo-explorador">Explorar la temporada →</a></article><article><h2>Quiero crear</h2><p>Encuentra una comparación y conviértela en una lámina.</p><a href="#studio">Entrar en Studio →</a></article></div></aside>'''
-
