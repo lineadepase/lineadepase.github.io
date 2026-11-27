@@ -29,9 +29,22 @@ function uncertainty(){
 $('muestra-tiros').addEventListener('input',uncertainty);$('muestra-goles').addEventListener('input',uncertainty);uncertainty();
 const payload=JSON.parse($('temporada-datos').textContent);let selection=[];
 const rows=[...document.querySelectorAll('[data-season-row]')];
+const compareBoxes=[...document.querySelectorAll('[data-compare-id]')];
+let compareIds=[];
+function updateComparison(message=''){
+ const status=$('temporada-seleccion'),link=$('temporada-studio');if(!status||!link)return;
+ compareBoxes.forEach(box=>box.checked=compareIds.includes(box.dataset.compareId));
+ link.hidden=compareIds.length!==2;
+ if(compareIds.length===2)link.href=core.comparisonUrl(globalThis.location?.href||'https://lineadepase.com/datalab-prototipo/',compareIds);
+ const names=compareIds.map(id=>{const match=payload.partidos.find(m=>m.archivo_id===id);return match?'J'+match.jornada+' · '+match.rival:id;});
+ status.textContent=message||(names.length?'Selección ('+names.length+'/2): '+names.join(' / '):'Elige dos jornadas de la tabla para compararlas en Studio.');
+}
+compareBoxes.forEach(box=>{box.hidden=false;if(box.parentElement)box.parentElement.hidden=false;box.addEventListener('change',()=>{const id=box.dataset.compareId;if(box.checked&&!compareIds.includes(id)){if(compareIds.length===2){box.checked=false;updateComparison('Ya has elegido dos jornadas. Quita una antes de añadir otra.');return;}compareIds.push(id);}else if(!box.checked)compareIds=compareIds.filter(value=>value!==id);updateComparison();});});
+if($('temporada-comparar'))$('temporada-comparar').hidden=compareBoxes.length===0;
 function season(){
  invalidateShare('temporada');
  selection=core.filterMatches(payload.partidos,$('temporada-sede').value,$('temporada-resultado').value,$('temporada-cobertura').value);
+ const previousCount=compareIds.length;compareIds=compareIds.filter(id=>selection.some(m=>m.archivo_id===id));updateComparison(compareIds.length<previousCount?'Se han quitado de la comparación las jornadas ocultas por los filtros.':'');
  const summary=core.summarize(selection),shown=new Set(selection.map(m=>String(m.jornada)));
  rows.forEach(row=>row.hidden=!shown.has(row.dataset.seasonRow));
  const values=[['Partidos',summary.games],['Puntos',summary.points],['Goles a favor',summary.gf],['Goles en contra',summary.gc]];

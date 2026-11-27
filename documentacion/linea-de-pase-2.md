@@ -66,3 +66,9 @@ Validación de esta ampliación: 31 pruebas de cálculo e interacción en entorn
 Se probó una vista previa HTTP limitada a 127.0.0.1, siguiendo la documentación de desarrollo local del navegador. La conexión no quedó accesible desde el navegador de la sesión, incluso al iniciar el servicio con permiso fuera del entorno restringido. El servicio temporal se detuvo. La revisión visual real continúa pendiente.
 
 La revisión de estilos añadió un tamaño de título específico para pantallas estrechas, objetivos de navegación de al menos 44 px, acciones apiladas en móvil, prevención de desbordamientos en tarjetas y una hoja de impresión para consultar tablas y contenidos. Son cambios revisados en código; no se presentan como verificados visualmente.
+
+## Del explorador a Studio
+
+La tabla del Zaragoza permite elegir dos jornadas y abrirlas en el comparador del archivo visual. La identidad se enlaza por número de jornada, fecha y rival, usando el identificador real de temporada del archivo. Si no existe una correspondencia, no se inventa una selección. Solo pueden elegirse dos jornadas; al aplicar filtros se retiran de la pareja las jornadas que dejan de estar visibles, con aviso.
+
+La ampliación pasa 34 pruebas de cálculo/interacción en entorno simulado y 11 del generador. Se comprueban temporadas diferentes con el mismo número de jornada, identificadores inválidos, selección de una tercera jornada y cambios de filtros.

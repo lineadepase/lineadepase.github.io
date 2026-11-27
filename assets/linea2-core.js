@@ -57,5 +57,9 @@
     url.hash=kind==='season'?'titulo-explorador':'datalab';
     return url.href;
   }
-  return {distribution,wilson,filterMatches,summarize,csv,passport,readView,viewUrl};
+  function comparisonUrl(base,ids){
+    if(!Array.isArray(ids)||ids.length!==2||new Set(ids).size!==2||ids.some(id=>typeof id!=='string'||!/^\d{4}\/\d{2}\|[1-9]\d*$/.test(id)))throw new TypeError('Elige dos jornadas válidas y distintas');
+    const url=new URL('../archivo-visual/',base);url.searchParams.set('jornada_a',ids[0]);url.searchParams.set('jornada_b',ids[1]);url.hash='titulo-comparar';return url.href;
+  }
+  return {distribution,wilson,filterMatches,summarize,csv,passport,readView,viewUrl,comparisonUrl};
 });

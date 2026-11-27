@@ -76,6 +76,14 @@ class PackageTests(unittest.TestCase):
         self.assertNotIn('<script>alert',html)
         self.assertIn('&lt;/script&gt;',html)
 
+    def test_identidad_de_jornada_requiere_fecha_rival_y_numero(self):
+        archive='<tr data-jornada="13" data-fecha-partido="2026-11-20" data-rival="Rival &lt;A&gt;" data-comparison-id="2026/27|13"></tr><tr data-jornada="13" data-fecha-partido="2025-11-20" data-rival="Rival &lt;A&gt;" data-comparison-id="2025/26|13"></tr>'
+        html=experiences.season({'corte':'2026-11-21','partidos':[match()]},archive)
+        self.assertIn('data-compare-id="2026/27|13"',html)
+        self.assertNotIn('2025/26|13',html)
+        unmatched=experiences.season({'corte':'2026-11-21','partidos':[match(rival='Otro')]},archive)
+        self.assertNotIn('data-compare-id',unmatched)
+
     def test_regeneracion_estable_y_sin_modificar_portada_publica(self):
         with TemporaryDirectory() as temp:
             root=Path(temp)
