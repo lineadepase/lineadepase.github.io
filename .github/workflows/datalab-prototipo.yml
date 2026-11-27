@@ -4,8 +4,8 @@ on:
     branches: [desarrollo/linea-de-pase-2]
     paths:
       - 'datalab-prototipo/**'
-      - 'assets/linea2.*'
-      - 'herramientas/linea2.py'
+      - 'assets/linea2*'
+      - 'herramientas/linea2*.py'
       - 'herramientas/pruebas/test_linea2.py'
       - 'datos/zaragoza.json'
       - 'archivo-visual/index.html'
@@ -15,8 +15,8 @@ on:
     branches: [main]
     paths:
       - 'datalab-prototipo/**'
-      - 'assets/linea2.*'
-      - 'herramientas/linea2.py'
+      - 'assets/linea2*'
+      - 'herramientas/linea2*.py'
       - 'herramientas/pruebas/test_linea2.py'
       - 'datos/zaragoza.json'
       - 'archivo-visual/index.html'
@@ -32,7 +32,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: node --test datalab-prototipo/pruebas/probabilidad.test.cjs
+      - run: node --test datalab-prototipo/pruebas/*.test.cjs
       - run: python herramientas/linea2.py
       - run: git diff --exit-code -- datalab-prototipo/index.html
       - run: python herramientas/auditar_enlaces.py

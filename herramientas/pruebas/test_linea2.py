@@ -2,6 +2,12 @@
 import importlib.util
 from pathlib import Path
 import unittest
+import sys
+import json
+from tempfile import TemporaryDirectory
+from unittest.mock import patch
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import linea2_experiencias as experiences
 
 spec = importlib.util.spec_from_file_location('linea2', Path(__file__).resolve().parents[1] / 'linea2.py')
 module = importlib.util.module_from_spec(spec)
@@ -57,6 +63,39 @@ class StudioTests(unittest.TestCase):
 
     def test_sin_pareja_no_inventa_opciones(self):
         self.assertIn('necesita dos jornadas', module.studio('<select id="comparar-jornada-a"><option value="1">Una</option></select>'))
+
+class PackageTests(unittest.TestCase):
+    def test_explorador_solo_publica_datos_hasta_el_corte_y_omite_metricas_incompletas(self):
+        data={'corte':'2026-11-21','partidos':[match(rival='</script><script>alert(1)</script>',completo=False,tiros_zaragoza=999),match('2026-12-01',rival='Futuro')]}
+        html=experiences.season(data)
+        payload=html.split('id="temporada-datos">',1)[1].split('</script>',1)[0]
+        parsed=json.loads(payload)
+        self.assertEqual(len(parsed['partidos']),1)
+        self.assertIsNone(parsed['partidos'][0]['tiros_zaragoza'])
+        self.assertNotIn('Futuro',html)
+        self.assertNotIn('<script>alert',html)
+        self.assertIn('&lt;/script&gt;',html)
+
+    def test_regeneracion_estable_y_sin_modificar_portada_publica(self):
+        with TemporaryDirectory() as temp:
+            root=Path(temp)
+            (root/'datos').mkdir()
+            (root/'archivo-visual').mkdir()
+            (root/'datalab-prototipo').mkdir()
+            (root/'index.html').write_text('Portada conservada',encoding='utf-8')
+            (root/'datos/zaragoza.json').write_text(json.dumps({'corte':'2026-11-21','partidos':[match(completo=True)]}),encoding='utf-8')
+            (root/'archivo-visual/index.html').write_text('<select id="comparar-jornada-a"><option value="2026/27|13">J13</option><option value="2026/27|12">J12</option></select>',encoding='utf-8')
+            with patch.object(module,'R',root),patch.object(module,'D',root/'datalab-prototipo'):
+                module.build()
+                first=(root/'datalab-prototipo/index.html').read_bytes()
+                module.build()
+                self.assertEqual(first,(root/'datalab-prototipo/index.html').read_bytes())
+            html=first.decode('utf-8')
+            self.assertIn('noindex,nofollow',html)
+            self.assertIn('linea2-core.js',html)
+            self.assertIn('linea2-experiencias.js',html)
+            self.assertIn('titulo-explorador',html)
+            self.assertEqual((root/'index.html').read_text(encoding='utf-8'),'Portada conservada')
 
 if __name__ == '__main__':
     unittest.main()
