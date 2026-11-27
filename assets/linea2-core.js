@@ -61,5 +61,23 @@
     if(!Array.isArray(ids)||ids.length!==2||new Set(ids).size!==2||ids.some(id=>typeof id!=='string'||!/^\d{4}\/\d{2}\|[1-9]\d*$/.test(id)))throw new TypeError('Elige dos jornadas válidas y distintas');
     const url=new URL('../archivo-visual/',base);url.searchParams.set('jornada_a',ids[0]);url.searchParams.set('jornada_b',ids[1]);url.hash='titulo-comparar';return url.href;
   }
-  return {distribution,wilson,filterMatches,summarize,csv,passport,readView,viewUrl,comparisonUrl};
+  function scenario(shots,probability){
+    if(shots<1)throw new RangeError('Debe haber al menos un disparo');
+    const values=distribution(shots,probability);
+    return {expected:shots*probability,atLeastOne:1-values[0]};
+  }
+  const researchFields={pregunta:300,hipotesis:500,fuentes:1200,metodo:1200,validacion:1200,limites:1000};
+  function researchDraft(value){
+    if(!value||value.version!==1)throw new TypeError('Borrador de investigación inválido');
+    const result={version:1};
+    Object.entries(researchFields).forEach(([key,max])=>{if(typeof value[key]!=='string'||value[key].length>max)throw new TypeError('Campo de investigación inválido');result[key]=value[key];});
+    return result;
+  }
+  function researchText(value){
+    const draft=researchDraft(value);
+    if(!draft.pregunta.trim())throw new TypeError('Define una pregunta de investigación');
+    const labels={pregunta:'Pregunta de investigación',hipotesis:'Hipótesis inicial',fuentes:'Datos y fuentes',metodo:'Método',validacion:'Validación',limites:'Límites del análisis'};
+    return 'LÍNEA DE PASE · PRO\nFICHA DE INVESTIGACIÓN · BORRADOR\n\n'+Object.entries(labels).map(([key,label])=>label.toUpperCase()+'\n'+(draft[key].trim()||'Pendiente de definir.')).join('\n\n')+'\n\nFicha de trabajo personal. Su contenido no constituye un resultado validado.\n';
+  }
+  return {distribution,wilson,filterMatches,summarize,csv,passport,readView,viewUrl,comparisonUrl,scenario,researchDraft,researchText};
 });

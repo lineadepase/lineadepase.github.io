@@ -112,3 +112,9 @@ Play marca la respuesta elegida y la correcta con texto y símbolos además del 
 Studio añade un formulario de mapa de temporada que toma las temporadas del generador existente y transfiere temporada, formato y tipo WebP mediante una URL GET. El formulario funciona sin JavaScript. Se amplía la prueba real de navegador para verificar los valores recibidos por el taller.
 
 La primera prueba del nuevo mapa encontró que el selector de temporadas del taller se rellena con JavaScript y no contiene opciones estáticas. Se corrigió el generador de Studio para obtener las temporadas de los identificadores de las jornadas cuando ese selector está vacío, y se añadió una prueba de regresión. La ejecución [46071615634](https://github.com/lineadepase/lineadepase.github.io/actions/runs/46071615634), sobre `f6e25cc`, superó 47 pruebas de lógica/generación y 28 de navegador: 75 en total. Se revisaron las capturas de Studio en escritorio y móvil estrecho y Play en escritorio. No se ha publicado ni fusionado main.
+
+## Escenarios de DataLab y cuaderno de Pro
+
+DataLab incorpora el experimento «Mismo xG, distinta historia»: compara número de remates y probabilidad constante por remate en dos escenarios independientes. Muestra esperanza y probabilidad de al menos un gol, diferencias en puntos porcentuales y un reinicio al ejemplo de 1 xG. Se explican los supuestos y no se presenta como una recomendación táctica.
+
+Pro incorpora una ficha de investigación con pregunta, hipótesis, fuentes, método, validación y límites. Permite guardar y recuperar un borrador local de forma explícita, descargarlo en texto y borrarlo. No hay guardado automático ni transmisión externa. Los campos vacíos se exportan como «Pendiente de definir» y el documento se identifica como borrador. Los textos y su longitud se validan al recuperar o exportar.

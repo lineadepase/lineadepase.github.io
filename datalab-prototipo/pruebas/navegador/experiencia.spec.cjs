@@ -118,3 +118,32 @@ test('Studio transfiere temporada y formato al mapa existente',async({page})=>{
   await expect(page.locator('#temporada-mapa')).toHaveValue(season);
   await expect(page.locator('#formato-mapa')).toHaveValue('historias');
 });
+
+test('DataLab compara escenarios y permite restablecerlos',async({page})=>{
+ await page.goto(entry+'#titulo-escenarios');
+ await expect(page.locator('#escenario-a-xg')).toHaveText('1');
+ await expect(page.locator('#escenario-b-xg')).toHaveText('1');
+ await expect(page.locator('#escenario-a-gol')).toHaveText('65,1 %');
+ await expect(page.locator('#escenario-b-gol')).toHaveText('75 %');
+ await page.locator('#escenario-a-p').press('Home');
+ await expect(page.locator('#escenario-a-gol')).toHaveText('0 %');
+ await page.locator('#escenarios-restablecer').click();
+ await expect(page.locator('#escenarios-lectura')).toContainText('Ambos escenarios suman 1');
+});
+
+test('Pro guarda, recupera y descarga una ficha sin inventar apartados',async({page})=>{
+ await page.goto(entry+'#pro');
+ await page.locator('#pro-pregunta').fill('¿Cómo cambia el rendimiento entre casa y fuera?');
+ await page.locator('#pro-metodo').fill('Comparación descriptiva con cobertura y fecha de corte.');
+ await page.locator('#pro-guardar').click();
+ await page.reload();
+ await expect(page.locator('#pro-pregunta')).toHaveValue('¿Cómo cambia el rendimiento entre casa y fuera?');
+ const event=page.waitForEvent('download');
+ await page.getByRole('button',{name:'Descargar ficha de investigación',exact:true}).click();
+ const content=await fs.readFile(await(await event).path(),'utf8');
+ expect(content).toContain('Pendiente de definir.');
+ expect(content).toContain('Comparación descriptiva');
+ await page.locator('#pro-borrar').click();
+ await page.reload();
+ await expect(page.locator('#pro-pregunta')).toHaveValue('');
+});
