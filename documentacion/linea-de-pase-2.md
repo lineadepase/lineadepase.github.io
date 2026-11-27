@@ -84,3 +84,7 @@ La ejecución [46036801246](https://github.com/lineadepase/lineadepase.github.io
 ## Resultado verificado de la segunda ejecución
 
 La ejecución [46037290703](https://github.com/lineadepase/lineadepase.github.io/actions/runs/46037290703), sobre `4667ada`, terminó correctamente: 45 pruebas de lógica/generación y 24 pruebas de Chromium, con regeneración sincronizada y auditoría de enlaces. Se inspeccionaron las 36 capturas resultantes (portada y ocho áreas en cuatro tamaños), con revisión ampliada de cabecera estrecha, pasaporte, DataLab y Museo. La cabecera ya no fragmenta el enlace de pasaporte y el enlace de salto permanece oculto salvo foco. No se ha desplegado ni fusionado main.
+
+## Dirección visual editorial
+
+A petición del usuario, se sustituye la estética de panel tecnológico oscuro y verde neón por una dirección de revista de fútbol y cuaderno de investigación: papel cálido, tinta oscura, rojo teja, titulares serif, numeración editorial, reglas y composición asimétrica. Las entradas de contenido son columnas abiertas; los experimentos funcionan como hojas de trabajo y las salas del Museo conservan la presencia de los gráficos reales. Se retiran el campo decorativo con brillo y la repetición de tarjetas redondeadas. No se incorporan fotografías de archivo ni gráficos ficticios para decorar. Las funciones y las URLs se mantienen.
