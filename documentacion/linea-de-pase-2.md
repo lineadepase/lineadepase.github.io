@@ -88,3 +88,7 @@ La ejecución [46037290703](https://github.com/lineadepase/lineadepase.github.io
 ## Dirección visual editorial
 
 A petición del usuario, se sustituye la estética de panel tecnológico oscuro y verde neón por una dirección de revista de fútbol y cuaderno de investigación: papel cálido, tinta oscura, rojo teja, titulares serif, numeración editorial, reglas y composición asimétrica. Las entradas de contenido son columnas abiertas; los experimentos funcionan como hojas de trabajo y las salas del Museo conservan la presencia de los gráficos reales. Se retiran el campo decorativo con brillo y la repetición de tarjetas redondeadas. No se incorporan fotografías de archivo ni gráficos ficticios para decorar. Las funciones y las URLs se mantienen.
+
+## Logo e intros facilitados por el autor
+
+Se incorpora el logotipo original extraído de la intro corta horizontal: futbolista, denominación y texto de especialidad, conservando el fondo original sin reconstrucción generativa. La cabecera usa esta marca y el lema «Del campo al dato». Media ofrece la intro corta de forma opcional y una descarga vertical. Se mantienen intactos los cuatro originales; las versiones web cortas pesan aproximadamente 375 y 388 KB, frente a unos 15 MB por original, y no se precargan ni se reproducen automáticamente. La procedencia y el proceso están registrados en `assets/marca/README.md`.
