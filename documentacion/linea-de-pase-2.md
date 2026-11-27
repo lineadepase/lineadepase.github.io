@@ -92,3 +92,7 @@ A petición del usuario, se sustituye la estética de panel tecnológico oscuro 
 ## Logo e intros facilitados por el autor
 
 Se incorpora el logotipo original extraído de la intro corta horizontal: futbolista, denominación y texto de especialidad, conservando el fondo original sin reconstrucción generativa. La cabecera usa esta marca y el lema «Del campo al dato». Media ofrece la intro corta de forma opcional y una descarga vertical. Se mantienen intactos los cuatro originales; las versiones web cortas pesan aproximadamente 375 y 388 KB, frente a unos 15 MB por original, y no se precargan ni se reproducen automáticamente. La procedencia y el proceso están registrados en `assets/marca/README.md`.
+
+## Validación de la dirección editorial y marca original
+
+La ejecución [46038983204](https://github.com/lineadepase/lineadepase.github.io/actions/runs/46038983204), sobre `12d1dcd`, superó las 45 pruebas de lógica/generación y las 24 de Chromium. Se revisaron las capturas de la nueva portada con el logo original en escritorio y móvil estrecho, Studio en tablet y Media en móvil, además de DataLab y Museo de la primera ejecución editorial. La paleta mantiene contrastes de 13,35:1 para el texto principal, 5,71:1 para el secundario y 6,30:1 para el texto de los botones. Las versiones cortas de las intros quedan accesibles desde Media sin autoplay.
