@@ -8,6 +8,8 @@ on:
       - 'herramientas/linea2.py'
       - 'herramientas/pruebas/test_linea2.py'
       - 'datos/zaragoza.json'
+      - 'archivo-visual/index.html'
+      - 'herramientas/actualizar_seo.py'
       - '.github/workflows/datalab-prototipo.yml'
   pull_request:
     branches: [main]
@@ -17,6 +19,8 @@ on:
       - 'herramientas/linea2.py'
       - 'herramientas/pruebas/test_linea2.py'
       - 'datos/zaragoza.json'
+      - 'archivo-visual/index.html'
+      - 'herramientas/actualizar_seo.py'
       - '.github/workflows/datalab-prototipo.yml'
 permissions:
   contents: read

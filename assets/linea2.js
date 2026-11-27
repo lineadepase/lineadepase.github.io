@@ -15,6 +15,8 @@ function showQuestion(){const q=questions[round];$('reto-pregunta').textContent=
 answerButtons.forEach((b,i)=>b.addEventListener('click',()=>{if(answered)return;answered=true;const q=questions[round],correct=i===q.correct;if(correct)score++;$('respuesta').textContent=(correct?'Correcto. ':'La respuesta es «'+q.options[q.correct]+'». ')+q.why;answerButtons.forEach(button=>button.disabled=true);$('reto-siguiente').disabled=false;$('reto-progreso').textContent='Pregunta '+(round+1)+' de '+questions.length+' · Aciertos: '+score;}));
 $('reto-siguiente').addEventListener('click',()=>{if(!answered)return;if(round<questions.length-1){round++;showQuestion();}else{$('reto-progreso').textContent='Recorrido completado: '+score+' de '+questions.length+' aciertos.';$('reto-siguiente').disabled=true;}});
 $('reto-reiniciar').addEventListener('click',()=>{round=0;score=0;showQuestion();});showQuestion();
+const studioForm=$('studio-form');
+if(studioForm)studioForm.addEventListener('submit',event=>{if($('studio-jornada_a').value===$('studio-jornada_b').value){event.preventDefault();$('studio-estado').textContent='Elige dos jornadas distintas para comparar.';$('studio-jornada_b').focus();}});
 const key='ldp-pasaporte-v2',areas=['DataLab','Museo','Play','Zaragoza','Pro','Studio','Media'];let state={areas:[],nota:''},storage=true;
 try{const s=JSON.parse(localStorage.getItem(key));if(s&&Array.isArray(s.areas)&&typeof s.nota==='string')state={areas:[...new Set(s.areas.filter(x=>areas.includes(x)))],nota:s.nota.slice(0,2000)};}catch(e){storage=false;}
 function render(){ $('progreso').textContent=new Set(state.areas).size+' de '+areas.length+' áreas exploradas'; }

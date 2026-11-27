@@ -43,5 +43,20 @@ class SnapshotTests(unittest.TestCase):
         text = module.snapshot({'corte':'2026-11-21', 'partidos':[], 'copa':[match()]})
         self.assertIn('No hay resultados de liga', text)
 
+class StudioTests(unittest.TestCase):
+    def test_opciones_del_taller_y_pareja_inicial(self):
+        archive = '<select id="comparar-jornada-a"><option value="2026/27|13">J13 · A &amp; B</option><option value="2026/27|12">J12</option></select><select id="otro"><option value="incorrecto">Ignorar</option></select>'
+        html = module.studio(archive)
+        self.assertIn('name="jornada_a"', html)
+        self.assertIn('name="jornada_b"', html)
+        self.assertIn('value="2026/27|13" selected', html)
+        self.assertIn('value="2026/27|12" selected', html)
+        self.assertIn('A &amp; B', html)
+        self.assertNotIn('incorrecto', html)
+        self.assertIn('method="get"', html)
+
+    def test_sin_pareja_no_inventa_opciones(self):
+        self.assertIn('necesita dos jornadas', module.studio('<select id="comparar-jornada-a"><option value="1">Una</option></select>'))
+
 if __name__ == '__main__':
     unittest.main()

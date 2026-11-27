@@ -2,6 +2,7 @@ from pathlib import Path
 from html import escape
 import json
 from datetime import date
+from html.parser import HTMLParser
 R=Path(__file__).resolve().parents[1]
 D=R/'datalab-prototipo'
 sections={
@@ -32,6 +33,41 @@ def snapshot(data):
  p = max(played, key=lambda match: (match['fecha'], match['jornada']))
  return f'<div class="snapshot"><p class="eyebrow">DATOS EXISTENTES · CORTE {escape(data["corte"])}</p><h3>Jornada {p["jornada"]} · {escape(p["rival"])}</h3><p class="result">{p["goles_favor"]} – {p["goles_contra"]}</p><p>Marcador de liga en orden Zaragoza–rival · {escape(p["sede"])} · {escape(p["fecha"])}.</p><p>La cobertura estadística varía entre partidos. Consulta las fuentes y las fichas completas en el panel.</p><a href="../proyectos/real-zaragoza/">Consultar el panel y sus fuentes</a></div>'
 
+def museum():
+ return '''<div class="gallery"><article class="exhibit"><p class="eyebrow">SALA 01 · CONEXIONES</p><h3>¿Quién conecta al equipo?</h3><figure><a href="../analisis/espana-eurocopa-redes/graficos/01_red_final_instagram.svg"><img src="../analisis/espana-eurocopa-redes/graficos/01_red_final_instagram.png" alt="Red de pases de España en la final de la Eurocopa femenina 2025. Laia Aleixandri está destacada por su intermediación." width="1080" height="1350" loading="lazy"></a><figcaption>Eurocopa femenina 2025 · StatsBomb Open Data · Elaboración de Línea de Pase. Abre la imagen para ampliarla.</figcaption></figure><p>Antes de leer: ¿la futbolista que más conecta tiene que ser quien más pases da?</p><details><summary>Descubre cómo leer la red</summary><p>Los círculos representan posición media y volumen de pases; las líneas unen parejas con al menos cuatro pases. El naranja identifica la mayor intermediación: por esa jugadora pasan más caminos cortos entre compañeras. En esta muestra es Laia Aleixandri.</p><p>La red incluye pases completados en juego hasta el primer cambio de España, en el minuto 70. No representa todas las acciones ni demuestra por sí sola la calidad de una jugadora.</p><a href="../proyectos/espana-eurocopa-redes/">Investiga la metodología y el contexto</a></details></article><article class="exhibit"><p class="eyebrow">SALA 02 · TERRITORIO</p><h3>¿Vale lo mismo un pase en cualquier zona?</h3><figure><a href="../proyectos/liga-f-xt/graficos/02_superficie_xt_instagram.png"><img src="../proyectos/liga-f-xt/graficos/02_superficie_xt_instagram.png" alt="Superficie de amenaza esperada de Liga F 2023/24: el valor de zona aumenta cerca de la portería hacia la derecha." width="1080" height="1350" loading="lazy"></a><figcaption>Liga F 2023/24 · StatsBomb Open Data · Modelo propio de Línea de Pase.</figcaption></figure><p>Observa el destino del balón. ¿Qué cambia si el pase acaba más cerca de la portería?</p><details><summary>Descubre el valor del territorio</summary><p>El modelo asigna un valor a cada zona. El xT de una acción completada es el valor del destino menos el del origen. En este mapa la dirección de ataque va hacia la derecha.</p><p>La superficie está ajustada con toda la temporada para explicar el método. No mide los movimientos sin balón ni demuestra que una decisión haya sido la mejor posible.</p><a href="../proyectos/liga-f-xt/">Investiga la validación del modelo</a></details></article></div>'''
+
+class ArchiveOptions(HTMLParser):
+ def __init__(self):
+  super().__init__()
+  self.active=False
+  self.current=None
+  self.options=[]
+ def handle_starttag(self, tag, attrs):
+  attrs=dict(attrs)
+  if tag=='select': self.active=attrs.get('id')=='comparar-jornada-a'
+  if tag=='option' and self.active: self.current=[attrs['value'], '']
+ def handle_data(self, text):
+  if self.current is not None: self.current[1]+=text
+ def handle_endtag(self, tag):
+  if tag=='option' and self.current is not None:
+   self.options.append(tuple(self.current))
+   self.current=None
+  if tag=='select': self.active=False
+
+def studio(archive):
+ parser=ArchiveOptions()
+ parser.feed(archive)
+ options=parser.options
+ if len(options)<2:
+  return '<p>La comparación necesita dos jornadas disponibles. <a href="../archivo-visual/">Consulta el archivo visual</a>.</p>'
+ def select(name, label, selected):
+  choices=''.join(f'<option value="{escape(value, quote=True)}"'+(' selected' if i==selected else '')+f'>{escape(text)}</option>' for i,(value,text) in enumerate(options))
+  return f'<label for="studio-{name}">{label}</label><select id="studio-{name}" name="{name}">{choices}</select>'
+ return '<div class="experiment"><form id="studio-form" action="../archivo-visual/#titulo-comparar" method="get"><h3>De dos jornadas a una lámina</h3><p>Elige dos jornadas distintas y abre el taller con esa pareja preparada.</p>'+select('jornada_a','Primera jornada',0)+select('jornada_b','Segunda jornada',1)+'<p id="studio-estado" role="status"></p><button type="submit">Abrir la comparación en Studio ↗</button></form><div><h3>Tu proceso de creación</h3><ol><li>Compara los marcadores y revisa la cobertura.</li><li>En el taller, elige formato: cuadrado, vertical, historias o carrusel.</li><li>Revisa la fuente y el texto alternativo antes de descargar.</li></ol><p>Las métricas se muestran solo cuando ambas fichas están completas. El taller permite exportar SVG, PNG o WebP.</p><a href="../archivo-visual/#titulo-mapa-temporada">Crear un mapa de temporada</a></div></div>'
+
+def media():
+ return '''<article class="media-feature"><div><p class="eyebrow">MIRA · EXPERIMENTA · COMPRENDE</p><h3>xG, sin líos</h3><p>¿Puedes crear más peligro y aun así perder? Una explicación de 1 minuto y 14 segundos, con subtítulos integrados.</p><video controls playsinline preload="none" poster="../assets/xg-portada.jpg" width="1920" height="1080" aria-label="xG, sin líos: explicación de los goles esperados"><source src="../assets/xg-sin-lios.mp4?v=20261014b" type="video/mp4">Tu navegador no puede reproducir el vídeo. <a href="../assets/xg-sin-lios.mp4?v=20261014b">Descargar el vídeo</a>.</video><p>Fuentes indicadas en el vídeo: Opta / FotMob y Hudl StatsBomb. Incluye ejemplos didácticos e imágenes recreadas con IA.</p></div><div><h3>Del vídeo al laboratorio</h3><p>Antes de verlo, piensa: si sumas 1 xG, ¿has garantizado un gol?</p><details><summary>Leer la idea principal</summary><p>El xG estima la probabilidad de gol de cada remate y suma esas probabilidades. Un tiro de 0,20 xG representa una probabilidad estimada del 20 %. Acumular 1 xG no garantiza un gol.</p><p>La estimación depende del modelo y de la información disponible. Describe la calidad de los tiros, pero no decide el marcador.</p></details><a class="cta" href="#datalab">Compruébalo con el simulador</a><p><a href="../videos/#t-xg">Ver explicación completa y fuentes</a></p></div></article>'''
+
 def build():
  nav=''.join(f'<a href="#{k}">{v[0]}</a>' for k,v in sections.items())
  body=''
@@ -39,6 +75,14 @@ def build():
   extra=''
   if k=='datalab':
    extra='''<div class="experiment"><div><p class="eyebrow">EXPERIMENTO 01 · PROBABILIDAD</p><h3>¿Cuántas ocasiones necesitas?</h3><p>Predice el resultado y mueve los controles.</p><label for="tiros">Disparos: <output id="n">5</output></label><input id="tiros" type="range" min="1" max="30" value="5"><label for="prob">Probabilidad por disparo: <output id="p">15 %</output></label><input id="prob" type="range" min="0" max="100" value="15"></div><div><p>Probabilidad de al menos un gol</p><p id="resultado" class="result" aria-live="polite">55,6 %</p><div class="bar"><span id="barra"></span></div><p id="esperados">Goles esperados: 0,8</p><details><summary>Comprende el experimento</summary><p>1 − (1 − p)ⁿ. Disparos independientes con idéntica probabilidad. Es un modelo didáctico, no un xG entrenado ni una predicción real.</p><p><a href="../proyectos/xg/">Profundiza en xG, sin líos</a></p></details><button id="simular" type="button">Simular una serie</button><p id="simulacion" aria-live="polite"></p></div></div>'''
+  if k=='museo':
+   extra=museum()
+  if k=='studio':
+   extra=studio((R/'archivo-visual/index.html').read_text(encoding='utf-8'))
+  if k=='media':
+   extra=media()
+  if k=='pro':
+   extra='''<div class="method"><h3>De una pregunta a una conclusión verificable</h3><ol><li><strong>Formula:</strong> define qué quieres saber y qué evidencia cambiaría tu opinión.</li><li><strong>Audita:</strong> comprueba origen, licencia, fecha y cobertura de los datos.</li><li><strong>Contrasta:</strong> compara con una referencia y valida fuera de la muestra usada para ajustar.</li><li><strong>Comunica:</strong> muestra la incertidumbre, las limitaciones y el código reproducible.</li></ol><p><a href="../seleccion/">Explora los proyectos y sus métodos</a></p></div>'''
   if k=='play':
    extra='''<div class="experiment"><div><h3>Desafía tu intuición</h3><p id="reto-progreso" role="status"></p><p id="reto-pregunta">Con dos disparos independientes al 50 %, ¿cuál es la probabilidad de marcar al menos una vez?</p><div class="answers"><button data-answer="50">50 %</button><button data-answer="75">75 %</button><button data-answer="100">100 %</button></div><p id="respuesta" aria-live="polite"></p><button id="reto-siguiente" type="button" disabled>Siguiente pregunta</button><button id="reto-reiniciar" type="button">Volver a empezar</button><noscript><p>Activa JavaScript para responder. Solución del primer reto: 75 %. La probabilidad de fallar ambos es 25 %.</p></noscript></div></div>'''
   if k=='zaragoza':

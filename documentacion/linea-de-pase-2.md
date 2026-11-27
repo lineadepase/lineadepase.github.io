@@ -35,3 +35,11 @@ Play incorpora tres retos sobre probabilidad, interpretación de xG y tamaño de
 El prototipo se regenera desde la rutina habitual de SEO, conservando su exclusión del índice. El resumen usa el último resultado de liga anterior al corte, aunque el archivo esté desordenado; omite marcadores pendientes y rechaza marcadores inválidos. Hay contenido inicial y avisos para la navegación sin JavaScript.
 
 Propuesta del usuario para una ampliación futura de Play: un trivial de fútbol. Anotado, sin desarrollar todavía.
+
+## Experiencias dentro de las áreas
+
+Museo incorpora dos salas con gráficos existentes, preguntas de observación y explicación desplegable: redes de pases de España y superficie xT de Liga F. Studio permite elegir una pareja de jornadas tomada directamente del selector del archivo visual, y abrir el generador con esa selección. Media integra el vídeo existente de xG, su contexto y una lectura alternativa, sin reproducción automática ni descarga anticipada del vídeo. Pro incorpora una guía de método.
+
+La revisión visual real sigue pendiente; no se ha validado el aspecto en móvil o escritorio.
+
+Validación de esta ampliación: 10 pruebas de interacción y descarga en entorno simulado, 8 pruebas del generador, auditorías de enlaces, canónicas, imágenes y accesibilidad estática superadas. No equivalen a pruebas en un navegador real.
