@@ -25,3 +25,7 @@ Siete pruebas automáticas: probabilidad, monotonía, simulación en los extremo
 La revisión visual y las pruebas reales de interacción móvil/escritorio no se han realizado: la política del navegador bloqueó la apertura del archivo local. Las comprobaciones estáticas no sustituyen esas pruebas. Las áreas reutilizan experiencias existentes; las nuevas investigaciones científicas requieren trabajo y validación independientes y no se presentan como modelos terminados.
 
 No se ha publicado ni fusionado main.
+
+## Continuación
+
+Play incorpora tres retos sobre probabilidad, interpretación de xG y tamaño de muestra, con explicación, recuento de aciertos y reinicio. Una respuesta solo cuenta una vez. La tablet no figura entre las superficies controlables de la sesión; la revisión visual continúa pendiente.
