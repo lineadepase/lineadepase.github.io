@@ -257,7 +257,7 @@ test('secuencia de ocasiones calcula, limita remates y reinicia sin perder foco'
  await expect(page.locator('#secuencia-resumen')).toContainText('0,6 goles esperados');
  await expect(page.locator('#secuencia-resumen')).toContainText('49,6 %');
  await expect(page.locator('#secuencia-resultados tr')).toHaveCount(4);
- await page.locator('#secuencia-p-0').fill('100');
+ await page.locator('#secuencia-p-0').press('End');
  await expect(page.locator('#secuencia-resumen')).toContainText('100 %');
  await expect(page.locator('#secuencia-p-0')).toBeFocused();
  for(let i=3;i<12;i++)await page.locator('#secuencia-anadir').click();
