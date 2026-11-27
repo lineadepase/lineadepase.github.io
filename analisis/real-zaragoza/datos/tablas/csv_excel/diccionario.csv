@@ -114,7 +114,7 @@ proximos;jornada;Jornada.;Número entero;14
 proximos;competicion;Competición.;Texto;Primera Federación
 proximos;fecha;Fecha prevista (puede cambiar).;Texto;2026-11-28
 proximos;sede;«Casa» o «Fuera».;Texto;Fuera
-proximos;rival;Rival.;Texto;AD Alcorcón
+proximos;rival;Rival.;Texto;Alcorcón
 proximos;fuente_url;Página de la que saqué el dato.;Texto;https://www.fotmob.com/es/matches/real-zaragoza-vs-alcorc…
 partidos_rivales;equipo;Equipo del que son los resultados.;Texto;Real Murcia
 partidos_rivales;jornada;Jornada.;Número entero;1

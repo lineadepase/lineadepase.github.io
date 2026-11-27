@@ -193,12 +193,12 @@ Próximos partidos del calendario. Archivo: `datos/entrada/proximos.csv` (1 fila
 | `competicion` | Competición. | Texto | Primera Federación |
 | `fecha` | Fecha prevista (puede cambiar). | Texto | 2026-11-28 |
 | `sede` | «Casa» o «Fuera». | Texto | Fuera |
-| `rival` | Rival. | Texto | AD Alcorcón |
+| `rival` | Rival. | Texto | Alcorcón |
 | `fuente_url` | Página de la que saqué el dato. | Texto | https://www.fotmob.com/es/matches/real-zaragoza-vs-alcorc… |
 
 ## partidos_rivales
 
-Resultados del próximo rival esta temporada, para la previa. Archivo: `datos/entrada/partidos_rivales.csv` (57 filas).
+Resultados del próximo rival esta temporada, para la previa. Archivo: `datos/entrada/partidos_rivales.csv` (70 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|
@@ -213,7 +213,7 @@ Resultados del próximo rival esta temporada, para la previa. Archivo: `datos/en
 
 ## incidencias
 
-Diferencias entre fuentes y qué dato me quedo. Es el registro de decisiones del proyecto. Archivo: `datos/entrada/incidencias.csv` (128 filas).
+Diferencias entre fuentes y qué dato me quedo. Es el registro de decisiones del proyecto. Archivo: `datos/entrada/incidencias.csv` (131 filas).
 
 | Columna | Qué es | Tipo | Ejemplo |
 |---|---|---|---|

@@ -1,7 +1,7 @@
 {
  "_nota": "Calendario facilitado para el seguimiento del Real Zaragoza. Las horas de inicio están en UTC y pueden cambiar. La web muestra el último resultado revisado hasta el martes por la mañana si hay partido entre semana o hasta el miércoles en caso contrario; después, el próximo partido. El estado en directo se consulta en Sofascore y nunca se deduce de la hora. El campo tv contiene únicamente los canales indicados para cada encuentro; si está vacío, la emisión está pendiente de confirmar.",
  "equipo_sofascore": 2815,
- "actualizado": "2026-11-23",
+ "actualizado": "2026-11-27",
  "partidos": [
   {
    "id": 16599774,
@@ -31,6 +31,20 @@
     },
     {
      "canal": "Footballclub",
+     "abierto": false
+    }
+   ]
+  },
+  {
+   "id": 17619885,
+   "inicio": "2026-12-03T20:00:00Z",
+   "local": "Real Zaragoza",
+   "visitante": "Burgos CF",
+   "competicion": "Copa del Rey",
+   "jornada": null,
+   "tv": [
+    {
+     "canal": "M+ LaLiga 4 (Movistar Plus+)",
      "abierto": false
     }
    ]
