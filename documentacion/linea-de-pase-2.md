@@ -104,3 +104,9 @@ Se aplica la distribución indicada por el usuario: Museo y contenidos editorial
 Las variantes viven en `assets/linea2-areas.css`, limitadas al contenedor de cada área, y mantienen la navegación, el logo y las funciones comunes.
 
 La ejecución [46040079753](https://github.com/lineadepase/lineadepase.github.io/actions/runs/46040079753), sobre `2036592`, superó las 69 pruebas. Se inspeccionaron las capturas de DataLab y Zaragoza en escritorio, Play y Pro en móvil, y Studio en tablet. No se ha publicado ni fusionado main.
+
+## Respuesta de Play y preparación de mapas en Studio
+
+Play marca la respuesta elegida y la correcta con texto y símbolos además del color, conserva un historial de aciertos y preguntas para repasar, y ofrece enlaces de aprendizaje en el resumen. Al avanzar, el foco pasa a la pregunta; al terminar, al resultado. Reiniciar limpia historial y resumen.
+
+Studio añade un formulario de mapa de temporada que toma las temporadas del generador existente y transfiere temporada, formato y tipo WebP mediante una URL GET. El formulario funciona sin JavaScript. Se amplía la prueba real de navegador para verificar los valores recibidos por el taller.

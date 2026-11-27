@@ -46,6 +46,8 @@ test('reto completo y reinicio',async({page})=>{
   await page.getByRole('button',{name:'No, un solo partido no basta',exact:true}).click();
   await page.getByRole('button',{name:'Ver resultado',exact:true}).click();
   await expect(page.locator('#reto-progreso')).toContainText('3 de 3 aciertos');
+  await expect(page.locator('#reto-historial li')).toHaveCount(3);
+  await expect(page.locator('#reto-resumen')).toContainText('Has acertado 3 de 3');
   await page.getByRole('button',{name:'Volver a empezar',exact:true}).click();
   await expect(page.locator('#reto-progreso')).toContainText('Pregunta 1 de 3');
 });
@@ -105,4 +107,14 @@ test('enlace compartible y acceso por teclado',async({page})=>{
   await page.keyboard.press('Tab');
   await expect(page.getByRole('link',{name:'Saltar al contenido',exact:true})).toBeFocused();
   await expect(page.locator('.skip')).toHaveCSS('opacity','1');
+});
+
+test('Studio transfiere temporada y formato al mapa existente',async({page})=>{
+  await page.goto(entry+'#studio');
+  const season=await page.locator('#studio-mapa-temporada').inputValue();
+  await page.locator('#studio-mapa-formato').selectOption('historias');
+  await page.getByRole('button',{name:'Preparar mapa en el taller →',exact:true}).click();
+  await expect(page).toHaveURL(/archivo-visual\/\?mapa-temporada=/);
+  await expect(page.locator('#temporada-mapa')).toHaveValue(season);
+  await expect(page.locator('#formato-mapa')).toHaveValue('historias');
 });
