@@ -17,6 +17,7 @@ def run(*args: str) -> None:
 
 
 def main() -> None:
+    run(str(ROOT / 'herramientas' / 'linea2.py'))
     run(str(ROOT / 'herramientas' / 'actualizar_seo.py'))
     run(str(ROOT / 'herramientas' / 'exportar_lamina.py'), '--solo-jornada', '--archivo-jornadas')
     run(str(ROOT / 'herramientas' / 'verificar_marcador_visual.py'))
