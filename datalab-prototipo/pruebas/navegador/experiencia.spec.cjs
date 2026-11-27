@@ -172,3 +172,24 @@ test('trivial cambia de tema, explica respuestas y enlaza al pasaporte',async({p
  await page.locator('#reto-reiniciar').click();
  await expect(page.locator('[data-answer]').nth(0)).toBeEnabled();
 });
+
+
+test('Studio prepara un borrador trazable y descarta vistas antiguas',async({page})=>{
+ await page.goto(entry+'#studio');
+ await page.locator('#editorial-pregunta').fill('¿Qué cambia entre estas jornadas?');
+ await page.locator('#editorial-nota').fill('Una comparación para revisar, sin concluir causalidad.');
+ await page.getByRole('button',{name:'Preparar borrador',exact:true}).click();
+ await expect(page.locator('#editorial-texto')).toHaveValue(/Estadísticas pendientes de validación/);
+ await expect(page.locator('#editorial-texto')).toHaveValue(/jornada-1.html/);
+ await expect(page.locator('#editorial-texto')).toHaveValue(/CORTE DE LOS DATOS/);
+ const download=page.waitForEvent('download');
+ await page.getByRole('button',{name:'Descargar borrador de publicación',exact:true}).click();
+ const text=await fs.readFile(await(await download).path(),'utf8');
+ expect(text).toContain('BORRADOR DE PUBLICACIÓN');expect(text).toContain('sin concluir causalidad');
+ await page.locator('#editorial-a').selectOption('1');
+ await expect(page.locator('#editorial-salida')).toBeHidden();
+ await page.getByRole('button',{name:'Preparar borrador',exact:true}).click();
+ await expect(page.locator('#editorial-estado')).toContainText('dos jornadas distintas');
+ await page.reload();
+ await expect(page.locator('#editorial-nota')).toHaveValue('');
+});
