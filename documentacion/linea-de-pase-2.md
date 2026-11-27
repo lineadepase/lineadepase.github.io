@@ -120,3 +120,9 @@ DataLab incorpora el experimento «Mismo xG, distinta historia»: compara númer
 Pro incorpora una ficha de investigación con pregunta, hipótesis, fuentes, método, validación y límites. Permite guardar y recuperar un borrador local de forma explícita, descargarlo en texto y borrarlo. No hay guardado automático ni transmisión externa. Los campos vacíos se exportan como «Pendiente de definir» y el documento se identifica como borrador. Los textos y su longitud se validan al recuperar o exportar.
 
 La ejecución [46072289256](https://github.com/lineadepase/lineadepase.github.io/actions/runs/46072289256), sobre `b5b47cc`, superó 41 pruebas de lógica, 12 de generación y 36 de navegador: 89 en total. Se revisaron las capturas completas de DataLab y Pro en escritorio y móvil estrecho: los escenarios y campos se apilan, los controles permanecen dentro de su área y las acciones de descarga, guardado y borrado resultan accesibles. La revisión usa tamaños simulados de navegador, no una tablet física. No se ha publicado ni fusionado main.
+
+## Trivial temático de Play
+
+El reto inicial se amplía a tres rondas de tres preguntas: intuición y goles esperados, lectura del partido e investigación con criterio. Cada respuesta explica el razonamiento; al cambiar de tema se reinician puntuación, historial y resumen. El resultado enlaza al botón existente para guardar Play en el pasaporte, sin añadir sellos automáticamente. La puntuación no se persiste. Se conservan el bloqueo de respuestas repetidas, el foco al avanzar y los indicadores de acierto con texto y símbolos.
+
+La ejecución [46072832453](https://github.com/lineadepase/lineadepase.github.io/actions/runs/46072832453), sobre `c24a626`, superó 42 pruebas de lógica, 12 de generación y 40 de navegador: 94 en total. Se revisaron las capturas de Play en escritorio y móvil estrecho; el selector, las respuestas y las acciones se mantienen dentro del área. No se ha publicado ni fusionado main.
