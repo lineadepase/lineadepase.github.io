@@ -102,3 +102,5 @@ La ejecución [46038983204](https://github.com/lineadepase/lineadepase.github.io
 Se aplica la distribución indicada por el usuario: Museo y contenidos editoriales conservan papel cálido y tipografía de revista; DataLab usa un laboratorio científico de grafito, retícula sutil, lecturas monoespaciadas y controles diferenciados; Zaragoza usa blanco, azul y escudo del club existente; Play se presenta como un programa deportivo con marcador de progreso y área de juego. No indica que exista una emisión en directo. Studio se propone como mesa de edición neutra y Pro como informe técnico claro. Las dos últimas direcciones son propuestas de diseño del asistente.
 
 Las variantes viven en `assets/linea2-areas.css`, limitadas al contenedor de cada área, y mantienen la navegación, el logo y las funciones comunes.
+
+La ejecución [46040079753](https://github.com/lineadepase/lineadepase.github.io/actions/runs/46040079753), sobre `2036592`, superó las 69 pruebas. Se inspeccionaron las capturas de DataLab y Zaragoza en escritorio, Play y Pro en móvil, y Studio en tablet. No se ha publicado ni fusionado main.
