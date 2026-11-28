@@ -13,7 +13,7 @@ module.exports=defineConfig({
   timeout:90000,
   reporter:[['list'],['html',{outputFolder:'playwright-report',open:'never'}]],
   outputDir:'test-results',
-  use:{baseURL:'http://127.0.0.1:4173',locale:'es-ES',timezoneId:'Europe/Madrid',reducedMotion:'reduce',trace:'retain-on-failure',screenshot:'only-on-failure',acceptDownloads:true},
+  use:{baseURL:'http://127.0.0.1:4173',locale:'es-ES',timezoneId:'Europe/Madrid',reducedMotion:'reduce',trace:'retain-on-failure',screenshot:'only-on-failure',acceptDownloads:true,launchOptions:engine==='firefox'?{firefoxUserPrefs:{'browser.download.viewableInternally.enabledTypes':'','browser.helperApps.neverAsk.saveToDisk':'application/octet-stream,image/webp,image/png,image/svg+xml,application/zip,text/plain'}}:{}},
   projects:[
     {name:'escritorio',use:{browserName:engine,viewport:{width:1440,height:1000}}},
     {name:'tablet',use:{browserName:engine,viewport:{width:820,height:1180},hasTouch:engine!=='firefox'}},

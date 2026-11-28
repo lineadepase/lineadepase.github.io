@@ -1043,13 +1043,13 @@
 
   function saveBlob(blob, filename) {
     const link = document.createElement('a');
-    const url = URL.createObjectURL(blob);
+    // Use a download MIME type so engines do not open generated images inline.
+    const url = URL.createObjectURL(new Blob([blob],{type:'application/octet-stream'}));
     link.href = url;
     link.download = filename;
     document.body.append(link);
     link.click();
-    link.remove();
-    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+    window.setTimeout(() => {link.remove();URL.revokeObjectURL(url);}, 60000);
   }
 
   function zipStored(files) {

@@ -3,7 +3,7 @@ const fs=require('node:fs/promises');
 const resources=require('../../../datos/linea2-catalogo.json').recursos;
 const entry='/datalab-prototipo/';
 test.beforeEach(async({page})=>{
- await page.route('**/*',route=>new URL(route.request().url()).hostname==='127.0.0.1'?route.continue():route.abort());
+ await page.route('**/*',route=>new URL(route.request().url()).origin==='http://127.0.0.1:4173'?route.continue():route.abort());
 });
 async function dismissCookies(page){await expect(page.locator('[data-preferencias-cookies]')).toBeVisible();const panel=page.locator('section.consentimiento');if(await panel.isVisible()){await panel.getByRole('button',{name:'Rechazar',exact:true}).click();await expect(panel).toBeHidden();}}
 async function downloadBytes(page,locator){await dismissCookies(page);await locator.scrollIntoViewIfNeeded();const [download]=await Promise.all([page.waitForEvent('download'),locator.click()]);return {name:download.suggestedFilename(),bytes:await fs.readFile(await download.path())};}

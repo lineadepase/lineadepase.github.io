@@ -1,6 +1,8 @@
 (function(){
 'use strict';
 const $=id=>document.getElementById(id),form=$('editorial-form');if(!form)return;
+// Clear transient notes after native form restoration; keep back/forward history intact.
+window.addEventListener('pageshow',event=>{if(!event.persisted)["editorial-pregunta", "editorial-nota", "editorial-texto"].forEach(id=>{if($(id))$(id).value='';});});
 const payload=JSON.parse($('temporada-datos').textContent),matches=payload.partidos;
 for(const code of ['a','b']){
  const select=$('editorial-'+code);

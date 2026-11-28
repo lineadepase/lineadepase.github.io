@@ -20,7 +20,7 @@ test('portada, áreas, imágenes y capturas sin desbordamiento global',async({pa
     await section.screenshot({path:info.outputPath(area+'.png'),animations:'disabled',style:'nav { position: static !important; }'});
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
   }
-  for(const img of await page.locator('#museo img').all())expect(await img.evaluate(el=>el.complete&&el.naturalWidth>0)).toBe(true);
+  for(const img of await page.locator('#museo img').all()){await img.scrollIntoViewIfNeeded();await expect.poll(()=>img.evaluate(el=>el.complete&&el.naturalWidth>0)).toBe(true);}
   expect(errors).toEqual([]);
 });
 

@@ -1,6 +1,8 @@
 (function(){
 'use strict';
 const $=id=>document.getElementById(id),form=$('museo-cuaderno');if(!form)return;
+// Clear transient notes after native form restoration; keep back/forward history intact.
+window.addEventListener('pageshow',event=>{if(!event.persisted)["museo-observo", "museo-interpreto", "museo-falta"].forEach(id=>{if($(id))$(id).value='';});});
 const works={red:{name:'Sala 01 · Red de pases',path:'../proyectos/espana-eurocopa-redes/',context:'España · final de la Eurocopa femenina 2025. Pases completados en juego hasta el primer cambio, minuto 70; enlaces desde cuatro pases. Fuente: StatsBomb Open Data. Elaboración: Línea de Pase.'},territorio:{name:'Sala 02 · Superficie de amenaza',path:'../proyectos/liga-f-xt/',context:'Liga F 2023/24. Superficie ajustada con toda la temporada para explicar el método. Dirección de ataque hacia la derecha. Fuente: StatsBomb Open Data. Modelo: Línea de Pase.'}};
 form.addEventListener('submit',event=>{
  event.preventDefault();if(!form.reportValidity())return;
