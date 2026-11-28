@@ -101,7 +101,7 @@ class PackageTests(unittest.TestCase):
             (root/'index.html').write_text('Portada conservada',encoding='utf-8')
             (root/'datos/zaragoza.json').write_text(json.dumps({'corte':'2026-11-21','partidos':[match(completo=True)]}),encoding='utf-8')
             (root/'archivo-visual/index.html').write_text('<select id="comparar-jornada-a"><option value="2026/27|13">J13</option><option value="2026/27|12">J12</option></select>',encoding='utf-8')
-            with patch.object(module,'R',root),patch.object(module,'D',root/'datalab-prototipo'):
+            with patch.object(module,'R',root),patch.object(module,'D',root/'datalab-prototipo'),patch('linea2_catalogo.load_catalogue',return_value=[]):
                 module.build()
                 first=(root/'datalab-prototipo/index.html').read_bytes()
                 module.build()
@@ -134,6 +134,33 @@ class AreaPagesTests(unittest.TestCase):
             first={str(p.relative_to(root)):p.read_bytes() for p in root.rglob('index.html')}
             linea2_paginas.build_pages(root,module.sections,fragments)
             self.assertEqual(first,{str(p.relative_to(root)):p.read_bytes() for p in root.rglob('index.html')})
+
+class CatalogueTests(unittest.TestCase):
+    def test_catalogo_real_y_etiquetas_sin_presentar_lecturas_como_juegos(self):
+        import linea2_catalogo as catalog
+        resources=catalog.load_catalogue(module.R)
+        self.assertEqual(len(resources),35)
+        play=[r for r in resources if 'play' in r['areas']]
+        self.assertEqual(len(play),7)
+        self.assertEqual(next(r for r in play if r['id']=='balance')['tipo'],'Registro editorial')
+        html=catalog.catalogue('media',resources)
+        self.assertIn('ldp_origen=media#modelo-xg',html)
+        self.assertIn('Contexto y límites',html)
+        self.assertIn('liga-f-perfiles',catalog.catalogue('datalab',resources))
+        self.assertIn('pendientes de investigación',catalog.catalogue('datalab',resources))
+
+    def test_catalogo_rechaza_rutas_inexistentes_y_escapa_textos(self):
+        import linea2_catalogo as catalog
+        with TemporaryDirectory() as temp:
+            root=Path(temp);(root/'datos').mkdir();(root/'pieza').mkdir();(root/'pieza/index.html').write_text('<h1>Una pieza</h1>',encoding='utf-8')
+            item=dict(id='pieza',titulo='<Pieza>',url='pieza/',areas=['play'],tipo='Lectura',instruccion='Mira <esto>',contexto='Fuente',limite='Límite')
+            file=root/'datos/linea2-catalogo.json'
+            file.write_text(json.dumps(dict(version=1,recursos=[item])),encoding='utf-8')
+            self.assertEqual(len(catalog.load_catalogue(root)),1)
+            self.assertIn('&lt;Pieza&gt;',catalog.catalogue('play',[item]))
+            for invalid in ['../fuera.html','no-existe/','https://example.com/','pieza/?parametro=1']:
+                file.write_text(json.dumps(dict(version=1,recursos=[item|dict(url=invalid)])),encoding='utf-8')
+                with self.subTest(url=invalid),self.assertRaises(ValueError):catalog.load_catalogue(root)
 
 if __name__ == '__main__':
     unittest.main()

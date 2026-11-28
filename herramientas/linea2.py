@@ -7,16 +7,16 @@ from html.parser import HTMLParser
 R=Path(__file__).resolve().parents[1]
 D=R/'datalab-prototipo'
 sections={
-'datalab':('DataLab','La curiosidad también se entrena.','Experimenta, comprende e investiga. Cambia una variable antes de sacar conclusiones.', [('xG, sin líos','Qué significa una probabilidad de gol y qué no puede decirnos.','proyectos/xg/'),('El peligro empieza antes del último pase','Modelo xT de Liga F, metodología y validación.','proyectos/liga-f-xt/'),('Los puntos engañan','Explora el seguimiento disponible. La investigación de fortaleza todavía requiere validación.','proyectos/real-zaragoza/')]),
-'museo':('Museo','Cada gráfico guarda una historia.','Un recorrido por redes de pases, territorio y memoria de una temporada.', [('La selección conectada','Redes de pases y estructura de la selección española.','proyectos/espana-eurocopa-redes/'),('Una temporada en imágenes','Explora jornadas, compara marcadores y descarga sus láminas.','archivo-visual/'),('El fútbol femenino en el mapa','Datos, población y oportunidades para ampliar la base.','proyectos/futbol-femenino/')]),
-'play':('Play','Primero intuye. Después comprueba.','Retos breves para mirar el partido con otras preguntas.', [('Marcador a ciegas','¿Qué te cuentan los datos antes de conocer el resultado?','marcador-a-ciegas/'),('Partidos espejo','Compara partidos que parecen iguales.','partidos-espejo/'),('El reloj del marcador','Descubre cómo cambia la lectura con el paso del tiempo.','reloj-del-marcador/'),('Balance de preguntas','Pon a prueba tu interpretación del encuentro.','balance-de-preguntas/')]),
-'zaragoza':('Zaragoza','Un equipo. Muchas preguntas.','Seguimiento de temporada con fecha de corte, fuentes y cobertura explícitas.', [('El panel de temporada','Resultados, evolución y participación.','proyectos/real-zaragoza/'),('El contexto del grupo','Compara equipos con los filtros existentes.','comparador/'),('Los futuros posibles','Consulta el modelo de simulación y sus límites.','proyectos/real-zaragoza/simulacion.html'),('Tras la jornada','La última entrega editorial disponible.','tras-la-jornada/')]),
-'pro':('Pro','Del gráfico a la decisión.','Métodos reproducibles, fuentes y herramientas para trabajar con criterio.', [('Selección profesional','Proyectos, perfil y dossier del autor.','seleccion/'),('Caja de herramientas','Comparador y mapa del grupo.','herramientas/'),('Conceptos para interpretar','Una guía para leer las métricas.','conceptos/'),('Código y metodología','Reproduce los análisis y consulta las pruebas.','https://github.com/lineadepase/lineadepase.github.io')]),
-'studio':('Studio','Dale forma a lo que has descubierto.','Crea piezas con los generadores existentes. Revisa el corte y las fuentes antes de compartir.', [('Taller de láminas','SVG, PNG, WebP, carruseles y formatos sociales con datos de jornada.','archivo-visual/'),('La entrega de jornada','Prepara imagen y texto por canal.','tras-la-jornada/'),('Pizarrón de una jugada','Descompón y explica una secuencia.','pizarron-de-una-jugada/'),('Galería visual','Encuentra una pieza y consulta su contexto.','galeria-visual/')]),
-'media':('Media','El fútbol también se explica mirando.','Vídeos y lecturas para seguir una pregunta más allá del laboratorio.', [('Vídeos','Explicaciones audiovisuales de Línea de Pase.','videos/'),('Archivo de análisis','Busca por tema, proyecto o jornada.','archivo/'),('Novedades','Consulta las incorporaciones a la web.','novedades/')]),
-'pasaporte':('Pasaporte','Tu recorrido, a tu ritmo.','Guarda las áreas que has explorado y una nota de aprendizaje. Solo en este navegador.', [])}
-def cards(items):
- return ''.join(f'<article class="card"><span class="number">{i:02}</span><h3>{escape(t)}</h3><p>{escape(d)}</p><a href="{u if u.startswith("https:") else "../"+u}">Abrir experiencia <span aria-hidden="true">↗</span></a></article>' for i,(t,d,u) in enumerate(items,1))
+'datalab':('DataLab', 'La curiosidad también se entrena.', 'Experimenta, comprende e investiga. Cambia una variable antes de sacar conclusiones.', []),
+'museo':('Museo', 'Cada gráfico guarda una historia.', 'Un recorrido por redes de pases, territorio y memoria de una temporada.', []),
+'play':('Play', 'Primero intuye. Después comprueba.', 'Retos breves para mirar el partido con otras preguntas.', []),
+'zaragoza':('Zaragoza', 'Un equipo. Muchas preguntas.', 'Seguimiento de temporada con fecha de corte, fuentes y cobertura explícitas.', []),
+'pro':('Pro', 'Del gráfico a la decisión.', 'Métodos reproducibles, fuentes y herramientas para trabajar con criterio.', []),
+'studio':('Studio', 'Dale forma a lo que has descubierto.', 'Crea piezas con los generadores existentes. Revisa el corte y las fuentes antes de compartir.', []),
+'media':('Media', 'El fútbol también se explica mirando.', 'Vídeos y lecturas para seguir una pregunta más allá del laboratorio.', []),
+'pasaporte':('Pasaporte', 'Tu recorrido, a tu ritmo.', 'Guarda las áreas que has explorado y una nota de aprendizaje. Solo en este navegador.', []),
+}
+
 def snapshot(data):
  """Resumen de liga: solo marcadores completos y anteriores al corte."""
  cutoff = date.fromisoformat(data['corte'])
@@ -86,6 +86,8 @@ def build():
  nav=''.join(f'<a href="#{k}">{v[0]}</a>' for k,v in sections.items())
  body=''
  fragments={}
+ from linea2_catalogo import load_catalogue, catalogue
+ resources=load_catalogue(R)
  for section_number,(k,(name,title,desc,items)) in enumerate(sections.items(),1):
   extra=''
   acciones=''
@@ -128,7 +130,7 @@ def build():
    'pro':'<strong>Línea de Pase / Pro</strong><span>Fuentes · Método · Validación</span>'
   }
   band=f'<div class="area-band">{bands[k]}</div>' if k in bands else ''
-  fragment=f'<section id="{k}" aria-labelledby="titulo-{k}">{band}<div class="section-head"><p class="eyebrow">{section_number:02} / {name.upper()}</p><h2 id="titulo-{k}">{title}</h2><p>{desc}</p></div>{extra}<div class="grid">{cards(items)}</div>{acciones}</section>'
+  fragment=f'<section id="{k}" aria-labelledby="titulo-{k}">{band}<div class="section-head"><p class="eyebrow">{section_number:02} / {name.upper()}</p><h2 id="titulo-{k}">{title}</h2><p>{desc}</p></div>{extra}{catalogue(k,resources)}{acciones}</section>'
   fragments[k]=fragment
   body+=fragment
  from linea2_experiencias import routes, experience_index

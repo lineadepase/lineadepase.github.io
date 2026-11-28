@@ -1,3 +1,19 @@
+// Retorno contextual cuando un recurso se abre desde el prototipo 2.0.
+(() => {
+  'use strict';
+  const origin=new URLSearchParams(location.search).get('ldp_origen');
+  const names={datalab:'DataLab',museo:'Museo',play:'Play',zaragoza:'Zaragoza',pro:'Pro',studio:'Studio',media:'Media'};
+  const script=document.currentScript,main=document.querySelector('main');
+  if(!Object.hasOwn(names,origin)||!script?.src||!main)return;
+  const root=new URL('../',script.src);
+  if(root.origin!==location.origin)return;
+  const aside=document.createElement('aside'),label=document.createElement('p'),link=document.createElement('a');
+  aside.className='linea2-retorno';aside.setAttribute('aria-label','Continuar mi recorrido');
+  aside.style.cssText='padding:16px;margin:16px 0 24px;border:1px solid currentColor';
+  label.textContent='Vienes de '+names[origin]+' · Prototipo Línea de Pase 2.0';
+  link.href=new URL('datalab-prototipo/'+origin+'/',root).href;link.className='boton';link.textContent='Volver a '+names[origin]+' →';
+  aside.append(label,link);main.prepend(aside);
+})();
 (() => {
   'use strict';
   document.querySelectorAll('[data-compartir-pagina]').forEach(button=>button.addEventListener('click',async()=>{

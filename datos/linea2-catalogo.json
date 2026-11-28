@@ -1,0 +1,433 @@
+{
+  "version": 1,
+  "recursos": [
+    {
+      "id": "xg",
+      "titulo": "xG, sin líos",
+      "url": "proyectos/xg/",
+      "areas": [
+        "datalab"
+      ],
+      "tipo": "Divulgación",
+      "instruccion": "Lee la explicación y contrasta el ejemplo con los experimentos de DataLab.",
+      "contexto": "Vídeo y explicación escrita de Línea de Pase; fuentes indicadas en la pieza.",
+      "limite": "Explica una métrica: no es un modelo nuevo entrenado ni una predicción del marcador."
+    },
+    {
+      "id": "xt",
+      "titulo": "El peligro empieza antes del último pase",
+      "url": "proyectos/liga-f-xt/",
+      "areas": [
+        "datalab"
+      ],
+      "tipo": "Investigación",
+      "instruccion": "Consulta el modelo, sus gráficos y la validación antes de comparar jugadoras.",
+      "contexto": "Liga F 2023/24 · StatsBomb Open Data · código y método en el proyecto.",
+      "limite": "El contexto del equipo influye; el xT no representa todas las acciones ni las alternativas de decisión."
+    },
+    {
+      "id": "perfiles",
+      "titulo": "¿En qué perfil está tu jugadora favorita?",
+      "url": "proyectos/liga-f-perfiles/",
+      "areas": [
+        "datalab"
+      ],
+      "tipo": "Investigación",
+      "instruccion": "Compara perfiles y revisa cómo se construyen las agrupaciones.",
+      "contexto": "Proyecto existente de perfiles de Liga F; datos, código y comprobaciones en su apartado de fuentes.",
+      "limite": "Un grupo estadístico no es una etiqueta permanente de talento ni una clasificación de mejores jugadoras."
+    },
+    {
+      "id": "base-femenina",
+      "titulo": "Fútbol femenino: ampliar la base",
+      "url": "proyectos/futbol-femenino/",
+      "areas": [
+        "datalab",
+        "museo"
+      ],
+      "tipo": "Territorio y datos",
+      "instruccion": "Lee el mapa y las tasas junto con los criterios de selección.",
+      "contexto": "Fuentes CSD e INE y periodos documentados en el proyecto.",
+      "limite": "Las tasas orientan un estudio: la demanda real debe contrastarse con clubes y participantes."
+    },
+    {
+      "id": "conceptos",
+      "titulo": "Conceptos para interpretar",
+      "url": "conceptos/",
+      "areas": [
+        "datalab",
+        "pro"
+      ],
+      "tipo": "Guía",
+      "instruccion": "Busca la definición de una métrica y comprueba sus límites antes de usarla.",
+      "contexto": "Guía existente con referencias de los conceptos.",
+      "limite": "Las definiciones y coberturas pueden variar entre proveedores."
+    },
+    {
+      "id": "redes",
+      "titulo": "La selección conectada",
+      "url": "proyectos/espana-eurocopa-redes/",
+      "areas": [
+        "museo"
+      ],
+      "tipo": "Redes de pases",
+      "instruccion": "Observa nodos y conexiones y después consulta la metodología.",
+      "contexto": "España · Eurocopa femenina 2025 · StatsBomb Open Data.",
+      "limite": "La red usa una ventana y un umbral de pases; no resume todas las acciones del partido."
+    },
+    {
+      "id": "galeria",
+      "titulo": "Galería visual",
+      "url": "galeria-visual/",
+      "areas": [
+        "museo",
+        "studio"
+      ],
+      "tipo": "Colección",
+      "instruccion": "Abre una pieza y vuelve a su proyecto para conocer el contexto.",
+      "contexto": "Gráficos existentes de los proyectos de Línea de Pase.",
+      "limite": "Una imagen aislada no sustituye sus fuentes, periodo y notas metodológicas."
+    },
+    {
+      "id": "archivo-visual",
+      "titulo": "Taller de láminas y mapa de temporada",
+      "url": "archivo-visual/",
+      "areas": [
+        "museo",
+        "studio"
+      ],
+      "tipo": "Generador",
+      "instruccion": "Elige jornadas o temporada, revisa la cobertura y descarga el formato que necesites.",
+      "contexto": "Marcadores y fichas del archivo; procedencia enlazada en cada jornada.",
+      "limite": "Las métricas solo se incluyen cuando hay cobertura validada. Revisa datos y texto alternativo antes de compartir."
+    },
+    {
+      "id": "ciegas",
+      "titulo": "Marcador a ciegas",
+      "url": "marcador-a-ciegas/",
+      "areas": [
+        "play"
+      ],
+      "tipo": "Reto interactivo",
+      "instruccion": "Mira los datos, escribe un marcador y pulsa «Comprobar mi marcador» para revelar el resultado.",
+      "contexto": "Partidos históricos incluidos en la página; fichas enlazadas en el reto.",
+      "limite": "Es un ejercicio de interpretación retrospectiva, no un pronóstico."
+    },
+    {
+      "id": "espejo",
+      "titulo": "Partidos espejo",
+      "url": "partidos-espejo/",
+      "areas": [
+        "play"
+      ],
+      "tipo": "Comparador interactivo",
+      "instruccion": "Elige un partido y busca un perfil parecido con otro resultado.",
+      "contexto": "Muestra de jornadas con posesión y balance de tiros disponibles.",
+      "limite": "La semejanza usa esas dos variables y la muestra disponible: no identifica partidos tácticamente idénticos."
+    },
+    {
+      "id": "reloj",
+      "titulo": "El reloj del marcador",
+      "url": "reloj-del-marcador/",
+      "areas": [
+        "play"
+      ],
+      "tipo": "Exploración interactiva",
+      "instruccion": "Cambia de partido para comparar minutos en ventaja, empate y desventaja.",
+      "contexto": "Cronología de goles de las fichas incluidas.",
+      "limite": "Resume 90 minutos reglamentarios; el tratamiento del descuento se explica en la página."
+    },
+    {
+      "id": "esquemas",
+      "titulo": "El juego en esquema",
+      "url": "esquemas-del-juego/",
+      "areas": [
+        "play"
+      ],
+      "tipo": "Esquema interactivo",
+      "instruccion": "Activa amplitud, presión y transición para comparar las tres ideas.",
+      "contexto": "Dibujos didácticos de Línea de Pase.",
+      "limite": "Las posiciones y trayectorias son ilustrativas; no son datos de seguimiento de un equipo."
+    },
+    {
+      "id": "preguntas",
+      "titulo": "Las preguntas del partido",
+      "url": "preguntas-del-partido/",
+      "areas": [
+        "play"
+      ],
+      "tipo": "Lectura editorial",
+      "instruccion": "Lee la pregunta previa y contrasta la respuesta añadida tras el encuentro.",
+      "contexto": "Acciones y datos comprobados en las fichas enlazadas.",
+      "limite": "Son preguntas de observación; no se puntúan como pronósticos."
+    },
+    {
+      "id": "balance",
+      "titulo": "Balance de preguntas",
+      "url": "balance-de-preguntas/",
+      "areas": [
+        "play"
+      ],
+      "tipo": "Registro editorial",
+      "instruccion": "Revisa qué preguntas están respondidas, abiertas o pendientes.",
+      "contexto": "Registro de preguntas y respuestas de los encuentros publicados.",
+      "limite": "El balance no mide aciertos de predicción ni rendimiento de un modelo."
+    },
+    {
+      "id": "cambios",
+      "titulo": "El mapa de lo que cambió",
+      "url": "mapa-de-lo-que-cambio/",
+      "areas": [
+        "play"
+      ],
+      "tipo": "Cronología editorial",
+      "instruccion": "Sigue las sustituciones y el gol; separa los hechos de la interpretación.",
+      "contexto": "Hechos registrados en la ficha de la J9.",
+      "limite": "Que un cambio ocurra antes del gol no demuestra que lo causara."
+    },
+    {
+      "id": "panel",
+      "titulo": "Panel del Zaragoza",
+      "url": "proyectos/real-zaragoza/",
+      "areas": [
+        "zaragoza"
+      ],
+      "tipo": "Seguimiento",
+      "instruccion": "Empieza por el resumen y consulta el corte de los datos.",
+      "contexto": "Datos de temporada y fuentes de las fichas.",
+      "limite": "Marcadores confirmados y métricas completas pueden tener coberturas diferentes."
+    },
+    {
+      "id": "jornadas",
+      "titulo": "Jornadas y fuentes",
+      "url": "proyectos/real-zaragoza/jornadas.html",
+      "areas": [
+        "zaragoza"
+      ],
+      "tipo": "Archivo de partidos",
+      "instruccion": "Abre cada ficha para revisar resultado, fuentes y cobertura.",
+      "contexto": "Fichas históricas de liga.",
+      "limite": "Una ficha pendiente de validar no aporta ceros a las medias."
+    },
+    {
+      "id": "previa",
+      "titulo": "La previa",
+      "url": "proyectos/real-zaragoza/previa.html",
+      "areas": [
+        "zaragoza"
+      ],
+      "tipo": "Lectura previa",
+      "instruccion": "Comprueba la fecha del encuentro y la información disponible antes del partido.",
+      "contexto": "Alias de la previa vigente; las previas históricas conservan sus páginas.",
+      "limite": "Una previa es anterior al partido; no es su análisis posterior."
+    },
+    {
+      "id": "evolucion",
+      "titulo": "Evolución del equipo",
+      "url": "proyectos/real-zaragoza/evolucion.html",
+      "areas": [
+        "zaragoza"
+      ],
+      "tipo": "Gráficos de temporada",
+      "instruccion": "Compara puntos, goles y tiros junto con el tamaño de muestra.",
+      "contexto": "Seguimiento de liga con corte indicado en la página.",
+      "limite": "Filtrar describe una selección; no demuestra por sí solo cambios de nivel."
+    },
+    {
+      "id": "plantilla",
+      "titulo": "Participación de la plantilla",
+      "url": "proyectos/real-zaragoza/plantilla.html",
+      "areas": [
+        "zaragoza"
+      ],
+      "tipo": "Participación",
+      "instruccion": "Consulta minutos y titularidades antes de interpretar goles y asistencias.",
+      "contexto": "Registros de participación de liga disponibles.",
+      "limite": "Las asistencias tienen cobertura incompleta; los minutos no miden por sí solos la calidad."
+    },
+    {
+      "id": "grupo",
+      "titulo": "El contexto del grupo",
+      "url": "comparador/",
+      "areas": [
+        "zaragoza",
+        "pro"
+      ],
+      "tipo": "Comparador",
+      "instruccion": "Elige equipos y sede; revisa el corte y las variables disponibles.",
+      "contexto": "Datos del Grupo 2 incluidos en el comparador.",
+      "limite": "Los rivales y calendarios pueden ser diferentes; no es una prueba causal."
+    },
+    {
+      "id": "mapa-grupo",
+      "titulo": "El mapa del grupo",
+      "url": "mapa-grupo/",
+      "areas": [
+        "zaragoza",
+        "pro"
+      ],
+      "tipo": "Mapa de equipos",
+      "instruccion": "Sitúa al Zaragoza dentro del grupo usando las métricas y sus definiciones.",
+      "contexto": "Datos y corte del mapa existente.",
+      "limite": "Las distancias del gráfico dependen de sus ejes y no son una clasificación universal de fortaleza."
+    },
+    {
+      "id": "simulacion",
+      "titulo": "Los futuros posibles",
+      "url": "proyectos/real-zaragoza/simulacion.html",
+      "areas": [
+        "zaragoza"
+      ],
+      "tipo": "Simulación",
+      "instruccion": "Lee los supuestos y el corte antes de interpretar las probabilidades.",
+      "contexto": "Modelo y metodología enlazados en la página.",
+      "limite": "Las probabilidades dependen del modelo: no garantizan un resultado ni sustituyen la validación."
+    },
+    {
+      "id": "goles",
+      "titulo": "Los goles, vistos uno a uno",
+      "url": "proyectos/real-zaragoza/goles-en-video.html",
+      "areas": [
+        "zaragoza"
+      ],
+      "tipo": "Análisis audiovisual",
+      "instruccion": "Relaciona la anotación de cada gol con el resumen del encuentro.",
+      "contexto": "Resúmenes y anotaciones manuales de las jugadas seleccionadas.",
+      "limite": "No representa todas las acciones ofensivas y defensivas."
+    },
+    {
+      "id": "revision",
+      "titulo": "Cuando las cifras no coinciden",
+      "url": "datos-en-revision/",
+      "areas": [
+        "zaragoza",
+        "pro"
+      ],
+      "tipo": "Control de fuentes",
+      "instruccion": "Consulta las discrepancias antes de reutilizar una cifra.",
+      "contexto": "Registro de datos en revisión del proyecto.",
+      "limite": "Una cifra señalada como pendiente no debe presentarse como validada."
+    },
+    {
+      "id": "seleccion",
+      "titulo": "Selección profesional",
+      "url": "seleccion/",
+      "areas": [
+        "pro"
+      ],
+      "tipo": "Trabajos y perfil",
+      "instruccion": "Revisa los trabajos, sus métodos y el perfil del autor.",
+      "contexto": "Proyectos existentes de Ángel Marqueta Alonso.",
+      "limite": "Cada proyecto debe valorarse con sus propios datos y límites."
+    },
+    {
+      "id": "proyectos",
+      "titulo": "Catálogo de proyectos",
+      "url": "proyectos/",
+      "areas": [
+        "pro"
+      ],
+      "tipo": "Investigaciones",
+      "instruccion": "Encuentra el análisis completo y su código cuando esté disponible.",
+      "contexto": "Catálogo existente de Línea de Pase.",
+      "limite": "Distingue divulgación, descripción y modelos validados en cada ficha."
+    },
+    {
+      "id": "herramientas",
+      "titulo": "Caja de herramientas",
+      "url": "herramientas/",
+      "areas": [
+        "pro"
+      ],
+      "tipo": "Exploración",
+      "instruccion": "Accede al comparador y al mapa del grupo.",
+      "contexto": "Herramientas existentes del seguimiento.",
+      "limite": "La cobertura disponible limita las comparaciones."
+    },
+    {
+      "id": "entrega",
+      "titulo": "Tras la jornada",
+      "url": "tras-la-jornada/",
+      "areas": [
+        "studio",
+        "zaragoza"
+      ],
+      "tipo": "Entrega editorial",
+      "instruccion": "Consulta la entrega disponible y sigue los enlaces a sus piezas y fuentes.",
+      "contexto": "Entregas publicadas del seguimiento del Zaragoza.",
+      "limite": "No todas las jornadas tienen entrega; no se generan hechos nuevos por cambiar de canal."
+    },
+    {
+      "id": "pizarron",
+      "titulo": "Pizarrón de una jugada",
+      "url": "pizarron-de-una-jugada/",
+      "areas": [
+        "studio"
+      ],
+      "tipo": "Secuencia interactiva",
+      "instruccion": "Retrocede desde el gol y avanza por córner, remate y desvío.",
+      "contexto": "Secuencia de la J9 descrita en el resumen del partido.",
+      "limite": "El esquema no mide posiciones, distancias ni alternativas no observadas."
+    },
+    {
+      "id": "video-xg",
+      "titulo": "xG, sin líos",
+      "url": "videos/#xg-sin-lios",
+      "areas": [
+        "media"
+      ],
+      "tipo": "Vídeo · 1 min 14 s",
+      "instruccion": "Reproduce el vídeo local con subtítulos integrados o lee la explicación alternativa.",
+      "contexto": "Fuentes y créditos indicados en la pieza.",
+      "limite": "Es divulgación sobre goles esperados; no garantiza un marcador."
+    },
+    {
+      "id": "video-modelo",
+      "titulo": "Construyo un modelo de xG desde cero",
+      "url": "videos/#modelo-xg",
+      "areas": [
+        "media"
+      ],
+      "tipo": "Vídeo · 13 min",
+      "instruccion": "Abre la explicación audiovisual y su guía escrita.",
+      "contexto": "Vídeo alojado en YouTube y guía del catálogo existente.",
+      "limite": "La explicación no acredita que el xG universal propuesto para 2.0 esté entrenado y validado."
+    },
+    {
+      "id": "video-fvs",
+      "titulo": "Así funciona el FVS",
+      "url": "videos/#fvs",
+      "areas": [
+        "media"
+      ],
+      "tipo": "Vídeo · 4 min",
+      "instruccion": "Abre el vídeo o la alternativa escrita; consulta la temporada y las fuentes citadas.",
+      "contexto": "Pieza existente sobre Football Video Support; referencias de la pieza en su explicación.",
+      "limite": "El contenido se refiere a la temporada indicada. La vigencia de las reglas debe revisarse antes de reutilizarlo."
+    },
+    {
+      "id": "archivo",
+      "titulo": "Archivo de análisis",
+      "url": "archivo/",
+      "areas": [
+        "media"
+      ],
+      "tipo": "Lecturas",
+      "instruccion": "Busca por tema, proyecto o jornada y abre el contenido original.",
+      "contexto": "Archivo generado a partir de los contenidos existentes.",
+      "limite": "La fecha y el corte de cada pieza forman parte de su interpretación."
+    },
+    {
+      "id": "novedades",
+      "titulo": "Novedades del proyecto",
+      "url": "novedades/",
+      "areas": [
+        "media"
+      ],
+      "tipo": "Actualizaciones",
+      "instruccion": "Consulta las incorporaciones registradas y sus enlaces.",
+      "contexto": "Registro editorial de novedades.",
+      "limite": "Una novedad no implica que todos los datos del sitio compartan su fecha."
+    }
+  ]
+}
