@@ -83,7 +83,7 @@ def build_pages(destination, sections, fragments):
                          lambda m: f'href="../{owners[m[1]]}/#{m[1]}"' if m[1] in owners else m[0], orientation)
     menu = ''.join(f'<article class="card"><h3><a href="../{area}/">{escape(values[0])} →</a></h3><p>{escape(values[2])}</p></article>'
                    for area, values in sections.items())
-    body = '<section class="orientation"><p class="eyebrow">FÚTBOL · DATOS · PREGUNTAS</p><h2>No solo mires el fútbol. Experiméntalo.</h2><p>Elige un recorrido o entra directamente en un área. Cada herramienta tiene su espacio; puedes guardar las áreas exploradas en tu pasaporte.</p></section>' + orientation + '<div class="grid">' + menu + '</div>'
+    body = '<section class="orientation"><p class="eyebrow">FÚTBOL · DATOS · PREGUNTAS</p><h2>No solo mires el fútbol. Experiméntalo.</h2><p>Elige un recorrido o entra directamente en un área. Cada herramienta tiene su espacio; puedes guardar las áreas exploradas en tu pasaporte.</p></section>' + orientation + '<div class="grid area-directory">' + menu + '</div>'
     folder = destination / 'inicio'
     folder.mkdir(parents=True, exist_ok=True)
     (folder / 'index.html').write_text(shell('inicio', 'Elige tu recorrido', body, []), encoding='utf-8')

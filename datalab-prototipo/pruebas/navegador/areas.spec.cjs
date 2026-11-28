@@ -10,6 +10,7 @@ test('inicio y ocho áreas funcionan aisladas y con navegación de retorno',asyn
  await page.goto(entry+'inicio/');
  await expect(page.locator('h1')).toHaveText('Elige tu recorrido');
  await expect(page.locator('#tiros')).toHaveCount(0);
+ const menuTitle=await page.locator('.area-directory h3').first().boundingBox();expect(menuTitle.width).toBeGreaterThan(100);
  await page.screenshot({path:info.outputPath('inicio.png'),fullPage:true,animations:'disabled'});
  for(const area of ['datalab','museo','play','zaragoza','pro','studio','media','pasaporte']){
   await page.getByRole('navigation',{name:'Áreas de Línea de Pase'}).getByRole('link',{name:new RegExp('^'+area+'$','i')}).click();
@@ -28,7 +29,7 @@ test('inicio y ocho áreas funcionan aisladas y con navegación de retorno',asyn
    await expect(page.locator('#resultado')).toHaveText('100 %');
    await expect(page.locator('#temporada-datos')).toHaveCount(0);
   }
-  await page.screenshot({path:info.outputPath(area+'.png'),fullPage:true,animations:'disabled'});
+  await page.screenshot({path:info.outputPath(area+'.png'),fullPage:true,animations:'disabled',style:'nav{position:static!important;}'});
  }
  await page.getByRole('link',{name:'← Inicio por recorridos',exact:true}).click();
  await expect(page).toHaveURL(/\/inicio\/$/);
