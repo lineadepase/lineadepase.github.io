@@ -6,7 +6,7 @@ Estado del 28 de noviembre de 2026. Rama `desarrollo/linea-de-pase-2`.
 
 Hay un prototipo funcional de ocho áreas en `/datalab-prototipo/`, con catorce accesos directos a experiencias y herramientas. No es todavía la sustitución de la web pública. Se conserva la portada actual y el prototipo lleva `noindex,nofollow`.
 
-La última versión funcional supera 156 pruebas: 45 de lógica, 15 de generación y 96 de Chromium en cuatro tamaños. No significa que todas las páginas históricas hayan pasado pruebas completas de interacción, ni que Safari, Firefox o dispositivos físicos estén revisados.
+La ejecución [46151963572](https://github.com/lineadepase/lineadepase.github.io/actions/runs/46151963572), sobre `29db3ee`, terminó correctamente: **412 comprobaciones** (45 de lógica, 19 de generación y 116 de navegador por motor en Chromium, Firefox y WebKit). Los cuatro tamaños son 1440, 820, 390 y 320 píxeles. Se verifican recorridos, cálculos, descargas reales, notas, rutas y accesibilidad automática. No equivale a una certificación de accesibilidad ni a una prueba de todos los dispositivos físicos.
 
 El inventario inicial registró 62 páginas HTML y 58 URLs en sitemap. Tras separar las áreas, hay 71 páginas HTML: las 62 anteriores más ocho entradas y un inicio de desarrollo. El sitemap público sigue con 58 URLs. Hay siete páginas asignadas a Play, cinco a DataLab, dos a Museo, dos a Studio, tres a Pro, tres a Media, 34 a Zaragoza, cinco transversales y el prototipo. Esta clasificación indica el área principal: un recurso puede enlazarse desde varias áreas sin duplicarlo. El inventario no acredita la vigencia de cada contenido.
 
@@ -27,13 +27,13 @@ La portada debe orientar y ofrecer los tres recorridos existentes: curiosidad, Z
 | DataLab | `/datalab/` | Nueva entrada para experimentos y proyectos; enlaza las investigaciones en sus URLs actuales. |
 | Museo | `/museo/` | Nueva entrada para salas y lectura de obras; utiliza los gráficos reales y la galería existente. |
 | Play | `/play/` | Nueva entrada para trivial y catálogo de juegos, con instrucciones y retorno. |
-| Zaragoza | `/proyectos/real-zaragoza/` | Reutiliza la entrada existente; no crea otro panel con la misma función. |
-| Pro | `/seleccion/` | Reutiliza el perfil y los trabajos; incorpora el cuaderno y el acceso a métodos. No es un servicio de pago. |
+| Zaragoza | `/zaragoza/` | Orientación, cobertura y explorador; conserva el seguimiento completo en `/proyectos/real-zaragoza/`. |
+| Pro | `/pro/` | Cuaderno, métodos y acceso al perfil y trabajos en `/seleccion/`. No es un servicio de pago. |
 | Studio | `/studio/` | Nueva entrada de selección y redacción; los generadores siguen en `/archivo-visual/` y sus rutas existentes. |
-| Media | `/videos/` | Reutiliza el catálogo audiovisual; enlaza archivo, novedades y explicaciones. |
+| Media | `/media/` | Orientación audiovisual; conserva el catálogo y explicaciones en `/videos/`. |
 | Pasaporte | `/pasaporte/` | Nueva entrada para recorrido y nota locales, sin cuenta. Se conserva la clave de almacenamiento. |
 
-Estas son rutas de destino previstas, no páginas ya implementadas. Primero se prepararán entradas separadas dentro de `/datalab-prototipo/`, sin indexación, para revisar el recorrido antes de activar rutas públicas. El prototipo actual se conservará durante la transición para no romper enlaces compartidos.
+Estas rutas están preparadas en una copia candidata independiente, todavía sin publicar. Las entradas de desarrollo continúan dentro de `/datalab-prototipo/`, sin indexación. Se ajusta la propuesta inicial de reutilizar tres entradas para conservar íntegros sus documentos históricos. El prototipo actual se conservará durante la transición para no romper enlaces compartidos.
 
 Las URLs existentes no se renombrarán para que coincidan con las etiquetas del menú. `/archivo/`, `/proyectos/`, `/conceptos/`, `/herramientas/`, `/galeria-visual/`, `/sobre-mi/`, privacidad, previas y fichas mantienen su dirección y su función. El alias de contacto y las excepciones de canonical deben mantenerse.
 
@@ -83,14 +83,14 @@ Se cierra cuando las ocho áreas tienen una entrada funcional en desarrollo y lo
 
 Se cierra cuando cada recurso del estreno tiene una ubicación, una entrada comprensible y un recorrido probado. No exige nuevas investigaciones.
 
-### D. Datos, SEO y revisión final — siguiente
+### D. Datos, SEO y revisión final — completado
 
-- [ ] Resolver o etiquetar cada discrepancia relevante; no convertir datos ausentes en ceros.
-- [ ] Preparar metadatos, sitemap y entradas finales conservando las 58 URLs actuales del mapa, salvo corrección justificada registrada.
-- [ ] Probar las rutas históricas y sus excepciones de canonical y alias.
-- [ ] Revisar accesibilidad, teclado, formularios, impresión y rendimiento medido; la estimación de peso no sustituye una medición de red.
-- [ ] Ampliar la revisión a Firefox y WebKit, y usar dispositivo físico cuando sea accesible; registrar cualquier limitación pendiente.
-- [ ] Entregar una versión candidata con capturas, pruebas y pendientes clasificados.
+- [x] Resolver o etiquetar cada discrepancia relevante; no convertir datos ausentes en ceros.
+- [x] Preparar metadatos, sitemap y entradas finales conservando las 58 URLs actuales del mapa, salvo corrección justificada registrada.
+- [x] Probar las rutas históricas y sus excepciones de canonical y alias.
+- [x] Revisar accesibilidad, teclado, formularios, impresión y rendimiento medido; la estimación de peso no sustituye una medición de red.
+- [x] Ampliar la revisión a Firefox y WebKit, y usar dispositivo físico cuando sea accesible; registrar cualquier limitación pendiente.
+- [x] Entregar una versión candidata con capturas, pruebas y pendientes clasificados.
 
 Se cierra cuando no quedan fallos que impidan navegar, interpretar datos o descargar los resultados anunciados, y los riesgos restantes están documentados.
 
@@ -111,9 +111,9 @@ El informe no certifica disponibilidad en Internet de cada enlace externo ni act
 
 ## Seguimiento y estimación
 
-A, B y C están completados. Quedan dos paquetes: D, revisión final y candidata; E, aprobación y publicación. El avance se informa por condiciones de cierre, no por número de herramientas añadidas o cantidad de pruebas.
+A, B, C y D están completados. Queda E: revisión de la candidata por el usuario, aprobación y publicación. El avance se informa por condiciones de cierre, no por número de herramientas añadidas o cantidad de pruebas.
 
-La referencia anterior de 5–8 jornadas efectivas era una estimación provisional del cierre completo, no una fecha comprometida. El inventario concreta el alcance, pero aún falta implementar B para medir el coste de separación y continuidad; no se reduce esa estimación por haber terminado solo la documentación. La separación de B está resuelta y verificada. No se asigna una fecha de publicación por el número de pruebas: la siguiente estimación depende de revisar las herramientas históricas en C y los navegadores pendientes en D.
+La estimación inicial de 5–8 jornadas queda sustituida por el cierre comprobado de A–D. No quedan funciones del estreno pendientes de implementar. La fecha de publicación depende de la revisión y aprobación de la candidata; las estadísticas históricas pendientes continúan identificadas y no bloquean el estreno con su cobertura actual.
 
 Inventario detallado: [tabla de rutas](linea2-inventario.md), [CSV](linea2-inventario.csv) y [JSON](linea2-inventario.json). Regeneración: `python herramientas/inventario_linea2.py`.
 
@@ -160,3 +160,10 @@ Se comprobaron los 35 destinos locales, el catálogo de las siete áreas con rec
 La primera prueba de carrusel elegía un botón del formato anterior que había quedado oculto. Se corrigió el selector para pulsar el visible. Otra ejecución detectó que el aviso de cookies interceptaba una descarga en móvil estrecho; la prueba espera la interfaz de consentimiento y rechaza la analítica antes de continuar. No se modificaron los generadores ni el comportamiento de consentimiento para superar esas pruebas.
 
 Se inspeccionaron los catálogos de Play y Media en escritorio y Play y DataLab en móvil estrecho, con contexto desplegado y enlaces completos. Las auditorías de rutas, canonicals, imágenes y accesibilidad estática siguen pasando: 71 páginas, 3.250 enlaces y recursos locales, 153 imágenes y las mismas 58 URLs del sitemap. No se ha publicado ni fusionado main. Sigue pendiente el paquete D.
+
+
+## Cierre verificado de D
+
+La ejecución [46151963572](https://github.com/lineadepase/lineadepase.github.io/actions/runs/46151963572), sobre `29db3ee`, terminó correctamente: **412 comprobaciones** (45 de lógica, 19 de generación y 116 de navegador por motor en Chromium, Firefox y WebKit). Los cuatro tamaños son 1440, 820, 390 y 320 píxeles. Se verifican recorridos, cálculos, descargas reales, notas, rutas y accesibilidad automática. No equivale a una certificación de accesibilidad ni a una prueba de todos los dispositivos físicos.
+
+La copia independiente conserva las 58 URLs previas y prepara 65 indexables; supera la auditoría de 79 páginas y 3.496 enlaces y recursos locales. El informe [de candidata](linea2-candidata.md) registra fuentes, cortes, ajustes de rutas, correcciones y límites. Se han revisado capturas de escritorio y móvil y la impresión sobre blanco. No hay dispositivo accesible por ADB. La edición pública, main y el sitemap del árbol de desarrollo permanecen sin activar.

@@ -4,9 +4,9 @@ El trabajo está en `desarrollo/linea-de-pase-2`. La entrada es `/datalab-protot
 
 ## Estado actual y siguiente paquete
 
-El paquete A de cierre (alcance, inventario y estructura) está completado. El paquete B está completado y verificado: ocho áreas separadas y nuevo inicio por recorridos; su validación se registra al final. El paquete C está completado y verificado: catálogo, presentación e integración de recursos existentes. El siguiente es D, revisión final de datos, SEO, accesibilidad y navegadores. El [plan de cierre del estreno](linea2-cierre-estreno.md) contiene el alcance, las rutas previstas, los criterios de aceptación y los paquetes pendientes. El [inventario](linea2-inventario.md) registra 71 páginas: 62 de la base anterior y nueve nuevas entradas de desarrollo. El sitemap público conserva 58 URLs. Ninguna de las nuevas rutas previstas se ha activado.
+El paquete A de cierre (alcance, inventario y estructura) está completado. El paquete B está completado y verificado: ocho áreas separadas y nuevo inicio por recorridos; su validación se registra al final. El paquete C está completado y verificado: catálogo, presentación e integración de recursos existentes. El paquete D también está completado: datos, SEO, accesibilidad automática, navegadores y candidata independiente. Solo queda el paquete E de revisión, aprobación y publicación. El [plan de cierre del estreno](linea2-cierre-estreno.md) contiene el alcance, las rutas previstas, los criterios de aceptación y los paquetes pendientes. El [inventario](linea2-inventario.md) registra 71 páginas: 62 de la base anterior y nueve nuevas entradas de desarrollo. El sitemap público conserva 58 URLs. Ninguna de las nuevas rutas previstas se ha activado.
 
-Última validación funcional: 156 pruebas (45 de lógica, 15 de generación, 96 de Chromium). La ejecución y la revisión del paquete C se registran al final de este documento. La auditoría local de canonicals, enlaces, imágenes y accesibilidad estática se ha repetido durante el inventario sin incidencias. Los apartados cronológicos posteriores conservan resultados y pendientes de etapas anteriores; no sustituyen este resumen ni el plan de cierre.
+Última validación funcional: 412 comprobaciones (45 de lógica, 19 de generación y 348 de navegador entre Chromium, Firefox y WebKit). La ejecución y la revisión del paquete C se registran al final de este documento. La auditoría local de canonicals, enlaces, imágenes y accesibilidad estática se ha repetido durante el inventario sin incidencias. Los apartados cronológicos posteriores conservan resultados y pendientes de etapas anteriores; no sustituyen este resumen ni el plan de cierre.
 
 ## Experiencias implementadas
 
@@ -183,3 +183,10 @@ La rutina `actualizar_seo.py` terminó correctamente en una copia de los archivo
 
 
 Cierre del paquete C: ejecución [46129942787](https://github.com/lineadepase/lineadepase.github.io/actions/runs/46129942787), sobre `a6f83e6`, con 156 pruebas superadas (45 de lógica, 15 de generación y 96 de Chromium). Además pasaron cuatro suites auxiliares y ocho pruebas locales en Chrome. Se inspeccionaron catálogos en escritorio y móvil estrecho y se comprobaron firmas y contenido de las exportaciones, incluido carrusel y mapa paginado. Se ajustó la prueba para usar el control visible y esperar al consentimiento antes de descargar; no se alteraron los generadores para hacerla pasar. Auditorías estáticas sin incidencias: 71 páginas, 3.250 enlaces y recursos locales, 153 imágenes y 58 URLs indexables conservadas. No se ha publicado ni fusionado main. El paquete D queda pendiente, incluida la vigencia de fuentes y reglas y la revisión de navegadores distintos de Chromium.
+
+
+## Paquete D: candidata verificada
+
+La ejecución [46151963572](https://github.com/lineadepase/lineadepase.github.io/actions/runs/46151963572), sobre `29db3ee`, terminó correctamente: **412 comprobaciones** (45 de lógica, 19 de generación y 116 de navegador por motor en Chromium, Firefox y WebKit). Los cuatro tamaños son 1440, 820, 390 y 320 píxeles. Se verifican recorridos, cálculos, descargas reales, notas, rutas y accesibilidad automática. No equivale a una certificación de accesibilidad ni a una prueba de todos los dispositivos físicos.
+
+Informe de cierre y límites: [candidata](linea2-candidata.md). Las ocho entradas finales se preparan fuera del repositorio; no se han activado en la web pública. La regeneración completa se ha probado en esa copia.
