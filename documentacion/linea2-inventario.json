@@ -1,6 +1,6 @@
 {
   "descripcion": "Inventario local; clasificación editorial para 2.0, no auditoría de contenidos ni de producción.",
-  "paginas": 62,
+  "paginas": 71,
   "urls_sitemap": 58,
   "por_area": {
     "DataLab": 5,
@@ -8,7 +8,7 @@
     "Museo": 2,
     "Play": 7,
     "Pro": 3,
-    "Prototipo": 1,
+    "Prototipo": 10,
     "Studio": 2,
     "Transversal": 5,
     "Zaragoza": 34
@@ -115,6 +115,23 @@
       "scripts": []
     },
     {
+      "archivo": "datalab-prototipo/datalab/index.html",
+      "ruta": "/datalab-prototipo/datalab/",
+      "area_principal": "Prototipo",
+      "titulo": "DataLab · Línea de Pase 2.0 · Prototipo",
+      "canonical": "https://lineadepase.com/datalab-prototipo/datalab/",
+      "robots": "noindex,nofollow",
+      "en_sitemap": false,
+      "scripts": [
+        "../../assets/linea2-core.js",
+        "../../assets/linea2-lab.js",
+        "../../assets/linea2-laboratorios.js",
+        "../../assets/linea2-escenarios.js",
+        "../../assets/linea2-secuencia.js",
+        "../../assets/linea2-pasaporte.js"
+      ]
+    },
+    {
       "archivo": "datalab-prototipo/index.html",
       "ruta": "/datalab-prototipo/",
       "area_principal": "Prototipo",
@@ -130,6 +147,116 @@
         "../assets/linea2-editorial.js",
         "../assets/linea2-museo.js",
         "../assets/linea2-secuencia.js"
+      ]
+    },
+    {
+      "archivo": "datalab-prototipo/inicio/index.html",
+      "ruta": "/datalab-prototipo/inicio/",
+      "area_principal": "Prototipo",
+      "titulo": "Elige tu recorrido · Línea de Pase 2.0 · Prototipo",
+      "canonical": "https://lineadepase.com/datalab-prototipo/inicio/",
+      "robots": "noindex,nofollow",
+      "en_sitemap": false,
+      "scripts": [
+        "../../assets/linea2-core.js",
+        "../../assets/linea2-pasaporte.js"
+      ]
+    },
+    {
+      "archivo": "datalab-prototipo/media/index.html",
+      "ruta": "/datalab-prototipo/media/",
+      "area_principal": "Prototipo",
+      "titulo": "Media · Línea de Pase 2.0 · Prototipo",
+      "canonical": "https://lineadepase.com/datalab-prototipo/media/",
+      "robots": "noindex,nofollow",
+      "en_sitemap": false,
+      "scripts": [
+        "../../assets/linea2-core.js",
+        "../../assets/linea2-pasaporte.js"
+      ]
+    },
+    {
+      "archivo": "datalab-prototipo/museo/index.html",
+      "ruta": "/datalab-prototipo/museo/",
+      "area_principal": "Prototipo",
+      "titulo": "Museo · Línea de Pase 2.0 · Prototipo",
+      "canonical": "https://lineadepase.com/datalab-prototipo/museo/",
+      "robots": "noindex,nofollow",
+      "en_sitemap": false,
+      "scripts": [
+        "../../assets/linea2-core.js",
+        "../../assets/linea2-museo.js",
+        "../../assets/linea2-pasaporte.js"
+      ]
+    },
+    {
+      "archivo": "datalab-prototipo/pasaporte/index.html",
+      "ruta": "/datalab-prototipo/pasaporte/",
+      "area_principal": "Prototipo",
+      "titulo": "Pasaporte · Línea de Pase 2.0 · Prototipo",
+      "canonical": "https://lineadepase.com/datalab-prototipo/pasaporte/",
+      "robots": "noindex,nofollow",
+      "en_sitemap": false,
+      "scripts": [
+        "../../assets/linea2-core.js",
+        "../../assets/linea2-pasaporte.js"
+      ]
+    },
+    {
+      "archivo": "datalab-prototipo/play/index.html",
+      "ruta": "/datalab-prototipo/play/",
+      "area_principal": "Prototipo",
+      "titulo": "Play · Línea de Pase 2.0 · Prototipo",
+      "canonical": "https://lineadepase.com/datalab-prototipo/play/",
+      "robots": "noindex,nofollow",
+      "en_sitemap": false,
+      "scripts": [
+        "../../assets/linea2-core.js",
+        "../../assets/linea2-reto.js",
+        "../../assets/linea2-pasaporte.js"
+      ]
+    },
+    {
+      "archivo": "datalab-prototipo/pro/index.html",
+      "ruta": "/datalab-prototipo/pro/",
+      "area_principal": "Prototipo",
+      "titulo": "Pro · Línea de Pase 2.0 · Prototipo",
+      "canonical": "https://lineadepase.com/datalab-prototipo/pro/",
+      "robots": "noindex,nofollow",
+      "en_sitemap": false,
+      "scripts": [
+        "../../assets/linea2-core.js",
+        "../../assets/linea2-investigacion.js",
+        "../../assets/linea2-pasaporte.js"
+      ]
+    },
+    {
+      "archivo": "datalab-prototipo/studio/index.html",
+      "ruta": "/datalab-prototipo/studio/",
+      "area_principal": "Prototipo",
+      "titulo": "Studio · Línea de Pase 2.0 · Prototipo",
+      "canonical": "https://lineadepase.com/datalab-prototipo/studio/",
+      "robots": "noindex,nofollow",
+      "en_sitemap": false,
+      "scripts": [
+        "../../assets/linea2-core.js",
+        "../../assets/linea2-studio.js",
+        "../../assets/linea2-editorial.js",
+        "../../assets/linea2-pasaporte.js"
+      ]
+    },
+    {
+      "archivo": "datalab-prototipo/zaragoza/index.html",
+      "ruta": "/datalab-prototipo/zaragoza/",
+      "area_principal": "Prototipo",
+      "titulo": "Zaragoza · Línea de Pase 2.0 · Prototipo",
+      "canonical": "https://lineadepase.com/datalab-prototipo/zaragoza/",
+      "robots": "noindex,nofollow",
+      "en_sitemap": false,
+      "scripts": [
+        "../../assets/linea2-core.js",
+        "../../assets/linea2-temporada.js",
+        "../../assets/linea2-pasaporte.js"
       ]
     },
     {

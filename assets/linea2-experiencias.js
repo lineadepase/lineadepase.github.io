@@ -1,6 +1,8 @@
+// Generado por herramientas/linea2_runtime.py; editar los módulos de área.
 (function(){
 'use strict';
 const $=id=>document.getElementById(id),core=globalThis.LDP2;
+if(!$('tiros'))return;
 const shared=core.readView(globalThis.location?.search||'');
 if(shared.shots!==undefined)$('tiros').value=String(shared.shots);
 if(shared.probability!==undefined)$('prob').value=String(shared.probability);
@@ -27,6 +29,22 @@ function uncertainty(){
  $('muestra-lectura').textContent=k+' goles en '+n+' disparos. Intervalo: '+percent(interval.low)+' a '+percent(interval.high)+'. Amplitud: '+number.format((interval.high-interval.low)*100)+' puntos porcentuales.';
 }
 $('muestra-tiros').addEventListener('input',uncertainty);$('muestra-goles').addEventListener('input',uncertainty);uncertainty();
+function share(kind){
+ const button=$(kind+'-enlace');if(!button)return;button.hidden=false;
+ button.addEventListener('click',()=>{const state={shots:$('tiros')?Number($('tiros').value):undefined,probability:$('prob')?Number($('prob').value):undefined,sampleShots:$('muestra-tiros')?Number($('muestra-tiros').value):undefined,sampleGoals:$('muestra-goles')?Number($('muestra-goles').value):undefined,venue:$('temporada-sede')?.value,result:$('temporada-resultado')?.value,coverage:$('temporada-cobertura')?.value};
+ const field=$(kind+'-url');field.value=core.viewUrl(globalThis.location?.href||'https://lineadepase.com/datalab-prototipo/',state,kind==='temporada'?'season':'labs');$(kind+'-compartir').hidden=false;field.focus();field.select();});
+}
+share('laboratorios');
+})();
+
+(function(){
+'use strict';
+const $=id=>document.getElementById(id),core=globalThis.LDP2;
+if(!$('temporada-datos'))return;
+const shared=core.readView(globalThis.location?.search||'');
+function invalidateShare(kind){if($(kind+'-compartir'))$(kind+'-compartir').hidden=true;}
+const number=new Intl.NumberFormat('es-ES',{maximumFractionDigits:1});
+function download(content,type,name){const url=URL.createObjectURL(new Blob([content],{type})),link=document.createElement('a');link.href=url;link.download=name;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
 const payload=JSON.parse($('temporada-datos').textContent);let selection=[];
 const rows=[...document.querySelectorAll('[data-season-row]')];
 const compareBoxes=[...document.querySelectorAll('[data-compare-id]')];
@@ -35,8 +53,8 @@ function updateComparison(message=''){
  const status=$('temporada-seleccion'),link=$('temporada-studio');if(!status||!link)return;
  compareBoxes.forEach(box=>box.checked=compareIds.includes(box.dataset.compareId));
  link.hidden=compareIds.length!==2;
- if($('temporada-redaccion'))$('temporada-redaccion').hidden=compareIds.length!==2;
- if(compareIds.length===2)link.href=core.comparisonUrl(globalThis.location?.href||'https://lineadepase.com/datalab-prototipo/',compareIds);
+ if($('temporada-redaccion')){$('temporada-redaccion').hidden=compareIds.length!==2;if(compareIds.length===2&&document.body?.dataset.areaRoot)$('temporada-redaccion').href=core.editorialUrl(globalThis.location.href,compareIds);}
+ if(compareIds.length===2)link.href=core.comparisonUrl(globalThis.location?.href||'https://lineadepase.com/datalab-prototipo/',compareIds,document.body?.dataset.siteRoot);
  const names=compareIds.map(id=>{const match=payload.partidos.find(m=>m.archivo_id===id);return match?'J'+match.jornada+' · '+match.rival:id;});
  status.textContent=message||(names.length?'Selección ('+names.length+'/2): '+names.join(' / '):'Elige dos jornadas de la tabla para compararlas en Studio.');
 }
@@ -62,8 +80,8 @@ $('temporada-csv').addEventListener('click',()=>{if(selection.length)download(co
 $('temporada-controles').hidden=false;$('temporada-acciones').hidden=false;season();
 function share(kind){
  const button=$(kind+'-enlace');if(!button)return;button.hidden=false;
- button.addEventListener('click',()=>{const state={shots:Number($('tiros').value),probability:Number($('prob').value),sampleShots:Number($('muestra-tiros').value),sampleGoals:Number($('muestra-goles').value),venue:$('temporada-sede').value,result:$('temporada-resultado').value,coverage:$('temporada-cobertura').value};
+ button.addEventListener('click',()=>{const state={shots:$('tiros')?Number($('tiros').value):undefined,probability:$('prob')?Number($('prob').value):undefined,sampleShots:$('muestra-tiros')?Number($('muestra-tiros').value):undefined,sampleGoals:$('muestra-goles')?Number($('muestra-goles').value):undefined,venue:$('temporada-sede')?.value,result:$('temporada-resultado')?.value,coverage:$('temporada-cobertura')?.value};
  const field=$(kind+'-url');field.value=core.viewUrl(globalThis.location?.href||'https://lineadepase.com/datalab-prototipo/',state,kind==='temporada'?'season':'labs');$(kind+'-compartir').hidden=false;field.focus();field.select();});
 }
-share('laboratorios');share('temporada');
+share('temporada');
 })();

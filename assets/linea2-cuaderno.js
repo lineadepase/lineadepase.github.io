@@ -1,3 +1,4 @@
+// Generado por herramientas/linea2_runtime.py; editar los módulos de área.
 (function(){
 'use strict';
 const $=id=>document.getElementById(id),core=globalThis.LDP2;
@@ -18,6 +19,12 @@ if($('escenario-a-n')){
  for(const code of ['a','b'])for(const field of ['n','p'])$('escenario-'+code+'-'+field).addEventListener('input',render);
  $('escenarios-restablecer').addEventListener('click',()=>{$('escenario-a-n').value='10';$('escenario-a-p').value='10';$('escenario-b-n').value='2';$('escenario-b-p').value='50';render();});render();
 }
+})();
+
+(function(){
+'use strict';
+const $=id=>document.getElementById(id),core=globalThis.LDP2;
+const fmt=new Intl.NumberFormat('es-ES',{maximumFractionDigits:1}),precise=new Intl.NumberFormat('es-ES',{maximumFractionDigits:2});
 if($('pro-ficha')){
  const fields=['pregunta','hipotesis','fuentes','metodo','validacion','limites'],key='ldp-pro-borrador-v1';
  function collect(){const value={version:1};fields.forEach(field=>value[field]=$('pro-'+field).value);return core.researchDraft(value);}

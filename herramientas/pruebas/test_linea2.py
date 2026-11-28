@@ -113,5 +113,27 @@ class PackageTests(unittest.TestCase):
             self.assertIn('titulo-explorador',html)
             self.assertEqual((root/'index.html').read_text(encoding='utf-8'),'Portada conservada')
 
+class AreaPagesTests(unittest.TestCase):
+    def test_paginas_separadas_con_sus_scripts_y_sin_indexacion(self):
+        import linea2_paginas
+        with TemporaryDirectory() as temp:
+            root=Path(temp)
+            fragments={key:f'<section id="{key}"><h2 id="titulo-{key}">{value[0]}</h2></section>' for key,value in module.sections.items()}
+            fragments['zaragoza']+='<script type="application/json" id="temporada-datos">{"partidos":[]}</script>'
+            linea2_paginas.build_pages(root,module.sections,fragments)
+            self.assertEqual(len(list(root.rglob('index.html'))),9)
+            datalab=(root/'datalab/index.html').read_text(encoding='utf-8')
+            self.assertIn('linea2-lab.js',datalab)
+            self.assertNotIn('linea2-reto.js',datalab)
+            self.assertNotIn('linea2-temporada.js',datalab)
+            self.assertIn('noindex,nofollow',datalab)
+            self.assertIn('aria-current="page">DataLab',datalab)
+            studio=(root/'studio/index.html').read_text(encoding='utf-8')
+            self.assertIn('id="temporada-datos"',studio)
+            self.assertNotIn('linea2-temporada.js',studio)
+            first={str(p.relative_to(root)):p.read_bytes() for p in root.rglob('index.html')}
+            linea2_paginas.build_pages(root,module.sections,fragments)
+            self.assertEqual(first,{str(p.relative_to(root)):p.read_bytes() for p in root.rglob('index.html')})
+
 if __name__ == '__main__':
     unittest.main()

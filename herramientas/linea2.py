@@ -85,6 +85,7 @@ def media():
 def build():
  nav=''.join(f'<a href="#{k}">{v[0]}</a>' for k,v in sections.items())
  body=''
+ fragments={}
  for section_number,(k,(name,title,desc,items)) in enumerate(sections.items(),1):
   extra=''
   acciones=''
@@ -127,10 +128,16 @@ def build():
    'pro':'<strong>Línea de Pase / Pro</strong><span>Fuentes · Método · Validación</span>'
   }
   band=f'<div class="area-band">{bands[k]}</div>' if k in bands else ''
-  body+=f'<section id="{k}" aria-labelledby="titulo-{k}">{band}<div class="section-head"><p class="eyebrow">{section_number:02} / {name.upper()}</p><h2 id="titulo-{k}">{title}</h2><p>{desc}</p></div>{extra}<div class="grid">{cards(items)}</div>{acciones}</section>'
+  fragment=f'<section id="{k}" aria-labelledby="titulo-{k}">{band}<div class="section-head"><p class="eyebrow">{section_number:02} / {name.upper()}</p><h2 id="titulo-{k}">{title}</h2><p>{desc}</p></div>{extra}<div class="grid">{cards(items)}</div>{acciones}</section>'
+  fragments[k]=fragment
+  body+=fragment
  from linea2_experiencias import routes, experience_index
- recorridos=routes()+experience_index()
+ recorridos='<p><a class="cta" href="inicio/">Probar la navegación por áreas →</a></p>'+routes()+experience_index()
  html=f'''<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><link rel="canonical" href="https://lineadepase.com/datalab-prototipo/"><meta name="description" content="Línea de Pase 2.0: experimenta con la ciencia del fútbol, explora su historia y crea con datos."><title>Línea de Pase 2.0 · Prototipo</title><link rel="icon" href="../assets/icono.svg"><link rel="stylesheet" href="../assets/linea2.css"><link rel="stylesheet" href="../assets/linea2-areas.css"></head><body><a class="skip" href="#contenido">Saltar al contenido</a><header><a class="brand" href="../"><img class="brand-original" src="../assets/marca/logo-intro.webp" width="804" height="258" alt="Línea de Pase"></a><span class="edition">Del campo al dato.</span><a href="#pasaporte">Mi pasaporte ↗</a></header><nav aria-label="Áreas de Línea de Pase">{nav}</nav><main id="contenido"><section class="hero"><div class="hero-copy"><p class="eyebrow">FÚTBOL / DATOS / PREGUNTAS</p><h1>No solo mires el fútbol.<br><em>Experiméntalo.</em></h1><p>Un museo vivo para explorar su historia, comprender su presente y jugar con sus posibilidades.</p><a class="cta" href="#datalab">Entra en el laboratorio ↗</a><p class="prototype">Prototipo de desarrollo · sin publicar</p></div><aside class="hero-note" aria-label="Pregunta para empezar"><div class="note-top"><span>Cuaderno de campo</span><span>N.º 01</span></div><p class="question">¿Jugar mejor<br>es ganar?</p><div class="pencil-line" aria-hidden="true"></div><p class="note-foot">El marcador es un comienzo.<br>La pregunta viene después.</p><a href="#titulo-explorador">Buscar una respuesta en los datos →</a></aside></section>{recorridos}{body}</main><footer><a class="brand" href="../">Línea de Pase</a><p>Ángel Marqueta Alonso · Ciencia de datos aplicada al fútbol</p><a href="../sobre-mi/">Sobre el proyecto</a> · <a href="../privacidad/">Privacidad</a><p>Los contenidos conservan sus direcciones originales. Este espacio es una versión en desarrollo.</p></footer><script src="../assets/linea2-core.js" defer></script><script src="../assets/linea2.js" defer></script><script src="../assets/linea2-experiencias.js" defer></script><script src="../assets/linea2-cuaderno.js" defer></script><script src="../assets/linea2-editorial.js" defer></script><script src="../assets/linea2-museo.js" defer></script><script src="../assets/linea2-secuencia.js" defer></script></body></html>'''
  (D/'index.html').write_text(html,encoding='utf-8')
+ from linea2_runtime import build_runtime
+ from linea2_paginas import build_pages
+ build_runtime(R)
+ build_pages(D,sections,fragments)
 if __name__=='__main__': build()
 

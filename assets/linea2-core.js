@@ -66,9 +66,17 @@
     url.hash=kind==='season'?'titulo-explorador':'datalab';
     return url.href;
   }
-  function comparisonUrl(base,ids){
+  function comparisonUrl(base,ids,siteRoot='../'){
     if(!Array.isArray(ids)||ids.length!==2||new Set(ids).size!==2||ids.some(id=>typeof id!=='string'||!/^\d{4}\/\d{2}\|[1-9]\d*$/.test(id)))throw new TypeError('Elige dos jornadas válidas y distintas');
-    const url=new URL('../archivo-visual/',base);url.searchParams.set('jornada_a',ids[0]);url.searchParams.set('jornada_b',ids[1]);url.hash='titulo-comparar';return url.href;
+    const url=new URL(siteRoot+'archivo-visual/',base);url.searchParams.set('jornada_a',ids[0]);url.searchParams.set('jornada_b',ids[1]);url.hash='titulo-comparar';return url.href;
+  }
+  function areaLink(id,base){
+    if(!['datalab','museo','play','zaragoza','pro','studio','media','pasaporte'].includes(id))throw new TypeError('Área desconocida');
+    return base?base+id+'/':'#'+id;
+  }
+  function editorialUrl(base,ids){
+    comparisonUrl(base,ids);
+    const url=new URL('../studio/',base);url.searchParams.set('partido_a',ids[0]);url.searchParams.set('partido_b',ids[1]);url.hash='editorial-titulo';return url.href;
   }
   function scenario(shots,probability){
     if(shots<1)throw new RangeError('Debe haber al menos un disparo');
@@ -88,5 +96,5 @@
     const labels={pregunta:'Pregunta de investigación',hipotesis:'Hipótesis inicial',fuentes:'Datos y fuentes',metodo:'Método',validacion:'Validación',limites:'Límites del análisis'};
     return 'LÍNEA DE PASE · PRO\nFICHA DE INVESTIGACIÓN · BORRADOR\n\n'+Object.entries(labels).map(([key,label])=>label.toUpperCase()+'\n'+(draft[key].trim()||'Pendiente de definir.')).join('\n\n')+'\n\nFicha de trabajo personal. Su contenido no constituye un resultado validado.\n';
   }
-  return {distribution,variedDistribution,wilson,filterMatches,summarize,csv,passport,readView,viewUrl,comparisonUrl,scenario,researchDraft,researchText};
+  return {areaLink,editorialUrl,distribution,variedDistribution,wilson,filterMatches,summarize,csv,passport,readView,viewUrl,comparisonUrl,scenario,researchDraft,researchText};
 });

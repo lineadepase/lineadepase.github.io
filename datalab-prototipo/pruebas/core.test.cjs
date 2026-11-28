@@ -39,3 +39,13 @@ test('secuencias conservan masa, esperanza y producto de fallos',()=>{
   for(const p of [0,.1,.5,1])core.variedDistribution(new Array(n).fill(p)).forEach((v,i)=>near(v,core.distribution(n,p)[i]));
  }
 });
+
+
+test('rutas por área y traslado a redacción no incluyen notas personales',()=>{
+ assert.equal(core.areaLink('play'),'#play');assert.equal(core.areaLink('play','../'),'../play/');assert.throws(()=>core.areaLink('otra','../'),TypeError);
+ const ids=['2026/27|2','2026/27|3'];
+ const editorial=new URL(core.editorialUrl('https://lineadepase.com/datalab-prototipo/zaragoza/?nota=privada#algo',ids));
+ assert.equal(editorial.pathname,'/datalab-prototipo/studio/');assert.equal(editorial.searchParams.get('partido_a'),ids[0]);assert.equal(editorial.searchParams.has('nota'),false);
+ assert.equal(new URL(core.comparisonUrl('https://lineadepase.com/datalab-prototipo/zaragoza/',ids,'../../')).pathname,'/archivo-visual/');
+ for(const pair of [[ids[0],ids[0]],['otro',ids[1]]])assert.throws(()=>core.editorialUrl('https://lineadepase.com/datalab-prototipo/zaragoza/',pair),TypeError);
+});

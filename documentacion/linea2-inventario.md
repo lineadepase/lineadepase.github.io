@@ -2,7 +2,7 @@
 
 Generado con `python herramientas/inventario_linea2.py`. Clasificación editorial de archivos locales; no certifica vigencia, datos ni publicación.
 
-**62 páginas HTML · 58 URLs en sitemap.** Se excluyen fragmentos de análisis, dependencias e informes de pruebas.
+**71 páginas HTML · 58 URLs en sitemap.** Se excluyen fragmentos de análisis, dependencias e informes de pruebas.
 
 Cada ruta se asigna a un área principal para planificar; puede aparecer enlazada desde otras. Todas se conservan. El prototipo queda separado del catálogo público.
 
@@ -13,7 +13,7 @@ Cada ruta se asigna a un área principal para planificar; puede aparecer enlazad
 | Museo | 2 |
 | Play | 7 |
 | Pro | 3 |
-| Prototipo | 1 |
+| Prototipo | 10 |
 | Studio | 2 |
 | Transversal | 5 |
 | Zaragoza | 34 |
@@ -27,7 +27,16 @@ Cada ruta se asigna a un área principal para planificar; puede aparecer enlazad
 | `/comparador/` | Zaragoza | Compara dos equipos del Grupo 2 · Línea de pase | Sí |
 | `/conceptos/` | DataLab | Conceptos para leer el fútbol con datos · Línea de pase | Sí |
 | `/contacto/` | Transversal | Contacto · Línea de pase | No |
+| `/datalab-prototipo/datalab/` | Prototipo | DataLab · Línea de Pase 2.0 · Prototipo | No |
 | `/datalab-prototipo/` | Prototipo | Línea de Pase 2.0 · Prototipo | No |
+| `/datalab-prototipo/inicio/` | Prototipo | Elige tu recorrido · Línea de Pase 2.0 · Prototipo | No |
+| `/datalab-prototipo/media/` | Prototipo | Media · Línea de Pase 2.0 · Prototipo | No |
+| `/datalab-prototipo/museo/` | Prototipo | Museo · Línea de Pase 2.0 · Prototipo | No |
+| `/datalab-prototipo/pasaporte/` | Prototipo | Pasaporte · Línea de Pase 2.0 · Prototipo | No |
+| `/datalab-prototipo/play/` | Prototipo | Play · Línea de Pase 2.0 · Prototipo | No |
+| `/datalab-prototipo/pro/` | Prototipo | Pro · Línea de Pase 2.0 · Prototipo | No |
+| `/datalab-prototipo/studio/` | Prototipo | Studio · Línea de Pase 2.0 · Prototipo | No |
+| `/datalab-prototipo/zaragoza/` | Prototipo | Zaragoza · Línea de Pase 2.0 · Prototipo | No |
 | `/datos-en-revision/` | Zaragoza | Cuando las cifras no coinciden · Línea de pase | Sí |
 | `/esquemas-del-juego/` | Play | El juego en esquema · Línea de pase | Sí |
 | `/galeria-visual/` | Museo | Galería visual de Línea de pase · Línea de pase | Sí |

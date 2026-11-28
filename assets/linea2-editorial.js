@@ -7,6 +7,14 @@ for(const code of ['a','b']){
  matches.forEach((m,index)=>{const option=document.createElement('option');option.value=String(index);option.textContent='J'+m.jornada+' · '+m.fecha+' · '+m.rival;select.append(option);});
 }
 if(matches.length>1)$('editorial-b').selectedIndex=1;
+if(document.body?.dataset.areaRoot){
+ const params=new URLSearchParams(location.search),ids=[params.get('partido_a'),params.get('partido_b')];
+ if(ids.some(id=>id!==null)){
+  const indexes=ids.map(id=>matches.findIndex(m=>m.archivo_id&&m.archivo_id===id));
+  if(indexes.every(index=>index>=0)&&indexes[0]!==indexes[1]){indexes.forEach((index,i)=>$('editorial-'+(i?'b':'a')).value=String(index));$('editorial-estado').textContent='Jornadas recibidas desde Zaragoza. Escribe tu pregunta y prepara el borrador.';}
+  else $('editorial-estado').textContent='La pareja del enlace no está disponible. Elige dos jornadas del catálogo.';
+ }
+}
 function invalidate(){$('editorial-salida').hidden=true;$('editorial-texto').value='';$('editorial-estado').textContent='Prepara de nuevo el borrador para incorporar los cambios.';}
 const transfer=$('temporada-redaccion');
 if(transfer)transfer.addEventListener('click',()=>{
@@ -24,7 +32,7 @@ form.addEventListener('submit',event=>{
  const question=$('editorial-pregunta').value.trim();if(!question){$('editorial-estado').textContent='Escribe una pregunta para tu publicación.';return;}
  const fmt=value=>value===null||value===undefined?'No disponible':new Intl.NumberFormat('es-ES',{maximumFractionDigits:1}).format(value);
  function describe(m){
- const source=new URL('../proyectos/real-zaragoza/jornada-'+m.jornada+'.html',location.href).href;
+ const source=new URL((document.body?.dataset.siteRoot||'../')+'proyectos/real-zaragoza/jornada-'+m.jornada+'.html',location.href).href;
  const stats=m.completo?'Tiros Zaragoza–rival: '+fmt(m.tiros_zaragoza)+'–'+fmt(m.tiros_rival)+'. Posesión: '+fmt(m.posesion_pct)+' %.':'Estadísticas pendientes de validación; no se incluyen tiros ni posesión.';
  return 'J'+m.jornada+' · '+m.fecha+' · '+m.sede+' · '+m.rival+'\nMarcador Zaragoza–rival: '+m.goles_favor+'–'+m.goles_contra+'\n'+stats+'\nFicha y fuentes: '+source;
  }
