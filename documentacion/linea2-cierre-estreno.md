@@ -1,14 +1,14 @@
 # Línea de Pase 2.0: alcance y cierre del primer estreno
 
-Estado del 27 de noviembre de 2026. Rama `desarrollo/linea-de-pase-2`.
+Estado del 28 de noviembre de 2026. Rama `desarrollo/linea-de-pase-2`.
 
 ## Dónde estamos
 
 Hay un prototipo funcional de ocho áreas en `/datalab-prototipo/`, con catorce accesos directos a experiencias y herramientas. No es todavía la sustitución de la web pública. Se conserva la portada actual y el prototipo lleva `noindex,nofollow`.
 
-La última versión funcional supera 116 pruebas: 44 de lógica, 12 de generación y 60 de Chromium en cuatro tamaños. No significa que todas las páginas históricas hayan pasado pruebas completas de interacción, ni que Safari, Firefox o dispositivos físicos estén revisados.
+La última versión funcional supera 138 pruebas: 45 de lógica, 13 de generación y 80 de Chromium en cuatro tamaños. No significa que todas las páginas históricas hayan pasado pruebas completas de interacción, ni que Safari, Firefox o dispositivos físicos estén revisados.
 
-El inventario local registra 62 páginas HTML y 58 URLs en sitemap. Hay siete páginas asignadas a Play, cinco a DataLab, dos a Museo, dos a Studio, tres a Pro, tres a Media, 34 a Zaragoza, cinco transversales y el prototipo. Esta clasificación indica el área principal: un recurso puede enlazarse desde varias áreas sin duplicarlo. El inventario no acredita la vigencia de cada contenido.
+El inventario inicial registró 62 páginas HTML y 58 URLs en sitemap. Tras separar las áreas, hay 71 páginas HTML: las 62 anteriores más ocho entradas y un inicio de desarrollo. El sitemap público sigue con 58 URLs. Hay siete páginas asignadas a Play, cinco a DataLab, dos a Museo, dos a Studio, tres a Pro, tres a Media, 34 a Zaragoza, cinco transversales y el prototipo. Esta clasificación indica el área principal: un recurso puede enlazarse desde varias áreas sin duplicarlo. El inventario no acredita la vigencia de cada contenido.
 
 ## Alcance del estreno
 
@@ -63,17 +63,17 @@ Generadores existentes: `actualizar_exploracion.py`, `actualizar_publicacion_jor
 - [x] Elegir entradas reutilizadas y nuevas, sin renombrar URLs históricas.
 - [x] Registrar las auditorías actuales y los límites de la verificación.
 
-### B. Separar las áreas y conectar el recorrido — siguiente
+### B. Separar las áreas y conectar el recorrido — completado
 
-- [ ] Crear entradas de área dentro del prototipo y una portada de orientación.
-- [ ] Compartir cabecera, navegación y pie sin copiar ocho implementaciones diferentes.
-- [ ] Cargar cada herramienta solo en su área; los scripts no deben exigir elementos de otras páginas.
-- [ ] Conservar enlaces compartidos, selección de jornadas y continuidad del pasaporte al navegar.
-- [ ] Comprobar portada → área → herramienta → retorno, con teclado y en móvil.
+- [x] Crear entradas de área dentro del prototipo y una portada de orientación.
+- [x] Compartir cabecera, navegación y pie sin copiar ocho implementaciones diferentes.
+- [x] Cargar cada herramienta solo en su área; los scripts no deben exigir elementos de otras páginas.
+- [x] Conservar enlaces compartidos, selección de jornadas y continuidad del pasaporte al navegar.
+- [x] Comprobar portada → área → herramienta → retorno, con teclado y en móvil.
 
 Se cierra cuando las ocho áreas tienen una entrada funcional en desarrollo y los recorridos no dependen de la página larga actual. Las rutas finales siguen sin activarse.
 
-### C. Integrar catálogo y presentación — después de B
+### C. Integrar catálogo y presentación — siguiente
 
 - [ ] Completar el catálogo de proyectos, juegos y vídeos con los recursos inventariados.
 - [ ] Aplicar los ambientes acordados a las entradas y a los puntos de transición; conservar gráficos y datos legibles.
@@ -111,8 +111,28 @@ El informe no certifica disponibilidad en Internet de cada enlace externo ni act
 
 ## Seguimiento y estimación
 
-Hay cuatro paquetes después de A: B, C, D y E. B es el trabajo inmediato. El avance se informa por condiciones de cierre, no por número de herramientas añadidas o cantidad de pruebas.
+A y B están completados. Quedan tres paquetes: C, D y E. C es el siguiente: integrar catálogo y presentación. El avance se informa por condiciones de cierre, no por número de herramientas añadidas o cantidad de pruebas.
 
-La referencia anterior de 5–8 jornadas efectivas era una estimación provisional del cierre completo, no una fecha comprometida. El inventario concreta el alcance, pero aún falta implementar B para medir el coste de separación y continuidad; no se reduce esa estimación por haber terminado solo la documentación. Se revisará al cerrar B y al detectar cualquier problema en los generadores existentes.
+La referencia anterior de 5–8 jornadas efectivas era una estimación provisional del cierre completo, no una fecha comprometida. El inventario concreta el alcance, pero aún falta implementar B para medir el coste de separación y continuidad; no se reduce esa estimación por haber terminado solo la documentación. La separación de B está resuelta y verificada. No se asigna una fecha de publicación por el número de pruebas: la siguiente estimación depende de revisar las herramientas históricas en C y los navegadores pendientes en D.
 
 Inventario detallado: [tabla de rutas](linea2-inventario.md), [CSV](linea2-inventario.csv) y [JSON](linea2-inventario.json). Regeneración: `python herramientas/inventario_linea2.py`.
+
+
+## Implementación del paquete B
+
+Entrada nueva: `/datalab-prototipo/inicio/`. Desde allí se accede a `/datalab-prototipo/datalab/`, `museo/`, `play/`, `zaragoza/`, `pro/`, `studio/`, `media/` y `pasaporte/`. Todas siguen sin indexación y comparten cabecera, navegación, pie y contenido con la vista continua. La portada pública y las rutas finales previstas no se han activado.
+
+Los scripts de cada área se cargan por separado. La vista continua conserva sus archivos de compatibilidad, generados a partir de los mismos módulos para evitar dos versiones divergentes. La regeneración comprueba también las páginas separadas y los scripts compuestos.
+
+El pasaporte utiliza la misma clave local y permite continuar entre entradas y vista continua. El borrador de Pro también mantiene su clave. Los borradores temporales de Studio y Museo siguen requiriendo descarga para conservarse; no se guardan automáticamente al navegar.
+
+Zaragoza transmite a Studio dos identificadores de jornadas, sin notas personales. Studio solo acepta una pareja distinta y disponible en su catálogo real. Las fuentes de los textos descargados y los enlaces a generadores resuelven desde la nueva profundidad de las páginas. El índice y los formularios que ya eran nativos siguen navegables sin JavaScript.
+
+
+## Cierre verificado de B
+
+La ejecución [46128006801](https://github.com/lineadepase/lineadepase.github.io/actions/runs/46128006801), sobre `5e6af25`, terminó correctamente: 45 pruebas de lógica, 13 de generación y 80 de navegador (138 en total). Se probaron inicio y ocho áreas, continuidad del pasaporte y de Pro, compatibilidad con la vista continua, transferencia Zaragoza → Studio, enlaces compartidos, fuentes en descargas y navegación sin JavaScript.
+
+Se revisaron las capturas del nuevo inicio en escritorio y móvil estrecho, los ocho ambientes en escritorio, Studio y Pro en móvil estrecho y Zaragoza en tablet simulada. La primera revisión detectó títulos del directorio móvil demasiado estrechos; se corrigió su disposición y la segunda ejecución incorporó una comprobación de ancho disponible. Las capturas largas desactivan temporalmente la posición fija del menú para evitar superposiciones de la captura; la navegación se comprueba con su comportamiento habitual.
+
+Las auditorías locales verifican 71 páginas, 3.212 enlaces y recursos locales y 153 imágenes sin incidencias, 70 páginas con canonical correcto y las mismas 58 entradas indexables del sitemap. No se ha revisado una tablet física ni completado Firefox y WebKit. No se ha publicado ni fusionado main.

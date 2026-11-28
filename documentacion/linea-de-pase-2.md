@@ -4,9 +4,9 @@ El trabajo está en `desarrollo/linea-de-pase-2`. La entrada es `/datalab-protot
 
 ## Estado actual y siguiente paquete
 
-El paquete A de cierre (alcance, inventario y estructura) está completado. El trabajo inmediato es el paquete B: separar las áreas dentro del prototipo y conectar sus recorridos. El [plan de cierre del estreno](linea2-cierre-estreno.md) contiene el alcance, las rutas previstas, los criterios de aceptación y los paquetes pendientes. El [inventario](linea2-inventario.md) registra 62 páginas existentes y 58 URLs en sitemap. Ninguna de las nuevas rutas previstas se ha activado.
+El paquete A de cierre (alcance, inventario y estructura) está completado. El paquete B está completado y verificado: ocho áreas separadas y nuevo inicio por recorridos; su validación se registra al final. El siguiente paquete es C: integrar catálogo y presentación de los recursos existentes. El [plan de cierre del estreno](linea2-cierre-estreno.md) contiene el alcance, las rutas previstas, los criterios de aceptación y los paquetes pendientes. El [inventario](linea2-inventario.md) registra 71 páginas: 62 de la base anterior y nueve nuevas entradas de desarrollo. El sitemap público conserva 58 URLs. Ninguna de las nuevas rutas previstas se ha activado.
 
-Última validación funcional: 116 pruebas (44 de lógica, 12 de generación, 60 de Chromium). La auditoría local de canonicals, enlaces, imágenes y accesibilidad estática se ha repetido durante el inventario sin incidencias. Los apartados cronológicos posteriores conservan resultados y pendientes de etapas anteriores; no sustituyen este resumen ni el plan de cierre.
+Última validación funcional: 138 pruebas (45 de lógica, 13 de generación, 80 de Chromium). La ejecución y la revisión del paquete B se registran al final de este documento. La auditoría local de canonicals, enlaces, imágenes y accesibilidad estática se ha repetido durante el inventario sin incidencias. Los apartados cronológicos posteriores conservan resultados y pendientes de etapas anteriores; no sustituyen este resumen ni el plan de cierre.
 
 ## Experiencias implementadas
 
@@ -45,13 +45,13 @@ python herramientas/auditar_accesibilidad_visual.py
 
 La rutina habitual `actualizar_seo.py` regenera primero la exploración existente y después este prototipo, para que Studio use las opciones actualizadas del archivo visual. La integración continua verifica pruebas, enlaces y salida generada sincronizada.
 
-`linea2_experiencias.py` mantiene el HTML de los laboratorios y el explorador. `linea2-core.js` contiene cálculos y transformaciones sin dependencias; `linea2-experiencias.js` conecta controles y exportaciones. `linea2.js` mantiene retos, Studio y pasaporte.
+`linea2_experiencias.py` y `linea2_cuaderno.py` mantienen las experiencias; `linea2_paginas.py` compone las entradas separadas a partir de los mismos fragmentos de la vista continua. `linea2-core.js` contiene cálculos y rutas. Los módulos de JavaScript se cargan según el área. `linea2_runtime.py` genera `linea2.js`, `linea2-experiencias.js` y `linea2-cuaderno.js` desde esos módulos para la vista continua; editar los módulos, no los archivos compuestos.
 
 ## Verificación y límites
 
 Se prueban normalización y esperanza de la distribución, límites y simetría de Wilson, filtros, muestras incompletas, selección vacía, exportaciones, recuperación de almacenamiento, importación de pasaporte, corte temporal, seguridad del JSON incorporado y regeneración sin modificar la portada pública. Las pruebas de interfaz usan un entorno simulado; no sustituyen un navegador real.
 
-**Revisión de navegador realizada:** la última batería supera 60 pruebas de Chromium en 1440, 820, 390 y 320 px, además de las 56 pruebas de lógica y generación. Se han inspeccionado capturas de portada, áreas y nuevas experiencias; las ampliaciones registran su ejecución al final de este documento. No se ha verificado la tablet física ni se han completado Firefox y WebKit. La revisión visual se realiza mediante capturas del entorno de pruebas de GitHub, ante la falta de acceso local desde el navegador de la sesión.
+**Revisión de navegador realizada:** la última batería supera 80 pruebas de Chromium en 1440, 820, 390 y 320 px, además de las 58 pruebas de lógica y generación. Se han inspeccionado capturas de portada, áreas y nuevas experiencias; las ampliaciones registran su ejecución al final de este documento. No se ha verificado la tablet física ni se han completado Firefox y WebKit. La revisión visual se realiza mediante capturas del entorno de pruebas de GitHub, ante la falta de acceso local desde el navegador de la sesión.
 
 Las investigaciones nuevas, como «Los puntos engañan» y un xG universal entrenado, requieren datos, desarrollo y validación independientes; no se presentan como investigaciones terminadas. Las experiencias y generadores existentes mantienen su implementación y sus rutas.
 
@@ -164,3 +164,10 @@ DataLab añade un quinto experimento con entre uno y doce remates ficticios, cad
 La primera revisión visual de la secuencia detectó expansión interna de la columna en móvil, aunque la página no presentaba desplazamiento global. Se limita el tamaño mínimo de los elementos de la rejilla, se adapta la tabla de dos columnas y se comprueban los límites geométricos de los controles además del ancho global.
 
 La ejecución [46075553439](https://github.com/lineadepase/lineadepase.github.io/actions/runs/46075553439), sobre `aba0469`, superó 44 pruebas de lógica, 12 de generación y 60 de navegador: 116 en total. Se revisaron escritorio y móvil estrecho, incluida la captura corregida sin recorte de controles ni tabla. No se ha publicado ni fusionado main.
+
+
+## Paquete B: áreas separadas y continuidad
+
+Nuevo inicio en `/datalab-prototipo/inicio/`, con ocho entradas de área y acceso desde la vista continua anterior. Cabecera, navegación, pie y contenido se generan de forma compartida; cada entrada carga sus módulos. La vista continua conserva scripts de compatibilidad generados desde los mismos módulos, enlaces compartidos y claves de almacenamiento.
+
+La ejecución [46128006801](https://github.com/lineadepase/lineadepase.github.io/actions/runs/46128006801), sobre `5e6af25`, superó 138 pruebas: 45 de lógica, 13 de generación y 80 de Chromium. Se revisaron inicio y ambientes, corrigió la anchura de títulos del directorio en móvil y repitió la batería con éxito. Los nuevos recorridos verifican retorno, pasaporte y Pro entre páginas, pareja Zaragoza → Studio, fuentes correctas desde las páginas anidadas y navegación sin JavaScript. Las auditorías estáticas pasan para 71 páginas y el sitemap conserva sus 58 URLs. Todas las entradas nuevas mantienen `noindex,nofollow`; no se ha publicado ni fusionado main. El siguiente paquete es C, catálogo y presentación.
