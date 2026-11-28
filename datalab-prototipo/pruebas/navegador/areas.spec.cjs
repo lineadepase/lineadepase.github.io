@@ -8,12 +8,12 @@ test.beforeEach(async({page})=>{
 test('inicio y ocho áreas funcionan aisladas y con navegación de retorno',async({page},info)=>{
  const errors=[];page.on('pageerror',error=>errors.push(error.message));
  await page.goto(entry+'inicio/');
- await expect(page.locator('h1')).toHaveText('Elige tu recorrido');
+ await expect(page.locator('h1')).toHaveCount(1);await expect(page.locator('h1')).toHaveText('El partido acaba.La curiosidad sigue.');
  await expect(page.locator('#tiros')).toHaveCount(0);
  const menuTitle=await page.locator('.area-directory h3').first().boundingBox();expect(menuTitle.width).toBeGreaterThan(100);
  await page.screenshot({path:info.outputPath('inicio.png'),fullPage:true,animations:'disabled'});
  for(const area of ['datalab','museo','play','zaragoza','pro','studio','media','pasaporte']){
-  await page.getByRole('navigation',{name:'Áreas de Línea de Pase'}).getByRole('link',{name:new RegExp('^'+area+'$','i')}).click();
+  await page.getByRole('navigation',{name:'Áreas de Línea de Pase'}).getByRole('link',{name:new RegExp('^'+(area==='play'?'Juegos':area)+'$','i')}).click();
   await expect(page).toHaveURL(new RegExp('/'+area+'/$'));
   await expect(page.locator('nav [aria-current="page"]')).toHaveCount(1);
   await expect(page.locator('main section')).toHaveCount(1);

@@ -129,7 +129,7 @@ def build():
   bands={
    'datalab':'<strong>DataLab / Ciencia del fútbol</strong><span>Experimenta · Comprende · Investiga</span>',
    'zaragoza':'<strong class="club"><img src="../assets/real-zaragoza-escudo-96.png" width="34" height="40" alt="" role="presentation">Real Zaragoza</strong><span>La temporada, en datos</span>',
-   'play':'<strong>LDP / PLAY</strong><span>Lee el juego. Toma una decisión.</span>',
+   'play':'<strong>LDP / JUEGOS</strong><span>Lee el juego. Toma una decisión.</span>',
    'studio':'<strong>Studio / Mesa de edición</strong><span>Selecciona · Compón · Exporta</span>',
    'pro':'<strong>Línea de Pase / Pro</strong><span>Fuentes · Método · Validación</span>'
   }
