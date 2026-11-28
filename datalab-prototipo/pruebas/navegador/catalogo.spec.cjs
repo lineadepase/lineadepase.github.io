@@ -1,6 +1,5 @@
 const {test,expect}=require('@playwright/test');
 const fs=require('node:fs/promises');
-const path=require('node:path');
 const resources=require('../../../datos/linea2-catalogo.json').recursos;
 const entry='/datalab-prototipo/';
 test.beforeEach(async({page})=>{
@@ -66,6 +65,11 @@ test('Studio exporta archivos SVG, PNG, WebP, ZIP y texto con contenido real',as
  const files=zipEntries(file.bytes);expect([...files.keys()].sort()).toEqual(['cuadrado.svg','historias.svg','texto-alternativo.txt','vertical.svg']);
  for(const name of ['cuadrado.svg','historias.svg','vertical.svg'])expect(files.get(name).toString()).toContain('<svg');
  expect(files.get('texto-alternativo.txt').toString().length).toBeGreaterThan(30);
+ await page.locator('#formato-comparacion').selectOption('carrusel');
+ file=await downloadBytes(page,page.locator('[data-descargar-comparacion="svg"]').first());
+ const slides=zipEntries(file.bytes);expect(slides.size).toBe(2);for(const bytes of slides.values())expect(bytes.toString()).toContain('<svg');
+ await page.locator('#tipo-mapa').selectOption('webp');await page.locator('#formato-mapa').selectOption('cuadrado');
+ file=await downloadBytes(page,page.locator('[data-descargar-mapa]'));expect(file.name).toMatch(/\.webp$/);expect(file.bytes.subarray(8,12).toString()).toBe('WEBP');
  file=await downloadBytes(page,page.locator('[data-descargar-comparacion-texto]'));expect(file.bytes.toString()).toContain('Zaragoza');
  await page.getByRole('link',{name:'Volver a Studio →',exact:true}).click();
  await page.locator('[data-resource="pizarron"]').getByRole('link').click();
