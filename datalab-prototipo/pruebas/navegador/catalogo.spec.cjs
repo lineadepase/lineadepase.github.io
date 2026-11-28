@@ -37,7 +37,7 @@ test('siete recursos de Play funcionan y permiten volver al área',async({page},
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
  for(const item of resources.filter(r=>r.areas.includes('play'))){
   await page.goto(entry+'play/');await page.locator('[data-resource="'+item.id+'"]').getByRole('link').click();await dismissCookies(page);
-  await expect(page.locator('.linea2-retorno')).toContainText('Vienes de Play');
+  await expect(page.locator('.linea2-retorno')).toContainText('Vienes de Juegos');
   if(item.id==='ciegas'){
    const card=page.locator('.reto-marcador').first();await card.locator('[name="local"]').fill('0');await card.locator('[name="visitante"]').fill('0');
    await card.getByRole('button',{name:'Comprobar mi marcador'}).click();await expect(card.locator('.marcador-ciego-revelar')).toHaveAttribute('open','');await expect(card.locator('button')).toBeDisabled();
@@ -45,7 +45,7 @@ test('siete recursos de Play funcionan y permiten volver al área',async({page},
   if(item.id==='espejo'){await page.locator('#comparar-espejo').click();await expect(page.locator('#resultado-espejo h3')).toHaveCount(2);}
   if(item.id==='reloj'){await page.locator('#selector-reloj').selectOption({index:1});await expect(page.locator('#reloj-resultado')).toContainText('Resultado final:');}
   if(item.id==='esquemas'){await page.locator('[data-elegir-fase="presion"]').click();await expect(page.locator('[data-elegir-fase="presion"]')).toHaveAttribute('aria-pressed','true');await expect(page.locator('[data-campo-nombre]')).toContainText('Presión');}
-  await page.getByRole('link',{name:'Volver a Play →',exact:true}).click();await expect(page).toHaveURL(/\/play\/$/);
+  await page.getByRole('link',{name:'Volver a Juegos →',exact:true}).click();await expect(page).toHaveURL(/\/play\/$/);
  }
  expect(errors).toEqual([]);
  await page.goto('/marcador-a-ciegas/?ldp_origen=https://example.com/');await expect(page.locator('.linea2-retorno')).toHaveCount(0);

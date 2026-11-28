@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   const origin=new URLSearchParams(location.search).get('ldp_origen');
-  const names={datalab:'DataLab',museo:'Museo',play:'Play',zaragoza:'Zaragoza',pro:'Pro',studio:'Studio',media:'Media'};
+  const names={datalab:'DataLab',museo:'Museo',play:'Juegos',zaragoza:'Zaragoza',pro:'Pro',studio:'Studio',media:'Media'};
   const script=document.currentScript,main=document.querySelector('main');
   if(!Object.hasOwn(names,origin)||!script?.src||!main)return;
   const root=new URL('../',script.src);

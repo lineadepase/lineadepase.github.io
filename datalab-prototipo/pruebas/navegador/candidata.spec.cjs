@@ -37,7 +37,7 @@ test('candidata conserva las 58 rutas previas y prepara metadatos de las nuevas'
  await page.goto('/contacto/');await expect(page).toHaveURL(url=>url.pathname==='/sobre-mi/'&&url.hash==='#contacto');
  await page.goto('/play/');await page.locator('[data-resource="ciegas"]').getByRole('link').click();
  await expect(page.locator('[data-preferencias-cookies]')).toBeVisible();const panel=page.locator('section.consentimiento');if(await panel.isVisible())await panel.getByRole('button',{name:'Rechazar',exact:true}).click();
- await page.getByRole('link',{name:'Volver a Play →',exact:true}).click();await expect(page).toHaveURL(url=>url.pathname==='/play/');
+ await page.getByRole('link',{name:'Volver a Juegos →',exact:true}).click();await expect(page).toHaveURL(url=>url.pathname==='/play/');
  expect(errors).toEqual([]);
 });
 
