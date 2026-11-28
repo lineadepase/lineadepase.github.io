@@ -55,7 +55,7 @@ test('Studio exporta archivos SVG, PNG, WebP, ZIP y texto con contenido real',as
  await page.goto(entry+'studio/');await page.locator('[data-resource="archivo-visual"]').getByRole('link').click();await dismissCookies(page);
  await expect(page.locator('.linea2-retorno')).toContainText('Studio');
  await page.locator('#formato-comparacion').selectOption('apaisado');
- let file=await downloadBytes(page,page.locator('[data-descargar-comparacion="svg"]').first());
+ let file=await downloadBytes(page,page.locator('[data-descargar-comparacion="svg"]:visible').first());
  expect(file.name).toMatch(/\.svg$/);expect(file.bytes.toString()).toContain('<svg');expect(file.bytes.toString()).toContain('<desc');
  file=await downloadBytes(page,page.locator('[data-descargar-comparacion="png"]').first());
  expect(file.bytes.subarray(0,8)).toEqual(Buffer.from([137,80,78,71,13,10,26,10]));expect(file.bytes.readUInt32BE(16)).toBe(1200);expect(file.bytes.readUInt32BE(20)).toBe(630);
@@ -66,7 +66,7 @@ test('Studio exporta archivos SVG, PNG, WebP, ZIP y texto con contenido real',as
  for(const name of ['cuadrado.svg','historias.svg','vertical.svg'])expect(files.get(name).toString()).toContain('<svg');
  expect(files.get('texto-alternativo.txt').toString().length).toBeGreaterThan(30);
  await page.locator('#formato-comparacion').selectOption('carrusel');
- file=await downloadBytes(page,page.locator('[data-descargar-comparacion="svg"]').first());
+ file=await downloadBytes(page,page.locator('[data-descargar-comparacion="svg"]:visible').first());
  const slides=zipEntries(file.bytes);expect(slides.size).toBe(2);for(const bytes of slides.values())expect(bytes.toString()).toContain('<svg');
  await page.locator('#tipo-mapa').selectOption('webp');await page.locator('#formato-mapa').selectOption('cuadrado');
  file=await downloadBytes(page,page.locator('[data-descargar-mapa]'));expect(file.name).toMatch(/\.zip$/);const mapPages=zipEntries(file.bytes);expect(mapPages.size).toBe(2);for(const bytes of mapPages.values())expect(bytes.subarray(8,12).toString()).toBe('WEBP');
