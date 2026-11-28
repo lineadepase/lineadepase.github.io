@@ -1,5 +1,7 @@
 # Línea de Pase 2.0: revisión de la candidata
 
+Revisión posterior: [nueva identidad y Museo histórico](linea2-revision-identidad.md). Esa revisión sustituye el diseño descrito en este informe base.
+
 Fecha: 28 de noviembre de 2026. Estado: paquete D completado y candidata verificada. No publicada.
 
 ## Qué se está revisando

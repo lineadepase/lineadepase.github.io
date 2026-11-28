@@ -12,7 +12,7 @@ El inventario inicial registró 62 páginas HTML y 58 URLs en sitemap. Tras sepa
 
 ## Alcance del estreno
 
-Entran las ocho áreas, los cinco experimentos didácticos, las dos salas del Museo, el trivial de nueve preguntas, los juegos existentes revisados, el seguimiento del Zaragoza, los generadores existentes, los cuadernos y el pasaporte local. El estreno se apoya en contenidos y datos que ya existen; las discrepancias se muestran y los valores ausentes no se completan por inferencia.
+Entran las ocho áreas, los cinco experimentos didácticos, la exposición histórica y la galería de dos obras del Museo, el trivial de nueve preguntas, los juegos existentes revisados, el seguimiento del Zaragoza, los generadores existentes, los cuadernos y el pasaporte local. El estreno se apoya en contenidos y datos que ya existen; las discrepancias se muestran y los valores ausentes no se completan por inferencia.
 
 Quedan fuera del primer estreno: un xG universal entrenado, la investigación de fortaleza «Los puntos engañan», cuentas, pagos, suscripciones, clasificación multijugador y sincronización en la nube. Los cuatro últimos no son compromisos de desarrollo posteriores: no forman parte del alcance actual. No se exige crear más vídeos, artículos o salas para poder cerrar esta primera versión.
 
@@ -25,8 +25,8 @@ La portada debe orientar y ofrecer los tres recorridos existentes: curiosidad, Z
 | Etiqueta de navegación | Entrada prevista al publicar | Decisión |
 | --- | --- | --- |
 | DataLab | `/datalab/` | Nueva entrada para experimentos y proyectos; enlaza las investigaciones en sus URLs actuales. |
-| Museo | `/museo/` | Nueva entrada para salas y lectura de obras; utiliza los gráficos reales y la galería existente. |
-| Play | `/play/` | Nueva entrada para trivial y catálogo de juegos, con instrucciones y retorno. |
+| Museo | `/museo/` | Entrada histórica con cronología y datos de época; conserva las obras actuales en una galería complementaria. |
+| Juegos | `/play/` | Nueva entrada para trivial y catálogo de juegos, con instrucciones y retorno. |
 | Zaragoza | `/zaragoza/` | Orientación, cobertura y explorador; conserva el seguimiento completo en `/proyectos/real-zaragoza/`. |
 | Pro | `/pro/` | Cuaderno, métodos y acceso al perfil y trabajos en `/seleccion/`. No es un servicio de pago. |
 | Studio | `/studio/` | Nueva entrada de selección y redacción; los generadores siguen en `/archivo-visual/` y sus rutas existentes. |
@@ -43,7 +43,7 @@ Las URLs existentes no se renombrarán para que coincidan con las etiquetas del 
 | --- | --- | --- |
 | DataLab | xG divulgativo, xT, perfiles de Liga F, fútbol femenino y conceptos | Separar proyectos reales de modelos didácticos; incorporar acceso al proyecto de perfiles, que no está destacado en el prototipo. |
 | Museo | Redes de España, superficie xT, galería y archivo visual | Mantener obra, contexto, fuente y metodología; evitar duplicar la biblioteca de descargas. |
-| Play | Marcador a ciegas, Partidos espejo, Reloj del marcador, Balance de preguntas, Preguntas del partido, Mapa de lo que cambió y Esquemas del juego | Revisar qué hace realmente cada pieza, añadir entrada e instrucciones coherentes y probar sus recorridos. No presentar todas como juegos competitivos. |
+| Juegos | Marcador a ciegas, Partidos espejo, Reloj del marcador, Balance de preguntas, Preguntas del partido, Mapa de lo que cambió y Esquemas del juego | Revisar qué hace realmente cada pieza, añadir entrada e instrucciones coherentes y probar sus recorridos. No presentar todas como juegos competitivos. |
 | Zaragoza | Panel, jornadas, previas, evolución, plantilla, grupo, simulación y goles en vídeo | Ordenar accesos, comprobar corte y discrepancias; mantener exportaciones y enlaces a las fuentes. |
 | Pro | Selección, proyectos, sobre mí, conceptos y herramientas | Presentar propósito, métodos y resultados demostrables, con acceso al cuaderno de investigación. |
 | Studio | Archivo visual, entrega de jornada y pizarrón | Verificar los formatos de descarga y el traslado Zaragoza → redacción; conservar texto alternativo y datos de cobertura. |
@@ -167,3 +167,10 @@ Se inspeccionaron los catálogos de Play y Media en escritorio y Play y DataLab 
 La ejecución [46151963572](https://github.com/lineadepase/lineadepase.github.io/actions/runs/46151963572), sobre `29db3ee`, terminó correctamente: **412 comprobaciones** (45 de lógica, 19 de generación y 116 de navegador por motor en Chromium, Firefox y WebKit). Los cuatro tamaños son 1440, 820, 390 y 320 píxeles. Se verifican recorridos, cálculos, descargas reales, notas, rutas y accesibilidad automática. No equivale a una certificación de accesibilidad ni a una prueba de todos los dispositivos físicos.
 
 La copia independiente conserva las 58 URLs previas y prepara 65 indexables; supera la auditoría de 79 páginas y 3.496 enlaces y recursos locales. El informe [de candidata](linea2-candidata.md) registra fuentes, cortes, ajustes de rutas, correcciones y límites. Se han revisado capturas de escritorio y móvil y la impresión sobre blanco. No hay dispositivo accesible por ADB. La edición pública, main y el sitemap del árbol de desarrollo permanecen sin activar.
+
+
+## Revisión posterior de identidad
+
+Por indicación del usuario, la portada incorpora más carácter y las ocho entradas expresan su temática en toda la página. El Museo se orienta a historia del fútbol con fuentes; Juegos sustituye al nombre visible Play sin cambiar su URL ni el progreso guardado. [Informe de la revisión](linea2-revision-identidad.md). Se mantiene pendiente la aprobación de publicación.
+
+La ejecución [46154179127](https://github.com/lineadepase/lineadepase.github.io/actions/runs/46154179127), sobre `fdec239`, terminó correctamente: **412 comprobaciones** (45 de lógica, 19 de generación y 116 por motor en Chromium, Firefox y WebKit). Los cuatro tamaños comprobados son 1440, 820, 390 y 320 píxeles. Las diez comprobaciones locales de candidata y las pruebas dirigidas de ratón y teclado también pasan.

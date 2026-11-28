@@ -13,8 +13,8 @@ El paquete A de cierre (alcance, inventario y estructura) está completado. El p
 | Área | Contenido y comportamiento |
 | --- | --- |
 | DataLab | Cinco experimentos: simulador, distribución binomial, intervalo de Wilson, comparación de escenarios y secuencia de probabilidades distintas. Modelos didácticos con supuestos explícitos. |
-| Museo | Dos salas con gráficos existentes, pistas, contraste y cuaderno descargable de observación, interpretación y comprobaciones. |
-| Play | Trivial de nueve preguntas en tres rondas, con explicación, recuento y reinicio; acceso a los juegos ya existentes. |
+| Museo | Exposición histórica «El juego que cambia», cronología de cuatro hitos y comparación de formatos 1991/2023; galería complementaria de dos obras y cuaderno descargable. |
+| Juegos (`/play/`) | Trivial de nueve preguntas en tres rondas, con explicación, recuento y reinicio; acceso a los juegos ya existentes. |
 | Zaragoza | Último resultado anterior al corte y explorador de liga con filtros de sede, resultado y cobertura; medias con tamaño de muestra, tabla enlazada a las fichas y CSV de la selección. |
 | Pro | Guía del proceso, acceso a recursos y ficha de investigación con guardado local explícito, recuperación, descarga y borrado. |
 | Studio | Comparador y mapa de temporada conectados a los generadores existentes; borrador descargable de publicación con traslado de la pareja elegida en Zaragoza. |
@@ -190,3 +190,10 @@ Cierre del paquete C: ejecución [46129942787](https://github.com/lineadepase/li
 La ejecución [46151963572](https://github.com/lineadepase/lineadepase.github.io/actions/runs/46151963572), sobre `29db3ee`, terminó correctamente: **412 comprobaciones** (45 de lógica, 19 de generación y 116 de navegador por motor en Chromium, Firefox y WebKit). Los cuatro tamaños son 1440, 820, 390 y 320 píxeles. Se verifican recorridos, cálculos, descargas reales, notas, rutas y accesibilidad automática. No equivale a una certificación de accesibilidad ni a una prueba de todos los dispositivos físicos.
 
 Informe de cierre y límites: [candidata](linea2-candidata.md). Las ocho entradas finales se preparan fuera del repositorio; no se han activado en la web pública. La regeneración completa se ha probado en esa copia.
+
+
+## Revisión de identidad por indicación del usuario
+
+Se rehace la portada con verde de campo y se da identidad de página completa a las ocho áreas. Museo pasa a abrir con historia del fútbol y sus datos; las obras analíticas se conservan como galería complementaria. Play pasa a llamarse Juegos de forma visible y conserva rutas e identificadores guardados. Detalles y fuentes: [revisión de identidad](linea2-revision-identidad.md). La candidata previa sigue sin aprobación de publicación.
+
+La ejecución [46154179127](https://github.com/lineadepase/lineadepase.github.io/actions/runs/46154179127), sobre `fdec239`, terminó correctamente: **412 comprobaciones** (45 de lógica, 19 de generación y 116 por motor en Chromium, Firefox y WebKit). Los cuatro tamaños comprobados son 1440, 820, 390 y 320 píxeles. Las diez comprobaciones locales de candidata y las pruebas dirigidas de ratón y teclado también pasan.
