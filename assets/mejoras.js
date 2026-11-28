@@ -101,7 +101,7 @@
   const contextMeta=document.querySelector('meta[name="grafico-contexto"]')?.content||document.querySelector('.corte-visible')?.textContent||'';
   const matchContext=document.querySelector('.ficha-marcador .mp-cab span')?.textContent.trim()||'';
   function passport(container,title,description,sample){
-    if(!container||container.querySelector(':scope > .pasaporte-cifra'))return;
+    if(!container||container.querySelector(':scope > .pasaporte-cifra,:scope > dd > .pasaporte-cifra'))return;
     const key=title.trim().toLocaleLowerCase('es');
     const details=document.createElement('details');details.className='pasaporte-cifra';
     const summary=document.createElement('summary');summary.textContent='Contexto de la cifra';details.append(summary);
@@ -118,7 +118,8 @@
     if((key.includes('tiros')||key==='tiros')&&window.location.pathname.endsWith('/jornada-9.html')){
       const review=document.createElement('p');const link=document.createElement('a');link.href='/datos-en-revision/#tiros-j9';link.textContent='Consultar la diferencia entre fuentes de la J9';review.append(link);content.append(review);
     }
-    details.append(content);container.append(details);
+    details.append(content);
+    if(container.classList.contains('mp-stat')){const definition=document.createElement('dd');definition.className='pasaporte-cifra-dd';definition.append(details);container.append(definition);}else container.append(details);
   }
   document.querySelectorAll('.mp-stat').forEach(row=>{
     const label=row.querySelector('dt');if(!label)return;

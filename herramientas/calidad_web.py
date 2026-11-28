@@ -161,7 +161,7 @@ def imagenes(raw, page, root=ROOT):
 def build(root=ROOT):
     changed=0
     for page in root.rglob('*.html'):
-        if any(x in ('.git','analisis') for x in page.relative_to(root).parts):continue
+        if any(x in ('.git','analisis','node_modules','playwright-report','test-results') for x in page.relative_to(root).parts):continue
         original=page.read_bytes()
         newline='\r\n' if b'\r\n' in original else '\n'
         raw=original.decode('utf-8')

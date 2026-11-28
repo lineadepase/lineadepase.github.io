@@ -10,6 +10,11 @@ on:
       - 'datos/zaragoza.json'
       - 'datos/linea2-catalogo.json'
       - 'assets/experiencia.js'
+      - 'assets/mejoras.js'
+      - 'assets/pasaporte-cifra.css'
+      - 'videos/index.html'
+      - 'herramientas/actualizar_exploracion.py'
+      - 'herramientas/auditar_canonicos.py'
       - 'archivo-visual/index.html'
       - 'herramientas/actualizar_seo.py'
       - '.github/workflows/datalab-prototipo.yml'
@@ -23,6 +28,11 @@ on:
       - 'datos/zaragoza.json'
       - 'datos/linea2-catalogo.json'
       - 'assets/experiencia.js'
+      - 'assets/mejoras.js'
+      - 'assets/pasaporte-cifra.css'
+      - 'videos/index.html'
+      - 'herramientas/actualizar_exploracion.py'
+      - 'herramientas/auditar_canonicos.py'
       - 'archivo-visual/index.html'
       - 'herramientas/actualizar_seo.py'
       - '.github/workflows/datalab-prototipo.yml'
@@ -41,10 +51,18 @@ jobs:
       - run: git diff --exit-code -- datalab-prototipo assets/linea2.js assets/linea2-experiencias.js assets/linea2-cuaderno.js
       - run: python herramientas/auditar_enlaces.py
       - run: python -m unittest discover -s herramientas/pruebas -p test_linea2.py
+      - run: python herramientas/linea2_datos.py
   navegador:
     needs: probabilidad
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        motor: [chromium, firefox, webkit]
+    env:
+      LDP_ENGINE: ${{ matrix.motor }}
+      LDP_CANDIDATE_DIR: ${{ runner.temp }}/linea2-candidata
     defaults:
       run:
         working-directory: datalab-prototipo/pruebas/navegador
@@ -59,13 +77,17 @@ jobs:
         with:
           python-version: '3.12'
       - run: npm ci --ignore-scripts --no-audit --no-fund
-      - run: npx playwright install --with-deps chromium
+      - run: npx playwright install --with-deps ${{ matrix.motor }}
+      - run: python herramientas/linea2_candidata.py --destino "$LDP_CANDIDATE_DIR"
+        working-directory: ${{ github.workspace }}
+      - run: python "$LDP_CANDIDATE_DIR/herramientas/auditar_canonicos.py"
+      - run: python "$LDP_CANDIDATE_DIR/herramientas/auditar_enlaces.py"
       - run: npm test
       - name: Conservar informe y capturas
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: revision-navegador-${{ github.sha }}
+          name: revision-navegador-${{ matrix.motor }}-${{ github.sha }}
           path: |
             datalab-prototipo/pruebas/navegador/playwright-report/
             datalab-prototipo/pruebas/navegador/test-results/

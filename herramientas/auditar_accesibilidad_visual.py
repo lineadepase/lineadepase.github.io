@@ -207,6 +207,7 @@ def audit_control_names() -> int:
     page_count = 0
     problems = []
     for path in sorted(ROOT.rglob("*.html")):
+        if set(path.relative_to(ROOT).parts)&{".git","node_modules","playwright-report","test-results"}:continue
         parser = ControlNameParser()
         parser.feed(path.read_text(encoding="utf-8"))
         page_count += 1
@@ -247,6 +248,7 @@ def audit_link_names() -> tuple[int, int]:
 
     page_count, link_count, problems = 0, 0, []
     for path in sorted(ROOT.rglob("*.html")):
+        if set(path.relative_to(ROOT).parts)&{".git","node_modules","playwright-report","test-results"}:continue
         parser = LinkNameParser()
         parser.feed(path.read_text(encoding="utf-8"))
         page_count += 1

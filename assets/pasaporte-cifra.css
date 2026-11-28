@@ -5,3 +5,4 @@
 .pasaporte-cifra-contenido p{margin:.25rem 0}.pasaporte-cifra-contenido a{font-weight:650}
 .mp-stat .pasaporte-cifra{font-weight:400}.kpi .pasaporte-cifra{display:block;font-size:.82rem}
 .mp-stat>.pasaporte-cifra{grid-column:1/-1;justify-self:start}
+.mp-stat>.pasaporte-cifra-dd{grid-column:1/-1;margin:0;min-width:0}

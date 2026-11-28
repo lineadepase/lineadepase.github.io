@@ -110,11 +110,18 @@ def build():
     from actualizar_exploracion import build as exploracion
     exploracion()
     actualizar_linea2()
+    if (ROOT / '.linea2-publicada.json').exists():
+        from linea2_candidata import render_release
+        render_release(ROOT, ROOT)
     output = ROOT / 'assets' / 'compartir'
     output.mkdir(parents=True, exist_ok=True)
     files = [ROOT / 'index.html']
     for folder in ['proyectos', 'sobre-mi', 'videos', 'contacto', 'archivo', 'archivo-visual', 'conceptos', 'comparador', 'seleccion', 'novedades', 'mapa-grupo', 'herramientas', 'tras-la-jornada', 'privacidad', 'preguntas-del-partido', 'marcador-a-ciegas', 'datos-en-revision', 'partidos-espejo', 'reloj-del-marcador', 'pizarron-de-una-jugada', 'balance-de-preguntas', 'mapa-de-lo-que-cambio', 'esquemas-del-juego', 'galeria-visual']:
         files.extend(sorted((ROOT / folder).rglob('*.html')))
+    if (ROOT / '.linea2-publicada.json').exists():
+        from linea2_candidata import AREAS
+        for area in AREAS:
+            files.append(ROOT / area / 'index.html')
     urls = []
     manifest = []
     for file in files:
@@ -126,6 +133,8 @@ def build():
         if head.redirect or head.noindex:
             continue
         path = file.relative_to(ROOT).as_posix()
+        if (ROOT / '.linea2-publicada.json').exists() and (path=='index.html' or path.split('/')[0] in AREAS):
+            raw = re.sub(r'<meta\b[^>]*(?:property|name)=["\'](?:og:[^"\']+|twitter:[^"\']+)["\'][^>]*>\s*', '', raw, flags=re.I)
         # GitHub Pages redirige /carpeta/index.html a /carpeta/. Declara y
         # publica siempre la URL limpia para evitar enviar redirecciones a Google.
         if path == 'index.html':
@@ -237,7 +246,8 @@ def build():
             tags.insert(-1, '<script type="application/ld+json">' + json.dumps(
                 {'@context': 'https://schema.org', '@graph': graph}, ensure_ascii=False) + '</script>')
         raw = raw.replace('</head>', nl.join(tags) + nl + '</head>', 1)
-        raw = incorporar_etiqueta(raw)
+        if not ((ROOT / '.linea2-publicada.json').exists() and (path=='index.html' or path.split('/')[0] in AREAS)):
+            raw = incorporar_etiqueta(raw)
         file.write_text(raw, encoding='utf-8', newline='')
         urls.append(url)
         manifest.append({'path': path, 'url': url, 'image': image_path})

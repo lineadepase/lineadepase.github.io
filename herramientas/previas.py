@@ -397,6 +397,10 @@ def ordenar(entries, hoy):
 
 
 def portada(root=ROOT, hoy=None):
+    if (root / '.linea2-publicada.json').exists():
+        if 'data-release="2"' not in (root / 'index.html').read_text(encoding='utf-8'):
+            raise ValueError('La portada 2.0 debe regenerarse antes de sincronizar las previas')
+        return  # El inicio orienta hacia Zaragoza; las fichas y calendarios siguen sincronizándose.
     entries = registro(root)
     hoy = hoy or datetime.now(ZoneInfo('Europe/Madrid')).date().isoformat()
     cards = []

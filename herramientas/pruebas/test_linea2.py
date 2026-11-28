@@ -162,5 +162,48 @@ class CatalogueTests(unittest.TestCase):
                 file.write_text(json.dumps(dict(version=1,recursos=[item|dict(url=invalid)])),encoding='utf-8')
                 with self.subTest(url=invalid),self.assertRaises(ValueError):catalog.load_catalogue(root)
 
+class CandidateTests(unittest.TestCase):
+    def test_rutas_y_metadatos_preparados_sin_activar_la_web(self):
+        from linea2_candidata import public_html
+        source=(module.R/'datalab-prototipo/play/index.html').read_text(encoding='utf-8')
+        output=public_html(source,'play','Retos y lecturas con contexto.')
+        self.assertIn('href="https://lineadepase.com/play/"',output)
+        self.assertIn('content="index,follow"',output)
+        self.assertIn('ldp_vista=publica',output)
+        self.assertNotIn('entrada de desarrollo',output)
+        self.assertIn('content="noindex,nofollow"',source)
+        self.assertIn('content="noindex,follow"',public_html(source,'pasaporte','Recorrido local.'))
+
+    def test_previas_conserva_la_portada_nueva_y_exige_su_marca(self):
+        import previas
+        with TemporaryDirectory() as temp:
+            root=Path(temp);(root/'.linea2-publicada.json').write_text('{"version":2}',encoding='utf-8')
+            (root/'index.html').write_text('<body data-release="2">Inicio por recorridos</body>',encoding='utf-8')
+            previas.portada(root)
+            self.assertIn('Inicio por recorridos',(root/'index.html').read_text(encoding='utf-8'))
+            (root/'index.html').write_text('Edición incorrecta',encoding='utf-8')
+            with self.assertRaises(ValueError):previas.portada(root)
+
+    def test_preparacion_no_sobrescribe_destinos_ni_el_repositorio(self):
+        from linea2_candidata import prepare
+        with self.assertRaises(ValueError):prepare(module.R,module.R/'candidata')
+        with TemporaryDirectory() as temp:
+            destination=Path(temp);(destination/'conservar.txt').write_text('Conservar',encoding='utf-8')
+            with self.assertRaises(ValueError):prepare(module.R,destination)
+            self.assertEqual((destination/'conservar.txt').read_text(encoding='utf-8'),'Conservar')
+
+    def test_datos_coinciden_con_su_origen_y_los_cortes_se_explican(self):
+        import linea2_datos
+        report=linea2_datos.audit(module.R)
+        self.assertEqual(report['errores'],[])
+        self.assertEqual(report['resultados'],13)
+        self.assertEqual(report['fichas_completas'],6)
+        self.assertEqual(report['fichas_pendientes'],[1,3,9,10,11,12,13])
+        data=json.loads((module.R/'datos/zaragoza.json').read_text(encoding='utf-8'))
+        group=json.loads((module.R/'datos/comparador-grupo2.json').read_text(encoding='utf-8'))
+        note=linea2_datos.coverage_note(data,group)
+        self.assertIn('jornada 8',note);self.assertIn('jornada 13',note)
+        self.assertIn('6 fichas',note)
+
 if __name__ == '__main__':
     unittest.main()

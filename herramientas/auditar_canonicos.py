@@ -85,8 +85,7 @@ def revisar_sitemap(indexables):
 
 def revisar():
     paginas = [p for p in ROOT.rglob('*.html')
-               if '.git' not in p.relative_to(ROOT).parts
-               and 'analisis' not in p.relative_to(ROOT).parts]
+               if not set(p.relative_to(ROOT).parts)&{'.git','analisis','node_modules','playwright-report','test-results'}]
     errores = []
     comprobadas = 0
     indexables = []

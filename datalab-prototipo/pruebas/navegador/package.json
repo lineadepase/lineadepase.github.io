@@ -2,6 +2,11 @@
   "name": "linea-de-pase-browser-tests",
   "private": true,
   "version": "1.0.0",
-  "scripts": { "test": "playwright test" },
-  "devDependencies": { "@playwright/test": "1.65.1" }
+  "scripts": {
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.1",
+    "@playwright/test": "1.65.1"
+  }
 }

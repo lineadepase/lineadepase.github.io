@@ -11,7 +11,8 @@
   aside.className='linea2-retorno';aside.setAttribute('aria-label','Continuar mi recorrido');
   aside.style.cssText='padding:16px;margin:16px 0 24px;border:1px solid currentColor';
   label.textContent='Vienes de '+names[origin]+' · Prototipo Línea de Pase 2.0';
-  link.href=new URL('datalab-prototipo/'+origin+'/',root).href;link.className='boton';link.textContent='Volver a '+names[origin]+' →';
+  const prefix=new URLSearchParams(location.search).get('ldp_vista')==='publica'?'':'datalab-prototipo/';
+  link.href=new URL(prefix+origin+'/',root).href;link.className='boton';link.textContent='Volver a '+names[origin]+' →';
   aside.append(label,link);main.prepend(aside);
 })();
 (() => {
