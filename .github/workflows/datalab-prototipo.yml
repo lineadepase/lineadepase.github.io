@@ -62,7 +62,6 @@ jobs:
         motor: [chromium, firefox, webkit]
     env:
       LDP_ENGINE: ${{ matrix.motor }}
-      LDP_CANDIDATE_DIR: ${{ runner.temp }}/linea2-candidata
     defaults:
       run:
         working-directory: datalab-prototipo/pruebas/navegador
@@ -77,6 +76,8 @@ jobs:
         with:
           python-version: '3.12'
       - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Ubicar candidata independiente
+        run: echo "LDP_CANDIDATE_DIR=$RUNNER_TEMP/linea2-candidata" >> "$GITHUB_ENV"
       - run: npx playwright install --with-deps ${{ matrix.motor }}
       - run: python herramientas/linea2_candidata.py --destino "$LDP_CANDIDATE_DIR"
         working-directory: ${{ github.workspace }}
