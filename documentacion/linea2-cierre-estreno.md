@@ -6,7 +6,7 @@ Estado del 28 de noviembre de 2026. Rama `desarrollo/linea-de-pase-2`.
 
 Hay un prototipo funcional de ocho áreas en `/datalab-prototipo/`, con catorce accesos directos a experiencias y herramientas. No es todavía la sustitución de la web pública. Se conserva la portada actual y el prototipo lleva `noindex,nofollow`.
 
-La última versión funcional supera 138 pruebas: 45 de lógica, 13 de generación y 80 de Chromium en cuatro tamaños. No significa que todas las páginas históricas hayan pasado pruebas completas de interacción, ni que Safari, Firefox o dispositivos físicos estén revisados.
+La última versión funcional supera 156 pruebas: 45 de lógica, 15 de generación y 96 de Chromium en cuatro tamaños. No significa que todas las páginas históricas hayan pasado pruebas completas de interacción, ni que Safari, Firefox o dispositivos físicos estén revisados.
 
 El inventario inicial registró 62 páginas HTML y 58 URLs en sitemap. Tras separar las áreas, hay 71 páginas HTML: las 62 anteriores más ocho entradas y un inicio de desarrollo. El sitemap público sigue con 58 URLs. Hay siete páginas asignadas a Play, cinco a DataLab, dos a Museo, dos a Studio, tres a Pro, tres a Media, 34 a Zaragoza, cinco transversales y el prototipo. Esta clasificación indica el área principal: un recurso puede enlazarse desde varias áreas sin duplicarlo. El inventario no acredita la vigencia de cada contenido.
 
@@ -73,17 +73,17 @@ Generadores existentes: `actualizar_exploracion.py`, `actualizar_publicacion_jor
 
 Se cierra cuando las ocho áreas tienen una entrada funcional en desarrollo y los recorridos no dependen de la página larga actual. Las rutas finales siguen sin activarse.
 
-### C. Integrar catálogo y presentación — siguiente
+### C. Integrar catálogo y presentación — completado
 
-- [ ] Completar el catálogo de proyectos, juegos y vídeos con los recursos inventariados.
-- [ ] Aplicar los ambientes acordados a las entradas y a los puntos de transición; conservar gráficos y datos legibles.
-- [ ] Revisar instrucciones, fuentes, corte y límites de cada recurso incluido.
-- [ ] Verificar las descargas que se anuncian: SVG, PNG, WebP, ZIP y textos según la herramienta.
-- [ ] Revisar la regeneración: las actualizaciones habituales no deben borrar la estructura 2.0.
+- [x] Completar el catálogo de proyectos, juegos y vídeos con los recursos inventariados.
+- [x] Aplicar los ambientes acordados a las entradas y a los puntos de transición; conservar gráficos y datos legibles.
+- [x] Revisar instrucciones, fuentes, corte y límites de cada recurso incluido.
+- [x] Verificar las descargas que se anuncian: SVG, PNG, WebP, ZIP y textos según la herramienta.
+- [x] Revisar la regeneración: las actualizaciones habituales no deben borrar la estructura 2.0.
 
 Se cierra cuando cada recurso del estreno tiene una ubicación, una entrada comprensible y un recorrido probado. No exige nuevas investigaciones.
 
-### D. Datos, SEO y revisión final — después de C
+### D. Datos, SEO y revisión final — siguiente
 
 - [ ] Resolver o etiquetar cada discrepancia relevante; no convertir datos ausentes en ceros.
 - [ ] Preparar metadatos, sitemap y entradas finales conservando las 58 URLs actuales del mapa, salvo corrección justificada registrada.
@@ -111,7 +111,7 @@ El informe no certifica disponibilidad en Internet de cada enlace externo ni act
 
 ## Seguimiento y estimación
 
-A y B están completados. Quedan tres paquetes: C, D y E. C es el siguiente: integrar catálogo y presentación. El avance se informa por condiciones de cierre, no por número de herramientas añadidas o cantidad de pruebas.
+A, B y C están completados. Quedan dos paquetes: D, revisión final y candidata; E, aprobación y publicación. El avance se informa por condiciones de cierre, no por número de herramientas añadidas o cantidad de pruebas.
 
 La referencia anterior de 5–8 jornadas efectivas era una estimación provisional del cierre completo, no una fecha comprometida. El inventario concreta el alcance, pero aún falta implementar B para medir el coste de separación y continuidad; no se reduce esa estimación por haber terminado solo la documentación. La separación de B está resuelta y verificada. No se asigna una fecha de publicación por el número de pruebas: la siguiente estimación depende de revisar las herramientas históricas en C y los navegadores pendientes en D.
 
@@ -136,3 +136,27 @@ La ejecución [46128006801](https://github.com/lineadepase/lineadepase.github.io
 Se revisaron las capturas del nuevo inicio en escritorio y móvil estrecho, los ocho ambientes en escritorio, Studio y Pro en móvil estrecho y Zaragoza en tablet simulada. La primera revisión detectó títulos del directorio móvil demasiado estrechos; se corrigió su disposición y la segunda ejecución incorporó una comprobación de ancho disponible. Las capturas largas desactivan temporalmente la posición fija del menú para evitar superposiciones de la captura; la navegación se comprueba con su comportamiento habitual.
 
 Las auditorías locales verifican 71 páginas, 3.212 enlaces y recursos locales y 153 imágenes sin incidencias, 70 páginas con canonical correcto y las mismas 58 entradas indexables del sitemap. No se ha revisado una tablet física ni completado Firefox y WebKit. No se ha publicado ni fusionado main.
+
+
+## Implementación del paquete C
+
+El catálogo único `datos/linea2-catalogo.json` reúne 35 recursos existentes. Cada entrada indica qué hacer, su tipo, contexto y límites, y las áreas desde las que se ofrece. Los perfiles de Liga F se incorporan a DataLab. Play distingue siete recursos: reto de marcador, comparador, reloj, esquema y tres lecturas o registros editoriales. Media ofrece las tres piezas audiovisuales existentes más archivo y novedades; no presenta el vídeo de construcción de xG como validación de un nuevo modelo de 2.0.
+
+Los catálogos se generan para la vista continua y las entradas separadas desde el mismo origen. Conservan sus ambientes de área y se pueden leer sin JavaScript. Las instrucciones y notas proceden de revisar las páginas locales, no de una nueva validación científica ni de una comprobación de vigencia normativa.
+
+Cuando se abre una pieza desde el catálogo, el parámetro `ldp_origen` permite mostrar un enlace para volver a su área del prototipo. Solo acepta siete nombres conocidos y construye un destino local; no copia notas ni puntuaciones. Los recursos conservan sus rutas y canonicals. Sin JavaScript, el enlace del catálogo abre el contenido original y el regreso puede hacerse con la navegación del navegador; el retorno contextual añadido requiere JavaScript.
+
+Se ejecutó `actualizar_seo.py` en una copia independiente de los archivos versionados. Finalizó correctamente y las nueve entradas de desarrollo quedaron idénticas byte a byte, incluyendo catálogos e indexación desactivada. No se trasladaron al repositorio las otras salidas regeneradas de esa copia.
+
+La revisión final de D debe comprobar vigencia y discrepancias de datos y reglas, Firefox/WebKit y dispositivos físicos cuando estén disponibles. La reproducción de vídeos de YouTube y la disponibilidad de sus servicios externos no quedan certificadas por las pruebas locales, que bloquean peticiones externas. Las instrucciones nuevas no añaden afirmaciones sobre las reglas del FVS.
+
+
+## Cierre verificado de C
+
+La ejecución [46129942787](https://github.com/lineadepase/lineadepase.github.io/actions/runs/46129942787), sobre `a6f83e6`, superó 45 pruebas de lógica, 15 de generación y 96 de navegador: 156 en total. También pasaron las cuatro suites auxiliares existentes de ampliación, consentimiento, métricas y previas, y ocho pruebas del paquete C en Chrome local para escritorio y móvil estrecho. Estas ejecuciones adicionales no se suman al total principal.
+
+Se comprobaron los 35 destinos locales, el catálogo de las siete áreas con recursos, interacción y retorno en los siete recursos de Play, los enlaces y atributos de los vídeos y los archivos descargados de Studio. La prueba de exportación inspecciona SVG, firma y dimensiones PNG de 1200 × 630, firma WebP, los cuatro archivos del kit social, las dos diapositivas del carrusel, las dos láminas WebP del mapa y el texto de comparación. No certifica reproducción de YouTube, impresión física ni todos los formatos auxiliares del taller.
+
+La primera prueba de carrusel elegía un botón del formato anterior que había quedado oculto. Se corrigió el selector para pulsar el visible. Otra ejecución detectó que el aviso de cookies interceptaba una descarga en móvil estrecho; la prueba espera la interfaz de consentimiento y rechaza la analítica antes de continuar. No se modificaron los generadores ni el comportamiento de consentimiento para superar esas pruebas.
+
+Se inspeccionaron los catálogos de Play y Media en escritorio y Play y DataLab en móvil estrecho, con contexto desplegado y enlaces completos. Las auditorías de rutas, canonicals, imágenes y accesibilidad estática siguen pasando: 71 páginas, 3.250 enlaces y recursos locales, 153 imágenes y las mismas 58 URLs del sitemap. No se ha publicado ni fusionado main. Sigue pendiente el paquete D.
