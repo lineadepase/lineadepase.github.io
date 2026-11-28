@@ -62,7 +62,8 @@ test('Studio exporta archivos SVG, PNG, WebP, ZIP y texto con contenido real',as
  expect(file.bytes.subarray(0,8)).toEqual(Buffer.from([137,80,78,71,13,10,26,10]));expect(file.bytes.readUInt32BE(16)).toBe(1200);expect(file.bytes.readUInt32BE(20)).toBe(630);
  await fs.writeFile(info.outputPath('comparacion.png'),file.bytes);
  file=await downloadBytes(page,page.locator('[data-descargar-comparacion="webp"]').first());expect(file.bytes.subarray(0,4).toString()).toBe('RIFF');expect(file.bytes.subarray(8,12).toString()).toBe('WEBP');
- await page.locator('#formato-kit').selectOption('svg');file=await downloadBytes(page,page.locator('[data-descargar-kit]'));
+ const estimateHeight=await page.locator('[data-kit-estimaciones]').evaluate(e=>e.getBoundingClientRect().height);
+ await page.locator('#formato-kit').selectOption('svg');expect(await page.locator('[data-kit-estimaciones]').evaluate(e=>e.getBoundingClientRect().height)).toBeGreaterThanOrEqual(estimateHeight-1);file=await downloadBytes(page,page.locator('[data-descargar-kit]'));
  const files=zipEntries(file.bytes);expect([...files.keys()].sort()).toEqual(['cuadrado.svg','historias.svg','texto-alternativo.txt','vertical.svg']);
  for(const name of ['cuadrado.svg','historias.svg','vertical.svg'])expect(files.get(name).toString()).toContain('<svg');
  expect(files.get('texto-alternativo.txt').toString().length).toBeGreaterThan(30);

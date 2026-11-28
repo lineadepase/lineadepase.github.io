@@ -979,10 +979,13 @@
     if(!kitEstimates)return;
     window.clearTimeout(estimateTimer);
     const run=++estimateRun;
+    // Keep the measured table space while recalculating so download controls stay put.
+    kitEstimates.style.minHeight=Math.ceil(kitEstimates.getBoundingClientRect().height)+'px';
+    kitEstimates.setAttribute('aria-busy','true');
     kitEstimates.textContent='Calculando tamaños para la pareja seleccionada…';
     estimateTimer=window.setTimeout(async()=>{
       const rowA=rounds.get(selectA?.value),rowB=rounds.get(selectB?.value);
-      if(!rowA||!rowB)return;
+      if(!rowA||!rowB){kitEstimates.setAttribute('aria-busy','false');return;}
       const metrics=rowA.dataset.completa==='1'&&rowB.dataset.completa==='1'&&Boolean(metricsToggle?.checked);
       const alt=altTextCustomized?altTextInput?.value.trim()||'':describeRows([rowA,rowB],densitySelect?.value||'completa',metrics);
       const formats=[['cuadrado',1080,1080],['vertical',1080,1350],['historias',1080,1920]];
@@ -1002,9 +1005,10 @@
         const zipFiles=['cuadrado','vertical','historias'].map(size=>({name:`${size}.${extension}`,bytes:sizeMap[size][zipType]}));
         zipFiles.push({name:'texto-alternativo.txt',bytes:new TextEncoder().encode(alt).length});
         const zipSize=zipFiles.reduce((sum,file)=>sum+(file.bytes??0)+76+2*new TextEncoder().encode(file.name).length,22);
+        kitEstimates.setAttribute('aria-busy','false');
         kitEstimates.innerHTML=`<div class="archivo-tabla-pesos"><table><thead><tr><th>Formato</th><th>SVG</th><th>PNG</th><th>WebP</th></tr></thead><tbody>${output.join('')}</tbody></table></div><p class="nota">ZIP del formato elegido (${zipType.toUpperCase()}): ${(zipSize/1024).toFixed(1)} KB, incluido el texto alternativo.</p>`;
       } catch {
-        if(run===estimateRun)kitEstimates.textContent='No se pudieron calcular todos los tamaños en este navegador.';
+        if(run===estimateRun){kitEstimates.setAttribute('aria-busy','false');kitEstimates.textContent='No se pudieron calcular todos los tamaños en este navegador.';}
       }
     },450);
   }
