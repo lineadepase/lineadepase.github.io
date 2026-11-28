@@ -69,7 +69,7 @@ test('Studio exporta archivos SVG, PNG, WebP, ZIP y texto con contenido real',as
  file=await downloadBytes(page,page.locator('[data-descargar-comparacion="svg"]').first());
  const slides=zipEntries(file.bytes);expect(slides.size).toBe(2);for(const bytes of slides.values())expect(bytes.toString()).toContain('<svg');
  await page.locator('#tipo-mapa').selectOption('webp');await page.locator('#formato-mapa').selectOption('cuadrado');
- file=await downloadBytes(page,page.locator('[data-descargar-mapa]'));expect(file.name).toMatch(/\.webp$/);expect(file.bytes.subarray(8,12).toString()).toBe('WEBP');
+ file=await downloadBytes(page,page.locator('[data-descargar-mapa]'));expect(file.name).toMatch(/\.zip$/);const mapPages=zipEntries(file.bytes);expect(mapPages.size).toBe(2);for(const bytes of mapPages.values())expect(bytes.subarray(8,12).toString()).toBe('WEBP');
  file=await downloadBytes(page,page.locator('[data-descargar-comparacion-texto]'));expect(file.bytes.toString()).toContain('Zaragoza');
  await page.getByRole('link',{name:'Volver a Studio →',exact:true}).click();
  await page.locator('[data-resource="pizarron"]').getByRole('link').click();
