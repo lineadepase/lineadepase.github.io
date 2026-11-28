@@ -11,7 +11,7 @@ sections={
 'museo':('Museo', 'El fútbol no siempre fue así.', 'Historia, reglas y cifras para entender cómo cambió el juego. Un archivo para mirar cada época en su contexto.', []),
 'play':('Juegos', 'Primero intuye. Después comprueba.', 'Retos breves para mirar el partido con otras preguntas.', []),
 'zaragoza':('Zaragoza', 'Un equipo. Muchas preguntas.', 'Seguimiento de temporada con fecha de corte, fuentes y cobertura explícitas.', []),
-'pro':('Pro', 'Del gráfico a la decisión.', 'Métodos reproducibles, fuentes y herramientas para trabajar con criterio.', []),
+'pro':('Pro', 'Del gráfico a la decisión.', 'Proyectos, fuentes y cuaderno de investigación para sostener una conclusión con evidencia.', []),
 'studio':('Studio', 'Dale forma a lo que has descubierto.', 'Crea piezas con los generadores existentes. Revisa el corte y las fuentes antes de compartir.', []),
 'media':('Media', 'El fútbol también se explica mirando.', 'Vídeos y lecturas para seguir una pregunta más allá del laboratorio.', []),
 'pasaporte':('Pasaporte', 'Tu recorrido, a tu ritmo.', 'Guarda las áreas que has explorado y una nota de aprendizaje. Solo en este navegador.', []),
@@ -111,7 +111,8 @@ def build():
   if k=='pro':
    extra='''<div class="method"><h3>De una pregunta a una conclusión verificable</h3><ol><li><strong>Formula:</strong> define qué quieres saber y qué evidencia cambiaría tu opinión.</li><li><strong>Audita:</strong> comprueba origen, licencia, fecha y cobertura de los datos.</li><li><strong>Contrasta:</strong> compara con una referencia y valida fuera de la muestra usada para ajustar.</li><li><strong>Comunica:</strong> muestra la incertidumbre, las limitaciones y el código reproducible.</li></ol><p><a href="../seleccion/">Explora los proyectos y sus métodos</a></p></div>'''
    from linea2_cuaderno import research_form
-   extra+=research_form()
+   from linea2_recorridos import professional_routes
+   extra=professional_routes()+extra+research_form()
   if k=='play':
    extra='''<div class="experiment"><div><h3>El trivial del dato</h3><p>Tres rondas temáticas de tres preguntas. Cada respuesta incluye una explicación. Cambiar de tema inicia una partida nueva; no se guarda la puntuación.</p><label for="reto-tema">Elige tu ronda</label><select id="reto-tema"><option value="intuicion">Intuición y goles esperados</option><option value="lectura">Leer el partido</option><option value="metodo">Investigar con criterio</option></select><p id="reto-progreso" role="status" tabindex="-1"></p><p id="reto-pregunta" tabindex="-1">Con dos disparos independientes al 50 %, ¿cuál es la probabilidad de marcar al menos una vez?</p><div class="answers"><button data-answer="50">50 %</button><button data-answer="75">75 %</button><button data-answer="100">100 %</button></div><p id="respuesta" aria-live="polite"></p><ol id="reto-historial" aria-label="Resultados de tus respuestas"></ol><div id="reto-resumen" hidden></div><button id="reto-siguiente" type="button" disabled>Siguiente pregunta</button><button id="reto-reiniciar" type="button">Volver a empezar</button><noscript><p>Activa JavaScript para responder. Solución del primer reto: 75 %. La probabilidad de fallar ambos es 25 %.</p></noscript></div></div>'''
   if k=='zaragoza':
@@ -123,6 +124,8 @@ def build():
    extra=snapshot(data)+note+season(data,(R/'archivo-visual/index.html').read_text(encoding='utf-8'))
   if k=='pasaporte':
    extra='''<div class="experiment"><div><noscript><p>El pasaporte necesita JavaScript para guardar tu recorrido. Puedes seguir explorando todas las áreas y sus enlaces.</p></noscript><p id="progreso" aria-live="polite"></p><progress id="pasaporte-barra" max="7" value="0" aria-label="Áreas exploradas"></progress><p><a id="pasaporte-retomar" href="#datalab">Continuar por DataLab →</a></p><div id="sellos"></div><label for="nota">¿Qué has aprendido?</label><textarea id="nota" maxlength="2000" rows="4"></textarea><p id="guardado" role="status"></p><button id="exportar">Descargar pasaporte</button><button id="borrar">Borrar mi recorrido</button><details class="passport-transfer"><summary>Llevar mi pasaporte a otro navegador</summary><p>Descarga una copia JSON y elígela en el otro dispositivo. La importación sustituye el recorrido solo cuando lo confirmas. El archivo puede contener tu nota personal; se lee en este navegador.</p><button id="pasaporte-json" type="button">Descargar copia JSON</button><label for="pasaporte-archivo">Elegir una copia de pasaporte</label><input id="pasaporte-archivo" type="file" accept=".json,application/json"><p id="pasaporte-importacion" role="status"></p><button id="pasaporte-aplicar" type="button" disabled>Sustituir mi recorrido por esta copia</button></details></div><div><h3>Un recuerdo de tu visita</h3><p>Marca cada área después de explorarla. Puedes descargar una copia y borrar tus datos cuando quieras. No se crea una cuenta ni se envían tus notas.</p></div></div>'''
+  from linea2_recorridos import purpose
+  extra=purpose(k)+extra
   if k!='pasaporte':
    siguiente=list(sections)[list(sections).index(k)+1]
    acciones=f'<div class="visit-actions"><button id="sello-{k}" type="button" aria-pressed="false" hidden>Guardar {name} en mi pasaporte</button><a href="#pasaporte">Anotar un descubrimiento</a><a href="#indice-experiencias">Ver todas las herramientas ↑</a><a href="#{siguiente}">Seguir hacia {sections[siguiente][0]} →</a></div>'
