@@ -122,3 +122,8 @@ Analytics (`G-N6J2L7P4LP`) solo se carga tras aceptar la analítica. `assets/con
 `herramientas/google_analytics.py` integra el cargador local, estilos y enlaces del pie al ejecutar `python herramientas/actualizar_seo.py`, sin duplicados. Las páginas de redirección y los fragmentos de análisis quedan excluidos. No añadir fragmentos de gtag directos a páginas o plantillas. Antes de publicar se comprueban: primera visita, rechazo, aceptación, persistencia, retirada y sincronización entre pestañas. Cloudflare, vídeos y fuentes externos son independientes de esta elección.
 
 La ampliación de gráficos se comprueba con `node herramientas/pruebas/ampliacion.test.cjs`: conserva el `viewBox` de los SVG responsivos y las dimensiones de los gráficos antiguos, permite aumentar el zoom y evita presentar puntos sin acción como botones en la copia ampliada.
+
+
+## Desarrollo de Línea de Pase 2.0
+
+La versión en desarrollo está en `desarrollo/linea-de-pase-2`, con entrada en `/datalab-prototipo/` y sin indexación. No sustituye todavía la portada pública. El [plan de cierre](documentacion/linea2-cierre-estreno.md) define alcance, estructura y paquetes pendientes; el [estado funcional](documentacion/linea-de-pase-2.md) registra las implementaciones y verificaciones. El [inventario de rutas](documentacion/linea2-inventario.md) se regenera con `python herramientas/inventario_linea2.py`, sin modificar las páginas. Publicar o fusionar main requiere aprobación del usuario.

@@ -2,17 +2,23 @@
 
 El trabajo está en `desarrollo/linea-de-pase-2`. La entrada es `/datalab-prototipo/`, con `noindex,nofollow`. No se ha sustituido la portada, publicado la web ni fusionado main. Las URLs históricas y su SEO se conservan.
 
+## Estado actual y siguiente paquete
+
+El paquete A de cierre (alcance, inventario y estructura) está completado. El trabajo inmediato es el paquete B: separar las áreas dentro del prototipo y conectar sus recorridos. El [plan de cierre del estreno](linea2-cierre-estreno.md) contiene el alcance, las rutas previstas, los criterios de aceptación y los paquetes pendientes. El [inventario](linea2-inventario.md) registra 62 páginas existentes y 58 URLs en sitemap. Ninguna de las nuevas rutas previstas se ha activado.
+
+Última validación funcional: 116 pruebas (44 de lógica, 12 de generación, 60 de Chromium). La auditoría local de canonicals, enlaces, imágenes y accesibilidad estática se ha repetido durante el inventario sin incidencias. Los apartados cronológicos posteriores conservan resultados y pendientes de etapas anteriores; no sustituyen este resumen ni el plan de cierre.
+
 ## Experiencias implementadas
 
 | Área | Contenido y comportamiento |
 | --- | --- |
-| DataLab | Simulador de disparos; distribución binomial exacta; laboratorio de tamaño de muestra e intervalo de Wilson al 95 %. Todos son modelos didácticos con supuestos explícitos. |
-| Museo | Dos salas con gráficos existentes, preguntas de observación, ampliación y lectura desplegable: redes de pases de España y superficie xT de Liga F. |
-| Play | Tres retos sobre probabilidad, xG y muestras pequeñas, con explicación, recuento y reinicio; acceso a los juegos ya existentes. |
+| DataLab | Cinco experimentos: simulador, distribución binomial, intervalo de Wilson, comparación de escenarios y secuencia de probabilidades distintas. Modelos didácticos con supuestos explícitos. |
+| Museo | Dos salas con gráficos existentes, pistas, contraste y cuaderno descargable de observación, interpretación y comprobaciones. |
+| Play | Trivial de nueve preguntas en tres rondas, con explicación, recuento y reinicio; acceso a los juegos ya existentes. |
 | Zaragoza | Último resultado anterior al corte y explorador de liga con filtros de sede, resultado y cobertura; medias con tamaño de muestra, tabla enlazada a las fichas y CSV de la selección. |
-| Pro | Guía del proceso de análisis; acceso a proyectos, dossier, herramientas, conceptos y código. |
-| Studio | Selección de jornadas desde las opciones del archivo visual; abre el generador existente con la pareja preparada y ofrece acceso al mapa de temporada. |
-| Media | Vídeo existente de xG con subtítulos integrados, lectura alternativa, fuentes y conexión al simulador, sin reproducción automática ni precarga del vídeo. |
+| Pro | Guía del proceso, acceso a recursos y ficha de investigación con guardado local explícito, recuperación, descarga y borrado. |
+| Studio | Comparador y mapa de temporada conectados a los generadores existentes; borrador descargable de publicación con traslado de la pareja elegida en Zaragoza. |
+| Media | Vídeo de xG con subtítulos y lectura alternativa; logo e intros originales del autor, sin reproducción automática ni precarga del vídeo. |
 | Pasaporte | Áreas exploradas y nota locales; descarga en texto o JSON; importación validada con confirmación explícita de sustitución; borrado con aviso si el navegador lo rechaza. |
 
 La portada del prototipo ofrece tres recorridos: curiosidad, Zaragoza y creación.
@@ -45,13 +51,13 @@ La rutina habitual `actualizar_seo.py` regenera primero la exploración existent
 
 Se prueban normalización y esperanza de la distribución, límites y simetría de Wilson, filtros, muestras incompletas, selección vacía, exportaciones, recuperación de almacenamiento, importación de pasaporte, corte temporal, seguridad del JSON incorporado y regeneración sin modificar la portada pública. Las pruebas de interfaz usan un entorno simulado; no sustituyen un navegador real.
 
-**Revisión de navegador realizada:** las 24 pruebas de Chromium han pasado en 1440, 820, 390 y 320 px. Se han inspeccionado las capturas de portada y las ocho áreas en estos tamaños, corregido la cabecera estrecha y la ocultación del enlace de salto, y repetido la ejecución con éxito. La tablet física no está accesible; los tamaños móvil/tablet son simulados. La vista previa local de esta sesión sigue sin conexión, pero la revisión se completó con los resultados del entorno de pruebas de GitHub.
+**Revisión de navegador realizada:** la última batería supera 60 pruebas de Chromium en 1440, 820, 390 y 320 px, además de las 56 pruebas de lógica y generación. Se han inspeccionado capturas de portada, áreas y nuevas experiencias; las ampliaciones registran su ejecución al final de este documento. No se ha verificado la tablet física ni se han completado Firefox y WebKit. La revisión visual se realiza mediante capturas del entorno de pruebas de GitHub, ante la falta de acceso local desde el navegador de la sesión.
 
 Las investigaciones nuevas, como «Los puntos engañan» y un xG universal entrenado, requieren datos, desarrollo y validación independientes; no se presentan como investigaciones terminadas. Las experiencias y generadores existentes mantienen su implementación y sus rutas.
 
 ## Ampliaciones anotadas
 
-El usuario propuso un trivial de fútbol para Play. Queda registrado como ampliación futura, todavía sin implementar.
+El trivial educativo está implementado: nueve preguntas en tres rondas sobre intuición, lectura del partido y método. Un trivial más amplio de historia del fútbol no está desarrollado ni se exige para cerrar el primer estreno.
 
 ## Continuidad de la visita y enlaces compartibles
 

@@ -1,0 +1,978 @@
+{
+  "descripcion": "Inventario local; clasificación editorial para 2.0, no auditoría de contenidos ni de producción.",
+  "paginas": 62,
+  "urls_sitemap": 58,
+  "por_area": {
+    "DataLab": 5,
+    "Media": 3,
+    "Museo": 2,
+    "Play": 7,
+    "Pro": 3,
+    "Prototipo": 1,
+    "Studio": 2,
+    "Transversal": 5,
+    "Zaragoza": 34
+  },
+  "rutas": [
+    {
+      "archivo": "404.html",
+      "ruta": "/404.html",
+      "area_principal": "Transversal",
+      "titulo": "Página no encontrada · Línea de pase",
+      "canonical": "",
+      "robots": "noindex,follow",
+      "en_sitemap": false,
+      "scripts": []
+    },
+    {
+      "archivo": "archivo/index.html",
+      "ruta": "/archivo/",
+      "area_principal": "Media",
+      "titulo": "Archivo de análisis · Línea de pase",
+      "canonical": "https://lineadepase.com/archivo/",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../assets/tema.js?v=20261105mapcls1",
+        "../assets/mejoras.js?v=20261104clsfix1",
+        "../assets/experiencia.js?v=20261104clsmobile1",
+        "../assets/archivo.js?v=20261027b"
+      ]
+    },
+    {
+      "archivo": "archivo-visual/index.html",
+      "ruta": "/archivo-visual/",
+      "area_principal": "Studio",
+      "titulo": "Archivo visual por jornada · Línea de pase",
+      "canonical": "https://lineadepase.com/archivo-visual/",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../assets/tema.js?v=20261105mapcls1",
+        "../assets/mejoras.js?v=20261104clsfix1",
+        "../assets/experiencia.js?v=20261104clsmobile1",
+        "../assets/vendor/qrcodegen.js",
+        "../assets/archivo-visual.js?v=20261028af"
+      ]
+    },
+    {
+      "archivo": "balance-de-preguntas/index.html",
+      "ruta": "/balance-de-preguntas/",
+      "area_principal": "Play",
+      "titulo": "Balance de preguntas · Línea de pase",
+      "canonical": "https://lineadepase.com/balance-de-preguntas/",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../assets/tema.js?v=20261105mapcls1",
+        "../assets/mejoras.js?v=20261104clsfix1",
+        "../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "comparador/index.html",
+      "ruta": "/comparador/",
+      "area_principal": "Zaragoza",
+      "titulo": "Compara dos equipos del Grupo 2 · Línea de pase",
+      "canonical": "https://lineadepase.com/comparador/",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../assets/tema.js?v=20261105mapcls1",
+        "../assets/mejoras.js?v=20261104clsfix1",
+        "../assets/experiencia.js?v=20261104clsmobile1",
+        "../assets/metricas-grupo.js?v=20261021g",
+        "../assets/comparador.js?v=20261021g"
+      ]
+    },
+    {
+      "archivo": "conceptos/index.html",
+      "ruta": "/conceptos/",
+      "area_principal": "DataLab",
+      "titulo": "Conceptos para leer el fútbol con datos · Línea de pase",
+      "canonical": "https://lineadepase.com/conceptos/",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../assets/tema.js?v=20261105mapcls1",
+        "../assets/mejoras.js?v=20261104clsfix1",
+        "../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "contacto/index.html",
+      "ruta": "/contacto/",
+      "area_principal": "Transversal",
+      "titulo": "Contacto · Línea de pase",
+      "canonical": "https://lineadepase.com/sobre-mi/#contacto",
+      "robots": "noindex",
+      "en_sitemap": false,
+      "scripts": []
+    },
+    {
+      "archivo": "datalab-prototipo/index.html",
+      "ruta": "/datalab-prototipo/",
+      "area_principal": "Prototipo",
+      "titulo": "Línea de Pase 2.0 · Prototipo",
+      "canonical": "https://lineadepase.com/datalab-prototipo/",
+      "robots": "noindex,nofollow",
+      "en_sitemap": false,
+      "scripts": [
+        "../assets/linea2-core.js",
+        "../assets/linea2.js",
+        "../assets/linea2-experiencias.js",
+        "../assets/linea2-cuaderno.js",
+        "../assets/linea2-editorial.js",
+        "../assets/linea2-museo.js",
+        "../assets/linea2-secuencia.js"
+      ]
+    },
+    {
+      "archivo": "datos-en-revision/index.html",
+      "ruta": "/datos-en-revision/",
+      "area_principal": "Zaragoza",
+      "titulo": "Cuando las cifras no coinciden · Línea de pase",
+      "canonical": "https://lineadepase.com/datos-en-revision/",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../assets/tema.js?v=20261105mapcls1",
+        "../assets/mejoras.js?v=20261104clsfix1",
+        "../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "esquemas-del-juego/index.html",
+      "ruta": "/esquemas-del-juego/",
+      "area_principal": "Play",
+      "titulo": "El juego en esquema · Línea de pase",
+      "canonical": "https://lineadepase.com/esquemas-del-juego/",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../assets/tema.js?v=20261105mapcls1",
+        "../assets/mejoras.js?v=20261104clsfix1",
+        "../assets/experiencia.js?v=20261104clsmobile1",
+        "../assets/campo-fases.js?v=20261027a"
+      ]
+    },
+    {
+      "archivo": "galeria-visual/index.html",
+      "ruta": "/galeria-visual/",
+      "area_principal": "Museo",
+      "titulo": "Galería visual de Línea de pase · Línea de pase",
+      "canonical": "https://lineadepase.com/galeria-visual/",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../assets/tema.js?v=20261105mapcls1",
+        "../assets/mejoras.js?v=20261104clsfix1",
+        "../assets/experiencia.js?v=20261104clsmobile1",
+        "../assets/galeria-visual.js?v=20261027b"
+      ]
+    },
+    {
+      "archivo": "herramientas/index.html",
+      "ruta": "/herramientas/",
+      "area_principal": "Pro",
+      "titulo": "Herramientas para explorar el Grupo 2 · Línea de pase",
+      "canonical": "https://lineadepase.com/herramientas/",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../assets/tema.js?v=20261105mapcls1",
+        "../assets/mejoras.js?v=20261104clsfix1",
+        "../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "index.html",
+      "ruta": "/",
+      "area_principal": "Transversal",
+      "titulo": "Análisis de datos de fútbol y Real Zaragoza · Línea de pase",
+      "canonical": "https://lineadepase.com/",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "assets/tema.js?v=20261105mapcls1",
+        "assets/mejoras.js?v=20261104clsfix1",
+        "assets/experiencia.js?v=20261104clsmobile1",
+        "assets/previas.js?v=20261027",
+        "assets/estado-partido.js?v=20261027b"
+      ]
+    },
+    {
+      "archivo": "mapa-de-lo-que-cambio/index.html",
+      "ruta": "/mapa-de-lo-que-cambio/",
+      "area_principal": "Play",
+      "titulo": "El mapa de lo que cambió · Línea de pase",
+      "canonical": "https://lineadepase.com/mapa-de-lo-que-cambio/",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../assets/tema.js?v=20261105mapcls1",
+        "../assets/mejoras.js?v=20261104clsfix1",
+        "../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "mapa-grupo/index.html",
+      "ruta": "/mapa-grupo/",
+      "area_principal": "Zaragoza",
+      "titulo": "El mapa del Grupo 2 · Línea de pase",
+      "canonical": "https://lineadepase.com/mapa-grupo/",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../assets/tema.js?v=20261105mapcls1",
+        "../assets/mejoras.js?v=20261104clsfix1",
+        "../assets/experiencia.js?v=20261104clsmobile1",
+        "../assets/metricas-grupo.js?v=20261021d",
+        "../assets/mapa-grupo.js?v=20261105reservacomp1"
+      ]
+    },
+    {
+      "archivo": "marcador-a-ciegas/index.html",
+      "ruta": "/marcador-a-ciegas/",
+      "area_principal": "Play",
+      "titulo": "El marcador a ciegas · Línea de pase",
+      "canonical": "https://lineadepase.com/marcador-a-ciegas/",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../assets/tema.js?v=20261105mapcls1",
+        "../assets/mejoras.js?v=20261104clsfix1",
+        "../assets/experiencia.js?v=20261104clsmobile1",
+        "../assets/marcador-a-ciegas.js?v=20261027a"
+      ]
+    },
+    {
+      "archivo": "novedades/index.html",
+      "ruta": "/novedades/",
+      "area_principal": "Media",
+      "titulo": "Qué hay de nuevo · Línea de pase",
+      "canonical": "https://lineadepase.com/novedades/",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../assets/tema.js?v=20261105mapcls1",
+        "../assets/mejoras.js?v=20261104clsfix1",
+        "../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "partidos-espejo/index.html",
+      "ruta": "/partidos-espejo/",
+      "area_principal": "Play",
+      "titulo": "Partidos espejo · Línea de pase",
+      "canonical": "https://lineadepase.com/partidos-espejo/",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../assets/tema.js?v=20261105mapcls1",
+        "../assets/mejoras.js?v=20261104clsfix1",
+        "../assets/experiencia.js?v=20261104clsmobile1",
+        "../assets/partidos-espejo.js?v=20261027b"
+      ]
+    },
+    {
+      "archivo": "pizarron-de-una-jugada/index.html",
+      "ruta": "/pizarron-de-una-jugada/",
+      "area_principal": "Studio",
+      "titulo": "El pizarrón de una jugada · Línea de pase",
+      "canonical": "https://lineadepase.com/pizarron-de-una-jugada/",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../assets/tema.js?v=20261105mapcls1",
+        "../assets/mejoras.js?v=20261104clsfix1",
+        "../assets/experiencia.js?v=20261104clsmobile1",
+        "../assets/jugada-hacia-atras.js?v=20261027d"
+      ]
+    },
+    {
+      "archivo": "preguntas-del-partido/index.html",
+      "ruta": "/preguntas-del-partido/",
+      "area_principal": "Play",
+      "titulo": "Las preguntas del partido · Línea de pase",
+      "canonical": "https://lineadepase.com/preguntas-del-partido/",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../assets/tema.js?v=20261105mapcls1",
+        "../assets/mejoras.js?v=20261104clsfix1",
+        "../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "privacidad/index.html",
+      "ruta": "/privacidad/",
+      "area_principal": "Transversal",
+      "titulo": "Privacidad y cookies · Línea de pase",
+      "canonical": "https://lineadepase.com/privacidad/",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../assets/tema.js?v=20261105mapcls1",
+        "../assets/mejoras.js?v=20261021fotos",
+        "../assets/experiencia.js?v=20261021fotos"
+      ]
+    },
+    {
+      "archivo": "proyectos/espana-eurocopa-redes/index.html",
+      "ruta": "/proyectos/espana-eurocopa-redes/",
+      "area_principal": "Museo",
+      "titulo": "Por dónde pasaba el juego de España · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/espana-eurocopa-redes/",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../../assets/tema.js?v=20261105mapcls1",
+        "../../assets/mejoras.js?v=20261104clsfix1",
+        "../../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "proyectos/futbol-femenino/index.html",
+      "ruta": "/proyectos/futbol-femenino/",
+      "area_principal": "DataLab",
+      "titulo": "Fútbol femenino en datos · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/futbol-femenino/",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../../assets/tema.js?v=20261105mapcls1",
+        "../../assets/mejoras.js?v=20261104clsfix1",
+        "../../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "proyectos/index.html",
+      "ruta": "/proyectos/",
+      "area_principal": "Pro",
+      "titulo": "Proyectos de análisis de datos de fútbol · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../assets/tema.js?v=20261105mapcls1",
+        "../assets/mejoras.js?v=20261104clsfix1",
+        "../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "proyectos/liga-f-perfiles/index.html",
+      "ruta": "/proyectos/liga-f-perfiles/",
+      "area_principal": "DataLab",
+      "titulo": "¿En qué perfil está tu jugadora favorita? · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/liga-f-perfiles/",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../../assets/tema.js?v=20261105mapcls1",
+        "../../assets/mejoras.js?v=20261104clsfix1",
+        "../../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "proyectos/liga-f-xt/index.html",
+      "ruta": "/proyectos/liga-f-xt/",
+      "area_principal": "DataLab",
+      "titulo": "El peligro empieza antes del último pase · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/liga-f-xt/",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../../assets/tema.js?v=20261105mapcls1",
+        "../../assets/mejoras.js?v=20261104clsfix1",
+        "../../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "proyectos/real-zaragoza/evolucion.html",
+      "ruta": "/proyectos/real-zaragoza/evolucion.html",
+      "area_principal": "Zaragoza",
+      "titulo": "Real Zaragoza 2026/27: puntos, goles y tiros · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/real-zaragoza/evolucion.html",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../../assets/tema.js?v=20261105mapcls1",
+        "../../assets/mejoras.js?v=20261104clsfix1",
+        "../../assets/experiencia.js?v=20261104clsmobile1",
+        "../../assets/d3.v7.8.5.min.js",
+        "../../assets/zaragoza-panel.js?v=20261027a11"
+      ]
+    },
+    {
+      "archivo": "proyectos/real-zaragoza/goles-en-video.html",
+      "ruta": "/proyectos/real-zaragoza/goles-en-video.html",
+      "area_principal": "Zaragoza",
+      "titulo": "Los goles del Real Zaragoza, vistos uno a uno · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/real-zaragoza/goles-en-video.html",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../../assets/tema.js?v=20261105mapcls1",
+        "../../assets/mejoras.js?v=20261104clsfix1",
+        "../../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "proyectos/real-zaragoza/grupo-2.html",
+      "ruta": "/proyectos/real-zaragoza/grupo-2.html",
+      "area_principal": "Zaragoza",
+      "titulo": "Grupo 2 de Primera Federación · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/real-zaragoza/grupo-2.html",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../../assets/tema.js?v=20261105mapcls1",
+        "../../assets/mejoras.js?v=20261104clsfix1",
+        "../../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "proyectos/real-zaragoza/index.html",
+      "ruta": "/proyectos/real-zaragoza/",
+      "area_principal": "Zaragoza",
+      "titulo": "Real Zaragoza 2026/27: análisis y estadísticas · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/real-zaragoza/",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../../assets/tema.js?v=20261105mapcls1",
+        "../../assets/mejoras.js?v=20261104clsfix1",
+        "../../assets/experiencia.js?v=20261104clsmobile1",
+        "../../assets/d3.v7.8.5.min.js",
+        "../../assets/zaragoza-panel.js?v=20261024j9"
+      ]
+    },
+    {
+      "archivo": "proyectos/real-zaragoza/informe-completo.html",
+      "ruta": "/proyectos/real-zaragoza/informe-completo.html",
+      "area_principal": "Zaragoza",
+      "titulo": "Informe completo: Real Zaragoza 2026/27 · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/real-zaragoza/informe-completo.html",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../../assets/tema.js?v=20261104clsmobile1",
+        "../../assets/mejoras.js?v=20261104clsfix1",
+        "../../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "proyectos/real-zaragoza/jornada-1.html",
+      "ruta": "/proyectos/real-zaragoza/jornada-1.html",
+      "area_principal": "Zaragoza",
+      "titulo": "J1: Gimnàstic de Tarragona 2-0 Real Zaragoza · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/real-zaragoza/jornada-1.html",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../../assets/tema.js?v=20261105mapcls1",
+        "../../assets/mejoras.js?v=20261104clsfix1",
+        "../../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "proyectos/real-zaragoza/jornada-10.html",
+      "ruta": "/proyectos/real-zaragoza/jornada-10.html",
+      "area_principal": "Zaragoza",
+      "titulo": "J10: Real Zaragoza 2-2 Villarreal B · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/real-zaragoza/jornada-10.html",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../../assets/tema.js?v=20261105mapcls1",
+        "../../assets/mejoras.js?v=20261104clsfix1",
+        "../../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "proyectos/real-zaragoza/jornada-11.html",
+      "ruta": "/proyectos/real-zaragoza/jornada-11.html",
+      "area_principal": "Zaragoza",
+      "titulo": "J11: Real Zaragoza 2-0 SD Huesca · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/real-zaragoza/jornada-11.html",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../../assets/tema.js?v=20261105mapcls1",
+        "../../assets/mejoras.js?v=20261104clsfix1",
+        "../../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "proyectos/real-zaragoza/jornada-12.html",
+      "ruta": "/proyectos/real-zaragoza/jornada-12.html",
+      "area_principal": "Zaragoza",
+      "titulo": "J12: Real Jaén 0-4 Real Zaragoza · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/real-zaragoza/jornada-12.html",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../../assets/tema.js?v=20261105mapcls1",
+        "../../assets/mejoras.js?v=20261104clsfix1",
+        "../../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "proyectos/real-zaragoza/jornada-13.html",
+      "ruta": "/proyectos/real-zaragoza/jornada-13.html",
+      "area_principal": "Zaragoza",
+      "titulo": "J13: Real Zaragoza 2-0 Rayo Majadahonda · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/real-zaragoza/jornada-13.html",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../../assets/tema.js?v=20261105mapcls1",
+        "../../assets/mejoras.js?v=20261104clsfix1",
+        "../../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "proyectos/real-zaragoza/jornada-2.html",
+      "ruta": "/proyectos/real-zaragoza/jornada-2.html",
+      "area_principal": "Zaragoza",
+      "titulo": "J2: Real Zaragoza 1-0 Antequera CF · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/real-zaragoza/jornada-2.html",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../../assets/tema.js?v=20261105mapcls1",
+        "../../assets/mejoras.js?v=20261104clsfix1",
+        "../../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "proyectos/real-zaragoza/jornada-3.html",
+      "ruta": "/proyectos/real-zaragoza/jornada-3.html",
+      "area_principal": "Zaragoza",
+      "titulo": "J3: Juventud Torremolinos CF 3-4 Real Zaragoza · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/real-zaragoza/jornada-3.html",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../../assets/tema.js?v=20261105mapcls1",
+        "../../assets/mejoras.js?v=20261104clsfix1",
+        "../../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "proyectos/real-zaragoza/jornada-4.html",
+      "ruta": "/proyectos/real-zaragoza/jornada-4.html",
+      "area_principal": "Zaragoza",
+      "titulo": "J4: Real Zaragoza 1-0 FC Cartagena · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/real-zaragoza/jornada-4.html",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../../assets/tema.js?v=20261105mapcls1",
+        "../../assets/mejoras.js?v=20261104clsfix1",
+        "../../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "proyectos/real-zaragoza/jornada-5.html",
+      "ruta": "/proyectos/real-zaragoza/jornada-5.html",
+      "area_principal": "Zaragoza",
+      "titulo": "J5: UD Ibiza 0-2 Real Zaragoza · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/real-zaragoza/jornada-5.html",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../../assets/tema.js?v=20261105mapcls1",
+        "../../assets/mejoras.js?v=20261104clsfix1",
+        "../../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "proyectos/real-zaragoza/jornada-6.html",
+      "ruta": "/proyectos/real-zaragoza/jornada-6.html",
+      "area_principal": "Zaragoza",
+      "titulo": "J6: Real Zaragoza 4-1 CD Teruel · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/real-zaragoza/jornada-6.html",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../../assets/tema.js?v=20261105mapcls1",
+        "../../assets/mejoras.js?v=20261104clsfix1",
+        "../../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "proyectos/real-zaragoza/jornada-7.html",
+      "ruta": "/proyectos/real-zaragoza/jornada-7.html",
+      "area_principal": "Zaragoza",
+      "titulo": "J7: Atlético Madrileño 4-4 Real Zaragoza · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/real-zaragoza/jornada-7.html",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../../assets/tema.js?v=20261105mapcls1",
+        "../../assets/mejoras.js?v=20261104clsfix1",
+        "../../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "proyectos/real-zaragoza/jornada-8.html",
+      "ruta": "/proyectos/real-zaragoza/jornada-8.html",
+      "area_principal": "Zaragoza",
+      "titulo": "J8: Real Murcia 0-0 Real Zaragoza · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/real-zaragoza/jornada-8.html",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../../assets/tema.js?v=20261105mapcls1",
+        "../../assets/mejoras.js?v=20261104clsfix1",
+        "../../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "proyectos/real-zaragoza/jornada-9.html",
+      "ruta": "/proyectos/real-zaragoza/jornada-9.html",
+      "area_principal": "Zaragoza",
+      "titulo": "J9: CE Europa 0-1 Real Zaragoza · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/real-zaragoza/jornada-9.html",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../../assets/tema.js?v=20261105mapcls1",
+        "../../assets/mejoras.js?v=20261104clsfix1",
+        "../../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "proyectos/real-zaragoza/jornadas.html",
+      "ruta": "/proyectos/real-zaragoza/jornadas.html",
+      "area_principal": "Zaragoza",
+      "titulo": "Real Zaragoza 2026/27, jornada a jornada · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/real-zaragoza/jornadas.html",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../../assets/tema.js?v=20261105mapcls1",
+        "../../assets/mejoras.js?v=20261104clsfix1",
+        "../../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "proyectos/real-zaragoza/plantilla.html",
+      "ruta": "/proyectos/real-zaragoza/plantilla.html",
+      "area_principal": "Zaragoza",
+      "titulo": "Plantilla Real Zaragoza 2026/27: minutos y goles · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/real-zaragoza/plantilla.html",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../../assets/tema.js?v=20261105mapcls1",
+        "../../assets/mejoras.js?v=20261104clsfix1",
+        "../../assets/experiencia.js?v=20261104clsmobile1",
+        "../../assets/d3.v7.8.5.min.js",
+        "../../assets/zaragoza-panel.js?v=20261024j9"
+      ]
+    },
+    {
+      "archivo": "proyectos/real-zaragoza/previa-copa-tudelano-20261027.html",
+      "ruta": "/proyectos/real-zaragoza/previa-copa-tudelano-20261027.html",
+      "area_principal": "Zaragoza",
+      "titulo": "Tudelano 0–4 Real Zaragoza: análisis de la Copa · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/real-zaragoza/previa-copa-tudelano-20261027.html",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../../assets/tema.js?v=20261105mapcls1",
+        "../../assets/mejoras.js?v=20261104clsfix1",
+        "../../assets/experiencia.js?v=20261104clsmobile1",
+        "../../assets/compartir-previa.js?v=20261027",
+        "../../assets/estado-partido.js?v=20261101a"
+      ]
+    },
+    {
+      "archivo": "proyectos/real-zaragoza/previa-jornada-10.html",
+      "ruta": "/proyectos/real-zaragoza/previa-jornada-10.html",
+      "area_principal": "Zaragoza",
+      "titulo": "Previa: Real Zaragoza – Villarreal B · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/real-zaragoza/previa-jornada-10.html",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../../assets/tema.js?v=20261105mapcls1",
+        "../../assets/mejoras.js?v=20261104clsfix1",
+        "../../assets/compartir-previa.js?v=20261027",
+        "../../assets/estado-partido.js?v=20261101a",
+        "../../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "proyectos/real-zaragoza/previa-jornada-11.html",
+      "ruta": "/proyectos/real-zaragoza/previa-jornada-11.html",
+      "area_principal": "Zaragoza",
+      "titulo": "Previa: Real Zaragoza – SD Huesca · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/real-zaragoza/previa-jornada-11.html",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../../assets/tema.js?v=20261105mapcls1",
+        "../../assets/mejoras.js?v=20261104clsfix1",
+        "../../assets/compartir-previa.js?v=20261027",
+        "../../assets/estado-partido.js?v=20261101a",
+        "../../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "proyectos/real-zaragoza/previa-jornada-12.html",
+      "ruta": "/proyectos/real-zaragoza/previa-jornada-12.html",
+      "area_principal": "Zaragoza",
+      "titulo": "Previa: Real Jaén – Real Zaragoza · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/real-zaragoza/previa-jornada-12.html",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../../assets/tema.js?v=20261105mapcls1",
+        "../../assets/mejoras.js?v=20261104clsfix1",
+        "../../assets/compartir-previa.js?v=20261027",
+        "../../assets/estado-partido.js?v=20261101a",
+        "../../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "proyectos/real-zaragoza/previa-jornada-13.html",
+      "ruta": "/proyectos/real-zaragoza/previa-jornada-13.html",
+      "area_principal": "Zaragoza",
+      "titulo": "Previa: Real Zaragoza – Rayo Majadahonda · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/real-zaragoza/previa-jornada-13.html",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../../assets/tema.js?v=20261105mapcls1",
+        "../../assets/mejoras.js?v=20261104clsfix1",
+        "../../assets/compartir-previa.js?v=20261027",
+        "../../assets/estado-partido.js?v=20261101a",
+        "../../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "proyectos/real-zaragoza/previa-jornada-14.html",
+      "ruta": "/proyectos/real-zaragoza/previa-jornada-14.html",
+      "area_principal": "Zaragoza",
+      "titulo": "Previa: Alcorcón – Real Zaragoza · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/real-zaragoza/previa-jornada-14.html",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../../assets/tema.js?v=20261105mapcls1",
+        "../../assets/mejoras.js?v=20261104clsfix1",
+        "../../assets/compartir-previa.js?v=20261027",
+        "../../assets/estado-partido.js?v=20261101a",
+        "../../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "proyectos/real-zaragoza/previa.html",
+      "ruta": "/proyectos/real-zaragoza/previa.html",
+      "area_principal": "Zaragoza",
+      "titulo": "Previa: Alcorcón – Real Zaragoza · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/real-zaragoza/previa-jornada-14.html",
+      "robots": "",
+      "en_sitemap": false,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../../assets/tema.js?v=20261105mapcls1",
+        "../../assets/mejoras.js?v=20261104clsfix1",
+        "../../assets/compartir-previa.js?v=20261027",
+        "../../assets/estado-partido.js?v=20261101a",
+        "../../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "proyectos/real-zaragoza/resumen-jornada-13.html",
+      "ruta": "/proyectos/real-zaragoza/resumen-jornada-13.html",
+      "area_principal": "Zaragoza",
+      "titulo": "Resumen: Real Zaragoza 2-0 Rayo Majadahonda · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/real-zaragoza/resumen-jornada-13.html",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../../assets/tema.js?v=20261105mapcls1",
+        "../../assets/mejoras.js?v=20261104clsfix1",
+        "../../assets/compartir-previa.js?v=20261027",
+        "../../assets/estado-partido.js?v=20261101a",
+        "../../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "proyectos/real-zaragoza/simulacion.html",
+      "ruta": "/proyectos/real-zaragoza/simulacion.html",
+      "area_principal": "Zaragoza",
+      "titulo": "Simulación del grupo 2 (J13) · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/real-zaragoza/simulacion.html",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../../assets/tema.js?v=20261105mapcls1",
+        "../../assets/mejoras.js?v=20261104clsfix1",
+        "../../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "proyectos/real-zaragoza/ultimo-partido.html",
+      "ruta": "/proyectos/real-zaragoza/ultimo-partido.html",
+      "area_principal": "Zaragoza",
+      "titulo": "Último partido: Real Zaragoza 2-0 Rayo Majadahonda · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/real-zaragoza/ultimo-partido.html",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../../assets/tema.js?v=20261105mapcls1",
+        "../../assets/mejoras.js?v=20261104clsfix1",
+        "../../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "proyectos/xg/index.html",
+      "ruta": "/proyectos/xg/",
+      "area_principal": "DataLab",
+      "titulo": "xG, sin líos · Línea de pase",
+      "canonical": "https://lineadepase.com/proyectos/xg/",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../../assets/tema.js?v=20261105mapcls1",
+        "../../assets/mejoras.js?v=20261104clsfix1",
+        "../../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "reloj-del-marcador/index.html",
+      "ruta": "/reloj-del-marcador/",
+      "area_principal": "Play",
+      "titulo": "El reloj del marcador · Línea de pase",
+      "canonical": "https://lineadepase.com/reloj-del-marcador/",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../assets/tema.js?v=20261105mapcls1",
+        "../assets/mejoras.js?v=20261104clsfix1",
+        "../assets/experiencia.js?v=20261104clsmobile1",
+        "../assets/reloj-del-marcador.js?v=20261027c"
+      ]
+    },
+    {
+      "archivo": "seleccion/index.html",
+      "ruta": "/seleccion/",
+      "area_principal": "Pro",
+      "titulo": "Una selección de trabajos · Línea de pase",
+      "canonical": "https://lineadepase.com/seleccion/",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../assets/tema.js?v=20261105mapcls1",
+        "../assets/mejoras.js?v=20261104clsfix1",
+        "../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "sobre-mi/index.html",
+      "ruta": "/sobre-mi/",
+      "area_principal": "Transversal",
+      "titulo": "Ángel Marqueta Alonso: analítica de fútbol · Línea de pase",
+      "canonical": "https://lineadepase.com/sobre-mi/",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../assets/tema.js?v=20261105mapcls1",
+        "../assets/mejoras.js?v=20261104clsfix1",
+        "../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "tras-la-jornada/index.html",
+      "ruta": "/tras-la-jornada/",
+      "area_principal": "Zaragoza",
+      "titulo": "Tras la jornada · Línea de pase",
+      "canonical": "https://lineadepase.com/tras-la-jornada/",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../assets/tema.js?v=20261105mapcls1",
+        "../assets/mejoras.js?v=20261104clsfix1",
+        "../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    },
+    {
+      "archivo": "videos/index.html",
+      "ruta": "/videos/",
+      "area_principal": "Media",
+      "titulo": "Vídeos de análisis de fútbol: xG y FVS · Línea de pase",
+      "canonical": "https://lineadepase.com/videos/",
+      "robots": "",
+      "en_sitemap": true,
+      "scripts": [
+        "/assets/consentimiento.js?v=20261029keyboard2",
+        "../assets/tema.js?v=20261105mapcls1",
+        "../assets/mejoras.js?v=20261104clsfix1",
+        "../assets/experiencia.js?v=20261104clsmobile1"
+      ]
+    }
+  ]
+}

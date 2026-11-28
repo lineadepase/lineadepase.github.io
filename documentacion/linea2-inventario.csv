@@ -1,0 +1,63 @@
+﻿archivo,ruta,area_principal,titulo,canonical,robots,en_sitemap
+404.html,/404.html,Transversal,Página no encontrada · Línea de pase,,"noindex,follow",False
+archivo/index.html,/archivo/,Media,Archivo de análisis · Línea de pase,https://lineadepase.com/archivo/,,True
+archivo-visual/index.html,/archivo-visual/,Studio,Archivo visual por jornada · Línea de pase,https://lineadepase.com/archivo-visual/,,True
+balance-de-preguntas/index.html,/balance-de-preguntas/,Play,Balance de preguntas · Línea de pase,https://lineadepase.com/balance-de-preguntas/,,True
+comparador/index.html,/comparador/,Zaragoza,Compara dos equipos del Grupo 2 · Línea de pase,https://lineadepase.com/comparador/,,True
+conceptos/index.html,/conceptos/,DataLab,Conceptos para leer el fútbol con datos · Línea de pase,https://lineadepase.com/conceptos/,,True
+contacto/index.html,/contacto/,Transversal,Contacto · Línea de pase,https://lineadepase.com/sobre-mi/#contacto,noindex,False
+datalab-prototipo/index.html,/datalab-prototipo/,Prototipo,Línea de Pase 2.0 · Prototipo,https://lineadepase.com/datalab-prototipo/,"noindex,nofollow",False
+datos-en-revision/index.html,/datos-en-revision/,Zaragoza,Cuando las cifras no coinciden · Línea de pase,https://lineadepase.com/datos-en-revision/,,True
+esquemas-del-juego/index.html,/esquemas-del-juego/,Play,El juego en esquema · Línea de pase,https://lineadepase.com/esquemas-del-juego/,,True
+galeria-visual/index.html,/galeria-visual/,Museo,Galería visual de Línea de pase · Línea de pase,https://lineadepase.com/galeria-visual/,,True
+herramientas/index.html,/herramientas/,Pro,Herramientas para explorar el Grupo 2 · Línea de pase,https://lineadepase.com/herramientas/,,True
+index.html,/,Transversal,Análisis de datos de fútbol y Real Zaragoza · Línea de pase,https://lineadepase.com/,,True
+mapa-de-lo-que-cambio/index.html,/mapa-de-lo-que-cambio/,Play,El mapa de lo que cambió · Línea de pase,https://lineadepase.com/mapa-de-lo-que-cambio/,,True
+mapa-grupo/index.html,/mapa-grupo/,Zaragoza,El mapa del Grupo 2 · Línea de pase,https://lineadepase.com/mapa-grupo/,,True
+marcador-a-ciegas/index.html,/marcador-a-ciegas/,Play,El marcador a ciegas · Línea de pase,https://lineadepase.com/marcador-a-ciegas/,,True
+novedades/index.html,/novedades/,Media,Qué hay de nuevo · Línea de pase,https://lineadepase.com/novedades/,,True
+partidos-espejo/index.html,/partidos-espejo/,Play,Partidos espejo · Línea de pase,https://lineadepase.com/partidos-espejo/,,True
+pizarron-de-una-jugada/index.html,/pizarron-de-una-jugada/,Studio,El pizarrón de una jugada · Línea de pase,https://lineadepase.com/pizarron-de-una-jugada/,,True
+preguntas-del-partido/index.html,/preguntas-del-partido/,Play,Las preguntas del partido · Línea de pase,https://lineadepase.com/preguntas-del-partido/,,True
+privacidad/index.html,/privacidad/,Transversal,Privacidad y cookies · Línea de pase,https://lineadepase.com/privacidad/,,True
+proyectos/espana-eurocopa-redes/index.html,/proyectos/espana-eurocopa-redes/,Museo,Por dónde pasaba el juego de España · Línea de pase,https://lineadepase.com/proyectos/espana-eurocopa-redes/,,True
+proyectos/futbol-femenino/index.html,/proyectos/futbol-femenino/,DataLab,Fútbol femenino en datos · Línea de pase,https://lineadepase.com/proyectos/futbol-femenino/,,True
+proyectos/index.html,/proyectos/,Pro,Proyectos de análisis de datos de fútbol · Línea de pase,https://lineadepase.com/proyectos/,,True
+proyectos/liga-f-perfiles/index.html,/proyectos/liga-f-perfiles/,DataLab,¿En qué perfil está tu jugadora favorita? · Línea de pase,https://lineadepase.com/proyectos/liga-f-perfiles/,,True
+proyectos/liga-f-xt/index.html,/proyectos/liga-f-xt/,DataLab,El peligro empieza antes del último pase · Línea de pase,https://lineadepase.com/proyectos/liga-f-xt/,,True
+proyectos/real-zaragoza/evolucion.html,/proyectos/real-zaragoza/evolucion.html,Zaragoza,"Real Zaragoza 2026/27: puntos, goles y tiros · Línea de pase",https://lineadepase.com/proyectos/real-zaragoza/evolucion.html,,True
+proyectos/real-zaragoza/goles-en-video.html,/proyectos/real-zaragoza/goles-en-video.html,Zaragoza,"Los goles del Real Zaragoza, vistos uno a uno · Línea de pase",https://lineadepase.com/proyectos/real-zaragoza/goles-en-video.html,,True
+proyectos/real-zaragoza/grupo-2.html,/proyectos/real-zaragoza/grupo-2.html,Zaragoza,Grupo 2 de Primera Federación · Línea de pase,https://lineadepase.com/proyectos/real-zaragoza/grupo-2.html,,True
+proyectos/real-zaragoza/index.html,/proyectos/real-zaragoza/,Zaragoza,Real Zaragoza 2026/27: análisis y estadísticas · Línea de pase,https://lineadepase.com/proyectos/real-zaragoza/,,True
+proyectos/real-zaragoza/informe-completo.html,/proyectos/real-zaragoza/informe-completo.html,Zaragoza,Informe completo: Real Zaragoza 2026/27 · Línea de pase,https://lineadepase.com/proyectos/real-zaragoza/informe-completo.html,,True
+proyectos/real-zaragoza/jornada-1.html,/proyectos/real-zaragoza/jornada-1.html,Zaragoza,J1: Gimnàstic de Tarragona 2-0 Real Zaragoza · Línea de pase,https://lineadepase.com/proyectos/real-zaragoza/jornada-1.html,,True
+proyectos/real-zaragoza/jornada-10.html,/proyectos/real-zaragoza/jornada-10.html,Zaragoza,J10: Real Zaragoza 2-2 Villarreal B · Línea de pase,https://lineadepase.com/proyectos/real-zaragoza/jornada-10.html,,True
+proyectos/real-zaragoza/jornada-11.html,/proyectos/real-zaragoza/jornada-11.html,Zaragoza,J11: Real Zaragoza 2-0 SD Huesca · Línea de pase,https://lineadepase.com/proyectos/real-zaragoza/jornada-11.html,,True
+proyectos/real-zaragoza/jornada-12.html,/proyectos/real-zaragoza/jornada-12.html,Zaragoza,J12: Real Jaén 0-4 Real Zaragoza · Línea de pase,https://lineadepase.com/proyectos/real-zaragoza/jornada-12.html,,True
+proyectos/real-zaragoza/jornada-13.html,/proyectos/real-zaragoza/jornada-13.html,Zaragoza,J13: Real Zaragoza 2-0 Rayo Majadahonda · Línea de pase,https://lineadepase.com/proyectos/real-zaragoza/jornada-13.html,,True
+proyectos/real-zaragoza/jornada-2.html,/proyectos/real-zaragoza/jornada-2.html,Zaragoza,J2: Real Zaragoza 1-0 Antequera CF · Línea de pase,https://lineadepase.com/proyectos/real-zaragoza/jornada-2.html,,True
+proyectos/real-zaragoza/jornada-3.html,/proyectos/real-zaragoza/jornada-3.html,Zaragoza,J3: Juventud Torremolinos CF 3-4 Real Zaragoza · Línea de pase,https://lineadepase.com/proyectos/real-zaragoza/jornada-3.html,,True
+proyectos/real-zaragoza/jornada-4.html,/proyectos/real-zaragoza/jornada-4.html,Zaragoza,J4: Real Zaragoza 1-0 FC Cartagena · Línea de pase,https://lineadepase.com/proyectos/real-zaragoza/jornada-4.html,,True
+proyectos/real-zaragoza/jornada-5.html,/proyectos/real-zaragoza/jornada-5.html,Zaragoza,J5: UD Ibiza 0-2 Real Zaragoza · Línea de pase,https://lineadepase.com/proyectos/real-zaragoza/jornada-5.html,,True
+proyectos/real-zaragoza/jornada-6.html,/proyectos/real-zaragoza/jornada-6.html,Zaragoza,J6: Real Zaragoza 4-1 CD Teruel · Línea de pase,https://lineadepase.com/proyectos/real-zaragoza/jornada-6.html,,True
+proyectos/real-zaragoza/jornada-7.html,/proyectos/real-zaragoza/jornada-7.html,Zaragoza,J7: Atlético Madrileño 4-4 Real Zaragoza · Línea de pase,https://lineadepase.com/proyectos/real-zaragoza/jornada-7.html,,True
+proyectos/real-zaragoza/jornada-8.html,/proyectos/real-zaragoza/jornada-8.html,Zaragoza,J8: Real Murcia 0-0 Real Zaragoza · Línea de pase,https://lineadepase.com/proyectos/real-zaragoza/jornada-8.html,,True
+proyectos/real-zaragoza/jornada-9.html,/proyectos/real-zaragoza/jornada-9.html,Zaragoza,J9: CE Europa 0-1 Real Zaragoza · Línea de pase,https://lineadepase.com/proyectos/real-zaragoza/jornada-9.html,,True
+proyectos/real-zaragoza/jornadas.html,/proyectos/real-zaragoza/jornadas.html,Zaragoza,"Real Zaragoza 2026/27, jornada a jornada · Línea de pase",https://lineadepase.com/proyectos/real-zaragoza/jornadas.html,,True
+proyectos/real-zaragoza/plantilla.html,/proyectos/real-zaragoza/plantilla.html,Zaragoza,Plantilla Real Zaragoza 2026/27: minutos y goles · Línea de pase,https://lineadepase.com/proyectos/real-zaragoza/plantilla.html,,True
+proyectos/real-zaragoza/previa-copa-tudelano-20261027.html,/proyectos/real-zaragoza/previa-copa-tudelano-20261027.html,Zaragoza,Tudelano 0–4 Real Zaragoza: análisis de la Copa · Línea de pase,https://lineadepase.com/proyectos/real-zaragoza/previa-copa-tudelano-20261027.html,,True
+proyectos/real-zaragoza/previa-jornada-10.html,/proyectos/real-zaragoza/previa-jornada-10.html,Zaragoza,Previa: Real Zaragoza – Villarreal B · Línea de pase,https://lineadepase.com/proyectos/real-zaragoza/previa-jornada-10.html,,True
+proyectos/real-zaragoza/previa-jornada-11.html,/proyectos/real-zaragoza/previa-jornada-11.html,Zaragoza,Previa: Real Zaragoza – SD Huesca · Línea de pase,https://lineadepase.com/proyectos/real-zaragoza/previa-jornada-11.html,,True
+proyectos/real-zaragoza/previa-jornada-12.html,/proyectos/real-zaragoza/previa-jornada-12.html,Zaragoza,Previa: Real Jaén – Real Zaragoza · Línea de pase,https://lineadepase.com/proyectos/real-zaragoza/previa-jornada-12.html,,True
+proyectos/real-zaragoza/previa-jornada-13.html,/proyectos/real-zaragoza/previa-jornada-13.html,Zaragoza,Previa: Real Zaragoza – Rayo Majadahonda · Línea de pase,https://lineadepase.com/proyectos/real-zaragoza/previa-jornada-13.html,,True
+proyectos/real-zaragoza/previa-jornada-14.html,/proyectos/real-zaragoza/previa-jornada-14.html,Zaragoza,Previa: Alcorcón – Real Zaragoza · Línea de pase,https://lineadepase.com/proyectos/real-zaragoza/previa-jornada-14.html,,True
+proyectos/real-zaragoza/previa.html,/proyectos/real-zaragoza/previa.html,Zaragoza,Previa: Alcorcón – Real Zaragoza · Línea de pase,https://lineadepase.com/proyectos/real-zaragoza/previa-jornada-14.html,,False
+proyectos/real-zaragoza/resumen-jornada-13.html,/proyectos/real-zaragoza/resumen-jornada-13.html,Zaragoza,Resumen: Real Zaragoza 2-0 Rayo Majadahonda · Línea de pase,https://lineadepase.com/proyectos/real-zaragoza/resumen-jornada-13.html,,True
+proyectos/real-zaragoza/simulacion.html,/proyectos/real-zaragoza/simulacion.html,Zaragoza,Simulación del grupo 2 (J13) · Línea de pase,https://lineadepase.com/proyectos/real-zaragoza/simulacion.html,,True
+proyectos/real-zaragoza/ultimo-partido.html,/proyectos/real-zaragoza/ultimo-partido.html,Zaragoza,Último partido: Real Zaragoza 2-0 Rayo Majadahonda · Línea de pase,https://lineadepase.com/proyectos/real-zaragoza/ultimo-partido.html,,True
+proyectos/xg/index.html,/proyectos/xg/,DataLab,"xG, sin líos · Línea de pase",https://lineadepase.com/proyectos/xg/,,True
+reloj-del-marcador/index.html,/reloj-del-marcador/,Play,El reloj del marcador · Línea de pase,https://lineadepase.com/reloj-del-marcador/,,True
+seleccion/index.html,/seleccion/,Pro,Una selección de trabajos · Línea de pase,https://lineadepase.com/seleccion/,,True
+sobre-mi/index.html,/sobre-mi/,Transversal,Ángel Marqueta Alonso: analítica de fútbol · Línea de pase,https://lineadepase.com/sobre-mi/,,True
+tras-la-jornada/index.html,/tras-la-jornada/,Zaragoza,Tras la jornada · Línea de pase,https://lineadepase.com/tras-la-jornada/,,True
+videos/index.html,/videos/,Media,Vídeos de análisis de fútbol: xG y FVS · Línea de pase,https://lineadepase.com/videos/,,True
