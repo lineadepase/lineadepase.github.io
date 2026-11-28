@@ -42,6 +42,7 @@ test('siete recursos de Play funcionan y permiten volver al área',async({page},
    const card=page.locator('.reto-marcador').first();await card.locator('[name="local"]').fill('0');await card.locator('[name="visitante"]').fill('0');
    await card.getByRole('button',{name:'Comprobar mi marcador'}).click();await expect(card.locator('.marcador-ciego-revelar')).toHaveAttribute('open','');await expect(card.locator('button')).toBeDisabled();
   }
+  if(item.id==='pizarron'){await page.locator('[data-retroceder]').click();await expect(page.locator('[data-estado-jugada]')).toContainText('Paso 2 de 3');await page.locator('[data-avanzar]').click();await expect(page.locator('[data-estado-jugada]')).toContainText('Paso 3 de 3');}
   if(item.id==='espejo'){await page.locator('#comparar-espejo').click();await expect(page.locator('#resultado-espejo h3')).toHaveCount(2);}
   if(item.id==='reloj'){await page.locator('#selector-reloj').selectOption({index:1});await expect(page.locator('#reloj-resultado')).toContainText('Resultado final:');}
   if(item.id==='esquemas'){await page.locator('[data-elegir-fase="presion"]').click();await expect(page.locator('[data-elegir-fase="presion"]')).toHaveAttribute('aria-pressed','true');await expect(page.locator('[data-campo-nombre]')).toContainText('Presión');}
@@ -73,7 +74,7 @@ test('Studio exporta archivos SVG, PNG, WebP, ZIP y texto con contenido real',as
  file=await downloadBytes(page,page.locator('[data-descargar-comparacion-texto]'));expect(file.bytes.toString()).toContain('Zaragoza');
  await page.getByRole('link',{name:'Volver a Studio →',exact:true}).click();
  await page.locator('[data-resource="pizarron"]').getByRole('link').click();
- await expect(page.locator('[data-estado-jugada]')).toContainText('Paso 3 de 3');await page.locator('[data-retroceder]').click();await expect(page.locator('[data-estado-jugada]')).toContainText('Paso 2 de 3');
+ await dismissCookies(page);await expect(page.locator('[data-estado-jugada]')).toContainText('Paso 3 de 3');await page.locator('[data-retroceder]').focus();await page.locator('[data-retroceder]').press('Enter');await expect(page.locator('[data-estado-jugada]')).toContainText('Paso 2 de 3');
 });
 
 test('Media enlaza los tres vídeos sin convertirlos en investigaciones nuevas',async({page})=>{
